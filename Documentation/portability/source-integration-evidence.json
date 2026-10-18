@@ -5663,10 +5663,1348 @@
           "bytes": 388
         }
       ]
+    },
+    {
+      "label": "native-pointer-fallback-reviewed",
+      "capturedAtUtc": "2026-10-18T15:18:01.6444963Z",
+      "headCommit": "06bac0b52ad1f1338ca2d5ced47c2d9905de75f4",
+      "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
+      "scope": "Committed06bac narrow absent-distance5 policy validates all raw names before decoding and resolution. All56 startup processes, two23-control suites and20 deterministic threshold observations pass with independent review. Original reds retained. Packaged native GNOME replay remains pending.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/build-linux.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/build-linux.log",
+          "sha256": "3348deaac9fd028388d542a24bcb58f9895dec95d62a0a849ef120f1ad0f6c7d",
+          "bytes": 12682
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/build-windows.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/build-windows.log",
+          "sha256": "64df9a53e888b192dca884c4e0d5493b194b46fedad63922df4f7c487a28339d",
+          "bytes": 12551
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/captured-gnome-green.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/captured-gnome-green.json",
+          "sha256": "e919064a2ce740c0e496451e66c2aba4f954f7405d826cc8d8ba4efadfcf8e78",
+          "bytes": 2148,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/captured-gnome-green.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/captured-gnome-green.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/frozen-manifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/frozen-manifest.json",
+          "sha256": "4665c87a312acdc0f53e575d89cadffd54b76aac8ec15f7e9ed2f7d993fce247",
+          "bytes": 48887
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/IsolatedBuild.props",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/IsolatedBuild.props",
+          "sha256": "82f6b9b9546421efad6aab75f88f5c76ef280c9e2a29e88d84eb78faae6a546c",
+          "bytes": 531
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/native-window-captured-gnome.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/native-window-captured-gnome.json",
+          "sha256": "337221862acd1d1964cdcdc67d6204dae9eb527a73f22d825826707ba124df63",
+          "bytes": 13487,
+          "results": [
+            {
+              "status": "pass",
+              "count": 23
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/native-window-captured-gnome.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/native-window-captured-gnome.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/native-window-fallback.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/native-window-fallback.json",
+          "sha256": "2b7372200299e9e1bfad95d2058a8c1f9850f7bfccc5872003512e6e6c1278c5",
+          "bytes": 13496,
+          "results": [
+            {
+              "status": "pass",
+              "count": 23
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/native-window-fallback.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/native-window-fallback.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/pat-exact-name-repaired.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/pat-exact-name-repaired.json",
+          "sha256": "7da9df13d6361c85915e6b6ab84fb5e8cd480b8c7b38c139b43d7230c2be7b79",
+          "bytes": 1973,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/pat-exact-name-repaired.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/pat-exact-name-repaired.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/run-controls.sh",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/run-controls.sh",
+          "sha256": "809be2bfc3299b80025a2e8adad7109333e8a0800d79d8f4fb735f09a7e1863a",
+          "bytes": 1251
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/run-matrix.sh",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/run-matrix.sh",
+          "sha256": "903d18b4bdae55d193aad729d1fc7693f69df5dd1a7d467a326d343bc24d0dd9",
+          "bytes": 2107
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-absent-property.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-absent-property.json",
+          "sha256": "10965ae3b448d28372cf7e93a9de55723738a5bcbcdf20cafa5d4646fb0ffd45",
+          "bytes": 1970,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-absent-property.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-absent-property.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-absent.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-absent.json",
+          "sha256": "b7a4b76b865993dd35964cd3dba40c45f98364f59aabb4dbbb811a762d470ab7",
+          "bytes": 1949,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-absent.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-absent.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-big.json",
+          "sha256": "95de997f6d0a6d0bb3ef59e063d3d14349e91bdfd23a201e12e1eb61a5d9833c",
+          "bytes": 2130,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-big.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-big.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-both-absent.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-both-absent.json",
+          "sha256": "d6a8ce90ddda6c4ea01391b27b18c6e24b46b92783eedeb465fe1e02c00ff630",
+          "bytes": 1978,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-both-absent.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-both-absent.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-count.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-count.json",
+          "sha256": "9eefa6f641635213df6fff52dc555c97d0725c6ba70cf30b27e2779a12507524",
+          "bytes": 1930,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-count.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-count.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-distance-duplicate.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-distance-duplicate.json",
+          "sha256": "e2edf7dbe087862eb4c6d0def77d6ec0a97224402bf2b58cb884c48ecf04b9ca",
+          "bytes": 2015,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-distance-duplicate.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-distance-duplicate.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-distance-range.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-distance-range.json",
+          "sha256": "aa666b051ea818bab838aeed99917e78a5a80e1205c3b5822d81e01261c41710",
+          "bytes": 1997,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-distance-range.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-distance-range.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-distance-value-type.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-distance-value-type.json",
+          "sha256": "c8e9a8babbbda187b368dbf2540c671eb6158d42244256a8d253f5fcf0429870",
+          "bytes": 2017,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-distance-value-type.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-distance-value-type.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-duplicate.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-duplicate.json",
+          "sha256": "1a3efaf9061511e8b07a582a1134c5f374fc9cf73b508b82892838a6519bf09e",
+          "bytes": 1993,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-duplicate.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-duplicate.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-header.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-header.json",
+          "sha256": "bbf5481e1808521ee9cbac4e5e914a610b58c0d9850380f51a7837b9c2a1827b",
+          "bytes": 1939,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-header.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-header.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-little.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-little.json",
+          "sha256": "a314c24f1a2e5cb7cc257163b07d6d511699fa79da420e6a172e1ae79ddee958",
+          "bytes": 2133,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-little.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-little.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-big.json",
+          "sha256": "f7913a8d2b3d5b257558b4ef8110d9cd58fa951f77caccde0a88cc36a5c33c54",
+          "bytes": 2154,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-big.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-big.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-count.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-count.json",
+          "sha256": "fe27810e38bf098976ff912424fa4a0fa090e144e83d541df280ab600d70c8db",
+          "bytes": 1964,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-count.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-count.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-duplicate.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-duplicate.json",
+          "sha256": "13b799155528756c46bd653a7ecd3edf4ad430cad5d3d24d231bf91c167bd2b1",
+          "bytes": 2027,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-duplicate.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-duplicate.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-header.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-header.json",
+          "sha256": "37c377d427b56e376f76226fa29b78187960cb7c8e43b24c43384a8feef50329",
+          "bytes": 1973,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-header.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-header.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-little.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-little.json",
+          "sha256": "189a62fb3f80693febc67878e073d5c90d1c832d4d67e3c2d4b772837a0bff02",
+          "bytes": 2157,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-little.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-little.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-range.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-range.json",
+          "sha256": "e94a7cc9c9760687a9ffefdc467d6ba4bab41b8dfb1b4b621413898b7ba91b5f",
+          "bytes": 2009,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-range.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-range.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-trailing.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-trailing.json",
+          "sha256": "95aa0a9cc63f51fcda4dd366bd5a48d556e5ee589be45223b81e5f85001ae95b",
+          "bytes": 1991,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-trailing.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-trailing.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-truncated.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-truncated.json",
+          "sha256": "0939c1f00103f2e41f18d352a8456518ef8eb4d5d67029f265b06914159e77d9",
+          "bytes": 1969,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-truncated.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-truncated.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-type.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-type.json",
+          "sha256": "1174328892e065cc046bcdd1549443cb0eb3d2ddcabbd355f390aae85f530190",
+          "bytes": 1967,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-type.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-type.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-under-count.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-under-count.json",
+          "sha256": "de835b459351f5614a6fccf0b7087dcca073113088bd56b7cabaf677a048994f",
+          "bytes": 1997,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-under-count.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-under-count.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-value-type.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-value-type.json",
+          "sha256": "a5c68fffcbdb6f6b7d8471a5ade7475915dba427cd364cdb97b23b5d0fe4febe",
+          "bytes": 2029,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-value-type.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-distance-value-type.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-time.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-time.json",
+          "sha256": "a6f03da91fce938cba1b31a025435df37097492f5988c5d169041133bedf7b9f",
+          "bytes": 1980,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-missing-time.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-missing-time.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-digit-segment-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-digit-segment-big.json",
+          "sha256": "31d8858e0fd18ab50857ec812491df6225f5f93021c895d2236e6f2be3798fb1",
+          "bytes": 1961,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-digit-segment-big.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-digit-segment-big.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-digit-segment-little.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-digit-segment-little.json",
+          "sha256": "3c680f9f71b70f52de178a71cf691fddc99ba85b65b954dd1e7dac45201dd092",
+          "bytes": 1967,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-digit-segment-little.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-digit-segment-little.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-digit-start-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-digit-start-big.json",
+          "sha256": "bacde77aec625f437cfc054daa29cf667abfd7d43e8fef8ad7e68035b4e4978b",
+          "bytes": 1957,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-digit-start-big.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-digit-start-big.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-digit-start-little.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-digit-start-little.json",
+          "sha256": "e063ff52b8b3a074845661c6aefea9713793c0508eaa2b08beafd38a04819a39",
+          "bytes": 1963,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-digit-start-little.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-digit-start-little.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-empty-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-empty-big.json",
+          "sha256": "63978434eeec231d6a15a1253f796b6213f1433ed5d97f06b0aff5ec02758956",
+          "bytes": 1967,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-empty-big.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-empty-big.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-empty-little.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-empty-little.json",
+          "sha256": "e749258dd4751cc04d4ec4aeaedfd324156ecae572b341da7402c51d71ac14f4",
+          "bytes": 1973,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-empty-little.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-empty-little.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-empty-segment-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-empty-segment-big.json",
+          "sha256": "d6f8af29ce44b6d120832f0b7c2fb5250edb37a7d4ca61ca0fbca5c7a21ed00f",
+          "bytes": 1961,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-empty-segment-big.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-empty-segment-big.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-empty-segment-little.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-empty-segment-little.json",
+          "sha256": "2fe6b462163eed5cf957ff2d87ce71fcf61c2bcf6d8169a44ef057aaaffaca05",
+          "bytes": 1967,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-empty-segment-little.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-empty-segment-little.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-illegal-distance-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-illegal-distance-big.json",
+          "sha256": "d2cd5c944626728b310f51d5956b2cb99e767ee5ebd666260c6d57cc557e736e",
+          "bytes": 1967,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-illegal-distance-big.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-illegal-distance-big.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-illegal-distance-little.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-illegal-distance-little.json",
+          "sha256": "7da9df13d6361c85915e6b6ab84fb5e8cd480b8c7b38c139b43d7230c2be7b79",
+          "bytes": 1973,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-illegal-distance-little.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-illegal-distance-little.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-leading-slash-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-leading-slash-big.json",
+          "sha256": "1182e92b9b8f9239c518e544d828ecd2fdfd798e438a7584afbb75ad02897d8a",
+          "bytes": 1961,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-leading-slash-big.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-leading-slash-big.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-leading-slash-little.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-leading-slash-little.json",
+          "sha256": "24a2bbbb7ad9bc2838f4196fc184d4e5c1c6c9a8d7fbadcea45b35739742824e",
+          "bytes": 1967,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-leading-slash-little.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-leading-slash-little.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-nonascii-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-nonascii-big.json",
+          "sha256": "cb386e7be17cb5cd5e60ec02927e08672fdb6b2a332641751d472de7e7db5b1f",
+          "bytes": 1951,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-nonascii-big.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-nonascii-big.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-nonascii-little.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-nonascii-little.json",
+          "sha256": "ccbea13efba7e4887efcdf4c33a7f3ee29fc86883b8f6ad7620c77d07c81f246",
+          "bytes": 1957,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-nonascii-little.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-nonascii-little.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-nul-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-nul-big.json",
+          "sha256": "b496a51921508003362abd582aeffd460e0722925003b1890c07f5468d421a7b",
+          "bytes": 1941,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-nul-big.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-nul-big.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-nul-little.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-nul-little.json",
+          "sha256": "7684577efc9cc9f42f2d76209f135ed9bd960d857c6c876f2711467a99c3c377",
+          "bytes": 1947,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-nul-little.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-nul-little.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-trailing-slash-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-trailing-slash-big.json",
+          "sha256": "9a719b8d1e8e4948ee918fc25f4dd50a26fd39fc2fb9bc03730579c464ffbc7a",
+          "bytes": 1985,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-trailing-slash-big.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-trailing-slash-big.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-trailing-slash-little.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-trailing-slash-little.json",
+          "sha256": "7bf512ca3cc5f18ef55ed39d79037f5000cbb163e0e255769ee7da8b59729ccb",
+          "bytes": 1991,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-trailing-slash-little.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-trailing-slash-little.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-unknown-illegal-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-unknown-illegal-big.json",
+          "sha256": "684f27e622bd81505f24eb9ec8b1495445bf257c280603f3005a1bd9417f6157",
+          "bytes": 1965,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-unknown-illegal-big.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-unknown-illegal-big.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-unknown-illegal-little.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-unknown-illegal-little.json",
+          "sha256": "e14a098260f88e842bf5e976e874c8cee509e623b724f1148866714b87a732a9",
+          "bytes": 1971,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-unknown-illegal-little.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-unknown-illegal-little.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-valid-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-valid-big.json",
+          "sha256": "ecd8c4246adc3b2476317c09d6c92d2e91530d291c7c9bc90f3e518cea1764da",
+          "bytes": 2148,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-valid-big.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-valid-big.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-valid-little.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-valid-little.json",
+          "sha256": "87bf509e3e5c5d53bf610ea336965dbefe10398425066a5cbb059abb653ad0d4",
+          "bytes": 2151,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-name-valid-little.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-name-valid-little.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-published-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-published-big.json",
+          "sha256": "0cffdc1bba582d60fa8995e58480f9a68cbd3312febc87f723f9e703d56c15ab",
+          "bytes": 2141,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-published-big.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-published-big.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-published-little.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-published-little.json",
+          "sha256": "89fea6f135a705b0170d9cd86a5e436a19c8715c4bcae612a72df2ec16b2ac75",
+          "bytes": 2144,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-published-little.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-published-little.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-published-max.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-published-max.json",
+          "sha256": "016afccd3e330caf7ed96b9bfdb59f97f934ea6cea7a9549b10c3df2bc9c13ad",
+          "bytes": 2149,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-published-max.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-published-max.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-published-min.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-published-min.json",
+          "sha256": "f908857e9c001d7a9e679dd34da00af8cfb32cc25cb7d1ae6cabca5f7f40803f",
+          "bytes": 2138,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-published-min.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-published-min.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-range.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-range.json",
+          "sha256": "f5a2ad48e5c4880c2e2eb930cbcbb9b9047dbb396163a7558cca4ec4c840f4a7",
+          "bytes": 1975,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-range.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-range.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-trailing.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-trailing.json",
+          "sha256": "e3a2caf0a90e4b5c4b11d9c48bd12ac9ca820c95d8dbfb6d3f6ab8e4c74a06db",
+          "bytes": 1957,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-trailing.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-trailing.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-truncated.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-truncated.json",
+          "sha256": "b11cfca0eb0e9ea9ddb4927656c9aeb6e22c4d79994c73d58f2cbd8d0c9478bc",
+          "bytes": 1935,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-truncated.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-truncated.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-type.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-type.json",
+          "sha256": "e9c2bc5cf1051dc7e2bf9b38c1a869f069736d28f5b3188cd96e42786eeb0fd3",
+          "bytes": 1933,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-type.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-type.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-value-type.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-value-type.json",
+          "sha256": "122ca76d21dbbac41bad63c74ede1dd707f2a736efca22749a78c3b2630cfb20",
+          "bytes": 1995,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/settings-value-type.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/settings-value-type.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/thresholds.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/thresholds.json",
+          "sha256": "9c67224ea038d3e9b9f8757cd715efdb431cd92d834fde8fdbcaccd70eb64fbb",
+          "bytes": 7080,
+          "results": [
+            {
+              "status": "pass",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/thresholds.stderr",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/thresholds.stderr",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/xvfb-controls.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/xvfb-controls.log",
+          "sha256": "dd798c6d56347ce518984a6bd9c38250f1dec7d230ae1f67e2c9b71d5852665b",
+          "bytes": 4960
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-revision2/xvfb-matrix.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-revision2/xvfb-matrix.log",
+          "sha256": "7ac8526c6b9787c546c47e8d6a4714fe0d8011319d5a5e1e07ab788bbc95a63e",
+          "bytes": 66008
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings/frozen-manifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings/frozen-manifest.json",
+          "sha256": "1d30fa34c60d38014596a17b2422ce78c6d4d1ad9d5867e02a3a92c1a203b345",
+          "bytes": 34913
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings/captured-gnome-red.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings/captured-gnome-red.json",
+          "sha256": "6998e623b6397ce0495afd86cba0c439e2a31224b1a73a768f470817929afb62",
+          "bytes": 2487,
+          "results": [
+            {
+              "status": "fail",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-pointer-settings-name-review/frozen-name-red-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/native-pointer-settings-name-review/frozen-name-red-summary.json",
+          "sha256": "1e44eef9492d9a2b43e48e2d2c2b5b0ae4991ef96ab1508d6e058bd77b963e51",
+          "bytes": 2905
+        },
+        {
+          "path": "artifacts/portability/pat-native-pointer-review/revision2/review-result.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/pat-native-pointer-review/revision2/review-result.json",
+          "sha256": "4790e1a33651d6b5a4def8e9c7ae70e63cd9521de92254c670abd97ee6cd2ffe",
+          "bytes": 796
+        },
+        {
+          "path": "artifacts/portability/pat-native-pointer-review/revision2/settings-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/pat-native-pointer-review/revision2/settings-summary.json",
+          "sha256": "e88758e1978f3720fc098da29ddb02deefbe2b7f0ccebba0d750cf8a67e489f4",
+          "bytes": 5339
+        },
+        {
+          "path": "artifacts/portability/pat-native-pointer-review/invalid-distance-name.bin",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/pat-native-pointer-review/invalid-distance-name.bin",
+          "sha256": "dee62bca381f6784c037299e80044a33e51602b1860f0fdcdf8ed26171b3d547",
+          "bytes": 80
+        },
+        {
+          "path": "artifacts/portability/scrooge-native-pointer-review/revision2-bb04ff0fe7f94056ba6067bc254a48f4/captured-gnome.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/artifacts/portability/scrooge-native-pointer-review/revision2-bb04ff0fe7f94056ba6067bc254a48f4/captured-gnome.json",
+          "sha256": "482978790a6182921159c411f1f62ff711aff6349614c9141e82345e66f8bc07",
+          "bytes": 2132,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "src/Portability/Backend/NativeHost/NativeWindowHost.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/src/Portability/Backend/NativeHost/NativeWindowHost.cs",
+          "sha256": "7ab75d6ff128255bca10ad0c61e87cc6f5db4ca4c82d7fc90431984a61139e41",
+          "bytes": 6399
+        },
+        {
+          "path": "src/Portability/Backend/NativeHost/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/src/Portability/Backend/NativeHost/README.md",
+          "sha256": "5c7c9d110c058eb2037f2aca90cbc993b7bfac030d40052d258b4e0c7d20a34e",
+          "bytes": 13862
+        },
+        {
+          "path": "src/Portability/Tests/NativeWindowIntegration/Program.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/src/Portability/Tests/NativeWindowIntegration/Program.cs",
+          "sha256": "a96958dd57dc29c3654228556c111c024ae62f2bba9a395fa07e2a52ab0b033b",
+          "bytes": 62000
+        },
+        {
+          "path": "src/Portability/Tests/NativeWindowIntegration/X11Fixture.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/src/Portability/Tests/NativeWindowIntegration/X11Fixture.cs",
+          "sha256": "9242de70585d1b56dad6cfc92e3bc64a092282c353f4edfbae72fb8ddd601da7",
+          "bytes": 23800
+        },
+        {
+          "path": "src/Portability/Tests/NativeWindowIntegration/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-native-pointer-fallback-reviewed/src/Portability/Tests/NativeWindowIntegration/README.md",
+          "sha256": "3b1cbf42ae08150e8111b49bdc8b73a38c0f20157664338cca4f9ab65d6de21c",
+          "bytes": 13389
+        }
+      ]
+    },
+    {
+      "label": "bitmap-conversion-hoist",
+      "capturedAtUtc": "2026-10-18T15:18:01.9034019Z",
+      "headCommit": "06bac0b52ad1f1338ca2d5ced47c2d9905de75f4",
+      "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
+      "scope": "Committed0f57 invariant metadata hoist preserves byte-for-byte display conversion in32 complete-buffer cases per OS and source ownership. Imaging12/rendering19 regressions per OS and both independent reviews pass. No timing improvement or packaged performance gate is claimed.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/correctness-evidence-hashes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/scientific-performance-diagnosis/hoist/correctness-evidence-hashes.json",
+          "sha256": "50a593093a8cac0ceede14a71f26242e058ab16094d846ed299134f186311a4b",
+          "bytes": 1504
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/scientific-performance-diagnosis/hoist/README.md",
+          "sha256": "e72236e7259140828c207158450b486b9a78f7b4cf4a27f3303b271fa26f3aa4",
+          "bytes": 6290
+        },
+        {
+          "path": "artifacts/portability/foghorn-imaging-hoist-review/review-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/foghorn-imaging-hoist-review/review-summary.json",
+          "sha256": "beaf1d53c8b15d7e41d6e32ec0f6885c91793c19de6ff291e32371e7941e5630",
+          "bytes": 3793
+        },
+        {
+          "path": "artifacts/portability/gosalyn-imaging-hoist-review/output-parity-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/gosalyn-imaging-hoist-review/output-parity-linux.json",
+          "sha256": "c309ff0b014ef59fbf8bc523cd3fd3376a46424e95810e2ca660af123ef1ed95",
+          "bytes": 2421
+        },
+        {
+          "path": "artifacts/portability/gosalyn-imaging-hoist-review/output-parity-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/gosalyn-imaging-hoist-review/output-parity-windows.json",
+          "sha256": "c309ff0b014ef59fbf8bc523cd3fd3376a46424e95810e2ca660af123ef1ed95",
+          "bytes": 2421
+        },
+        {
+          "path": "src/Microsoft.DotNet.Wpf/src/PresentationCore/System/Windows/Media/Imaging/Portable/PortableBitmapBuffer.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/src/Microsoft.DotNet.Wpf/src/PresentationCore/System/Windows/Media/Imaging/Portable/PortableBitmapBuffer.cs",
+          "sha256": "c5e00a1dee314ef739927b7ac8cd925f278faca1258a3d2f5ca239ee15934d78",
+          "bytes": 7239
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/PortableBitmapBuffer.before.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/scientific-performance-diagnosis/hoist/PortableBitmapBuffer.before.cs",
+          "sha256": "f3ac971f05967397e13489ee168869cc790cb38709464e504f20a78b89ef68cc",
+          "bytes": 6925
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/PresentationCore.after-captured.dll",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/scientific-performance-diagnosis/hoist/PresentationCore.after-captured.dll",
+          "sha256": "369f3363e9b654125f347cdf89efc1294216ab106028f598f6ff39615d461ac5",
+          "bytes": 3480064
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/PresentationCore.after-captured.pdb",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/scientific-performance-diagnosis/hoist/PresentationCore.after-captured.pdb",
+          "sha256": "00c80f9f970861640aa5a021b11f8d34244cff70b4fad89f26e16c65a4aba87b",
+          "bytes": 1611888
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/core-compiled-document-diff.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/scientific-performance-diagnosis/hoist/core-compiled-document-diff.json",
+          "sha256": "4eb9dbda3073f56f3d65a6d4ab244160f25ec7b30df45ce04d5dd3f38ea555f3",
+          "bytes": 449
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/output-parity-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/scientific-performance-diagnosis/hoist/output-parity-windows.json",
+          "sha256": "5f676ecfcee5623fa5f27f8d7d3f808fbd3e0eb97e8befd3f99941446e1434de",
+          "bytes": 2421
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/output-parity-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/scientific-performance-diagnosis/hoist/output-parity-linux.json",
+          "sha256": "5f676ecfcee5623fa5f27f8d7d3f808fbd3e0eb97e8befd3f99941446e1434de",
+          "bytes": 2421
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/cross-os-output-parity.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/scientific-performance-diagnosis/hoist/cross-os-output-parity.json",
+          "sha256": "06fd0e6dc834aa10cc55913d2b55491614f0acc46888d9df1f2e440e1e0a0419",
+          "bytes": 1765
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/imaging-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/scientific-performance-diagnosis/hoist/imaging-windows.json",
+          "sha256": "451453c9bac75f3f532da1353e96dcffb885b4ab645d8958b32012721da97ba4",
+          "bytes": 2497,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/imaging-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/scientific-performance-diagnosis/hoist/imaging-linux.json",
+          "sha256": "f3303ce3e833ab7f3220fadf570c1642efd3899e7d5538c15349c7aa7ca74a93",
+          "bytes": 2422,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/rendering-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/scientific-performance-diagnosis/hoist/rendering-windows.json",
+          "sha256": "ab35f0a2f98fb5bb42182c26c427ee1990e4b2a19ee8a81d29b7445e3607e33b",
+          "bytes": 3525,
+          "results": [
+            {
+              "status": "pass",
+              "count": 19
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/rendering-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-conversion-hoist/artifacts/portability/scientific-performance-diagnosis/hoist/rendering-linux.json",
+          "sha256": "d7e61f1f55372600f6e066adcd8bb80dd5837752e437b4a2ed42f8fdf0bb9bc1",
+          "bytes": 3405,
+          "results": [
+            {
+              "status": "pass",
+              "count": 19
+            }
+          ]
+        }
+      ]
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",
   "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
   "phase3Status": "classic-source-controls-passed-packaged-nina-replay-pending",
-  "phase5Status": "gnome-xwayland-startup-failed-absent-distance-policy-approved-repair-pending"
+  "phase5Status": "native-absent-distance-repair-passed-packaged-gnome-replay-pending"
 }

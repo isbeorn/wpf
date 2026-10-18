@@ -44,7 +44,7 @@ These results have different scopes and must not be added into a general compati
 | [Core input](../../src/Portability/Tests/InputIntegration/README.md) | 36 checks pass | 36 checks pass | Actual InputManager staging, routed events, commands, focus, capture and cursor visibility with a managed host |
 | [Settings](../../src/Portability/Tests/SystemSettingsIntegration/README.md) | 20 checks pass | 20 checks pass | Explicit immutable palette, editing preferences and four scrollbar metrics, genuine resource/theme lookup and XAML access policy; source-built Classic control layout has a separate four-case result |
 | [Window lifecycle](../../src/Portability/Tests/WindowLifecycleIntegration/README.md) | 66 checks pass; stock oracle 26/26 | 66 checks pass | Genuine Window ownership, modal cleanup, asynchronous bounds, content sizing and public Application.Run startup/shutdown; independent lifetime, fractional acknowledgment and explicit-request replays pass |
-| [Native WPF Window](../../src/Portability/Tests/NativeWindowIntegration/README.md) | Builds; runtime intentionally unsupported | 22/22 for each XSETTINGS byte order; nine rejection cases pass | Genuine WPF Window, Button.Click, TextBox input, synchronous dialog, scientific bitmap mutation, cover/uncover, five-button state, capture and minimum-pixel DPI behavior on Xvfb |
+| [Native WPF Window](../../src/Portability/Tests/NativeWindowIntegration/README.md) | Builds; runtime intentionally unsupported | Original byte-order suites pass; absent-distance repair adds 56 startup cases, two 23-check native suites and 20 threshold observations | Genuine WPF Window, Button.Click, TextBox input, synchronous dialog, scientific bitmap mutation, cover/uncover, five-button state, capture and minimum-pixel DPI behavior on Xvfb; fresh packaged GNOME replay remains pending |
 | [Native window manager](../../src/Portability/Tests/NativeWindowIntegration/README.md) | Not applicable | Ten fresh Openbox runs, 13/13 each | Actual state, frame extents, maximize/minimize/restore, pending bounds intents, callback-triggered close and settled native pixels |
 | [App-local SDK/runtime](../../src/Portability/Packaging/README.md) | External consumer 11 checks per build/publish/custom path; archive/output audit 6/6 | External consumer 11 checks per path; native FDD and self-contained 13/13 each; archive/output audit 8/8 | Local-feed restore, actual compiler, two BAML origins, companion assembly, forwarders, case-sensitive Linux compilation, Unicode pack resources, identities, compiler origins, licenses and exact runtime/native contents |
 | [Complete unchanged view](../../src/Portability/Packaging/Consumer/App/README.md) | Stock reference 15/15 for each compiler origin | 19/19 in each of four package-only processes | Same compiled view and original dictionary, native validation/editing/commands, owned dialogs, bound RGB48, resources, clocks, both DPI directions and fresh lifetimes; explicit host templates remain part of this profile |
@@ -223,9 +223,13 @@ omits distance. Independent decoding confirms the parser's result. A separate
 read-only GTK query reports an effective 5-pixel distance. Desktop settings owner,
 XSETTINGS bytes and RESOURCE_MANAGER bytes remain unchanged after both probes.
 The user approved a declared 5-pixel fallback only for absent distance, preserving
-published values and all invalid-data failures. Implementation and a fresh
-packaged desktop replay remain pending. This is neither a desktop pass nor a
-native Wayland result.
+published values and all invalid-data failures. Commit `06bac0b52` implements that
+policy after complete payload and raw-name validation, with per-field provenance.
+All 56 startup cases, two 23-check native suites and 20 deterministic threshold
+observations pass. Independent review caught and closed acceptance of malformed
+setting names; the original failures remain preserved. These are dedicated Xvfb
+checks, including replay of the captured GNOME property. A fresh packaged desktop
+replay remains pending. This is neither a desktop pass nor a native Wayland result.
 
 The initial native X11 Window profile requires at least one physical client pixel on each axis. Explicit application requests for zero or subpixel client extents are an unsupported boundary, checked before issuing native configure requests. Stock Windows WPF instead coerces these requests to its desktop-specific native minimum and publishes that accepted size through Width/Height, ActualWidth/ActualHeight and RestoreBounds. Matching that behavior needs a logical/native minimum-size contract; this profile does not claim it. Preserving an already valid native window during a DPI change is a separate requirement and must not emit an illegal zero-pixel configure request.
 
@@ -257,14 +261,29 @@ qualified package bytes above.
 Linux RGB48 accumulates 17.02 seconds of start lateness and cannot sustain the
 approved one-second update interval in this configuration. Dirty-only publication
 also remains expensive: mean callback transactions are 1163.69/2144.74 ms on
-Linux versus 8.26/8.51 ms on Windows. These measurements do not yet identify the
-cost owner. A separate bounded diagnosis precedes renderer optimization.
+Linux versus 8.26/8.51 ms on Windows. Subsequent one-variable controls and native
+leaf profiles identify repeated whole-source display conversion as the dominant
+measured cost in this configuration. Commit `0f57b2d73` hoists invariant pixel
+format and row-stride metadata out of those loops without changing conversion
+math, storage or ownership. All 32 complete converted-buffer cases per OS remain
+byte-exact, Imaging 12/12 and Rendering 19/19 pass on both systems and independent
+reviews find no supported defect. The optimization's cadence effect and a fresh
+combined-package workload remain unmeasured.
 
 The 18 paired native pixel samples differ by up to 57/255. All 18 Windows samples
 match their stock offscreen references, while Linux's first Gray16 center is 4
 versus Windows 53. Source bit depth, channel order and complete readback remain
 exact. Display parity is unqualified; expected pixels have not been changed to
 hide this result.
+
+The user subsequently accepted documented, bounded backend sampling differences
+while preserving WPF mode/state semantics and exact scientific source values.
+Calibration separates format-specific interior interpolation, geometry-derived
+edge coverage and coordinate-justified nearest-texel boundary choices. Observed
+1-2/255 interpolation and up to 17/255 edge-coverage differences are corpus
+measurements, not a global tolerance. Implementation, large-coordinate checks and
+native requalification remain in progress. HighQuality/Fant prefiltering remains
+required by the NINA image paths and is not qualified by that policy decision.
 
 The timings end at dispatcher/render callbacks, not confirmed presentation.
 Native observations occur outside those timers and do not prove the latest

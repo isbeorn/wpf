@@ -85,6 +85,20 @@ The user separately selected Unicode 17 character classification for word select
 
 Image storage retains original data, including Gray16 and Rgb48. Conversion to a display surface must not discard precision in `CopyPixels` or change channel order. A backend must preserve snapshot and ownership semantics when callers release or reuse source memory, plus the existing freeze and dispatcher handoff behavior.
 
+The user accepted documented, bounded display differences from the Windows
+software renderer rather than exact reproduction of its fixed-point sampler and
+8x8 edge grid. Preserve WPF sampling-mode selection, inherited drawing state and
+exact scientific source values. Qualify Linear interpolation with measured
+format-specific interior bounds and geometry-derived premultiplied edge checks.
+The calibration observed interior differences of 1-2/255 and edge-coverage
+differences up to 17/255; these are observations for that corpus, not a blanket
+pixel tolerance. NearestNeighbor may select an adjacent texel only at boundaries
+justified by the samplers' coordinate arithmetic. Verify large image coordinates,
+both pan directions, flips, clipping and DPI before declaring those cases
+supported. Retain raw comparisons and document each qualified limit. HighQuality
+and Fant prefiltering remain separate required NINA work and must fail explicitly
+until implemented and qualified.
+
 ### Backend selection
 
 Recommend evaluating Avalonia's open-source infrastructure first because it already provides desktop platform integration. This is reuse beneath WPF, with NINA's views remaining WPF. Avalonia is [MIT licensed](https://github.com/AvaloniaUI/Avalonia/blob/main/licence.md) and has an existing [layered platform architecture](https://docs.avaloniaui.net/docs/fundamentals/architecture). XPF code and commercial runtime components are excluded.
