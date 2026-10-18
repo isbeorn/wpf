@@ -1,0 +1,14 @@
+<Project>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <AssemblyName>Portability.SystemSettings.GenericFixture</AssemblyName>
+    <RootNamespace>Portability.SystemSettings.GenericFixture</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../Framework/PresentationFramework/PresentationFramework.csproj" />
+    <Page Include="Themes/Generic.xaml" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="../../../Framework/Build/PortableWpfReferences.targets" />
+  <Import Project="../../../Markup/PortableMarkup.targets" />
+</Project>

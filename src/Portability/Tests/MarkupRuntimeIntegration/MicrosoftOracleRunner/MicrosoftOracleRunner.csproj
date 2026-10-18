@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <MicrosoftOracleAssembly>$(PortabilityRepositoryRoot)artifacts/portability/markup-runtime-integration/microsoft-oracle/FixtureControls.dll</MicrosoftOracleAssembly>
+    <!-- Keep the frozen Windows-targeted fixture's platform annotations visible while probing the portable runtime. -->
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);CA1416</WarningsNotAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../RuntimeAssemblyEvidence.cs" />
+    <ProjectReference Include="../../../Framework/PresentationFramework/PresentationFramework.csproj" />
+    <ProjectReference Include="../../../Framework/PresentationFramework-SystemCore/PresentationFramework-SystemCore.csproj" />
+    <ProjectReference Include="../../../Framework/PresentationFramework-SystemData/PresentationFramework-SystemData.csproj" />
+    <ProjectReference Include="../../../Framework/PresentationFramework-SystemDrawing/PresentationFramework-SystemDrawing.csproj" />
+    <ProjectReference Include="../../../Framework/PresentationFramework-SystemXml/PresentationFramework-SystemXml.csproj" />
+    <ProjectReference Include="../../../Framework/PresentationFramework-SystemXmlLinq/PresentationFramework-SystemXmlLinq.csproj" />
+    <Reference Include="FixtureControls" HintPath="$(MicrosoftOracleAssembly)" Private="true" />
+    <Content Include="../MicrosoftCompilerOracle.json" Link="MicrosoftCompilerOracle.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Import Project="../../../Framework/Build/PortableWpfReferences.targets" />
+  <Target Name="RequireFrozenMicrosoftOracle" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(MicrosoftOracleAssembly)')" Text="Run Tests/MarkupRuntimeIntegration/Capture-MicrosoftCompilerOracle.ps1 on Windows to freeze the existing unchanged Microsoft-produced companion assembly before building this gate." />
+  </Target>
+</Project>

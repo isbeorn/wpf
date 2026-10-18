@@ -7,6 +7,9 @@ using System.IO;
 using System.Windows;
 using System.Text;
 using MS.Internal;
+#if PORTABLE_WPF
+using MS.Internal.Portability.Settings;
+#endif
 
 namespace MS.Win32
 {
@@ -115,6 +118,9 @@ namespace MS.Win32
     {
         static UxThemeWrapper()
         {
+#if PORTABLE_WPF
+            _themeState = new ThemeState(false, null, null);
+#else
             // When in high contrast we want to force the WPF theme to be Classic
             // because that is the only WPF theme that has full fidelity support for the
             // high contrast color scheme. Prior to Win8 the OS automatically switched
@@ -125,13 +131,18 @@ namespace MS.Win32
             // currently. Thus we fallback to Classic in this situation.
 
             _themeState = new ThemeState(!SystemParameters.HighContrast && SafeNativeMethods.IsUxThemeActive(), null, null);
+#endif
         }
 
         internal static bool IsActive
         {
             get
             {
+#if PORTABLE_WPF
+                return false;
+#else
                 return IsActiveCompatWrapper;
+#endif
             }
         }
 
@@ -139,7 +150,11 @@ namespace MS.Win32
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.ThemeName;
+#else
                 return ThemeNameCompatWrapper;
+#endif
             }
         }
 
@@ -147,7 +162,11 @@ namespace MS.Win32
         {
             get
             {
+#if PORTABLE_WPF
+                throw new PlatformNotSupportedException("Portable generic resources do not supply a Windows theme color.");
+#else
                 return ThemeColorCompatWrapper;
+#endif
             }
         }
 
@@ -155,7 +174,11 @@ namespace MS.Win32
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.ThemedResourceName;
+#else
                 return ThemedResourceNameCompatWrapper;
+#endif
             }
         }
 
@@ -299,8 +322,12 @@ namespace MS.Win32
 
         internal static void OnThemeChanged()
         {
+#if PORTABLE_WPF
+            throw new PlatformNotSupportedException("The portable settings profile is immutable; live Windows theme changes are not supported.");
+#else
             RestoreSupportedState();
             EnsureThemeState(themeChanged: true);
+#endif
         }
 
         private static ThemeState _themeState;

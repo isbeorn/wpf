@@ -1,0 +1,22 @@
+<Project>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <AssemblyName>Portability.MarkupIntegration.Fixture</AssemblyName>
+    <RootNamespace>Portability.MarkupIntegration.Fixture</RootNamespace>
+    <OutputType>Library</OutputType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../Framework/PresentationFramework/PresentationFramework.csproj" />
+    <Compile Include="../../MarkupIntegration/Fixture/ProbeView.cs" />
+    <Page Include="../../MarkupIntegration/Fixture/Views/Orbit View Ω.xaml" Link="Views/Orbit View Ω.xaml" />
+    <Page Include="../../MarkupIntegration/Fixture/Dictionaries/Palette.xaml" Link="Dictionaries/Palette.xaml" />
+    <Resource Include="../../MarkupIntegration/Fixture/Assets/CaseSensitive Ω.txt" Link="Assets/CaseSensitive Ω.txt" />
+    <Resource Include="Assets/Opaque Payload Ω.fixtureopaque" />
+    <Resource Include="Assets/Opaque Payload Ω.fixtureopaque" Link="Assets/NoExtension Ω" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="../../../Framework/Build/PortableWpfReferences.targets" />
+  <Import Project="../../../Markup/PortableMarkup.targets" />
+  <Import Project="../../MarkupIntegration/PassEvidence.targets" />
+</Project>

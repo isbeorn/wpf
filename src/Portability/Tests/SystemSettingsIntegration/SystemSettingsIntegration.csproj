@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>Portability.SystemSettingsIntegration</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="GenericFixture/**/*.cs" />
+    <ProjectReference Include="GenericFixture/GenericFixture.csproj" />
+    <ProjectReference Include="../../Framework/PresentationFramework/PresentationFramework.csproj" />
+    <ProjectReference Include="../MarkupRuntimeIntegration/Fixture/Fixture.csproj" />
+    <ProjectReference Include="../../Framework/PresentationFramework-SystemCore/PresentationFramework-SystemCore.csproj" />
+    <ProjectReference Include="../../Framework/PresentationFramework-SystemData/PresentationFramework-SystemData.csproj" />
+    <ProjectReference Include="../../Framework/PresentationFramework-SystemDrawing/PresentationFramework-SystemDrawing.csproj" />
+    <ProjectReference Include="../../Framework/PresentationFramework-SystemXml/PresentationFramework-SystemXml.csproj" />
+    <ProjectReference Include="../../Framework/PresentationFramework-SystemXmlLinq/PresentationFramework-SystemXmlLinq.csproj" />
+  </ItemGroup>
+  <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+</Project>

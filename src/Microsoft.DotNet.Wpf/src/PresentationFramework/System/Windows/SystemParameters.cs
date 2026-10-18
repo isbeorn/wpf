@@ -10,6 +10,9 @@ using System.Windows.Media;
 using MS.Win32;
 using MS.Internal;
 using MS.Internal.Interop;
+#if PORTABLE_WPF
+using MS.Internal.Portability.Settings;
+#endif
 
 namespace System.Windows
 {
@@ -159,6 +162,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.HighContrast;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.HighContrast])
@@ -182,6 +188,7 @@ namespace System.Windows
                 }
 
                 return _highContrast;
+#endif
             }
         }
 
@@ -193,6 +200,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.MouseVanish;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MouseVanish])
@@ -211,6 +221,7 @@ namespace System.Windows
                 }
 
                 return _mouseVanish;
+#endif
             }
         }
 
@@ -566,6 +577,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.KeyboardCues;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.KeyboardCues])
@@ -584,6 +598,7 @@ namespace System.Windows
                 }
 
                 return _keyboardCues;
+#endif
             }
         }
 
@@ -1836,6 +1851,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.CaretWidthDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.CaretWidth])
@@ -1878,6 +1896,7 @@ namespace System.Windows
                 }
 
                 return _caretWidth;
+#endif
             }
         }
 
@@ -2410,6 +2429,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.MinimumHorizontalDragDistanceDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MinimumHorizontalDragDistance])
@@ -2420,6 +2442,7 @@ namespace System.Windows
                 }
 
                 return _minimumHorizontalDragDistance;
+#endif
             }
         }
 
@@ -2430,6 +2453,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.MinimumVerticalDragDistanceDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MinimumVerticalDragDistance])
@@ -2440,6 +2466,7 @@ namespace System.Windows
                 }
 
                 return _minimumVerticalDragDistance;
+#endif
             }
         }
 
@@ -5945,8 +5972,12 @@ namespace System.Windows
 
         private static double _focusBorderWidth;
         private static double _focusBorderHeight;
+#if !PORTABLE_WPF
         private static bool _highContrast;
+#endif
+#if !PORTABLE_WPF
         private static bool _mouseVanish;
+#endif
 
         private static bool _dropShadow;
         private static bool _flatMenu;
@@ -5955,7 +5986,9 @@ namespace System.Windows
 
         private static NativeMethods.ICONMETRICS _iconMetrics;
 
+#if !PORTABLE_WPF
         private static bool _keyboardCues;
+#endif
         private static int _keyboardDelay;
         private static bool _keyboardPref;
         private static int _keyboardSpeed;
@@ -5984,7 +6017,9 @@ namespace System.Windows
 
         private static bool _minAnimation;
         private static int _border;
+#if !PORTABLE_WPF
         private static double _caretWidth;
+#endif
         private static bool _dragFullWindows;
         private static int _foregroundFlashCount;
         private static NativeMethods.NONCLIENTMETRICS _ncm;
@@ -5995,8 +6030,10 @@ namespace System.Windows
         private static double _cursorHeight;
         private static double _thickHorizontalBorderHeight;
         private static double _thickVerticalBorderWidth;
+#if !PORTABLE_WPF
         private static double _minimumHorizontalDragDistance;
         private static double _minimumVerticalDragDistance;
+#endif
         private static double _fixedFrameHorizontalBorderHeight;
         private static double _fixedFrameVerticalBorderWidth;
         private static double _focusHorizontalBorderHeight;

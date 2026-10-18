@@ -1,0 +1,33 @@
+# Portable system settings integration
+
+This fixture uses the actual source-built PresentationCore and PresentationFramework assemblies, normal app-local references and the existing compiled BAML fixture. It does not supply replacement WPF types.
+
+The portable product starts with the named `portable-light-v1` snapshot: 30 system color roles, seven accent roles, `KeyboardCues=false` and `HighContrast=false`. The complete opaque palette is declared in `PresentationCore/MS/internal/Portability/Settings/PortableSystemSettings.cs`. It is an initial product palette, not a claim that an OS desktop theme was detected. Existing frozen-brush caches, high-contrast brush aliases and resource keys remain in use.
+
+An internal platform adapter can call `PortableSystemSettingsProvider.Register(snapshot)` before the first settings consumption. Snapshots copy and validate the complete palette. First consumption seals registration. Replacing a consumed snapshot fails with its profile name; live appearance changes are not implemented. The portable resource path therefore does not create a hidden Win32 settings notification window. Resource lookup, theme dictionary lookup, expression invalidation and application dictionary replacement still use the existing WPF implementation. APIs that request a Win32 resource notification window explicitly report that unsupported boundary.
+
+The immutable resource policy selects `ThemeName=generic` and `ThemedResourceName=themes/generic`. `UxThemeWrapper` reports no active Windows native theme and does not query UxTheme. Existing lookup still attempts optional external generic assemblies and loads source-assembly generic dictionaries through `ThemeInfo` and `DefaultStyleKey` metadata. A genuine custom-control `themes/generic.baml` fixture verifies that path. The product graph does not yet ship a built-in control theme package; these checks do not manufacture or qualify default templates. Windows theme color and live native theme-change requests receive explicit unsupported diagnostics.
+
+Caret preferences belong to the same immutable snapshot. The initial product defaults are 1 DIP width and a 500 ms blink interval, not observed OS preferences. Startup adapters may supply a positive finite DIP width and a blink interval from -1 through `int.MaxValue/2` milliseconds. Both -1 and 0 mean steady caret; the upper bound preserves the existing animation's doubled interval without integer overflow. The alternate fixture uses 2 DIPs and -1 to check both startup directions.
+
+`MouseVanish=false` is the initial editing preference. A startup adapter can explicitly enable it in the same snapshot. The alternate fixture enables it and checks the actual SystemParameters getter; real typing, cursor hiding and recovery are verified by the input integration lane.
+
+The initial horizontal and vertical drag thresholds are 4 DIPs each as explicit product preferences. Startup adapters can supply independent positive finite DIP values. The fixture verifies asymmetric 2.5/7.5 DIP getters, both axes' invalid values and retained finite limits. Native desktop preference discovery, live changes and full drag/drop behavior remain separate qualification; this boundary allows the existing TextEditor mouse-down path to read its real drag thresholds without user32.
+
+Pointer settings are optional and read lazily. Without them, a pointer-dependent operation receives a named unsupported diagnostic. `PortablePointerSettings` contains positive double-click time in milliseconds and positive X/Y thresholds in raw mouse-report client pixels. These match the direct comparisons in `MouseDevice.IsSameSpot`; they are not DIPs or an inferred desktop default. The native host owns acquisition and registration of genuine platform preferences. This fixture's explicit 4 by 6 pixel and 500 ms values are test inputs only.
+
+The suite checks all 37 colors, frozen brush identity and cache invalidation, immutable palette copying and completeness, late registration rejection, KeyboardNavigation cue show/hide logic, pointer presence/absence, genuine Control/Window/BAML construction and DynamicResource add/replace/remove with local and application dictionaries. Application changes use a real registered Window, matching WPF's existing application resource invalidation scope. `--high-contrast-fixture` selects an explicitly named test snapshot to verify existing high-contrast brush aliases; it does not claim a production high-contrast theme. Normal Windows builds without `PORTABLE_WPF` retain the original OS settings and notification code.
+
+Run from `src/Portability` using the pinned .NET 10 SDK. Set `NUGET_PACKAGES` and `DOTNET_CLI_HOME` to the workspace's OS-specific `artifacts/portability` locations. Use a separate `PortableFrameworkArtifactsDir` when other framework graphs are building.
+
+```text
+dotnet build Tests/SystemSettingsIntegration/SystemSettingsIntegration.csproj -c Release -m:1 -nr:false -p:UseSharedCompilation=false -p:PortableFrameworkArtifactsDir=<isolated-absolute-directory>/
+dotnet <test-output>/Portability.SystemSettingsIntegration.dll
+dotnet <test-output>/Portability.SystemSettingsIntegration.dll --always-show-cues --pointer-fixture --high-contrast-fixture
+```
+
+The console emits structured JSON and returns nonzero on a failed check. Separate processes exercise both startup preference directions, pointer supplied/missing and high contrast enabled/disabled. Native theme parity, general system metrics, live settings updates, native Alt-key delivery and native window presentation require separate platform integration.
+
+The runtime load check rejects DirectWriteForwarder and the private WinForms contract on both OSes. It also requires the Windows UxTheme module to be absent on Linux. The Windows process can load UxTheme outside this resource policy, so that observation is reported without treating whole-process Windows module absence as a portable resource guarantee.
+
+The shared portable build selects the unchanged official `System.Windows.Extensions` 10.0.13 `runtimes/win/lib/net10.0` managed implementation for XAML access types. The package's ordinary `lib/net10.0` assembly throws on Linux even for these pure managed methods. Tests cover all four `XamlAccessLevel` factories and real internal/private object-writer construction, exact assembly identity, Default ALC and the qualified implementation SHA-256. This selects NuGet runtime items before SDK copy/dependency/publish processing; it does not copy over finished outputs, alter assembly references or install a runtime resolver. SoundPlayer, certificate UI and other Windows-only operations are not qualified by the XAML access proof.

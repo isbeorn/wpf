@@ -13,6 +13,9 @@ using System.Windows.Interop;
 using MS.Win32;
 using MS.Internal.Documents;
 using MS.Internal.Commands; // CommandHelpers
+#if PORTABLE_WPF
+using MS.Internal.Portability.Input;
+#endif
 
 //
 // Description: Text editing service for controls.
@@ -181,12 +184,26 @@ namespace System.Windows.Documents
         // Un-hides the mouse cursor.
         internal static void _ShowCursor()
         {
+#if PORTABLE_WPF
+            PortableInputProvider provider = GetPortableMouseProvider();
+            if (provider?.IsCursorHidden == true && provider.SetCursorVisibility(true))
+                Mouse.UpdateCursor();
+#else
             if (TextEditor._ThreadLocalStore.HideCursor)
             {
                 TextEditor._ThreadLocalStore.HideCursor = false;
                 SafeNativeMethods.ShowCursor(true);
             }
+#endif
         }
+
+#if PORTABLE_WPF
+        private static PortableInputProvider GetPortableMouseProvider()
+        {
+            PresentationSource source = InputManager.UnsecureCurrent.PortableInputState.MouseSource;
+            return source != null && !source.IsDisposed ? source.GetInputProvider(typeof(MouseDevice)) as PortableInputProvider : null;
+        }
+#endif
 
         // ................................................................
         //
@@ -1857,6 +1874,13 @@ namespace System.Windows.Documents
         // Hides the mouse cursor when the user starts typing.
         private static void HideCursor(TextEditor This)
         {
+#if PORTABLE_WPF
+            if (SystemParameters.MouseVanish && This.UiScope.IsMouseOver)
+            {
+                PortableInputProvider provider = GetPortableMouseProvider();
+                if (provider?.IsCursorHidden == false) provider.SetCursorVisibility(false);
+            }
+#else
             if (!TextEditor._ThreadLocalStore.HideCursor &&
                 SystemParameters.MouseVanish &&
                 This.UiScope.IsMouseOver)
@@ -1864,6 +1888,7 @@ namespace System.Windows.Documents
                 TextEditor._ThreadLocalStore.HideCursor = true;
                 SafeNativeMethods.ShowCursor(false);
             }
+#endif
         }
 
         // When the mouse cursor is over a Hyperlink, force a cursor update

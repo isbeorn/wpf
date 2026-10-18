@@ -415,7 +415,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return FallbackFontSize;
+#else
                 return ConvertFontHeight(SystemParameters.NonClientMetrics.lfMessageFont.lfHeight);
+#endif
             }
         }
 
@@ -444,7 +448,11 @@ namespace System.Windows
             {
                 if (_messageFontFamily == null)
                 {
+#if PORTABLE_WPF
+                    _messageFontFamily = new FontFamily("Global User Interface");
+#else
                     _messageFontFamily = new FontFamily(SystemParameters.NonClientMetrics.lfMessageFont.lfFaceName);
+#endif
                 }
 
                 return _messageFontFamily;
@@ -459,7 +467,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return FontStyles.Normal;
+#else
                 return (SystemParameters.NonClientMetrics.lfMessageFont.lfItalic != 0) ? FontStyles.Italic : FontStyles.Normal;
+#endif
             }
         }
 
@@ -470,7 +482,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return FontWeights.Normal;
+#else
                 return FontWeight.FromOpenTypeWeight(SystemParameters.NonClientMetrics.lfMessageFont.lfWeight);
+#endif
             }
         }
 
@@ -485,6 +501,7 @@ namespace System.Windows
                 {
                     _messageFontTextDecorations = new TextDecorationCollection();
 
+#if !PORTABLE_WPF
                     if (SystemParameters.NonClientMetrics.lfMessageFont.lfUnderline != 0)
                     {
                         CopyTextDecorationCollection(TextDecorations.Underline, _messageFontTextDecorations);
@@ -494,6 +511,7 @@ namespace System.Windows
                     {
                         CopyTextDecorationCollection(TextDecorations.Strikethrough, _messageFontTextDecorations);
                     }
+#endif
                     _messageFontTextDecorations.Freeze();
                 }
 

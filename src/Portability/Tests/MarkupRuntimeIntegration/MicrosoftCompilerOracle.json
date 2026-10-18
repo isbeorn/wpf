@@ -1,0 +1,16 @@
+{
+  "origin": "Existing WindowsReference companion assembly built by installed Microsoft.NET.Sdk.WindowsDesktop 10.0.401, without the fork's app-local markup targets",
+  "fixtureAssembly": "FixtureControls.dll",
+  "fixtureSha256": "60D2A40A5FEBA9D901821A95EE8EDA5448A3F777C12C1A42C44B90B212F1ED48",
+  "fixtureOriginalPath": "artifacts/portability/windows-reference/bin/FixtureControls/release/FixtureControls.dll",
+  "fixtureProject": "src/Portability/Probes/WindowsReference/FixtureControls/FixtureControls.csproj",
+  "fixtureProjectSha256": "6CF9C317F0BADF6B9A76DA4A129E1D224AD79E56B4F98CE3F0733CFFC22FB34B",
+  "generatedSource": "artifacts/portability/windows-reference/obj/FixtureControls/release/FixtureView.g.cs",
+  "generatedSourceSha256": "3738598FED420DADF0523FD469699C0D25BAE19D20507C79DB29A0894A6C8896",
+  "compilerSdk": "10.0.401",
+  "compilerIdentity": "PresentationBuildTasks, Version=10.0.12.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+  "compilerOriginalPath": "C:/Program Files/dotnet/sdk/10.0.401/Sdks/Microsoft.NET.Sdk.WindowsDesktop/tools/net10.0/PresentationBuildTasks.dll",
+  "compilerSha256": "90F7F7DA909659E0A786CA2E594BFB39691E3B185D9DD01C2D442C64609453F2",
+  "targetsOriginalPath": "C:/Program Files/dotnet/sdk/10.0.401/Sdks/Microsoft.NET.Sdk.WindowsDesktop/targets/Microsoft.WinFX.targets",
+  "targetsSha256": "C27C651B54D2EA7FA931D92A41DC220C45CDEFE15E670E49C5AAE2601BEDC619"
+}

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>Wpf.Portability.WindowLifecycleIntegration</AssemblyName>
+    <WpfSharedDir>$(MSBuildThisFileDirectory)../../../Microsoft.DotNet.Wpf/src/Shared/</WpfSharedDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="WindowTestAccess.cs" />
+    <Compile Remove="StockOracle/**/*.cs" />
+    <ProjectReference Include="../../Framework/PresentationFramework/PresentationFramework.csproj" />
+  </ItemGroup>
+  <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+  <Import Project="../../Framework/Build/PublicSigning.targets" />
+</Project>

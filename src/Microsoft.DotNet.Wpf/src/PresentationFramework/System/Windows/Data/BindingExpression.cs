@@ -2210,7 +2210,11 @@ namespace System.Windows.Data
             // The detection algorithm below is expensive, so only do when the target
             // property is especially susceptible to the problem
             if (TargetProperty.OwnerType != typeof(System.Windows.Controls.Primitives.Selector) &&  // SelectedItem, SelectedValue, SelectedIndex, etc.
+#if PORTABLE_WPF
+                (TargetProperty.OwnerType != typeof(ComboBox) || TargetProperty.Name != nameof(ComboBox.Text) || TargetProperty != ComboBox.TextProperty)
+#else
                 TargetProperty != ComboBox.TextProperty                                             // ComboBox.Text
+#endif
                 )
             {
                 return false;

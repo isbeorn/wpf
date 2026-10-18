@@ -1662,6 +1662,11 @@ namespace System.Windows.Documents
         /// </summary>
         internal static bool IsBidiInputLanguageInstalled()
         {
+#if PORTABLE_WPF
+            foreach (CultureInfo language in InputLanguageManager.Current.AvailableInputLanguages)
+                if (IsBidiInputLanguage(language)) return true;
+            return false;
+#else
             bool bidiInputLanguageInstalled;
 
             bidiInputLanguageInstalled = false;
@@ -1691,6 +1696,7 @@ namespace System.Windows.Documents
             }
 
             return bidiInputLanguageInstalled;
+#endif
         }
 
         #endregion Bidi Support
@@ -2469,6 +2475,9 @@ namespace System.Windows.Documents
         /// </returns>
         private static bool IsBidiInputLanguage(CultureInfo cultureInfo)
         {
+#if PORTABLE_WPF
+            return cultureInfo.TextInfo.IsRightToLeft;
+#else
             bool bidiInput;
             string fontSignature;
 
@@ -2487,6 +2496,7 @@ namespace System.Windows.Documents
             }
 
             return bidiInput;
+#endif
         }
 
         //......................................................

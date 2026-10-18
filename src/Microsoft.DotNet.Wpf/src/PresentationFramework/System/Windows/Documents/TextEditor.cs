@@ -96,10 +96,14 @@ namespace System.Windows.Documents
 
             // If no IME/TextServices are installed, we have no native reasources
             // to clean up at Finalizer.
+#if PORTABLE_WPF
+            GC.SuppressFinalize(this);
+#else
             if (!TextServicesLoader.ServicesInstalled)
             {
                 GC.SuppressFinalize(this);
             }
+#endif
         }
 
         #endregion Constructors
@@ -1522,6 +1526,7 @@ namespace System.Windows.Documents
             }
 
             // Init a TSF TextStore if any TIPs/IMEs are installed.
+#if !PORTABLE_WPF
             if (_textContainer is TextContainer && TextServicesHost.Current != null)
             {
                 // We need to make sure we get back a valid thread manager first since it's possible for
@@ -1540,6 +1545,7 @@ namespace System.Windows.Documents
                     Marshal.ReleaseComObject(threadManager);
                 }
             }
+#endif
 
             _pendingTextStoreInit = false;
 
@@ -2005,7 +2011,11 @@ namespace System.Windows.Documents
         private bool _acceptsRichContent;
 
         // If the system is IMM enabled, this is true.
+#if PORTABLE_WPF
+        private static bool _immEnabled = false;
+#else
         private static bool _immEnabled = SafeSystemMetrics.IsImmEnabled ;
+#endif
 
         // ImmComposition implementation, used when _immEnabled.
         private ImmComposition _immComposition;

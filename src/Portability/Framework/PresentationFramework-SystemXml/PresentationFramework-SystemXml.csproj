@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PresentationFramework-SystemXml</AssemblyName>
+    <WpfSourceProject>$(WpfSourceDir)Extensions/PresentationFramework-SystemXml/PresentationFramework-SystemXml.csproj</WpfSourceProject>
+    <WpfSigningKey>Ecma</WpfSigningKey>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../PresentationFramework/PresentationFramework.csproj" />
+    <ProjectReference Include="../WindowsBase/WindowsBase.csproj" />
+    <ProjectReference Include="../System.Xaml/System.Xaml.csproj" />
+  </ItemGroup>
+  <Import Project="../Build/SourceManifest.targets" />
+  <Import Project="../Build/PublicSigning.targets" />
+  <Import Project="../Build/PortableWpfReferences.targets" />
+</Project>
