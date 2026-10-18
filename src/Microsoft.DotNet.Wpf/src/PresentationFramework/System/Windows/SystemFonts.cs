@@ -20,7 +20,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontSize;
+#else
                 return ConvertFontHeight(SystemParameters.IconMetrics.lfFont.lfHeight);
+#endif
             }
         }
 
@@ -31,12 +35,16 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontFamily;
+#else
                 if (_iconFontFamily == null)
                 {
                     _iconFontFamily = new FontFamily(SystemParameters.IconMetrics.lfFont.lfFaceName);
                 }
 
                 return _iconFontFamily;
+#endif
             }
         }
 
@@ -47,7 +55,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontStyle;
+#else
                 return (SystemParameters.IconMetrics.lfFont.lfItalic != 0) ? FontStyles.Italic : FontStyles.Normal;
+#endif
             }
         }
 
@@ -58,7 +70,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontWeight;
+#else
                 return FontWeight.FromOpenTypeWeight(SystemParameters.IconMetrics.lfFont.lfWeight);
+#endif
             }
         }
 
@@ -69,6 +85,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontTextDecorations;
+#else
                 if (_iconFontTextDecorations == null)
                 {
                     _iconFontTextDecorations = new TextDecorationCollection();
@@ -87,6 +106,7 @@ namespace System.Windows
                 }
 
                 return _iconFontTextDecorations;
+#endif
             }
         }
 
@@ -97,7 +117,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontSize;
+#else
                 return ConvertFontHeight(SystemParameters.NonClientMetrics.lfCaptionFont.lfHeight);
+#endif
             }
         }
 
@@ -109,12 +133,16 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontFamily;
+#else
                 if (_captionFontFamily == null)
                 {
                     _captionFontFamily = new FontFamily(SystemParameters.NonClientMetrics.lfCaptionFont.lfFaceName);
                 }
 
                 return _captionFontFamily;
+#endif
             }
         }
 
@@ -126,7 +154,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontStyle;
+#else
                 return (SystemParameters.NonClientMetrics.lfCaptionFont.lfItalic != 0) ? FontStyles.Italic : FontStyles.Normal;
+#endif
             }
         }
 
@@ -138,7 +170,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontWeight;
+#else
                 return FontWeight.FromOpenTypeWeight(SystemParameters.NonClientMetrics.lfCaptionFont.lfWeight);
+#endif
             }
         }
 
@@ -150,6 +186,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontTextDecorations;
+#else
                 if (_captionFontTextDecorations == null)
                 {
                     _captionFontTextDecorations = new TextDecorationCollection();
@@ -167,6 +206,7 @@ namespace System.Windows
                 }
 
                 return _captionFontTextDecorations;
+#endif
             }
         }
 
@@ -177,7 +217,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontSize;
+#else
                 return ConvertFontHeight(SystemParameters.NonClientMetrics.lfSmCaptionFont.lfHeight);
+#endif
             }
         }
 
@@ -189,12 +233,16 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontFamily;
+#else
                 if (_smallCaptionFontFamily == null)
                 {
                     _smallCaptionFontFamily = new FontFamily(SystemParameters.NonClientMetrics.lfSmCaptionFont.lfFaceName);
                 }
 
                 return _smallCaptionFontFamily;
+#endif
             }
         }
 
@@ -206,7 +254,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontStyle;
+#else
                 return (SystemParameters.NonClientMetrics.lfSmCaptionFont.lfItalic != 0) ? FontStyles.Italic : FontStyles.Normal;
+#endif
             }
         }
 
@@ -218,7 +270,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontWeight;
+#else
                 return FontWeight.FromOpenTypeWeight(SystemParameters.NonClientMetrics.lfSmCaptionFont.lfWeight);
+#endif
             }
         }
 
@@ -230,6 +286,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontTextDecorations;
+#else
                 if (_smallCaptionFontTextDecorations == null)
                 {
                    _smallCaptionFontTextDecorations = new TextDecorationCollection();
@@ -248,6 +307,7 @@ namespace System.Windows
                 }
 
                 return _smallCaptionFontTextDecorations;
+#endif
             }
         }
 
@@ -258,7 +318,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontSize;
+#else
                 return ConvertFontHeight(SystemParameters.NonClientMetrics.lfMenuFont.lfHeight);
+#endif
             }
         }
 
@@ -269,12 +333,16 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontFamily;
+#else
                 if (_menuFontFamily == null)
                 {
                     _menuFontFamily = new FontFamily(SystemParameters.NonClientMetrics.lfMenuFont.lfFaceName);
                 }
 
                 return _menuFontFamily;
+#endif
             }
         }
 
@@ -285,7 +353,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontStyle;
+#else
                 return (SystemParameters.NonClientMetrics.lfMenuFont.lfItalic != 0) ? FontStyles.Italic : FontStyles.Normal;
+#endif
             }
         }
 
@@ -296,7 +368,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontWeight;
+#else
                 return FontWeight.FromOpenTypeWeight(SystemParameters.NonClientMetrics.lfMenuFont.lfWeight);
+#endif
             }
         }
 
@@ -307,6 +383,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontTextDecorations;
+#else
                 if (_menuFontTextDecorations == null)
                 {
                    _menuFontTextDecorations = new TextDecorationCollection();
@@ -324,6 +403,7 @@ namespace System.Windows
                 }
 
                 return _menuFontTextDecorations;
+#endif
             }
         }
 
@@ -334,7 +414,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontSize;
+#else
                 return ConvertFontHeight(SystemParameters.NonClientMetrics.lfStatusFont.lfHeight);
+#endif
             }
         }
 
@@ -346,12 +430,16 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontFamily;
+#else
                 if (_statusFontFamily == null)
                 {
                     _statusFontFamily = new FontFamily(SystemParameters.NonClientMetrics.lfStatusFont.lfFaceName);
                 }
 
                 return _statusFontFamily;
+#endif
             }
         }
 
@@ -363,7 +451,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontStyle;
+#else
                 return (SystemParameters.NonClientMetrics.lfStatusFont.lfItalic != 0) ? FontStyles.Italic : FontStyles.Normal;
+#endif
             }
         }
 
@@ -375,7 +467,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontWeight;
+#else
                 return FontWeight.FromOpenTypeWeight(SystemParameters.NonClientMetrics.lfStatusFont.lfWeight);
+#endif
             }
         }
 
@@ -387,6 +483,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return MessageFontTextDecorations;
+#else
 
                 if (_statusFontTextDecorations == null)
                 {
@@ -405,6 +504,7 @@ namespace System.Windows
                 }
 
                 return _statusFontTextDecorations;
+#endif
             }
         }
 
@@ -1045,38 +1145,52 @@ namespace System.Windows
 
         internal static void InvalidateIconMetrics()
         {
+#if !PORTABLE_WPF
             _iconFontTextDecorations = null;
             _iconFontFamily = null;
+#endif
         }
 
         internal static void InvalidateNonClientMetrics()
         {
             _messageFontTextDecorations = null;
+#if !PORTABLE_WPF
             _statusFontTextDecorations = null;
             _menuFontTextDecorations = null;
             _smallCaptionFontTextDecorations = null;
             _captionFontTextDecorations = null;
+#endif
 
             _messageFontFamily = null;
+#if !PORTABLE_WPF
             _statusFontFamily = null;
             _menuFontFamily = null;
             _smallCaptionFontFamily = null;
             _captionFontFamily = null;
+#endif
         }
 
+#if !PORTABLE_WPF
         private static TextDecorationCollection _iconFontTextDecorations;
+#endif
         private static TextDecorationCollection _messageFontTextDecorations;
+#if !PORTABLE_WPF
         private static TextDecorationCollection _statusFontTextDecorations;
         private static TextDecorationCollection _menuFontTextDecorations;
         private static TextDecorationCollection _smallCaptionFontTextDecorations;
         private static TextDecorationCollection _captionFontTextDecorations;
+#endif
 
+#if !PORTABLE_WPF
         private static FontFamily _iconFontFamily;
+#endif
         private static FontFamily _messageFontFamily;
+#if !PORTABLE_WPF
         private static FontFamily _statusFontFamily;
         private static FontFamily _menuFontFamily;
         private static FontFamily _smallCaptionFontFamily;
         private static FontFamily _captionFontFamily;
+#endif
 
         private static SystemResourceKey _cacheIconFontSize;
         private static SystemResourceKey _cacheIconFontFamily;

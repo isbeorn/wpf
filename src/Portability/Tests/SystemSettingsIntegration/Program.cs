@@ -60,6 +60,10 @@ internal static partial class Program
             Check("caret-settings-and-boundaries", () => VerifyCaret(highContrast));
             Check("drag-distance-profile", () => VerifyDragDistance(highContrast));
             Check("scrollbar-metrics-and-resource-keys", () => SystemMetricChecks.Verify(metricFixture));
+            foreach (string role in SystemFontChecks.Roles)
+                Check("system-font-" + role, () => SystemFontChecks.VerifyRole(role));
+            Check("actual-classic-tooltip-font-and-layout", SystemFontChecks.VerifyToolTip);
+            Check("fixed-classic-no-shadow-resource", SystemFontChecks.VerifyDropShadow);
             Check("late-profile-replacement-rejected", VerifyLateRegistration);
             Check("dynamic-system-color-resource", VerifyDynamicSystemResource);
             Check("actual-generic-style-dictionary", () => VerifyGenericStyle(expectClassicTheme));

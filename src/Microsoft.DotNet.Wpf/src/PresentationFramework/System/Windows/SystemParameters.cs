@@ -294,6 +294,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return false;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.DropShadow])
@@ -312,6 +315,7 @@ namespace System.Windows
                 }
 
                 return _dropShadow;
+#endif
             }
         }
 
@@ -5999,7 +6003,9 @@ namespace System.Windows
         private static bool _mouseVanish;
 #endif
 
+#if !PORTABLE_WPF
         private static bool _dropShadow;
+#endif
         private static bool _flatMenu;
         private static NativeMethods.RECT _workAreaInternal;
         private static Rect _workArea;
