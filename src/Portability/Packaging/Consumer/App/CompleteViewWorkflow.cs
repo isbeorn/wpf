@@ -235,7 +235,9 @@ internal static class CompleteViewWorkflow
                     desktop.SetDpi(96);
                     wait(() => VisualTreeHelper.GetDpi(next).DpiScaleX == 1, null);
                     next.Close();
-                    Require(PresentationSource.FromVisual(nextView) == null && !desktop.IsMapped(next) && nextClosed == 1, "Closing an active animation retained the native window/source or changed Closed count.");
+                    Require(PresentationSource.FromVisual(nextView) == null && nextClosed == 1, "Closing an active animation retained the source or changed Closed count.");
+                    wait(() => !desktop.IsMapped(next), null);
+                    Require(nextClosed == 1, "Native disappearance changed the Closed count.");
                 }
                 finally
                 {
