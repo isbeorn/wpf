@@ -385,8 +385,28 @@ graphs establish only the behavior recorded in the results ledger. Phases 0 and
 milestones do not qualify a new package, full NINA, a real IME engine or a live
 desktop, and painting support does not imply dashed geometry-query support.
 
+Subsequent commits add bounded nonuniform rounded fills (`cc728889b`) and portable
+ShowInTaskbar hints/requests (`f6b152ca1`). Exact source-equivalence proofs reuse
+the reviewed owner corpora; a fresh combined native/Classic stage and original
+NINA replay were pending at that checkpoint. Taskbar hints are not desktop shell presentation,
+and rounded fill support does not certify curved strokes or dash phase. Bounds
+REV2 was not integrated or certified by that owner-only checkpoint.
+
+The subsequent Bounds commit (`d18213a4a`) has a verified combined graph and
+root-released whole runtime stages for diagnostics. The Grid bounds extension
+(`b6569d9a4`) is a separately reviewed component commit; its new native stage and
+actual AvalonDock replay remain pending. The original ImageControlVM now passes
+26 offscreen Linux checks on the whole released Bounds runtime family; native
+image interaction and package qualification remain open. Popup revision 2 is
+frozen but not integrated or qualified while an owned-popup cleanup neighbor is
+reviewed. Phases 2 through 5 remain open.
+
 Current scope decision: the user has deferred native focused-editor/IME
 composition integration. Keep the investigation draft local and unqualified;
 do not implement the proposed base/hook revision. Committed transport and
 ordinary complete Unicode text remain separate evidence. Historical native
 composition requirements remain open, and this deferral does not pass Phase 5.
+This is a user-approved deferred capability and known limitation, not a pending
+permission decision or a reason to stop other phases. Ordinary Unicode input,
+managed preedit and controlled IBus transport keep their separate evidence scopes;
+genuine native engine/editor startup remains unqualified.

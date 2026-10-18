@@ -344,7 +344,7 @@ Raw negative cases remain alongside the passing results. Local changes and commi
 | Phase 1 retained rendering | Drawing-content seam, native cover/uncover, image mutation and packaged presentation pass | Bound Image control, animation, large frames and sustained workloads remain later gates |
 | Phase 1 replacement text | Bounded paragraphs, fallback, Unicode 17 bidi, caret/selection and complete Unicode commits pass | Native IME preedit/engines and broader document behavior remain open |
 | Phase 2 integrated view | Functional Windows/Linux comparison, public Application.Run and refreshed 24 MP short 1 Hz callback cadence pass; phase gate open | Complete display qualification, presentation latency, measured budgets and sustained-memory bounds remain open |
-| Phase 3 NINA controls/resources | Selected unchanged editor/base OxyPlot workflows and unshown native-initialized GuiderGraph diagnostic pass; gate open | Mapped original plot input, Linux ImageControlVM, broader imaging, plugins, docking and sequencer coverage remain open |
+| Phase 3 NINA controls/resources | Selected unchanged editor/base OxyPlot workflows, unshown native-initialized GuiderGraph and offscreen Linux ImageControlVM 26 pass; gate open | Mapped original plot/image input, broader imaging, plugins, docking and sequencer coverage remain open |
 | Phase 4 application shell | Gate open | Simulated equipment session, complete shell lifecycle and overnight stability remain open |
 | Phase 5 packaged desktop | f7 package, live GNOME text clipboard and bounded Window/Button AT-SPI source protocols pass; gate open | Strict live picker selection/cancellation, real IME, screen-reader workflows and other platform/session gates remain open |
 
@@ -753,11 +753,161 @@ milestones pass within their stated scopes. Phases 0 and 1 remain bounded passes
 Phases 2 through 5 remain open. No new package, full NINA, live desktop, real IME
 engine or AvalonDock behavior gate is established here.
 
+## Later committed source milestones, 19 October
+
+Commit `cc728889b62dbed70553e815766d868cac6742d4` adds bounded nonuniform rounded
+fills. The three direct walker fill sites reuse original WPF cubic paths for
+rounded primitives, RectangleGeometry fills and VisualBrush destination masks.
+No/uniform guideline frames retain Skia conics. General conversion, geometry
+queries, clipping, rounded strokes and curved dash phase are unchanged.
+The [source-equivalence proof](../../artifacts/portability/cubic-fill-integration-main-1/source-equivalence.json)
+establishes exact reuse of the reviewed owner source corpus, not a fresh combined
+runtime. Both owner OSes pass focused cubic fills 23, full guidelines 324,
+Rendering 47, Geometry 355, dashes 48, visibility 26 and VisualBrush 61. Stock
+focused 22 and full 216 pass. Independent correctness replays pass focused 23
+per portable OS and stock 22; the test-value review repeats full guidelines 324,
+Rendering 47 and the causal red with 20 expected failures per OS. Both reviews
+have no supported findings. The owner records its corrected fixture/setup and
+runner issues. No fresh native/Classic stage, original NINA cubic replay,
+package or physical desktop pass is established.
+
+Commit `f6b152ca146bcd1cda7c265ca976dcf7fb30ea38` preserves the original public
+ShowInTaskbar value before source creation and forwards live/hidden changes
+through the existing peer without source recreation or a fabricated owner.
+Its [source-equivalence proof](../../artifacts/portability/taskbar-integration-main-1/source-equivalence.json)
+and [commit verification](../../artifacts/portability/taskbar-integration-main-1/commit-verification.json)
+bind all eleven exact reviewed inputs. Owner lifecycle 68 and managed preedit 30
+pass on both OSes; native taskbar 4 and ordinary native 23 pass. Independent
+reviews repeat lifecycle/native and preedit respectively with no supported
+findings. The private Xvfb observations cover initial/hidden hints and mapped
+EWMH requests, not WM acknowledgement, desktop taskbar or Alt-Tab presentation.
+Fixture-friend lifecycle closures must not be staged. A fresh combined graph,
+AvalonDock Float and package qualification remain pending. Bounds REV2 is not
+integrated or certified here.
+
+| New source evidence | SHA-256 |
+| --- | --- |
+| Cubic source equivalence | `688DCBEA6AFAEEE611BFF138678079C797F1B2F8F44B3056BAAAA932D2476142` |
+| [Cubic owner freeze](../../artifacts/portability/native-cubic-fills/review-freeze.json) | `2EDC097FC693351D0A01B357E790DB874D68C7A63D5FE51F63D1287A6539F3B2` |
+| [Cubic correctness review](../../artifacts/portability/della-native-cubic-fill-review/review-results.json) | `5C88AEC7497598748FD2694EAF649D92C1D75E953914FCBA702AE4BC4806C261` |
+| [Cubic test-value review](../../artifacts/portability/foghorn-native-cubic-fill-review/review-summary.json) | `C4167D8183E808509BA684DD299E00C078FE40EF605F266AB7A8A3E9C6DB6217` |
+| Taskbar source equivalence | `1C8F276F9662A4BC5D4F447E2D65AC188D3D23605C77B44641F97570816D50F0` |
+| [Taskbar owner freeze, verified copy](../../artifacts/portability/feasibility-checkpoint-20261019/evidence/taskbar-owner/freeze.json) | `E96AC9A13BFC0149D15C973E0A397AF35AE7045771F7E0DA8481FCEAC0117F19` |
+| [Taskbar correctness review](../../artifacts/portability/della-taskbar-visibility-review/review-results.json) | `9FF3FA68A249CB4E4B54890A57D0B2EF8712631BE6AB43C132FFE8980211AAB5` |
+| [Taskbar test-value review](../../artifacts/portability/foghorn-taskbar-visibility-review/review-summary.json) | `1803BAB63007D92001C8EC907557EB36143A9B597AC57FB3C2E293421BFD4A6B` |
+
+The [original profile-selector diagnostic](../../artifacts/portability/nina-profile-selection-diagnostic/revision-1/verification.json)
+stops at the original ProfileSelectView's Microsoft.Win32.SystemEvents assembly
+dependency, with zero framework native-load failures. It does not pass original
+selector construction or interaction. The corrected
+[stock REV2 reference](../../artifacts/portability/nina-profile-selection-diagnostic/revision-2/runtime-results-1/result.json)
+passes choose-forward 22 and fresh-process reload 7 on WindowsDesktop 10.0.12.
+Original bindings are Unattached before Show and Active against the actual VM
+after genuine Show, layout and dispatcher settlement. Selection persistence,
+disk readback and released file locks pass. Both private-desktop children exit
+zero with empty stderr and verified cleanup. Build warnings remain explicit:
+stock 2, portable 1 and launcher 0. Preferences-file persistence, cancel, reverse,
+full App startup, native input, the portable workflow and package qualification
+remain open. The Linux SystemEvents boundary and earlier incomplete evidence
+are unchanged; Phases 2 through 5 remain open.
+
+## Bounds combined release and Grid component integration
+
+Commit `d18213a4a1747087ba068dddd9bc54af4940bf65` integrates bounded dashed render
+bounds and the REV2 zero-radius rectangle stroke-route repair. Supported bounds
+reuse the actual dashed outline with the declared fill/transform/fallback
+semantics. The REV2 audit records 28 exact raster and 25 exact bounds comparisons;
+three all-gap routes retain a documented preexisting conservative-bounds
+difference. Dashed containment and widened geometry remain unqualified.
+The [combined freeze](../../artifacts/portability/combined-renderer-window-main-1/revision1/combined-freeze.json)
+passes 3,341 checks across 28 runs and all 32 builds with zero errors. Ordinary
+families pass 1,559 checks per OS, including Geometry 437; separate fixture-only
+families pass lifecycle 68 and managed preedit 30 per OS. Linux native Window 23
+and taskbar hints/requests 4 pass. Existing warnings remain explicit: ordinary
+builds 14 per OS and verification builds 10 per OS.
+
+The [root inspection](../../artifacts/portability/combined-renderer-window-main-1/revision1/root-inspection.json)
+and [consumer release](../../artifacts/portability/combined-renderer-window-main-1/revision1/root-consumer-release.json)
+bind all 35 exact source overlays and two ordinary 143-file stages. Fixture-friend
+Core/PF variants are excluded from those stages. Only whole unchanged runtime
+families are released for actual NINA diagnostics. This supersedes the earlier
+owner-only pending-stage status without changing those historical records.
+It is not a package, full application or physical desktop qualification.
+
+Commit `b6569d9a43ae29dc881af8a168c1ab5a4346eb0f` adds bounds for one open hollow
+figure containing isolated noncollapsed linear runs separated by explicit gaps,
+with matching Flat caps. Query-origin and skipped-pen semantics are preserved;
+converter, dasher and painting remain unchanged. Its
+[source-equivalence proof](../../artifacts/portability/grid-bounds-integration-main-1/source-equivalence.json)
+and [commit verification](../../artifacts/portability/grid-bounds-integration-main-1/commit-verification.json)
+bind nine exact reviewed files and 30 unchanged seed files. Geometry 615 passes
+per OS, retaining all previous 437 checks; Rendering 47 per OS and stock 570
+also pass. Independent correctness and test-value reviews have no supported
+findings. The component records 144 exact stock queries and 16 target rasters.
+A preexisting skewed translucent multi-contour/control raster difference remains
+308 pixels, 1,142 channels and maximum 15, with unchanged pre/fixed hashes and no
+new tolerance. No-ink conservative bounds, dashed containment rejection and
+unqualified native widening remain explicit limits.
+
+| New frozen evidence | SHA-256 |
+| --- | --- |
+| Bounds combined freeze | `6E707788C5308623C962CD6797F2B58D4B0C81C70A629B926B16C9E3B1D8987E` |
+| Bounds root inspection | `329D1EDDEF1FF8EDBF67E42F7D724F259DF1715036EF0660A7A0886473BFB669` |
+| Bounds root consumer release | `F91C9D04129CECA89F46977C47E864D44CA7A92FC31DB4E003879FCDB885CA22` |
+| Grid source equivalence | `6D38FE4DCC6B66D1822E8E3F937B6EEAC6FEB41628EBE753B65DCBB3CA27FC47` |
+| [Grid owner freeze](../../artifacts/portability/grid-bounds-implementation/freeze.json) | `D91F643839DADD99A64A99123DAE688C20EFC88F602FB7B5FE09CA6963E71C8D` |
+| [Grid correctness review](../../artifacts/portability/webby-grid-bounds-review/review-summary.json) | `42F9C0B7ED5607A8C55675E5C6C085ACE22D3DE92AE4B7BA0CB863C77715C95F` |
+| [Grid test-value review](../../artifacts/portability/donald-grid-bounds-review/review-summary.json) | `516F8810CE58DA385B6DC560B93AC230BF688D6E789A60F56E98EF88840FE5C6` |
+
+The released Bounds stage excludes Grid and Popup revision 2. Grid's fresh native
+stage and actual AvalonDock replay remain pending. Popup revision 2 is frozen
+but remains unintegrated and unqualified while a possible throwing owned-popup
+cleanup neighbor is reviewed. The stock profile 29-check reference and Linux
+SystemEvents failure retain their separate scopes. No earlier NINA failure is
+reclassified, and Phases 2 through 5 remain open.
+
+## Original ImageControlVM offscreen Linux result
+
+The unchanged ImageControlVM/ImageControlView/ImageView now
+[passes all 26 ordered checks](../../artifacts/portability/nina-imagecontrolvm-combined-renderer-window-diagnostic/revision-1/verification.json)
+on the whole released `d18213a4a` Linux family. The original 160 PE files,
+54 source blobs, 33 dictionaries and 143 framework-stage files verify. All 26
+names match the stock reference and all 18 logical/source frame contracts agree.
+Real public commands and retained bindings exercise 6000x4000 Gray16/Rgb48,
+four rotations, flip on/off, crosshair on/off, image removal and VM disposal.
+Image-body rasters change with operations and restore exactly; source identity
+and CopyPixels remain exact. This is not cross-OS exact raster or HQ equivalence.
+
+The offscreen run exits zero with zero native failures and empty stderr. Build
+records zero errors and one existing CS8602 warning. The unchanged historical
+Program mode label still names `a181`; the consumption pin, verification sidecar
+and actual output hashes identify the consumed `d182` family. The preserved
+preflight metadata mismatch was corrected only in bookkeeping before run-02.
+No NINA, fixture assertion, BAML, template or framework binary was overlaid.
+The original seven-pass/one-failure/18-unreached conic red remains unchanged.
+
+| ImageControlVM evidence | SHA-256 |
+| --- | --- |
+| Verification | `F8425AE4ACF15D61C17CA1BEE15091987C4A464DD96B3729A232227F825757BD` |
+| [Runtime result](../../artifacts/portability/nina-imagecontrolvm-combined-renderer-window-diagnostic/revision-1/run-02/runtime-linux.json) | `F993FBE8B0E83167057719FBC23FF9BA932933AB39DE7FBA0FAB796EDAACE1B5` |
+| [Consumption pin](../../artifacts/portability/nina-imagecontrolvm-combined-renderer-window-diagnostic/revision-1/consumption-pin.json) | `89C094AC475A44ED342CCDA14E66D79A433A57721FEDE87E80837A6EA147CF71` |
+| [1,052-record evidence manifest](../../artifacts/portability/nina-imagecontrolvm-combined-renderer-window-diagnostic/revision-1/evidence.sha256.json) | `5B82EB4F4C28D64A68913A13FF774C4B76FA9753DC84591AA3FB53767857B8F3` |
+
+This establishes original command/binding operations and offscreen image pixels.
+It uses no Show or native input and does not qualify fit/1:1/pan, acquisition,
+PrepareImage/star processing, 1 Hz throughput, the shell or a package. Earlier
+checkpoint descriptions of a running replay are historical capture-time status;
+the completed result above is current. Phases 2 through 5 remain open.
+
 The user has deferred native focused-editor/IME composition integration.
 The investigation draft remains local and unqualified, with no new base/hook
 implementation. Committed transport and ordinary complete Unicode text retain
 their separate scopes. This is a current policy decision, not a passed check;
 historical composition requirements and the open Phase 5 gate remain unchanged.
+This user-approved deferred capability is a known limitation, not a pending
+permission decision or a block on other phases. Ordinary Unicode input, managed
+preedit and controlled IBus transport remain separate from unqualified genuine
+native engine/editor startup. No hidden base copy or architecture hook is added.
 
 The accepted bidi contract follows Unicode 17. All 91,707 Unicode bidi character level cases pass after a bounded correction to the pinned managed dependency. This algorithm result is separate from paragraph layout, fallback, glyph positioning and native editing qualification. Legacy Windows WPF bracket ordering and measured Display-mode metric differences are recorded compatibility differences, not silently relaxed test tolerances.
 

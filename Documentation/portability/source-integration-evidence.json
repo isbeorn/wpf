@@ -13870,6 +13870,481 @@
       ],
       "sourceCommit": "81ad28a6de9cd18db45328e434bb0714d928d38a",
       "outcome": "pass"
+    },
+    {
+      "label": "committed-cubic-fill-reviewed-owner-reuse",
+      "capturedAtUtc": "2026-10-18T22:26:45.7457348Z",
+      "headCommit": "f6b152ca146bcd1cda7c265ca976dcf7fb30ea38",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit cc728889b62dbed70553e815766d868cac6742d4 reuses the exact independently reviewed fill-only owner source corpus. Owner Windows/Linux focused cubic fills23, full Guidelines324, Rendering47, Geometry355, dashes48, visibility26 and VisualBrush61 pass; stock focused22/full216 pass. Della repeats focused both OS/stock; Foghorn repeats full guidelines/rendering and causal reds with20 expected failures each OS. No supported findings. This source-equivalence integration is not a fresh native/Classic stage or actual NINA cubic replay. General conversion, geometry queries, rounded strokes and curved dash phase remain unchanged. No new package, desktop or phase completion.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/cubic-fill-integration-main-1/source-equivalence.json",
+          "sha256": "688dcbea6afaeee611bff138678079c797f1b2f8f44b3056baaaa932d2476142",
+          "bytes": 1847
+        },
+        {
+          "path": "artifacts/portability/native-cubic-fills/review-freeze.json",
+          "sha256": "2edc097fc693351d0a01b357e790db874d68c7a63d5fe51f63d1287a6539f3b2",
+          "bytes": 8826
+        },
+        {
+          "path": "artifacts/portability/native-cubic-fills/HANDOFF.md",
+          "sha256": "ef9acffe5ddebff38d64c45dea859d9fc4da20079cc4766b5709dc9620ea6590",
+          "bytes": 4433
+        },
+        {
+          "path": "artifacts/portability/della-native-cubic-fill-review/review-results.json",
+          "sha256": "5c88aec7497598748fd2694eaf649d92c1d75e953914fcba702ae4bc4806c261",
+          "bytes": 2498
+        },
+        {
+          "path": "artifacts/portability/foghorn-native-cubic-fill-review/review-summary.json",
+          "sha256": "c4167d8183e808509ba684dd299e00c078fe40ef605f266ab7a8a3e9c6db6217",
+          "bytes": 1691
+        },
+        {
+          "path": "artifacts/portability/native-cubic-fills/windows-final-GuidelineIntegration-cubic-fills-only-results.json",
+          "sha256": "85cd405d4f881246b4fb577c8523841ab0ed5498fa2e3455e403f60715d4d6c7",
+          "bytes": 2850,
+          "results": [
+            {
+              "status": "pass",
+              "count": 23
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-cubic-fills/linux-final-GuidelineIntegration-cubic-fills-only-results.json",
+          "sha256": "a2d2b0351debfb63d7b27f97d6a25e3af4a2b2c6b1b29b1f253c5d2ab1825161",
+          "bytes": 2709,
+          "results": [
+            {
+              "status": "pass",
+              "count": 23
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-cubic-fills/windows-green-GuidelineIntegration-full-results.json",
+          "sha256": "4d03b1f956fa4e36b3eab947f6cc484cb1953f8ed39f41d2d909a0cb6cfc0be6",
+          "bytes": 608557,
+          "results": [
+            {
+              "status": "pass",
+              "count": 324
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-cubic-fills/linux-final-GuidelineIntegration-full-results.json",
+          "sha256": "7b1f37a8d3e615dda298b53a4d3b57efb31e40d7b16e33e0691563f8696ef58a",
+          "bytes": 601891,
+          "results": [
+            {
+              "status": "pass",
+              "count": 324
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-cubic-fills/stock-focused-results.json",
+          "sha256": "eacb49194c9e1d0845f523bccbf9060e40d2c59e167829f29175011b72b06b15",
+          "bytes": 2640,
+          "results": [
+            {
+              "status": "pass",
+              "count": 22
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-cubic-fills/windows-stock-StockOracle-full-results.json",
+          "sha256": "05349c9c321dbc19abd022f2f4a219f4b090a807e6dcc9581e31a36ce0a7c59d",
+          "bytes": 564884,
+          "results": [
+            {
+              "status": "pass",
+              "count": 216
+            }
+          ]
+        }
+      ],
+      "sourceCommit": "cc728889b62dbed70553e815766d868cac6742d4",
+      "outcome": "pass"
+    },
+    {
+      "label": "committed-taskbar-hints-reviewed-owner-reuse",
+      "capturedAtUtc": "2026-10-18T22:26:45.7457348Z",
+      "headCommit": "f6b152ca146bcd1cda7c265ca976dcf7fb30ea38",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit f6b152ca146bcd1cda7c265ca976dcf7fb30ea38 preserves11 byte-exact reviewed inputs. Owner lifecycle68 and managed preedit30 pass both OS, native hints/requests4 and ordinary native23 pass. Independent reviews repeat lifecycle/native and preedit respectively, with no supported findings. Initial and hidden hints plus mapped EWMH requests preserve source/owner/focus lifetime; private Xvfb has no WM. No WM acknowledgement, desktop taskbar/Alt-Tab presentation, AvalonDock Float, fresh combined graph or package claim. Fixture-friend lifecycle closures must not be staged. Bounds REV2 is not integrated/certified. Native IME remains deferred and Phases2-5 remain open.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/taskbar-integration-main-1/source-equivalence.json",
+          "sha256": "1c8f276f9662a4bc5d4f447e2d65ac188d3d23605c77b44641f97570816d50f0",
+          "bytes": 3315
+        },
+        {
+          "path": "artifacts/portability/taskbar-integration-main-1/commit-verification.json",
+          "sha256": "bf1752bb769072df71300b4e53230557ceecc3a7cb7d1242509897eec4ac3494",
+          "bytes": 350
+        },
+        {
+          "path": "C:/Users/isbeo/.codex/worktrees/portable-taskbar-visibility/wpf/artifacts/portability/taskbar-visibility/freeze.json",
+          "sha256": "e96ac9a13bfc0149d15c973e0a397af35ae7045771f7e0da8481fceac0117f19",
+          "bytes": 22411,
+          "snapshotPath": "artifacts/portability/feasibility-checkpoint-20261019/evidence/taskbar-owner/freeze.json"
+        },
+        {
+          "path": "artifacts/portability/della-taskbar-visibility-review/review-results.json",
+          "sha256": "9ff3fa68a249cb4e4b54890a57d0b2ef8712631be6ab43c132ffe8980211aab5",
+          "bytes": 2003
+        },
+        {
+          "path": "artifacts/portability/foghorn-taskbar-visibility-review/review-summary.json",
+          "sha256": "1803bab63007d92001c8ec907557eb36143a9b597ac57fb3c2e293421bfd4a6b",
+          "bytes": 2620
+        },
+        {
+          "path": "C:/Users/isbeo/.codex/worktrees/portable-taskbar-visibility/wpf/artifacts/portability/taskbar-visibility/green-windows-lifecycle.json",
+          "sha256": "1649084e56bb67b89be5e06c151a6b4d515f08aceb10d41936560e8a30599bf8",
+          "bytes": 14250,
+          "snapshotPath": "artifacts/portability/feasibility-checkpoint-20261019/evidence/taskbar-owner/green-windows-lifecycle.json",
+          "results": [
+            {
+              "status": "pass",
+              "count": 68
+            }
+          ]
+        },
+        {
+          "path": "C:/Users/isbeo/.codex/worktrees/portable-taskbar-visibility/wpf/artifacts/portability/taskbar-visibility/green-linux-lifecycle.json",
+          "sha256": "023b66b76f9d2f5950ca0943435aead06cacbcdbad03661238d68b41cd87ab51",
+          "bytes": 13508,
+          "snapshotPath": "artifacts/portability/feasibility-checkpoint-20261019/evidence/taskbar-owner/green-linux-lifecycle.json",
+          "results": [
+            {
+              "status": "pass",
+              "count": 68
+            }
+          ]
+        },
+        {
+          "path": "C:/Users/isbeo/.codex/worktrees/portable-taskbar-visibility/wpf/artifacts/portability/taskbar-visibility/green-windows-preedit.json",
+          "sha256": "2baa85c4b61741e51bccc905b033de353e905b5d4bc795b220e50d033f92df4f",
+          "bytes": 6613,
+          "snapshotPath": "artifacts/portability/feasibility-checkpoint-20261019/evidence/taskbar-owner/green-windows-preedit.json",
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "C:/Users/isbeo/.codex/worktrees/portable-taskbar-visibility/wpf/artifacts/portability/taskbar-visibility/green-linux-preedit.json",
+          "sha256": "505b5eb13714fbe1b76d4bc63ed9cec4825965414a6c08b29214b8b2951c9604",
+          "bytes": 6378,
+          "snapshotPath": "artifacts/portability/feasibility-checkpoint-20261019/evidence/taskbar-owner/green-linux-preedit.json",
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "C:/Users/isbeo/.codex/worktrees/portable-taskbar-visibility/wpf/artifacts/portability/taskbar-visibility/green-native-taskbar.json",
+          "sha256": "40c48277f0bd202782618e217d52383d2dc1981f21d0c5d3abfc96c557aecd44",
+          "bytes": 3928,
+          "snapshotPath": "artifacts/portability/feasibility-checkpoint-20261019/evidence/taskbar-owner/green-native-taskbar.json",
+          "results": [
+            {
+              "status": "pass",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "path": "C:/Users/isbeo/.codex/worktrees/portable-taskbar-visibility/wpf/artifacts/portability/taskbar-visibility/green-native-ordinary.json",
+          "sha256": "c7baf900832a10148756e7a10960e6abd0ce7281faf23b6ba070c40d85e1ddfd",
+          "bytes": 13716,
+          "snapshotPath": "artifacts/portability/feasibility-checkpoint-20261019/evidence/taskbar-owner/green-native-ordinary.json",
+          "results": [
+            {
+              "status": "pass",
+              "count": 23
+            }
+          ]
+        }
+      ],
+      "sourceCommit": "f6b152ca146bcd1cda7c265ca976dcf7fb30ea38",
+      "outcome": "pass"
+    },
+    {
+      "label": "original-profile-selector-stock-rev2-choose-forward-and-reload",
+      "capturedAtUtc": "2026-10-18T22:33:52.7677211Z",
+      "headCommit": "f6b152ca146bcd1cda7c265ca976dcf7fb30ea38",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Stock WindowsDesktop10.0.12 reference only, SDK10.0.401: genuine original ProfileSelectView/VM choose-forward22 and fresh-process disk reload7 pass with original160 PE closure and33 dictionaries. Bindings Unattached before Show become Active against actual VM after genuine Show/layout/dispatcher settlement. Selection persistence, independent disk readback, released profile locks and private-desktop child cleanup pass. Real original in-memory settings provider keeps preferences-file persistence open. Both processes exit0 with empty stderr. Build warnings stock2/portable1/launcher0 are retained. No cancel, choose-reverse, full App, native keyboard/mouse, portable workflow or package qualification. Linux original missing SystemEvents construction boundary unchanged; no framework native-load failure. All earlier incomplete/negative evidence remains historical. Native IME deferred and Phases2-5 open.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/nina-profile-selection-diagnostic/revision-2/runtime-results-1/result.json",
+          "sha256": "500caf6270ccce257e69e714397b4cbb1cfc8d5bc25424912b50b954f7ec0813",
+          "bytes": 23193,
+          "results": [
+            {
+              "status": "pass",
+              "count": 29
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/nina-profile-selection-diagnostic/revision-2/runtime-results-1/runtime-evidence.sha256.json",
+          "sha256": "1071fa9b90fb9f4d013416916c3a38515f46a326cfd5cd87b19869eb2e61c00e",
+          "bytes": 5057
+        },
+        {
+          "path": "artifacts/portability/nina-profile-selection-diagnostic/revision-2/isolated-runs/20261018T222814-dbc47e3dd3b0432ab8f83998832e8929/runtime.json",
+          "sha256": "601e091dc760849ffabd0f0759c8cb9fa761150b2cd3acb21bb6ffd86a07dcf7",
+          "bytes": 59524,
+          "results": [
+            {
+              "status": "pass",
+              "count": 22
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/nina-profile-selection-diagnostic/revision-2/isolated-runs/20261018T222830-5c6f5b5cb6ef4698b023f24d51cdb31b/runtime.json",
+          "sha256": "836f21750426ac921c045a991334001e40febf4348126411ea65bbb573e49f30",
+          "bytes": 29989,
+          "results": [
+            {
+              "status": "pass",
+              "count": 7
+            }
+          ]
+        }
+      ],
+      "sourceCommit": null,
+      "outcome": "pass"
+    },
+    {
+      "label": "committed-bounds-rev2-coherent-renderer-window-release",
+      "capturedAtUtc": "2026-10-18T23:05:29.7020897Z",
+      "headCommit": "b6569d9a43ae29dc881af8a168c1ab5a4346eb0f",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit d18213a4a1747087ba068dddd9bc54af4940bf65 completes bounded dashed render bounds and REV2 zero-radius rectangle stroke routing. Combined graph passes3341 checks/28 runs/32 builds with zero errors: ordinary1559 checks per OS, separate verification lifecycle68/preedit30 per OS and Linux native23/taskbar4. Existing ordinary14 and verification10 build warnings per OS retained. Root inspects exact35 overlays and releases two whole143-file ordinary stages with no fixture-friend Core/PF. Three no-ink conservative-bounds cases retain their preexisting measured difference. Dashed containment/native widening remain unqualified. This current stage supersedes owner-only pending-stage status without rewriting history, but excludes Grid/Popup revision2. No package, physical desktop, full NINA or native IME qualification.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/combined-renderer-window-main-1/revision1/combined-freeze.json",
+          "sha256": "6e707788c5308623c962cd6797f2b58d4b0c81c70a629b926b16c9e3b1d8987e",
+          "bytes": 231395
+        },
+        {
+          "path": "artifacts/portability/combined-renderer-window-main-1/revision1/result-summary.json",
+          "sha256": "c677eef3986e703f07d35081bb1b4f03d5f332606a2ce0eb23f041b6777f6070",
+          "bytes": 6304,
+          "results": [
+            {
+              "status": "pass",
+              "count": 3341
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/combined-renderer-window-main-1/revision1/HANDOFF.md",
+          "sha256": "fc1ede20274fb7562c81a8498a65f0cbbb2506ab069a13c4fc14882a4d7af03e",
+          "bytes": 4339
+        },
+        {
+          "path": "artifacts/portability/combined-renderer-window-main-1/revision1/root-inspection.json",
+          "sha256": "329d1eddef1ff8edbf67e42f7d724f259df1715036ef0660a7a0886473bfb669",
+          "bytes": 606
+        },
+        {
+          "path": "artifacts/portability/combined-renderer-window-main-1/revision1/root-consumer-release.json",
+          "sha256": "f91c9d04129ceca89f46977c47e864d44ca7a92fc31db4e003879fcdb885ca22",
+          "bytes": 1529
+        },
+        {
+          "path": "artifacts/portability/combined-renderer-window-main-1/revision1/published-stage-manifests.json",
+          "sha256": "8218d1b28d2f05274126a4f98e37e301a6b08482d853eb0ca2ce99566986e5cd",
+          "bytes": 54686
+        },
+        {
+          "path": "artifacts/portability/combined-renderer-window-main-1/revision1/friend-family-isolation.json",
+          "sha256": "c5da151e0c20c239d0aec9fe2b50adcacac96d4eb8f259e27358ff35de4d7060",
+          "bytes": 33361
+        }
+      ],
+      "sourceCommit": "d18213a4a1747087ba068dddd9bc54af4940bf65",
+      "outcome": "pass"
+    },
+    {
+      "label": "committed-open-hollow-grid-bounds-component",
+      "capturedAtUtc": "2026-10-18T23:05:29.7020897Z",
+      "headCommit": "b6569d9a43ae29dc881af8a168c1ab5a4346eb0f",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit b6569d9a43ae29dc881af8a168c1ab5a4346eb0f integrates nine exact reviewed files with30 seed files unchanged. One open hollow figure of isolated noncollapsed linear runs separated by explicit gaps and matching Flat caps preserves final-space query origin and skipped-pen fallback. Geometry615 per OS retains all437 earlier cases; Rendering47 per OS and stock570 pass, with144 stock queries and16 target raster controls. Independent correctness and maintainability/test-value reviews have no supported findings. Preexisting skewed translucent multi-contour/control difference308 pixels/1142 channels/max15 remains unchanged with no new tolerance. Existing no-ink bounds caveat, rejected dashed containment and unqualified native widening remain. Fresh Grid native stage/actual AvalonDock pending; Popup revision2 under freeze preparation and ImageControlVM26 replay running, with no result inferred. No package or full NINA qualification; native IME is a user-approved deferred capability, not a pending permission decision or block on other phases.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/grid-bounds-integration-main-1/source-equivalence.json",
+          "sha256": "6d38fe4dcc6b66d1822e8e3f937b6eeac6feb41628ebe753b65dcbb3ca27fc47",
+          "bytes": 1818
+        },
+        {
+          "path": "artifacts/portability/grid-bounds-integration-main-1/commit-verification.json",
+          "sha256": "76eb9af147eedd4225d90bdebbcb28b6eeec54a4f95cc6dace96556546beaf09",
+          "bytes": 277
+        },
+        {
+          "path": "artifacts/portability/grid-bounds-implementation/freeze.json",
+          "sha256": "d91f643839dadd99a64a99123dae688c20efc88f602fb7b5fe09ca6963e71c8d",
+          "bytes": 24094
+        },
+        {
+          "path": "artifacts/portability/grid-bounds-implementation/HANDOFF.md",
+          "sha256": "8b7ef800bd0360a093bf80025504d5f82df0a90dad5f0364f10a997ee02cc046",
+          "bytes": 4271
+        },
+        {
+          "path": "artifacts/portability/webby-grid-bounds-review/review-summary.json",
+          "sha256": "42f9c0b7ed5607a8c55675e5c6c085ace22d3de92ae4b7ba0cb863c77715c95f",
+          "bytes": 2087
+        },
+        {
+          "path": "artifacts/portability/donald-grid-bounds-review/review-summary.json",
+          "sha256": "516f8810ce58da385b6dc560b93ac230bf688d6e789a60f56e98ef88840fe5c6",
+          "bytes": 4117
+        },
+        {
+          "path": "artifacts/portability/grid-bounds-implementation/windows-final-results.json",
+          "sha256": "a2e7521d9810d521bbc417f0ddd18619cbc33190cf6f296eb670bbba681b1d5e",
+          "bytes": 87854,
+          "results": [
+            {
+              "status": "pass",
+              "count": 615
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/grid-bounds-implementation/linux-final-results.json",
+          "sha256": "12df825933e36241b7c47f3e96574d465b06eef21e72f024828355996034da52",
+          "bytes": 84162,
+          "results": [
+            {
+              "status": "pass",
+              "count": 615
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/grid-bounds-implementation/rendering-windows-final-results.json",
+          "sha256": "83397ae204d2877c43ef4def8bf73454417c828aae15771863ad7927f7718ff5",
+          "bytes": 7201,
+          "results": [
+            {
+              "status": "pass",
+              "count": 47
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/grid-bounds-implementation/rendering-linux-final-results.json",
+          "sha256": "b2610001899748c3ed4781fb4a2db6ccbf4b115fdbae1534987a587ba388ecab",
+          "bytes": 6936,
+          "results": [
+            {
+              "status": "pass",
+              "count": 47
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/grid-bounds-implementation/stock-final-results.json",
+          "sha256": "6bbd4411ab988d2a9c4f53bce3ef375a462a16d21a4c00483db9b3a32ec3fdf2",
+          "bytes": 81084,
+          "results": [
+            {
+              "status": "pass",
+              "count": 570
+            }
+          ]
+        }
+      ],
+      "sourceCommit": "b6569d9a43ae29dc881af8a168c1ab5a4346eb0f",
+      "outcome": "pass"
+    },
+    {
+      "label": "original-imagecontrolvm-linux26-whole-bounds-family-offscreen",
+      "capturedAtUtc": "2026-10-18T23:13:06.2621989Z",
+      "headCommit": "b6569d9a43ae29dc881af8a168c1ab5a4346eb0f",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Unchanged pinned NINA ImageControlVM/ImageControlView/ImageView passes26 ordered original checks on the whole143-file d18213a4a ordinary Linux source family, not a package. Original160 PE files,54 source blobs and33 dictionaries verify;26 names and18 logical/source frame contracts match stock. Public commands/bindings exercise24MP Gray16/Rgb48 rotation four times, flip and crosshair on/off, source CopyPixels exactness, image removal and VM disposal. Body raster changes and exact restores pass without cross-OS raster/HQ equivalence. Runner0/native failures0/empty stderr; build0 errors and1 existing CS8602 warning. All1052 evidence records rehash. Historical Program a181 label is unchanged; verification/pin/output sidecars prove actual d182 runtime. Initial stale metadata pin attempt is preserved, corrected only in bookkeeping before run-02. Original7-pass/1-fail/18-unreached conic red remains historical. No Show/native input/fit/1:1/pan/acquisition/PrepareImage/star processing/1Hz/shell/package claim. Earlier running statuses are capture-time history, not current status. Popup revision2 remains unintegrated/unqualified pending cleanup-neighbor review; native IME is an approved deferred capability and Phases2-5 remain open.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-combined-renderer-window-diagnostic/revision-1/verification.json",
+          "sha256": "f8425ae4acf15d61c17ca1bee15091987c4a464dd96b3729a232227f825757bd",
+          "bytes": 3906
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-combined-renderer-window-diagnostic/revision-1/run-02/runtime-linux.json",
+          "sha256": "f993fbe8b0e83167057719fbc23ff9ba932933ab39de7fba0fab796edaace1b5",
+          "bytes": 268657,
+          "results": [
+            {
+              "status": "pass",
+              "count": 26
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-combined-renderer-window-diagnostic/revision-1/consumption-pin.json",
+          "sha256": "89c094ac475a44ed342ccda14e66d79a433a57721fede87e80837a6ea147cf71",
+          "bytes": 77709
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-combined-renderer-window-diagnostic/revision-1/evidence.sha256.json",
+          "sha256": "5b82eb4f4c28d64a68913a13ff774c4b76fa9753dc84591aa3fb53767857b8f3",
+          "bytes": 194636
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-combined-renderer-window-diagnostic/revision-1/findings.md",
+          "sha256": "1e05790999f2a33da049a2bb783992ac21736bd3a45ea972d40f131409fa1216",
+          "bytes": 4200
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-combined-renderer-window-diagnostic/revision-1/stock26-replay-comparison.json",
+          "sha256": "1b49cd44f758dfabe76b58ee7c4bd51f1c5e46f5c58b00ab0ecebd0bfd5c0b47",
+          "bytes": 2679
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-combined-renderer-window-diagnostic/revision-1/frame-contract-comparison.json",
+          "sha256": "fd726068d83c7c0d1cb00adb9ebc820ad768b1c8a64612459000348c78649dde",
+          "bytes": 11970
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-combined-renderer-window-diagnostic/revision-1/fixture-source-correspondence.json",
+          "sha256": "bf3ee0f8e7221a09716a08382a0bb77d8b71e6e4eb571d54f3ce30ad4911bbc0",
+          "bytes": 1802
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-combined-renderer-window-diagnostic/revision-1/run-02/process-linux.json",
+          "sha256": "21c0f935c1ea17b39bc514bbc31808f2c53d6de6bd8fd00911182fbf9f695863",
+          "bytes": 101
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-combined-renderer-window-diagnostic/revision-1/run-02/output-verification.json",
+          "sha256": "d5fa15da6fb415f1c6a343d2db0cf9b4d0765cb1ebbabf349e75bd8cb8767d57",
+          "bytes": 4456
+        }
+      ],
+      "sourceCommit": "d18213a4a1747087ba068dddd9bc54af4940bf65",
+      "outcome": "pass"
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",
@@ -13877,5 +14352,6 @@
   "phase3Status": "selected-unchanged-nina-editor-native-contract-passed-broader-imaging-and-shell-pending",
   "phase5Status": "gnome-startup-and-live-text-clipboard-passed-picker-selection-ime-and-accessibility-pending",
   "phase0Status": "passed-bounded-feasibility",
-  "nativeImePolicy": "User deferred native focused-editor/IME composition integration on 2026-10-18. Preserve the investigation draft locally and unqualified; no new base/hook implementation. Committed transport and ordinary complete Unicode text remain separate evidence. This is not a passed check and does not change historical requirements or complete Phase 5."
+  "nativeImePolicy": "User deferred native focused-editor/IME composition integration on 2026-10-18. Preserve the investigation draft locally and unqualified; no new base/hook implementation. Committed transport and ordinary complete Unicode text remain separate evidence. This is not a passed check and does not change historical requirements or complete Phase 5.",
+  "nativeImeDeferredScope": "User-approved deferred capability and known limitation, not a pending permission request or reason to stop other phases. Ordinary complete Unicode input, managed preedit and controlled IBus transport retain separate evidence. Genuine native composing-engine/editor startup remains unqualified; no new hidden architecture hook/base copy. Phases2-5 remain open for their other actual gates."
 }
