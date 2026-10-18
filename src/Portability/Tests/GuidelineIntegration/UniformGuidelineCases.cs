@@ -56,7 +56,7 @@ internal static class UniformGuidelineCases
 #if !STOCK
         void Reject(double[] x, double[] y, DpiScale scale)
         {
-            try { render(new ConicVisual(x, y, translated, false, false, false), scale, 96, 96); }
+            try { render(new ConicVisual(x, y, translated, false, false, true), scale, 96, 96); }
             catch (NotSupportedException error) when (error.Message.Contains("rational conic", StringComparison.Ordinal)) { return; }
             throw new InvalidOperationException("A nonuniform rational-conic frame was silently accepted.");
         }

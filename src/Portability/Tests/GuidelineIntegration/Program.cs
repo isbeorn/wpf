@@ -21,6 +21,13 @@ using var reference = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContex
 var thread = new Thread(() =>
 {
     CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+    if (!args.Contains("--visibility-only") && !args.Contains("--visual-brush-only") && !args.Contains("--dashes-only"))
+    {
+        var cubicFills = NativeCubicFillCases.Run(Render);
+        results.AddRange(cubicFills);
+        failed |= cubicFills.Any(item => !item.passed);
+        if (args.Contains("--cubic-fills-only")) { Dispatcher.CurrentDispatcher.InvokeShutdown(); return; }
+    }
     if (!args.Contains("--visibility-only") && !args.Contains("--visual-brush-only"))
     {
         var dashes = DashedPenCases.Run(Render, args);

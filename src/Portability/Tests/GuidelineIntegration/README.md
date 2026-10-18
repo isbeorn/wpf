@@ -64,8 +64,8 @@ Skia's conics and native WPF's cubic shape controls differ. Uniform-offset conic
 translation is covered, including multiple guides. The captured visible radius-1
 case differs from stock by at most 44 in eight corner-coverage channels; its portable
 multi-guide, single-guide and explicit-translation controls match exactly. This
-observation adds no new tolerance or general curve bound. The actual 35-unit span
-at 1.5x DPI remains explicitly unsupported because its offsets differ. Arbitrary
+observation adds no new tolerance or general curve bound. The actual 35-unit rounded fill span
+at 1.5x DPI now uses the existing native cubic representation when offsets differ. Arbitrary
 curve pixel parity is not claimed. Stock and
 Skia antialiasing differ on curves/rotation, so those stock samples allow 64/255
 coverage variation while the explicit same-backend controls must match exactly.
@@ -279,3 +279,38 @@ The actual focus primitive must match an explicit top-left PathGeometry full ras
 Dash units/phase/positive and negative period wrap, odd repetition, negative lengths, frozen/mutable collection immutability and contour resets use genuine retained drawings and independent solid intervals. Round-cap solid interval and continuous-stroke controls permit only one alpha LSB at curved edges; the calibrated stock Round endpoint bound is44, confined to named Round profiles. Flat/Square independent controls stay exact and other stock profiles retain3. All-zero/tiny cycles below native .1, nonfinite/unrepresentable scalars, Triangle and mismatched caps reject explicitly. Zero-length ON intervals with non-Flat caps reject because the installed backend loses the final endpoint dot; no epsilon or solid fallback is used. Flat zero-on and zero-off profiles are calibrated separately.
 
 Painting does not add dashed Geometry.StrokeContains or GetRenderBounds support. Existing GeometryIntegration negative checks remain mandatory. No Windows native source path, theme/template, scientific image data or sampling contract changes.
+
+## Native cubic rounded fills
+
+Run `--cubic-fills-only` for the shared focused corpus. The portable Walker uses
+original RectangleGeometry.GetAsPathGeometry cubics only for nonuniform-guideline
+fills from DrawRoundedRectangle, direct DrawGeometry RectangleGeometry and their
+VisualBrush destination masks. No-guide and uniform-offset primitives keep their
+native Skia conics. General geometry conversion, bounds, containment, Boolean
+operations, clips, stroke widening and dash-effect ordering are unchanged.
+
+The first case reproduces NINA's actual visible scrollbar thumb: rect(0,0,7,
+786.06125), radii5/5, brush#FF007063, pen null, translation(1188,40), 96DPI and
+nonuniform bottom-edge correction. It compares complete rasters with the genuine
+public PathGeometry.CreateFromGeometry control and a separate explicitly positioned
+cubic path using the captured controls. Known interior/exterior pixels and logical
+bounds are checked independently. Stock WPF10.0.12 confirms exact primitive/path
+raster equality for these selected cases. Portable equality is also exact; this is
+not a claim of arbitrary stock/backend antialiasing equivalence. The independent
+source-color ratio allows only one byte of premultiplication quantization, as
+observed in stock edge pixels, without relaxing any geometry raster comparison.
+
+Representative cases cover zero/either-zero/negative/clamped radii, transposed
+extents, reflected axes, geometry transforms applied once, fractional/192DPI,
+transparent fills, rounded clips and following siblings. VisualBrush cases cover
+patterned destinations and persistent source mutation, failed replacement recovery,
+null and restore using the existing target/dispatcher helpers. No new fixture
+framework or production test API is introduced.
+
+Nonuniform rational ellipse/arc paths retain the named diagnostic. Rounded stroke
+widening and genuinely rounded dashed contour phase remain outside this fill slice;
+a fill combined with an unsupported effective stroke is not a supported drawing.
+The five unequal/interior/near-equal guideline negatives now draw actual ellipses,
+while formerly rejected rounded fills are positive controls. Existing uniform
+conic and dashed regressions remain intact. A reviewed coherent renderer release
+and the unchanged actual NINA26-case replay remain separate qualification gates.

@@ -79,9 +79,18 @@ namespace MS.Internal.Portability.Rendering
             if (rectangle.IsEmpty) return;
             if (brush is VisualBrush visualBrush)
             {
-                using var fill = new SKPath();
-                fill.AddRoundRect(ToRect(rectangle), (float)Math.Min(Math.Abs(radiusX), rectangle.Width / 2), (float)Math.Min(Math.Abs(radiusY), rectangle.Height / 2));
+                using var fill = !_guidelines.IsSimple
+                    ? SkiaGeometry.Create(new RectangleGeometry(rectangle, radiusX, radiusY).GetAsPathGeometry(), false)
+                    : new SKPath();
+                if (_guidelines.IsSimple)
+                    fill.AddRoundRect(ToRect(rectangle), (float)Math.Min(Math.Abs(radiusX), rectangle.Width / 2), (float)Math.Min(Math.Abs(radiusY), rectangle.Height / 2));
                 DrawVisualBrush(visualBrush, fill, rectangle);
+                brush = null;
+            }
+            if (!_guidelines.IsSimple && brush != null)
+            {
+                using (SKPath fill = SkiaGeometry.Create(new RectangleGeometry(rectangle, radiusX, radiusY).GetAsPathGeometry(), false))
+                using (SKPaint paint = CreateBrush(brush)) DrawSnappedPath(fill, paint);
                 brush = null;
             }
             bool dashedRectangle = (radiusX == 0 || radiusY == 0) && pen?.DashStyle?.Dashes?.Count > 0;
@@ -120,7 +129,9 @@ namespace MS.Internal.Portability.Rendering
         public override void DrawGeometry(Brush brush, Pen pen, Geometry geometry)
         {
             if (geometry == null || (brush == null && (pen == null || pen.Brush == null))) return;
-            using (SKPath fill = SkiaGeometry.Create(geometry, false))
+            Geometry fillGeometry = brush != null && !_guidelines.IsSimple && geometry is RectangleGeometry rectangle
+                ? rectangle.GetAsPathGeometry() : geometry;
+            using (SKPath fill = SkiaGeometry.Create(fillGeometry, false))
             {
                 if (brush is VisualBrush visualBrush)
                     DrawVisualBrush(visualBrush, fill, geometry.Bounds);

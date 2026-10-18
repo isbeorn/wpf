@@ -247,6 +247,24 @@ internal static class VisualBrushCases
         bitmap.WritePixels(new Int32Rect(0, 0, 2, 2), pixels, 8, 0);
     }
     private static DrawingVisual Image(BitmapSource bitmap) => Drawing(dc => dc.DrawImage(bitmap, new Rect(0, 0, 8, 6)));
+    internal static void CheckRoundedFillRecovery()
+    {
+        WriteableBitmap bitmap = Bitmap(); DrawingVisual source = Image(bitmap);
+        var brush = new VisualBrush(source);
+        var host = Drawing(dc => { dc.PushGuidelineSet(new GuidelineSet([0, 16], [0, 12.375])); dc.DrawRoundedRectangle(brush, null, new Rect(0, 0, 16, 12.375), 3, 3); dc.Pop(); });
+        using var target = new Target(host);
+        target.Render(); Pump(); ColorAt(target.Pixels!, 7, 5, Colors.Red);
+        target.Change(() => Write(bitmap, 64)); ColorAt(target.Pixels!, 7, 5, Color.FromRgb(64, 0, 0));
+        byte[] original = new byte[16]; bitmap.CopyPixels(original, 8, 0);
+        if (original.Where((value, index) => index % 4 == 2).Any(value => value != 64))
+            throw new InvalidOperationException("Rounded brush rendering changed source bitmap data.");
+        var replacement = Drawing(dc => dc.DrawRectangle(Brushes.Blue, null, new Rect(0, 0, 8, 6)));
+        replacement.OpacityMask = Brushes.White;
+        FailedDispatcherFrame(() => brush.Visual = replacement, "opacity mask");
+        target.Change(() => replacement.OpacityMask = null); ColorAt(target.Pixels!, 7, 5, Colors.Blue);
+        target.Change(() => brush.Visual = null); ColorAt(target.Pixels!, 7, 5, Colors.Transparent);
+        target.Change(() => brush.Visual = source); ColorAt(target.Pixels!, 7, 5, Color.FromRgb(64, 0, 0));
+    }
     private static void CheckRetained()
     {
         WriteableBitmap bitmap = Bitmap(); DrawingVisual source = Image(bitmap);
