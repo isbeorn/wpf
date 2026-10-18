@@ -1,9 +1,11 @@
+using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
 using System.Text.Json;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using SkiaSharp;
 
@@ -129,6 +131,8 @@ Run("ui-element-layout-retained-content-and-invalidation", () =>
     using var repainted = target.Snapshot();
     Pixel(repainted, 8, 8, SKColors.Blue);
 });
+Run("opacity-animation-forward-background-progress-and-removal", () => ObserveOpacityAnimation(1, 0.25, 1));
+Run("opacity-animation-reverse-background-progress-and-removal", () => ObserveOpacityAnimation(0.25, 1, 0.8));
 Run("physical-dpi-scaling-and-atomic-resize", () =>
 {
     var root = new DrawingVisual();
@@ -539,6 +543,52 @@ static void Drain()
     var frame = new DispatcherFrame();
     Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new Action(() => frame.Continue = false));
     Dispatcher.PushFrame(frame);
+}
+static void ObserveOpacityAnimation(double from, double to, double baseOpacity)
+{
+    var root = new RenderElement { Opacity = baseOpacity };
+    root.Measure(new Size(32, 24));
+    root.Arrange(new Rect(0, 0, 32, 24));
+    using var target = new Target(root, 32, 24);
+    Drain();
+    var clock = new DoubleAnimation(from, to, TimeSpan.FromMilliseconds(350)).CreateClock();
+    bool intermediateObserved = false;
+    int observations = 0;
+    var elapsed = Stopwatch.StartNew();
+    var frame = new DispatcherFrame();
+    root.ApplyAnimationClock(UIElement.OpacityProperty, clock);
+    var observer = new DispatcherTimer(TimeSpan.FromMilliseconds(5), DispatcherPriority.Background, (_, _) =>
+    {
+        observations++;
+        using var pixels = target.Snapshot();
+        double opacity = root.Opacity;
+        SKColor pixel = pixels.GetPixel(8, 8);
+        if (clock.CurrentState == ClockState.Active && clock.CurrentProgress > 0 && clock.CurrentProgress < 1 &&
+            opacity > 0.3 && opacity < 0.9 && Math.Abs(pixel.Alpha - opacity * 255) <= 2 &&
+            pixel.Red == 255 && pixel.Green == 0 && pixel.Blue == 0)
+            intermediateObserved = true;
+        if (clock.CurrentState == ClockState.Filling || elapsed.Elapsed > TimeSpan.FromSeconds(3))
+            frame.Continue = false;
+    }, Dispatcher.CurrentDispatcher);
+    try
+    {
+        Dispatcher.PushFrame(frame);
+        Require(intermediateObserved,
+            $"Background work missed intermediate clock/property/pixels for {from}->{to}; observations={observations}, opacity={root.Opacity}, progress={clock.CurrentProgress}.");
+        Require(clock.CurrentState == ClockState.Filling && root.Opacity == to && root.HasAnimatedProperties,
+            "The opacity clock did not reach its held endpoint.");
+        using var endpoint = target.Snapshot();
+        Pixel(endpoint, 8, 8, new SKColor(255, 0, 0, (byte)Math.Round(to * 255)));
+    }
+    finally
+    {
+        observer.Stop();
+        root.ApplyAnimationClock(UIElement.OpacityProperty, null);
+        Drain();
+    }
+    Require(!root.HasAnimatedProperties && root.Opacity == baseOpacity, "Removing the opacity clock did not restore the base value.");
+    using var restored = target.Snapshot();
+    Pixel(restored, 8, 8, new SKColor(255, 0, 0, (byte)Math.Round(baseOpacity * 255)));
 }
 static void Pixel(SKBitmap bitmap, int x, int y, SKColor expected)
 {

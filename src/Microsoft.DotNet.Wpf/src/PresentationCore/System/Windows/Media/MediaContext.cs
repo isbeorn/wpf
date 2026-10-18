@@ -2000,7 +2000,10 @@ namespace System.Windows.Media
                 {
                     if (++tickLoopCount > 153)
                         throw new InvalidOperationException(SR.MediaContext_InfiniteTickLoop);
+                    bool renderRequestedBeforeTick = _portableRenderRequested;
                     _timeManager.Tick();
+                    // Tick invalidations are included in this frame; earlier callback requests still need a follow-up.
+                    _portableRenderRequested = renderRequestedBeforeTick;
                     if (_isDisposed) return;
                     _timeManager.LockTickTime();
                     FireInvokeOnRenderCallbacks();
