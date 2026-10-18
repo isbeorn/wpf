@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>App</AssemblyName>
+    <StartupObject>CompleteViewWindowsReference.Program</StartupObject>
+    <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
+    <RollForward>Disable</RollForward>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <EnableDefaultPageItems>false</EnableDefaultPageItems>
+    <SharedWorkflow>$(RepoRoot)src/Portability/Packaging/Consumer/App/CompleteViewWorkflow.cs</SharedWorkflow>
+    <SharedResources>$(RepoRoot)src/Portability/Packaging/Consumer/App/WorkflowResources.xaml</SharedResources>
+    <DejaVuFontPath Condition="'$(DejaVuFontPath)' == ''">$(RepoRoot)src/Portability/Dependencies/TextUnicode/Original/tests/Avalonia.Skia.UnitTests/Fonts/DejaVuSans.ttf</DejaVuFontPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Using Include="System.IO" />
+    <Reference Include="FixtureControls" HintPath="$(FixtureControlsPath)" Private="true" />
+    <Compile Include="$(SharedWorkflow)" Link="CompleteViewWorkflow.cs" />
+    <Page Include="$(SharedResources)" Link="WorkflowResources.xaml" />
+    <None Include="$(CompleteViewOriginPath)" Link="CompleteViewOrigin.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(DejaVuFontPath)" Link="DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(SharedWorkflow)" Link="provenance/CompleteViewWorkflow.cs" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(SharedResources)" Link="provenance/WorkflowResources.xaml" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="WindowsDesktop.cs" Link="provenance/WindowsDesktop.cs" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Program.cs" Link="provenance/Program.cs" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="app.manifest" Link="provenance/app.manifest" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Target Name="PinReferenceInputs" BeforeTargets="GetAssemblyAttributes">
+    <Error Condition="'$(FixtureOrigin)' != 'Microsoft' and '$(FixtureOrigin)' != 'Port'" Text="FixtureOrigin must be Microsoft or Port." />
+    <Error Condition="!Exists('$(FixtureControlsPath)') or !Exists('$(CompleteViewOriginPath)')" Text="Supply FixtureControlsPath and CompleteViewOriginPath from the same prepared origin." />
+    <GetFileHash Files="$(FixtureControlsPath)"><Output TaskParameter="Items" ItemName="_FixtureHash" /></GetFileHash>
+    <GetFileHash Files="$(CompleteViewOriginPath)"><Output TaskParameter="Items" ItemName="_OriginHash" /></GetFileHash>
+    <GetFileHash Files="$(SharedWorkflow)"><Output TaskParameter="Items" ItemName="_WorkflowHash" /></GetFileHash>
+    <GetFileHash Files="$(SharedResources)"><Output TaskParameter="Items" ItemName="_ResourcesHash" /></GetFileHash>
+    <GetFileHash Files="WindowsDesktop.cs"><Output TaskParameter="Items" ItemName="_DesktopHash" /></GetFileHash>
+    <GetFileHash Files="Program.cs"><Output TaskParameter="Items" ItemName="_ProgramHash" /></GetFileHash>
+    <GetFileHash Files="app.manifest"><Output TaskParameter="Items" ItemName="_ManifestHash" /></GetFileHash>
+    <ItemGroup>
+      <AssemblyMetadata Include="FixtureOrigin" Value="$(FixtureOrigin)" />
+      <AssemblyMetadata Include="FixtureInputSha256" Value="@(_FixtureHash->'%(FileHash)')" />
+      <AssemblyMetadata Include="FixtureOriginSha256" Value="@(_OriginHash->'%(FileHash)')" />
+      <AssemblyMetadata Include="CompleteViewWorkflow.cs" Value="@(_WorkflowHash->'%(FileHash)')" />
+      <AssemblyMetadata Include="WorkflowResources.xaml" Value="@(_ResourcesHash->'%(FileHash)')" />
+      <AssemblyMetadata Include="WindowsDesktop.cs" Value="@(_DesktopHash->'%(FileHash)')" />
+      <AssemblyMetadata Include="Program.cs" Value="@(_ProgramHash->'%(FileHash)')" />
+      <AssemblyMetadata Include="app.manifest" Value="@(_ManifestHash->'%(FileHash)')" />
+    </ItemGroup>
+  </Target>
+</Project>

@@ -1,0 +1,11 @@
+<Project>
+  <Import Project="../../Directory.Build.props" />
+  <PropertyGroup>
+    <FixtureOrigin Condition="'$(FixtureOrigin)' == ''">Microsoft</FixtureOrigin>
+    <RepoRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../../../..'))</RepoRoot>
+    <ReferenceArtifacts>$(RepoRoot)artifacts/portability/complete-view-windows-reference/$(FixtureOrigin)/</ReferenceArtifacts>
+    <BaseOutputPath>$(ReferenceArtifacts)bin/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(ReferenceArtifacts)obj/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+</Project>
