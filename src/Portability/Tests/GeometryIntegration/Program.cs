@@ -3,6 +3,21 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Media;
 
+#if !PORTABLE_GEOMETRY_TESTS
+if (args.Length == 1 && args[0] == "--capture-combine-sampling")
+{
+    Console.WriteLine(JsonSerializer.Serialize(CombineCases.CaptureSamplingMasks(), new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
+
+#endif
+
+if (args.Length == 1 && args[0] == "--capture-combine-contracts")
+{
+    Console.WriteLine(JsonSerializer.Serialize(CombineCases.CaptureContracts(), new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
+
 if (args.Length == 1 && args[0] == "--capture-bounds-precision")
 {
     Console.WriteLine(JsonSerializer.Serialize(BoundsCases.CapturePrecision(), new JsonSerializerOptions { WriteIndented = true }));
@@ -115,6 +130,7 @@ Reject("unsupported-combined-stroke", () => combined.StrokeContains(new Pen(Brus
 Reject("unsupported-mixed-end-caps", () => line.StrokeContains(new Pen(Brushes.Red, 4) { EndLineCap = PenLineCap.Round }, new Point(10, 0)), "end caps");
 #endif
 
+CombineCases.Run(Check);
 OutlineCases.Run(Check);
 BoundsCases.Run(Check);
 MixedStrokeCases.Run(Check);

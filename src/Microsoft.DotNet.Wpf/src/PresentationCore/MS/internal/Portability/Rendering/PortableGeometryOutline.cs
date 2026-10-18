@@ -11,6 +11,89 @@ namespace MS.Internal.Portability.Rendering
 {
     internal static class PortableGeometryOutline
     {
+        internal static PathGeometry Combine(Geometry first, Geometry second, GeometryCombineMode mode,
+            Transform transform, double tolerance, ToleranceType type)
+        {
+            SKPathOp operation = mode switch
+            {
+                GeometryCombineMode.Union => SKPathOp.Union,
+                GeometryCombineMode.Intersect => SKPathOp.Intersect,
+                GeometryCombineMode.Xor => SKPathOp.Xor,
+                GeometryCombineMode.Exclude => SKPathOp.Difference,
+                _ => throw new NotSupportedException($"Portable geometry combination does not support mode {mode}.")
+            };
+            try
+            {
+                using (SKPath left = SkiaGeometry.Create(first, false, closeFillContours: true))
+                using (SKPath right = SkiaGeometry.Create(second, false, closeFillContours: true))
+                using (SKPath leftBounds = SkiaGeometry.Create(first, false, includeHollows: true))
+                using (SKPath rightBounds = SkiaGeometry.Create(second, false, includeHollows: true))
+                {
+                    TransformForCombine(left, transform);
+                    TransformForCombine(right, transform);
+                    TransformForCombine(leftBounds, transform);
+                    TransformForCombine(rightBounds, transform);
+                    SKRect bounds = leftBounds.TightBounds;
+                    if (leftBounds.IsEmpty) bounds = rightBounds.TightBounds;
+                    else if (!rightBounds.IsEmpty)
+                    {
+                        SKRect other = rightBounds.TightBounds;
+                        bounds = new SKRect(Math.Min(bounds.Left, other.Left), Math.Min(bounds.Top, other.Top),
+                            Math.Max(bounds.Right, other.Right), Math.Max(bounds.Bottom, other.Bottom));
+                    }
+                    if (!float.IsFinite(bounds.Left) || !float.IsFinite(bounds.Top) || !float.IsFinite(bounds.Right) || !float.IsFinite(bounds.Bottom))
+                        throw new ArithmeticException("Portable geometry combination requires finite bounds.");
+                    double absolute = SkiaGeometry.AbsoluteTolerance(bounds, tolerance, type);
+                    // Infinite relative tolerance times a point extent still has an empty Boolean result.
+                    if (double.IsNaN(absolute)) absolute = 0;
+                    using (SKPath leftPolynomial = FlattenConics(left, absolute))
+                    using (SKPath rightPolynomial = FlattenConics(right, absolute))
+                    using (SKPath combined = leftPolynomial.Op(rightPolynomial, operation))
+                    {
+                        if (combined == null)
+                            throw new InvalidOperationException("Portable geometry combination failed.");
+                        using (SKPath simplified = combined.Simplify())
+                        {
+                            if (simplified == null)
+                                throw new InvalidOperationException("Portable geometry combination simplification failed.");
+                            using (SKPath winding = simplified.ToWinding())
+                            {
+                                if (winding == null)
+                                    throw new InvalidOperationException("Portable geometry combination winding normalization failed.");
+                                TransformForCombine(winding, null);
+                                PathGeometry result = ToGeometry(winding, FillRule.Nonzero);
+                                result.Transform = null;
+                                return result;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (ArithmeticException) { return new PathGeometry(); }
+        }
+
+        private static void TransformForCombine(SKPath path, Transform transform)
+        {
+            if (path.IsEmpty) return;
+            if (transform != null && !transform.Value.IsIdentity)
+            {
+                Matrix matrix = transform.Value;
+                path.Transform(new SKMatrix(CombineScalar(matrix.M11), CombineScalar(matrix.M21), CombineScalar(matrix.OffsetX),
+                    CombineScalar(matrix.M12), CombineScalar(matrix.M22), CombineScalar(matrix.OffsetY), 0, 0, 1));
+            }
+            foreach (SKPoint point in path.Points)
+                if (!float.IsFinite(point.X) || !float.IsFinite(point.Y))
+                    throw new ArithmeticException("Portable geometry combination requires finite transformed coordinates.");
+        }
+
+        private static float CombineScalar(double value)
+        {
+            float result = (float)value;
+            if (!float.IsFinite(result))
+                throw new ArithmeticException("Portable geometry combination requires finite transform coefficients representable by the raster backend.");
+            return result;
+        }
+
         internal static PathGeometry Create(Geometry geometry, double tolerance, ToleranceType type)
         {
             try

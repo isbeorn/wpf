@@ -8,6 +8,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="../Program.cs" Link="Program.cs" />
+    <Compile Include="../CombineCases.cs" Link="CombineCases.cs" />
     <Compile Include="../OutlineCases.cs" Link="OutlineCases.cs" />
     <Compile Include="../BoundsCases.cs" Link="BoundsCases.cs" />
     <Compile Include="../MixedStrokeCases.cs" Link="MixedStrokeCases.cs" />
