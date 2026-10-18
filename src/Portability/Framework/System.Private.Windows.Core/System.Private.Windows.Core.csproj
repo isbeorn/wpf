@@ -7,6 +7,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
     <PublishReadyToRun>false</PublishReadyToRun>
+    <RestoreAdditionalProjectSources>$(RestoreAdditionalProjectSources);https://pkgs.dev.azure.com/azure-public/winsdk/_packaging/CI/nuget/v3/index.json</RestoreAdditionalProjectSources>
     <SignAssembly>true</SignAssembly>
     <PublicSign>true</PublicSign>
     <AssemblyOriginatorKeyFile>$(BaseIntermediateOutputPath)Ecma.public.snk</AssemblyOriginatorKeyFile>
@@ -15,7 +16,7 @@
     <WindowsCoreArchive>$(RepoRoot)artifacts/portability/windows-core-source/winforms-3c92f9f1cc1dcc74779795d518c67aa80f472df7.zip</WindowsCoreArchive>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Windows.CsWin32" Version="[0.3.151]" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Windows.CsWin32" Version="0.3.151" GeneratePathProperty="true" PrivateAssets="all" />
     <PackageReference Include="System.Formats.Nrbf" Version="10.0.13" />
     <AdditionalFiles Include="$(WindowsCoreSourceRoot)NativeMethods.txt;$(WindowsCoreSourceRoot)NativeMethods.json" />
     <EmbeddedResource Include="$(WindowsCoreSourceRoot)Resources/SR.resx">

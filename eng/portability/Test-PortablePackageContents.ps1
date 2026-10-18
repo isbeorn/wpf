@@ -2,6 +2,7 @@
 param([Parameter(Mandatory)][string] $DistributionDirectory, [string] $ConsumerDirectory)
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
+Import-Module (Join-Path $PSScriptRoot '../../src/Portability/Packaging/PackageTools.psm1') -Force
 $distribution=[IO.Path]::GetFullPath($DistributionDirectory)
 $manifest=[xml](Get-Content (Join-Path $distribution 'runtime/RuntimeManifest.xml') -Raw)
 $expected=@{}
@@ -23,6 +24,16 @@ Check 'archive-runtime-allowlist-and-hashes' {
             if($hash -ne $expected[$name].sha256) { throw "Runtime package hash mismatch: $name" }
         }
         foreach($file in $manifest.portableRuntime.file) { if(!$zip.GetEntry($file.path)) { throw "Declared runtime asset absent from package: $($file.path)" } }
+        if($expected.ContainsKey('System.Private.Windows.Core.dll')) {
+            $helperPath=Join-Path $distribution 'runtime/lib/net10.0/System.Private.Windows.Core.dll'
+            if((Get-FileHash -LiteralPath $helperPath).Hash -ne $expected['System.Private.Windows.Core.dll'].sha256) {throw 'Windows.Core loose helper bytes differ from the archive-verified manifest.'}
+            $helper=Get-PortableAssemblyInfo $helperPath
+            if($helper.machine -ne 'I386' -or $helper.corFlags -notmatch 'ILOnly' -or $helper.nativeHeaderSize -ne 0 -or
+                $helper.version -ne '10.0.0.0' -or $helper.token -ne 'b77a5c561934e089') {throw 'Windows.Core is not the qualified source-built IL-only helper.'}
+            foreach($name in @('LICENSE.TXT','SourcePin.json','SourceManifest.props')) {
+                if(!$zip.GetEntry("ThirdPartyNotices/Windows.Core/$name")) {throw "Windows.Core source notice missing: $name"}
+            }
+        }
     } finally { $zip.Dispose() }
 }
 Check 'sdk-tool-closure-and-package-relative-imports' {
@@ -33,6 +44,7 @@ Check 'sdk-tool-closure-and-package-relative-imports' {
             if("tools/net10.0/$required.dll" -notin $tools) { throw "Compiler dependency missing: $required" }
         }
         if($tools.Count -ne 3) { throw "Unexpected compiler task closure: $($tools -join ', ')" }
+        if($expected.ContainsKey('System.Private.Windows.Core.dll') -and $zip.GetEntry('tools/contracts/System.Private.Windows.Core.dll')) {throw 'The source-built runtime helper still has a competing SDK contract copy.'}
         foreach($entry in $zip.Entries | Where-Object FullName -match '\.(props|targets)$') {
             $reader=[IO.StreamReader]::new($entry.Open())
             try { $text=$reader.ReadToEnd() } finally { $reader.Dispose() }
@@ -87,15 +99,17 @@ if($ConsumerDirectory) {
                 $candidates=@((Join-Path $directory ([IO.Path]::GetFileName($file.path))),(Join-Path $directory $file.path) | Select-Object -Unique | Where-Object {Test-Path $_ -PathType Leaf})
                 if($candidates.Count -ne 1 -or (Get-FileHash $candidates[0]).Hash -ne $file.sha256) { throw "Consumer runtime asset differs or has ambiguous deployment locations: $($file.path)" }
             }
-            foreach($name in @('System.Private.Windows.Core','System.Private.Windows.GdiPlus','DirectWriteForwarder','ReachFramework','System.Printing','PresentationUI')) {
+            foreach($name in @('System.Private.Windows.GdiPlus','DirectWriteForwarder','ReachFramework','System.Printing','PresentationUI')) {
                 if(Test-Path (Join-Path $directory "$name.dll")) { throw "Compile-only contract reached consumer output: $name" }
             }
+            if(!$expected.ContainsKey('System.Private.Windows.Core.dll') -and (Test-Path (Join-Path $directory 'System.Private.Windows.Core.dll'))) {throw 'Unqualified Windows.Core reached an older consumer profile.'}
             $deps=Get-Content (Join-Path $directory 'App.deps.json') -Raw | ConvertFrom-Json -AsHashtable
             $target=$deps.targets[$deps.runtimeTarget.name]
             if(@($deps.libraries.Keys | Where-Object {$_ -match 'Microsoft.AspNetCore.App'}).Count -gt 0 -or
                 @(Get-ChildItem -LiteralPath $directory -File -Filter 'Microsoft.AspNetCore.*').Count -gt 0) { throw 'Auxiliary ASP.NET restore pack entered the application runtime.' }
             $singleIdentities=@('WindowsBase','System.Windows.Extensions','Avalonia.X11')
             if($expected.ContainsKey('PresentationFramework.Classic.dll')) {$singleIdentities+='PresentationFramework.Classic'}
+            if($expected.ContainsKey('System.Private.Windows.Core.dll')) {$singleIdentities+='System.Private.Windows.Core'}
             foreach($name in $singleIdentities) {
                 $matches=@($target.Values | ForEach-Object {if($_.ContainsKey('runtime')) {$_.runtime.Keys}} | Where-Object { [IO.Path]::GetFileName($_) -eq "$name.dll" })
                 if($matches.Count -ne 1) { throw "Consumer .deps has $($matches.Count) runtime identities for $name" }

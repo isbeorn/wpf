@@ -6,7 +6,7 @@ The source pin is dotnet/dotnet `4099f83977f4d29604a9aeb971fb0a7bc1d5f699`, subt
 
 Run `Prepare-Sources.ps1` once, then build this project with SDK 10.0.401. Source preparation only downloads the pinned archive when missing. The build verifies the archive, extracts the selected unchanged files into ignored artifacts and prepares the original ECMA public key. No upstream source file is patched or omitted. The original AssemblyInfo, IVTs and System.PublicKeys compile directly. Public signing preserves the binding identity; it does not authenticate the assembly as a Microsoft build.
 
-The original CsWin32 0.3.151 is available on the original public Windows SDK feed, rather than nuget.org. The original Nrbf version is 10.0.13. For example, from `src/Portability`, with `NUGET_PACKAGES` and `DOTNET_CLI_HOME` set to dedicated artifacts directories:
+The original CsWin32 0.3.151 is available on the original public Windows SDK feed, rather than nuget.org. This project adds that feed through RestoreAdditionalProjectSources for its own restore graph only. Before compilation it checks the resolved PkgMicrosoft_Windows_CsWin32 directory for the exact original package, rejecting higher-version fallback without imposing an exact transitive constraint on Primitives' separate generator version. The original Nrbf version is 10.0.13. For example, from `src/Portability`, with `NUGET_PACKAGES` and `DOTNET_CLI_HOME` set to dedicated artifacts directories:
 
 ```powershell
 ./Framework/System.Private.Windows.Core/Prepare-Sources.ps1

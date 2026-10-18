@@ -256,6 +256,7 @@
           "System.Configuration.ConfigurationManager": "[10.0.13, )",
           "System.Formats.Nrbf": "[10.0.13, )",
           "System.IO.Packaging": "[10.0.13, )",
+          "System.Private.Windows.Core": "[10.0.0-portable.1, )",
           "System.Windows.Extensions": "[10.0.13, )",
           "System.Windows.Primitives": "[10.0.0-portable.1, )",
           "System.Xaml": "[10.0.0-portable.1, )",
@@ -271,6 +272,7 @@
           "System.Configuration.ConfigurationManager": "[10.0.13, )",
           "System.Formats.Nrbf": "[10.0.13, )",
           "System.IO.Packaging": "[10.0.13, )",
+          "System.Private.Windows.Core": "[10.0.0-portable.1, )",
           "System.Windows.Extensions": "[10.0.13, )",
           "System.Xaml": "[10.0.0-portable.1, )",
           "UIAutomationProvider": "[10.0.0-portable.1, )",
@@ -278,8 +280,17 @@
           "WindowsBase": "[10.0.0-portable.1, )"
         }
       },
+      "system.private.windows.core": {
+        "type": "Project",
+        "dependencies": {
+          "System.Formats.Nrbf": "[10.0.13, )"
+        }
+      },
       "system.windows.primitives": {
-        "type": "Project"
+        "type": "Project",
+        "dependencies": {
+          "System.Private.Windows.Core": "[10.0.0-portable.1, )"
+        }
       },
       "system.xaml": {
         "type": "Project",
@@ -299,6 +310,7 @@
       "uiautomationtypes": {
         "type": "Project",
         "dependencies": {
+          "System.Private.Windows.Core": "[10.0.0-portable.1, )",
           "System.Xaml": "[10.0.0-portable.1, )",
           "WindowsBase": "[10.0.0-portable.1, )"
         }
@@ -309,6 +321,7 @@
           "System.Configuration.ConfigurationManager": "[10.0.13, )",
           "System.Diagnostics.EventLog": "[10.0.13, )",
           "System.IO.Packaging": "[10.0.13, )",
+          "System.Private.Windows.Core": "[10.0.0-portable.1, )",
           "System.Security.Cryptography.Xml": "[10.0.13, )",
           "System.Security.Permissions": "[10.0.13, )",
           "System.Windows.Extensions": "[10.0.13, )",

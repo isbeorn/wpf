@@ -272,9 +272,25 @@ internal static class Program
             Require(candidates.Length==1,"Runtime asset is absent or has ambiguous deployment locations: "+name);
             Require(Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(candidates[0])))==(string?)file.Attribute("sha256"),"Runtime manifest mismatch: "+name);
         }
-        foreach(var name in new[]{"System.Private.Windows.Core","System.Private.Windows.GdiPlus","DirectWriteForwarder","ReachFramework","System.Printing","PresentationUI"})
+        foreach(var name in new[]{"System.Private.Windows.GdiPlus","DirectWriteForwarder","ReachFramework","System.Printing","PresentationUI"})
             Require(!File.Exists(Path.Combine(AppContext.BaseDirectory,name+".dll")),"Compile-only contract reached runtime output: "+name);
+        Require(manifest.Root!.Elements("file").Any(file=>Path.GetFileName((string?)file.Attribute("path"))=="System.Private.Windows.Core.dll"),
+            "This consumer requires the source-built managed Windows.Core runtime profile.");
+        VerifyManagedWindowsCore();
+        Require(Directory.Exists(Path.Combine(AppContext.BaseDirectory,"ThirdPartyNotices/Wpf.Portable.Runtime/Windows.Core")),"Windows.Core source notices were not propagated.");
         Require(Directory.Exists(Path.Combine(AppContext.BaseDirectory,"ThirdPartyNotices/Wpf.Portable.Runtime/TextUnicode")),"Unicode source notices were not propagated into application output.");
+    }
+
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+    private static void VerifyManagedWindowsCore()
+    {
+        var data=new System.Windows.DataObject();
+        data.SetData(System.Windows.DataFormats.UnicodeText,"Managed \u03bb",true);
+        Require(data.GetText()=="Managed \u03bb" && new System.Windows.DataObject((System.Windows.IDataObject)data).GetText()=="Managed \u03bb",
+            "The genuine managed DataObject store or IDataObject wrapping failed.");
+        var helper=typeof(System.Windows.DataObject).GetInterfaces().Select(type=>type.Assembly).First(assembly=>assembly.GetName().Name=="System.Private.Windows.Core");
+        Require(AssemblyLoadContext.GetLoadContext(helper)==AssemblyLoadContext.Default && helper.GetName().Version==new Version(10,0,0,0) &&
+            Convert.ToHexString(helper.GetName().GetPublicKeyToken()!)=="B77A5C561934E089","Windows.Core did not load its preserved identity in Default ALC.");
     }
 
     private static void VerifyRequiredChecks(IEnumerable<string> names, bool interactive, bool includeCompletion)

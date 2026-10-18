@@ -14,7 +14,7 @@
   </PropertyGroup>
   <Target Name="CapturePortableDistributionInputs" AfterTargets="CoreCompile">
     <ItemGroup>
-      <_PortableDistributionInput Include="@(Compile);@(EmbeddedResource);@(Page);@(ApplicationDefinition);@(Resource);@(AdditionalFiles);@(Analyzer);$(MSBuildAllProjects)" />
+      <_PortableDistributionInput Include="@(Compile);@(EmbeddedResource);@(Page);@(ApplicationDefinition);@(Resource);@(AdditionalFiles);@(Analyzer);@(PortableSourceInput);$(MSBuildAllProjects)" />
     </ItemGroup>
     <WriteLinesToFile File="$(IntermediateOutputPath)portable-inputs.txt" Lines="@(_PortableDistributionInput->'%(FullPath)')" Overwrite="true" WriteOnlyWhenDifferent="true" />
   </Target>

@@ -1,5 +1,9 @@
 <Project>
   <Import Project="SourceManifest.props" />
+  <ItemGroup>
+    <PortableSourceInput Include="$(WindowsCoreArchive);$(MSBuildThisFileDirectory)LICENSE.TXT;$(MSBuildThisFileDirectory)SourcePin.json;$(MSBuildThisFileDirectory)SourceManifest.props" />
+    <PortableSourceInput Include="@(OriginalWindowsCoreSource->'$(WindowsCoreSourceRoot)%(Identity)')" />
+  </ItemGroup>
   <UsingTask TaskName="PrepareOriginalWindowsCore" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <Archive ParameterType="System.String" Required="true" />
@@ -45,5 +49,9 @@
     <PrepareOriginalWindowsCore Archive="$(WindowsCoreArchive)" SourceRoot="$(WindowsCoreSourceRoot)" Manifest="@(OriginalWindowsCoreSource)" KeyFile="$(AssemblyOriginatorKeyFile)">
       <Output TaskParameter="Sources" ItemName="Compile" />
     </PrepareOriginalWindowsCore>
+  </Target>
+  <Target Name="ValidateOriginalWindowsCoreGenerator" BeforeTargets="CoreCompile">
+    <Error Condition="'$(PkgMicrosoft_Windows_CsWin32)' == '' or !Exists('$(PkgMicrosoft_Windows_CsWin32)/microsoft.windows.cswin32.0.3.151.nupkg')"
+           Text="Original Windows.Core requires CsWin32 0.3.151. Resolved package directory '$(PkgMicrosoft_Windows_CsWin32)' is outside the pinned generator profile; restore the original package before compiling." />
   </Target>
 </Project>

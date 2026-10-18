@@ -66,7 +66,13 @@ try {
         }
         $seen[$name] = $hash
         $identity = $null
-        if ($Kind -eq 'managed') { $identity = Get-PortableAssemblyInfo $Source }
+        if ($Kind -eq 'managed') {
+            $identity = Get-PortableAssemblyInfo $Source
+            if ($name -eq 'System.Private.Windows.Core.dll' -and ($identity.machine -ne 'I386' -or $identity.corFlags -notmatch 'ILOnly' -or
+                $identity.nativeHeaderSize -ne 0 -or $identity.version -ne '10.0.0.0' -or $identity.token -ne 'b77a5c561934e089')) {
+                throw 'Windows.Core runtime must be the original-source AnyCPU IL-only ECMA helper.'
+            }
+        }
         else { Assert-PortableElf $Source }
         Copy-PortableFile $Source (Join-Path $runtime $Destination)
         $file = $manifest.CreateElement('file')
@@ -129,6 +135,9 @@ try {
     $unicodeNotices = Join-Path $published 'ThirdPartyNotices/TextUnicode'
     if (!(Test-Path $unicodeNotices)) { throw 'The required Unicode source notices were not published.' }
     Copy-Item -LiteralPath $unicodeNotices -Destination (Join-Path $runtime 'ThirdPartyNotices/TextUnicode') -Recurse
+    foreach ($name in @('LICENSE.TXT','SourcePin.json','SourceManifest.props')) {
+        Copy-PortableFile (Join-Path $portable "Framework/System.Private.Windows.Core/$name") (Join-Path $runtime "ThirdPartyNotices/Windows.Core/$name")
+    }
     $avaloniaLicense = Join-Path $repo 'artifacts/portability/native-host/upstream/licence.md'
     Copy-PortableFile $avaloniaLicense (Join-Path $runtime 'ThirdPartyNotices/Avalonia.MIT.md')
     $manifest.Save((Join-Path $runtime 'RuntimeManifest.xml'))
