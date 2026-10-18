@@ -20,6 +20,10 @@ internal static partial class Program
     [STAThread]
     private static int Main(string[] args)
     {
+        if (args.SequenceEqual(new[] { "--primary-screen-unavailable" }, StringComparer.Ordinal))
+            return PrimaryScreenChecks.RunUnavailable();
+        if (args.SequenceEqual(new[] { "--primary-screen-constructor" }, StringComparer.Ordinal))
+            return PrimaryScreenChecks.RunConstructor();
         if (args.SequenceEqual(new[] { "--classic-dictionary-diagnostic" }, StringComparer.Ordinal))
             return RunClassicDictionaryDiagnostic();
         if (args.SequenceEqual(new[] { "--default-theme-layout" }, StringComparer.Ordinal))
@@ -35,20 +39,21 @@ internal static partial class Program
         bool always = args.Contains("--always-show-cues", StringComparer.Ordinal);
         bool pointer = args.Contains("--pointer-fixture", StringComparer.Ordinal);
         bool highContrast = args.Contains("--high-contrast-fixture", StringComparer.Ordinal);
+        bool screenFixture = args.Contains("--primary-screen-fixture", StringComparer.Ordinal);
         bool metricFixture = args.Contains("--metric-fixture", StringComparer.Ordinal);
         bool expectClassicTheme = !args.Contains("--expect-generic-theme", StringComparer.Ordinal);
-        if (args.Any(argument => argument is not "--always-show-cues" and not "--pointer-fixture" and not "--high-contrast-fixture" and not "--metric-fixture" and not "--expect-classic-theme" and not "--expect-generic-theme")
+        if (args.Any(argument => argument is not "--always-show-cues" and not "--pointer-fixture" and not "--high-contrast-fixture" and not "--metric-fixture" and not "--primary-screen-fixture" and not "--expect-classic-theme" and not "--expect-generic-theme")
             || args.Contains("--expect-classic-theme", StringComparer.Ordinal) && !expectClassicTheme)
             Check("arguments", () => throw new ArgumentException("Use startup fixture flags and at most one of --expect-classic-theme or --expect-generic-theme. Theme expectation flags only assert policy."));
         else
         {
             Check("startup-profile-registration", () =>
             {
-                object profile = CreateProfile(always, pointer ? CreatePointer() : null, scrollBarMetrics: metricFixture ? SystemMetricChecks.CreateFixture() : null);
+                object profile = CreateProfile(always, pointer ? CreatePointer() : null, scrollBarMetrics: metricFixture ? SystemMetricChecks.CreateFixture() : null, primaryScreenMetrics: screenFixture ? PrimaryScreenChecks.CreateFixture() : null);
                 if (highContrast)
                     profile = profile.GetType().GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance).Single().Invoke(
-                        ["test-high-contrast-v1", GetProperty(profile, "Colors"), always, true, pointer ? CreatePointer() : null, 2.0, -1, true, 2.5, 7.5, GetProperty(profile, "ScrollBarMetrics")]);
-                if (always || pointer || highContrast || metricFixture) Register(profile);
+                        ["test-high-contrast-v1", GetProperty(profile, "Colors"), always, true, pointer ? CreatePointer() : null, 2.0, -1, true, 2.5, 7.5, GetProperty(profile, "ScrollBarMetrics"), screenFixture ? GetProperty(profile, "PrimaryScreenMetrics") : null]);
+                if (always || pointer || highContrast || metricFixture || screenFixture) Register(profile);
                 Require((string)GetProperty(CurrentProfile(), "ProfileName") == (highContrast ? "test-high-contrast-v1" : "portable-light-v1"), "Profile identity mismatch.");
                 return "Named startup palette registered before consumption; fixture preferences do not claim desktop theme parity.";
             });
@@ -64,6 +69,9 @@ internal static partial class Program
                 Check("system-font-" + role, () => SystemFontChecks.VerifyRole(role));
             Check("actual-classic-tooltip-font-and-layout", SystemFontChecks.VerifyToolTip);
             Check("fixed-classic-no-shadow-resource", SystemFontChecks.VerifyDropShadow);
+            Check("primary-screen-metrics-and-closed-combobox", () => PrimaryScreenChecks.Verify(screenFixture));
+            Check("fixed-classic-combobox-animation-resources", PrimaryScreenChecks.VerifyAnimation);
+            Check("fixed-classic-repeatbutton-policy", PrimaryScreenChecks.VerifyRepeatPolicy);
             Check("late-profile-replacement-rejected", VerifyLateRegistration);
             Check("dynamic-system-color-resource", VerifyDynamicSystemResource);
             Check("actual-generic-style-dictionary", () => VerifyGenericStyle(expectClassicTheme));
@@ -95,6 +103,7 @@ internal static partial class Program
             explicitPointerFixture = pointer,
             explicitHighContrastFixture = highContrast,
             explicitMetricFixture = metricFixture,
+            explicitPrimaryScreenFixture = screenFixture,
             expectedTheme = expectClassicTheme ? "Classic" : "generic",
             windowsProcessModules,
             checks
@@ -160,13 +169,13 @@ internal static partial class Program
         var mutable = (IDictionary)Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(roleType, typeof(uint)))!;
         foreach (DictionaryEntry entry in colors) mutable.Add(entry.Key, entry.Value);
         var constructor = source.GetType().GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance).Single();
-        var copied = constructor.Invoke(["copied-profile", mutable, false, false, null, 1.0, 500, false, 4.0, 4.0, null]);
+        var copied = constructor.Invoke(["copied-profile", mutable, false, false, null, 1.0, 500, false, 4.0, 4.0, null, null]);
         var role = Enum.Parse(roleType, "ControlText");
         var original = mutable[role];
         mutable[role] = 0xFF000000u;
         Require(Equals(source.GetType().GetMethod("GetColor", BindingFlags.NonPublic | BindingFlags.Instance)!.Invoke(copied, [role]), original), "Snapshot retained the caller's mutable palette.");
         mutable.Remove(role);
-        try { _ = constructor.Invoke(["incomplete-profile", mutable, false, false, null, 1.0, 500, false, 4.0, 4.0, null]); }
+        try { _ = constructor.Invoke(["incomplete-profile", mutable, false, false, null, 1.0, 500, false, 4.0, 4.0, null, null]); }
         catch (TargetInvocationException exception) when (exception.InnerException is ArgumentException inner && inner.Message.Contains("ControlText", StringComparison.Ordinal))
         { return "Snapshot copied the palette and rejected a missing color with a named role diagnostic."; }
         throw new InvalidOperationException("Incomplete palette was accepted.");
@@ -367,7 +376,7 @@ internal static partial class Program
     private static Type CoreType(string name) => typeof(SolidColorBrush).Assembly.GetType("MS.Internal.Portability.Settings." + name, throwOnError: true)!;
     private static object GetProperty(object instance, string name) => instance.GetType().GetProperty(name, BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(instance)!;
     private static object CreatePointer() => Activator.CreateInstance(CoreType("PortablePointerSettings"), BindingFlags.NonPublic | BindingFlags.Instance, null, [4, 6, 500], null)!;
-    private static object CreateProfile(bool cues, object? pointer = null, double width = 1.0, int blink = 500, double horizontalDrag = 4.0, double verticalDrag = 4.0, object? scrollBarMetrics = null) => CoreType("PortableSystemSettings").GetMethod("CreateInitialLightProfile", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, [cues, pointer, width, blink, false, horizontalDrag, verticalDrag, scrollBarMetrics])!;
+    private static object CreateProfile(bool cues, object? pointer = null, double width = 1.0, int blink = 500, double horizontalDrag = 4.0, double verticalDrag = 4.0, object? scrollBarMetrics = null, object? primaryScreenMetrics = null) => CoreType("PortableSystemSettings").GetMethod("CreateInitialLightProfile", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, [cues, pointer, width, blink, false, horizontalDrag, verticalDrag, scrollBarMetrics, primaryScreenMetrics])!;
     private static object CurrentProfile() => CoreType("PortableSystemSettingsProvider").GetProperty("Current", BindingFlags.NonPublic | BindingFlags.Static)!.GetValue(null)!;
     private static void Register(object profile) => CoreType("PortableSystemSettingsProvider").GetMethod("Register", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, [profile]);
     private static void Require(bool condition, string message) { if (!condition) throw new InvalidOperationException(message); }

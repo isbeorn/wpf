@@ -18,6 +18,7 @@ using Rect = WpfFork::System.Windows.Rect;
 using Visual = WpfFork::System.Windows.Media.Visual;
 using Application = Avalonia.Application;
 
+if (args.FirstOrDefault() == "--primary-screen-only") return PrimaryScreenCases.Run(args[1..]);
 if (args.FirstOrDefault() == "--clipboard-peer") return ClipboardCases.Peer(args[1..]);
 if (args.FirstOrDefault() == "--file-dialog-protocol") return FileDialogCases.Run(args[1..]);
 if (args.Contains("--clipboard-managed-only", StringComparer.Ordinal)) return ClipboardCases.ManagedSmoke();

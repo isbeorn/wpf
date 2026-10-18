@@ -20,8 +20,11 @@ public static class NativeWindowHost
         NativeDispatcherHost.InitializeForCurrentThread(builder, softwareFramebuffer: true);
         var (data, origin) = ExternalWindowBridge.ReadPointerSettingsProperty();
         var preferences = ResolvePointerPreferences(XSettingsPointerPreferences.Parse(data), origin);
+        var primary = ExternalWindowBridge.ReadPrimaryScreen();
+
         PortableSystemSettingsProvider.Register(PortableSystemSettings.CreateInitialLightProfile(pointerSettings:
-            new PortablePointerSettings(preferences.Distance, preferences.Distance, preferences.Time)));
+            new PortablePointerSettings(preferences.Distance, preferences.Distance, preferences.Time),
+            primaryScreenMetrics: primary is null ? null : new PortablePrimaryScreenMetrics(primary.Bounds.Width / primary.Scaling, primary.Bounds.Height / primary.Scaling)));
         PortableWindowPlatform.RegisterFactory(new NativeWindowFactory(
             AvaloniaLocator.Current.GetRequiredService<IWindowingPlatform>()));
         WpfFork::MS.Internal.Portability.Clipboard.PortableClipboard.Register(new NativeClipboard(

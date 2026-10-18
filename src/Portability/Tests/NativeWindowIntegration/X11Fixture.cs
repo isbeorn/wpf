@@ -217,6 +217,7 @@ internal sealed class X11Fixture : IDisposable
 
     internal bool IsMapped(IntPtr window) => window != IntPtr.Zero &&
         XGetWindowAttributes(_display, window, out var attributes) != 0 && attributes.MapState == 2;
+    internal (int Width, int Height) RootSize => Size(_root);
     internal bool HasSize(IntPtr window, int width, int height) =>
         XGetWindowAttributes(_display, window, out var attributes) != 0 && attributes.Width == width && attributes.Height == height;
     internal (int Width, int Height) Size(IntPtr window)

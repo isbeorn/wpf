@@ -613,6 +613,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return 1;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.KeyboardDelay])
@@ -631,6 +634,7 @@ namespace System.Windows
                 }
 
                 return _keyboardDelay;
+#endif
             }
         }
 
@@ -669,6 +673,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return 31;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.KeyboardSpeed])
@@ -687,6 +694,7 @@ namespace System.Windows
                 }
 
                 return _keyboardSpeed;
+#endif
             }
         }
 
@@ -1163,6 +1171,9 @@ namespace System.Windows
 
             get
             {
+#if PORTABLE_WPF
+                return false;
+#else
 
                 lock (_cacheValid)
                 {
@@ -1182,6 +1193,7 @@ namespace System.Windows
                 }
 
                 return _comboBoxAnimation;
+#endif
             }
         }
 
@@ -3106,6 +3118,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.PrimaryScreenMetrics.WidthDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.PrimaryScreenWidth])
@@ -3116,6 +3131,7 @@ namespace System.Windows
                 }
 
                 return _primaryScreenWidth;
+#endif
             }
         }
 
@@ -3126,6 +3142,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.PrimaryScreenMetrics.HeightDip;
+#else
 
                 lock (_cacheValid)
                 {
@@ -3137,6 +3156,7 @@ namespace System.Windows
                 }
 
                 return _primaryScreenHeight;
+#endif
             }
         }
 
@@ -5143,11 +5163,13 @@ namespace System.Windows
             if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.MaximizedPrimaryScreenHeight))
                 changed |= _maximizedPrimaryScreenHeight != MaximizedPrimaryScreenHeight;
 
+#if !PORTABLE_WPF
             if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.PrimaryScreenWidth))
                 changed |= _primaryScreenWidth != PrimaryScreenWidth;
 
             if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.PrimaryScreenHeight))
                 changed |= _primaryScreenHeight != PrimaryScreenHeight;
+#endif
 
             if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.VirtualScreenWidth))
                 changed |= _virtualScreenWidth != VirtualScreenWidth;
@@ -5252,12 +5274,16 @@ namespace System.Windows
 
                 case NativeMethods.SPI_SETKEYBOARDCUES:
                     return InvalidateProperty((int)CacheSlot.KeyboardCues, "KeyboardCues");
+#if !PORTABLE_WPF
                 case NativeMethods.SPI_SETKEYBOARDDELAY:
                     return InvalidateProperty((int)CacheSlot.KeyboardDelay, "KeyboardDelay");
+#endif
                 case NativeMethods.SPI_SETKEYBOARDPREF:
                     return InvalidateProperty((int)CacheSlot.KeyboardPreference, "KeyboardPreference");
+#if !PORTABLE_WPF
                 case NativeMethods.SPI_SETKEYBOARDSPEED:
                     return InvalidateProperty((int)CacheSlot.KeyboardSpeed, "KeyboardSpeed");
+#endif
                 case NativeMethods.SPI_SETSNAPTODEFBUTTON:
                     return InvalidateProperty((int)CacheSlot.SnapToDefaultButton, "SnapToDefaultButton");
                 case NativeMethods.SPI_SETWHEELSCROLLLINES:
@@ -5286,8 +5312,10 @@ namespace System.Windows
                 case NativeMethods.SPI_SETMENUSHOWDELAY:
                     return InvalidateProperty((int)CacheSlot.MenuShowDelay, "MenuShowDelay");
 
+#if !PORTABLE_WPF
                 case NativeMethods.SPI_SETCOMBOBOXANIMATION:
                     return InvalidateProperty((int)CacheSlot.ComboBoxAnimation, "ComboBoxAnimation");
+#endif
                 case NativeMethods.SPI_SETCLIENTAREAANIMATION:
                     return InvalidateProperty((int)CacheSlot.ClientAreaAnimation, "ClientAreaAnimation");
                 case NativeMethods.SPI_SETCURSORSHADOW:
@@ -6015,9 +6043,13 @@ namespace System.Windows
 #if !PORTABLE_WPF
         private static bool _keyboardCues;
 #endif
+#if !PORTABLE_WPF
         private static int _keyboardDelay;
+#endif
         private static bool _keyboardPref;
+#if !PORTABLE_WPF
         private static int _keyboardSpeed;
+#endif
         private static bool _snapToDefButton;
         private static int _wheelScrollLines;
         private static int _mouseHoverTime;
@@ -6028,7 +6060,9 @@ namespace System.Windows
         private static bool _menuFade;
         private static int _menuShowDelay;
 
+#if !PORTABLE_WPF
         private static bool _comboBoxAnimation;
+#endif
         private static bool _clientAreaAnimation;
         private static bool _cursorShadow;
         private static bool _gradientCaptions;
@@ -6091,8 +6125,10 @@ namespace System.Windows
         private static double _minimizedGridHeight;
         private static double _minimumWindowTrackWidth;
         private static double _minimumWindowTrackHeight;
+#if !PORTABLE_WPF
         private static double _primaryScreenWidth;
         private static double _primaryScreenHeight;
+#endif
         private static double _windowCaptionButtonWidth;
         private static double _windowCaptionButtonHeight;
         private static double _resizeFrameHorizontalBorderHeight;

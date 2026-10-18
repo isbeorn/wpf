@@ -54,15 +54,32 @@ namespace MS.Internal.Portability.Settings
         internal double VerticalScrollBarButtonHeightDip { get; }
     }
 
+    internal sealed class PortablePrimaryScreenMetrics
+    {
+        internal PortablePrimaryScreenMetrics(double widthDip, double heightDip)
+        {
+            if (!double.IsFinite(widthDip) || widthDip <= 0)
+                throw new ArgumentOutOfRangeException(nameof(widthDip), "Primary-screen width must be finite and positive in DIPs.");
+            if (!double.IsFinite(heightDip) || heightDip <= 0)
+                throw new ArgumentOutOfRangeException(nameof(heightDip), "Primary-screen height must be finite and positive in DIPs.");
+            WidthDip = widthDip;
+            HeightDip = heightDip;
+        }
+
+        internal double WidthDip { get; }
+        internal double HeightDip { get; }
+    }
+
     internal sealed class PortableSystemSettings
     {
         private readonly PortablePointerSettings? _pointerSettings;
+        private readonly PortablePrimaryScreenMetrics? _primaryScreenMetrics;
 
         internal PortableSystemSettings(string profileName, IReadOnlyDictionary<PortableSystemColor, uint> colors,
             bool keyboardCues, bool highContrast, PortablePointerSettings? pointerSettings = null,
             double caretWidthDip = 1.0, int caretBlinkTimeMilliseconds = 500, bool mouseVanish = false,
             double minimumHorizontalDragDistanceDip = 4.0, double minimumVerticalDragDistanceDip = 4.0,
-            PortableScrollBarMetrics? scrollBarMetrics = null)
+            PortableScrollBarMetrics? scrollBarMetrics = null, PortablePrimaryScreenMetrics? primaryScreenMetrics = null)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(profileName);
             ArgumentNullException.ThrowIfNull(colors);
@@ -91,6 +108,7 @@ namespace MS.Internal.Portability.Settings
             KeyboardCues = keyboardCues;
             HighContrast = highContrast;
             _pointerSettings = pointerSettings;
+            _primaryScreenMetrics = primaryScreenMetrics;
             CaretWidthDip = caretWidthDip;
             CaretBlinkTimeMilliseconds = caretBlinkTimeMilliseconds;
             MouseVanish = mouseVanish;
@@ -114,13 +132,16 @@ namespace MS.Internal.Portability.Settings
         internal PortablePointerSettings PointerSettings => _pointerSettings ?? throw new PlatformNotSupportedException(
             $"Portable settings profile '{ProfileName}' does not supply native pointer double-click preferences.");
 
+        internal PortablePrimaryScreenMetrics PrimaryScreenMetrics => _primaryScreenMetrics ?? throw new PlatformNotSupportedException(
+            $"Portable settings profile '{ProfileName}' does not supply observed primary-screen metrics. Register native screen settings before constructing controls that require them.");
+
         internal uint GetColor(PortableSystemColor role) => Colors.TryGetValue(role, out uint color) ? color :
             throw new ArgumentOutOfRangeException(nameof(role), role, $"Color role is not supplied by settings profile '{ProfileName}'.");
 
         internal static PortableSystemSettings CreateInitialLightProfile(bool keyboardCues = false, PortablePointerSettings? pointerSettings = null,
             double caretWidthDip = 1.0, int caretBlinkTimeMilliseconds = 500, bool mouseVanish = false,
             double minimumHorizontalDragDistanceDip = 4.0, double minimumVerticalDragDistanceDip = 4.0,
-            PortableScrollBarMetrics? scrollBarMetrics = null) =>
+            PortableScrollBarMetrics? scrollBarMetrics = null, PortablePrimaryScreenMetrics? primaryScreenMetrics = null) =>
             new PortableSystemSettings("portable-light-v1", new Dictionary<PortableSystemColor, uint>
             {
                 [PortableSystemColor.ActiveBorder] = 0xFF6B7280,
@@ -161,7 +182,7 @@ namespace MS.Internal.Portability.Settings
                 [PortableSystemColor.AccentDark2] = 0xFF123253,
                 [PortableSystemColor.AccentDark3] = 0xFF09192A
             }, keyboardCues, highContrast: false, pointerSettings, caretWidthDip, caretBlinkTimeMilliseconds, mouseVanish,
-                minimumHorizontalDragDistanceDip, minimumVerticalDragDistanceDip, scrollBarMetrics);
+                minimumHorizontalDragDistanceDip, minimumVerticalDragDistanceDip, scrollBarMetrics, primaryScreenMetrics);
     }
 }
 #endif

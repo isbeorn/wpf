@@ -39,6 +39,34 @@ public sealed class ExternalWindowBridge : IDisposable
         s_observer.Windows.Add(_handle, this);
     }
 
+    public static Screen? ReadPrimaryScreen()
+    {
+        Dispatcher.UIThread.VerifyAccess();
+        var platform = AvaloniaLocator.Current.GetRequiredService<AvaloniaX11Platform>();
+        Screen? primary = null;
+        Screen? sole = null;
+        int count = 0, primaryCount = 0;
+        foreach (var screen in platform.Screens.AllScreens)
+        {
+            count++;
+            sole = screen;
+            if (screen.IsPrimary)
+            {
+                primary = screen;
+                primaryCount++;
+            }
+        }
+        primary = primaryCount == 1 ? primary : count == 1 ? sole : null;
+        if (primary is null) return null;
+        double scale = primary.Scaling;
+        var bounds = primary.Bounds;
+        if (bounds.Width <= 0 || bounds.Height <= 0 || !double.IsFinite(scale) || scale <= 0 ||
+            !double.IsFinite(bounds.Width / scale) || !double.IsFinite(bounds.Height / scale) ||
+            bounds.Width / scale <= 0 || bounds.Height / scale <= 0)
+            throw new PlatformNotSupportedException("The native X11 screen service reported invalid primary-screen bounds or scaling.");
+        return primary;
+    }
+
     public event Action<bool>? FocusChanged;
     public event Action? CaptureLost;
 
