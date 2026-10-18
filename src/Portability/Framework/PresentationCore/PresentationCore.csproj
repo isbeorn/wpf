@@ -14,7 +14,11 @@
     </AssemblyAttribute>
     <Compile Include="$(WpfSourceDir)PresentationCore/MS/internal/TextFormatting/Portable/*.cs" />
     <Compile Include="$(WpfSourceDir)PresentationCore/MS/internal/Portability/Rendering/*.cs" />
+    <Compile Include="$(WpfSourceDir)PresentationCore/MS/internal/Portability/Windowing/*.cs" />
+    <Compile Include="$(WpfSourceDir)PresentationCore/MS/internal/Portability/Settings/*.cs" />
+    <Compile Include="$(WpfSourceDir)PresentationCore/MS/internal/Portability/Input/*.cs" />
     <Compile Include="$(WpfSourceDir)PresentationCore/System/Windows/Media/Imaging/Portable/*.cs" />
+    <Compile Include="PortableFriendAssemblies.cs" />
     <EmbeddedResource Include="$(WpfResourceFile)" LogicalName="$(WpfResourceManifestName).resources" />
     <EmbeddedResource Include="$(WpfSourceDir)PresentationCore/System/Windows/Media/Resources/ColorProfiles/ColorProfiles.resx" LogicalName="ColorProfiles.resources" />
     <ProjectReference Include="../WindowsBase/WindowsBase.csproj" />

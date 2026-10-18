@@ -1,0 +1,136 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+#if PORTABLE_WPF
+#nullable enable
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+namespace MS.Internal.Portability.Settings
+{
+    internal sealed class PortablePointerSettings
+    {
+        internal PortablePointerSettings(int doubleClickWidth, int doubleClickHeight, int doubleClickTimeMilliseconds)
+        {
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(doubleClickWidth);
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(doubleClickHeight);
+            ArgumentOutOfRangeException.ThrowIfNegativeOrZero(doubleClickTimeMilliseconds);
+            DoubleClickWidth = doubleClickWidth;
+            DoubleClickHeight = doubleClickHeight;
+            DoubleClickTimeMilliseconds = doubleClickTimeMilliseconds;
+        }
+
+        // Distances use raw mouse-report client pixels, matching MouseDevice.IsSameSpot.
+        internal int DoubleClickWidth { get; }
+        internal int DoubleClickHeight { get; }
+        internal int DoubleClickTimeMilliseconds { get; }
+    }
+
+    internal sealed class PortableSystemSettings
+    {
+        private readonly PortablePointerSettings? _pointerSettings;
+
+        internal PortableSystemSettings(string profileName, IReadOnlyDictionary<PortableSystemColor, uint> colors,
+            bool keyboardCues, bool highContrast, PortablePointerSettings? pointerSettings = null,
+            double caretWidthDip = 1.0, int caretBlinkTimeMilliseconds = 500, bool mouseVanish = false,
+            double minimumHorizontalDragDistanceDip = 4.0, double minimumVerticalDragDistanceDip = 4.0)
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(profileName);
+            ArgumentNullException.ThrowIfNull(colors);
+            if (!double.IsFinite(caretWidthDip) || caretWidthDip <= 0)
+                throw new ArgumentOutOfRangeException(nameof(caretWidthDip), "Caret width must be finite and positive in DIPs.");
+            if (caretBlinkTimeMilliseconds < -1 || caretBlinkTimeMilliseconds > int.MaxValue / 2)
+                throw new ArgumentOutOfRangeException(nameof(caretBlinkTimeMilliseconds), "Caret blink time must be -1 or 0 for a steady caret, or a positive interval that can be doubled without overflow.");
+            if (!double.IsFinite(minimumHorizontalDragDistanceDip) || minimumHorizontalDragDistanceDip <= 0)
+                throw new ArgumentOutOfRangeException(nameof(minimumHorizontalDragDistanceDip), "Horizontal drag distance must be finite and positive in DIPs.");
+            if (!double.IsFinite(minimumVerticalDragDistanceDip) || minimumVerticalDragDistanceDip <= 0)
+                throw new ArgumentOutOfRangeException(nameof(minimumVerticalDragDistanceDip), "Vertical drag distance must be finite and positive in DIPs.");
+            var palette = new Dictionary<PortableSystemColor, uint>();
+            foreach (var role in Enum.GetValues<PortableSystemColor>())
+            {
+                if (!colors.TryGetValue(role, out uint color))
+                    throw new ArgumentException($"Settings profile '{profileName}' is missing color role '{role}'.", nameof(colors));
+                if ((color >> 24) != 255)
+                    throw new ArgumentException($"System color role '{role}' must be opaque in profile '{profileName}'.", nameof(colors));
+                palette.Add(role, color);
+            }
+            if (colors.Count != palette.Count)
+                throw new ArgumentException($"Settings profile '{profileName}' contains an unsupported color role.", nameof(colors));
+
+            ProfileName = profileName;
+            Colors = new ReadOnlyDictionary<PortableSystemColor, uint>(palette);
+            KeyboardCues = keyboardCues;
+            HighContrast = highContrast;
+            _pointerSettings = pointerSettings;
+            CaretWidthDip = caretWidthDip;
+            CaretBlinkTimeMilliseconds = caretBlinkTimeMilliseconds;
+            MouseVanish = mouseVanish;
+            MinimumHorizontalDragDistanceDip = minimumHorizontalDragDistanceDip;
+            MinimumVerticalDragDistanceDip = minimumVerticalDragDistanceDip;
+        }
+
+        internal string ProfileName { get; }
+        internal IReadOnlyDictionary<PortableSystemColor, uint> Colors { get; }
+        internal bool KeyboardCues { get; }
+        internal bool HighContrast { get; }
+        internal double CaretWidthDip { get; }
+        internal int CaretBlinkTimeMilliseconds { get; }
+        internal bool MouseVanish { get; }
+        internal double MinimumHorizontalDragDistanceDip { get; }
+        internal double MinimumVerticalDragDistanceDip { get; }
+        internal string ThemeName => "generic";
+        internal string ThemedResourceName => "themes/generic";
+        internal PortablePointerSettings PointerSettings => _pointerSettings ?? throw new PlatformNotSupportedException(
+            $"Portable settings profile '{ProfileName}' does not supply native pointer double-click preferences.");
+
+        internal uint GetColor(PortableSystemColor role) => Colors.TryGetValue(role, out uint color) ? color :
+            throw new ArgumentOutOfRangeException(nameof(role), role, $"Color role is not supplied by settings profile '{ProfileName}'.");
+
+        internal static PortableSystemSettings CreateInitialLightProfile(bool keyboardCues = false, PortablePointerSettings? pointerSettings = null,
+            double caretWidthDip = 1.0, int caretBlinkTimeMilliseconds = 500, bool mouseVanish = false,
+            double minimumHorizontalDragDistanceDip = 4.0, double minimumVerticalDragDistanceDip = 4.0) =>
+            new PortableSystemSettings("portable-light-v1", new Dictionary<PortableSystemColor, uint>
+            {
+                [PortableSystemColor.ActiveBorder] = 0xFF6B7280,
+                [PortableSystemColor.ActiveCaption] = 0xFF2463A6,
+                [PortableSystemColor.ActiveCaptionText] = 0xFFFFFFFF,
+                [PortableSystemColor.AppWorkspace] = 0xFF707781,
+                [PortableSystemColor.Control] = 0xFFF0F0F0,
+                [PortableSystemColor.ControlDark] = 0xFFA0A0A0,
+                [PortableSystemColor.ControlDarkDark] = 0xFF696969,
+                [PortableSystemColor.ControlLight] = 0xFFE3E3E3,
+                [PortableSystemColor.ControlLightLight] = 0xFFFFFFFF,
+                [PortableSystemColor.ControlText] = 0xFF1F2328,
+                [PortableSystemColor.Desktop] = 0xFF3A4654,
+                [PortableSystemColor.GradientActiveCaption] = 0xFF5B8CC0,
+                [PortableSystemColor.GradientInactiveCaption] = 0xFFDCE5EE,
+                [PortableSystemColor.GrayText] = 0xFF6B7280,
+                [PortableSystemColor.Highlight] = 0xFF2463A6,
+                [PortableSystemColor.HighlightText] = 0xFFFFFFFF,
+                [PortableSystemColor.HotTrack] = 0xFF1B4A7D,
+                [PortableSystemColor.InactiveBorder] = 0xFFB8C6D5,
+                [PortableSystemColor.InactiveCaption] = 0xFFB8C6D5,
+                [PortableSystemColor.InactiveCaptionText] = 0xFF3C4550,
+                [PortableSystemColor.Info] = 0xFFFFF8D7,
+                [PortableSystemColor.InfoText] = 0xFF1F2328,
+                [PortableSystemColor.Menu] = 0xFFFFFFFF,
+                [PortableSystemColor.MenuBar] = 0xFFF0F0F0,
+                [PortableSystemColor.MenuHighlight] = 0xFFDDE8F3,
+                [PortableSystemColor.MenuText] = 0xFF1F2328,
+                [PortableSystemColor.ScrollBar] = 0xFFE0E0E0,
+                [PortableSystemColor.Window] = 0xFFFFFFFF,
+                [PortableSystemColor.WindowFrame] = 0xFF6B7280,
+                [PortableSystemColor.WindowText] = 0xFF1F2328,
+                [PortableSystemColor.Accent] = 0xFF2463A6,
+                [PortableSystemColor.AccentLight1] = 0xFF5B8CC0,
+                [PortableSystemColor.AccentLight2] = 0xFF9CB9D9,
+                [PortableSystemColor.AccentLight3] = 0xFFDDE8F3,
+                [PortableSystemColor.AccentDark1] = 0xFF1B4A7D,
+                [PortableSystemColor.AccentDark2] = 0xFF123253,
+                [PortableSystemColor.AccentDark3] = 0xFF09192A
+            }, keyboardCues, highContrast: false, pointerSettings, caretWidthDip, caretBlinkTimeMilliseconds, mouseVanish,
+                minimumHorizontalDragDistanceDip, minimumVerticalDragDistanceDip);
+    }
+}
+#endif

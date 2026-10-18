@@ -1213,6 +1213,13 @@ namespace System.Windows.Input
         /// </summary> 
         internal void GotKeyboardFocus(DependencyObject focus)
         {
+#if PORTABLE_WPF
+            if (focus != null &&
+                ((InputMethodState)focus.GetValue(PreferredImeStateProperty) != InputMethodState.DoNotCare ||
+                 ((ImeConversionModeValues)focus.GetValue(PreferredImeConversionModeProperty) & ImeConversionModeValues.DoNotCare) == 0 ||
+                 ((ImeSentenceModeValues)focus.GetValue(PreferredImeSentenceModeProperty) & ImeSentenceModeValues.DoNotCare) == 0))
+                throw new PlatformNotSupportedException("Portable IME mode selection is not supported. Use host committed text input.");
+#else
             object value;
 
             if (focus == null)
@@ -1238,6 +1245,7 @@ namespace System.Windows.Input
             {
                 ImeSentenceMode = (ImeSentenceModeValues)value;
             }
+#endif
         }
 
         /// <summary>
@@ -1301,6 +1309,7 @@ namespace System.Windows.Input
         /// </summary> 
         internal void EnableOrDisableInputMethod(bool bEnabled)
         {
+#if !PORTABLE_WPF
             // InputMethod enable/disabled status was changed on the current focus Element.
             if (TextServicesLoader.ServicesInstalled &&
                 TextServicesContext.DispatcherCurrent != null)
@@ -1343,6 +1352,7 @@ namespace System.Windows.Input
                     UnsafeNativeMethods.ImmAssociateContext(new HandleRef(this, hwnd), new HandleRef(this, IntPtr.Zero));
                 }
 }
+#endif
         }
  
         #endregion Internal methods
@@ -1779,7 +1789,7 @@ namespace System.Windows.Input
 
         // If the system is IMM enabled, this is true.
 #if PORTABLE_WPF
-        private static bool _immEnabled = OperatingSystem.IsWindows() && SafeSystemMetrics.IsImmEnabled;
+        private static bool _immEnabled = false;
 #else
         private static bool _immEnabled = SafeSystemMetrics.IsImmEnabled ; 
 #endif

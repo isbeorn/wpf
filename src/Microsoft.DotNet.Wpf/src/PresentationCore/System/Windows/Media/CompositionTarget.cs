@@ -113,6 +113,9 @@ namespace System.Windows.Media
 
             if (!_isDisposed)
             {
+#if PORTABLE_WPF
+                SetRootVisual(null);
+#endif
                 //
                 // Disconnect the root visual so that all of the child
                 // animations and resources are cleaned up.
@@ -448,6 +451,9 @@ namespace System.Windows.Media
         /// Visual.</param>
         private void SetRootVisual(Visual visual)
         {
+#if PORTABLE_WPF
+            visual?.VerifyAccess();
+#endif
             // We need to make this function robust by leaving the
             // _rootVisual in a consistent state.
 
@@ -461,6 +467,12 @@ namespace System.Windows.Media
                 throw new System.ArgumentException(SR.CompositionTarget_RootVisual_HasParent);
             }
 
+#if PORTABLE_WPF
+            if (_rootVisual != null)
+            {
+                _rootVisual.IsRootElement = false;
+            }
+#else
             DUCE.ChannelSet channelSet = MediaContext.From(Dispatcher).GetChannels();
             DUCE.Channel channel = channelSet.Channel;
             if (_rootVisual != null && _contentRoot.IsOnChannel(channel))
@@ -471,6 +483,7 @@ namespace System.Windows.Media
 
                 _rootVisual.IsRootElement = false;
             }
+#endif
 
             _rootVisual = visual;
 

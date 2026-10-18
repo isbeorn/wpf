@@ -68,6 +68,10 @@ namespace System.Windows.Input
         // Track the focus of KeyboardDevice. KeyboardDevice.ChangeFocus() this.
         internal void Focus(DependencyObject focus)
         {
+#if PORTABLE_WPF
+            // Committed text is delivered by the host through RawTextInputReport.
+            return;
+#else
             if (focus == null)
             {
                 // Don't grab keyboard events from Text Services Framework without keyboard focus.
@@ -87,6 +91,7 @@ namespace System.Windows.Input
             }
 
             InputMethod.Current.EnableOrDisableInputMethod((bool)focus.GetValue(InputMethod.IsInputMethodEnabledProperty));
+#endif
         }
 
         //------------------------------------------------------
@@ -112,6 +117,9 @@ namespace System.Windows.Input
         // Marks interesting KeyDown events as ImeInput.
         private void PreProcessInput(object sender, PreProcessInputEventArgs e)
         {
+#if PORTABLE_WPF
+            return;
+#else
             TextServicesContext context;
             KeyEventArgs keyArgs;
 
@@ -154,10 +162,14 @@ namespace System.Windows.Input
                     }
                 }
             }
+#endif
         }
 
         private void PostProcessInput(object sender, ProcessInputEventArgs e)
         {
+#if PORTABLE_WPF
+            return;
+#else
             TextServicesContext context;
             KeyEventArgs keyArgs;
 
@@ -207,6 +219,7 @@ namespace System.Windows.Input
                     keyArgs.Handled = true;
                 }
             }
+#endif
         }
 
         private bool TextServicesKeystroke(TextServicesContext context, KeyEventArgs keyArgs, bool test)

@@ -385,9 +385,13 @@ namespace System.Windows.Input
 
         private static string GetCurrentOEMCPEncoding(int code)
         {
+#if PORTABLE_WPF
+            throw new PlatformNotSupportedException("Portable Alt-numpad OEM code-page input is not supported. Use host committed text input.");
+#else
             int codePage = UnsafeNativeMethods.GetOEMCP();
 
             return CharacterEncoding(codePage, code);
+#endif
         }
 
         /// <summary>
@@ -395,6 +399,9 @@ namespace System.Windows.Input
         /// </summary>
         private static unsafe string CharacterEncoding(int codePage, int code)
         {
+#if PORTABLE_WPF
+            throw new PlatformNotSupportedException("Portable Alt-numpad code-page input is not supported. Use host committed text input.");
+#else
             ReadOnlySpan<byte> multiByte = ConvertCodeToByteArray(code, stackalloc byte[2]);
             Span<char> outputChars = stackalloc char[EncodingBufferLen]; // 4
          
@@ -412,6 +419,7 @@ namespace System.Windows.Input
 
             // Set the length as MultiByteToWideChar returns
             return new string(outputChars.Slice(0, charsWritten));
+#endif
         }
 
         // PreProcessInput event handler
@@ -898,6 +906,9 @@ namespace System.Windows.Input
         {
             get 
             {
+#if PORTABLE_WPF
+                throw new PlatformNotSupportedException("Portable Windows hexadecimal Alt-numpad input is not supported. Use host committed text input.");
+#else
                 if (!_isHexNumpadRegistryChecked)
                 {
                     RegistryKey key = Registry.CurrentUser.OpenSubKey("Control Panel\\Input Method");
@@ -914,6 +925,7 @@ namespace System.Windows.Input
                 }
 
                 return _isHexNumpadEnabled;
+#endif
             }
         }
 
@@ -943,11 +955,13 @@ namespace System.Windows.Input
         // TextComposition for AltNumpad.
         private TextComposition _altNumpadcomposition;
 
+#if !PORTABLE_WPF
         // True if EnableHexNumpad registry has been checked.
         private static bool _isHexNumpadRegistryChecked = false;
 
         // True if EnableHexNumpad registry is set.
         private static bool _isHexNumpadEnabled = false;
+#endif
 
         // Character encoding length.
         private const int EncodingBufferLen  =  4;

@@ -468,6 +468,11 @@ namespace System.Windows
             }
         }
 
+#if PORTABLE_WPF
+        internal bool IsRootSourceOf(Visual visual) =>
+            visual != null && ReferenceEquals(visual.GetValue(RootSourceProperty), this);
+#endif
+
             
 
         /// <summary>

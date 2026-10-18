@@ -159,6 +159,9 @@ namespace System.Windows.Input
 
         private void LoadFromFile(string fileName)
         {
+#if PORTABLE_WPF
+            throw new PlatformNotSupportedException("Portable custom cursor files are not supported.");
+#else
             // Load a Custom Cursor
             _cursorHandle = UnsafeNativeMethods.LoadImageCursor(IntPtr.Zero,
                                                                 fileName,
@@ -195,6 +198,7 @@ namespace System.Windows.Input
                     throw new ArgumentException(SR.Format(SR.Cursor_LoadImageFailure, fileName));
                 }
             }
+#endif
         }
 
         //**** DEAD CODE - retained only for compat, if user sets quirk flag  ****
@@ -266,6 +270,9 @@ namespace System.Windows.Input
 
         private void LoadFromStream(Stream cursorStream)
         {
+#if PORTABLE_WPF
+            throw new PlatformNotSupportedException("Portable custom cursor streams are not supported.");
+#else
             if (MS.Internal.CoreAppContextSwitches.AllowExternalProcessToBlockAccessToTemporaryFiles)
             {
                 LegacyLoadFromStream(cursorStream);
@@ -299,15 +306,18 @@ namespace System.Windows.Input
             {
                 FileHelper.DeleteTemporaryFile(filePath);
             }
+#endif
         }
 
         private void LoadCursorHelper(CursorType cursorType)
         {
+#if !PORTABLE_WPF
             if (cursorType != CursorType.None)
             {
                 // Load a Standard Cursor
                 _cursorHandle = SafeNativeMethods.LoadCursor(new HandleRef(this,IntPtr.Zero), (IntPtr)(CursorTypes[(int)cursorType]));
             }
+#endif
             this._cursorType = cursorType;
         }
 

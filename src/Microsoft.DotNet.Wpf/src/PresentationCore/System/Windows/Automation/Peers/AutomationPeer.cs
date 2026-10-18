@@ -245,17 +245,23 @@ namespace System.Windows.Automation.Peers
         ///
         static AutomationPeer()
         {
+#if !PORTABLE_WPF
             // Disable message processing to avoid re-entrancy (WM_GETOBJECT)
             using (Dispatcher.CurrentDispatcher.DisableProcessing())
             {
                 Initialize();
             }
+#endif
         }
 
-#if ENABLE_AUTOMATIONPEER_LOGGING
+#if PORTABLE_WPF || ENABLE_AUTOMATIONPEER_LOGGING
         protected AutomationPeer()
         {
+#if PORTABLE_WPF
+            throw new PlatformNotSupportedException("Portable accessibility peers are not implemented.");
+#else
             LogPeer(this);
+#endif
         }
 #endif
 

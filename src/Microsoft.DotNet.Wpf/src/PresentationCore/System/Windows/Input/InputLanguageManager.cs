@@ -97,7 +97,11 @@ namespace System.Windows.Input
         private InputLanguageManager()
         {
             // register our default input language source.
+#if PORTABLE_WPF
+            RegisterInputLanguageSource(new MS.Internal.Portability.Input.PortableInputLanguageSource());
+#else
             RegisterInputLanguageSource(new InputLanguageSource(this));
+#endif
         }
 
         //------------------------------------------------------
@@ -244,6 +248,9 @@ namespace System.Windows.Input
                     return _source.CurrentInputLanguage;
                 }
 
+#if PORTABLE_WPF
+                return CultureInfo.CurrentCulture;
+#else
                 IntPtr hkl = SafeNativeMethods.GetKeyboardLayout(0);
                 if (hkl == IntPtr.Zero)
                 {
@@ -252,6 +259,7 @@ namespace System.Windows.Input
 
                 // This needs to work before source is attached.
                 return new CultureInfo((short)NativeMethods.IntPtrToInt32(hkl));
+#endif
             }
             set
             {
@@ -438,9 +446,22 @@ namespace System.Windows.Input
         {
             get
             {
+#if PORTABLE_WPF
+                IEnumerator languages = Current._source?.InputLanguageList?.GetEnumerator();
+                if (languages == null) return false;
+                try
+                {
+                    return languages.MoveNext() && languages.MoveNext();
+                }
+                finally
+                {
+                    (languages as IDisposable)?.Dispose();
+                }
+#else
                 int count = SafeNativeMethods.GetKeyboardLayoutList(0, null);
 
                 return (count > 1);
+#endif
             }
         }
 
