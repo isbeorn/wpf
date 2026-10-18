@@ -12,6 +12,9 @@ namespace Wpf.Portable.NativeHost;
 public static class NativeDispatcherHost
 {
     public static void InitializeForCurrentThread(AppBuilder builder)
+        => InitializeForCurrentThread(builder, softwareFramebuffer: false);
+
+    internal static void InitializeForCurrentThread(AppBuilder builder, bool softwareFramebuffer)
     {
         ArgumentNullException.ThrowIfNull(builder);
         if (!OperatingSystem.IsLinux())
@@ -20,11 +23,13 @@ public static class NativeDispatcherHost
             throw new InvalidOperationException("Initialize the native host before creating this thread's WPF Dispatcher.");
 
         var exceptions = new NativeCallbackExceptions();
-        builder.UsePlatformDetect().With(new X11PlatformOptions
+        var options = new X11PlatformOptions
         {
             UseGLibMainLoop = true,
             ExternalGLibMainLoopExceptionLogger = exceptions.Capture
-        }).SetupWithoutStarting();
+        };
+        if (softwareFramebuffer) options.RenderingMode = new[] { X11RenderingMode.Software };
+        builder.UsePlatformDetect().With(options).SetupWithoutStarting();
         Dispatcher.UIThread.VerifyAccess();
         var implementation = Dispatcher.UIThread.PlatformImpl;
         if (implementation is not IControlledDispatcherImpl controlled ||

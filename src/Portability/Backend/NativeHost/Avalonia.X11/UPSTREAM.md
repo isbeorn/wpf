@@ -7,9 +7,11 @@
 - Archive SHA-256: `9E9EE6EE270BFDC02FBC34296DA51EE6242325156D2B67CBED92D2CCBC2E2029`
 - License: MIT, preserved in `LICENSE.md` and copied beside build outputs.
 
-`../Prepare-AvaloniaSource.ps1` verifies the archive before replacing the generated extraction under `artifacts/portability/native-host/upstream`. The complete upstream checkout remains ignored build input. Its 83 original X11 source files remain untouched. The project compiles 82 unchanged files, one verified derivative of `GlibDispatcherImplBase.cs`, original shared raw-event grouping code and unchanged source generators. The owned maintenance surface is `ExternalDispatcherBridge.cs` plus the single source patch `Patches/GuardBackgroundCallback.patch`.
+`../Prepare-AvaloniaSource.ps1` verifies the archive before replacing the generated extraction under `artifacts/portability/native-host/upstream`. The complete upstream checkout remains ignored build input. Its 83 original X11 source files remain untouched. The project compiles 81 unchanged files, verified derivatives of `GlibDispatcherImplBase.cs` and `X11Window.cs`, original shared raw-event grouping code and unchanged source generators. The owned maintenance surface is `ExternalDispatcherBridge.cs`, `ExternalWindowBridge.cs` and two source patches under `Patches/`.
 
 Every build verifies the original GLib dispatcher file SHA-256 `5070CE8FC7CD809B06C4B424CD1330F7D33CC0CCC36A48303E88B25B37922965`, then replays the one exact patch hunk into `.portable-derived/<OS>/GlibDispatcherImplBase.cs`. The derivative is separate from the original file and remains under the upstream editorconfig tree so its analyzer policy is preserved. The original source and verified archive are never patched. The derivative's resulting SHA-256 is `A5057CE83D488795BD8A37106847B46C3F14B79133A19EBFF9F1C386208FA2DC`.
+
+The same exact-hunk task verifies original `X11Window.cs` SHA-256 `E8552DF43A2EB2B045317E92E3584A35BB07401DDBA665CB40AAB9CDC948079F` before replaying `PreserveMinimumDpiExtent.patch` into a separate per-OS derivative, SHA-256 `22A2D6B7EBF1F83D9E47C0FA4EA289828873C8DF22652DC92A4D8067433910C1`. Only `WindowResizeReason.DpiChange` preserves each converted extent at the legal native minimum of one pixel. This prevents a valid 1-pixel window at 96 DPI becoming 0.666 DIP at 144 DPI then requesting illegal zero pixels when returning to 96 DPI. The corrected pixel size flows through the original hints, main/render-child configure and existing cache/callback path. Explicit zero/subpixel user requests remain rejected by the owned bridge; the patch adds no logical zero-size contract or fabricated host metrics.
 
 The new typed private-API facade returns Avalonia's existing `ManagedDispatcherImpl.IManagedDispatcherInputProvider` interface over its actual Xlib event dispatcher and manual grouped input queue. Its small provider delegates pending Xlib events to the original `X11EventDispatcher.DispatchX11Events`, then dispatches at most one already-grouped input through the existing manual provider. The owned WPF adapter calls it before waiting for more OS events. It creates no queue, translates no WPF priorities and changes no Avalonia application behavior when unused.
 
@@ -21,12 +23,22 @@ The third regression concerns the native C callback boundary. The upstream `Requ
 
 The rebuilt assembly retains `Avalonia.X11, Version=12.1.4.0` with the original `c8d484a7012f9a8b` public signing identity. Its informational version explicitly identifies this source adaptation and upstream commit. Public signing preserves identity for existing friend access; it is not an upstream signature. The original public key is read from the verified upstream `build/AvaloniaPublicKey.props`. No metadata, assembly references or package DLLs are patched.
 
+The native Window peer adds a separate typed `ExternalWindowBridge`. The low-level `IWindowImpl` cannot receive native events without an `IInputRoot`, whose abstract internal members prevent an external implementation. The existing X11 assembly's original Base friend access permits an inert `InputElement` token implementing that interface. This token has no Avalonia control tree, layout, renderer or input-manager routing. Actual WPF reports are consumed exclusively by the genuine WPF source/provider.
+
+The Window bridge uses the backend's existing X11 display for native focus queries/acquisition, actual pointer grabs, physical screen hit queries and XKB key snapshots. Its observer chains the existing native event hook, returns the previous hook's result and does not consume native events. It observes normal focus changes and capture loss and restores the prior hook after the last peer is disposed. It also reads the actual XSETTINGS selection owner's bounded property and checks framebuffer upload errors after synchronizing the upstream framebuffer's deferred display. These methods create no native event queue and do not replace original X11 dispatch. They are an additional maintenance obligation beyond the earlier dispatcher facade and exception guard.
+
+The same facade queries actual client dimensions/screen origin, bounded EWMH frame extents and state for a single host metrics publication. This bypasses a confirmed stale upstream Configure cache without changing that cache or the original dispatch jobs. The owned peer captures the complete result and DPI before notifying WPF. No synchronous event pumping or server grab is used.
+
+The owned `X11Window` partial in that facade also contains the pinned `Resize` request body from upstream lines 1331-1346. An explicit WPF size request must reach X11 even when it equals Avalonia's delayed Configure cache but differs from actual server dimensions. This narrow copy omits only the cached-equality return and the `force` behavior; it preserves native pixel rounding, size hints, render-child resizing and original pre-map/popup acknowledgement. Mapped Window geometry remains authoritative from native events and fresh server metrics. The peer schedules its existing coalesced metrics publication after the request, including when the server already has the requested size and emits no Configure event. Maintaining this copied request body against the pinned upstream implementation is an additional source adaptation obligation.
+
+Before size hints or either configure request, the owned resize entry rejects converted client dimensions below one native pixel with a named managed `PlatformNotSupportedException`. This initial profile does not implement zero-logical-size mapping. It does not clamp the request, fabricate geometry or leave a BadValue error pending in X11. Valid one-pixel extents retain the original request and native acknowledgement path.
+
 Runtime dependencies use ordinary project/package references:
 
 | Assembly | Source |
 | --- | --- |
-| WindowsBase and its framework dependencies | Existing source-built portable WPF projects |
-| Wpf.Portable.NativeHost | Owned native pump adapter |
+| WindowsBase, PresentationCore, PresentationFramework and their framework dependencies | Existing source-built portable WPF projects |
+| Wpf.Portable.NativeHost | Owned native pump and Window peer adapters |
 | Avalonia.X11 | This source-built project, selected by the dependency graph instead of the package X11 binary |
 | Avalonia, Avalonia.Skia, Avalonia.FreeDesktop and Avalonia.FreeDesktop.AtSpi | Exact NuGet 12.1.4 dependencies with lock files |
 

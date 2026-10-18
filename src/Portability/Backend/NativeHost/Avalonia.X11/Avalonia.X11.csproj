@@ -16,14 +16,17 @@
     <PublicSign>true</PublicSign>
     <AssemblyOriginatorKeyFile>$(BaseIntermediateOutputPath)Avalonia.public.snk</AssemblyOriginatorKeyFile>
     <PatchedAvaloniaSourceFile>$(AvaloniaSourceDir).portable-derived/$(OS)/GlibDispatcherImplBase.cs</PatchedAvaloniaSourceFile>
+    <PatchedAvaloniaWindowSourceFile>$(AvaloniaSourceDir).portable-derived/$(OS)/X11Window.cs</PatchedAvaloniaWindowSourceFile>
     <AvaloniaAccessUnstablePrivateApis>true</AvaloniaAccessUnstablePrivateApis>
     <WarningsNotAsErrors>$(WarningsNotAsErrors);AVA3001;CS0649</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(AvaloniaSourceDir)src/Avalonia.X11/**/*.cs" Exclude="$(AvaloniaSourceDir)src/Avalonia.X11/Dispatching/GlibDispatcherImplBase.cs" />
+    <Compile Include="$(AvaloniaSourceDir)src/Avalonia.X11/**/*.cs" Exclude="$(AvaloniaSourceDir)src/Avalonia.X11/Dispatching/GlibDispatcherImplBase.cs;$(AvaloniaSourceDir)src/Avalonia.X11/X11Window.cs" />
     <Compile Include="$(PatchedAvaloniaSourceFile)" />
+    <Compile Include="$(PatchedAvaloniaWindowSourceFile)" />
     <Compile Include="$(AvaloniaSourceDir)src/Shared/RawEventGrouping.cs" />
     <Compile Include="ExternalDispatcherBridge.cs" />
+    <Compile Include="ExternalWindowBridge.cs" />
     <PackageReference Include="Avalonia" Version="[12.1.4]" />
     <PackageReference Include="Avalonia.Skia" Version="[12.1.4]" />
     <PackageReference Include="Avalonia.FreeDesktop" Version="[12.1.4]" />
@@ -52,9 +55,10 @@
       ]]></Code>
     </Task>
   </UsingTask>
-  <UsingTask TaskName="ApplyPinnedAvaloniaBackgroundGuard" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+  <UsingTask TaskName="ApplyPinnedAvaloniaPatch" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
     <ParameterGroup>
       <SourceFile ParameterType="System.String" Required="true" />
+      <ExpectedSourceHash ParameterType="System.String" Required="true" />
       <PatchFile ParameterType="System.String" Required="true" />
       <OutputFile ParameterType="System.String" Required="true" />
     </ParameterGroup>
@@ -68,8 +72,8 @@
         string originalHash;
         using (var hash = SHA256.Create())
           originalHash = System.BitConverter.ToString(hash.ComputeHash(original)).Replace("-", "");
-        if (originalHash != "5070CE8FC7CD809B06C4B424CD1330F7D33CC0CCC36A48303E88B25B37922965")
-          throw new InvalidDataException("The pinned GLib dispatcher source hash does not match.");
+        if (originalHash != ExpectedSourceHash)
+          throw new InvalidDataException("The pinned Avalonia source hash does not match.");
         var patch = File.ReadAllText(PatchFile).Replace("\r\n", "\n").Split('\n');
         if (patch.Count(line => line.StartsWith("@@ ", System.StringComparison.Ordinal)) != 1)
           throw new InvalidDataException("Expected exactly one approved source patch hunk.");
@@ -92,6 +96,7 @@
   <Target Name="PreparePinnedAvaloniaInputs" BeforeTargets="CoreCompile">
     <Error Condition="!Exists('$(AvaloniaSourceDir)src/Avalonia.X11/X11Platform.cs')" Text="Run Backend/NativeHost/Prepare-AvaloniaSource.ps1 before building the pinned X11 source adaptation." />
     <WritePinnedAvaloniaPublicKey SourceFile="$(AvaloniaSourceDir)build/AvaloniaPublicKey.props" OutputFile="$(AssemblyOriginatorKeyFile)" />
-    <ApplyPinnedAvaloniaBackgroundGuard SourceFile="$(AvaloniaSourceDir)src/Avalonia.X11/Dispatching/GlibDispatcherImplBase.cs" PatchFile="$(MSBuildThisFileDirectory)Patches/GuardBackgroundCallback.patch" OutputFile="$(PatchedAvaloniaSourceFile)" />
+    <ApplyPinnedAvaloniaPatch SourceFile="$(AvaloniaSourceDir)src/Avalonia.X11/Dispatching/GlibDispatcherImplBase.cs" ExpectedSourceHash="5070CE8FC7CD809B06C4B424CD1330F7D33CC0CCC36A48303E88B25B37922965" PatchFile="$(MSBuildThisFileDirectory)Patches/GuardBackgroundCallback.patch" OutputFile="$(PatchedAvaloniaSourceFile)" />
+    <ApplyPinnedAvaloniaPatch SourceFile="$(AvaloniaSourceDir)src/Avalonia.X11/X11Window.cs" ExpectedSourceHash="E8552DF43A2EB2B045317E92E3584A35BB07401DDBA665CB40AAB9CDC948079F" PatchFile="$(MSBuildThisFileDirectory)Patches/PreserveMinimumDpiExtent.patch" OutputFile="$(PatchedAvaloniaWindowSourceFile)" />
   </Target>
 </Project>
