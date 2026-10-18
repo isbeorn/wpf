@@ -13,8 +13,9 @@ namespace MS.Internal.Portability.Input
     internal interface IPortableTextCompositionSink
     {
         bool CanStart { get; }
-        bool Begin(PortableTextCompositionSession session, long generation, string text, int caret);
-        bool Update(string text, int caret);
+        bool Begin(PortableTextCompositionSession session, long generation, string text, int caret, bool visible);
+        bool Update(string text, int caret, bool? visible);
+        bool SetVisibility(bool visible);
         bool Commit(string text);
         void Cancel();
     }
@@ -49,7 +50,7 @@ namespace MS.Internal.Portability.Input
             else element.SetValue(SinkProperty, sink);
         }
 
-        internal long Begin(PresentationSource source, string text, int caret)
+        internal long Begin(PresentationSource source, string text, int caret, bool visible = true)
         {
             _dispatcher.VerifyAccess();
             Validate(text, caret);
@@ -71,7 +72,7 @@ namespace MS.Internal.Portability.Input
             long generation = _generation;
             try
             {
-                if (sink.Begin(this, generation, text, caret) && IsCurrent(generation, sink)) return generation;
+                if (sink.Begin(this, generation, text, caret, visible) && IsCurrent(generation, sink)) return generation;
                 if (IsCurrent(generation, sink)) CancelCurrent();
                 return 0;
             }
@@ -82,13 +83,26 @@ namespace MS.Internal.Portability.Input
             }
         }
 
-        internal bool Update(PresentationSource source, long generation, string text, int caret)
+        internal bool Update(PresentationSource source, long generation, string text, int caret, bool? visible = null)
         {
             _dispatcher.VerifyAccess();
             if (!Matches(source, generation)) return false;
             Validate(text, caret);
             IPortableTextCompositionSink sink = _sink;
-            try { return sink.Update(text, caret); }
+            try { return sink.Update(text, caret, visible); }
+            catch
+            {
+                if (IsCurrent(generation, sink)) CancelCurrent();
+                throw;
+            }
+        }
+
+        internal bool SetVisibility(PresentationSource source, long generation, bool visible)
+        {
+            _dispatcher.VerifyAccess();
+            if (!Matches(source, generation)) return false;
+            IPortableTextCompositionSink sink = _sink;
+            try { return sink.SetVisibility(visible); }
             catch
             {
                 if (IsCurrent(generation, sink)) CancelCurrent();

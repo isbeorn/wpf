@@ -47,6 +47,9 @@ internal static class ManagedPreeditChecks
         }
         void Trace(string name) => traces.Add(new { name, editor = box.Text, boundSource = model.Value,
             sourceWrites = model.Writes.ToArray(), textChanged = changed.ToArray() });
+        bool Visible(long token, bool visible, PortableInputProvider? target = null) => (target ?? provider).SetPreeditVisibility(token, visible);
+        long BeginPacket(string text, int caret, bool visible) => provider.BeginPreedit(text, caret, visible);
+        bool UpdatePacket(long token, string text, int caret, bool visible) => provider.UpdatePreedit(token, text, caret, visible);
         void Publish()
         {
             string result = JsonSerializer.Serialize(new { probe = "managed-textbox-preedit", os = System.Runtime.InteropServices.RuntimeInformation.OSDescription,
@@ -320,6 +323,230 @@ internal static class ManagedPreeditChecks
                 if (!before.AsSpan(pixel * 4, 4).SequenceEqual(after.AsSpan(pixel * 4, 4))) differences++;
             }
             Require(differences >= 2, "Retained pixels did not show composition underline removal outside the unchanged caret.");
+        });
+
+        Record("visibility-hide-show-restores-and-defers", () =>
+        {
+            Reset(); long token = Begin("candidate", 4);
+            Require(Visible(token, false), "Hide rejected current generation."); root.UpdateLayout(); Drain(); Exact("ABCDE");
+            Require(box.SelectionStart == 1 && box.SelectionLength == 2 && !box.CanUndo && FindVisual(root, "CompositionAdorner") == null && model.Writes.Count == 0,
+                "Hide failed to restore original selection/undo/adornment without publication.");
+            int count = changed.Count;
+            Require(Visible(token, false) && changed.Count == count, "Repeated Hide edited text.");
+            Require(provider.UpdatePreedit(token, "\U0001F600e\u0301", 2), "Hidden update rejected current generation."); Drain(); Exact("ABCDE");
+            Require(changed.Count == count && model.Writes.Count == 0, "Hidden update exposed a candidate or source value.");
+            Require(Visible(token, true), "Show could not resume current generation."); root.UpdateLayout(); Drain();
+            Require(box.Text == "A\U0001F600e\u0301DE" && box.CaretIndex == 3 && model.Writes.Count == 0 && FindVisual(root, "CompositionAdorner") != null,
+                "Show lost the latest candidate/caret or published it.");
+            count = changed.Count; Require(Visible(token, true) && changed.Count == count, "Repeated Show edited text.");
+            Require(provider.CommitPreedit(token, "final"), "Resumed composition could not commit."); Drain(); Exact("AfinalDE");
+            Require(model.Writes.SequenceEqual(new[] { "AfinalDE" }), "Visibility cycle published intermediate source values.");
+            box.Undo(); Drain(); Exact("ABCDE"); Require(!box.CanUndo && box.SelectionStart == 1 && box.SelectionLength == 2, "Visibility cycle created multiple undo steps.");
+            box.Redo(); Drain(); Exact("AfinalDE");
+            Trace("visibility final with one undo/redo");
+        });
+
+        Record("visibility-initial-hidden-and-visible-empty-packets", () =>
+        {
+            Reset(); int starts = 0, updates = 0, completes = 0;
+            TextCompositionEventHandler start = (_, _) => starts++;
+            TextCompositionEventHandler update = (_, _) => updates++;
+            TextCompositionEventHandler complete = (_, _) => completes++;
+            box.AddHandler(TextCompositionManager.TextInputStartEvent, start, true);
+            box.AddHandler(TextCompositionManager.TextInputUpdateEvent, update, true);
+            box.AddHandler(TextCompositionManager.TextInputEvent, complete, true);
+            try
+            {
+                long token = BeginPacket("invisible", 4, false); Require(token != 0, "Initially hidden packet failed."); Drain(); Exact("ABCDE");
+                Require(changed.Count == 0 && model.Writes.Count == 0 && starts == 1 && updates == 0 && completes == 0, "Initially hidden packet flashed text or lost Start.");
+                Require(UpdatePacket(token, "latest", 3, false), "Hidden full-state packet failed."); Drain(); Exact("ABCDE");
+                Require(changed.Count == 0 && updates == 1, "Hidden packet mutated text or lost real Update.");
+                Require(Visible(token, true) && box.Text == "AlatestDE" && box.CaretIndex == 4, "Show lost hidden packet.");
+                Require(Visible(token, false), "Hide after Show failed."); Drain(); Exact("ABCDE");
+                Require(UpdatePacket(token, "", 0, true) && box.Text == "ADE", "Visible empty candidate was confused with Hide.");
+                Require(Visible(token, false), "Empty candidate could not hide."); Drain(); Exact("ABCDE");
+                Require(Visible(token, true) && box.Text == "ADE", "Empty candidate could not resume.");
+                Require(starts == 1 && updates == 2 && completes == 0 && model.Writes.Count == 0, "Visibility manufactured routed packet lifecycle or source updates.");
+                Require(provider.CommitPreedit(token, ""), "Empty result failed."); Drain(); Exact("ADE"); Require(completes == 1, "Commit did not complete exactly once.");
+                box.Undo(); Drain(); Exact("ABCDE"); Require(!box.CanUndo, "Hidden empty packet left extra undo.");
+            }
+            finally
+            {
+                box.RemoveHandler(TextCompositionManager.TextInputStartEvent, start);
+                box.RemoveHandler(TextCompositionManager.TextInputUpdateEvent, update);
+                box.RemoveHandler(TextCompositionManager.TextInputEvent, complete);
+            }
+        });
+
+        Record("visibility-hidden-commit-cancel-undo-enabled-disabled", () =>
+        {
+            foreach (bool undo in new[] { true, false })
+            foreach (bool commit in new[] { true, false })
+            {
+                Reset(undo: undo); long token = Begin("candidate", 4); Require(Visible(token, false), "Hide failed.");
+                Require(provider.UpdatePreedit(token, "cached", 2), "Hidden cache update failed."); Drain(); Exact("ABCDE");
+                Require(model.Writes.Count == 0, "Hidden restoration or cache published source.");
+                Require(commit ? provider.CommitPreedit(token, "accepted") : provider.CancelPreedit(token), "Hidden ending failed."); Drain(); Exact(commit ? "AacceptedDE" : "ABCDE");
+                Require(model.Writes.All(text => text == (commit ? "AacceptedDE" : "ABCDE")) && FindVisual(root, "CompositionAdorner") == null, "Hidden ending published candidate or retained adornment.");
+                Require(!Visible(token, true) && !provider.CommitPreedit(token, "late"), "Ended hidden generation revived.");
+                if (undo && commit) { box.Undo(); Drain(); Exact("ABCDE"); Require(!box.CanUndo, "Hidden commit has extra undo."); box.Redo(); Drain(); Exact("AacceptedDE"); }
+                else Require(!box.CanUndo && !box.CanRedo, "Hidden ending added unsupported undo history.");
+            }
+            Reset("ABC"); box.Select(3, 0); host.Report(new PortableTextInputReport(source, InputMode.Foreground, 1, "!")); Drain(); Exact("ABC!");
+            box.Select(1, 1); long next = Begin("temporary", 2); Visible(next, false); Visible(next, true); Visible(next, false);
+            Require(provider.CommitPreedit(next, "Z"), "Hidden final edit failed."); Drain(); Exact("AZC!");
+            box.Undo(); Drain(); Exact("ABC!"); Require(box.CanUndo, "Visibility discarded unrelated earlier undo."); box.Undo(); Drain(); Exact("ABC");
+        });
+
+        Record("visibility-foreign-text-selection-and-binding-win", () =>
+        {
+            foreach (string mode in new[] { "text", "selection", "binding", "binding-same" })
+            {
+                Reset(); long token = Begin("candidate", 4); Visible(token, false); PreeditModel old = model;
+                if (mode == "text") box.SetCurrentValue(TextBox.TextProperty, "application");
+                else if (mode == "selection") box.Select(0, 0);
+                else Bind(new PreeditModel { Value = mode == "binding-same" ? "ABCDE" : "replacement" });
+                Require(!Visible(token, true) && !provider.CommitPreedit(token, "stale"), "Hidden foreign change retained ownership: " + mode); Drain();
+                Exact(mode == "text" ? "application" : mode == "binding" ? "replacement" : "ABCDE");
+                if (mode == "selection") Require(box.SelectionStart == 0 && box.SelectionLength == 0, "Hidden cancellation restored over app selection.");
+                if (mode is "binding" or "binding-same") Require(old.Writes.Count == 0 && old.Value == "ABCDE", "Hidden ending flushed detached binding.");
+            }
+        });
+
+        Record("visibility-restored-textchanged-reentry", () =>
+        {
+            foreach (string mode in new[] { "text", "selection", "cancel", "show", "update", "begin" })
+            {
+                Reset(); long token = Begin("candidate", 4); bool called = false; bool nested = false;
+                TextChangedEventHandler handler = (_, _) =>
+                {
+                    if (called || box.Text != "ABCDE") return; called = true;
+                    if (mode == "text") box.SetCurrentValue(TextBox.TextProperty, "application");
+                    else if (mode == "selection") box.Select(0, 0);
+                    else if (mode == "cancel") nested = provider.CancelPreedit(token);
+                    else if (mode == "show") nested = Visible(token, true);
+                    else if (mode == "update") nested = provider.UpdatePreedit(token, "nested", 0);
+                    else nested = provider.BeginPreedit("nested", 0) != 0;
+                };
+                box.TextChanged += handler;
+                bool hidden;
+                try { hidden = Visible(token, false); } finally { box.TextChanged -= handler; }
+                Drain(); Require(called, "Restoration did not expose the real TextChanged callout.");
+                if (mode == "text" || mode == "selection" || mode == "cancel")
+                {
+                    Require(!hidden && !Visible(token, true), "Restoration reentry revived an ended generation."); Exact(mode == "text" ? "application" : "ABCDE");
+                    if (mode == "selection") Require(box.SelectionStart == 0 && box.SelectionLength == 0, "Restoration overwrote app selection.");
+                }
+                else
+                {
+                    Require(hidden && !nested && model.Writes.Count == 0, "Busy restoration accepted reentrant packet or published source."); Exact("ABCDE");
+                    Require(Visible(token, true) && box.Text == "AcandidateDE", "Rejected reentry replaced cached candidate."); provider.CancelPreedit(token); Drain(); Exact("ABCDE");
+                }
+            }
+        });
+
+        Record("visibility-hidden-lifecycle-and-bound-source-reentry", () =>
+        {
+            foreach (string mode in new[] { "focus", "readonly", "disabled" })
+            {
+                Reset(); long token = Begin("candidate", 4); Visible(token, false);
+                if (mode == "focus") Keyboard.ClearFocus(); else if (mode == "readonly") box.IsReadOnly = true; else box.IsEnabled = false;
+                Drain(); Exact("ABCDE"); Require(!Visible(token, true) && !provider.CommitPreedit(token, "late") && !box.CanUndo, "Hidden invalidation retained generation/history: " + mode);
+                box.IsReadOnly = false; box.IsEnabled = true; Keyboard.Focus(box);
+            }
+            Reset(); long original = Begin("candidate", 4); Visible(original, false); long nested = 0;
+            model.OnWrite = _ => { model.OnWrite = null; nested = provider.BeginPreedit("next", 4); };
+            Require(provider.CommitPreedit(original, "final"), "Hidden commit failed before source callout."); Drain();
+            Require(nested == 0 && !provider.CommitPreedit(original, "stale") && box.Text == "AfinalDE" && model.Writes.SequenceEqual(new[] { "AfinalDE" }),
+                "In-flight source publication accepted a nested session or duplicate source write.");
+            box.Undo(); Drain(); Exact("ABCDE"); Require(!box.CanUndo, "Source callout added an undo step."); box.Redo(); Drain(); Exact("AfinalDE");
+            long next = Begin("next", 4); Require(provider.CommitPreedit(next, "!"), "Editor could not begin after source publication returned."); Drain(); Exact("Afinal!DE");
+        });
+
+        Record("visibility-hidden-window-canceled-and-accepted-closing", () =>
+        {
+            Reset(); var closingBox = new TextBox { Template = box.Template, FontFamily = box.FontFamily };
+            var closingModel = new PreeditModel { Value = "ABCDE" };
+            closingBox.SetBinding(TextBox.TextProperty, new Binding(nameof(PreeditModel.Value)) { Source = closingModel, Mode = BindingMode.TwoWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged });
+            var window = new Window { Width = 200, Height = 40, Content = closingBox, ShowActivated = false };
+            bool cancel = true; window.Closing += (_, args) => args.Cancel = cancel;
+            try
+            {
+                window.Show(); window.UpdateLayout(); Drain(); Keyboard.Focus(closingBox); closingBox.Select(1, 2); closingModel.Writes.Clear();
+                var closingSource = (PortablePresentationSource)PresentationSource.FromVisual(closingBox);
+                var closingProvider = (PortableInputProvider)closingSource.GetInputProvider(typeof(KeyboardDevice));
+                long token = closingProvider.BeginPreedit("candidate", 4);
+                Require(token != 0 && Visible(token, false, closingProvider), "Window preedit did not hide.");
+                window.Close();
+                Require(!closingSource.IsDisposed && closingProvider.UpdatePreedit(token, "cached", 2) && closingBox.Text == "ABCDE" && closingModel.Writes.Count == 0,
+                    "Canceled Closing ended hidden ownership or exposed its cache.");
+                Require(Visible(token, true, closingProvider) && closingBox.Text == "AcachedDE" && Visible(token, false, closingProvider), "Canceled Closing could not resume and hide.");
+                cancel = false; window.Close(); Drain();
+                Require(closingSource.IsDisposed && closingBox.Text == "ABCDE" && closingModel.Value == "ABCDE" && !Visible(token, true, closingProvider) && !closingProvider.CommitPreedit(token, "late"),
+                    "Accepted close retained hidden state or stale callbacks.");
+                Require(closingModel.Writes.All(text => text == "ABCDE"), "Closing published hidden candidate.");
+            }
+            finally { cancel = false; window.Close(); }
+            Require(ReferenceEquals(Keyboard.Focus(box), box), "Original editor could not regain focus.");
+        });
+
+        Record("visibility-hidden-routed-handled-complete-and-reentry", () =>
+        {
+            foreach (string mode in new[] { "handled", "complete", "text", "selection", "begin" })
+            {
+                Reset(); long token = Begin("candidate", 4); Visible(token, false); long nested = 0;
+                TextCompositionEventHandler handler = (_, args) =>
+                {
+                    if (mode == "handled") args.Handled = true;
+                    else if (mode == "complete") args.TextComposition.Complete();
+                    else if (mode == "text") box.SetCurrentValue(TextBox.TextProperty, "application");
+                    else if (mode == "selection") box.Select(0, 0);
+                    else if (nested == 0) nested = provider.BeginPreedit("new", 3);
+                };
+                box.AddHandler(TextCompositionManager.PreviewTextInputUpdateEvent, handler);
+                try { Require(!provider.UpdatePreedit(token, "unaccepted", 0), "Hidden routed intervention did not reject the old packet."); }
+                finally { box.RemoveHandler(TextCompositionManager.PreviewTextInputUpdateEvent, handler); }
+                Require(!Visible(token, true), "Old hidden generation survived routed intervention.");
+                if (mode == "begin") { Require(nested != 0 && provider.CommitPreedit(nested, "final"), "Nested generation failed after hidden update."); Drain(); Exact("AfinalDE"); }
+                else { Drain(); Exact(mode == "text" ? "application" : "ABCDE"); Require(!box.CanUndo, "Hidden rejected packet added undo."); }
+                if (mode == "selection") Require(box.SelectionStart == 0 && box.SelectionLength == 0, "Hidden routed callback lost app selection.");
+            }
+        });
+
+        Record("visibility-restores-original-combining-and-supplementary-range", () =>
+        {
+            foreach (string original in new[] { "Ae\u0301DE", "A\U0001F600DE" })
+            foreach (bool undo in new[] { true, false })
+            {
+                Reset(original, undo); long token = Begin("replacement", 3); Require(Visible(token, false), "Unicode original range did not hide."); Drain(); Exact(original);
+                Require(box.SelectionStart == 1 && box.SelectionLength == 2 && model.Writes.Count == 0, "Unicode original range/selection was not exact.");
+                Require(Visible(token, true) && provider.CommitPreedit(token, "X"), "Unicode range could not resume/commit."); Drain(); Exact("AXDE");
+                if (undo) { box.Undo(); Drain(); Exact(original); Require(!box.CanUndo, "Unicode original required multiple undo steps."); }
+                else Require(!box.CanUndo, "Undo-disabled Unicode composition recorded undo.");
+            }
+        });
+
+        Record("visibility-source-generation-thread-and-utf16-boundaries", () =>
+        {
+            Reset(); long token = BeginPacket("\U0001F600", 2, false); Require(token != 0, "Hidden begin failed.");
+            foreach ((string text, int caret) in new[] { ("\ud800", 0), ("\udc00", 0), ("\U0001F600", 1), ("x", -1), ("x", 2) })
+            {
+                bool rejected = false;
+                try { UpdatePacket(token, text, caret, true); } catch (ArgumentException) { rejected = true; }
+                Require(rejected && box.Text == "ABCDE" && model.Writes.Count == 0, "Invalid visible packet exposed or changed hidden state.");
+            }
+            Require(!Visible(token + 1, true), "Wrong generation changed visibility.");
+            using (var otherSource = new PortablePresentationSource(_ => { }))
+            {
+                otherSource.AttachHost(new ControlsHost { Source = otherSource });
+                var other = (PortableInputProvider)otherSource.GetInputProvider(typeof(KeyboardDevice));
+                Require(!Visible(token, true, other), "Foreign source changed visibility.");
+            }
+            Exception? foreign = null;
+            var thread = new Thread(() => { try { Visible(token, true); } catch (Exception exception) { foreign = exception; } }); thread.Start(); thread.Join();
+            Require(foreign is InvalidOperationException && box.Text == "ABCDE", "Foreign thread changed hidden state.");
+            Require(Visible(token, true) && box.Text == "A\U0001F600DE" && box.CaretIndex == 3, "Rejected packet corrupted latest complete candidate.");
+            provider.CancelPreedit(token); Drain(); Exact("ABCDE"); Require(!Visible(token, false), "Canceled token accepted Hide.");
         });
 
         Record("source-disposal-restores-and-rejects-late-callbacks", () =>

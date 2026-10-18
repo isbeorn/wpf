@@ -27,6 +27,11 @@ namespace MS.Internal.Portability.Input
         private bool _committing;
         private bool _completedByEditor;
         private bool _hasEdited;
+        private bool _publishing;
+        private bool _visible;
+        private string _candidateText;
+        private int _candidateCaret;
+        private string _originalDocument;
         private ITextPointer _start;
         private ITextPointer _end;
         private string _originalText;
@@ -47,11 +52,11 @@ namespace MS.Internal.Portability.Input
             _box = (TextBox)editor.UiScope;
         }
 
-        public bool CanStart => !_editing && !_canceling && UndoManager.GetUndoManager(_box)?.OpenedUnit == null;
+        public bool CanStart => !_editing && !_canceling && !_publishing && UndoManager.GetUndoManager(_box)?.OpenedUnit == null;
         internal bool IsComposing => _active;
         internal TextEditor Editor => _editor;
 
-        public bool Begin(PortableTextCompositionSession session, long generation, string text, int caret)
+        public bool Begin(PortableTextCompositionSession session, long generation, string text, int caret, bool visible)
         {
             if (!_box.IsEnabled || _box.IsReadOnly || !CanStart) return false;
             _session = session;
@@ -62,6 +67,10 @@ namespace MS.Internal.Portability.Input
             _committing = false;
             _cancelRequested = false;
             _hasEdited = false;
+            _visible = visible;
+            _candidateText = string.Empty;
+            _candidateCaret = 0;
+            _originalDocument = ReadDocument();
             _undoUnit = null;
             _start = _editor.Selection.Start.CreatePointer(LogicalDirection.Backward);
             _end = _editor.Selection.End.CreatePointer(LogicalDirection.Forward);
@@ -70,16 +79,41 @@ namespace MS.Internal.Portability.Input
             _originalMoving = _editor.Selection.MovingPosition.Offset;
             _binding = BindingOperations.GetBindingExpressionBase(_box, TextBox.TextProperty);
             RememberDocument();
-            return RaisePreedit(text, caret, true);
+            return RaisePreedit(text, caret, true, visible);
         }
 
-        public bool Update(string text, int caret)
+        public bool Update(string text, int caret, bool? visible)
         {
-            if (!CheckOwned()) return false;
-            return RaisePreedit(text, caret, false);
+            if (_editing || _canceling || _committing || !CheckOwned()) return false;
+            return RaisePreedit(text, caret, false, visible);
         }
 
-        private bool RaisePreedit(string text, int caret, bool start)
+        public bool SetVisibility(bool visible)
+        {
+            if (_editing || _canceling || _committing || !CheckOwned()) return false;
+            if (_visible == visible) return true;
+            uint operation = _operation;
+            if (!visible)
+            {
+                _visible = false;
+                RemoveAdorner();
+                if (operation != _operation || !CheckOwned()) return false;
+                if (!RestoreOriginal()) { Finish(operation); return false; }
+                if (_cancelRequested) { _cancelRequested = false; Cancel(); }
+            }
+            else
+            {
+                _visible = true;
+                var composition = CreateComposition();
+                composition.SetCompositionPositions(_start, _end, _candidateText);
+                Apply(composition, _candidateCaret);
+            }
+            if (operation != _operation || !CheckOwned()) return false;
+            if (_visible) UpdateAdorner();
+            return _active && operation == _operation;
+        }
+
+        private bool RaisePreedit(string text, int caret, bool start, bool? visible)
         {
             uint operation = _operation;
             var composition = CreateComposition();
@@ -97,15 +131,21 @@ namespace MS.Internal.Portability.Input
                 if (_active) Cancel();
                 return false;
             }
+            _candidateText = text;
+            _candidateCaret = caret;
+            bool show = visible ?? _visible;
+            if (!show) return SetVisibility(false);
+            _visible = true;
             Apply(composition, caret);
-            if (!CheckOwned()) return false;
+            if (operation != _operation || !CheckOwned()) return false;
             UpdateAdorner();
-            return true;
+            return _active && operation == _operation;
         }
 
         public bool Commit(string text)
         {
-            if (!CheckOwned()) return false;
+            if (_editing) { _cancelRequested = true; return false; }
+            if (_canceling || _committing || !CheckOwned()) return false;
             uint operation = _operation;
             var composition = CreateComposition();
             composition.Stage = TextCompositionStage.Started;
@@ -145,16 +185,7 @@ namespace MS.Internal.Portability.Input
             _canceling = true;
             try
             {
-                UndoManager manager = UndoManager.GetUndoManager(_box);
-                if (_undoUnit != null && manager != null && manager.IsEnabled && manager.OpenedUnit == null &&
-                    ReferenceEquals(manager.LastUnit, _undoUnit) && !_undoUnit.Locked)
-                {
-                    manager.Reopen(_undoUnit);
-                    manager.Close(_undoUnit, UndoCloseAction.Rollback);
-                }
-                else if (_hasEdited) RestoreWithoutUndo();
-                if (operation != _operation || !_active) return;
-                RememberDocument();
+                if (!RestoreOriginal() || operation != _operation || !_active) return;
                 var composition = CreateComposition();
                 composition.Stage = TextCompositionStage.Started;
                 composition.SetResultPositions(_editor.Selection.Start, _editor.Selection.End, string.Empty);
@@ -221,6 +252,36 @@ namespace MS.Internal.Portability.Input
             if (_cancelRequested) { _cancelRequested = false; Cancel(); }
         }
 
+        private bool RestoreOriginal()
+        {
+            _editing = true;
+            try
+            {
+                _editor.Selection.BeginChangeNoUndo();
+                try
+                {
+                    UndoManager manager = UndoManager.GetUndoManager(_box);
+                    if (_undoUnit != null && manager != null && manager.IsEnabled && manager.OpenedUnit == null &&
+                        ReferenceEquals(manager.LastUnit, _undoUnit) && !_undoUnit.Locked)
+                    {
+                        manager.Reopen(_undoUnit);
+                        manager.Close(_undoUnit, UndoCloseAction.Rollback);
+                    }
+                    else if (_hasEdited) RestoreWithoutUndo();
+                    _undoUnit = null;
+                    _hasEdited = false;
+                }
+                finally { _editor.Selection.EndChange(); }
+                if (_originalDocument != ReadDocument() || _originalAnchor != _editor.Selection.AnchorPosition.Offset ||
+                    _originalMoving != _editor.Selection.MovingPosition.Offset) return false;
+                _start = _editor.TextContainer.CreatePointerAtOffset(Math.Min(_originalAnchor, _originalMoving), LogicalDirection.Backward);
+                _end = _editor.TextContainer.CreatePointerAtOffset(Math.Max(_originalAnchor, _originalMoving), LogicalDirection.Forward);
+                RememberDocument();
+                return true;
+            }
+            finally { _editing = false; }
+        }
+
         private void RestoreWithoutUndo()
         {
             _editor.TextContainer.BeginChangeNoUndo();
@@ -242,7 +303,9 @@ namespace MS.Internal.Portability.Input
             _expectedAnchor = _editor.Selection.AnchorPosition.Offset;
             _expectedMoving = _editor.Selection.MovingPosition.Offset;
         }
-        private bool OwnsDocument() => _expectedText == ReadDocument() &&
+        private bool OwnsDocument() =>
+            ReferenceEquals(_binding, BindingOperations.GetBindingExpressionBase(_box, TextBox.TextProperty)) &&
+            _expectedText == ReadDocument() &&
             _expectedAnchor == _editor.Selection.AnchorPosition.Offset && _expectedMoving == _editor.Selection.MovingPosition.Offset;
         private bool CheckOwned()
         {
@@ -255,33 +318,40 @@ namespace MS.Internal.Portability.Input
         {
             if (!_active || operation != _operation) return;
             _active = false;
-            _adornmentUpdate?.Abort();
-            _adornmentUpdate = null;
-            CompositionAdorner adorner = _adorner;
-            _adorner = null;
-            if (_adornedView != null) _adornedView.Updated -= OnTextViewUpdated;
-            _adornedView = null;
             _undoUnit = null;
+            _visible = false;
+            _candidateText = null;
+            _originalDocument = null;
             _session.Release(_generation, this);
             BindingExpressionBase binding = _binding;
             _binding = null;
-            adorner?.Uninitialize();
+            RemoveAdorner();
             if (operation != _operation || _active) return;
             if (binding != null && ReferenceEquals(binding, BindingOperations.GetBindingExpressionBase(_box, TextBox.TextProperty)) &&
                 !Helper.IsComposing(_box) && binding.IsUpdateDeferredForComposition)
             {
                 binding.IsUpdateDeferredForComposition = false;
-                binding.Dirty();
+                _publishing = true;
+                try { binding.Dirty(); }
+                finally { _publishing = false; }
             }
         }
-        private void UpdateAdorner()
+        private void RemoveAdorner()
         {
             _adornmentUpdate?.Abort();
             _adornmentUpdate = null;
             if (_adornedView != null) _adornedView.Updated -= OnTextViewUpdated;
             _adornedView = null;
-            _adorner?.Uninitialize();
+            CompositionAdorner adorner = _adorner;
             _adorner = null;
+            adorner?.Uninitialize();
+        }
+
+        private void UpdateAdorner()
+        {
+            uint operation = _operation;
+            RemoveAdorner();
+            if (!_active || !_visible || operation != _operation) return;
             if (_editor.TextView == null || _start.CompareTo(_end) == 0) return;
             var attribute = new UnsafeNativeMethods.TF_DISPLAYATTRIBUTE { lsStyle = UnsafeNativeMethods.TF_DA_LINESTYLE.TF_LS_SOLID };
             _adorner = new CompositionAdorner(_editor.TextView);
@@ -295,7 +365,7 @@ namespace MS.Internal.Portability.Input
 
         private void OnTextViewUpdated(object sender, EventArgs args)
         {
-            if (!_active || _editing || _canceling || _adornmentUpdate != null) return;
+            if (!_active || !_visible || _editing || _canceling || _adornmentUpdate != null) return;
             uint operation = _operation;
             CompositionAdorner adorner = _adorner;
             _adornmentUpdate = _box.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>

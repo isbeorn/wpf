@@ -100,6 +100,9 @@ namespace MS.Internal.Portability.Input
         private bool CanAcceptPreedit { get { _source.VerifyAccess(); return !_disposed && !_disposing && !_source.IsDisposed; } }
         internal long BeginPreedit(string text, int caret) => CanAcceptPreedit ? PortableTextCompositionSession.Current.Begin(_source, text, caret) : 0;
         internal bool UpdatePreedit(long generation, string text, int caret) => CanAcceptPreedit && PortableTextCompositionSession.Current.Update(_source, generation, text, caret);
+        internal long BeginPreedit(string text, int caret, bool visible) => CanAcceptPreedit ? PortableTextCompositionSession.Current.Begin(_source, text, caret, visible) : 0;
+        internal bool UpdatePreedit(long generation, string text, int caret, bool visible) => CanAcceptPreedit && PortableTextCompositionSession.Current.Update(_source, generation, text, caret, visible);
+        internal bool SetPreeditVisibility(long generation, bool visible) => CanAcceptPreedit && PortableTextCompositionSession.Current.SetVisibility(_source, generation, visible);
         internal bool CommitPreedit(long generation, string text) => CanAcceptPreedit && PortableTextCompositionSession.Current.Commit(_source, generation, text);
         internal bool CancelPreedit(long generation) => CanAcceptPreedit && PortableTextCompositionSession.Current.Cancel(_source, generation);
         public bool AcquireFocus(bool checkOnly)
