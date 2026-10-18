@@ -1,0 +1,14 @@
+<Project>
+  <Target Name="CaptureMarkupIntegrationPass1" AfterTargets="MarkupCompilePass1">
+    <WriteLinesToFile File="$(IntermediateOutputPath)markup-pass1.txt" Lines="RequirePass2=$(_RequireMCPass2ForMainAssembly)" Overwrite="true" WriteOnlyWhenDifferent="true" />
+    <ItemGroup><FileWrites Include="$(IntermediateOutputPath)markup-pass1.txt;$(IntermediateOutputPath)markup-pass2.txt" /></ItemGroup>
+  </Target>
+  <Target Name="CaptureMarkupIntegrationPass2" AfterTargets="MarkupCompilePass2" Condition="'$(_RequireMCPass2ForMainAssembly)' == 'true'">
+    <Error Condition="'@(GeneratedBaml)' == ''" Text="The local-type markup pass completed without generated BAML evidence." />
+    <GetFileHash Files="@(GeneratedBaml)" Algorithm="SHA256">
+      <Output TaskParameter="Items" ItemName="_MarkupPass2Evidence" />
+    </GetFileHash>
+    <WriteLinesToFile File="$(IntermediateOutputPath)markup-pass2.txt" Lines="Pass2Completed=true;@(_MarkupPass2Evidence->'%(Filename)%(Extension)|%(FileHash)')" Overwrite="true" WriteOnlyWhenDifferent="true" />
+    <ItemGroup><FileWrites Include="$(IntermediateOutputPath)markup-pass2.txt" /></ItemGroup>
+  </Target>
+</Project>

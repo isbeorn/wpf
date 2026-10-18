@@ -1,0 +1,21 @@
+<Project>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <AssemblyName>Portability.MarkupIntegration.Fixture</AssemblyName>
+    <RootNamespace>Portability.MarkupIntegration.Fixture</RootNamespace>
+    <OutputType>Library</OutputType>
+    <MarkupIntegrationWrongCaseViewSource Condition="'$(MarkupIntegrationWrongCaseViewSource)' == ''">views/Orbit View Ω.xaml</MarkupIntegrationWrongCaseViewSource>
+  </PropertyGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" />
+    <Page Include="Views/Orbit View Ω.xaml" Condition="'$(MarkupIntegrationCaseSensitiveNegative)' != 'true'" />
+    <Page Include="$(MarkupIntegrationWrongCaseViewSource)" Condition="'$(MarkupIntegrationCaseSensitiveNegative)' == 'true'" />
+    <Page Include="Dictionaries/Palette.xaml" />
+    <Resource Include="Assets/CaseSensitive Ω.txt" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="../../../Markup/PortableMarkup.targets" />
+  <Import Project="../PassEvidence.targets" />
+</Project>
