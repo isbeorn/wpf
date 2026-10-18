@@ -15,6 +15,21 @@ try
     var properties = new RunProperties(new Typeface(family));
     var paragraph = new Paragraph(properties);
     using var formatter = TextFormatter.Create();
+    Regression("empty-and-end-caret-bounds-regression", () =>
+    {
+        foreach (string text in new[] { "", "abc", "abc\r\n" })
+        {
+            using var caretLine = formatter.FormatLine(new Source(text, properties), 0, 1000, paragraph, null);
+            int end = caretLine.Length - caretLine.NewlineLength;
+            foreach (int length in new[] { 0, caretLine.NewlineLength })
+            {
+                var bounds = caretLine.GetTextBounds(end, length);
+                Require(bounds.Count == 1 && (bounds[0].TextRunBounds == null || bounds[0].TextRunBounds.Count == 1) &&
+                    bounds[0].Rectangle.Width == 0 && Near(bounds[0].Rectangle.Height, caretLine.Height),
+                    $"empty-end-caret-bounds-{text.Length}-{length}", "The real TextBoxLine single-position bounds contract accepts empty and terminator caret rectangles.");
+            }
+        }
+    });
     Regression("exact-fit-word-regression", () =>
     {
         foreach (TextWrapping wrapping in new[] { TextWrapping.Wrap, TextWrapping.WrapWithOverflow })

@@ -285,7 +285,8 @@ namespace MS.Internal.TextFormatting.Portable
             }
             double left = Distance(Math.Min(first - _first, _text.Length));
             double right = Distance(Math.Min(first - _first + length, _text.Length));
-            return new[] { new TextBounds(new Rect(left, 0, Math.Max(0, right - left), _height), FlowDirection.LeftToRight, ranges) };
+            return new[] { new TextBounds(new Rect(left, 0, Math.Max(0, right - left), _height), FlowDirection.LeftToRight,
+                ranges.Count == 0 ? null : ranges) };
         }
 
         public override bool HasOverflowed => _overflow;
