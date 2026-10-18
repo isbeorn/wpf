@@ -481,12 +481,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
                     0, false, (key.Modifiers & RawInputModifiers.Alt) != 0, KeyInterop.VirtualKeyFromKey(mapped), IntPtr.Zero));
                 break;
             case RawTextInputEventArgs text:
-                foreach (char character in text.Text)
-                {
-                    if (!CanNotify || _source.IsDisposed) break;
-                    if (char.IsSurrogate(character)) throw new PlatformNotSupportedException("Native committed text currently supports BMP characters only.");
-                    RawInput?.Invoke(new RawTextInputReport(_source, InputMode.Foreground, timestamp, false, false, char.IsControl(character), character));
-                }
+                RawInput?.Invoke(new PortableTextInputReport(_source, InputMode.Foreground, timestamp, text.Text));
                 break;
             case RawPointerEventArgs pointer:
                 if (pointer.Type == RawPointerEventType.CancelCapture) { OnCaptureLost(); break; }

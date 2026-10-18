@@ -619,6 +619,16 @@ namespace System.Windows.Input
             {
                 if(input.Report.Type == InputType.Text && input.RoutedEvent == InputManager.InputReportEvent)
                 {
+#if PORTABLE_WPF
+                    if (input.Report is MS.Internal.Portability.Input.PortableTextInputReport committedText)
+                    {
+                        TextComposition composition = new TextComposition(_inputManager, (IInputElement)e.StagingItem.Input.Source,
+                            committedText.Text, TextCompositionAutoComplete.On, InputManager.Current.PrimaryKeyboardDevice);
+                        if (committedText.Text.Length == 1 && char.IsControl(committedText.Text[0])) composition.MakeControl();
+                        input.Handled = UnsafeStartComposition(composition);
+                        return;
+                    }
+#endif
                     RawTextInputReport textInput;
                     textInput = (RawTextInputReport)input.Report;
 

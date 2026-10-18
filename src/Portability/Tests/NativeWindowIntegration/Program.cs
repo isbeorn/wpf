@@ -77,6 +77,15 @@ try
                     Run("resolved-settings-controlled-report-click-thresholds", () => VerifyClickThresholds(native));
                     completed = true;
                 }
+                else if (args.Contains("--text-commits-only", StringComparer.Ordinal))
+                {
+                    Require(fontPath is not null && File.Exists(fontPath), "Pass the pinned font path.");
+                    var textFont=new FontFamily(new Uri(Path.GetFullPath(fontPath!)),"DejaVu Sans");
+                    Run("native-callback-complete-multi-character-commit", () => NativeTextCommitChecks.CompleteString(native,Wait,Drain,textFont,"ab\u03a9e\u0301"));
+                    Run("native-callback-complete-supplementary-commit", () => NativeTextCommitChecks.CompleteString(native,Wait,Drain,textFont,"ab\U0001F600\u03a9e\u0301"));
+                    Run("native-enter-tab-control-command-routing", () => NativeTextCommitChecks.KeyCommands(native,Wait,Drain,textFont));
+                    completed=true;
+                }
                 else if (args.Contains("--clipboard-manager-only", StringComparer.Ordinal))
                 {
                     ClipboardCases.ExerciseManager(fontPath!, Run, Wait, TextTemplate);
@@ -968,6 +977,7 @@ static ControlTemplate TextTemplate()
 }
 void WriteResults() => Console.WriteLine(JsonSerializer.Serialize(new
 {
+    textCommitObservations = NativeTextCommitChecks.Observations,
     probe = wmOnly ? "genuine-wpf-native-window-manager" : "genuine-wpf-native-window", os = System.Runtime.InteropServices.RuntimeInformation.OSDescription,
     scope = wmOnly ? "native virtual X11 server with workspace Openbox; genuine Window state, geometry and retained frame; physical desktop unqualified" :
         "native virtual X11 server; OS-injected XTest input; genuine Window, retained frame and InputManager; physical desktop unqualified",

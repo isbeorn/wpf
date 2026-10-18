@@ -77,6 +77,10 @@ namespace MS.Internal.Portability.Input
                     return handled;
                 }
             }
+            else if (report is PortableTextInputReport committedText)
+            {
+                if (committedText.Text.Length == 0 || _manager.PortableInputState.KeyboardSource != _source) return false;
+            }
             else if (report is RawTextInputReport text)
             {
                 if (char.IsSurrogate(text.CharacterCode) || text.IsDeadCharacter)

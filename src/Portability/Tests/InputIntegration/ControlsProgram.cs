@@ -78,6 +78,12 @@ var thread = new Thread(() =>
         root.UpdateLayout();
         var caret = FindVisual(root, "CaretElement") ?? throw new InvalidOperationException("The actual TextBox caret did not attach to the AdornerDecorator.");
         if (!ReferenceEquals(PresentationSource.FromVisual(caret), source)) throw new InvalidOperationException("The managed caret did not retain the actual presentation source.");
+        if (args.Contains("--unicode-commits"))
+        {
+            UnicodeCommitChecks.Run(host,source,box,root,model,args.Single(value => value.StartsWith("--font=",StringComparison.Ordinal))[7..]);
+            Dispatcher.CurrentDispatcher.InvokeShutdown();
+            return;
+        }
         host.Report(new RawMouseInputReport(InputMode.Foreground, 1, source, RawMouseActions.Activate | RawMouseActions.AbsoluteMove, 10, 10, 0, IntPtr.Zero));
         if (!box.IsMouseOver) throw new InvalidOperationException("Actual mouse hit testing did not place the pointer over the TextBox.");
         if (overrideCursor) Mouse.OverrideCursor = Cursors.Cross;
