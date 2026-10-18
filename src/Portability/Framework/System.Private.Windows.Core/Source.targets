@@ -1,0 +1,49 @@
+<Project>
+  <Import Project="SourceManifest.props" />
+  <UsingTask TaskName="PrepareOriginalWindowsCore" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Archive ParameterType="System.String" Required="true" />
+      <SourceRoot ParameterType="System.String" Required="true" />
+      <Manifest ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
+      <KeyFile ParameterType="System.String" Required="true" />
+      <Sources ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Linq" />
+      <Using Namespace="System.Security.Cryptography" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        if (!File.Exists(Archive)) throw new FileNotFoundException("Run Prepare-Sources.ps1 to acquire the pinned Windows.Core source archive.", Archive);
+        using (var input = File.OpenRead(Archive))
+          if (BitConverter.ToString(SHA256.Create().ComputeHash(input)).Replace("-", "") != "6964320B93BBE473A5775F20D187159981F47BA2C5FA034EE7996ACC72B3A24E")
+            throw new InvalidDataException("Pinned winforms source archive hash mismatch.");
+        using var zip = new System.IO.Compression.ZipArchive(File.OpenRead(Archive));
+        var sources = new System.Collections.Generic.List<Microsoft.Build.Framework.ITaskItem>();
+        foreach (var file in Manifest)
+        {
+          var relative = file.ItemSpec;
+          var entry = zip.GetEntry("winforms-3c92f9f1cc1dcc74779795d518c67aa80f472df7/src/System.Private.Windows.Core/src/" + relative);
+          if (entry == null) throw new InvalidDataException("Original source archive entry missing: " + relative);
+          using var memory = new MemoryStream();
+          using (var stream = entry.Open()) stream.CopyTo(memory);
+          var bytes = memory.ToArray();
+          if (BitConverter.ToString(SHA256.Create().ComputeHash(bytes)).Replace("-", "") != file.GetMetadata("Sha256"))
+            throw new InvalidDataException("Original source hash mismatch: " + relative);
+          var target = Path.Combine(SourceRoot, relative);
+          Directory.CreateDirectory(Path.GetDirectoryName(target));
+          if (!File.Exists(target) || !File.ReadAllBytes(target).SequenceEqual(bytes)) File.WriteAllBytes(target, bytes);
+          if (relative.EndsWith(".cs", StringComparison.Ordinal)) sources.Add(new Microsoft.Build.Utilities.TaskItem(target));
+        }
+        var key = new byte[] {0,0,0,0,0,0,0,0,4,0,0,0,0,0,0,0};
+        Directory.CreateDirectory(Path.GetDirectoryName(KeyFile));
+        if (!File.Exists(KeyFile) || !File.ReadAllBytes(KeyFile).SequenceEqual(key)) File.WriteAllBytes(KeyFile, key);
+        Sources = sources.ToArray();
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="PrepareOriginalWindowsCoreSources" BeforeTargets="PrepareForBuild">
+    <PrepareOriginalWindowsCore Archive="$(WindowsCoreArchive)" SourceRoot="$(WindowsCoreSourceRoot)" Manifest="@(OriginalWindowsCoreSource)" KeyFile="$(AssemblyOriginatorKeyFile)">
+      <Output TaskParameter="Sources" ItemName="Compile" />
+    </PrepareOriginalWindowsCore>
+  </Target>
+</Project>
