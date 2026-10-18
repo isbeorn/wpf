@@ -1476,10 +1476,10 @@ namespace System.Windows.Media
                 _portableTickTimer.Stop();
                 _currentRenderOp?.Abort();
                 _currentRenderOp = null;
-                foreach (IPortableRenderTarget target in _portableRenderTargets)
-                {
-                    target.RootVisual.SetFlags(false, VisualFlags.ShouldPostRender);
-                }
+                foreach (Visual root in _portableVisualRoots.Keys)
+                    root.SetFlags(false, VisualFlags.ShouldPostRender);
+                _portableVisualRoots.Clear();
+                _portableBrushSources.Clear();
                 _portableRenderTargets.Clear();
 #else
                 RemoveChannels();
@@ -1968,7 +1968,7 @@ namespace System.Windows.Media
                 throw new ArgumentException("The render target must belong to this dispatcher.", nameof(target));
             if (_portableRenderTargets.Add(target))
             {
-                target.RootVisual.SetFlags(true, VisualFlags.ShouldPostRender);
+                RegisterPortableVisualRoot(target.RootVisual);
                 PostRender();
             }
         }
@@ -1978,12 +1978,45 @@ namespace System.Windows.Media
             VerifyAccess();
             if (_portableRenderTargets.Remove(target))
             {
-                bool rootStillRegistered = false;
-                foreach (IPortableRenderTarget remaining in _portableRenderTargets)
-                    rootStillRegistered |= ReferenceEquals(remaining.RootVisual, target.RootVisual);
-                if (!rootStillRegistered)
-                    target.RootVisual.SetFlags(false, VisualFlags.ShouldPostRender);
+                UnregisterPortableVisualRoot(target.RootVisual);
             }
+        }
+
+        internal void RegisterPortableVisualRoot(Visual visual)
+        {
+            VerifyAccess();
+            _portableVisualRoots.TryGetValue(visual, out int references);
+            _portableVisualRoots[visual] = checked(references + 1);
+            visual.SetFlags(true, VisualFlags.ShouldPostRender);
+        }
+
+        internal void UnregisterPortableVisualRoot(Visual visual)
+        {
+            VerifyAccess();
+            if (!_portableVisualRoots.TryGetValue(visual, out int references)) return;
+            if (references == 1)
+            {
+                _portableVisualRoots.Remove(visual);
+                visual.SetFlags(false, VisualFlags.ShouldPostRender);
+            }
+            else _portableVisualRoots[visual] = references - 1;
+        }
+
+        internal bool IsPortableBrushSource(Visual visual) => _portableBrushSources.ContainsKey(visual);
+
+        internal void RegisterPortableBrushSource(Visual visual)
+        {
+            VerifyAccess();
+            _portableBrushSources.TryGetValue(visual, out int references);
+            _portableBrushSources[visual] = checked(references + 1);
+        }
+
+        internal void UnregisterPortableBrushSource(Visual visual)
+        {
+            VerifyAccess();
+            if (!_portableBrushSources.TryGetValue(visual, out int references)) return;
+            if (references == 1) _portableBrushSources.Remove(visual);
+            else _portableBrushSources[visual] = references - 1;
         }
 
         private void RenderPortable()
@@ -2043,6 +2076,8 @@ namespace System.Windows.Media
             }
         }
 
+        private readonly Dictionary<Visual, int> _portableBrushSources = new Dictionary<Visual, int>();
+        private readonly Dictionary<Visual, int> _portableVisualRoots = new Dictionary<Visual, int>();
         private readonly HashSet<IPortableRenderTarget> _portableRenderTargets = new HashSet<IPortableRenderTarget>();
         private bool _portableRenderRequested;
         private DispatcherTimer _portableTickTimer;

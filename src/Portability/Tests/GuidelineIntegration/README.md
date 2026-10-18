@@ -157,8 +157,9 @@ in the raw results and must be explained by permitted source coordinates.
 
 ## Large sampling run
 
-The ordinary fixture includes 166 checks, including sixteen uniform-offset checks,
-nine visual-boundary checks and the unchanged 44 guideline checks. `--large-sampling` adds 51 cases with 6000x4000 Gray16, RGB48 and Pbgra32
+The ordinary fixture includes 227 checks, including 61 VisualBrush checks,
+sixteen uniform-offset checks, nine visual-boundary checks and the unchanged 44
+guideline checks. `--large-sampling` adds 51 cases with 6000x4000 Gray16, RGB48 and Pbgra32
 sources and 1184x811 output. Inputs include independent 16-bit low bytes,
 coordinate-coded high bytes and premultiplied alpha zones. Caller arrays are
 cleared and complete CopyPixels results must retain the exact input bytes.
@@ -222,3 +223,45 @@ rejects an actual Linear fallback on the same source. At 1:1 HQ also satisfies
 independent nearest-source texel checks; both 1:1 and magnification must match
 the native Linear raster exactly. Gray16/RGB48 low bytes remain independent and
 complete source CopyPixels comparisons remain exact after clearing caller data.
+
+## Non-tiled VisualBrush fills
+
+The portable walker supports TileMode.None VisualBrush fills for rectangles,
+rounded rectangles, ellipses and geometries. It replays the actual source visual
+under the destination and viewport clips, without a picture cache or intermediate
+bitmap. Mapping follows the original TileBrushUtils and BrushTypeUtils equations:
+relative or absolute viewbox/viewport, all Stretch/alignment values and relative
+then absolute brush transforms. Source layout stays with the original
+VisualBrush AutoLayoutContent mechanism; painting never measures or arranges.
+
+Run `GuidelineIntegration --visual-brush-only` for the bounded 61-case matrix.
+The normal fixture also runs these cases with the existing guideline and sampling
+regressions. Tests include nonzero source bounds, root rotation/offset, all four
+fill shapes, patterned cropping/alignment, reflected brush transforms, fractional
+DPI and group opacity. Ellipse clip and DrawOval edge coverage differ in Skia;
+every ellipse cell is checked against analytic interior/exterior bounds and
+premultiplied source color, without claiming identical edge bytes.
+
+Persistent-target cases pump the actual dispatcher after detached source changes,
+with no unrelated host rendering activity. They cover bitmap mutation, visual
+replacement/null/restore, opacity changes, shared consumers, obsolete dependency
+removal, disposal, dispatcher shutdown and recovery after failed or recursive
+frames. A target retains previously consumed and newly encountered roots after a
+failed frame, pruning obsolete roots after its next successful frame. MediaContext
+counts shared brush sources without claiming composition-root ownership. The
+portable ancestor invalidation walk checks this membership separately from real
+render-target root flags. Shutdown clears the brush membership without changing
+source root flags. Persistent AutoLayout and legal current/former source parenting
+are checked while the consuming target remains alive. Failure recovery drains an
+observed failed dispatcher frame before the fixing mutation; failed replacement
+checks both old/new dependency retention and later pruning.
+
+Gray16 and RGB48 checks compare the brush display with direct source-image drawing
+through the same qualified HighQuality and Nearest samplers in both directions,
+then verify exact original and mutated source bytes. Following sibling drawing
+checks sampling, opacity, guideline and clip state restoration.
+
+Tiled modes, VisualBrush pens/glyph foregrounds, recursive source graphs, visual
+effects and opacity masks remain explicit unsupported cases. Null/empty sources,
+zero-area mappings and singular transforms paint transparently. This is a
+bounded portable rendering profile, not Windows software pixel equivalence.

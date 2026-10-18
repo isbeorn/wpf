@@ -21,6 +21,16 @@ using var reference = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContex
 var thread = new Thread(() =>
 {
     CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+#if !STOCK
+    var visualBrushes = VisualBrushCases.Run(Render);
+    results.AddRange(visualBrushes);
+    failed |= visualBrushes.Any(item => !item.passed);
+    if (args.Contains("--visual-brush-only"))
+    {
+        Dispatcher.CurrentDispatcher.InvokeShutdown();
+        return;
+    }
+#endif
     var visualGuidelines = VisualGuidelineCases.Run(Render);
     results.AddRange(visualGuidelines);
     failed |= visualGuidelines.Any(item => !item.passed);

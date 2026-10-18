@@ -3,6 +3,7 @@
 
 #if PORTABLE_WPF
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
 using SkiaSharp;
@@ -15,6 +16,9 @@ namespace MS.Internal.Portability.Rendering
         private readonly SKColorFilter _linearSamplingPrecision;
         private DpiScale _dpiScale;
         private bool _disposed;
+        private readonly HashSet<Visual> _brushSources = new();
+        private readonly HashSet<Visual> _activeVisuals = new();
+        private HashSet<Visual> _frameSources;
 
         public Visual RootVisual { get; }
         internal event Action FrameRendered;
@@ -55,19 +59,29 @@ namespace MS.Internal.Portability.Rendering
         public void Render()
         {
             VerifyAccess();
+            if (_frameSources != null) throw new InvalidOperationException("A portable render target cannot render recursively.");
+            _frameSources = new HashSet<Visual>();
             SKCanvas canvas = _surface.Canvas;
             int saved = canvas.Save();
             try
             {
                 canvas.Clear(SKColors.Transparent);
                 canvas.Scale((float)_dpiScale.DpiScaleX, (float)_dpiScale.DpiScaleY);
-                var walker = new SkiaDrawingContextWalker(canvas, _linearSamplingPrecision);
+                var walker = new SkiaDrawingContextWalker(canvas, _linearSamplingPrecision, this);
                 WalkVisual(RootVisual, walker);
                 canvas.Flush();
+                foreach (Visual obsolete in new List<Visual>(_brushSources))
+                    if (!_frameSources.Contains(obsolete))
+                    {
+                        _brushSources.Remove(obsolete);
+                        MediaContext.From(RootVisual.Dispatcher).UnregisterPortableBrushSource(obsolete);
+                    }
             }
             finally
             {
                 canvas.RestoreToCount(saved);
+                // Keep both old and newly encountered sources after failure so fixing either can retry the frame.
+                _frameSources = null;
             }
             // Handlers may dispose or resize the target, so raster state must not be used after notification.
             FrameRendered?.Invoke();
@@ -106,6 +120,9 @@ namespace MS.Internal.Portability.Rendering
                 return;
             FrameRendered = null;
             MediaContext.From(RootVisual.Dispatcher).UnregisterPortableRenderTarget(this);
+            foreach (Visual source in _brushSources)
+                MediaContext.From(RootVisual.Dispatcher).UnregisterPortableBrushSource(source);
+            _brushSources.Clear();
             _disposed = true;
             _surface.Dispose();
             _linearSamplingPrecision.Dispose();
@@ -133,8 +150,21 @@ namespace MS.Internal.Portability.Rendering
                 throw new ArgumentOutOfRangeException(nameof(dpiScale), "DPI scales must be finite positive values representable by the raster backend.");
         }
 
-        private static void WalkVisual(Visual visual, SkiaDrawingContextWalker walker)
+        internal void RegisterBrushSource(Visual visual)
         {
+            VerifyAccess();
+            visual.Dispatcher.VerifyAccess();
+            if (visual.Dispatcher != RootVisual.Dispatcher)
+                throw new InvalidOperationException("VisualBrush content must belong to the render target's dispatcher.");
+            _frameSources.Add(visual);
+            if (_brushSources.Add(visual))
+                MediaContext.From(RootVisual.Dispatcher).RegisterPortableBrushSource(visual);
+        }
+
+        internal void WalkVisual(Visual visual, SkiaDrawingContextWalker walker)
+        {
+            if (!_activeVisuals.Add(visual))
+                throw new NotSupportedException("Portable rendering does not support recursive VisualBrush graphs.");
             var guidelines = walker.CaptureGuidelines();
             BitmapScalingMode bitmapScalingMode = walker.PushBitmapScalingMode(visual.VisualBitmapScalingMode);
             int saved = walker.Canvas.Save();
@@ -170,6 +200,7 @@ namespace MS.Internal.Portability.Rendering
                 walker.Canvas.RestoreToCount(saved);
                 walker.RestoreGuidelines(guidelines);
                 walker.RestoreBitmapScalingMode(bitmapScalingMode);
+                _activeVisuals.Remove(visual);
             }
         }
     }

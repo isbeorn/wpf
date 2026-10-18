@@ -20,8 +20,14 @@ namespace MS.Internal.Portability.Rendering
         private PortableGuidelineFrame _guidelines = PortableGuidelineFrame.Empty;
         private readonly System.Collections.Generic.Stack<PortableGuidelineFrame> _guidelineStates = new();
 
+        private readonly PortableRenderTarget _target;
+
         internal SkiaDrawingContextWalker(SKCanvas canvas, SKColorFilter linearSamplingPrecision)
+            : this(canvas, linearSamplingPrecision, null) { }
+
+        internal SkiaDrawingContextWalker(SKCanvas canvas, SKColorFilter linearSamplingPrecision, PortableRenderTarget target)
         {
+            _target = target;
             Canvas = canvas;
             _linearSamplingPrecision = linearSamplingPrecision;
         }
@@ -52,6 +58,13 @@ namespace MS.Internal.Portability.Rendering
         public override void DrawRectangle(Brush brush, Pen pen, Rect rectangle)
         {
             if (rectangle.IsEmpty) return;
+            if (brush is VisualBrush visualBrush)
+            {
+                using var fill = new SKPath();
+                fill.AddRect(ToRect(rectangle));
+                DrawVisualBrush(visualBrush, fill, rectangle);
+                brush = null;
+            }
             if (!_guidelines.IsEmpty)
             {
                 using var path = new SKPath(); path.AddRect(ToRect(rectangle));
@@ -64,6 +77,13 @@ namespace MS.Internal.Portability.Rendering
         public override void DrawRoundedRectangle(Brush brush, Pen pen, Rect rectangle, double radiusX, double radiusY)
         {
             if (rectangle.IsEmpty) return;
+            if (brush is VisualBrush visualBrush)
+            {
+                using var fill = new SKPath();
+                fill.AddRoundRect(ToRect(rectangle), (float)Math.Min(Math.Abs(radiusX), rectangle.Width / 2), (float)Math.Min(Math.Abs(radiusY), rectangle.Height / 2));
+                DrawVisualBrush(visualBrush, fill, rectangle);
+                brush = null;
+            }
             if (!_guidelines.IsEmpty)
             {
                 using var path = new SKPath();
@@ -79,6 +99,12 @@ namespace MS.Internal.Portability.Rendering
         {
             var rectangle = new SKRect((float)(center.X - Math.Abs(radiusX)), (float)(center.Y - Math.Abs(radiusY)),
                 (float)(center.X + Math.Abs(radiusX)), (float)(center.Y + Math.Abs(radiusY)));
+            if (brush is VisualBrush visualBrush)
+            {
+                using var fill = new SKPath(); fill.AddOval(rectangle);
+                DrawVisualBrush(visualBrush, fill, new Rect(rectangle.Left, rectangle.Top, rectangle.Width, rectangle.Height));
+                brush = null;
+            }
             if (!_guidelines.IsEmpty)
             {
                 using var path = new SKPath(); path.AddOval(rectangle);
@@ -93,7 +119,9 @@ namespace MS.Internal.Portability.Rendering
             if (geometry == null || (brush == null && (pen == null || pen.Brush == null))) return;
             using (SKPath fill = SkiaGeometry.Create(geometry, false))
             {
-                if (brush != null)
+                if (brush is VisualBrush visualBrush)
+                    DrawVisualBrush(visualBrush, fill, geometry.Bounds);
+                else if (brush != null)
                     using (SKPaint paint = CreateBrush(brush)) DrawSnappedPath(fill, paint);
             }
             if (pen != null && pen.Brush != null && pen.Thickness != 0)
@@ -293,6 +321,85 @@ namespace MS.Internal.Portability.Rendering
             int saved = Canvas.Save();
             try { Canvas.ResetMatrix(); Canvas.DrawPath(snapped, fill); }
             finally { Canvas.RestoreToCount(saved); }
+        }
+
+        private void DrawVisualBrush(VisualBrush brush, SKPath shape, Rect bounds)
+        {
+            if (brush.TileMode != TileMode.None) throw Unsupported($"VisualBrush tile mode {brush.TileMode}");
+            Visual source = brush.Visual;
+            if (source == null || bounds.IsEmpty || bounds.Width <= 0 || bounds.Height <= 0) return;
+            if (_target == null) throw Unsupported("VisualBrush content without a portable render target");
+            _target.RegisterBrushSource(source);
+            Rect content = source.CalculateSubgraphBoundsOuterSpace();
+            Rect viewbox = AbsoluteRectangle(brush.Viewbox, brush.ViewboxUnits, content);
+            Rect viewport = AbsoluteRectangle(brush.Viewport, brush.ViewportUnits, bounds);
+            if (!UsableRectangle(viewbox) || !UsableRectangle(viewport)) return;
+
+            // These operations follow CTileBrushUtils::CalculateViewboxToViewportMapping.
+            double sx = brush.Stretch == Stretch.None ? 1 : viewport.Width / viewbox.Width;
+            double sy = brush.Stretch == Stretch.None ? 1 : viewport.Height / viewbox.Height;
+            if (brush.Stretch == Stretch.Uniform) sx = sy = Math.Min(sx, sy);
+            if (brush.Stretch == Stretch.UniformToFill) sx = sy = Math.Max(sx, sy);
+            double ax = brush.AlignmentX == AlignmentX.Left ? 0 : brush.AlignmentX == AlignmentX.Right ? 1 : 0.5;
+            double ay = brush.AlignmentY == AlignmentY.Top ? 0 : brush.AlignmentY == AlignmentY.Bottom ? 1 : 0.5;
+            var mapping = new Matrix(sx, 0, 0, sy,
+                viewport.X + ax * viewport.Width - (viewbox.X + ax * viewbox.Width) * sx,
+                viewport.Y + ay * viewport.Height - (viewbox.Y + ay * viewbox.Height) * sy);
+            // CBrushTypeUtils applies the normalized bounds transform before the absolute transform.
+            var brushTransform = new Matrix(1 / bounds.Width, 0, 0, 1 / bounds.Height, -bounds.X / bounds.Width, -bounds.Y / bounds.Height);
+            brushTransform.Append(brush.RelativeTransform.Value);
+            brushTransform.Append(new Matrix(bounds.Width, 0, 0, bounds.Height, bounds.X, bounds.Y));
+            brushTransform.Append(brush.Transform.Value);
+            RequireFinite(mapping); RequireFinite(brushTransform);
+            if (!mapping.HasInverse || !brushTransform.HasInverse) return;
+
+            int saved = Canvas.Save();
+            var guidelines = CaptureGuidelines();
+            BitmapScalingMode mode = _bitmapScalingMode;
+            try
+            {
+                if (_guidelines.IsEmpty) Canvas.ClipPath(shape, SKClipOperation.Intersect, true);
+                else
+                {
+                    SKMatrix original = Canvas.TotalMatrix;
+                    using SKPath snapped = _guidelines.SnapPath(shape, original);
+                    Canvas.ResetMatrix();
+                    Canvas.ClipPath(snapped, SKClipOperation.Intersect, true);
+                    Canvas.SetMatrix(original);
+                }
+                SKMatrix transform = ToMatrix(brushTransform);
+                Canvas.Concat(in transform);
+                Canvas.ClipRect(ToRect(viewport), SKClipOperation.Intersect, true);
+                transform = ToMatrix(mapping);
+                Canvas.Concat(in transform);
+                if (brush.Opacity != 1) PushOpacity(brush.Opacity);
+                _target.WalkVisual(source, this);
+            }
+            finally
+            {
+                Canvas.RestoreToCount(saved);
+                RestoreGuidelines(guidelines);
+                _bitmapScalingMode = mode;
+            }
+        }
+
+        private static Rect AbsoluteRectangle(Rect rectangle, BrushMappingMode units, Rect bounds)
+        {
+            if (rectangle.IsEmpty || units == BrushMappingMode.Absolute) return rectangle;
+            if (bounds.IsEmpty) return Rect.Empty;
+            return new Rect(bounds.X + rectangle.X * bounds.Width, bounds.Y + rectangle.Y * bounds.Height,
+                rectangle.Width * bounds.Width, rectangle.Height * bounds.Height);
+        }
+
+        private static bool UsableRectangle(Rect value) => !value.IsEmpty && value.Width > 0 && value.Height > 0 &&
+            double.IsFinite(value.X) && double.IsFinite(value.Y) && double.IsFinite(value.Right) && double.IsFinite(value.Bottom);
+
+        private static void RequireFinite(Matrix matrix)
+        {
+            SKMatrix value = ToMatrix(matrix);
+            if (!float.IsFinite(value.ScaleX) || !float.IsFinite(value.ScaleY) || !float.IsFinite(value.SkewX) ||
+                !float.IsFinite(value.SkewY) || !float.IsFinite(value.TransX) || !float.IsFinite(value.TransY))
+                throw Unsupported("non-finite VisualBrush transforms");
         }
 
         private static SKPaint CreateBrush(Brush brush)

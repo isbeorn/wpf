@@ -5202,8 +5202,9 @@ namespace System.Windows.Media
             // Notify each registered ancestor before the native propagation early-out.
             for (Visual current = e; current != null; current = current._parent as Visual)
             {
-                if (current.CheckFlagsOr(VisualFlags.ShouldPostRender))
-                    MediaContext.From(current.Dispatcher).PostRender();
+                MediaContext context = current.Dispatcher.Reserved0 as MediaContext;
+                if (context != null && (current.CheckFlagsOr(VisualFlags.ShouldPostRender) || context.IsPortableBrushSource(current)))
+                    context.PostRender();
             }
 #endif
             while ((e != null) &&
