@@ -11,6 +11,21 @@ using SkiaSharp;
 
 var checks = new List<object>();
 var failed = false;
+var visibility = new List<VisibilityCases.Result>();
+Run("visibility-cases-dispatcher", () => visibility.AddRange(VisibilityCases.Run((visual, dpi, width, height) =>
+{
+    using var target = new Target(visual, width, height, dpi);
+    target.Render();
+    using var pixels = target.Snapshot();
+    return pixels.GetPixelSpan().ToArray();
+})));
+checks.AddRange(visibility.Select(item => new { name = item.Name, status = item.passed ? "pass" : "fail", detail = item.detail }));
+failed |= visibility.Any(item => !item.passed);
+if (args.Contains("--visibility-only"))
+{
+    Console.WriteLine(JsonSerializer.Serialize(new { probe = "retained-visibility", checks }, new JsonSerializerOptions { WriteIndented = true }));
+    return failed ? 1 : 0;
+}
 Run("retained-command-bounds-survive-render-and-mutation", () =>
 {
     var transform = new MatrixTransform(2, 0, 0, 3, 8, 9);

@@ -163,6 +163,8 @@ namespace MS.Internal.Portability.Rendering
 
         internal void WalkVisual(Visual visual, SkiaDrawingContextWalker walker)
         {
+            if (visual.VisualOpacity == 0)
+                return;
             if (!_activeVisuals.Add(visual))
                 throw new NotSupportedException("Portable rendering does not support recursive VisualBrush graphs.");
             var guidelines = walker.CaptureGuidelines();

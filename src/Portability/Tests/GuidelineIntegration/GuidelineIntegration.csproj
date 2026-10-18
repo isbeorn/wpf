@@ -2,6 +2,7 @@
   <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
   <ItemGroup>
     <Compile Remove="StockOracle/**/*.cs" />
+    <Compile Include="../RenderingIntegration/VisibilityCases.cs" Link="VisibilityCases.cs" />
     <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" />
     <Content Include="StockGuidelineReference.json" CopyToOutputDirectory="PreserveNewest" Condition="Exists('StockGuidelineReference.json')" />
     <Content Include="StockBitmapSamplingReference.json" CopyToOutputDirectory="PreserveNewest" />

@@ -265,3 +265,5 @@ Tiled modes, VisualBrush pens/glyph foregrounds, recursive source graphs, visual
 effects and opacity masks remain explicit unsupported cases. Null/empty sources,
 zero-area mappings and singular transforms paint transparently. This is a
 bounded portable rendering profile, not Windows software pixel equivalence.
+
+The stock oracle and portable program also include the shared retained-visibility corpus from ../RenderingIntegration/VisibilityCases.cs. --visibility-only runs those checks without the sampling/guideline corpus. Expected visibility pixels come from the recorded rectangle and transparent exterior, not copied backend output; actual stock RenderTargetBitmap and portable retained traversal execute the same cases.
