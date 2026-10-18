@@ -307,7 +307,6 @@ namespace System.Windows
             PortableBoundsChanges changes = _portablePendingBounds & ~_portableBoundsAwaitingAck;
             if (changes == PortableBoundsChanges.None) return;
             Rect target = _portableRestoreBounds;
-            bool calledNative = false;
             _portableApplyingBounds = true;
             _portableMetricsDuringBoundsApply = false;
             try
@@ -318,11 +317,7 @@ namespace System.Windows
                     _portableRequestedDesktopPosition = position;
                     _portableRequestedBoundsDpi = _portablePeer.DpiScale;
                     _portableBoundsAwaitingAck |= _portablePendingBounds & (PortableBoundsChanges.Left | PortableBoundsChanges.Top);
-                    if (!_portableHasBeenShown || position != _portablePeer.DesktopPosition)
-                    {
-                        calledNative = true;
-                        _portablePeer.SetDesktopPosition(position);
-                    }
+                    _portablePeer.SetDesktopPosition(position);
                 }
                 if ((changes & (PortableBoundsChanges.Width | PortableBoundsChanges.Height)) != 0)
                 {
@@ -332,15 +327,11 @@ namespace System.Windows
                     _portableRequestedClientPixels = new Size(client.Width * dpi.DpiScaleX, client.Height * dpi.DpiScaleY);
                     _portableRequestedBoundsDpi = dpi;
                     _portableBoundsAwaitingAck |= _portablePendingBounds & (PortableBoundsChanges.Width | PortableBoundsChanges.Height);
-                    if (client != _portablePeer.ClientSize)
-                    {
-                        calledNative = true;
-                        _portablePeer.SetClientSize(client);
-                    }
+                    _portablePeer.SetClientSize(client);
                 }
             }
             finally { _portableApplyingBounds = false; }
-            if (_portableMetricsDuringBoundsApply || !calledNative) PortableOnMetricsChanged();
+            if (_portableMetricsDuringBoundsApply) PortableOnMetricsChanged();
         }
 
         private void PortablePublishLocation(Point logical, bool notify)

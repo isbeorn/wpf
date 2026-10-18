@@ -872,6 +872,49 @@ var thread = new Thread(() =>
         }
         finally { factory.InitialDpi = new DpiScale(1, 1); }
     });
+    foreach (string intent in new[] { "size", "position", "both" })
+    Run("transient-normal-match-still-sends-" + intent + "-intent", () =>
+    {
+        try
+        {
+            foreach (WindowState state in new[] { WindowState.Maximized, WindowState.Minimized })
+            foreach (bool geometryFirst in new[] { false, true })
+            foreach (bool belowMinimum in new[] { false, true })
+            {
+                factory.GeometryFirst = geometryFirst;
+                var original = new Rect(100, 80, 320, 200);
+                var window = new Window { Left = original.X, Top = original.Y, Width = original.Width, Height = original.Height,
+                    MinWidth = 200, MinHeight = 120, MaxWidth = 500, MaxHeight = 400 };
+                window.Show(); var peer = factory.Last;
+                window.WindowState = state;
+                Point targetPosition = intent == "size" ? original.TopLeft : peer.DesktopPosition;
+                Size targetSize = intent == "position" ? original.Size : belowMinimum ? new Size(200, 120) : new Size(500, 400);
+                if (intent != "position") { window.Width = belowMinimum ? 100 : 800; window.Height = belowMinimum ? 80 : 650; }
+                if (intent != "size") { window.Left = targetPosition.X; window.Top = targetPosition.Y; }
+                var target = new Rect(targetPosition, targetSize);
+                peer.TransientNormalBounds = target;
+                peer.DeferBounds = true;
+                int sizeRequests = peer.ClientSizeRequests, positionRequests = peer.DesktopPositionRequests;
+                window.WindowState = WindowState.Normal;
+                int queuedSizes = peer.ClientSizeRequests - sizeRequests, queuedPositions = peer.DesktopPositionRequests - positionRequests;
+                Size queuedSize = peer.LastClientRequest; Point queuedPosition = peer.LastDesktopRequest;
+                peer.PublishGeometry(original); window.UpdateLayout(); Drain();
+                Assert(peer.ClientSizeRequests - sizeRequests == queuedSizes && peer.DesktopPositionRequests - positionRequests == queuedPositions,
+                    "Late old restore and unchanged layout do not retry a sent intent");
+                if (queuedPositions != 0) peer.PublishGeometry(peer.OuterSize, queuedPosition);
+                if (queuedSizes != 0) peer.PublishGeometry(new Size(queuedSize.Width + 16, queuedSize.Height + 40), peer.DesktopPosition);
+                window.UpdateLayout(); Drain();
+                Assert(new Rect(peer.DesktopPosition, peer.OuterSize) == target && window.RestoreBounds == target,
+                    "Actually queued explicit requests win over a late old Normal restore despite an initially matching snapshot");
+                Assert(queuedSizes == (intent == "position" ? 0 : 1) && queuedPositions == (intent == "size" ? 0 : 1),
+                    "Each newly pending axis pair issues exactly one peer request even when current geometry matches");
+                Assert(peer.ClientSizeRequests - sizeRequests == queuedSizes && peer.DesktopPositionRequests - positionRequests == queuedPositions,
+                    "Acknowledged intent and unchanged layout issue no further requests");
+                window.Close();
+            }
+        }
+        finally { factory.GeometryFirst = false; }
+    });
     Run("application-window-main-and-owned-collections", () =>
     {
         var app = new Application { ShutdownMode = ShutdownMode.OnExplicitShutdown };
@@ -953,11 +996,15 @@ sealed class ManagedPeer : IPortableWindowPeer
     public Point DesktopPosition { get; private set; }
     public bool DeferBounds { get; set; }
     public int BoundsRequests { get; private set; }
+    public int ClientSizeRequests { get; private set; }
+    public int DesktopPositionRequests { get; private set; }
+    public Rect? TransientNormalBounds { get; set; }
     public Size LastClientRequest { get; private set; }
     public Point LastDesktopRequest { get; private set; }
     public void SetDesktopPosition(Point position)
     {
         BoundsRequests++;
+        DesktopPositionRequests++;
         LastDesktopRequest = position;
         if (DeferBounds) return;
         DesktopPosition = position;
@@ -997,6 +1044,7 @@ sealed class ManagedPeer : IPortableWindowPeer
     public void SetClientSize(Size size)
     {
         BoundsRequests++;
+        ClientSizeRequests++;
         LastClientRequest = size;
         if (DeferBounds) return;
         ClientSize = size;
@@ -1025,6 +1073,12 @@ sealed class ManagedPeer : IPortableWindowPeer
             _frameSize = state == WindowState.Normal ? new Size(16, 40) : new Size();
             ClientSize = state == WindowState.Normal ? _normalClientSize : state == WindowState.Maximized ? new Size(1280, 760) : new Size(160, 40);
             DesktopPosition = state == WindowState.Normal ? _normalPosition : state == WindowState.Maximized ? new Point(-8, -8) : new Point(-32000, -32000);
+            if (state == WindowState.Normal && TransientNormalBounds is Rect transient)
+            {
+                ClientSize = new Size(transient.Width - _frameSize.Width, transient.Height - _frameSize.Height);
+                DesktopPosition = new Point(transient.X * DpiScale.DpiScaleX, transient.Y * DpiScale.DpiScaleY);
+                TransientNormalBounds = null;
+            }
             MetricsChanged?.Invoke();
         }
         if (_factory.GeometryFirst) { Geometry(); if (State == state) StateChanged?.Invoke(state); }
