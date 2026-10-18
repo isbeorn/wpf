@@ -51,6 +51,10 @@ namespace Microsoft.Win32
         public virtual bool? ShowDialog()
         {
             CheckPermissionsToShowDialog();
+#if PORTABLE_WPF
+            return this is FileDialog dialog ? dialog.ShowPortableDialog(null) :
+                throw new PlatformNotSupportedException("This common dialog has no portable native capability.");
+#else
 
             // Don't allow file dialogs to be shown if not in interactive mode
             // (for example, if we're running as a service)
@@ -106,6 +110,7 @@ namespace Microsoft.Win32
             {
                 tempParentHwnd?.Dispose();
             }
+#endif
         }
 
         /// <summary>
@@ -114,6 +119,10 @@ namespace Microsoft.Win32
         public bool? ShowDialog(Window owner)
         {
             CheckPermissionsToShowDialog();
+#if PORTABLE_WPF
+            return this is FileDialog dialog ? dialog.ShowPortableDialog(owner) :
+                throw new PlatformNotSupportedException("This common dialog has no portable native capability.");
+#else
 
             // If a valid window wasn't passed into this function, we'll
             // call ShowDialog() to use the active window instead of 
@@ -154,6 +163,7 @@ namespace Microsoft.Win32
             {
                 ComponentDispatcher.CriticalPopModal();
             }
+#endif
         }
 
         #endregion Public Methods
@@ -322,7 +332,11 @@ namespace Microsoft.Win32
         ///  member so that the dialog can be properly centered onscreen.
         ///  It is exposed through the OwnerWindowHandle property.
         /// </summary>
+#if PORTABLE_WPF
+        private IntPtr _hwndOwnerWindow = IntPtr.Zero;
+#else
         private IntPtr _hwndOwnerWindow;
+#endif
 
         #endregion Private Fields
     }

@@ -7,6 +7,7 @@ using Avalonia.Input;
 using Avalonia.Input.Raw;
 using Avalonia.Platform;
 using Avalonia.Platform.Surfaces;
+using Avalonia.Platform.Storage;
 using Avalonia.Rendering.Composition;
 using Avalonia.X11;
 using WpfFork::MS.Internal.Portability.Input;
@@ -42,7 +43,7 @@ internal sealed class NativeWindowFactory(IWindowingPlatform platform) : IPortab
     }
 }
 
-internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
+internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost, IPortableFileDialogHost
 {
     private readonly IWindowImpl _window;
     private readonly WpfSource _source;
@@ -63,6 +64,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
     private WpfPoint _desktopPosition;
     private WpfPoint _clientScreenOrigin;
     private WpfDpi _dpiScale;
+    private CancellationTokenSource? _fileDialogCancellation;
 
     internal NativeWindowPeer(IWindowImpl window, WpfSource source,
         Dictionary<IWindowImpl, NativeWindowPeer> windows, PortableWindowOptions options)
@@ -118,6 +120,53 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
     public event Action? CloseRequested;
     public event Action<bool>? ActivationChanged;
     public event Action<WpfState>? StateChanged;
+
+    public async Task<PortableFileDialogResult> ShowFileDialogAsync(PortableFileDialogOptions options, CancellationToken cancellationToken)
+    {
+        Verify();
+        if (_closed || !IsVisible) throw new InvalidOperationException("A file chooser requires a live visible native owner.");
+        if (_fileDialogCancellation is not null) throw new InvalidOperationException("This native owner already has a pending file chooser.");
+        using var cancellation = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+        _fileDialogCancellation = cancellation;
+        try
+        {
+            var filters = options.Filters.Select(filter => new FilePickerFileType(filter.Name) { Patterns = filter.Patterns }).ToArray();
+            FilePickerFileType? selected = filters.Length == 0 ? null : filters[options.FilterIndex - 1];
+            IReadOnlyList<IStorageFile> files;
+            FilePickerFileType? selectedType;
+            if (options.Save)
+            {
+                var result = await _native.SaveFilePickerAsync(new FilePickerSaveOptions
+                {
+                    Title = options.Title, SuggestedFileName = options.FileName,
+                    FileTypeChoices = filters, SuggestedFileType = selected
+                }, options.Directory, cancellation.Token).ConfigureAwait(true);
+                files = result.File is null ? [] : [result.File];
+                selectedType = result.SelectedFileType;
+            }
+            else
+            {
+                var result = await _native.OpenFilePickerAsync(new FilePickerOpenOptions
+                {
+                    Title = options.Title, SuggestedFileName = options.FileName,
+                    FileTypeFilter = filters, SuggestedFileType = selected, AllowMultiple = options.AllowMultiple
+                }, options.Directory, cancellation.Token).ConfigureAwait(true);
+                files = result.Files;
+                selectedType = result.SelectedFileType;
+            }
+            cancellation.Token.ThrowIfCancellationRequested();
+            Verify();
+            int? filterIndex = null;
+            if (selectedType is not null)
+            {
+                int index = Array.IndexOf(filters, selectedType);
+                if (index < 0) throw new InvalidDataException("The desktop file chooser returned an unknown filter.");
+                filterIndex = index + 1;
+            }
+            return new PortableFileDialogResult(files.Count != 0, Array.AsReadOnly(files.Select(file => file.Path.LocalPath).ToArray()), filterIndex);
+        }
+        finally { _fileDialogCancellation = null; }
+    }
 
     public unsafe void Present(ReadOnlySpan<byte> premultipliedBgra, int pixelWidth, int pixelHeight, int stride)
     {
@@ -328,12 +377,14 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
     {
         if (_closed) return;
         _closed = true; IsVisible = false; _isActive = false;
+        _fileDialogCancellation?.Cancel();
         Closed?.Invoke();
     }
     public void Dispose()
     {
         if (_disposed) return;
         Verify();
+        _fileDialogCancellation?.Cancel();
         _window.Input = null; _window.Paint = null; _window.Closing = null;
         _window.Resized = null; _window.ScalingChanged = null; _window.PositionChanged = null;
         _window.WindowStateChanged = null; _window.Closed = null;

@@ -673,6 +673,43 @@ namespace System.Windows
                 _dispatcherFrame = null;
             }
         }
+
+        internal IPortableWindowPeer PortableBeginFileDialog()
+        {
+            VerifyContextAndObjectState();
+            IPortableWindowPeer peer = _portablePeer;
+            if (_disposed || !_isVisible || peer == null || !peer.IsVisible)
+                throw new InvalidOperationException("A portable file dialog requires a live visible native owner.");
+            if (_portableModal || !peer.IsEnabled)
+                throw new InvalidOperationException("The native file dialog owner is already disabled or modal.");
+            _portableModal = true;
+            try
+            {
+                peer.ReleaseMouseCapture();
+                if (!PortableOwnsDialogPeer(peer)) throw new OperationCanceledException("The file dialog owner closed while entering modal state.");
+                peer.SetEnabled(false);
+                if (!PortableOwnsDialogPeer(peer)) throw new OperationCanceledException("The file dialog owner closed while entering modal state.");
+                return peer;
+            }
+            catch
+            {
+                PortableEndFileDialog(peer, false);
+                throw;
+            }
+        }
+
+        internal bool PortableOwnsDialogPeer(IPortableWindowPeer peer) =>
+            !_disposed && _isVisible && ReferenceEquals(_portablePeer, peer) && peer.IsVisible;
+
+        internal void PortableEndFileDialog(IPortableWindowPeer peer, bool activate)
+        {
+            VerifyAccess();
+            bool restore = _portableModal;
+            _portableModal = false;
+            if (!restore || _disposed || !ReferenceEquals(_portablePeer, peer)) return;
+            peer.SetEnabled(IsEnabled);
+            if (PortableOwnsDialogPeer(peer) && activate && peer.IsEnabled) peer.Activate();
+        }
     }
 }
 #endif

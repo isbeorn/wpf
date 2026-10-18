@@ -24,6 +24,8 @@ public static class NativeWindowHost
             new PortablePointerSettings(preferences.Distance, preferences.Distance, preferences.Time)));
         PortableWindowPlatform.RegisterFactory(new NativeWindowFactory(
             AvaloniaLocator.Current.GetRequiredService<IWindowingPlatform>()));
+        WpfFork::MS.Internal.Portability.Clipboard.PortableClipboard.Register(new NativeClipboard(
+            AvaloniaLocator.Current.GetRequiredService<Avalonia.Input.Platform.IClipboard>()));
         PointerPreferences = preferences;
     }
 

@@ -17,6 +17,7 @@
     <Compile Include="$(WpfSourceDir)PresentationCore/MS/internal/Portability/Windowing/*.cs" />
     <Compile Include="$(WpfSourceDir)PresentationCore/MS/internal/Portability/Settings/*.cs" />
     <Compile Include="$(WpfSourceDir)PresentationCore/MS/internal/Portability/Input/*.cs" />
+    <Compile Include="$(WpfSourceDir)PresentationCore/MS/internal/Portability/Clipboard/*.cs" />
     <Compile Include="$(WpfSourceDir)PresentationCore/System/Windows/Media/Imaging/Portable/*.cs" />
     <Compile Include="PortableFriendAssemblies.cs" />
     <EmbeddedResource Include="$(WpfResourceFile)" LogicalName="$(WpfResourceManifestName).resources" />

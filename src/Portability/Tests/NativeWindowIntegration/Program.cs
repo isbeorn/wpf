@@ -18,6 +18,10 @@ using Rect = WpfFork::System.Windows.Rect;
 using Visual = WpfFork::System.Windows.Media.Visual;
 using Application = Avalonia.Application;
 
+if (args.FirstOrDefault() == "--clipboard-peer") return ClipboardCases.Peer(args[1..]);
+if (args.FirstOrDefault() == "--file-dialog-protocol") return FileDialogCases.Run(args[1..]);
+if (args.Contains("--clipboard-managed-only", StringComparer.Ordinal)) return ClipboardCases.ManagedSmoke();
+
 var checks = new ConcurrentQueue<Check>();
 bool completed = false;
 Dispatcher? dispatcher = null;
@@ -71,6 +75,16 @@ try
                 if (args.Contains("--click-thresholds-only", StringComparer.Ordinal))
                 {
                     Run("resolved-settings-controlled-report-click-thresholds", () => VerifyClickThresholds(native));
+                    completed = true;
+                }
+                else if (args.Contains("--clipboard-manager-only", StringComparer.Ordinal))
+                {
+                    ClipboardCases.ExerciseManager(fontPath!, Run, Wait, TextTemplate);
+                    completed = true;
+                }
+                else if (args.Contains("--clipboard-only", StringComparer.Ordinal))
+                {
+                    ClipboardCases.Exercise(fontPath!, Run, Wait, TextTemplate);
                     completed = true;
                 }
                 else Exercise(native);

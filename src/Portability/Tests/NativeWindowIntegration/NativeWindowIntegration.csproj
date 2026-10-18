@@ -10,4 +10,5 @@
     <ProjectReference Include="../../Backend/NativeHost/NativeHost.csproj" />
   </ItemGroup>
   <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+  <Import Project="../../Framework/Build/WindowsNativeContracts.props" />
 </Project>

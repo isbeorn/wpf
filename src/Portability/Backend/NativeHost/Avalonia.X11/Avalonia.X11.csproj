@@ -17,13 +17,17 @@
     <AssemblyOriginatorKeyFile>$(BaseIntermediateOutputPath)Avalonia.public.snk</AssemblyOriginatorKeyFile>
     <PatchedAvaloniaSourceFile>$(AvaloniaSourceDir).portable-derived/$(OS)/GlibDispatcherImplBase.cs</PatchedAvaloniaSourceFile>
     <PatchedAvaloniaWindowSourceFile>$(AvaloniaSourceDir).portable-derived/$(OS)/X11Window.cs</PatchedAvaloniaWindowSourceFile>
+    <PatchedAvaloniaPortalSourceFile>$(AvaloniaSourceDir).portable-derived/$(OS)/PortablePortalStorageProvider.cs</PatchedAvaloniaPortalSourceFile>
+    <PatchedAvaloniaClipboardSourceFile>$(AvaloniaSourceDir).portable-derived/$(OS)/X11ClipboardImpl.cs</PatchedAvaloniaClipboardSourceFile>
     <AvaloniaAccessUnstablePrivateApis>true</AvaloniaAccessUnstablePrivateApis>
     <WarningsNotAsErrors>$(WarningsNotAsErrors);AVA3001;CS0649</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(AvaloniaSourceDir)src/Avalonia.X11/**/*.cs" Exclude="$(AvaloniaSourceDir)src/Avalonia.X11/Dispatching/GlibDispatcherImplBase.cs;$(AvaloniaSourceDir)src/Avalonia.X11/X11Window.cs" />
+    <Compile Include="$(AvaloniaSourceDir)src/Avalonia.X11/**/*.cs" Exclude="$(AvaloniaSourceDir)src/Avalonia.X11/Dispatching/GlibDispatcherImplBase.cs;$(AvaloniaSourceDir)src/Avalonia.X11/X11Window.cs;$(AvaloniaSourceDir)src/Avalonia.X11/Selections/Clipboard/X11ClipboardImpl.cs" />
     <Compile Include="$(PatchedAvaloniaSourceFile)" />
     <Compile Include="$(PatchedAvaloniaWindowSourceFile)" />
+    <Compile Include="$(PatchedAvaloniaPortalSourceFile)" />
+    <Compile Include="$(PatchedAvaloniaClipboardSourceFile)" />
     <Compile Include="$(AvaloniaSourceDir)src/Shared/RawEventGrouping.cs" />
     <Compile Include="ExternalDispatcherBridge.cs" />
     <Compile Include="ExternalWindowBridge.cs" />
@@ -98,5 +102,7 @@
     <WritePinnedAvaloniaPublicKey SourceFile="$(AvaloniaSourceDir)build/AvaloniaPublicKey.props" OutputFile="$(AssemblyOriginatorKeyFile)" />
     <ApplyPinnedAvaloniaPatch SourceFile="$(AvaloniaSourceDir)src/Avalonia.X11/Dispatching/GlibDispatcherImplBase.cs" ExpectedSourceHash="5070CE8FC7CD809B06C4B424CD1330F7D33CC0CCC36A48303E88B25B37922965" PatchFile="$(MSBuildThisFileDirectory)Patches/GuardBackgroundCallback.patch" OutputFile="$(PatchedAvaloniaSourceFile)" />
     <ApplyPinnedAvaloniaPatch SourceFile="$(AvaloniaSourceDir)src/Avalonia.X11/X11Window.cs" ExpectedSourceHash="E8552DF43A2EB2B045317E92E3584A35BB07401DDBA665CB40AAB9CDC948079F" PatchFile="$(MSBuildThisFileDirectory)Patches/PreserveMinimumDpiExtent.patch" OutputFile="$(PatchedAvaloniaWindowSourceFile)" />
+    <ApplyPinnedAvaloniaPatch SourceFile="$(AvaloniaSourceDir)src/Avalonia.FreeDesktop/DBusSystemDialog.cs" ExpectedSourceHash="130DFD301877AB9451D319A0970E1050030F52733FA1C4D6C720AC46EDA1888A" PatchFile="$(MSBuildThisFileDirectory)Patches/PortablePortalStorageProvider.patch" OutputFile="$(PatchedAvaloniaPortalSourceFile)" />
+    <ApplyPinnedAvaloniaPatch SourceFile="$(AvaloniaSourceDir)src/Avalonia.X11/Selections/Clipboard/X11ClipboardImpl.cs" ExpectedSourceHash="BC885C44363ECD9F3F314A66E6018250FED7964F22F708012D04422AF1F0BC45" PatchFile="$(MSBuildThisFileDirectory)Patches/BoundClipboardManagerWait.patch" OutputFile="$(PatchedAvaloniaClipboardSourceFile)" />
   </Target>
 </Project>

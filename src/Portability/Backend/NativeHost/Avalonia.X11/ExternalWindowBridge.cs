@@ -1,11 +1,16 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
 using Avalonia.Input;
 using Avalonia.Controls;
 using Avalonia.Input.TextInput;
 using Avalonia.Metadata;
 using Avalonia.Platform;
+using Avalonia.Platform.Storage;
+using Avalonia.FreeDesktop;
 using Avalonia.Threading;
 using static Avalonia.X11.XLib;
 
@@ -34,6 +39,37 @@ public sealed class ExternalWindowBridge : IDisposable
 
     public event Action<bool>? FocusChanged;
     public event Action? CaptureLost;
+
+    public async Task<OpenFilePickerResult> OpenFilePickerAsync(FilePickerOpenOptions options, string? directory, CancellationToken cancellationToken)
+    {
+        var provider = await CreatePortalProviderAsync(cancellationToken).ConfigureAwait(true);
+        if (!string.IsNullOrEmpty(directory) && Directory.Exists(directory))
+            options.SuggestedStartLocation = await provider.TryGetFolderFromPathAsync(new Uri(Path.GetFullPath(directory))).ConfigureAwait(true);
+        return await provider.OpenFilePickerWithResultAsync(options).ConfigureAwait(true);
+    }
+
+    public async Task<SaveFilePickerResult> SaveFilePickerAsync(FilePickerSaveOptions options, string? directory, CancellationToken cancellationToken)
+    {
+        var provider = await CreatePortalProviderAsync(cancellationToken).ConfigureAwait(true);
+        if (!string.IsNullOrEmpty(directory) && Directory.Exists(directory))
+            options.SuggestedStartLocation = await provider.TryGetFolderFromPathAsync(new Uri(Path.GetFullPath(directory))).ConfigureAwait(true);
+        return await provider.SaveFilePickerWithResultAsync(options).ConfigureAwait(true);
+    }
+
+    private async Task<IStorageProvider> CreatePortalProviderAsync(CancellationToken cancellationToken)
+    {
+        Verify();
+        cancellationToken.ThrowIfCancellationRequested();
+        var provider = await PortablePortalStorageProvider.TryCreateAsync(() =>
+        {
+            Verify();
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult<IPortalParentLease?>(new TrivialPortalParentLease($"x11:{_handle:X}"));
+        }, cancellationToken).ConfigureAwait(true);
+        cancellationToken.ThrowIfCancellationRequested();
+        Verify();
+        return provider ?? throw new PlatformNotSupportedException("The desktop file chooser portal is unavailable; GTK fallback is not enabled.");
+    }
 
     public void RequestClientSize(Size clientSize)
     {

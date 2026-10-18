@@ -21,7 +21,12 @@ public static class Clipboard
     /// <summary>
     ///  Clear the system clipboard.
     /// </summary>
-    public static void Clear() => ClipboardCore.Clear().ThrowOnFailure();
+    public static void Clear() =>
+#if PORTABLE_WPF
+        MS.Internal.Portability.Clipboard.PortableClipboard.Clear();
+#else
+        ClipboardCore.Clear().ThrowOnFailure();
+#endif
 
     /// <summary>
     ///  Return <see langword="true"/> if Clipboard contains the audio data. Otherwise, return <see langword="false"/>.
@@ -64,7 +69,12 @@ public static class Clipboard
     /// <summary>
     ///  Permanently renders the contents of the last IDataObject that was set onto the clipboard.
     /// </summary>
-    public static void Flush() => ClipboardCore.Flush().ThrowOnFailure();
+    public static void Flush() =>
+#if PORTABLE_WPF
+        MS.Internal.Portability.Clipboard.PortableClipboard.Flush();
+#else
+        ClipboardCore.Flush().ThrowOnFailure();
+#endif
 
     /// <summary>
     ///  Get audio data as Stream from Clipboard.
@@ -169,7 +179,15 @@ public static class Clipboard
     /// <summary>
     ///  Set the file drop list to Clipboard.
     /// </summary>
-    public static void SetFileDropList(StringCollection fileDropList) => ClipboardCore.SetFileDropList(fileDropList);
+    public static void SetFileDropList(StringCollection fileDropList)
+    {
+#if PORTABLE_WPF
+        ArgumentNullException.ThrowIfNull(fileDropList);
+        throw new PlatformNotSupportedException("Portable clipboard export supports Unicode text only.");
+#else
+        ClipboardCore.SetFileDropList(fileDropList);
+#endif
+    }
 
     /// <summary>
     ///  Set the image data to Clipboard.
@@ -209,8 +227,12 @@ public static class Clipboard
     /// </summary>
     public static IDataObject? GetDataObject()
     {
+#if PORTABLE_WPF
+        return MS.Internal.Portability.Clipboard.PortableClipboard.GetDataObject();
+#else
         ClipboardCore.GetDataObject<DataObject, IDataObject>(out IDataObject? dataObject).ThrowOnFailure();
         return dataObject;
+#endif
     }
 
     /// <summary>
@@ -224,7 +246,12 @@ public static class Clipboard
     public static bool IsCurrent(IDataObject data)
     {
         ArgumentNullException.ThrowIfNull(data);
-        return ClipboardCore.IsObjectOnClipboard(data);
+        return
+#if PORTABLE_WPF
+            MS.Internal.Portability.Clipboard.PortableClipboard.IsCurrent(data);
+#else
+            ClipboardCore.IsObjectOnClipboard(data);
+#endif
     }
 
     /// <summary>
@@ -253,9 +280,13 @@ public static class Clipboard
     {
         ArgumentNullException.ThrowIfNull(data);
 
+#if PORTABLE_WPF
+        MS.Internal.Portability.Clipboard.PortableClipboard.SetDataObject(data);
+#else
         // Wrap if we're not already a DataObject
         DataObject dataObject = data as DataObject ?? DataObject.CreateFromClipboard(data);
         ClipboardCore.SetData(dataObject, copy).ThrowOnFailure();
+#endif
     }
 
     /// <summary>
