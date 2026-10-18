@@ -72,7 +72,8 @@ void Exercise()
     Run("accessibility-boundary-does-not-fabricate-native-peers", () =>
     {
         Require(!System.Windows.Automation.Peers.AutomationPeer.ListenerExists(System.Windows.Automation.Peers.AutomationEvents.AutomationFocusChanged), "An inaccessible backend claimed an automation listener.");
-        Expect<PlatformNotSupportedException>(() => new System.Windows.Automation.Peers.UIElementAutomationPeer(root.First));
+        var peer = new System.Windows.Automation.Peers.UIElementAutomationPeer(root.First);
+        Expect<PlatformNotSupportedException>(() => peer.ProviderFromPeer(peer));
     });
     Run("missing-host-input-capabilities-fail-explicitly", () =>
     {

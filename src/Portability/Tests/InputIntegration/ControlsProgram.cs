@@ -20,6 +20,12 @@ var thread = new Thread(() =>
 {
     try
     {
+        if (args.Contains("--automation"))
+        {
+            AutomationCases.Run(args.First(value => value.StartsWith("--automation-results=", StringComparison.Ordinal))[21..]);
+            Dispatcher.CurrentDispatcher.InvokeShutdown();
+            return;
+        }
         if (args.Contains("--close-during-hide"))
         {
             foreach (bool beforeApply in new[] { false, true })

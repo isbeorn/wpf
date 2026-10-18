@@ -177,6 +177,11 @@ namespace System.Windows.Automation.Peers
             if(presentationSource == null)
                 return Rect.Empty;
 
+#if PORTABLE_WPF
+            if (presentationSource is MS.Internal.Portability.Windowing.PortablePresentationSource)
+                return GetPortableScreenBounds(new Rect(new Point(), _owner.RenderSize), presentationSource);
+#endif
+
             HwndSource hwndSource = presentationSource as HwndSource;
 
             // If the source isn't an HwnSource, there's not much we can do, return empty rect
@@ -199,6 +204,11 @@ namespace System.Windows.Automation.Peers
             // If there's no source, the element is not visible, return empty rect
             if (presentationSource == null)
                 return Rect.Empty;
+
+#if PORTABLE_WPF
+            if (presentationSource is MS.Internal.Portability.Windowing.PortablePresentationSource)
+                return GetPortableScreenBounds(CalculateVisibleBoundingRect(_owner), presentationSource);
+#endif
 
             HwndSource hwndSource = presentationSource as HwndSource;
 
@@ -494,6 +504,14 @@ namespace System.Windows.Automation.Peers
             if(presentationSource == null)
                 return pt;
 
+#if PORTABLE_WPF
+            if (presentationSource is MS.Internal.Portability.Windowing.PortablePresentationSource)
+            {
+                Rect bounds = GetPortableScreenBounds(new Rect(new Point(), _owner.RenderSize), presentationSource);
+                return bounds.IsEmpty ? pt : new Point(bounds.Left + bounds.Width / 2, bounds.Top + bounds.Height / 2);
+            }
+#endif
+
             HwndSource hwndSource = presentationSource as HwndSource;
 
             // If the source isn't an HwnSource, there's not much we can do, return (double.NaN, double.NaN) point
@@ -516,6 +534,16 @@ namespace System.Windows.Automation.Peers
             if (!_owner.Focus())
                 throw new InvalidOperationException(SR.SetFocusFailed);
         }
+
+#if PORTABLE_WPF
+        private Rect GetPortableScreenBounds(Rect elementBounds, PresentationSource source)
+        {
+            if (elementBounds.IsEmpty || source.IsDisposed) return Rect.Empty;
+            Rect rootBounds = PointUtil.ElementToRoot(elementBounds, _owner, source);
+            Rect clientBounds = PointUtil.RootToClient(rootBounds, source);
+            return new Rect(PointUtil.ClientToScreen(clientBounds.TopLeft, source), PointUtil.ClientToScreen(clientBounds.BottomRight, source));
+        }
+#endif
 
         private UIElement _owner;
         private SynchronizedInputAdaptor _synchronizedInputPattern;

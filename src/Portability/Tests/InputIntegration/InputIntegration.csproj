@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
   <ItemGroup>
-    <Compile Remove="CoreTestAccess.cs;ControlsProgram.cs;UnicodeCommitChecks.cs" />
+    <Compile Remove="CoreTestAccess.cs;ControlsProgram.cs;UnicodeCommitChecks.cs;AutomationCases.cs" />
     <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" />
   </ItemGroup>
   <Import Project="../../Framework/Build/PortableWpfReferences.targets" />

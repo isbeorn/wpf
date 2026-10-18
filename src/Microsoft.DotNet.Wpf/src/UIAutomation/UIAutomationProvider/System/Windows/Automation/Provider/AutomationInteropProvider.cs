@@ -82,7 +82,11 @@ namespace System.Windows.Automation.Provider
         { 
             get 
             {
+#if PORTABLE_WPF
+                return false;
+#else
                 return UiaCoreProviderApi.UiaClientsAreListening();
+#endif
             } 
         }
 

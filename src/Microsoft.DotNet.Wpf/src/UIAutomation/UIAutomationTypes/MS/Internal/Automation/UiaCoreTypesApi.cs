@@ -55,17 +55,30 @@ namespace MS.Internal.Automation
 
         internal static object UiaGetReservedNotSupportedValue()
         {
+#if PORTABLE_WPF
+            return s_notSupportedValue;
+#else
             object notSupportedValue;
             CheckError(RawUiaGetReservedNotSupportedValue(out notSupportedValue));
             return notSupportedValue;
+#endif
         }
 
         internal static object UiaGetReservedMixedAttributeValue()
         {
+#if PORTABLE_WPF
+            return s_mixedAttributeValue;
+#else
             object mixedAttributeValue;
             CheckError(RawUiaGetReservedMixedAttributeValue(out mixedAttributeValue));
             return mixedAttributeValue;
+#endif
         }
+
+#if PORTABLE_WPF
+        private static readonly object s_notSupportedValue = new object();
+        private static readonly object s_mixedAttributeValue = new object();
+#endif
 
         internal static bool SupportsWin7Identifiers()
         {

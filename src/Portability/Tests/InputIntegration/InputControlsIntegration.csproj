@@ -3,6 +3,7 @@
   <ItemGroup>
     <Compile Include="ControlsProgram.cs" />
     <Compile Include="UnicodeCommitChecks.cs" />
+    <Compile Include="AutomationCases.cs" />
     <ProjectReference Include="../../Framework/PresentationFramework/PresentationFramework.csproj" />
   </ItemGroup>
   <Import Project="../../Framework/Build/PortableWpfReferences.targets" />

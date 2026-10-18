@@ -24,6 +24,11 @@ namespace System.Windows.Automation.Peers
         ///
         protected override string GetNameCore()
         {
+#if PORTABLE_WPF
+            string name = AutomationProperties.GetName(Owner);
+            if (string.IsNullOrEmpty(name)) name = GetLabeledByCore()?.GetName();
+            return string.IsNullOrEmpty(name) ? ((Window)Owner).Title : name;
+#else
             string name = base.GetNameCore();
 
             if(name.Length == 0)
@@ -48,6 +53,7 @@ namespace System.Windows.Automation.Peers
             }
 
             return name;
+#endif
         }
 
         ///
@@ -61,6 +67,9 @@ namespace System.Windows.Automation.Peers
         ///
         protected override Rect GetBoundingRectangleCore()
         {
+#if PORTABLE_WPF
+            return base.GetBoundingRectangleCore();
+#else
             Window window = (Window)Owner;
             Rect bounds = new Rect(0,0,0,0);
             
@@ -77,6 +86,7 @@ namespace System.Windows.Automation.Peers
             }
 
             return bounds;
+#endif
         }
 
         protected override bool IsDialogCore()

@@ -32,6 +32,8 @@ string? settingsPayloadPath = args.FirstOrDefault(value => value.StartsWith("--s
 object? resolvedSettings = null;
 bool settingsOnly = args.Contains("--settings-only", StringComparer.Ordinal);
 bool wmOnly = args.Contains("--wm-only", StringComparer.Ordinal);
+bool automationOnly = args.Contains("--automation-only", StringComparer.Ordinal);
+object[] managedAutomationTrace = [];
 bool traceHostMetrics = args.Contains("--trace-host-metrics", StringComparer.Ordinal);
 var windowManagerTrace = new ConcurrentQueue<object>();
 var guidelineCapture = new ConcurrentQueue<object>();
@@ -72,7 +74,12 @@ try
         {
             try
             {
-                if (args.Contains("--click-thresholds-only", StringComparer.Ordinal))
+                if (automationOnly)
+                {
+                    Run("native-window-managed-peers-bounds-focus-dpi-and-close", () => managedAutomationTrace = NativeAutomationChecks.Run(native, Wait, Drain));
+                    completed = true;
+                }
+                else if (args.Contains("--click-thresholds-only", StringComparer.Ordinal))
                 {
                     Run("resolved-settings-controlled-report-click-thresholds", () => VerifyClickThresholds(native));
                     completed = true;
@@ -979,10 +986,11 @@ void WriteResults() => Console.WriteLine(JsonSerializer.Serialize(new
 {
     textCommitObservations = NativeTextCommitChecks.Observations,
     probe = wmOnly ? "genuine-wpf-native-window-manager" : "genuine-wpf-native-window", os = System.Runtime.InteropServices.RuntimeInformation.OSDescription,
-    scope = wmOnly ? "native virtual X11 server with workspace Openbox; genuine Window state, geometry and retained frame; physical desktop unqualified" :
+    scope = automationOnly ? "native virtual X11 server; genuine managed peers and native source bounds; no AT-SPI export or physical desktop qualification" : wmOnly ? "native virtual X11 server with workspace Openbox; genuine Window state, geometry and retained frame; physical desktop unqualified" :
         "native virtual X11 server; OS-injected XTest input; genuine Window, retained frame and InputManager; physical desktop unqualified",
     display = Environment.GetEnvironmentVariable("DISPLAY"), culture = CultureInfo.CurrentCulture.Name, settingsOrigin,
     windowManagerTrace,
+    managedAutomationTrace,
     guidelineCapture,
     frameTransitions,
     clickThresholds,

@@ -254,14 +254,10 @@ namespace System.Windows.Automation.Peers
 #endif
         }
 
-#if PORTABLE_WPF || ENABLE_AUTOMATIONPEER_LOGGING
+#if ENABLE_AUTOMATIONPEER_LOGGING
         protected AutomationPeer()
         {
-#if PORTABLE_WPF
-            throw new PlatformNotSupportedException("Portable accessibility peers are not implemented.");
-#else
             LogPeer(this);
-#endif
         }
 #endif
 
@@ -1800,6 +1796,9 @@ namespace System.Windows.Automation.Peers
         ///</Summary>
         protected internal IRawElementProviderSimple ProviderFromPeer(AutomationPeer peer)
         {
+#if PORTABLE_WPF
+            throw new PlatformNotSupportedException("Portable native automation provider export is not implemented.");
+#else
             AutomationPeer referencePeer = this;
 
             //replace itself with EventsSource if we are aggregated and hidden from the UIA
@@ -1810,6 +1809,7 @@ namespace System.Windows.Automation.Peers
             }
 
             return ElementProxy.StaticWrap(peer, referencePeer);
+#endif
         }
 
         private IRawElementProviderSimple ProviderFromPeerNoDelegation(AutomationPeer peer)
