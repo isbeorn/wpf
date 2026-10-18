@@ -100,40 +100,48 @@ namespace System.Windows.Media.Imaging
         internal unsafe SKBitmap CreateDisplayBitmap()
         {
             int minimumStride = checked(Width * 4);
+            int bytesPerPixel = BytesPerPixel;
+            bool gray16 = Format == PixelFormats.Gray16;
+            bool gray8 = Format == PixelFormats.Gray8;
+            bool rgb48 = Format == PixelFormats.Rgb48;
+            bool rgb24 = Format == PixelFormats.Rgb24;
+            bool premultiplied = Format == PixelFormats.Pbgra32;
+            bool hasAlpha = Format == PixelFormats.Bgra32 || premultiplied;
             var bitmap = new SKBitmap(new SKImageInfo(Width, Height, SKColorType.Bgra8888,
-                Format == PixelFormats.Pbgra32 ? SKAlphaType.Premul : SKAlphaType.Unpremul));
+                premultiplied ? SKAlphaType.Premul : SKAlphaType.Unpremul));
             try
             {
                 byte* output = (byte*)bitmap.GetPixels();
-                if (output == null || bitmap.RowBytes < minimumStride)
+                int destinationRowBytes = bitmap.RowBytes;
+                if (output == null || destinationRowBytes < minimumStride)
                     throw new InvalidOperationException("The portable display bitmap could not be allocated.");
                 for (int y = 0; y < Height; y++)
                     for (int x = 0; x < Width; x++)
                     {
-                        int offset = y * Stride + x * BytesPerPixel;
+                        int offset = y * Stride + x * bytesPerPixel;
                         byte red, green, blue, alpha = 255;
-                        if (Format == PixelFormats.Gray16)
+                        if (gray16)
                         {
                             ushort value = BinaryPrimitives.ReadUInt16LittleEndian(_front.AsSpan(offset, 2));
                             red = green = blue = (byte)((value + 128) / 257);
                         }
-                        else if (Format == PixelFormats.Gray8)
+                        else if (gray8)
                             red = green = blue = _front[offset];
-                        else if (Format == PixelFormats.Rgb48)
+                        else if (rgb48)
                         {
                             red = _front[offset + 1]; green = _front[offset + 3]; blue = _front[offset + 5];
                         }
-                        else if (Format == PixelFormats.Rgb24)
+                        else if (rgb24)
                         {
                             red = _front[offset]; green = _front[offset + 1]; blue = _front[offset + 2];
                         }
                         else
                         {
                             blue = _front[offset]; green = _front[offset + 1]; red = _front[offset + 2];
-                            if (Format == PixelFormats.Bgra32 || Format == PixelFormats.Pbgra32)
+                            if (hasAlpha)
                                 alpha = _front[offset + 3];
                         }
-                        byte* destination = output + checked((long)y * bitmap.RowBytes + (long)x * 4);
+                        byte* destination = output + checked((long)y * destinationRowBytes + (long)x * 4);
                         destination[0] = blue; destination[1] = green; destination[2] = red; destination[3] = alpha;
                     }
                 return bitmap;
