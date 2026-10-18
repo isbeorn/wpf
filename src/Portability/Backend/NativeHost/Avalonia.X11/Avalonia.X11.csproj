@@ -15,6 +15,7 @@
     <SignAssembly>true</SignAssembly>
     <PublicSign>true</PublicSign>
     <AssemblyOriginatorKeyFile>$(BaseIntermediateOutputPath)Avalonia.public.snk</AssemblyOriginatorKeyFile>
+    <PatchedAvaloniaPlatformSourceFile>$(AvaloniaSourceDir).portable-derived/$(OS)/X11Platform.cs</PatchedAvaloniaPlatformSourceFile>
     <PatchedAvaloniaSourceFile>$(AvaloniaSourceDir).portable-derived/$(OS)/GlibDispatcherImplBase.cs</PatchedAvaloniaSourceFile>
     <PatchedAvaloniaWindowSourceFile>$(AvaloniaSourceDir).portable-derived/$(OS)/X11Window.cs</PatchedAvaloniaWindowSourceFile>
     <PatchedAvaloniaPortalSourceFile>$(AvaloniaSourceDir).portable-derived/$(OS)/PortablePortalStorageProvider.cs</PatchedAvaloniaPortalSourceFile>
@@ -23,7 +24,10 @@
     <WarningsNotAsErrors>$(WarningsNotAsErrors);AVA3001;CS0649</WarningsNotAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(AvaloniaSourceDir)src/Avalonia.X11/**/*.cs" Exclude="$(AvaloniaSourceDir)src/Avalonia.X11/Dispatching/GlibDispatcherImplBase.cs;$(AvaloniaSourceDir)src/Avalonia.X11/X11Window.cs;$(AvaloniaSourceDir)src/Avalonia.X11/Selections/Clipboard/X11ClipboardImpl.cs" />
+    <Compile Include="$(AvaloniaSourceDir)src/Avalonia.X11/**/*.cs" Exclude="$(AvaloniaSourceDir)src/Avalonia.X11/X11Platform.cs;$(AvaloniaSourceDir)src/Avalonia.X11/Dispatching/GlibDispatcherImplBase.cs;$(AvaloniaSourceDir)src/Avalonia.X11/X11Window.cs;$(AvaloniaSourceDir)src/Avalonia.X11/Selections/Clipboard/X11ClipboardImpl.cs" />
+    <Compile Include="$(PatchedAvaloniaPlatformSourceFile)" />
+    <Compile Include="PortableIbusTransport.cs" />
+    <Compile Include="PortableIbusTextInputMethod.cs" />
     <Compile Include="$(PatchedAvaloniaSourceFile)" />
     <Compile Include="$(PatchedAvaloniaWindowSourceFile)" />
     <Compile Include="$(PatchedAvaloniaPortalSourceFile)" />
@@ -99,6 +103,11 @@
   </UsingTask>
   <Target Name="PreparePinnedAvaloniaInputs" BeforeTargets="CoreCompile">
     <Error Condition="!Exists('$(AvaloniaSourceDir)src/Avalonia.X11/X11Platform.cs')" Text="Run Backend/NativeHost/Prepare-AvaloniaSource.ps1 before building the pinned X11 source adaptation." />
+    <GetFileHash Files="$(AvaloniaSourceDir)src/Avalonia.FreeDesktop/DBusIme/IBus/IBusX11TextInputMethod.cs" Algorithm="SHA256">
+      <Output TaskParameter="Items" ItemName="PinnedIbusSource" />
+    </GetFileHash>
+    <Error Condition="'%(PinnedIbusSource.FileHash)' != '9BA28E30F7889E7979A8C68B92CA9F39A2A95C0DD4DF5C1603D1C0023FB36DBF'" Text="The original pinned IBus source hash does not match the maintained derivative." />
+    <ApplyPinnedAvaloniaPatch SourceFile="$(AvaloniaSourceDir)src/Avalonia.X11/X11Platform.cs" ExpectedSourceHash="A14E65F1C8BE0ACBA9F2308EF6AD6749669CCE2B0D8B71BB76879694838CA0AE" PatchFile="$(MSBuildThisFileDirectory)Patches/SelectPortableIbus.patch" OutputFile="$(PatchedAvaloniaPlatformSourceFile)" />
     <WritePinnedAvaloniaPublicKey SourceFile="$(AvaloniaSourceDir)build/AvaloniaPublicKey.props" OutputFile="$(AssemblyOriginatorKeyFile)" />
     <ApplyPinnedAvaloniaPatch SourceFile="$(AvaloniaSourceDir)src/Avalonia.X11/Dispatching/GlibDispatcherImplBase.cs" ExpectedSourceHash="5070CE8FC7CD809B06C4B424CD1330F7D33CC0CCC36A48303E88B25B37922965" PatchFile="$(MSBuildThisFileDirectory)Patches/GuardBackgroundCallback.patch" OutputFile="$(PatchedAvaloniaSourceFile)" />
     <ApplyPinnedAvaloniaPatch SourceFile="$(AvaloniaSourceDir)src/Avalonia.X11/X11Window.cs" ExpectedSourceHash="E8552DF43A2EB2B045317E92E3584A35BB07401DDBA665CB40AAB9CDC948079F" PatchFile="$(MSBuildThisFileDirectory)Patches/PreserveMinimumDpiExtent.patch" OutputFile="$(PatchedAvaloniaWindowSourceFile)" />

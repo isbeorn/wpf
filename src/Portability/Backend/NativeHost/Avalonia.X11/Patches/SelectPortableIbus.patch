@@ -1,0 +1,12 @@
+--- a/src/Avalonia.X11/X11Platform.cs
++++ b/src/Avalonia.X11/X11Platform.cs
+@@ -58,8 +58,10 @@
+             if (EnableIme(options))
+             {
+                 // Attempt to configure DBus-based input method and check if we can fall back to XIM
+-                if (!X11DBusImeHelper.DetectAndRegister() && ShouldUseXim())
++                if (X11DBusImeHelper.DetectAndRegister())
++                    PortableIbusFactory.ReplaceRegisteredIbus();
++                else if (ShouldUseXim())
+                     useXim = true;
+             }
