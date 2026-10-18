@@ -46,7 +46,7 @@ These results have different scopes and must not be added into a general compati
 | [Window lifecycle](../../src/Portability/Tests/WindowLifecycleIntegration/README.md) | 66 checks pass; stock oracle 26/26 | 66 checks pass | Genuine Window ownership, modal cleanup, asynchronous bounds, content sizing and public Application.Run startup/shutdown; independent lifetime, fractional acknowledgment and explicit-request replays pass |
 | [Native WPF Window](../../src/Portability/Tests/NativeWindowIntegration/README.md) | Builds; runtime intentionally unsupported | Original byte-order suites pass; absent-distance repair adds 56 startup cases, two 23-check native suites and 20 threshold observations | Genuine WPF Window, Button.Click, TextBox input, synchronous dialog, scientific bitmap mutation, cover/uncover, five-button state, capture and minimum-pixel DPI behavior on Xvfb; fresh packaged GNOME replay remains pending |
 | [Native window manager](../../src/Portability/Tests/NativeWindowIntegration/README.md) | Not applicable | Ten fresh Openbox runs, 13/13 each | Actual state, frame extents, maximize/minimize/restore, pending bounds intents, callback-triggered close and settled native pixels |
-| [App-local SDK/runtime](../../src/Portability/Packaging/README.md) | External consumer 11 checks per build/publish/custom path; archive/output audit 6/6 | External consumer 11 checks per path; native FDD and self-contained 13/13 each; archive/output audit 8/8 | Local-feed restore, actual compiler, two BAML origins, companion assembly, forwarders, case-sensitive Linux compilation, Unicode pack resources, identities, compiler origins, licenses and exact runtime/native contents |
+| [App-local SDK/runtime](../../src/Portability/Packaging/README.md) | Classic feed: external consumer 12 checks per build/publish/custom path; archive/output audit 6/6 | Classic feed: external consumer 12 checks per path; native FDD and self-contained 14/14 each; archive/output audit 8/8 | Local-feed restore, actual compiler, both BAML origins, default Classic templates, companion assembly, forwarders, case-sensitive compilation, identities, licenses and exact contents; Windows package checks exclude native text layout |
 | [Complete unchanged view](../../src/Portability/Packaging/Consumer/App/README.md) | Stock reference 15/15 for each compiler origin | 19/19 in each of four package-only processes | Same compiled view and original dictionary, native validation/editing/commands, owned dialogs, bound RGB48, resources, clocks, both DPI directions and fresh lifetimes; explicit host templates remain part of this profile |
 
 The text runs load no Windows interop assemblies. A faithful managed span container removes a C++/CLI metadata dependency from the existing span algorithms. Native typography caches and the inactive legacy itemizer have explicit portable diagnostics. This closes the observed DirectWrite startup dependency for these paths, not every framework text feature.
@@ -180,13 +180,34 @@ correctness and maintainability reviews pass. The normal Windows build/pack and
 Commit `db753499b` selects that Classic profile through the two source mapping
 lines. Normal source graphs without an overlay pass the same settings and layout
 checks on both OSes. Commit `000afc7` adds the theme to the runtime package graph
-and selects a fresh isolated markup compiler for its genuine BAML build. Package
-preparation passes independent review and detects the missing theme in the older
-feed. Positive package qualification is running from a clean committed checkout
-before a fresh unchanged NINA replay.
+and selects a fresh isolated markup compiler for its genuine BAML build. Commit
+`c0b2b469a` repairs temporary markup-project asset selection. Its clean producer
+qualifies all 17 package records with 3,567 unchanged inputs, 53 managed assets
+and two Linux native libraries. The separately pinned consumer `a790c7299`
+constructs genuine Classic templates and native-free layout on Windows; Linux
+also requires positive Button/TextBox text layout. Both focused reviews pass,
+and the older generic feed still fails the new default-template check.
 PresentationUI remains compile-only and was not copied or loaded by these cases.
 The full deferred document-resource closure, broader views, control libraries
 and shell qualification remain open.
+
+The qualified local feed is
+`artifacts/portability/distribution-phase3-classic-final-2`:
+
+| Local package | SHA-256 |
+| --- | --- |
+| Wpf.Portable.Runtime | `0C2B3AFEDEC2EB86DD1731130DED5F3DF7AEA574DC5B9359FD63525929C0B266` |
+| Wpf.Portable.Sdk | `4802533D0BE91B4A69E13D73C5556ED921259348C3938AE56EA15B17A6BC609A` |
+
+The unchanged NINA replay passes its first five checks on Linux, then fails real
+layout while resolving `(Validation.Errors).CurrentItem.ErrorContent` in the
+original TextBox style. Its genuine Microsoft BAML maps the presentation xmlns
+to Ribbon and WindowsFormsIntegration as well as the core assemblies, although
+it references no Ribbon or WinForms control type. The schema loader eagerly
+requires every namespace candidate before resolving `Validation`. A narrow
+namespace-loading repair is in progress; this is not a NINA layout pass. The
+Windows portable replay instead reaches the bundle's known lack of Windows
+HarfBuzz native assets. Stock Windows retains its separate six-check baseline.
 
 ## Review and repaired failures
 
@@ -267,8 +288,18 @@ measured cost in this configuration. Commit `0f57b2d73` hoists invariant pixel
 format and row-stride metadata out of those loops without changing conversion
 math, storage or ownership. All 32 complete converted-buffer cases per OS remain
 byte-exact, Imaging 12/12 and Rendering 19/19 pass on both systems and independent
-reviews find no supported defect. The optimization's cadence effect and a fresh
-combined-package workload remain unmeasured.
+reviews find no supported defect.
+
+A profiled source-built comparison subsequently uses 99 runtime binaries per
+side, with only PresentationCore differing. Three warmups and three measured
+24 MP transactions per format produce mean callback times of 841.58 to 377.58 ms
+for Gray16 and 1576.00 to 506.67 ms for RGB48. Each transaction has two presents
+and no GC collections. Full initial/final native images match across variants,
+source samples remain exact and independent review reproduces the raw results.
+The diagnostic source preserves the original callback boundary but adds tracing
+and does not traverse the full zoom/replacement sequence. It measures an
+intermediate renderer state in a fixed run order. The fresh combined-package
+30-frame workload and performance gate remain open.
 
 The 18 paired native pixel samples differ by up to 57/255. All 18 Windows samples
 match their stock offscreen references, while Linux's first Gray16 center is 4

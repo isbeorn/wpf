@@ -27,6 +27,13 @@ Publish separate results for source compatibility, managed binary compatibility,
 
 The initial promise is source compatibility for the pinned NINA corpus plus explicitly tested unchanged managed control binaries. Full compatibility with arbitrary WPF applications, third-party binaries or Windows interop is a later objective. Unsupported operations must have explicit diagnostics and ledger entries; silent no-op implementations do not count as support.
 
+The user explicitly prefers simple use of native operating-system behavior for
+desktop services over emulating Windows details. Expected differences in
+clipboard lifetime, native pickers and related desktop interactions are accepted
+when documented. Reuse the selected backend's existing services and keep WPF's
+public programming model, real NINA workflows and scientific data intact. Reserve
+additional compatibility machinery for a demonstrated application requirement.
+
 ## Source baseline and existing constraints
 
 The inspected WPF revision is `65d15adece1df9a73e3d1abc11f8bbf99e9fc7a9`. Its [global.json](../global.json) selects a .NET 12 alpha SDK, [Directory.Build.props](../Directory.Build.props) targets `net11.0` and [Versions.props](../eng/Versions.props) uses assembly major version 12. The [baseline decision and build evidence](portability/runtime-baseline.md) retain this coherent upstream Windows build and select a separate opt-in .NET 10 portable product with assembly version 10 for NINA. Do not infer the baseline from the README.
@@ -133,6 +140,18 @@ time, absent settings ownership and malformed, duplicate, wrong-type or
 nonpositive values still fail explicitly. Validate the complete payload before
 resolving absent distance and retain per-field provenance. This policy adds no
 GTK runtime dependency or live settings subscription.
+
+The user approved session-only clipboard copies when Linux cannot retain them
+after process exit. Normal Copy/Cut, `Clipboard.SetText`,
+`SetDataObject(copy: true)` and `Flush` may therefore succeed without Windows'
+persistence guarantee.
+Attempt available clipboard-manager persistence and report the actual qualified
+behavior separately; task completion alone does not prove persistence. The first
+slice covers Unicode text through the original WPF clipboard APIs, data objects
+and TextBox commands, with external-process transfers in both directions.
+Preserve selection ownership and dispatcher responsiveness, distinguish CLIPBOARD
+from PRIMARY and diagnose unsupported formats explicitly. Image, file-drop and
+rich-text support require their own subsequent qualification.
 
 ## Phased delivery
 

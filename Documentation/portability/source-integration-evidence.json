@@ -7001,10 +7001,1229 @@
           ]
         }
       ]
+    },
+    {
+      "label": "classic-package-qualified",
+      "capturedAtUtc": "2026-10-18T15:46:47.6911633Z",
+      "headCommit": "a790c7299ed60f485def554d7d07799b3de4a141",
+      "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
+      "scope": "Sourcec0b2 producer and separately pinneda790 consumer qualify17 package records,53managed/twoLinux native assets and3567 source inputs. Windows verifies managed templates/native-free layout; Linux additionally requires real text layout and native14. Original producer/consumer reds retained. Later hoist/pointer repair absent from this feed.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/distribution-phase3-classic-final-2/qualification-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/distribution-phase3-classic-final-2/qualification-results.json",
+          "sha256": "9b2fcfb86b376523d56448a0f331c9159feed9a73944e53a15cd9a3e4966a235",
+          "bytes": 9760
+        },
+        {
+          "path": "artifacts/portability/distribution-phase3-classic-final-2/producer-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/distribution-phase3-classic-final-2/producer-freeze.json",
+          "sha256": "a3d18d333ce1676413d6fd5f4b63da4c42c8f77b6c1d8cefca2c66bbbd4efc61",
+          "bytes": 3913
+        },
+        {
+          "path": "artifacts/portability/distribution-phase3-classic-final-2/producer-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/distribution-phase3-classic-final-2/producer-results.json",
+          "sha256": "0a74fb881f852bba0a8dc5e1e1a2e005c5384fff320163af7ebf27c60ca2e6ff",
+          "bytes": 575
+        },
+        {
+          "path": "artifacts/portability/distribution-phase3-classic-final-2/runtime/BuildInputs.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/distribution-phase3-classic-final-2/runtime/BuildInputs.json",
+          "sha256": "31fab2db7e4168d0931af7551c1eab358359c85f3665c0b75399f6d53da5ecdc",
+          "bytes": 731441
+        },
+        {
+          "path": "artifacts/portability/distribution-phase3-classic-final-2/runtime/Provenance.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/distribution-phase3-classic-final-2/runtime/Provenance.json",
+          "sha256": "832aba754561d4bb9000edb52da7012693e4575b64e3fddd86286d2a7d79b188",
+          "bytes": 141188
+        },
+        {
+          "path": "artifacts/portability/distribution-phase3-classic-final-2/runtime/RuntimeContentManifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/distribution-phase3-classic-final-2/runtime/RuntimeContentManifest.json",
+          "sha256": "49cf4e4cda9d3a27444b4aacf541713006236074a828b1901c320bf447034e4c",
+          "bytes": 19944
+        },
+        {
+          "path": "artifacts/portability/distribution-phase3-classic-final-2/runtime/RuntimeManifest.xml",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/distribution-phase3-classic-final-2/runtime/RuntimeManifest.xml",
+          "sha256": "01d55afec8c0926957627375208f900aaec566f46defa9f0ce6ec320ff6bfd26",
+          "bytes": 11090
+        },
+        {
+          "path": "artifacts/portability/distribution-phase3-classic-final-2/sdk/SdkManifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/distribution-phase3-classic-final-2/sdk/SdkManifest.json",
+          "sha256": "397139c759fba59c14603216ae6d1d8f6fe5864ee6facdee7cb83b9fc958b572",
+          "bytes": 3555
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-windows/bin-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-windows/bin-results.json",
+          "sha256": "99a554dbd93a16d9019f0477ad579627a9f0e2a66c829b59e2641a295b0c1e37",
+          "bytes": 4949,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-windows/publish-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-windows/publish-results.json",
+          "sha256": "f941aa38d3e7d2330a2fc122e24eb0553a325d1aa58380fdf1932ac71b4d79dc",
+          "bytes": 4844,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-windows/custom-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-windows/custom-results.json",
+          "sha256": "ccb62126cf7787a921973e42a40e4c622db44e8daad47b419087d1ce56d747db",
+          "bytes": 4998,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-windows/incremental-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-windows/incremental-results.json",
+          "sha256": "345d6756198ad4d510fbe4835a86014c4845007399157d42ae7d6ec82035b18a",
+          "bytes": 1485,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/bin-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/bin-results.json",
+          "sha256": "bc30856bc82b8854d99f533655f386e663da0d981fc29ecf1b688f70d36070b9",
+          "bytes": 7202,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/custom-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/custom-results.json",
+          "sha256": "2a02280f019dc58e602ad5dd27a54fffa9d90a92b6742a5afbd4267d8bd5cc13",
+          "bytes": 7265,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/incremental-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/incremental-results.json",
+          "sha256": "ba97faf45c5c607126ab9eba4f83b6a2a2940c542a0671a7c749b9a86241b697",
+          "bytes": 179,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/case-sensitivity-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/case-sensitivity-results.json",
+          "sha256": "1a64e8370f2100fb13cda520956c13c37fb91de78d269de2ee9c7a562eb9a577",
+          "bytes": 282,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/publish-fdd-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/publish-fdd-results.json",
+          "sha256": "d9148007143a96882999bd5ed2f0d7ef4dd1f421aff140edd0296bd10663a03e",
+          "bytes": 7094,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/publish-linux-fdd-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/publish-linux-fdd-results.json",
+          "sha256": "d9f3e623dad8dfc3869b3b0ace025222d6126ab80fb1d4a5a4b5323a0e9514cd",
+          "bytes": 7096,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/publish-linux-sc-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/publish-linux-sc-results.json",
+          "sha256": "0e50d5144351f07e909313d8c4129cb007028b6fde13a6e5fc755bbfad63f9f4",
+          "bytes": 6776,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/native-fdd-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/native-fdd-results.json",
+          "sha256": "8c320881a8fe75c42d27e9cab811738628d5092f620ae29ccab3ec985c1f3787",
+          "bytes": 9497,
+          "results": [
+            {
+              "status": "pass",
+              "count": 14
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/native-sc-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/external-preparelinux/native-sc-results.json",
+          "sha256": "dd90ccfdb2670dbb3a1982b6b472505adab62d2228e304a2e00f7f17e33677ae",
+          "bytes": 9177,
+          "results": [
+            {
+              "status": "pass",
+              "count": 14
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/package-audit-windows-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/package-audit-windows-results.json",
+          "sha256": "7a6631ce445e7bae5cf576ddbc76b445a3df1c48044be42d03a88f879950cb81",
+          "bytes": 1255,
+          "results": [
+            {
+              "status": "pass",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/package-audit-linux-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/package-audit-linux-results.json",
+          "sha256": "43ce37f828b393e0c68a8424bfe91e37637a1aa232e41aa2587805eb1e9c7028",
+          "bytes": 1672,
+          "results": [
+            {
+              "status": "pass",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/dependency-policy-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/dependency-policy-results.json",
+          "sha256": "a925b0161c54357bf104e1dacb851232d1b83c7ddd781147d42f2ca5daff9ab6",
+          "bytes": 1496,
+          "results": [
+            {
+              "status": "pass",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/positive/runtime-policy-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/positive/runtime-policy-results.json",
+          "sha256": "24166335885dde91efb8d935d785b7c1f7f4eced2dad9a7dbbf917ec52d70949",
+          "bytes": 2650,
+          "results": [
+            {
+              "status": "pass",
+              "count": 14
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/basil-windows-template-review/positive-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/basil-windows-template-review/positive-results.json",
+          "sha256": "ec28cb30949d98f18af8cc3bd2f853e1b788187886957e24747d2b2aac7f010a",
+          "bytes": 4466,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/basil-windows-template-review/negative-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/basil-windows-template-review/negative-results.json",
+          "sha256": "df23f9aa03c843c34d1d383190cb6527288a26cab265ccbb3fc76ca1b8441fe6",
+          "bytes": 5028,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/donald-classic-package-review/windows-template-repair/windows-replay-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/donald-classic-package-review/windows-template-repair/windows-replay-results.json",
+          "sha256": "5405d4f6d9a090320060d978da5c6120c5ec3e086e7588832f2863fbb83fa761",
+          "bytes": 4634,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase3-classic-final-2/external-windows/bin-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/distribution-phase3-classic-final-2/external-windows/bin-results.json",
+          "sha256": "6a05a53741af0efc2f87da826bc70421c49e224da44ee6d84dd55aef948cc9fb",
+          "bytes": 7031,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/negative/regression-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/negative/regression-results.json",
+          "sha256": "3d6319cd47fe10d1ff449defb3b386eddc191b06e6167355670550472c237b9f",
+          "bytes": 1661
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/old-feed-hashes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/old-feed-hashes.json",
+          "sha256": "2f70b257b9f8111c21d41b49d13474e8f91f7ed1f18fe343a92591f549d42383",
+          "bytes": 1167
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/repaired-matrix-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/repaired-matrix-freeze.json",
+          "sha256": "dd9207c66720cbbb635ac1aca838499a5478a66fa45ce4188bbd2cd898536731",
+          "bytes": 5600
+        },
+        {
+          "path": "artifacts/portability/distribution-phase3-classic-final-2/feed/Wpf.Portable.Runtime.10.0.0-portable.1.nupkg",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/distribution-phase3-classic-final-2/feed/Wpf.Portable.Runtime.10.0.0-portable.1.nupkg",
+          "sha256": "0c2b3afedec2eb86dd1731130ded5f3df7aea574dc5b9359fd63525929c0b266",
+          "bytes": 14722379
+        },
+        {
+          "path": "artifacts/portability/distribution-phase3-classic-final-2/feed/Wpf.Portable.Sdk.10.0.0-portable.1.nupkg",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/distribution-phase3-classic-final-2/feed/Wpf.Portable.Sdk.10.0.0-portable.1.nupkg",
+          "sha256": "4802533d0be91b4a69e13d73c5556ed921259348c3938ae56ea15b17a6bc609a",
+          "bytes": 3362883
+        },
+        {
+          "path": "artifacts/portability/distribution-phase3-classic-final-1/producer-failure.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/distribution-phase3-classic-final-1/producer-failure.json",
+          "sha256": "03208d62b48a9f24f5c6d93b9a5af9587efa0540d5b33f4b7ac55cd91fd13b2f",
+          "bytes": 1141
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/windows-template-repair/focused-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/artifacts/portability/classic-package-preparation/windows-template-repair/focused-freeze.json",
+          "sha256": "71bcba01483d715b7a279e9d9833ba76725c212cb57cccf7000dbfdb936ea77b",
+          "bytes": 1931
+        },
+        {
+          "path": "src/Portability/Packaging/IsolatedBuild.props",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/src/Portability/Packaging/IsolatedBuild.props",
+          "sha256": "a4889fed4f7ed9aa9da42d215f23169f6dc054cd1ada0e40fbbc17e16fabe332",
+          "bytes": 1651
+        },
+        {
+          "path": "src/Portability/Packaging/Consumer/App/Program.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/src/Portability/Packaging/Consumer/App/Program.cs",
+          "sha256": "302a23abcf76dec4f8fba5895c49207be55b910874731784c38b68ff16cefef3",
+          "bytes": 23204
+        },
+        {
+          "path": "src/Portability/Packaging/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-qualified/src/Portability/Packaging/README.md",
+          "sha256": "629c145fd19c1ca851d409ee75ed873b8fbf9a949a4f1166344971d528f10e3b",
+          "bytes": 8486
+        }
+      ]
+    },
+    {
+      "label": "nina-classic-replay-ribbon-red",
+      "capturedAtUtc": "2026-10-18T15:46:47.9401879Z",
+      "headCommit": "a790c7299ed60f485def554d7d07799b3de4a141",
+      "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
+      "scope": "Unchanged3370-source/160managed-file NINA closure and six dictionaries construct. Linux layout fails on eager optional Ribbon xmlns assembly loading for Validation.Errors; original BAML contains no Ribbon type reference. Windows layout fails at known Linux-only native-font asset boundary. Neither profile passes layout; native validation remains pending.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/root-release.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/root-release.json",
+          "sha256": "fe20fb2ccf03d1426df2e6050a320d21501e86fc5315a69124bebde4bb683022",
+          "bytes": 883
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/preparation.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/preparation.json",
+          "sha256": "2c95e0270f4c0e1849771124b7c2340f99e094df0b8bda9016b236fc9fae3bab",
+          "bytes": 10584
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/prepared-files.sha256.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/prepared-files.sha256.json",
+          "sha256": "98a7c657702df8b99a8ba58c11b1e54ef5a933844f3531260c73995996159b5a",
+          "bytes": 5168
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/original-textbox-baml-metadata.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/original-textbox-baml-metadata.json",
+          "sha256": "eb9abf75a468635bfd38cc6d1e28425c01d2b494cbba6a66b55bc3f9904fc42f",
+          "bytes": 3295
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/build-linux.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/build-linux.log",
+          "sha256": "932f89b3e40c55e3b18bfdb9ef4fbd118c8a326ee4f2cf173e29d9efc5360d92",
+          "bytes": 1280
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/build-windows.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/build-windows.log",
+          "sha256": "70f4a2c004c351298a00aab5992a7502dc7f398982b63e4b41e439b298deb177",
+          "bytes": 1303
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/linux-loaded-assembly-hashes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/linux-loaded-assembly-hashes.json",
+          "sha256": "0298182ce15f9d4a8aa64f9c1e6d80b6d8085775ebf9e4f4fcc40bf99b276c37",
+          "bytes": 27676
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/linux-output-files.sha256.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/linux-output-files.sha256.json",
+          "sha256": "30d74d6e9b269f492efb6583c20aaa3c6c4f1e43a02cfeacd8499b87ecc794c6",
+          "bytes": 55696
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/linux-red-evidence.sha256.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/linux-red-evidence.sha256.json",
+          "sha256": "6a31d0e8096bdcabb10eb10e20ef0d4463199be32655424e47e0167921d23d34",
+          "bytes": 2562
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/NuGet.linux.Config",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/NuGet.linux.Config",
+          "sha256": "9c825865ac7355fa1fb26bb2167e6bb86ed0c9217a663fb9d5c6f16199b36429",
+          "bytes": 198
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/NuGet.windows.Config",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/NuGet.windows.Config",
+          "sha256": "0b32381103e3309dad505feb66f37de244f168cfce50c18bfc42024957f7eabf",
+          "bytes": 194
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/process-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/process-linux.json",
+          "sha256": "9a119cf0f64137d63a0d0672fdd56a2bc712387950e9ce2abd5abe14e98d2de6",
+          "bytes": 22
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/process-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/process-windows.json",
+          "sha256": "caf4cb0744099c01f005d26ac6dbc86dab0c8b3f7065965bbb9021b9d229625f",
+          "bytes": 30
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/replay-final.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/replay-final.json",
+          "sha256": "90d3df85fbb7cc4b8435ac3de45baa4dc6ab93f276d886c200e39c832330b8c3",
+          "bytes": 22005
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/replay-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/replay-summary.json",
+          "sha256": "e12935461e4d3c65d8a714b5d08898573ee37ca975d9c9e4b6c3c0f34548157f",
+          "bytes": 9966
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/runtime-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/runtime-linux.json",
+          "sha256": "71f5bcd4a0b556befd4a561478f69797f3656818e0f64e380a08460d0044059d",
+          "bytes": 277300,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/runtime-linux.stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/runtime-linux.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/runtime-manifest-byte-verification.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/runtime-manifest-byte-verification.json",
+          "sha256": "3e43589b4bf2010db662f01d9163782e481fe70c7e901d1cf5a1ebc827371670",
+          "bytes": 20563
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/runtime-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/runtime-windows.json",
+          "sha256": "bfb74bd5ca1a51baa245ef7ffd413b2fb60bf3fbed66f8565a6e369123f8cbcd",
+          "bytes": 280340,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/runtime-windows.stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/runtime-windows.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/windows-evidence.sha256.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/windows-evidence.sha256.json",
+          "sha256": "f3a1f68028c46602305bb4ebc12d37b2ef33808d50d8b5acafdd8d99474bba7a",
+          "bytes": 1330
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/windows-loaded-assembly-hashes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/windows-loaded-assembly-hashes.json",
+          "sha256": "132f69a545467d3f1914bc7d34b02ed6d61d0cc8917800be4f1b4afaaca950b5",
+          "bytes": 20232
+        },
+        {
+          "path": "artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/windows-output-files.sha256.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-classic-replay-ribbon-red/artifacts/portability/nina-classic-package-replay/runs/0C2B3AFEDEC2EB86-4802533D0BE91B4A/windows-output-files.sha256.json",
+          "sha256": "5ffe41480f01c1f5726250bbfc9e6c36a04cdb3c67ff9151c085d66058e91305",
+          "bytes": 57393
+        }
+      ]
+    },
+    {
+      "label": "bitmap-hoist-source-ab",
+      "capturedAtUtc": "2026-10-18T15:46:48.8581414Z",
+      "headCommit": "a790c7299ed60f485def554d7d07799b3de4a141",
+      "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
+      "scope": "Profiled source-built99-binary Core-only comparison passes four24MP three-warmup/three-measured-frame runs. Gray mean841.58->377.58ms,RGB1576.00->506.67ms, two presents/transaction,sourceexact/nativeimagesbyte-identical. Raw110files and independent review retained. Canonical30-frame fresh-package gate remains open.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-evidence-hashes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-evidence-hashes.json",
+          "sha256": "1b2c54de8558d08d8f92b70a8aff00ec7bbe42a63da43bd96b2b63a4e1b0e049",
+          "bytes": 19009
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/README.md",
+          "sha256": "7d7c4aa3ebabd8826a67418a8b3362f88bb042f5da354a8a22bce326e70d893d",
+          "bytes": 10989
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/WORKLOAD-MAP.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/WORKLOAD-MAP.md",
+          "sha256": "96b8758373df96703b08e059b5fe3e4b019cf3e659559fb03427ddeb13bc3335",
+          "bytes": 2760
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/workload-canonical-to-diagnostic.diff",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/workload-canonical-to-diagnostic.diff",
+          "sha256": "32f89137420245e2fc8185928238e681f4ac29b74e897d6f711dd58848cc57e6",
+          "bytes": 11664
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/leaf-ip.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/leaf-ip.txt",
+          "sha256": "6cfad1d0fcd4048832534d5819d314d891a06e5f8fdc42b40526a88c3b7310b8",
+          "bytes": 95485
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/leaf-stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/leaf-stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/perf-498.map",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/perf-498.map",
+          "sha256": "be241412e458309cc60a2fd5b1001cf5954fb9024a978bd7f74cdf654f70861b",
+          "bytes": 2051550
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/perf.data",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/perf.data",
+          "sha256": "24bb6ceb08bdc45da4fd99009ed969f112560f6a244108ab2b006f4c2c159380",
+          "bytes": 166784
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/phase-symbols.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/phase-symbols.json",
+          "sha256": "c2657663104a8a01137de87f5a30da87d0f27b4086bc0c5bd1698adf4828b4a9",
+          "bytes": 3416
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/pid.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/pid.txt",
+          "sha256": "b4294b263fa7113848704e0c11d8954a91e91b7eed4f28e69f0657c866d7d0d2",
+          "bytes": 4
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/process.json",
+          "sha256": "0cf5aa2e7227e9736d9d50cec3a2d236ffe8bd10c4d427828ee022b788a86305",
+          "bytes": 160
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/stdout.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/stdout.log",
+          "sha256": "3545a169ed2c9054693bde39b2e48b2baf48c61e823bb9bcf4daf4448ac8f351",
+          "bytes": 1888
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/environment.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/environment.json",
+          "sha256": "4383ce77b015b595370479dd4309057c4e712a30f13ad825de821c728275e5b9",
+          "bytes": 51497
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/final.ppm",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/final.ppm",
+          "sha256": "e0ec271190c016631ce336de55f38b43cd8a6a36d1f1926a16657fa262bd9412",
+          "bytes": 2880688
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/frames.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/frames.json",
+          "sha256": "15518933810742c43ceac9134327ac1142237c1d6df5bf8ff46213a5fa3cf99f",
+          "bytes": 2999
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/initial.ppm",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/initial.ppm",
+          "sha256": "acdce51a00d7786536f21aeeebc886d2ca175a79994f315d8ca2129f6d6e84d2",
+          "bytes": 2880688
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/linux-native-snapshot-first.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/linux-native-snapshot-first.json",
+          "sha256": "9c0fdec361ffaccbdbf2692a18790b9a672672c969b2268c3fc1dfeee0cdccb1",
+          "bytes": 2376
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/linux-native-snapshot-last.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/linux-native-snapshot-last.json",
+          "sha256": "e7d50a38e8980f84f92113599f2d8e5a68333365b0111482af9696fbe06a81b6",
+          "bytes": 2376
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/loaded-managed-assemblies-first.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/loaded-managed-assemblies-first.json",
+          "sha256": "e6bd7e16b49e66c9d48142ec651875a315d86da99b2b65dac500551cf7957d32",
+          "bytes": 20210
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/loaded-managed-assemblies-last.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/loaded-managed-assemblies-last.json",
+          "sha256": "d46577658be459f0400429039f766de736d29aad000e048982e68d9280deb0d4",
+          "bytes": 20504
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/memory-samples.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/memory-samples.json",
+          "sha256": "42f2021bdb1cae51464675d69632ee08d603d304e24fcb9317f698f8fe8f4576",
+          "bytes": 34117
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/native-pixels-first.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/native-pixels-first.json",
+          "sha256": "c55e0b6aa41308394d5b92c59da3d1a681558f7621247e87cf9321794475524b",
+          "bytes": 921
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/native-pixels-last.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/native-pixels-last.json",
+          "sha256": "dfb40662bc482e576db7b46ee1d326ef72ff5693b9de8604b854bac3ed01b5ca",
+          "bytes": 926
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/proc-self-maps-first.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/proc-self-maps-first.txt",
+          "sha256": "f3fb0e64cd47964e046c13912ec047a49ea57e3433bcbfefa589c631ddcb5b14",
+          "bytes": 119906
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/proc-self-maps-last.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/proc-self-maps-last.txt",
+          "sha256": "749bbd8c58637cf5cd659a33bba7c10e80a38d64472b5c317e1964e02bf8fd74",
+          "bytes": 121294
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/runtime-audit.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/runtime-audit.json",
+          "sha256": "3b3ebb0288b9a4b05acc19cc1534d91c4416d61ad9aeb03d6a8167b5fdd4fa57",
+          "bytes": 19373
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Gray16/run/summary.json",
+          "sha256": "1914c81479324809e46016413ab78232fd980c89fd3bd73f3aa4eb6228978df4",
+          "bytes": 4915
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/leaf-ip.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/leaf-ip.txt",
+          "sha256": "c345dfa523953e502389c558e00b9cdc794c0b59eafbea0c0efa046445c8d934",
+          "bytes": 113166
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/leaf-stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/leaf-stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/perf-542.map",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/perf-542.map",
+          "sha256": "769a428d3e14284cd7c635a5425296b2d390cda6c9694377e4c7142882405e6f",
+          "bytes": 2045297
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/perf.data",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/perf.data",
+          "sha256": "53e8b930cd9c088c3459fd532dcfbe347f1624ff8f0fa4f563ae52e647aa0292",
+          "bytes": 173680
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/phase-symbols.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/phase-symbols.json",
+          "sha256": "5173e1202e0c4b8ab3a0d1c6dbc6f672ce3ac0f210490ae378d53876def18c5b",
+          "bytes": 3344
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/pid.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/pid.txt",
+          "sha256": "a6e27db66275c9c2a2779d4e9ad561dc33b22b0d9ad68c882acf50314e9b9716",
+          "bytes": 4
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/process.json",
+          "sha256": "0cf5aa2e7227e9736d9d50cec3a2d236ffe8bd10c4d427828ee022b788a86305",
+          "bytes": 160
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/stdout.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/stdout.log",
+          "sha256": "f88181feb9b292e9aa62c313f7d2537ebe8a9932a57f37fe3b0aba060e28c287",
+          "bytes": 1885
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/environment.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/environment.json",
+          "sha256": "b6ac623ddac8c08669170f407bcabde65e0b300d5ac724c4aa95286871dfd809",
+          "bytes": 51498
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/final.ppm",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/final.ppm",
+          "sha256": "5810c0f036cd0df4ddb1a5c4d82e7db7ff0246633a71d30e756785f5c119bfec",
+          "bytes": 2880688
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/frames.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/frames.json",
+          "sha256": "f2b40b9ffffc14b405fe1431a4263f790a6a59f65ed809af84129e63df1d6290",
+          "bytes": 2990
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/initial.ppm",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/initial.ppm",
+          "sha256": "4d270d0dbfcf6b8c2b2d5da8bc162c184bba19e328355a402059e784e310d40d",
+          "bytes": 2880688
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/linux-native-snapshot-first.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/linux-native-snapshot-first.json",
+          "sha256": "4b55caf66287589040fdd439c0a3480be50740c7b0299adb6120cdd8f90ff318",
+          "bytes": 2376
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/linux-native-snapshot-last.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/linux-native-snapshot-last.json",
+          "sha256": "846b411f43aecb1a929529910f50a1aa757294f9508437577781cafdd52ff031",
+          "bytes": 2376
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/loaded-managed-assemblies-first.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/loaded-managed-assemblies-first.json",
+          "sha256": "e6bd7e16b49e66c9d48142ec651875a315d86da99b2b65dac500551cf7957d32",
+          "bytes": 20210
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/loaded-managed-assemblies-last.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/loaded-managed-assemblies-last.json",
+          "sha256": "d46577658be459f0400429039f766de736d29aad000e048982e68d9280deb0d4",
+          "bytes": 20504
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/memory-samples.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/memory-samples.json",
+          "sha256": "2391459b818f2cad4c5d0082ea744ad9704097a4265a27d2d5fa1e8b9a07b902",
+          "bytes": 36162
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/native-pixels-first.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/native-pixels-first.json",
+          "sha256": "d9ee5b955040761bbd3530c21b27b08305f8c7c7f812b3c353541e14e7e7cd5e",
+          "bytes": 924
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/native-pixels-last.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/native-pixels-last.json",
+          "sha256": "bc61ead9798f23113fe09c8c063d5a018322a8d8cca6a49ff22e72a7d6b0d0e0",
+          "bytes": 927
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/proc-self-maps-first.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/proc-self-maps-first.txt",
+          "sha256": "c9556649b789b5643af99d523091be28c51dc5c1f591d25414bf61541f054967",
+          "bytes": 120509
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/proc-self-maps-last.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/proc-self-maps-last.txt",
+          "sha256": "9c42b23949bb0f566a1784939a643c37aafdc37bf4631d69cb9fec0dc48e3dda",
+          "bytes": 121637
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/runtime-audit.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/runtime-audit.json",
+          "sha256": "3b3ebb0288b9a4b05acc19cc1534d91c4416d61ad9aeb03d6a8167b5fdd4fa57",
+          "bytes": 19373
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-after-Rgb48/run/summary.json",
+          "sha256": "7b1ff29628ba2d19206e79a76938b2f76e589ba6f0ff330b16bc2b5fbc1ce033",
+          "bytes": 4909
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/leaf-ip.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/leaf-ip.txt",
+          "sha256": "05bf83256ba23440f529d69edf3c6678a0a07cfa27fb09af4937ebbeada1b509",
+          "bytes": 224126
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/leaf-stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/leaf-stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/perf-392.map",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/perf-392.map",
+          "sha256": "211bcc9fc390862fa33bb80052b62911748547cc4c3f66820052fe5d5cae5043",
+          "bytes": 2075814
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/perf.data",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/perf.data",
+          "sha256": "ed4d4bbdd89507b3e04be8fe35b8a7bc9c1ba11399efb28025662faf2a40cc2f",
+          "bytes": 214376
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/phase-symbols.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/phase-symbols.json",
+          "sha256": "976325dbbb8969ace4e083b8c26673de143456eb4a82f19b508d8c6ea4c0c4ac",
+          "bytes": 4075
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/pid.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/pid.txt",
+          "sha256": "6b16b2d9eb92a7ce60777fb344a43fb2146aabc424f25dcb055b175fec4cdccf",
+          "bytes": 4
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/process.json",
+          "sha256": "0cf5aa2e7227e9736d9d50cec3a2d236ffe8bd10c4d427828ee022b788a86305",
+          "bytes": 160
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/stdout.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/stdout.log",
+          "sha256": "136201c9f8c2f324b8bc52d6d933d56ce6137ddf8c1e11c9399edd14b1ad7fbb",
+          "bytes": 1891
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/environment.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/environment.json",
+          "sha256": "975f09697463413ddf3492440cacc0173e90dafd0ba5d8a8effc2cf2b584bc93",
+          "bytes": 51499
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/final.ppm",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/final.ppm",
+          "sha256": "e0ec271190c016631ce336de55f38b43cd8a6a36d1f1926a16657fa262bd9412",
+          "bytes": 2880688
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/frames.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/frames.json",
+          "sha256": "4eda3003e21cd96ed577bc3bc0f700b4fec88645308ef358ab2f83a4ef8e4e86",
+          "bytes": 3000
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/initial.ppm",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/initial.ppm",
+          "sha256": "acdce51a00d7786536f21aeeebc886d2ca175a79994f315d8ca2129f6d6e84d2",
+          "bytes": 2880688
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/linux-native-snapshot-first.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/linux-native-snapshot-first.json",
+          "sha256": "6af9c3c581abaa4bf903464be8beaad36f69b5458b549b3b43c6c1cafb253402",
+          "bytes": 2376
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/linux-native-snapshot-last.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/linux-native-snapshot-last.json",
+          "sha256": "03c5ce3a6b811e379e6871b5071f0cac7bcc6d603a34a9d6fa457ef52b0ede4a",
+          "bytes": 2376
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/loaded-managed-assemblies-first.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/loaded-managed-assemblies-first.json",
+          "sha256": "aa00d61999af502dad0f457f018605da979ae82887ea580a2cb43e310bb73277",
+          "bytes": 20234
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/loaded-managed-assemblies-last.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/loaded-managed-assemblies-last.json",
+          "sha256": "308a63ce6544a96bd55f59feb44f9a292709a831f328d21440e2167f104cd2f0",
+          "bytes": 20528
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/memory-samples.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/memory-samples.json",
+          "sha256": "bdba69e6bbe9a5c9217719456518f7bcd8bd287210daee40d7d12ee3967371b8",
+          "bytes": 48611
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/native-pixels-first.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/native-pixels-first.json",
+          "sha256": "ffefc9bdd1b8fd03ad43f4b490a473416edf838c64946a66a1cc9e9f5c335fc0",
+          "bytes": 921
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/native-pixels-last.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/native-pixels-last.json",
+          "sha256": "2d2826f493d369f513dba2b90118511ccc9f5a88a68de5c8fd6a8efa8173c75f",
+          "bytes": 930
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/proc-self-maps-first.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/proc-self-maps-first.txt",
+          "sha256": "8e07ff5e22833811ee963daf74cd941f71e08e082b7a9ea4040247bcf4de5517",
+          "bytes": 120553
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/proc-self-maps-last.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/proc-self-maps-last.txt",
+          "sha256": "eade795a3272e403f2170e63e182386d61a5945bfb0faeda81e1d2ea943ac74b",
+          "bytes": 121686
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/runtime-audit.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/runtime-audit.json",
+          "sha256": "e586a1a76f9aa61e76f2a64a23acc83d2e26b7f288911c09147095e5a96c2b3d",
+          "bytes": 19422
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Gray16/run/summary.json",
+          "sha256": "57f46e3915ccb6d5d487083cd64582bbf07b22c23dffc0c91d220403043502b2",
+          "bytes": 4880
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/leaf-ip.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/leaf-ip.txt",
+          "sha256": "899d33cca595d7cc3d44aa36331912dfd0343f2c43f5568196115cffdc9fa94a",
+          "bytes": 355443
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/leaf-stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/leaf-stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/perf-451.map",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/perf-451.map",
+          "sha256": "5ca2704a4035b69694f1f662a8648cc7801a0373924d04b715a47a26eaa22a90",
+          "bytes": 2092623
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/perf.data",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/perf.data",
+          "sha256": "63025f688fd798b131adbae841c7d053d57e958f61aa834f6b6f0916e87e1339",
+          "bytes": 263848
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/phase-symbols.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/phase-symbols.json",
+          "sha256": "c4a4097a1b225b590e415b9ddf4ad62ae988648ed9c60623730cd0f5507f093d",
+          "bytes": 3692
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/pid.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/pid.txt",
+          "sha256": "bb4be6de6854f575525fafc394479ae42f5dc81d3c474433f7c25b1a033bfaf2",
+          "bytes": 4
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/process.json",
+          "sha256": "0cf5aa2e7227e9736d9d50cec3a2d236ffe8bd10c4d427828ee022b788a86305",
+          "bytes": 160
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/stdout.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/stdout.log",
+          "sha256": "5f496078feca1693768e050f0f867a39d4afa4d8cd547be80c55cd7dfef08f0a",
+          "bytes": 1888
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/environment.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/environment.json",
+          "sha256": "ac7e6b1c8f80677275ccd19c72faf4f0e7e79bda1a0695e7c6aeda65228808aa",
+          "bytes": 51499
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/final.ppm",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/final.ppm",
+          "sha256": "5810c0f036cd0df4ddb1a5c4d82e7db7ff0246633a71d30e756785f5c119bfec",
+          "bytes": 2880688
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/frames.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/frames.json",
+          "sha256": "14ec873ea58bd5f158d95a3c47825576ce902b251d92723abc8aa9c671912d77",
+          "bytes": 3011
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/initial.ppm",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/initial.ppm",
+          "sha256": "4d270d0dbfcf6b8c2b2d5da8bc162c184bba19e328355a402059e784e310d40d",
+          "bytes": 2880688
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/linux-native-snapshot-first.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/linux-native-snapshot-first.json",
+          "sha256": "a64210790ec88be366919322b9d69d3b434317b43885f120e882e5e3f6481e1f",
+          "bytes": 2376
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/linux-native-snapshot-last.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/linux-native-snapshot-last.json",
+          "sha256": "54189c3ad5c81384d0c0ded2ad94abc828a489bdae75f97e9abc6b8706c17402",
+          "bytes": 2376
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/loaded-managed-assemblies-first.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/loaded-managed-assemblies-first.json",
+          "sha256": "aa00d61999af502dad0f457f018605da979ae82887ea580a2cb43e310bb73277",
+          "bytes": 20234
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/loaded-managed-assemblies-last.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/loaded-managed-assemblies-last.json",
+          "sha256": "308a63ce6544a96bd55f59feb44f9a292709a831f328d21440e2167f104cd2f0",
+          "bytes": 20528
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/memory-samples.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/memory-samples.json",
+          "sha256": "45eba1c83662e80bc4d1f2af2ae3f062117405b8fd3e7008156a1fd545dc1457",
+          "bytes": 66617
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/native-pixels-first.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/native-pixels-first.json",
+          "sha256": "e2d962409a40f720edee224050b97d9ed92a6cd2c5d02891c9abd3b53af67f57",
+          "bytes": 923
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/native-pixels-last.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/native-pixels-last.json",
+          "sha256": "cc3c4c9dbc28d11f8752e2ddbdeac7e385ea3daff92757b930c1c9f93c31dfb9",
+          "bytes": 927
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/proc-self-maps-first.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/proc-self-maps-first.txt",
+          "sha256": "d8746d1dd0bc40da7ed0c85a65d00a521ec07ac6eb11ac224d9c01bd33da327a",
+          "bytes": 121431
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/proc-self-maps-last.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/proc-self-maps-last.txt",
+          "sha256": "e51f82413f00a25c64d44869793be8c29c13d85251b276dbaba957fb10837ec6",
+          "bytes": 120946
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/runtime-audit.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/runtime-audit.json",
+          "sha256": "e586a1a76f9aa61e76f2a64a23acc83d2e26b7f288911c09147095e5a96c2b3d",
+          "bytes": 19422
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-before-Rgb48/run/summary.json",
+          "sha256": "b175e40f982fccab02aefecfb8d7332a913cd5e48d578c772d599775de4ca52e",
+          "bytes": 4922
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/ab2-runtime-hashes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/ab2-runtime-hashes.json",
+          "sha256": "13e408b7230d773eedba35827e2f6ce4fc4ae5d4eaabbe92e5c4c4a1864de5eb",
+          "bytes": 22403
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/ab2-runtime-diff.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/ab2-runtime-diff.json",
+          "sha256": "d5bafa0da536cf9a1a2606cae94352df76f957993c9bed54237c002cef073c36",
+          "bytes": 105
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/core-compiled-document-diff.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/core-compiled-document-diff.json",
+          "sha256": "4eb9dbda3073f56f3d65a6d4ab244160f25ec7b30df45ce04d5dd3f38ea555f3",
+          "bytes": 449
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-comparison.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-comparison.json",
+          "sha256": "1cd397f32c5e227873e0ec75f41a6886d7c5eeabb4054525c75961e6bf7fe3aa",
+          "bytes": 1098
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-conditions.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-conditions.json",
+          "sha256": "f50d39e9aeeaba07d34bee67ae9105994d5e54b9f28741093fc5b42b0f6209ab",
+          "bytes": 1631
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-final-runtime-check.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-final-runtime-check.json",
+          "sha256": "92611f4d0e7273d42a3d78fdf38be094e37934a088ebf8e2df4a2bc3e15dfa91",
+          "bytes": 2061
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-native-pixel-parity.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-native-pixel-parity.json",
+          "sha256": "1d14be56d2dcfa3383540affaaea3aa1947507fc31eedefb68f110cdf6171a6a",
+          "bytes": 319
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-sample-decode-check.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/source-ab-sample-decode-check.json",
+          "sha256": "d248dc73708015140cff98ea66a1899635f1091ee3306b9b504a76c718f48d2a",
+          "bytes": 457
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/run-source-ab.executed.sh",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/run-source-ab.executed.sh",
+          "sha256": "2ebdc79912b3e7b02064d6017aff6be73d7c8edee20ea4a880a6aad18e3dbe24",
+          "bytes": 1741
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/run-source-ab.sh",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/run-source-ab.sh",
+          "sha256": "b329727b175f21ecdf4e6d7bbd8a0e1e476dd938b23a3c380d2cf55cdb35f7cf",
+          "bytes": 1923
+        },
+        {
+          "path": "artifacts/portability/scientific-performance-diagnosis/hoist/profile-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-bitmap-hoist-source-ab/artifacts/portability/scientific-performance-diagnosis/hoist/profile-summary.json",
+          "sha256": "aa054a21a972a79f1e35570caf41d13611251c47ed0318fd0f85bca61139d31b",
+          "bytes": 5001
+        }
+      ]
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",
   "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
-  "phase3Status": "classic-source-controls-passed-packaged-nina-replay-pending",
+  "phase3Status": "classic-package-passed-unchanged-nina-layout-failed-optional-ribbon-namespace-load",
   "phase5Status": "native-absent-distance-repair-passed-packaged-gnome-replay-pending"
 }
