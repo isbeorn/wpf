@@ -269,6 +269,8 @@ Image cases include odd widths, padded stride, minimum dimensions, edge dirty re
 
 Measure Windows references and Linux results on comparable declared hardware with fixed image sizes, plot histories and update rates. Phase 0 records the workloads; Phase 2 sets numerical latency, memory and allocation budgets from those measurements before the shell gate. Label CPU rasterization, GPU paths and warm/cold runs. Avoid invented performance targets or silently treating a growing cache as a leak.
 
+The approved first imaging workload is 6000 x 4000 scientific frames, Gray16 and RGB48 tested separately, at one full-frame update per second with interactive zoom/pan. Record measured reference distributions before setting numerical budgets for that workload.
+
 The final gate for each change includes targeted tests, the relevant broader regressions, build/static checks, affected view instantiation and inspection of the actual diff. Independent reviewers assess correctness, maintainability, useful test coverage and scope. Fix supported findings and rerun affected checks after the last edit.
 
 ## Critical path and decisions

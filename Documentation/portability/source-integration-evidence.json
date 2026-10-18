@@ -1,0 +1,1480 @@
+{
+  "schemaVersion": 2,
+  "checkpoint": "2026-10-18",
+  "baseSourceRevision": "65d15adece1df9a73e3d1abc11f8bbf99e9fc7a9",
+  "foundationCommit": "c39969138",
+  "portableTargetFramework": "net10.0",
+  "portableAssemblyVersion": "10.0.0.0",
+  "phase1Status": "passed-bounded-feasibility",
+  "upstreamThreadingTests": {
+    "passed": 208,
+    "failed": 0,
+    "skipped": 0
+  },
+  "results": [
+    {
+      "path": "artifacts/portability/framework-identity-windows.json",
+      "sha256": "ccb0817ec20d5d795404c75b547967e4c6ce9a2cd139ca0c72c543822d617585",
+      "bytes": 1819,
+      "probe": "framework-identity",
+      "scope": "actual-fork-windowsbase-app-local-default-context-net10",
+      "results": [
+        {
+          "status": "pass",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/framework-identity-linux.json",
+      "sha256": "88c6e529fcce8a983f0ba3880ffc83bffbd476ca99c2868fb5d9618055be0bce",
+      "bytes": 1732,
+      "probe": "framework-identity",
+      "scope": "actual-fork-windowsbase-app-local-default-context-net10",
+      "results": [
+        {
+          "status": "pass",
+          "count": 8
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/dispatcher-integration/windows-results.json",
+      "sha256": "0356d39a725c0506a4f4dc331a0f3d72f0247543c881602b4388ee0d44d16804",
+      "bytes": 2356,
+      "probe": "dispatcher-integration",
+      "scope": "fork WindowsBase dependency properties and Dispatcher with managed portable pump; native ETW disabled; no native window/input host",
+      "results": [
+        {
+          "status": "pass",
+          "count": 14
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/dispatcher-integration-linux/linux-results.json",
+      "sha256": "43301712edc1d61ddb10b8162277c15c8e93ae9f9b0f8522a5ee26cfd40bc2bc",
+      "bytes": 2306,
+      "probe": "dispatcher-integration",
+      "scope": "fork WindowsBase dependency properties and Dispatcher with managed portable pump; native ETW disabled; no native window/input host",
+      "results": [
+        {
+          "status": "not-applicable",
+          "count": 1
+        },
+        {
+          "status": "pass",
+          "count": 13
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/text-integration/windows/results.json",
+      "sha256": "8893f26076d516c6b5e43f0ab87668fb1c015420a27e8e229327972b0b2471dc",
+      "bytes": 16146,
+      "probe": "actual-wpf-text-integration",
+      "scope": "Source-built WPF TextFormatter, TextLine, Typeface, GlyphTypeface, GlyphRun and DrawingContext integration; bounded LTR support.",
+      "results": [
+        {
+          "status": "pass",
+          "count": 79
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/text-integration/linux/results.json",
+      "sha256": "3b00a4c2cfb05caef44e1916ad93672f1b774a99a35a02599ffb8d306183505d",
+      "bytes": 15727,
+      "probe": "actual-wpf-text-integration",
+      "scope": "Source-built WPF TextFormatter, TextLine, Typeface, GlyphTypeface, GlyphRun and DrawingContext integration; bounded LTR support.",
+      "results": [
+        {
+          "status": "pass",
+          "count": 79
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/rendering-integration/results-windows-extensions.json",
+      "sha256": "9f540446508e75135acd8bf16296bdeb274f6245c6a8e3a2e7c5e84c58c02d54",
+      "bytes": 2551,
+      "probe": "retained-rendering-integration",
+      "scope": "Actual fork DrawingVisual, UIElement layout, RenderData and MediaContext rendering to DPI-scaled Skia CPU surfaces; no native window or framework controls.",
+      "results": [
+        {
+          "status": "pass",
+          "count": 13
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/rendering-integration/results-linux-extensions.json",
+      "sha256": "ee1ec7cc37693027d7c516fe697f8fcee59251013ad3f434549db49667340022",
+      "bytes": 2468,
+      "probe": "retained-rendering-integration",
+      "scope": "Actual fork DrawingVisual, UIElement layout, RenderData and MediaContext rendering to DPI-scaled Skia CPU surfaces; no native window or framework controls.",
+      "results": [
+        {
+          "status": "pass",
+          "count": 13
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/native-dispatcher-integration/linux-xvfb.json",
+      "sha256": "9cd01c847ab7b801993106809a21fec917af3bdc8ad29b40a5121521b24a2c0e",
+      "bytes": 5143,
+      "probe": "real-wpf-native-dispatcher-integration",
+      "scope": "Actual fork WindowsBase Dispatcher and DependencyObject with pinned Avalonia 12.1.4 X11/GLib native event pump; XTest OS-injected input",
+      "results": [
+        {
+          "status": "pass",
+          "count": 15
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/nina-windows-reference/results.json",
+      "sha256": "1003c94bcc99168ae00619230007066bf23904a84bed52a882ec20c15211b491",
+      "bytes": 16792,
+      "probe": "NinaWindowsReference",
+      "scope": "Pinned NINA view tests on Windows stock WPF 10.0.12; native copy payload omitted; not this fork or whole NINA baseline",
+      "results": [
+        {
+          "status": "pass",
+          "count": 16
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/markup/build-verification-windows.json",
+      "sha256": "c85457420bde9e6f019ddc77ba0520378649cf5a6cc07bae96f33c15cff9e61e",
+      "bytes": 1524,
+      "probe": "real-wpf-markup-build-integration",
+      "scope": "Current fork PresentationBuildTasks and Microsoft.WinFX.targets compiling genuine WPF BAML and generated component code. This executable inspects build artifacts and does not infer runtime compatibility from compiler evidence.",
+      "results": [
+        {
+          "status": "pass",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/markup/build-verification-linux.json",
+      "sha256": "c2898c2df94189b0ea590021f4b49a25d9629d13863ae0195dc3104fcc15d35b",
+      "bytes": 1677,
+      "probe": "real-wpf-markup-build-integration",
+      "scope": "Current fork PresentationBuildTasks and Microsoft.WinFX.targets compiling genuine WPF BAML and generated component code. This executable inspects build artifacts and does not infer runtime compatibility from compiler evidence.",
+      "results": [
+        {
+          "status": "pass",
+          "count": 4
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/markup/runtime-windows.json",
+      "sha256": "9d5a0c6f7844cad4994cfb8a9af69b1f2ec797f61d4d43f64224ff00ed6cc76b",
+      "bytes": 1071,
+      "probe": "real-wpf-markup-windows-runtime-reference",
+      "scope": "Current fork compiler output loaded by stock Windows WPF runtime. Linux real-framework runtime construction remains pending.",
+      "results": [
+        {
+          "status": "pass",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/markup-runtime-windows.json",
+      "sha256": "0e3ff5a45d51fd97cd2445f88ae32cfbdbd63b42a1cc733f5e8b3bc2ca9fec3b",
+      "bytes": 3171,
+      "probe": "real-portable-wpf-baml-runtime",
+      "scope": "Exact markup integration fixture compiled and executed through current-source app-local WPF assemblies with no WindowsDesktop framework requirement. A failed construction check records the first actual runtime boundary and is not compatibility success.",
+      "results": [
+        {
+          "status": "pass",
+          "count": 7
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/markup-runtime-linux.json",
+      "sha256": "d825db98b17ca89a563e6319c6fe42ec62d640a74613afdb529a5a2522b5cfa7",
+      "bytes": 12362,
+      "probe": "real-portable-wpf-baml-runtime",
+      "scope": "Exact markup integration fixture compiled and executed through current-source app-local WPF assemblies with no WindowsDesktop framework requirement. A failed construction check records the first actual runtime boundary and is not compatibility success.",
+      "results": [
+        {
+          "status": "blocked",
+          "count": 2
+        },
+        {
+          "status": "fail",
+          "count": 2
+        },
+        {
+          "status": "pass",
+          "count": 3
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/microsoft-baml-runtime-windows.json",
+      "sha256": "f14c311e135f9c7cf40b0ed63ccb744a0d5e00bb099765861f2c364f7b7e68f4",
+      "bytes": 4568,
+      "probe": "microsoft-produced-baml-source-framework-runtime",
+      "scope": "Frozen unchanged SDK10 Microsoft-produced companion assembly loaded by the current-source app-local WPF runtime. The candidate is a binary reference and is never recompiled against the port.",
+      "results": [
+        {
+          "status": "pass",
+          "count": 5
+        }
+      ]
+    },
+    {
+      "path": "artifacts/portability/microsoft-baml-runtime-linux.json",
+      "sha256": "f6f81276ae2a0564ae29ea33910072c44c876713ec8bfc74d1ba4156093eb198",
+      "bytes": 8590,
+      "probe": "microsoft-produced-baml-source-framework-runtime",
+      "scope": "Frozen unchanged SDK10 Microsoft-produced companion assembly loaded by the current-source app-local WPF runtime. The candidate is a binary reference and is never recompiled against the port.",
+      "results": [
+        {
+          "status": "blocked",
+          "count": 1
+        },
+        {
+          "status": "fail",
+          "count": 1
+        },
+        {
+          "status": "pass",
+          "count": 3
+        }
+      ]
+    }
+  ],
+  "logs": [
+    {
+      "path": "artifacts/portability/current-source-windows-build-locale-c.log",
+      "sha256": "ae30fb981458f8d8bb1c9ad620d24bcedcd7d8270ac0de0052fe64a7a973df5f",
+      "bytes": 29106
+    },
+    {
+      "path": "artifacts/portability/upstream-threading-tests.log",
+      "sha256": "daf1afab421b7db42d838bbda8837c31878d3d204d226b9111801ba2fab506f4",
+      "bytes": 341
+    }
+  ],
+  "scope": "Snapshot of source integration evidence, with failures preserved; phase gates remain partial.",
+  "checkpoints": [
+    {
+      "label": "native-controls",
+      "capturedAtUtc": "20261018T103814447Z",
+      "headCommit": "a331a589c3d8b36b98655462a71b4386ac22b5b6",
+      "includesUncommittedWork": true,
+      "phase1Status": "partial",
+      "scope": "Recorded component and native Xvfb results. Source repairs and distribution qualification remain in progress; no complete phase claim.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/markup-runtime-final-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/markup-runtime-final-windows.json",
+          "sha256": "955cb31cc9d7cb30c1658aeb2fae4503b7cbf52f1c9dd551d6b1e73fb3fce445",
+          "bytes": 4282,
+          "probe": "real-portable-wpf-baml-runtime",
+          "scope": "Exact markup integration fixture compiled and executed through current-source app-local WPF assemblies with no WindowsDesktop framework requirement. A failed construction check records the first actual runtime boundary and is not compatibility success.",
+          "results": [
+            {
+              "status": "pass",
+              "count": 7
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/markup-runtime-final-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/markup-runtime-final-linux.json",
+          "sha256": "efe679647c43c88e05ffa318bc132f69fdd628ea838a8ef8e6802303ac00b775",
+          "bytes": 4173,
+          "probe": "real-portable-wpf-baml-runtime",
+          "scope": "Exact markup integration fixture compiled and executed through current-source app-local WPF assemblies with no WindowsDesktop framework requirement. A failed construction check records the first actual runtime boundary and is not compatibility success.",
+          "results": [
+            {
+              "status": "pass",
+              "count": 7
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/microsoft-baml-final-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/microsoft-baml-final-windows.json",
+          "sha256": "6ecfe6be237079e808f503ab836214913899cc869c4e16294b8bcb5e6bacacc8",
+          "bytes": 5517,
+          "probe": "microsoft-produced-baml-source-framework-runtime",
+          "scope": "Frozen unchanged SDK10 Microsoft-produced companion assembly loaded by the current-source app-local WPF runtime. The candidate is a binary reference and is never recompiled against the port.",
+          "results": [
+            {
+              "status": "pass",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/microsoft-baml-final-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/microsoft-baml-final-linux.json",
+          "sha256": "02fa5fbfef0e7a5f305d0a16f218489cc792c7a7e37cc5d42bd87e94fa1737a7",
+          "bytes": 5374,
+          "probe": "microsoft-produced-baml-source-framework-runtime",
+          "scope": "Frozen unchanged SDK10 Microsoft-produced companion assembly loaded by the current-source app-local WPF runtime. The candidate is a binary reference and is never recompiled against the port.",
+          "results": [
+            {
+              "status": "pass",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-xvfb.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/native-window-integration/linux-xvfb.json",
+          "sha256": "de7eb50ce88e65e9afc4d698555be001370edd80f3c3fd3428d8e43abd0b80bb",
+          "bytes": 4751,
+          "probe": "genuine-wpf-native-window",
+          "scope": "native virtual X11 server; OS-injected XTest input; genuine Window, retained frame and InputManager; physical desktop unqualified",
+          "results": [
+            {
+              "status": "pass",
+              "count": 14
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/basil-input-recheck/final-fixture-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/basil-input-recheck/final-fixture-windows.json",
+          "sha256": "066ea7fc1d7b736679ffe9750a2cc39eaf308f7d3fafe50450138c70d9bc4ed6",
+          "bytes": 4196,
+          "fixture": "real-wpf-input-report-pipeline",
+          "results": [
+            {
+              "status": "pass",
+              "count": 36
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/basil-input-recheck/final-fixture-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/basil-input-recheck/final-fixture-linux.json",
+          "sha256": "b09ff56e1abe65a073189123671082a429527e7b53da82eb07cdb019b1ec7fa3",
+          "bytes": 4017,
+          "fixture": "real-wpf-input-report-pipeline",
+          "results": [
+            {
+              "status": "pass",
+              "count": 36
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/imaging-integration/windows/results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/imaging-integration/windows/results.json",
+          "sha256": "f952fee2ea18bc6cdcba812998a7f4d30d6aa299cae788e0900cf30c2dacd4df",
+          "bytes": 2468,
+          "probe": "actual-wpf-imaging-integration",
+          "scope": "Owned raw scientific samples, real mutable bitmap APIs and retained DrawImage; codecs/conversion graphs unsupported.",
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/imaging-integration/linux/results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/imaging-integration/linux/results.json",
+          "sha256": "95cbf03d2bb9af97848481d73210a5fea747daae7491902fe7d78af6cfeac4ab",
+          "bytes": 2387,
+          "probe": "actual-wpf-imaging-integration",
+          "scope": "Owned raw scientific samples, real mutable bitmap APIs and retained DrawImage; codecs/conversion graphs unsupported.",
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/system-settings-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/system-settings-windows.json",
+          "sha256": "9fc30ef4f38c2a8ad2a02cd1e14efafc6f08b9faa0faa5d6bdd8000295e6de1a",
+          "bytes": 6904,
+          "probe": "system-settings-integration",
+          "scope": "Actual portable settings and construction; native theme parity, live profile updates and native Alt delivery are not claimed.",
+          "results": [
+            {
+              "status": "pass",
+              "count": 19
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/system-settings-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/system-settings-linux.json",
+          "sha256": "436748ce8d117bd84bb956597fcadd593d19ab1967c58abc9b3063009f38ef35",
+          "bytes": 4852,
+          "probe": "system-settings-integration",
+          "scope": "Actual portable settings and construction; native theme parity, live profile updates and native Alt delivery are not claimed.",
+          "results": [
+            {
+              "status": "pass",
+              "count": 19
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/geometry-integration/outline-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/geometry-integration/outline-windows.json",
+          "sha256": "d571b64b9e33efeb46a17b9b4c4175534b78aca5d0aa7788b7e424898904a5f8",
+          "bytes": 13558,
+          "probe": "actual-geometry-containment",
+          "results": [
+            {
+              "status": "pass",
+              "count": 99
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/geometry-integration/outline-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/geometry-integration/outline-linux.json",
+          "sha256": "a8acfb321b7bae58f59133b09651dc72893f680dfcee88acdd7e9fb86596d192",
+          "bytes": 12950,
+          "probe": "actual-geometry-containment",
+          "results": [
+            {
+              "status": "pass",
+              "count": 99
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/windows-regression-after-threadstatic-repair.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/windows-regression-after-threadstatic-repair.log",
+          "sha256": "1ff1fe048d465f3c5cb81af1e112a78d5fd3a8fe49c6ed4c06db8b8a52335d54",
+          "bytes": 29014
+        },
+        {
+          "path": "artifacts/portability/upstream-threading-after-threadstatic-repair.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T103814447Z-native-controls/artifacts/portability/upstream-threading-after-threadstatic-repair.log",
+          "sha256": "fb06a9a2859aae82361191c29a88d3ca1b4631ba6a2f546463101fdaa2ded5a7",
+          "bytes": 224
+        }
+      ]
+    },
+    {
+      "label": "committed-core",
+      "capturedAtUtc": "20261018T111859226Z",
+      "headCommit": "dd62f1432",
+      "phase1Status": "partial",
+      "scope": "Fresh isolated git-archive builds of committed guideline, text, source and core-input slices on both operating systems. Original Windows regression logs additionally cover the current working tree. PresentationFramework, native-window and packaging qualification remain separate.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/committed-checkpoint/ed97e8604-windows.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T111859226Z-committed-core/artifacts/portability/committed-checkpoint/ed97e8604-windows.log",
+          "sha256": "8e960d6a746bd54d1f57da12ab3ee4221a6dad41b9ff4b217796397541d87bc4",
+          "bytes": 43570,
+          "sourceCommit": "ed97e8604",
+          "platform": "windows",
+          "results": [
+            {
+              "status": "pass",
+              "count": 44
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/committed-checkpoint/ed97e8604-linux.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T111859226Z-committed-core/artifacts/portability/committed-checkpoint/ed97e8604-linux.log",
+          "sha256": "220d9b2e9b43b508118318b938c9f49c47c8fea03fca5a38ab860d4889c4ccbc",
+          "bytes": 40150,
+          "sourceCommit": "ed97e8604",
+          "platform": "linux",
+          "results": [
+            {
+              "status": "pass",
+              "count": 44
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/committed-checkpoint/dd62f1432-text-windows.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T111859226Z-committed-core/artifacts/portability/committed-checkpoint/dd62f1432-text-windows.log",
+          "sha256": "e805f0c139a16a640ac41a908011c57c15c088a8ab6e0f9ea2cdf464d02fce63",
+          "bytes": 83212,
+          "sourceCommit": "dd62f1432",
+          "platform": "windows",
+          "results": [
+            {
+              "status": "pass",
+              "count": 344
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/committed-checkpoint/dd62f1432-text-linux.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T111859226Z-committed-core/artifacts/portability/committed-checkpoint/dd62f1432-text-linux.log",
+          "sha256": "84d1ca75ba9c29381587a28048f797eaca9fa972b9b0a32c8acc4442ed2e70fa",
+          "bytes": 81444,
+          "sourceCommit": "dd62f1432",
+          "platform": "linux",
+          "results": [
+            {
+              "status": "pass",
+              "count": 344
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/committed-checkpoint/dd62f1432-source-windows.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T111859226Z-committed-core/artifacts/portability/committed-checkpoint/dd62f1432-source-windows.log",
+          "sha256": "8e39e24e32d66237444c5cef39f82111a0d27bb9bc11eab5c413b5d0d6131eb7",
+          "bytes": 5562,
+          "sourceCommit": "dd62f1432",
+          "platform": "windows",
+          "results": [
+            {
+              "status": "pass",
+              "count": 29
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/committed-checkpoint/dd62f1432-source-linux.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T111859226Z-committed-core/artifacts/portability/committed-checkpoint/dd62f1432-source-linux.log",
+          "sha256": "d6f255474cc2318e44a2fed7e33a0f374be2a25fb50c0e848228f013889006d9",
+          "bytes": 5395,
+          "sourceCommit": "dd62f1432",
+          "platform": "linux",
+          "results": [
+            {
+              "status": "pass",
+              "count": 29
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/committed-checkpoint/dd62f1432-input-windows.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T111859226Z-committed-core/artifacts/portability/committed-checkpoint/dd62f1432-input-windows.log",
+          "sha256": "8ebcd3741e99e9f23a24001abd348b0665e8ae2e20d9dc965e73066283f568c2",
+          "bytes": 4310,
+          "sourceCommit": "dd62f1432",
+          "platform": "windows",
+          "results": [
+            {
+              "status": "pass",
+              "count": 36
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/committed-checkpoint/dd62f1432-input-linux.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T111859226Z-committed-core/artifacts/portability/committed-checkpoint/dd62f1432-input-linux.log",
+          "sha256": "9c3a127505b1b5869fbb5c6ca20260a474c7942e2858516dac0c86dc494c7fc0",
+          "bytes": 4123,
+          "sourceCommit": "dd62f1432",
+          "platform": "linux",
+          "results": [
+            {
+              "status": "pass",
+              "count": 36
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/windows-phase1-regression-20261018.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T111859226Z-committed-core/artifacts/portability/windows-phase1-regression-20261018.log",
+          "sha256": "31ec3b593c0311baecbaa821340eec84d9bdd454692c183a0d1859553a098196",
+          "bytes": 29106,
+          "includesUncommittedWork": true
+        },
+        {
+          "path": "artifacts/portability/upstream-threading-phase1-20261018.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T111859226Z-committed-core/artifacts/portability/upstream-threading-phase1-20261018.log",
+          "sha256": "fee2fd7ae10145067b97ebcace23c94289312f2e1dcab634a76548896040489e",
+          "bytes": 224,
+          "includesUncommittedWork": true
+        }
+      ]
+    },
+    {
+      "label": "committed-presentation-framework",
+      "capturedAtUtc": "20261018T113252678Z",
+      "headCommit": "d3962709e",
+      "phase1Status": "partial",
+      "scope": "Fresh isolated git-archive Window56 builds on both operating systems, original Windows build/pack and208 upstream threading checks. Native Window/backend and distribution qualification remain separate.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/committed-checkpoint/d3962709e-windows.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T113252678Z-committed-presentation-framework/artifacts/portability/committed-checkpoint/d3962709e-windows.log",
+          "sha256": "31c83990f8f1568ad6e27ac129e371e937f34c9dd927092c88d22035f4b266f4",
+          "bytes": 20921,
+          "sourceCommit": "d3962709e",
+          "results": [
+            {
+              "status": "pass",
+              "count": 56
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/committed-checkpoint/d3962709e-linux.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T113252678Z-committed-presentation-framework/artifacts/portability/committed-checkpoint/d3962709e-linux.log",
+          "sha256": "9e09d6e259744d26e20fbbfe4771c2cd159edc0181682d3effe6e0a2a5e8a72a",
+          "bytes": 20801,
+          "sourceCommit": "d3962709e",
+          "results": [
+            {
+              "status": "pass",
+              "count": 56
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/windows-window-review-regression-20261018.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T113252678Z-committed-presentation-framework/artifacts/portability/windows-window-review-regression-20261018.log",
+          "sha256": "ea13b2492bb41e5bf3a3ec88c2e9967858f17144b138128620eb46517aa298d3",
+          "bytes": 29014,
+          "sourceCommit": "d3962709e"
+        },
+        {
+          "path": "artifacts/portability/upstream-threading-window-review-20261018.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T113252678Z-committed-presentation-framework/artifacts/portability/upstream-threading-window-review-20261018.log",
+          "sha256": "c6d28bf3dd40736235706f5042445357528bc7749d97679f96a1ff39b25e9806",
+          "bytes": 224,
+          "sourceCommit": "d3962709e"
+        }
+      ]
+    },
+    {
+      "label": "native-window",
+      "capturedAtUtc": "20261018T121612169Z",
+      "headCommit": "7874ee356",
+      "phase1Status": "partial",
+      "scope": "Final native virtual X11 and workspace Openbox runtime freeze, managed Window59 and stock19, dispatcher17 and independent callback replay. Native source committed cf4a52c96; runtime freeze predates the patch-context-only normalization documented in root-patch-equivalence.json. Final current-commit package production remains separate.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/window-lifecycle/freeze-manifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/window-lifecycle/freeze-manifest.json",
+          "sha256": "5e8a8092415d07f86a6c6806673a72b712d2d2abe5defd8a0086da89eb8d9180",
+          "bytes": 3985
+        },
+        {
+          "path": "artifacts/portability/window-lifecycle/windows-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/window-lifecycle/windows-results.json",
+          "sha256": "de643fec47bad66704a1e52707d6199b15584a7c314ff15c8b93a11bf67c7074",
+          "bytes": 9587,
+          "results": [
+            {
+              "status": "pass",
+              "count": 59
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/window-lifecycle-linux/linux-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/window-lifecycle-linux/linux-results.json",
+          "sha256": "df432aeffd09f83f5df14519e0eb7ac3b9794c60dcafa7ab027e7dd1376d0e85",
+          "bytes": 9275,
+          "results": [
+            {
+              "status": "pass",
+              "count": 59
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/window-lifecycle/stock-restore-oracle.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/window-lifecycle/stock-restore-oracle.json",
+          "sha256": "b619855807341963d13a56b394a11b1d4df608a5c64ff4e1a67990e49fe0c290",
+          "bytes": 31746,
+          "results": [
+            {
+              "status": "pass",
+              "count": 19
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/native-window-final-manifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/native-window-final-manifest.json",
+          "sha256": "f6ffd9cabcb579b47c2eac7c365a12d4f7cb4b75f651dd91d2aba188ad0ccd9c",
+          "bytes": 17092
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/final-verification.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/final-verification.json",
+          "sha256": "7d89060862ca343497aa1da0449756eb140ff8b4a3f2b966ce0e575f1e9671bf",
+          "bytes": 8769
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/root-patch-equivalence.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/root-patch-equivalence.json",
+          "sha256": "b11c76cedad0d3d0547b4c62bdd92c072038490ef1743e2085776fd3488452c6",
+          "bytes": 614
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/windows-build.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/windows-build.log",
+          "sha256": "eb569ab7226dba982331316ecdbe2acf76f331a027432d564cdd88214f527fb3",
+          "bytes": 8769
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-build.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/linux-build.log",
+          "sha256": "86c1199568a454faa6042e745f41d1646f832d279c4fe04e0343f447319875d3",
+          "bytes": 8954
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/windows-x11-incremental.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/windows-x11-incremental.json",
+          "sha256": "06f5bacf639be7a8123fb16ca049464d1f630bf8c14e81ad62595b48902a09ca",
+          "bytes": 2327
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-x11-incremental.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/linux-x11-incremental.json",
+          "sha256": "8821d51a4fc21df58ceb82645a8dc057e6ed8163548a307fa3a0468908fa8d56",
+          "bytes": 2263
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-xvfb.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/linux-xvfb.json",
+          "sha256": "31bb0650acbebf234fe83832483530dc86001958b8f1557ad368c6c5c1b2cfcf",
+          "bytes": 13009,
+          "results": [
+            {
+              "status": "pass",
+              "count": 22
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-xvfb-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/linux-xvfb-big.json",
+          "sha256": "0eaf1a1b6460c61583c8bc9142818da679ca3dc2bb711fa1bd3873c92110a390",
+          "bytes": 13006,
+          "results": [
+            {
+              "status": "pass",
+              "count": 22
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-dispatcher-integration/linux-boundaries.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-dispatcher-integration/linux-boundaries.json",
+          "sha256": "49d18f0f1827098314ff564fafb7afbe8364c2e1a605dee9ac7ae430797e4353",
+          "bytes": 5726,
+          "results": [
+            {
+              "status": "pass",
+              "count": 17
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/settings-absent.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/settings-absent.json",
+          "sha256": "e13476056d0c63586acfa59279f260d43b925e1f2dd5b7c938028778907f737e",
+          "bytes": 1851,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/settings-header.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/settings-header.json",
+          "sha256": "e0538e5f7e947dc29579973a1084ff4843857e221d988d3b2268a27aa16a079a",
+          "bytes": 1841,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/settings-count.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/settings-count.json",
+          "sha256": "039c6ca81ee109b5213d2a4a576156ed0925d8755cd02688e3a950030c0c0b37",
+          "bytes": 1832,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/settings-truncated.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/settings-truncated.json",
+          "sha256": "bca937c706c6da2461c34ae4b225d21b666279f41256edf5a7ba1fa1413f1890",
+          "bytes": 1837,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/settings-type.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/settings-type.json",
+          "sha256": "e3578f3eda041da884911843d05fe1cd898eb20987281044fbad467807d3cb69",
+          "bytes": 1835,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/settings-range.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/settings-range.json",
+          "sha256": "72064d18cac2d8a3e60857245723bf42d9edbe7e75c4e9ab622b2e278a61eb46",
+          "bytes": 1889,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/settings-duplicate.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/settings-duplicate.json",
+          "sha256": "294753fca58cce6069457919750abec03428a733a81f4eed650ee1126f7e7c17",
+          "bytes": 1895,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/settings-value-type.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/settings-value-type.json",
+          "sha256": "073461f7ccfb7091e8c4df4208b926eb8f406b180c40f9fa9f3fef4e36ec929f",
+          "bytes": 1897,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/settings-trailing.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/settings-trailing.json",
+          "sha256": "5d1350394a8890d4d05aa413f3f5ecbd8398fe13fbf3b7b9e8233bc9abb84413",
+          "bytes": 1859,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-openbox-repeat-1.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/linux-openbox-repeat-1.json",
+          "sha256": "d52153acb947d6ebc4fa76f548de548cb9cb79da6848fb0e59530deae3535e50",
+          "bytes": 16929,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-openbox-repeat-2.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/linux-openbox-repeat-2.json",
+          "sha256": "a12e6ae8fa43778cc818abc2c31012e5fa61106d4b4ee32a7f6e93cc149a7691",
+          "bytes": 16929,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-openbox-repeat-3.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/linux-openbox-repeat-3.json",
+          "sha256": "fa0af82f45bbab695d3be49158d6d948b588202e2f586d6bf8553923266ddd5e",
+          "bytes": 16929,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-openbox-repeat-4.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/linux-openbox-repeat-4.json",
+          "sha256": "459b09f96dc87870e8ac6e1879fb9515f6a6b724c10215ccd6018350b96687a4",
+          "bytes": 16929,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-openbox-repeat-5.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/linux-openbox-repeat-5.json",
+          "sha256": "7a346d49fcec2d9034172f2efeb4fec88a1dd0433bea96946bbb68c6f22563ef",
+          "bytes": 16926,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-openbox-repeat-6.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/linux-openbox-repeat-6.json",
+          "sha256": "1aa3987f178a8b177d13ce23fd16f7461b16e5794af0c19f4016757cd940ba40",
+          "bytes": 16926,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-openbox-repeat-7.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/linux-openbox-repeat-7.json",
+          "sha256": "d7f7f528d3380171408c5c4fee20ba08df31e07f70672070c0f3a156f80d39ea",
+          "bytes": 16929,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-openbox-repeat-8.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/linux-openbox-repeat-8.json",
+          "sha256": "96ac6e94b790410b99891220a3e3eae60c3ddc6f2cd051125296d157a38b51a4",
+          "bytes": 16929,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-openbox-repeat-9.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/linux-openbox-repeat-9.json",
+          "sha256": "25a2426b9c1b5b8e8d287314cb69cb808c21f44943c515fc4d0a3ce41b706230",
+          "bytes": 16929,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-window-integration/linux-openbox-repeat-10.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/native-window-integration/linux-openbox-repeat-10.json",
+          "sha256": "ac29db22899459b1a539f28dd06ae273f6df3b73821de9cce7e368c03ffb6199",
+          "bytes": 17250,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/review-gosalyn-native/minimum-dpi.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/review-gosalyn-native/minimum-dpi.json",
+          "sha256": "5c0282b93772b41c4629ddcdf47d3c076d2e8db062afabf4828acc997c77b14b",
+          "bytes": 2544,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/review-gosalyn-native/zero-managed-initial.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/review-gosalyn-native/zero-managed-initial.json",
+          "sha256": "4f2871bcd55cd4abe19a55c2f83db629898dc9a021a20839c5b4131d536f7a42",
+          "bytes": 2050,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/review-gosalyn-native/zero-managed-width.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/review-gosalyn-native/zero-managed-width.json",
+          "sha256": "c9f545c2d101f779d07bc4ed35df72b4bd76f1a712be36dc9cf754500439dc66",
+          "bytes": 2046,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/review-gosalyn-native/zero-managed-height.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/review-gosalyn-native/zero-managed-height.json",
+          "sha256": "1d2d8ba96bdc203e67269e304db14626d9f0151ebd2a823ae26e2540838e31de",
+          "bytes": 2048,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/review-gosalyn-native/zero-managed-fractional.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/review-gosalyn-native/zero-managed-fractional.json",
+          "sha256": "a9cdf77e64b0a406f5340545348c1d61be734b48c1121b1f604467de0b868b99",
+          "bytes": 2056,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/review-gosalyn-native/repaired-callbacks.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/review-gosalyn-native/repaired-callbacks.json",
+          "sha256": "930b7b0de6602a4c284c1adce496b443549fbce6ae5a622ce1e079b4de368deb",
+          "bytes": 1999,
+          "results": [
+            {
+              "status": "pass",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/review-gosalyn-native/family-state.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/review-gosalyn-native/family-state.json",
+          "sha256": "b65ae3d15523ec74655f03f29c832d62a778211473ab1911e82eb2622b1b4dfa",
+          "bytes": 1839,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/review-gosalyn-native/family-dpi.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/review-gosalyn-native/family-dpi.json",
+          "sha256": "b65ae3d15523ec74655f03f29c832d62a778211473ab1911e82eb2622b1b4dfa",
+          "bytes": 1839,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/review-gosalyn-native/family-location.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/review-gosalyn-native/family-location.json",
+          "sha256": "b65ae3d15523ec74655f03f29c832d62a778211473ab1911e82eb2622b1b4dfa",
+          "bytes": 1839,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/review-gosalyn-native/family-resize.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T121612169Z-native-window/artifacts/portability/review-gosalyn-native/family-resize.json",
+          "sha256": "b65ae3d15523ec74655f03f29c832d62a778211473ab1911e82eb2622b1b4dfa",
+          "bytes": 1839,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "distribution-final",
+      "capturedAtUtc": "20261018T122043018Z",
+      "headCommit": "7874ee35628d6ba9d338754dae2d3c0a8e274fce",
+      "phase1Status": "passed-bounded-feasibility",
+      "scope": "Fresh isolated source producer and external Windows/Linux package-only consumer matrix, Linux source/caches/publication/execution on case-sensitive native /tmp, frozen Microsoft and new fork BAML, native FDD/self-contained and independent archive/output audit. Original Windows build/pack and 208 upstream threading tests also pass. Physical desktop, complete integrated view and NINA qualification remain later gates.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/distribution-final-2/final-qualification-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/final-qualification-results.json",
+          "sha256": "2d0917a9786858a293a916caa6180bdf5584eaa7e581c9740bd2d384625be823",
+          "bytes": 4681
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/producer-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/producer-results.json",
+          "sha256": "07fff3a5f859cf7b801817c679621f5e628e8e59aeba5d77e4159b4a6c812893",
+          "bytes": 545
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/runtime/Provenance.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/runtime/Provenance.json",
+          "sha256": "1bae6c05ac72a996dc95b541fb38a7b60d7da22a6ee9a962ff74f8ce47c26205",
+          "bytes": 138904
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/runtime/BuildInputs.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/runtime/BuildInputs.json",
+          "sha256": "bd3f0bceb73b477ff04d68b0a16dbe1fa26ffa9875445429eb18c0e7541d2d10",
+          "bytes": 724114
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/runtime/RuntimeContentManifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/runtime/RuntimeContentManifest.json",
+          "sha256": "8d2e9b0ca02870ed1a5663f076d6d56b0d9604b495e79c9a2e41e1c930868c18",
+          "bytes": 19789
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/runtime/RuntimeManifest.xml",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/runtime/RuntimeManifest.xml",
+          "sha256": "1396a5d9c187f19b2bde03c216050c50a3c7a0269b7d0fddfecf144157b83e5f",
+          "bytes": 10936
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/sdk/SdkManifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/sdk/SdkManifest.json",
+          "sha256": "b7547fb5c64626001ae72e0ae881ae39dda4070289929709ace5d240963c90ea",
+          "bytes": 3555
+        },
+        {
+          "path": "artifacts/portability/windows-final-native-package-regression-20261018.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/windows-final-native-package-regression-20261018.log",
+          "sha256": "6bc5f4382caf0e4500811b71b1c0ee69dda812fb12551a2aec4e0680ceede4ae",
+          "bytes": 29106
+        },
+        {
+          "path": "artifacts/portability/upstream-threading-final-native-package-20261018.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/upstream-threading-final-native-package-20261018.log",
+          "sha256": "fee2fd7ae10145067b97ebcace23c94289312f2e1dcab634a76548896040489e",
+          "bytes": 224
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-windows/bin-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-windows/bin-results.json",
+          "sha256": "461609fa542f9eb900233856b1eec1c3c715ffa4313bc9729210b89f54ce2927",
+          "bytes": 3672,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-windows/publish-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-windows/publish-results.json",
+          "sha256": "de34cfb51b0d55f1fb265e0348c1609ca8de2c0b58ba5e5630b45432a19f039a",
+          "bytes": 3582,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-windows/custom-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-windows/custom-results.json",
+          "sha256": "71acd85828e9e29d891fcf4459f3b51cf53a8d46a471722d367cdc338a4312da",
+          "bytes": 3714,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-windows/incremental-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-windows/incremental-results.json",
+          "sha256": "be274df793ea87f5d465683bb89627a83c12090e2e4a06585107cdafc30b10d8",
+          "bytes": 1233,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-preparelinux/bin-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-preparelinux/bin-results.json",
+          "sha256": "ebdc8693f83c315461709005a99545ec18acfdaa54cd8a1674f0ad309951bfc1",
+          "bytes": 5317,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-preparelinux/custom-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-preparelinux/custom-results.json",
+          "sha256": "eacf79fe52afcfbb26e1e1039885a80b0024214f070600fae28ef08d55e843ba",
+          "bytes": 5359,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-preparelinux/incremental-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-preparelinux/incremental-results.json",
+          "sha256": "ba97faf45c5c607126ab9eba4f83b6a2a2940c542a0671a7c749b9a86241b697",
+          "bytes": 179,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-preparelinux/case-sensitivity-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-preparelinux/case-sensitivity-results.json",
+          "sha256": "efddd631d6bceab2ecabb57d8ec7eb242cb6a2c137e05b3be2ff9733e8863292",
+          "bytes": 282,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-preparelinux/publish-fdd-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-preparelinux/publish-fdd-results.json",
+          "sha256": "fd886dca22f23e72af719abc245aa551355ff06a5d403aa3190b29c67257dd2a",
+          "bytes": 5245,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-preparelinux/publish-linux-fdd-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-preparelinux/publish-linux-fdd-results.json",
+          "sha256": "3efc64467399d17d67b9bf81c30091382a89de19b06907e4323f8e0a89474622",
+          "bytes": 5281,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-preparelinux/publish-linux-sc-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-preparelinux/publish-linux-sc-results.json",
+          "sha256": "9531f54013b4d897a04e9701d594e876cc95b7bdb90fe3884b55008a3fc69a88",
+          "bytes": 4964,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-preparelinux/native-fdd-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-preparelinux/native-fdd-results.json",
+          "sha256": "a0441b5c597ab7aba1797f41bff560513da63493aaa2486f9733fb6ca42aa53c",
+          "bytes": 8540,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-preparelinux/native-sc-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-preparelinux/native-sc-results.json",
+          "sha256": "f8a1a39f83dc96e6231923d91401fdd0ff04fcadc4b9e18d00e2c66a098c87f5",
+          "bytes": 8221,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/package-audit-windows-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/package-audit-windows-results.json",
+          "sha256": "7a6631ce445e7bae5cf576ddbc76b445a3df1c48044be42d03a88f879950cb81",
+          "bytes": 1255,
+          "results": [
+            {
+              "status": "pass",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/package-audit-linux-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/package-audit-linux-results.json",
+          "sha256": "43ce37f828b393e0c68a8424bfe91e37637a1aa232e41aa2587805eb1e9c7028",
+          "bytes": 1672,
+          "results": [
+            {
+              "status": "pass",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/dependency-policy-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/dependency-policy-results.json",
+          "sha256": "08b2d73800ff88f0c08267aee4b8a2632971bb596184134fee98a09fe76fd36f",
+          "bytes": 1496,
+          "results": [
+            {
+              "status": "pass",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/runtime-policy-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/runtime-policy-results.json",
+          "sha256": "e8d1c49513145bdedccba3d68a17cce84b75faaa9156d9322c982c023234a9ee",
+          "bytes": 2650,
+          "results": [
+            {
+              "status": "pass",
+              "count": 14
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/feed/Wpf.Portable.Runtime.10.0.0-portable.1.nupkg",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/feed/Wpf.Portable.Runtime.10.0.0-portable.1.nupkg",
+          "sha256": "0a263235af0529e4bacbbdf446b26c21995ceb958f77b839baeda98d5915844e",
+          "bytes": 14670323
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/feed/Wpf.Portable.Sdk.10.0.0-portable.1.nupkg",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/feed/Wpf.Portable.Sdk.10.0.0-portable.1.nupkg",
+          "sha256": "2b957a26b154eec2467618a1478d97d520a6e42606f92609d68fc121d91d0f80",
+          "bytes": 3361978
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-windows/compiler-origins.xml",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-windows/compiler-origins.xml",
+          "sha256": "247e2c9fdd1a1a8c08a83a10a7f22bdca8271e884758ecafad1d134eec62099b",
+          "bytes": 4048
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-windows/compiler-origins-control.xml",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-windows/compiler-origins-control.xml",
+          "sha256": "a7df9ccfd7ed82a2810781c3ecec391b40c5553185bf814719d62f46263c8258",
+          "bytes": 570
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-preparelinux/compiler-origins.xml",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-preparelinux/compiler-origins.xml",
+          "sha256": "01ede4d3d06d1dff3fdff214c0b4c50fc67a9649968e46a556867ce6244ce22d",
+          "bytes": 3613
+        },
+        {
+          "path": "artifacts/portability/distribution-final-2/external-preparelinux/compiler-origins-control.xml",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/distribution-final-2/external-preparelinux/compiler-origins-control.xml",
+          "sha256": "49d0c854bd0f78a06902ed0e894593cd0738fe2183ddd8af93cb33aab171fe7f",
+          "bytes": 636
+        },
+        {
+          "path": "artifacts/portability/review-webby-distribution-final-2/behavior-checks.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/review-webby-distribution-final-2/behavior-checks.json",
+          "sha256": "70479b7e6086a33f87fb0557e2a8bbac7b810ed3cd0561c5f56f787306191ddb",
+          "bytes": 1395
+        },
+        {
+          "path": "artifacts/portability/review-webby-distribution-final-2/final-verification.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/review-webby-distribution-final-2/final-verification.json",
+          "sha256": "e34661f15bf1ba6cb1b78e8e7228cc3b7bd5d52db80e9ee4b54dd769c1886986",
+          "bytes": 209
+        },
+        {
+          "path": "artifacts/portability/review-webby-distribution-final-2/linux-audit-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/review-webby-distribution-final-2/linux-audit-results.json",
+          "sha256": "43ce37f828b393e0c68a8424bfe91e37637a1aa232e41aa2587805eb1e9c7028",
+          "bytes": 1672
+        },
+        {
+          "path": "artifacts/portability/review-webby-distribution-final-2/microsoft-oracle-hashes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/review-webby-distribution-final-2/microsoft-oracle-hashes.json",
+          "sha256": "ffe1717178b0d49292442cb480a32351dbfaee6cb57e5127c79691476581c922",
+          "bytes": 522
+        },
+        {
+          "path": "artifacts/portability/review-webby-distribution-final-2/package-audit-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/review-webby-distribution-final-2/package-audit-results.json",
+          "sha256": "43ce37f828b393e0c68a8424bfe91e37637a1aa232e41aa2587805eb1e9c7028",
+          "bytes": 1672
+        },
+        {
+          "path": "artifacts/portability/review-webby-distribution-final-2/source-input-check.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/review-webby-distribution-final-2/source-input-check.json",
+          "sha256": "4c3b01b292c8d4f9f69fcdd0513ec2c0661054ed6d855b209e4ebd20e2b5b9a2",
+          "bytes": 45
+        },
+        {
+          "path": "artifacts/portability/review-webby-distribution-final-2/windows-audit-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018T122043018Z-distribution-final/artifacts/portability/review-webby-distribution-final-2/windows-audit-results.json",
+          "sha256": "7a6631ce445e7bae5cf576ddbc76b445a3df1c48044be42d03a88f879950cb81",
+          "bytes": 1255
+        }
+      ]
+    }
+  ],
+  "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",
+  "phase2Status": "not-yet-qualified"
+}

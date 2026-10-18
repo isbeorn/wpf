@@ -54,8 +54,10 @@ Consumers must also import `Build/SystemWindowsExtensions.targets`. It selects
 the genuine managed XamlAccessLevel implementation from the pinned official
 System.Windows.Extensions package after ordinary package resolution. The
 repository's portability subtree imports this policy through Directory.Build.targets;
-external consumers do not inherit that file. Automatic delivery through a local
-portable SDK package is still being implemented. No custom assembly resolver is used.
+external consumers do not inherit that file. The local
+[portable SDK/runtime packages](../Packaging/README.md) deliver the qualified
+policy transitively and verify it in external consumers. No custom assembly
+resolver is used.
 
 - `Build/SourceManifest.targets`: set WpfSourceProject. Imports the original
   Compile includes and removes. It normalizes casing only when locating the
@@ -88,4 +90,5 @@ to make compilation or tests pass.
 PresentationCore and PresentationFramework also use genuine Windows metadata
 for unported code during compilation. A successful compile does not qualify
 those APIs or permit shipping Windows native binaries as a Linux implementation.
-The runtime package must separate compile-only metadata from its executable closure.
+The runtime package separates compile-only metadata from its executable closure
+and audits the exact managed/native allowlist in built and published consumers.
