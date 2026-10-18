@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <OutputType>Exe</OutputType>
+    <DefineConstants>$(DefineConstants);STOCK</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Program.cs" Link="Program.cs" />
+    <Content Include="../../../Dependencies/TextUnicode/Original/tests/Avalonia.Skia.UnitTests/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

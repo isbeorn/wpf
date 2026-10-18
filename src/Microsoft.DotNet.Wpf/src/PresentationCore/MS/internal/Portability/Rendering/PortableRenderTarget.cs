@@ -124,6 +124,7 @@ namespace MS.Internal.Portability.Rendering
 
         private static void WalkVisual(Visual visual, SkiaDrawingContextWalker walker)
         {
+            var guidelines = walker.CaptureGuidelines();
             int saved = walker.Canvas.Save();
             try
             {
@@ -139,6 +140,7 @@ namespace MS.Internal.Portability.Rendering
                     walker.PushClip(visual.VisualClip);
                 if (visual.VisualOpacity != 1)
                     walker.PushOpacity(visual.VisualOpacity);
+                walker.SetVisualGuidelines(visual);
 
                 if (visual is DrawingVisual drawingVisual)
                     drawingVisual.WalkContent(walker);
@@ -154,6 +156,7 @@ namespace MS.Internal.Portability.Rendering
             finally
             {
                 walker.Canvas.RestoreToCount(saved);
+                walker.RestoreGuidelines(guidelines);
             }
         }
     }

@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="StockOracle/**/*.cs" />
+    <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" />
+    <Content Include="StockGuidelineReference.json" CopyToOutputDirectory="PreserveNewest" Condition="Exists('StockGuidelineReference.json')" />
+    <Content Include="../../Dependencies/TextUnicode/Original/tests/Avalonia.Skia.UnitTests/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+</Project>

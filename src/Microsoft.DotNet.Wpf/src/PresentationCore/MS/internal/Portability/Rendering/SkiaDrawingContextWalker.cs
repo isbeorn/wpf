@@ -15,12 +15,21 @@ namespace MS.Internal.Portability.Rendering
     internal sealed class SkiaDrawingContextWalker : DrawingContextWalker
     {
         internal SKCanvas Canvas { get; }
+        private PortableGuidelineFrame _guidelines = PortableGuidelineFrame.Empty;
+        private readonly System.Collections.Generic.Stack<PortableGuidelineFrame> _guidelineStates = new();
 
         internal SkiaDrawingContextWalker(SKCanvas canvas) => Canvas = canvas;
 
         public override void DrawLine(Pen pen, Point point0, Point point1)
         {
             if (pen == null || pen.Brush == null || pen.Thickness == 0) return;
+            if (!_guidelines.IsEmpty)
+            {
+                using var path = new SKPath();
+                path.MoveTo(ToPoint(point0)); path.LineTo(ToPoint(point1));
+                using (SKPaint paint = CreatePen(pen)) DrawSnappedPath(path, paint);
+                return;
+            }
             using (SKPaint paint = CreatePen(pen))
                 Canvas.DrawLine(ToPoint(point0), ToPoint(point1), paint);
         }
@@ -28,12 +37,25 @@ namespace MS.Internal.Portability.Rendering
         public override void DrawRectangle(Brush brush, Pen pen, Rect rectangle)
         {
             if (rectangle.IsEmpty) return;
+            if (!_guidelines.IsEmpty)
+            {
+                using var path = new SKPath(); path.AddRect(ToRect(rectangle));
+                Paint(brush, pen, paint => DrawSnappedPath(path, paint));
+                return;
+            }
             Paint(brush, pen, paint => Canvas.DrawRect(ToRect(rectangle), paint));
         }
 
         public override void DrawRoundedRectangle(Brush brush, Pen pen, Rect rectangle, double radiusX, double radiusY)
         {
             if (rectangle.IsEmpty) return;
+            if (!_guidelines.IsEmpty)
+            {
+                using var path = new SKPath();
+                path.AddRoundRect(ToRect(rectangle), (float)Math.Min(Math.Abs(radiusX), rectangle.Width / 2), (float)Math.Min(Math.Abs(radiusY), rectangle.Height / 2));
+                Paint(brush, pen, paint => DrawSnappedPath(path, paint));
+                return;
+            }
             Paint(brush, pen, paint => Canvas.DrawRoundRect(ToRect(rectangle),
                 (float)Math.Min(Math.Abs(radiusX), rectangle.Width / 2), (float)Math.Min(Math.Abs(radiusY), rectangle.Height / 2), paint));
         }
@@ -42,6 +64,12 @@ namespace MS.Internal.Portability.Rendering
         {
             var rectangle = new SKRect((float)(center.X - Math.Abs(radiusX)), (float)(center.Y - Math.Abs(radiusY)),
                 (float)(center.X + Math.Abs(radiusX)), (float)(center.Y + Math.Abs(radiusY)));
+            if (!_guidelines.IsEmpty)
+            {
+                using var path = new SKPath(); path.AddOval(rectangle);
+                Paint(brush, pen, paint => DrawSnappedPath(path, paint));
+                return;
+            }
             Paint(brush, pen, paint => Canvas.DrawOval(rectangle, paint));
         }
 
@@ -51,11 +79,11 @@ namespace MS.Internal.Portability.Rendering
             using (SKPath fill = SkiaGeometry.Create(geometry, false))
             {
                 if (brush != null)
-                    using (SKPaint paint = CreateBrush(brush)) Canvas.DrawPath(fill, paint);
+                    using (SKPaint paint = CreateBrush(brush)) DrawSnappedPath(fill, paint);
             }
             if (pen != null && pen.Brush != null && pen.Thickness != 0)
                 using (SKPath stroke = SkiaGeometry.Create(geometry, true))
-                using (SKPaint paint = CreatePen(pen)) Canvas.DrawPath(stroke, paint);
+                using (SKPaint paint = CreatePen(pen)) DrawSnappedPath(stroke, paint);
         }
 
         public override void DrawGlyphRun(Brush foregroundBrush, GlyphRun glyphRun)
@@ -81,7 +109,18 @@ namespace MS.Internal.Portability.Rendering
                     buffer.SetGlyphs(glyphs);
                     buffer.SetPositions(positions);
                     using (SKTextBlob blob = builder.Build())
-                        Canvas.DrawText(blob, (float)glyphRun.BaselineOrigin.X, (float)glyphRun.BaselineOrigin.Y, paint);
+                    {
+                        SKMatrix matrix = Canvas.TotalMatrix;
+                        float baseline = matrix.MapPoint(ToPoint(glyphRun.BaselineOrigin)).Y;
+                        matrix.TransY += _guidelines.OffsetY(baseline);
+                        int saved = Canvas.Save();
+                        try
+                        {
+                            Canvas.SetMatrix(matrix);
+                            Canvas.DrawText(blob, (float)glyphRun.BaselineOrigin.X, (float)glyphRun.BaselineOrigin.Y, paint);
+                        }
+                        finally { Canvas.RestoreToCount(saved); }
+                    }
                 }
                 GC.KeepAlive(glyphRun);
             }
@@ -91,6 +130,7 @@ namespace MS.Internal.Portability.Rendering
 
         public override void PushClip(Geometry clipGeometry)
         {
+            _guidelineStates.Push(_guidelines);
             Canvas.Save();
             if (clipGeometry != null)
                 using (SKPath clip = SkiaGeometry.Create(clipGeometry, false)) Canvas.ClipPath(clip, SKClipOperation.Intersect, true);
@@ -98,6 +138,7 @@ namespace MS.Internal.Portability.Rendering
 
         public override void PushTransform(Transform transform)
         {
+            _guidelineStates.Push(_guidelines);
             Canvas.Save();
             if (transform != null)
             {
@@ -108,11 +149,25 @@ namespace MS.Internal.Portability.Rendering
 
         public override void PushOpacity(double opacity)
         {
+            _guidelineStates.Push(_guidelines);
             using (var paint = new SKPaint { Color = new SKColor(255, 255, 255, Alpha(opacity)) })
                 Canvas.SaveLayer(paint);
         }
 
-        public override void Pop() => Canvas.Restore();
+        public override void Pop()
+        {
+            Canvas.Restore();
+            _guidelines = _guidelineStates.Pop();
+        }
+
+        internal (int Count, PortableGuidelineFrame Frame) CaptureGuidelines() => (_guidelineStates.Count, _guidelines);
+        internal void RestoreGuidelines((int Count, PortableGuidelineFrame Frame) state)
+        {
+            while (_guidelineStates.Count > state.Count) _guidelineStates.Pop();
+            _guidelines = state.Frame;
+        }
+        internal void SetVisualGuidelines(Visual visual) => _guidelines = PortableGuidelineFrame.Create(
+            visual.VisualXSnappingGuidelines, visual.VisualYSnappingGuidelines, false, Canvas.TotalMatrix);
 
         public override void DrawLine(Pen pen, Point point0, AnimationClock point0Animations, Point point1, AnimationClock point1Animations)
         {
@@ -147,7 +202,21 @@ namespace MS.Internal.Portability.Rendering
             if (!(imageSource is System.Windows.Media.Imaging.BitmapSource bitmap) || bitmap.PortableBuffer == null)
                 throw Unsupported("image sources without portable bitmap storage");
             using (SKBitmap pixels = bitmap.PortableBuffer.CreateDisplayBitmap())
-                Canvas.DrawBitmap(pixels, ToRect(rectangle));
+            {
+                if (_guidelines.IsEmpty) Canvas.DrawBitmap(pixels, ToRect(rectangle));
+                else
+                {
+                    SKMatrix sampling = SKMatrix.Concat(Canvas.TotalMatrix, new SKMatrix(
+                        (float)(rectangle.Width / pixels.Width), 0, (float)rectangle.Left,
+                        0, (float)(rectangle.Height / pixels.Height), (float)rectangle.Top, 0, 0, 1));
+                    using SKShader shader = pixels.ToShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp,
+                        new SKSamplingOptions(SKFilterMode.Linear), sampling);
+                    using var paint = new SKPaint { Shader = shader, IsAntialias = true };
+                    using var path = new SKPath();
+                    path.AddRect(ToRect(rectangle));
+                    DrawSnappedPath(path, paint);
+                }
+            }
             GC.KeepAlive(imageSource);
         }
         public override void DrawImage(ImageSource imageSource, Rect rectangle, AnimationClock rectangleAnimations)
@@ -158,9 +227,23 @@ namespace MS.Internal.Portability.Rendering
         public override void DrawVideo(MediaPlayer player, Rect rectangle) => throw Unsupported("video");
         public override void DrawVideo(MediaPlayer player, Rect rectangle, AnimationClock rectangleAnimations) => throw Unsupported("video");
         public override void PushOpacityMask(Brush opacityMask) => throw Unsupported("an opacity mask");
-        public override void PushGuidelineSet(GuidelineSet guidelines) => throw Unsupported("guideline sets");
-        internal override void PushGuidelineY1(double coordinate) => throw Unsupported("guidelines");
-        internal override void PushGuidelineY2(double leadingCoordinate, double offsetToDrivenCoordinate) => throw Unsupported("guidelines");
+        public override void PushGuidelineSet(GuidelineSet guidelines)
+        {
+            PortableGuidelineFrame frame = guidelines == null ? _guidelines : PortableGuidelineFrame.Create(
+                guidelines.GuidelinesX, guidelines.GuidelinesY, guidelines.IsDynamic, Canvas.TotalMatrix);
+            _guidelineStates.Push(_guidelines);
+            Canvas.Save();
+            _guidelines = frame;
+        }
+        internal override void PushGuidelineY1(double coordinate) => PushGuidelineY2(coordinate, 0);
+        internal override void PushGuidelineY2(double leadingCoordinate, double offsetToDrivenCoordinate)
+        {
+            PortableGuidelineFrame frame = PortableGuidelineFrame.Create(null,
+                new DoubleCollection { leadingCoordinate, offsetToDrivenCoordinate }, true, Canvas.TotalMatrix);
+            _guidelineStates.Push(_guidelines);
+            Canvas.Save();
+            _guidelines = frame;
+        }
         [Obsolete(MS.Internal.Media.VisualTreeUtils.BitmapEffectObsoleteMessage)]
         public override void PushEffect(BitmapEffect effect, BitmapEffectInput effectInput) => throw Unsupported("bitmap effects");
 
@@ -170,6 +253,19 @@ namespace MS.Internal.Portability.Rendering
                 using (SKPaint fill = CreateBrush(brush)) draw(fill);
             if (pen != null && pen.Brush != null && pen.Thickness != 0)
                 using (SKPaint stroke = CreatePen(pen)) draw(stroke);
+        }
+
+        private void DrawSnappedPath(SKPath path, SKPaint paint)
+        {
+            if (_guidelines.IsEmpty) { Canvas.DrawPath(path, paint); return; }
+            using var outline = new SKPath();
+            if (paint.Style == SKPaintStyle.Stroke && !paint.GetFillPath(path, outline)) return;
+            using SKPath snapped = _guidelines.SnapPath(paint.Style == SKPaintStyle.Stroke ? outline : path, Canvas.TotalMatrix);
+            using SKPaint fill = paint.Clone();
+            fill.Style = SKPaintStyle.Fill;
+            int saved = Canvas.Save();
+            try { Canvas.ResetMatrix(); Canvas.DrawPath(snapped, fill); }
+            finally { Canvas.RestoreToCount(saved); }
         }
 
         private static SKPaint CreateBrush(Brush brush)
