@@ -9,6 +9,158 @@ using SkiaSharp;
 
 var checks = new List<object>();
 var failed = false;
+Run("first-root-dpi-registration-and-child-inheritance", () =>
+{
+    var root = new ContainerVisual();
+    VisualTreeHelper.SetRootDpi(root, new DpiScale(2, 2));
+    var independent = new DrawingVisual();
+    Require(VisualTreeHelper.GetDpi(independent).DpiScaleX == 1 && VisualTreeHelper.GetDpi(independent).DpiScaleY == 1,
+        "The first scaled root changed the default DPI of an unrelated visual.");
+    var child = new RenderElement();
+    root.Children.Add(child);
+    Require(VisualTreeHelper.GetDpi(child).DpiScaleX == 2 && VisualTreeHelper.GetDpi(child).DpiScaleY == 2,
+        "An added UIElement did not inherit the root's DPI.");
+    Require(child.DpiChangeCount == 1, "Adding a child at a new DPI did not invoke its actual OnDpiChanged.");
+    VisualTreeHelper.SetRootDpi(root, new DpiScale(1, 1));
+    Require(VisualTreeHelper.GetDpi(child).DpiScaleX == 1 && VisualTreeHelper.GetDpi(child).DpiScaleY == 1 && child.DpiChangeCount == 2,
+        "Returning the root to default DPI did not update the child and its DPI callback.");
+});
+Run("ui-element-layout-retained-content-and-invalidation", () =>
+{
+    var root = new RenderElement();
+    root.Measure(new Size(32, 24));
+    root.Arrange(new Rect(0, 0, 32, 24));
+    Require(root.RenderCount == 1 && root.IsMeasureValid && root.IsArrangeValid, "Real UIElement layout did not invoke OnRender.");
+    using var target = new Target(root, 40, 32);
+    Drain();
+    using (var initial = target.Snapshot()) Pixel(initial, 8, 8, SKColors.Red);
+    root.Fill.Color = Colors.Blue;
+    Drain();
+    using (var changed = target.Snapshot()) Pixel(changed, 8, 8, SKColors.Blue);
+    Require(root.RenderCount == 1, "Retained brush mutation unnecessarily recorded the UIElement again.");
+    root.InvalidateVisual();
+    root.UpdateLayout();
+    Drain();
+    Require(root.RenderCount == 2, "InvalidateVisual did not run real UIElement OnRender again.");
+    using var repainted = target.Snapshot();
+    Pixel(repainted, 8, 8, SKColors.Blue);
+});
+Run("physical-dpi-scaling-and-atomic-resize", () =>
+{
+    var root = new DrawingVisual();
+    using (var drawing = root.RenderOpen())
+    {
+        drawing.PushClip(new RectangleGeometry(new Rect(0, 0, 20, 16)));
+        drawing.PushTransform(new TranslateTransform(4, 2));
+        drawing.DrawRectangle(Brushes.Red, null, new Rect(0, 0, 24, 20));
+        drawing.Pop(); drawing.Pop();
+    }
+    using var target = new Target(root, 32, 24, new DpiScale(1, 1));
+    Drain();
+    using (var one = target.Snapshot())
+    {
+        Pixel(one, 6, 4, SKColors.Red);
+        Pixel(one, 21, 4, SKColors.Transparent);
+    }
+    target.Resize(64, 24, new DpiScale(2, 1));
+    Drain();
+    using (var wide = target.Snapshot())
+    {
+        Pixel(wide, 12, 4, SKColors.Red);
+        Pixel(wide, 12, 18, SKColors.Transparent);
+        Pixel(wide, 42, 4, SKColors.Transparent);
+    }
+    target.Resize(32, 48, new DpiScale(1, 2));
+    Drain();
+    using (var tall = target.Snapshot())
+    {
+        Pixel(tall, 6, 8, SKColors.Red);
+        Pixel(tall, 21, 8, SKColors.Transparent);
+        Pixel(tall, 6, 34, SKColors.Transparent);
+    }
+    target.Resize(64, 48, new DpiScale(2, 2));
+    Drain();
+    using (var two = target.Snapshot())
+    {
+        Require(two.Width == 64 && two.Height == 48, "DPI resize did not use physical surface dimensions.");
+        Pixel(two, 12, 8, SKColors.Red);
+        Pixel(two, 42, 8, SKColors.Transparent);
+        Pixel(two, 4, 8, SKColors.Transparent);
+        Pixel(two, 12, 34, SKColors.Transparent);
+    }
+    foreach (var invalid in new[] { new DpiScale(0, 1), new DpiScale(1, -1), new DpiScale(double.NaN, 1), new DpiScale(1, double.PositiveInfinity) })
+        Expect<ArgumentOutOfRangeException>(() => target.Resize(8, 8, invalid));
+    Expect<ArgumentOutOfRangeException>(() => target.Resize(0, 8, new DpiScale(1, 1)));
+    Expect<InvalidOperationException>(() => target.Resize(int.MaxValue, int.MaxValue, new DpiScale(1, 1)));
+    target.Render();
+    using (var preserved = target.Snapshot())
+    {
+        Require(preserved.Width == 64 && preserved.Height == 48, "Rejected resize changed the previous surface.");
+        Pixel(preserved, 12, 8, SKColors.Red);
+        Pixel(preserved, 4, 8, SKColors.Transparent);
+    }
+    target.Resize(32, 24, new DpiScale(1, 1));
+    Drain();
+    using var restored = target.Snapshot();
+    Pixel(restored, 6, 4, SKColors.Red);
+    Pixel(restored, 21, 4, SKColors.Transparent);
+});
+Run("frame-notification-mutation-reentry-and-disposal", () =>
+{
+    var brush = new SolidColorBrush(Colors.Red);
+    var root = new DrawingVisual();
+    using (var drawing = root.RenderOpen()) drawing.DrawRectangle(brush, null, new Rect(0, 0, 16, 16));
+    var target = new Target(root, 24, 24);
+    int frames = 0;
+    target.FrameRendered += () =>
+    {
+        frames++;
+        using var frame = target.Snapshot();
+        Pixel(frame, 8, 8, frames == 1 ? SKColors.Red : SKColors.Blue);
+        if (frames == 1) brush.Color = Colors.Blue;
+    };
+    Drain();
+    Require(frames == 2, "Mutation from frame notification did not schedule the next frame.");
+    target.Dispose();
+
+    var reentrant = new Target(root, 24, 24);
+    int reentries = 0;
+    reentrant.FrameRendered += () => { if (++reentries == 1) reentrant.Render(); };
+    reentrant.Render();
+    Require(reentries == 2, "Completed-frame callback could not reenter rendering.");
+    reentrant.Dispose();
+    Drain();
+    Require(reentries == 2, "A disposed target notified pending queued work.");
+
+    var closing = new Target(root, 24, 24);
+    int closingFrames = 0;
+    closing.FrameRendered += () => { closingFrames++; closing.Dispose(); };
+    closing.Render();
+    Expect<ObjectDisposedException>(() => closing.Snapshot());
+    Drain();
+    Require(closingFrames == 1, "Disposal from a completed-frame callback left queued notifications.");
+});
+Run("frame-notification-failure-and-exception-recovery", () =>
+{
+    var root = new DrawingVisual();
+    using (var drawing = root.RenderOpen()) { drawing.PushOpacityMask(Brushes.Red); drawing.Pop(); }
+    using var target = new Target(root, 24, 24);
+    int frames = 0;
+    target.FrameRendered += () => frames++;
+    Expect<NotSupportedException>(() => target.Render());
+    Require(frames == 0, "A failed frame emitted a successful-frame notification.");
+    using (var drawing = root.RenderOpen()) drawing.DrawRectangle(Brushes.Blue, null, new Rect(0, 0, 16, 16));
+    Drain();
+    Require(frames == 1, "Recovery did not produce a completed frame.");
+    Action throwing = () => throw new FrameCallbackException();
+    target.FrameRendered += throwing;
+    Expect<FrameCallbackException>(() => target.Render());
+    target.FrameRendered -= throwing;
+    target.Render();
+    using var recovered = target.Snapshot();
+    Pixel(recovered, 8, 8, SKColors.Blue);
+    Pixel(recovered, 20, 8, SKColors.Transparent);
+});
 Run("retained-drawing-and-resource-invalidation", () =>
 {
     var root = new DrawingVisual();
@@ -147,6 +299,21 @@ Run("actual-glyph-run-advances-offsets-and-brush-invalidation", () =>
             if (color.Alpha > 0) { Require(color.Blue > 250 && color.Red < 2, "Glyph brush mutation left old ink."); blue = true; }
         }
     Require(blue, "Glyph run had no ink after brush mutation.");
+    var oneBounds = InkBounds(changed, 0, 44);
+    byte[] onePixels = changed.Bytes;
+    target.Resize(192, 112, new DpiScale(2, 2));
+    Drain();
+    using (var scaled = target.Snapshot())
+    {
+        var twoBounds = InkBounds(scaled, 0, 88);
+        Require(Math.Abs(twoBounds.Left - 2 * oneBounds.Left) <= 2 && Math.Abs(twoBounds.Top - 2 * oneBounds.Top) <= 2 &&
+            Math.Abs(twoBounds.Right - 2 * oneBounds.Right) <= 2 && Math.Abs(twoBounds.Bottom - 2 * oneBounds.Bottom) <= 2,
+            "Glyph ink did not follow physical DPI scaling on both axes.");
+    }
+    target.Resize(96, 56, new DpiScale(1, 1));
+    Drain();
+    using var restored = target.Snapshot();
+    Require(onePixels.AsSpan().SequenceEqual(restored.Bytes), "Returning to 1x DPI did not restore exact glyph pixels.");
 });
 Run("stream-path-transform-and-composite-opacity", () =>
 {
@@ -254,7 +421,7 @@ Console.WriteLine(JsonSerializer.Serialize(new
     os = RuntimeInformation.OSDescription,
     core = typeof(DrawingVisual).Assembly.FullName,
     corePath = typeof(DrawingVisual).Assembly.Location,
-    scope = "Actual fork DrawingVisual, RenderData and MediaContext rendering to Skia CPU surfaces; no native window or framework controls.",
+    scope = "Actual fork DrawingVisual, UIElement layout, RenderData and MediaContext rendering to DPI-scaled Skia CPU surfaces; no native window or framework controls.",
     checks
 }, new JsonSerializerOptions { WriteIndented = true }));
 return failed ? 1 : 0;
@@ -318,20 +485,46 @@ internal sealed class Target : IDisposable
 {
     private readonly object instance;
     private readonly Type type;
-    internal Target(Visual root, int width, int height)
+    internal Target(Visual root, int width, int height, DpiScale? dpi = null)
     {
         type = typeof(Visual).Assembly.GetType("MS.Internal.Portability.Rendering.PortableRenderTarget", throwOnError: true)!;
-        try { instance = Activator.CreateInstance(type, BindingFlags.Instance | BindingFlags.NonPublic, null, [root, width, height], null)!; }
+        object[] arguments = dpi.HasValue ? [root, width, height, dpi.Value] : [root, width, height];
+        try { instance = Activator.CreateInstance(type, BindingFlags.Instance | BindingFlags.NonPublic, null, arguments, null)!; }
         catch (TargetInvocationException exception) { ExceptionDispatchInfo.Capture(exception.InnerException!).Throw(); throw; }
     }
     internal SKBitmap Snapshot() => (SKBitmap)Invoke("Snapshot")!;
     internal void Render() => Invoke("Render");
     internal void Resize(int width, int height) => Invoke("Resize", width, height);
+    internal void Resize(int width, int height, DpiScale dpi) => Invoke("Resize", width, height, dpi);
+    internal event Action FrameRendered
+    {
+        add => type.GetEvent("FrameRendered", BindingFlags.Instance | BindingFlags.NonPublic)!.GetAddMethod(true)!.Invoke(instance, [value]);
+        remove => type.GetEvent("FrameRendered", BindingFlags.Instance | BindingFlags.NonPublic)!.GetRemoveMethod(true)!.Invoke(instance, [value]);
+    }
     internal void Invalidate() => Invoke("Invalidate");
     public void Dispose() => Invoke("Dispose");
     private object? Invoke(string method, params object[] arguments)
     {
-        try { return type.GetMethod(method, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!.Invoke(instance, arguments); }
+        try { return type.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            .Single(candidate => candidate.Name == method && candidate.GetParameters().Length == arguments.Length).Invoke(instance, arguments); }
         catch (TargetInvocationException exception) { ExceptionDispatchInfo.Capture(exception.InnerException!).Throw(); throw; }
     }
 }
+internal sealed class RenderElement : UIElement
+{
+    internal SolidColorBrush Fill { get; } = new SolidColorBrush(Colors.Red);
+    internal int RenderCount { get; private set; }
+    internal int DpiChangeCount { get; private set; }
+    protected override Size MeasureCore(Size availableSize) => new Size(32, 24);
+    protected override void OnRender(DrawingContext drawingContext)
+    {
+        RenderCount++;
+        drawingContext.DrawRectangle(Fill, null, new Rect(0, 0, RenderSize.Width, RenderSize.Height));
+    }
+    protected override void OnDpiChanged(DpiScale oldDpi, DpiScale newDpi)
+    {
+        DpiChangeCount++;
+        base.OnDpiChanged(oldDpi, newDpi);
+    }
+}
+internal sealed class FrameCallbackException : Exception;

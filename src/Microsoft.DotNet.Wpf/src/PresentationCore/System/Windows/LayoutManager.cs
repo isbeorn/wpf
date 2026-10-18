@@ -433,7 +433,9 @@ namespace System.Windows
                 }
             }
 
+#if !PORTABLE_WPF
             MS.Internal.Text.TextInterface.Font.ResetFontFaceCache();
+#endif
             MS.Internal.FontCache.BufferCache.Reset();
 
             if (etwTracingEnabled)

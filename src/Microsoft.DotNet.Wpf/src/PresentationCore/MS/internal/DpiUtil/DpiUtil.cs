@@ -175,6 +175,13 @@ namespace MS.Internal
         {
             lock (UIElement.DpiLock)
             {
+#if PORTABLE_WPF
+                if (UIElement.DpiScaleXValues.Count == 0)
+                {
+                    UIElement.DpiScaleXValues.Add(1);
+                    UIElement.DpiScaleYValues.Add(1);
+                }
+#endif
                 bool dpiScaleFlag1, dpiScaleFlag2;
                 int index = 0;
                 int sizeOfList = UIElement.DpiScaleXValues.Count;

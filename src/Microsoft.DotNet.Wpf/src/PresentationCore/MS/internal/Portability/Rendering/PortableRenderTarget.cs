@@ -3,6 +3,7 @@
 
 #if PORTABLE_WPF
 using System;
+using System.Windows;
 using System.Windows.Media;
 using SkiaSharp;
 
@@ -11,16 +12,25 @@ namespace MS.Internal.Portability.Rendering
     internal sealed class PortableRenderTarget : IPortableRenderTarget, IDisposable
     {
         private SKSurface _surface;
+        private DpiScale _dpiScale;
         private bool _disposed;
 
         public Visual RootVisual { get; }
+        internal event Action FrameRendered;
 
         internal PortableRenderTarget(Visual rootVisual, int width, int height)
+            : this(rootVisual, width, height, new DpiScale(1, 1))
+        {
+        }
+
+        internal PortableRenderTarget(Visual rootVisual, int width, int height, DpiScale dpiScale)
         {
             ArgumentNullException.ThrowIfNull(rootVisual);
             rootVisual.Dispatcher.VerifyAccess();
+            ValidateDpi(dpiScale);
             RootVisual = rootVisual;
             _surface = CreateSurface(width, height);
+            _dpiScale = dpiScale;
             try
             {
                 MediaContext.From(rootVisual.Dispatcher).RegisterPortableRenderTarget(this);
@@ -40,6 +50,7 @@ namespace MS.Internal.Portability.Rendering
             try
             {
                 canvas.Clear(SKColors.Transparent);
+                canvas.Scale((float)_dpiScale.DpiScaleX, (float)_dpiScale.DpiScaleY);
                 var walker = new SkiaDrawingContextWalker(canvas);
                 WalkVisual(RootVisual, walker);
                 canvas.Flush();
@@ -48,14 +59,20 @@ namespace MS.Internal.Portability.Rendering
             {
                 canvas.RestoreToCount(saved);
             }
+            // Handlers may dispose or resize the target, so raster state must not be used after notification.
+            FrameRendered?.Invoke();
         }
 
-        internal void Resize(int width, int height)
+        internal void Resize(int width, int height) => Resize(width, height, _dpiScale);
+
+        internal void Resize(int width, int height, DpiScale dpiScale)
         {
             VerifyAccess();
+            ValidateDpi(dpiScale);
             SKSurface replacement = CreateSurface(width, height);
             _surface.Dispose();
             _surface = replacement;
+            _dpiScale = dpiScale;
             Invalidate();
         }
 
@@ -77,6 +94,7 @@ namespace MS.Internal.Portability.Rendering
             RootVisual.Dispatcher.VerifyAccess();
             if (_disposed)
                 return;
+            FrameRendered = null;
             MediaContext.From(RootVisual.Dispatcher).UnregisterPortableRenderTarget(this);
             _disposed = true;
             _surface.Dispose();
@@ -94,6 +112,14 @@ namespace MS.Internal.Portability.Rendering
             ArgumentOutOfRangeException.ThrowIfNegativeOrZero(height);
             return SKSurface.Create(new SKImageInfo(width, height, SKColorType.Bgra8888, SKAlphaType.Premul))
                 ?? throw new InvalidOperationException("The portable CPU raster surface could not be allocated.");
+        }
+
+        private static void ValidateDpi(DpiScale dpiScale)
+        {
+            if (!double.IsFinite(dpiScale.DpiScaleX) || !double.IsFinite(dpiScale.DpiScaleY) ||
+                !float.IsFinite((float)dpiScale.DpiScaleX) || !float.IsFinite((float)dpiScale.DpiScaleY) ||
+                (float)dpiScale.DpiScaleX <= 0 || (float)dpiScale.DpiScaleY <= 0)
+                throw new ArgumentOutOfRangeException(nameof(dpiScale), "DPI scales must be finite positive values representable by the raster backend.");
         }
 
         private static void WalkVisual(Visual visual, SkiaDrawingContextWalker walker)
@@ -116,6 +142,8 @@ namespace MS.Internal.Portability.Rendering
 
                 if (visual is DrawingVisual drawingVisual)
                     drawingVisual.WalkContent(walker);
+                else if (visual is UIElement element)
+                    element.WalkContent(walker);
                 else if (visual.GetType() != typeof(ContainerVisual))
                     throw new NotSupportedException($"Portable rendering does not support visual content of type {visual.GetType().FullName}.");
 
