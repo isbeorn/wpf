@@ -109,8 +109,8 @@ namespace MS.Internal.Portability.Settings
         internal double MinimumHorizontalDragDistanceDip { get; }
         internal double MinimumVerticalDragDistanceDip { get; }
         internal PortableScrollBarMetrics ScrollBarMetrics { get; }
-        internal string ThemeName => "generic";
-        internal string ThemedResourceName => "themes/generic";
+        internal string ThemeName => "Classic";
+        internal string ThemedResourceName => "themes/classic";
         internal PortablePointerSettings PointerSettings => _pointerSettings ?? throw new PlatformNotSupportedException(
             $"Portable settings profile '{ProfileName}' does not supply native pointer double-click preferences.");
 

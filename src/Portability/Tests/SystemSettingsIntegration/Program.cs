@@ -36,9 +36,10 @@ internal static partial class Program
         bool pointer = args.Contains("--pointer-fixture", StringComparer.Ordinal);
         bool highContrast = args.Contains("--high-contrast-fixture", StringComparer.Ordinal);
         bool metricFixture = args.Contains("--metric-fixture", StringComparer.Ordinal);
-        bool expectClassicTheme = args.Contains("--expect-classic-theme", StringComparer.Ordinal);
-        if (args.Any(argument => argument is not "--always-show-cues" and not "--pointer-fixture" and not "--high-contrast-fixture" and not "--metric-fixture" and not "--expect-classic-theme"))
-            Check("arguments", () => throw new ArgumentException("Use --always-show-cues, --pointer-fixture, --high-contrast-fixture, --metric-fixture and/or --expect-classic-theme, or no arguments."));
+        bool expectClassicTheme = !args.Contains("--expect-generic-theme", StringComparer.Ordinal);
+        if (args.Any(argument => argument is not "--always-show-cues" and not "--pointer-fixture" and not "--high-contrast-fixture" and not "--metric-fixture" and not "--expect-classic-theme" and not "--expect-generic-theme")
+            || args.Contains("--expect-classic-theme", StringComparer.Ordinal) && !expectClassicTheme)
+            Check("arguments", () => throw new ArgumentException("Use startup fixture flags and at most one of --expect-classic-theme or --expect-generic-theme. Theme expectation flags only assert policy."));
         else
         {
             Check("startup-profile-registration", () =>

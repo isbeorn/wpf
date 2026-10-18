@@ -19,9 +19,11 @@ the full PresentationUI project also depends on ReachFramework, System.Printing
 and Windows Forms. No placeholder resource-key type or Windows runtime binary is
 provided here.
 
-This wrapper does not select the portable default theme or include it in a package.
-That requires a separately qualified settings and packaging change. Classic is a
-named portable profile, without a Windows desktop or Aero2 pixel-parity claim.
+The immutable Core source policy selects `ThemeName=Classic` and
+`ThemedResourceName=themes/classic`. Existing ThemeInfo and SystemResources lookup
+load this genuine external theme assembly. Classic is a fixed portable profile,
+without a Windows desktop or Aero2 pixel-parity claim. Package delivery and an
+unchanged-binary NINA replay require their own qualification.
 
 The existing SystemSettingsIntegration executable adds two isolated modes:
 
@@ -39,8 +41,8 @@ The second verifies custom-control generic fallback, explicit-style override and
 removal, then requires an ordinary UserControl's default template to connect its
 content through ContentPresenter and complete positive layout. It also initializes
 and lays out ordinary Button and TextBox controls, checking TextBox's genuine
-PART_ContentHost ScrollViewer. It supplies no local templates. UserControl remains
-a red regression while settings select `generic`.
+PART_ContentHost ScrollViewer. It supplies no local templates. The historical
+generic profile's blank UserControl remains preserved as the original red case.
 
 Use `PortableFrameworkArtifactsDir` and `SystemSettingsArtifactsDirectory` to isolate
 the framework graph and test outputs. Existing default output paths are preserved
@@ -58,11 +60,10 @@ PresentationUI through FlowDocumentReader; Linux first reaches native keyboard
 repeat settings through RepeatButton. Neither sweep justifies adding PresentationUI
 to the selected ordinary-control path.
 
-An artifact-only rehearsal swaps exactly two lines in a snapshot of the genuine
-PortableSystemSettings source: ThemeName becomes `Classic` and ThemedResourceName
-becomes `themes/classic`. Live theme selection remains generic and Classic has
-not yet been integrated into the runtime package. The rehearsal uses normal
-Default ALC references with no PresentationUI runtime binary.
+The historical artifact-only rehearsal swapped exactly two lines in a snapshot
+of the genuine PortableSystemSettings source: ThemeName became `Classic` and
+ThemedResourceName became `themes/classic`. It preceded the live source policy
+change and used normal Default ALC references with no PresentationUI runtime binary.
 
 The initial pre-metric rehearsal passed all four checks on Windows. Linux passed
 custom generic precedence/removal, UserControl content layout and Button layout,
@@ -77,16 +78,19 @@ four ordinary-control checks, including TextBox's genuine content host and layou
 The settings suite also passes 20/20 checks on both systems for default metrics,
 asymmetric fractional metrics and high contrast with asymmetric metrics. These
 runs use `--expect-classic-theme` to assert the rehearsal's selected policy; the
-flag does not change that policy. The live generic baseline passes the same three
+flag does not change that policy. The historical generic baseline passed the same three
 20-check profiles without that expectation flag.
 
-Current evidence is under `artifacts/portability/classic/rehearsal-metrics`, with
+Historical rehearsal evidence is under `artifacts/portability/classic/rehearsal-metrics`, with
 the source overlay, provenance, compiled-source checksums and results pinned by
 `handoff.json`. The original review freeze remains unchanged; a focused
 `readme-revision.json` records this documentation correction and its revised hash.
 
-Live theme selection remains `generic`. Classic selection, package integration
-and a fresh unchanged-binary NINA view replay remain pending. The full deferred
-document/resource closure remains unqualified, including the earlier PresentationUI
-and keyboard-repeat paths. This rehearsal is not the delivered runtime or a
-Phase3 qualification result.
+The live source now selects Classic directly, with no artifact overlay. Fresh
+normal source-graph verification is recorded under
+`artifacts/portability/classic/live-source`. The main settings suite defaults to a
+Classic policy assertion; explicit theme expectation flags only check that policy.
+This source change does not qualify package delivery or a fresh unchanged-binary
+NINA view replay. The full deferred document/resource closure remains unqualified,
+including the earlier PresentationUI and keyboard-repeat paths. Source-graph
+verification alone does not qualify a delivered runtime or Phase3.
