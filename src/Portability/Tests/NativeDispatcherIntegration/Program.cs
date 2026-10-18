@@ -18,6 +18,7 @@ using DispatcherFrame = WpfFork::System.Windows.Threading.DispatcherFrame;
 using DispatcherPriority = WpfFork::System.Windows.Threading.DispatcherPriority;
 using DispatcherTimer = WpfFork::System.Windows.Threading.DispatcherTimer;
 using DispatcherOperationStatus = WpfFork::System.Windows.Threading.DispatcherOperationStatus;
+using DispatcherSynchronizationContext = WpfFork::System.Windows.Threading.DispatcherSynchronizationContext;
 
 var checks = new List<object>();
 var failed = false;
@@ -112,6 +113,68 @@ try
         var x11Version = x11Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
         Require(x11Version.Contains("portable-native-input.2d79ba55fae1b1e71c69f93a668080c9029e6a31", StringComparison.Ordinal) && Convert.ToHexString(x11Assembly.GetName().GetPublicKeyToken()!) == "C8D484A7012F9A8B", "The pinned source X11 adaptation or original signing identity was not loaded.");
         return new { assembly = typeof(Dispatcher).Assembly.FullName, path = typeof(Dispatcher).Assembly.Location, moduleVersionId = typeof(Dispatcher).Assembly.ManifestModule.ModuleVersionId, owner, x11Assembly = x11Assembly.FullName, x11Version, x11Path = x11Assembly.Location };
+    });
+
+    Run("same-thread-send-is-inline-without-native-pumping", () =>
+    {
+        var native = (Avalonia.Threading.IControlledDispatcherImpl)Avalonia.Threading.Dispatcher.UIThread.PlatformImpl;
+        var downBefore = keyDown;
+        var upBefore = keyUp;
+        var queuedRan = false;
+        var queued = dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => queuedRan = true));
+        nativeInput.PressAndRelease();
+        Require(native.HasPendingInput, "The Send case has no pending native input to detect accidental pumping.");
+        var previousContext = SynchronizationContext.Current;
+        var callbackThread = 0;
+        var value = dispatcher.Invoke(() =>
+        {
+            callbackThread = Environment.CurrentManagedThreadId;
+            Require(!queuedRan && keyDown == downBefore && keyUp == upBefore, "Send pumped queued WPF or native callbacks before its inline delegate.");
+            return 42;
+        }, DispatcherPriority.Send);
+        Require(value == 42 && callbackThread == owner && ReferenceEquals(SynchronizationContext.Current, previousContext), "Same-thread Send did not return synchronously on its owner thread or restore its context.");
+        Require(!queuedRan && queued.Status == DispatcherOperationStatus.Pending && keyDown == downBefore && keyUp == upBefore && native.HasPendingInput, "Same-thread Send pumped WPF or native work before returning.");
+        PumpUntil(() => queuedRan && keyDown > downBefore && keyUp > upBefore);
+        return new { value, callbackThread, queuedStatusAfterExplicitPump = queued.Status.ToString(), nativeDeliveryAfterExplicitPump = true };
+    });
+
+    Run("disable-processing-blocks-native-frame-and-wait-pumping", () =>
+    {
+        var native = (Avalonia.Threading.IControlledDispatcherImpl)Avalonia.Threading.Dispatcher.UIThread.PlatformImpl;
+        var downBefore = keyDown;
+        var upBefore = keyUp;
+        var queuedRan = false;
+        var blockedFrame = new DispatcherFrame();
+        dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { queuedRan = true; blockedFrame.Continue = false; }));
+        nativeInput.PressAndRelease();
+        Require(native.HasPendingInput, "The disabled-processing case has no pending native input.");
+        var frameRejected = false;
+        var waitAnyIndex = -1;
+        var waitAllResult = -1;
+        using (dispatcher.DisableProcessing())
+        {
+            try { Dispatcher.PushFrame(blockedFrame); }
+            catch (InvalidOperationException) { frameRejected = true; }
+            Require(frameRejected && !queuedRan, "DisableProcessing allowed an actual WPF frame to pump native or managed work.");
+            using var first = new ManualResetEvent(false);
+            using var second = new ManualResetEvent(false);
+            var context = new DispatcherSynchronizationContext(dispatcher);
+            IntPtr[] handles = [first.SafeWaitHandle.DangerousGetHandle(), second.SafeWaitHandle.DangerousGetHandle()];
+            Require(context.Wait(handles, false, 0) == WaitHandle.WaitTimeout, "Disabled WaitAny ignored unsignaled handles.");
+            var signal = Task.Run(() => { Thread.Sleep(40); second.Set(); });
+            waitAnyIndex = context.Wait(handles, false, 2000);
+            signal.GetAwaiter().GetResult();
+            Require(waitAnyIndex == 1, "Disabled WaitAny did not observe the worker-signaled second handle.");
+            Require(context.Wait(handles, true, 0) == WaitHandle.WaitTimeout, "Disabled WaitAll ignored the unsignaled first handle.");
+            first.Set();
+            waitAllResult = context.Wait(handles, true, 0);
+            Require(waitAllResult == 0, "Disabled WaitAll did not observe both signaled handles.");
+            first.Reset(); second.Reset();
+            Require(context.Wait(handles, false, 0) == WaitHandle.WaitTimeout, "Disabled WaitAny ignored reset handles.");
+            Require(!queuedRan && keyDown == downBefore && keyUp == upBefore && native.HasPendingInput, "A disabled wait dispatched queued WPF or native input callbacks.");
+        }
+        PumpUntil(() => queuedRan && keyDown > downBefore && keyUp > upBefore);
+        return new { frameRejected, waitAnyIndex, waitAllResult, processingResumed = queuedRan, nativeDeliveryAfterReenable = true };
     });
 
     Run("worker-invoke-and-coalesced-wake", () =>
