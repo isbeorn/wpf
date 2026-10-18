@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../../Framework/PresentationFramework/PresentationFramework.csproj" />
+    <ProjectReference Include="../../Framework/PresentationFramework.Classic/PresentationFramework.Classic.csproj" />
     <ProjectReference Include="../../Framework/PresentationFramework-SystemCore/PresentationFramework-SystemCore.csproj" />
     <ProjectReference Include="../../Framework/PresentationFramework-SystemData/PresentationFramework-SystemData.csproj" />
     <ProjectReference Include="../../Framework/PresentationFramework-SystemDrawing/PresentationFramework-SystemDrawing.csproj" />

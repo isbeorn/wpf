@@ -8,10 +8,11 @@
     <BaseIntermediateOutputPath>$(PortableDistributionBuildRoot)obj/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
     <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
     <NuGetLockFilePath>$(BaseIntermediateOutputPath)packages.lock.json</NuGetLockFilePath>
+    <CustomAfterMicrosoftCommonTargets Condition="'$(MSBuildProjectName)' == 'PresentationBuildTasks'">$(MSBuildThisFileDirectory)CompilerClosure.targets</CustomAfterMicrosoftCommonTargets>
   </PropertyGroup>
   <Target Name="CapturePortableDistributionInputs" AfterTargets="CoreCompile">
     <ItemGroup>
-      <_PortableDistributionInput Include="@(Compile);@(EmbeddedResource);@(AdditionalFiles);@(Analyzer);$(MSBuildAllProjects)" />
+      <_PortableDistributionInput Include="@(Compile);@(EmbeddedResource);@(Page);@(ApplicationDefinition);@(Resource);@(AdditionalFiles);@(Analyzer);$(MSBuildAllProjects)" />
     </ItemGroup>
     <WriteLinesToFile File="$(IntermediateOutputPath)portable-inputs.txt" Lines="@(_PortableDistributionInput->'%(FullPath)')" Overwrite="true" WriteOnlyWhenDifferent="true" />
   </Target>

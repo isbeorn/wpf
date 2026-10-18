@@ -10,7 +10,7 @@
     "unicodeVersion": "17.0.0"
   },
   "frameworkAssemblies": [
-    "WindowsBase", "System.Xaml", "System.Windows.Primitives", "PresentationCore", "PresentationFramework",
+    "WindowsBase", "System.Xaml", "System.Windows.Primitives", "PresentationCore", "PresentationFramework", "PresentationFramework.Classic",
     "UIAutomationTypes", "UIAutomationProvider", "PresentationFramework-SystemCore", "PresentationFramework-SystemData",
     "PresentationFramework-SystemDrawing", "PresentationFramework-SystemXml", "PresentationFramework-SystemXmlLinq"
   ],

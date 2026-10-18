@@ -94,7 +94,9 @@ if($ConsumerDirectory) {
             $target=$deps.targets[$deps.runtimeTarget.name]
             if(@($deps.libraries.Keys | Where-Object {$_ -match 'Microsoft.AspNetCore.App'}).Count -gt 0 -or
                 @(Get-ChildItem -LiteralPath $directory -File -Filter 'Microsoft.AspNetCore.*').Count -gt 0) { throw 'Auxiliary ASP.NET restore pack entered the application runtime.' }
-            foreach($name in @('WindowsBase','System.Windows.Extensions','Avalonia.X11')) {
+            $singleIdentities=@('WindowsBase','System.Windows.Extensions','Avalonia.X11')
+            if($expected.ContainsKey('PresentationFramework.Classic.dll')) {$singleIdentities+='PresentationFramework.Classic'}
+            foreach($name in $singleIdentities) {
                 $matches=@($target.Values | ForEach-Object {if($_.ContainsKey('runtime')) {$_.runtime.Keys}} | Where-Object { [IO.Path]::GetFileName($_) -eq "$name.dll" })
                 if($matches.Count -ne 1) { throw "Consumer .deps has $($matches.Count) runtime identities for $name" }
             }

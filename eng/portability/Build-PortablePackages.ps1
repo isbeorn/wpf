@@ -21,7 +21,8 @@ $env:DOTNET_GENERATE_ASPNET_CERTIFICATE='false'
 $env:DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE='true'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT='1'
 $isolation = @("-p:DirectoryBuildPropsPath=$(Join-Path $packaging 'IsolatedBuild.props')",
-    "-p:PortableDistributionBuildRoot=$($output.Replace('\','/'))/graph/")
+    "-p:PortableDistributionBuildRoot=$($output.Replace('\','/'))/graph/",
+    "-p:_PresentationBuildTasksAssembly=$($output.Replace('\','/'))/graph/bin/PresentationBuildTasks/Release/net10.0/PresentationBuildTasks.dll")
 function Invoke-Build([string[]] $Arguments) {
     & $Dotnet @Arguments
     if ($LASTEXITCODE -ne 0) { throw "dotnet failed ($LASTEXITCODE): $($Arguments -join ' ')" }
@@ -32,7 +33,7 @@ try {
     Invoke-Build (@('restore','Packaging/Stage/Stage.csproj','-r',$profile.runtimeIdentifier,
         '-p:SelfContained=true','-p:RuntimeFrameworkVersion=10.0.12') + $isolation)
     Invoke-Build (@('publish','Packaging/Stage/Stage.csproj','-c','Release','-r',$profile.runtimeIdentifier,
-        '--self-contained','false','--disable-build-servers','-p:UseAppHost=false','-o',(Join-Path $output 'published')) + $isolation)
+        '--self-contained','false','--disable-build-servers','-v:diag','-p:UseAppHost=false','-o',(Join-Path $output 'published')) + $isolation)
     Invoke-Build (@('build','Markup/PresentationBuildTasks/PresentationBuildTasks.csproj','-c','Release','--disable-build-servers',
         "-p:CustomAfterMicrosoftCommonTargets=$(Join-Path $packaging 'CompilerClosure.targets')") + $isolation)
     $published = Join-Path $output 'published'
