@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Avalonia.Portable.DevGenerators</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>14.0</LangVersion>
+    <NoWarn>$(NoWarn);RS2008;RS1036</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(AvaloniaSourceDir)src/tools/DevGenerators/**/*.cs" />
+    <Compile Include="$(AvaloniaSourceDir)src/Shared/SourceGeneratorAttributes.cs" />
+    <Compile Include="$(AvaloniaSourceDir)src/Shared/IsExternalInit.cs" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="[4.14.0]" PrivateAssets="all" />
+  </ItemGroup>
+</Project>

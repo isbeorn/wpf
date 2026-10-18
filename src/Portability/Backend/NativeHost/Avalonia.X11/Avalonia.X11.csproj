@@ -1,0 +1,97 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Avalonia.X11</AssemblyName>
+    <Version>12.1.4</Version>
+    <AssemblyVersion>12.1.4.0</AssemblyVersion>
+    <FileVersion>12.1.4.0</FileVersion>
+    <InformationalVersion>12.1.4+portable-native-input.2d79ba55fae1b1e71c69f93a668080c9029e6a31</InformationalVersion>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <IsPackable>false</IsPackable>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableRuntimeMarshalling>true</EnableRuntimeMarshalling>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign>true</PublicSign>
+    <AssemblyOriginatorKeyFile>$(BaseIntermediateOutputPath)Avalonia.public.snk</AssemblyOriginatorKeyFile>
+    <PatchedAvaloniaSourceFile>$(AvaloniaSourceDir).portable-derived/$(OS)/GlibDispatcherImplBase.cs</PatchedAvaloniaSourceFile>
+    <AvaloniaAccessUnstablePrivateApis>true</AvaloniaAccessUnstablePrivateApis>
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);AVA3001;CS0649</WarningsNotAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(AvaloniaSourceDir)src/Avalonia.X11/**/*.cs" Exclude="$(AvaloniaSourceDir)src/Avalonia.X11/Dispatching/GlibDispatcherImplBase.cs" />
+    <Compile Include="$(PatchedAvaloniaSourceFile)" />
+    <Compile Include="$(AvaloniaSourceDir)src/Shared/RawEventGrouping.cs" />
+    <Compile Include="ExternalDispatcherBridge.cs" />
+    <PackageReference Include="Avalonia" Version="[12.1.4]" />
+    <PackageReference Include="Avalonia.Skia" Version="[12.1.4]" />
+    <PackageReference Include="Avalonia.FreeDesktop" Version="[12.1.4]" />
+    <PackageReference Include="Avalonia.FreeDesktop.AtSpi" Version="[12.1.4]" />
+    <ProjectReference Include="../BuildTools/DevGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <None Include="$(AvaloniaSourceDir)licence.md" Link="licenses/Avalonia.MIT.md" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <UsingTask TaskName="WritePinnedAvaloniaPublicKey" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <SourceFile ParameterType="System.String" Required="true" />
+      <OutputFile ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Linq" />
+      <Using Namespace="System.Xml.Linq" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        var root = XDocument.Load(SourceFile).Root;
+        var xmlNamespace = root.Name.Namespace;
+        var key = root.Element(xmlNamespace + "PropertyGroup").Element(xmlNamespace + "AvaloniaPublicKey").Value;
+        Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
+        var bytes = new byte[key.Length / 2];
+        for (var i = 0; i < bytes.Length; i++) bytes[i] = System.Convert.ToByte(key.Substring(i * 2, 2), 16);
+        if (!File.Exists(OutputFile) || !File.ReadAllBytes(OutputFile).SequenceEqual(bytes))
+          File.WriteAllBytes(OutputFile, bytes);
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <UsingTask TaskName="ApplyPinnedAvaloniaBackgroundGuard" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <SourceFile ParameterType="System.String" Required="true" />
+      <PatchFile ParameterType="System.String" Required="true" />
+      <OutputFile ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Linq" />
+      <Using Namespace="System.Security.Cryptography" />
+      <Using Namespace="System.Text" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        var original = File.ReadAllBytes(SourceFile);
+        string originalHash;
+        using (var hash = SHA256.Create())
+          originalHash = System.BitConverter.ToString(hash.ComputeHash(original)).Replace("-", "");
+        if (originalHash != "5070CE8FC7CD809B06C4B424CD1330F7D33CC0CCC36A48303E88B25B37922965")
+          throw new InvalidDataException("The pinned GLib dispatcher source hash does not match.");
+        var patch = File.ReadAllText(PatchFile).Replace("\r\n", "\n").Split('\n');
+        if (patch.Count(line => line.StartsWith("@@ ", System.StringComparison.Ordinal)) != 1)
+          throw new InvalidDataException("Expected exactly one approved source patch hunk.");
+        var hunk = patch.SkipWhile(line => !line.StartsWith("@@ ", System.StringComparison.Ordinal)).Skip(1).Where(line => line.Length > 0).ToArray();
+        if (hunk.Any(line => line[0] != ' ' && line[0] != '-' && line[0] != '+'))
+          throw new InvalidDataException("The source patch contains an unsupported hunk line.");
+        var before = string.Join("\n", hunk.Where(line => line[0] != '+').Select(line => line.Substring(1)));
+        var after = string.Join("\n", hunk.Where(line => line[0] != '-').Select(line => line.Substring(1)));
+        var text = Encoding.UTF8.GetString(original);
+        var index = text.IndexOf(before, System.StringComparison.Ordinal);
+        if (index < 0 || index != text.LastIndexOf(before, System.StringComparison.Ordinal))
+          throw new InvalidDataException("The approved GLib source patch has no unique exact match.");
+        var modified = Encoding.UTF8.GetBytes(text.Replace(before, after));
+        Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
+        if (!File.Exists(OutputFile) || !File.ReadAllBytes(OutputFile).SequenceEqual(modified))
+          File.WriteAllBytes(OutputFile, modified);
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="PreparePinnedAvaloniaInputs" BeforeTargets="CoreCompile">
+    <Error Condition="!Exists('$(AvaloniaSourceDir)src/Avalonia.X11/X11Platform.cs')" Text="Run Backend/NativeHost/Prepare-AvaloniaSource.ps1 before building the pinned X11 source adaptation." />
+    <WritePinnedAvaloniaPublicKey SourceFile="$(AvaloniaSourceDir)build/AvaloniaPublicKey.props" OutputFile="$(AssemblyOriginatorKeyFile)" />
+    <ApplyPinnedAvaloniaBackgroundGuard SourceFile="$(AvaloniaSourceDir)src/Avalonia.X11/Dispatching/GlibDispatcherImplBase.cs" PatchFile="$(MSBuildThisFileDirectory)Patches/GuardBackgroundCallback.patch" OutputFile="$(PatchedAvaloniaSourceFile)" />
+  </Target>
+</Project>

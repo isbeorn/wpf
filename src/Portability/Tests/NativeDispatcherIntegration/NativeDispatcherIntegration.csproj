@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <AvaloniaAccessUnstablePrivateApis>true</AvaloniaAccessUnstablePrivateApis>
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);AVA3001</WarningsNotAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../Framework/WindowsBase/WindowsBase.csproj" Aliases="WpfFork" />
+    <ProjectReference Include="../../Backend/NativeHost/NativeHost.csproj" />
+    <PackageReference Include="Avalonia.Themes.Fluent" Version="[12.1.4]" />
+  </ItemGroup>
+  <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+</Project>

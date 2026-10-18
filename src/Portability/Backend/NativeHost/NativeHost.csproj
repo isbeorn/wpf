@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Wpf.Portable.NativeHost</AssemblyName>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <IsPackable>false</IsPackable>
+    <AvaloniaAccessUnstablePrivateApis>true</AvaloniaAccessUnstablePrivateApis>
+    <WarningsNotAsErrors>$(WarningsNotAsErrors);AVA3001</WarningsNotAsErrors>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Avalonia.X11/**/*.cs;BuildTools/**/*.cs" />
+    <ProjectReference Include="../../Framework/WindowsBase/WindowsBase.csproj" Aliases="WpfFork" />
+    <ProjectReference Include="Avalonia.X11/Avalonia.X11.csproj" />
+    <PackageReference Include="Avalonia.Desktop" Version="[12.1.4]" />
+  </ItemGroup>
+  <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+  <Import Project="../../Framework/Build/PublicSigning.targets" />
+</Project>
