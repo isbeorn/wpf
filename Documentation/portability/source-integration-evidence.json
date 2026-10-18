@@ -13589,11 +13589,293 @@
       ],
       "sourceCommit": null,
       "outcome": "partial"
+    },
+    {
+      "label": "committed-private-ibus-transport",
+      "capturedAtUtc": "2026-10-18T21:45:44.2866386Z",
+      "headCommit": "81ad28a6de9cd18db45328e434bb0714d928d38a",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit db3162527 source-built combined Windows/Linux native graphs: 18 controlled private IBus protocol/factory processes pass 48 checks and ten existing native processes pass 111 checks. Both graphs build with zero errors and 14 retained warnings each. Original fixture PDB matches the pre-normalization source; the recorded two-byte trailing-empty-line removal leaves C# tokens and production unchanged. Later graphs compile current fixture content using archived newline conventions, not byte-identical main files. No composing engine, focused WPF editor attachment, package or physical desktop qualification.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/native-ibus-combined-main-1/combined-freeze.json",
+          "sha256": "12b0b9a31a8493b01e55d76788b1d33bbbaf74eeddff64cc6bc15c01a031b435",
+          "bytes": 67162
+        },
+        {
+          "path": "artifacts/portability/native-ibus-combined-main-1/result-summary.json",
+          "sha256": "874c0fe2f9aa768019c5189f7eab09bebab7854047d0c49453e81aef42cfa639",
+          "bytes": 4241,
+          "results": [
+            {
+              "status": "pass",
+              "count": 159
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-ibus-combined-main-1/handoff.md",
+          "sha256": "42af53215fbbc4e2ee726a1b592cbb8d9bde5aaa3d1189361b6fa636408b9a71",
+          "bytes": 3082
+        },
+        {
+          "path": "artifacts/portability/native-ibus-combined-main-1/root-fixture-eof-normalization.json",
+          "sha256": "60e2e438f9b0fc91f1cf88d9a921f033d9293a5a6c4926dc60c8ab33aea2f51e",
+          "bytes": 573
+        },
+        {
+          "path": "artifacts/portability/native-ibus-combined-main-1/pdb-source-runtime-correspondence.json",
+          "sha256": "5bc4c386f8ef44e96493896d5cadbcab6eb217348aa9bb3ff00c521f870e203c",
+          "bytes": 11911
+        }
+      ],
+      "sourceCommit": "db31625278649ec78ab757c4d7b044fd53ce8d33",
+      "outcome": "pass"
+    },
+    {
+      "label": "committed-bounded-geometry-combine",
+      "capturedAtUtc": "2026-10-18T21:45:44.2866386Z",
+      "headCommit": "81ad28a6de9cd18db45328e434bb0714d928d38a",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit 15c7c697c bounded Geometry.Combine shares the coherent renderer freeze with invisible-subtree repair: eight managed processes and 1308 checks per OS, including Geometry 355, plus 21 private native processes and 75 checks. Four Boolean modes, transforms, fill rules and declared curves retain explicit backend precision/tolerance differences. Root releases whole stages only. Original Windows build/pack passes zero warnings/errors and 208 threading checks after a process-local C-locale retry; initial Perl-locale failure remains preserved. No package, full NINA or desktop qualification.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/rendering-combined-main-1/combined-freeze.json",
+          "sha256": "8f0a59b6fd261f839663c0e2b68c40afade46e3137cc2e82afb6aebc2f5c8e0d",
+          "bytes": 182679
+        },
+        {
+          "path": "artifacts/portability/rendering-combined-main-1/result-summary.json",
+          "sha256": "1ab81e4e43a604adb4c8f871643439b23f6e6546d60102628daadc985b8b21e8",
+          "bytes": 5612,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2691
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/rendering-combined-main-1/handoff.md",
+          "sha256": "535cdc5899ce8577a000ed8bc5f5d3b6bab2d9a0adedacb63ad7fe3e71e98380",
+          "bytes": 4187
+        },
+        {
+          "path": "artifacts/portability/rendering-combined-main-1/root-stage-release.json",
+          "sha256": "aecb0e9c4d1cacc1b559eca8a2e9da3823c167a05468fb8681d4218d925646ae",
+          "bytes": 87600
+        },
+        {
+          "path": "artifacts/portability/rendering-combined-main-1/original-windows-regression.json",
+          "sha256": "3fa2e2e3a52d740626741dc559bd7128e47137a486e053414038a59bea4ed348",
+          "bytes": 2072
+        },
+        {
+          "path": "artifacts/portability/rendering-combined-main-1/windows-geometry.json",
+          "sha256": "59443cb8db035df68d7084189f1bfe812a2abe87abbfaf17727e1c688e57d95e",
+          "bytes": 49843,
+          "results": [
+            {
+              "status": "pass",
+              "count": 355
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/rendering-combined-main-1/linux-geometry.json",
+          "sha256": "6e94f1e774d6fb9d831a26abbe21ab028416b60f8600b4622a09c24e3e83a2a5",
+          "bytes": 47706,
+          "results": [
+            {
+              "status": "pass",
+              "count": 355
+            }
+          ]
+        }
+      ],
+      "sourceCommit": "15c7c697c301aa4b2b22c3090a53a2c5834c520b",
+      "outcome": "pass"
+    },
+    {
+      "label": "committed-invisible-subtree-traversal-and-preserved-nina-conic-red",
+      "capturedAtUtc": "2026-10-18T21:45:44.2866386Z",
+      "headCommit": "81ad28a6de9cd18db45328e434bb0714d928d38a",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit b81c905aa shares the same renderer freeze rather than a second independent aggregate. Focused visibility passes 27 per OS with hidden/collapsed/zero-opacity skipping, visible unattached roots, state recovery and retained VisualBrush dependency ownership. Original expected reds remain historical. Later unchanged NINA ImageControlVM observation-only diagnostic passes seven checks, fails first Gray16 raster at visible original scrollbar CornerScrollBarRectangle under nonuniform conic guidelines and leaves 18 unreached, with zero native failures and original 26 assertions unchanged. No full NINA imaging/package pass. Text cwd incident and corrected isolated reruns remain recorded.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/rendering-combined-main-1/combined-freeze.json",
+          "sha256": "8f0a59b6fd261f839663c0e2b68c40afade46e3137cc2e82afb6aebc2f5c8e0d",
+          "bytes": 182679
+        },
+        {
+          "path": "artifacts/portability/rendering-combined-main-1/windows-visibility.json",
+          "sha256": "cf9d763f2957d7b0dbf9919e82b8219aa8a084acdc32dce46ab94a429f86f127",
+          "bytes": 3534,
+          "results": [
+            {
+              "status": "pass",
+              "count": 27
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/rendering-combined-main-1/linux-visibility.json",
+          "sha256": "25868ce60cbee6ee91a198e1e1d7a2cd41da839518909143b1085bd122cbf1ab",
+          "bytes": 3394,
+          "results": [
+            {
+              "status": "pass",
+              "count": 27
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/rendering-combined-main-1/text-cwd-incident.json",
+          "sha256": "e2789a4a2512edd490511bf3230d09e35ddf7835125a65551560c89eb670aed2",
+          "bytes": 2160
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-invisible-subtree-diagnostic/revision-2/findings.md",
+          "sha256": "a7df10db5302b524ea87d8fd2c9d1eb8c67b9b5b3b6591d820ddb0432c352367",
+          "bytes": 6311
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-invisible-subtree-diagnostic/revision-2/verification.json",
+          "sha256": "658786911e7c1f38f5a27ed4e10c0a9a0d59d1559fbe335d1f43905ee7cc9490",
+          "bytes": 2197
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-invisible-subtree-diagnostic/revision-2/run-01/runtime-linux.json",
+          "sha256": "d6a1226e8a20924240adff6ecea747fb9f3309c1f377e7db24c2f9812a779409",
+          "bytes": 118854,
+          "results": [
+            {
+              "status": "pass",
+              "count": 7
+            },
+            {
+              "status": "fail",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-invisible-subtree-diagnostic/revision-2/run-01/process-linux.json",
+          "sha256": "9005674e6837d19e18cb00d073c3e0a65e8f52fbd7fc3e39b5dc17f075e8fa89",
+          "bytes": 101
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-invisible-subtree-diagnostic/revision-2/first-chance-locals.json",
+          "sha256": "173c7cb2e543e98f8a43ae9622a31f67b1dd393bec8e4b21a8c7326504ea47c2",
+          "bytes": 35606
+        }
+      ],
+      "sourceCommit": "b81c905aa402a48f25809952f66e7c5d6b54442e",
+      "outcome": "partial"
+    },
+    {
+      "label": "committed-bounded-dashed-painting",
+      "capturedAtUtc": "2026-10-18T21:45:44.2866386Z",
+      "headCommit": "81ad28a6de9cd18db45328e434bb0714d928d38a",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit 81ad28a6d exact coherent source-built graph passes all 44 gates and 3183 checks: 1431 managed checks per OS, 75 private native checks and 246 stock checks. All 28 portable project builds pass zero errors with 14 retained warnings per OS; stock build passes zero warnings/errors. Original stock scalar-splat runner incident and final explicit-array reruns are preserved. Bounded paint profiles include actual Classic focus contour, paired phase and retained pattern/clear/restore recovery. Root stage release permits whole-stage diagnostics only. Curved dash-phase equivalence, arbitrary profiles, exact full fractional stock raster parity and dashed geometry queries remain unqualified. No new threading, package, native IME engine, Popup, full NINA or live desktop pass.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/dashed-painting-combined-main-1/combined-freeze.json",
+          "sha256": "1b2512783703ceab4238c71d473d51f482f2ff9d9f26a34cd94798481bd58fd0",
+          "bytes": 184494
+        },
+        {
+          "path": "artifacts/portability/dashed-painting-combined-main-1/result-summary.json",
+          "sha256": "537b1d32cd62ad923a8a3cdee34c5f5a85bf4ba560fe2abbaf8239de8346296f",
+          "bytes": 7464,
+          "results": [
+            {
+              "status": "pass",
+              "count": 3183
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/dashed-painting-combined-main-1/HANDOFF.md",
+          "sha256": "f57d69acba4f574d3a500d01716c3b656044206ed2233b49b72f3d36e3f2a8dc",
+          "bytes": 3897
+        },
+        {
+          "path": "artifacts/portability/dashed-painting-combined-main-1/root-stage-release.json",
+          "sha256": "da3fd65dc08206de38598464ec3fa0b3187e5865d2dc36844385ce3dc84b8af7",
+          "bytes": 1317
+        },
+        {
+          "path": "artifacts/portability/dashed-painting-combined-main-1/root-frozen-rehash.json",
+          "sha256": "3c717ba3d915e604bd6e3070d0769162b39b368a6ff9f7126d0e5099dfe76a0d",
+          "bytes": 289
+        },
+        {
+          "path": "artifacts/portability/dashed-painting-combined-main-1/windows-dashes.json",
+          "sha256": "3c244490b9a352b73d9db8e0d3c95a93f5118d1ca8a5f815206249a253f216e7",
+          "bytes": 8734,
+          "results": [
+            {
+              "status": "pass",
+              "count": 48
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/dashed-painting-combined-main-1/linux-dashes.json",
+          "sha256": "fd23c918dfc4ca29409cb63b346aeea9f6207f06e518d0a88f943204524cc485",
+          "bytes": 8351,
+          "results": [
+            {
+              "status": "pass",
+              "count": 48
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/dashed-painting-combined-main-1/stock-final-dashes.json",
+          "sha256": "a4e9101a8a17fe644da7cb110957e51d837ae24a58630d8b5c6cd26a7b32fe4d",
+          "bytes": 4216,
+          "results": [
+            {
+              "status": "pass",
+              "count": 29
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/dashed-painting-combined-main-1/stock-final-visibility.json",
+          "sha256": "cb270b3fb8f9eb65cfc2670ce11aae6d8c224d22f94ca22965116dc8bb30161e",
+          "bytes": 3191,
+          "results": [
+            {
+              "status": "pass",
+              "count": 23
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/dashed-painting-combined-main-1/stock-final-full.json",
+          "sha256": "433eb1cd7d40fa37f0c6d2371865a4e07bd56c3b9ce6d696e17215bfa1db53de",
+          "bytes": 562571,
+          "results": [
+            {
+              "status": "pass",
+              "count": 194
+            }
+          ]
+        }
+      ],
+      "sourceCommit": "81ad28a6de9cd18db45328e434bb0714d928d38a",
+      "outcome": "pass"
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",
   "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
   "phase3Status": "selected-unchanged-nina-editor-native-contract-passed-broader-imaging-and-shell-pending",
   "phase5Status": "gnome-startup-and-live-text-clipboard-passed-picker-selection-ime-and-accessibility-pending",
-  "phase0Status": "passed-bounded-feasibility"
+  "phase0Status": "passed-bounded-feasibility",
+  "nativeImePolicy": "User deferred native focused-editor/IME composition integration on 2026-10-18. Preserve the investigation draft locally and unqualified; no new base/hook implementation. Committed transport and ordinary complete Unicode text remain separate evidence. This is not a passed check and does not change historical requirements or complete Phase 5."
 }

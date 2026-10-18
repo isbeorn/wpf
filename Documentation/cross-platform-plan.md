@@ -376,3 +376,17 @@ The design review should confirm these recommendations before implementation:
 8. Scale parallel agents by independent contracts and file ownership, with one integration owner and independent review.
 
 Current implementation evidence and phase gate status are recorded in the [feasibility results](portability/feasibility-results.md). The gates described here are acceptance requirements, not claims that those phases have passed.
+
+The latest committed source milestones are the controlled private IBus transport
+(`db3162527`), bounded Geometry.Combine (`15c7c697c`), invisible-subtree traversal
+(`b81c905aa`) and bounded dashed painting (`81ad28a6d`). Their frozen combined
+graphs establish only the behavior recorded in the results ledger. Phases 0 and
+1 pass within their bounded scopes; Phases 2 through 5 remain open. These source
+milestones do not qualify a new package, full NINA, a real IME engine or a live
+desktop, and painting support does not imply dashed geometry-query support.
+
+Current scope decision: the user has deferred native focused-editor/IME
+composition integration. Keep the investigation draft local and unqualified;
+do not implement the proposed base/hook revision. Committed transport and
+ordinary complete Unicode text remain separate evidence. Historical native
+composition requirements remain open, and this deferral does not pass Phase 5.

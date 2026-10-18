@@ -39,13 +39,14 @@ These results have different scopes and must not be added into a general compati
 | [WPF dispatcher](../../src/Portability/Tests/DispatcherIntegration/README.md) | 14 checks pass | 13 pass, one STA-only case inapplicable | Actual priorities, frames, waits, timers, cancellation, exceptions, worker wake, shutdown and managed pump lifecycle |
 | [Markup compiler](../../src/Portability/Tests/MarkupIntegration/README.md) | 3 artifact checks and 3 stock runtime checks pass | 4 artifact checks and native wrong-case rejection pass | Original PresentationBuildTasks/WinFX targets, pass2, generated hookup and byte-identical cross-OS BAML/resources |
 | [BAML source runtime](../../src/Portability/Tests/MarkupRuntimeIntegration/README.md) | Fork-produced fixture 7/7; frozen Microsoft-produced fixture 5/5 | Fork-produced fixture 7/7; frozen Microsoft-produced fixture 5/5 | Real source PresentationFramework construction, generated fields/events, templates, bindings, dictionaries and pack resources; no native window qualification |
-| [Retained rendering](../../src/Portability/Tests/RenderingIntegration/README.md) | 19 checks pass | 19 checks pass | Actual DrawingVisual/UIElement, RenderData, layout, MediaContext, geometry, brushes, glyphs, invalidation, independent DPI scales, surface lifetime and animation scheduling without starving Background observations |
-| [Geometry](../../src/Portability/Tests/GeometryIntegration/README.md) | 268 checks pass; stock oracle 262/262 | 268 checks pass | Actual containment, outline topology, glyph counters, transforms, widened stroke bounds, mixed stroked/unstroked runs and retained drawing-content bounds |
-| [Guideline snapping](../../src/Portability/Tests/GuidelineIntegration/README.md) | Combined corpus 227 checks pass; preceding stock 142/142 | Combined corpus 227 checks pass | Native-derived snapping and bounded retained VisualBrush integration; stock 142 belongs to the earlier uniform-offset slice, not all 227 cases |
+| [Retained rendering](../../src/Portability/Tests/RenderingIntegration/README.md) | Combined corpus 47 checks pass; focused visibility 27/27 | Combined corpus 47 checks pass; focused visibility 27/27 | Actual retained replay, invisible-subtree skipping/recovery and retained dash mutation; original 19-check result remains historical evidence |
+| [Geometry](../../src/Portability/Tests/GeometryIntegration/README.md) | Combined corpus 355 checks pass | Combined corpus 355 checks pass | Existing containment, outlines, transforms, widened bounds and mixed strokes plus bounded Geometry.Combine; earlier stock 262/262 does not cover the expanded corpus |
+| [Guideline snapping](../../src/Portability/Tests/GuidelineIntegration/README.md) | Combined corpus 301 checks pass; focused dashes 48/48 | Combined corpus 301 checks pass; focused dashes 48/48 | Native-derived snapping, retained VisualBrush and bounded dashed painting; latest stock default 194, focused dashes 29 and visibility 23 remain separate scopes |
 | [WPF text](../../src/Portability/Tests/TextIntegration/README.md) | 344 checks pass | 344 checks pass | Actual paragraph wrapping, fallback, Unicode 17 bidi, combining marks, source-run spans, caret/selection geometry and retained glyph pixels within the declared profile |
 | [Word selection](../../src/Portability/Tests/TextIntegration/Compatibility.md) | 210 control checks pass | 210 control checks pass | Actual TextBox move/select word commands in both flow directions; the user-approved Unicode 17 classification retains WPF's RichEdit algorithm and Latin table |
 | [Scientific bitmaps](../../src/Portability/Tests/ImagingIntegration/README.md) | 12 groups pass | 12 groups pass | Actual CachedBitmap/WriteableBitmap, exact Gray16/Rgb48 samples, caller ownership, nested locks, dirty publication, cloning/freezing and retained DrawImage |
 | [Native dispatcher](../../src/Portability/Tests/NativeDispatcherIntegration/README.md) | Builds; runtime intentionally unsupported | 17 checks pass on native Xvfb | Actual WPF dispatcher with pinned Avalonia X11/GLib pump, native input, pending queues, nested frames, inline Send, disabled-processing waits and callback exception safety |
+| [Native IBus transport](../../src/Portability/Tests/NativeWindowIntegration/README.md) | Combined native graph builds | 18 controlled private protocol/factory processes pass 48 checks | Pinned X11 IBus transport/factory only; actual composing engine, focused WPF editor attachment and live desktop remain unqualified |
 | [PresentationSource](../../src/Portability/Tests/PresentationSourceIntegration/README.md) | 29 checks pass | 29 checks pass | Real source/root ownership, layout, rendering, DPI, reentrant callouts and stale callback cleanup with a managed host |
 | [Core input](../../src/Portability/Tests/InputIntegration/README.md) | 36 checks pass | 36 checks pass | Actual InputManager staging, routed events, commands, focus, capture and cursor visibility with a managed host |
 | [Settings](../../src/Portability/Tests/SystemSettingsIntegration/README.md) | 155 checks across seven processes | 155 checks across seven processes | Immutable settings, optional observed primary-screen pair and declared Classic defaults; no desktop font discovery, multiscreen updates or native Popup qualification |
@@ -288,8 +289,8 @@ GuiderVM commands and equipment behavior remain unexecuted.
 
 The genuine ImageControlVM stock reference separately passes 26 checks using
 the unchanged ImageControlView/ImageView BAML, original mediators, 33 dictionaries
-and real public VM commands. No NINA source is rebuilt. Its coherent Linux source
-diagnostic passes seven checks, fails the first Gray16 raster check and leaves
+and real public VM commands. No NINA source is rebuilt. Its earlier coherent Linux
+source diagnostic passes seven checks, fails the first Gray16 raster check and leaves
 18 checks unreached, with no native load failures. All 143 consumed stage files,
 160 original NINA closure files and exact image source bytes/geometry verify.
 The failing null ImageBrush belongs to the Collapsed Bahtinov overlay with its
@@ -301,9 +302,23 @@ A paired renderer diagnostic passes 11 stock checks but reproduces eight
 invisible-subtree failures on each portable OS, including Hidden/Collapsed
 content, zero-opacity traversal and a hidden consumer's stale VisualBrush source
 registration. It also verifies that an unattached visible offscreen root must
-still paint. The zero-opacity traversal repair is under implementation, not
-qualified by these failing records. Neither the stock reference nor the
-GuiderGraph diagnostic clears this Linux imaging gate.
+still paint. Those expected-red records remain unchanged. Commit `b81c905aa`
+subsequently qualifies the bounded invisible-subtree repair in the combined
+renderer graph described below; the original failing records are not relabeled
+as passes.
+
+The later [same-stage ImageControlVM diagnostic](../../artifacts/portability/nina-imagecontrolvm-invisible-subtree-diagnostic/revision-2/findings.md)
+again passes seven checks, fails the first Gray16 raster and leaves 18 unreached.
+It gets beyond the hidden Bahtinov ImageBrush and identifies the actual visible
+`CornerScrollBarRectangle` in the original vertical scrollbar thumb: fractional
+nonuniform guidelines reach an unsupported rounded-path conic. All 143 consumed
+stage files and 160 original NINA files verify, with no native load failures.
+The additional walker call/reflection observes the frozen renderer without
+changing any of the original 26 assertions, NINA BAML, templates or VM bytes.
+This preserves the earlier hidden-ImageBrush red as history and records the next
+concrete owner; it does not pass Linux ImageControlVM, the full imaging workflow
+or a package gate. The separately committed geometry and traversal results do
+not substitute for a fresh original-view replay.
 
 ## Review and repaired failures
 
@@ -659,10 +674,90 @@ they are not discarded or reported as zero-warning portable graphs. Native
 focused-editor lease/caret attachment, real IME engines and a fresh package/live
 desktop replay remain unqualified.
 
-A genuine Classic ComboBox mouse click exposes a separate next boundary:
-`ItemsControl.AutoScrollTimeout` still reaches user32 `GetDoubleClickTime` before
-native Popup construction. The expected-red diagnostic preserves the original
+An earlier genuine Classic ComboBox mouse click records a separate boundary:
+at that checkpoint `ItemsControl.AutoScrollTimeout` reaches user32
+`GetDoubleClickTime` before native Popup construction. The expected-red diagnostic preserves the original
 template and real input path. Phases 2 through 5 remain open.
+
+## Committed transport and rendering milestones
+
+Commit `db3162527` integrates the controlled native IBus transport/factory slice.
+Its [combined freeze](../../artifacts/portability/native-ibus-combined-main-1/combined-freeze.json)
+passes 18 private protocol/factory processes with 48 checks and ten existing
+native regression processes with 111 checks. Both complete native graphs build
+with zero errors and 14 retained warnings each. This qualifies transport against
+the controlled private counterpart, not an actual composing engine, focused
+WPF editor attachment, package or physical desktop.
+
+The original IBus run compiled the pre-normalization fixture recorded in its
+PDB. A [two-byte EOF normalization](../../artifacts/portability/native-ibus-combined-main-1/root-fixture-eof-normalization.json)
+then removed one trailing empty line, preserving all C# tokens and production
+bytes. That original PDB is not claimed to contain the final fixture bytes.
+The newer rendering/dash graphs compile the current fixture content with the
+archived newline convention; those copies match main after CRLF/LF normalization.
+The original run, source hashes and caveat remain preserved.
+
+Commit `15c7c697c` adds bounded Geometry.Combine for the four Boolean modes,
+operand/result transforms, fill rules, empty and touching contours and the
+declared supported curve inputs. The backend polynomial solver has its own
+float-precision/tolerance profile, not universal Windows topology or raster
+parity. Existing named precision/unsupported-input diagnostics remain. The
+[coherent renderer freeze](../../artifacts/portability/rendering-combined-main-1/combined-freeze.json)
+passes eight managed processes with 1,308 checks per OS, including Geometry 355,
+plus 21 private native processes with 75 checks. The
+[root stage release](../../artifacts/portability/rendering-combined-main-1/root-stage-release.json)
+permits whole-stage diagnostics, not package or full application qualification.
+Original Windows build/pack passes with zero warnings/errors and threading
+208/208. Its initial inherited Perl-locale failure is retained; only the
+process-local C-locale retry is counted as passed.
+
+Commit `b81c905aa` closes the invisible-subtree traversal slice in that same graph.
+Hidden/Collapsed and zero-opacity subtrees skip retained content and descendants;
+visible unattached roots still paint. Round trips restore pixels, unsupported
+content in skipped subtrees is not visited and siblings retain their state.
+VisualBrush checks distinguish stale dependencies of skipped consumers from
+dependencies needed to observe an invisible source's recovery. Focused Rendering
+visibility 27 and the combined Rendering 46, Guideline 253 and VisualBrush 61
+results are scoped to that graph. The Text runner's first cwd mistake and failed
+freeze remain recorded; only the corrected isolated Text reruns are final gates.
+
+Commit `81ad28a6d` adds bounded dashed painting and retained Pen/DashStyle mutation
+coverage. The [final combined freeze](../../artifacts/portability/dashed-painting-combined-main-1/combined-freeze.json)
+passes all 44 gates and 3,183 checks: 1,431 managed checks per OS, 75 private native
+checks and 246 stock checks. All 28 portable project builds pass with zero errors
+and 14 retained warnings per OS; the stock build has zero warnings/errors.
+The [handoff](../../artifacts/portability/dashed-painting-combined-main-1/HANDOFF.md)
+records the fixed stock-runner argument correction and preserves its initial
+outputs. This run does not add a new upstream threading result.
+
+The dash profile covers finite supported patterns, phase in both directions,
+contour starts, calibrated caps, clear/restore and failure recovery. The actual
+zero-radius Classic focus contour uses the correct top-left start. Explicit
+unsupported profiles remain named failures. True rounded/ellipse dash phase,
+arbitrary dash profiles, exact full fractional stock raster equivalence and
+dashed Geometry.StrokeContains/GetRenderBounds remain unqualified. Painting does
+not relax the existing geometry-query diagnostics.
+
+| Frozen source evidence | SHA-256 |
+| --- | --- |
+| IBus combined freeze | `12B0B9A31A8493B01E55D76788B1D33BBBAF74EEDDFF64CC6BC15C01A031B435` |
+| Geometry/visibility combined freeze | `8F0A59B6FD261F839663C0E2B68C40AFADE46E3137CC2E82AFB6AEBC2F5C8E0D` |
+| Geometry/visibility root stage release | `AECB0E9C4D1CACC1B559ECA8A2E9DA3823C167A05468FB8681D4218D925646AE` |
+| Dashed-painting combined freeze | `1B2512783703CEAB4238C71D473D51F482F2FF9D9F26A34CD94798481BD58FD0` |
+| [Dashed-painting root stage release](../../artifacts/portability/dashed-painting-combined-main-1/root-stage-release.json) | `DA3FD65DC08206DE38598464EC3FA0B3187E5865D2DC36844385CE3DC84B8AF7` |
+
+All 932 evidence records listed by these three freezes rehash at this checkpoint.
+The current source ledger appends the four logical milestones and later NINA
+diagnostic without replacing their historical negatives. These source-built
+milestones pass within their stated scopes. Phases 0 and 1 remain bounded passes;
+Phases 2 through 5 remain open. No new package, full NINA, live desktop, real IME
+engine or AvalonDock behavior gate is established here.
+
+The user has deferred native focused-editor/IME composition integration.
+The investigation draft remains local and unqualified, with no new base/hook
+implementation. Committed transport and ordinary complete Unicode text retain
+their separate scopes. This is a current policy decision, not a passed check;
+historical composition requirements and the open Phase 5 gate remain unchanged.
 
 The accepted bidi contract follows Unicode 17. All 91,707 Unicode bidi character level cases pass after a bounded correction to the pinned managed dependency. This algorithm result is separate from paragraph layout, fallback, glyph positioning and native editing qualification. Legacy Windows WPF bracket ordering and measured Display-mode metric differences are recorded compatibility differences, not silently relaxed test tolerances.
 
