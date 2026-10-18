@@ -63,3 +63,29 @@ The retained world-skew stock vector is a documented backend difference, not a f
 Run `--capture-dashed-bounds` in Reference to regenerate the raw stock values. `--capture-dashed-bounds-ink` records the affine occupied-pixel box and both outline-bound and stock-bound containment counts. These offscreen checks do not qualify the genuine native ComboBox keyboard workflow; coherent native replay is separate.
 REV2 also pairs retained DrawGeometry(RectangleGeometry) with the genuine WPF PathGeometry conversion and DrawRoundedRectangle. The sparse (10,10,20,40) rectangle with width 2, Flat caps and [1,100] has a single 2-DIP ON run: its public bounds are (10,9,20,41) and the run must start at top-left. Before the repair, DrawGeometry alone started at bottom-left and painted two pixels outside its own reported bounds. Only dashed rectangles with either radius zero now obtain their stroke path from RectangleGeometry.GetAsPathGeometry, preserving its transform. General conversion, solid strokes and truly rounded shapes are unchanged. Exact full raster, public/retained bounds before and after rendering and occupied-cell containment cover null/fill, +/- phase and wrap, geometry scaling/reflection and either radius zero.
 The REV2 stock audit records 28 exact raster comparisons and 25 exact bounds comparisons. In the three offset +1 all-gap routes, both backends paint no ink, but stock reports (10,9,20,41) while portable reports the source extent (10,10,20,40). This native conservative extent was already present before the route repair. It is recorded as a measured preexisting difference, not counted as stock-exact and not hidden by a tolerance.
+
+The bounded grid cases reuse the SHA-256-pinned original OxyPlot StreamGeometry
+and the offscreen stock 10.0.12 calibration in GridBoundsReference.json. They
+cover one open unfilled figure with at least two isolated noncollapsed straight
+stroked runs, explicit linear gaps and matching Flat caps. Signed dash phases,
+period/restoration, original extent, skipped-pen start, final-coordinate query
+origin, leading/trailing gaps and geometry/world translation are compared to
+stock. The 16 calibrated raster cases compare full BGRA bytes against separately
+drawn directed rows and include a deliberately stroked-connector negative
+control. Retained queries run before/after paint and same-object mutations.
+Joined, fully stroked hollow, all-gap, closed, curved, grouped, collapsed and
+non-Flat-cap neighbors remain rejected. Existing no-ink conservative bounds
+behavior remains separately documented above; this slice does not widen that
+qualification.
+
+GridAffineReference.json records four disjoint diagonal/reflected/skewed stock
+bounds cases. All four bounds and independent-row unions are checked, with
+occupied raster cells intersecting the reported bounds. One pre-existing Skia
+world-skew multi-contour raster differs from separate translucent draws by up to
+15 channel levels (308 pixels); stock does not show that difference. The same
+before/fixed raster hashes establish that this bounds-only change preserves it.
+The `--capture-grid-affine` mode retains that paired evidence without weakening
+the 16 exact-grid raster checks. Geometry.GetWidenedPathGeometry retains its
+original native entrypoint and is unqualified here; dashed containment retains
+its portable rejection. No NINA view, native window, package or interactive
+workflow is qualified by this offscreen fixture.

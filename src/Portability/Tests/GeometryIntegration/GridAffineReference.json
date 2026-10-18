@@ -1,0 +1,70 @@
+{
+  "core": "C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App\\10.0.12\\PresentationCore.dll",
+  "coreSha256": "A0CE98A232C65ED2B9F9AF58B39359A6016066AFD62E85ECFD745DA202F0B01B",
+  "records": [
+    {
+      "geometryTransform": false,
+      "matrix": "1.5,0.25,0.3,1.25,80,40",
+      "originalBounds": "0,0,203.2012481689453,193.00311279296875",
+      "independentRowBounds": [
+        "97.79875183105469,54.496883392333984,66.40249633789062,36.006229400634766",
+        "142.53042602539062,106.88507843017578,54.93914794921875,16.229843139648438",
+        "136.7987518310547,156.99688720703125,66.40249633789062,36.0062255859375"
+      ],
+      "mismatchedPixels": 0,
+      "mismatchedChannels": 0,
+      "maxChannelDifference": 0,
+      "actualSha256": "F803BCD8846711D7D41A744A3185E60EA8D9D634DF96FF2F77C02E63A246CF38",
+      "independentSha256": "F803BCD8846711D7D41A744A3185E60EA8D9D634DF96FF2F77C02E63A246CF38",
+      "firstDifferences": []
+    },
+    {
+      "geometryTransform": true,
+      "matrix": "1.5,0.25,0.3,1.25,80,40",
+      "originalBounds": "0,0,203.2342529296875,192.9417266845703",
+      "independentRowBounds": [
+        "97.7657470703125,54.55826950073242,66.468505859375,35.88346481323242",
+        "142.86618041992188,107.01824188232422,54.26763916015625,15.963516235351562",
+        "136.7657470703125,157.0582733154297,66.468505859375,35.883453369140625"
+      ],
+      "mismatchedPixels": 0,
+      "mismatchedChannels": 0,
+      "maxChannelDifference": 0,
+      "actualSha256": "127D3AB736B3933EE0EAC3D5B1FDDAD36B0621CDE7E3F9BEE0DFDDB866133577",
+      "independentSha256": "127D3AB736B3933EE0EAC3D5B1FDDAD36B0621CDE7E3F9BEE0DFDDB866133577",
+      "firstDifferences": []
+    },
+    {
+      "geometryTransform": false,
+      "matrix": "-1.2,0.2,0.1,1.4,160,5",
+      "originalBounds": "0,0,149.31304931640625,171.5813751220703",
+      "independentRowBounds": [
+        "102.68695068359375,20.418622970581055,46.6260986328125,37.16275596618652",
+        "79.7763900756836,74.32917785644531,50.44721221923828,21.341644287109375",
+        "98.68695068359375,134.4186248779297,46.6260986328125,37.162750244140625"
+      ],
+      "mismatchedPixels": 0,
+      "mismatchedChannels": 0,
+      "maxChannelDifference": 0,
+      "actualSha256": "F287B8DE3DFCC5F67D720B8051CEF30CE0FBCC998DE7A9E44D20F6886492BAB0",
+      "independentSha256": "F287B8DE3DFCC5F67D720B8051CEF30CE0FBCC998DE7A9E44D20F6886492BAB0",
+      "firstDifferences": []
+    },
+    {
+      "geometryTransform": true,
+      "matrix": "-1.2,0.2,0.1,1.4,160,5",
+      "originalBounds": "0,0,149.3081512451172,171.3937530517578",
+      "independentRowBounds": [
+        "102.69184875488281,20.606246948242188,46.616302490234375,36.787506103515625",
+        "79.8143081665039,74.53575897216797,50.37139129638672,20.928482055664062",
+        "98.69184875488281,134.6062469482422,46.616302490234375,36.787506103515625"
+      ],
+      "mismatchedPixels": 0,
+      "mismatchedChannels": 0,
+      "maxChannelDifference": 0,
+      "actualSha256": "E29D6AF9CFB17FE111B82B2D650891D61160C8603F2A5EF58172EBB272E2921C",
+      "independentSha256": "E29D6AF9CFB17FE111B82B2D650891D61160C8603F2A5EF58172EBB272E2921C",
+      "firstDifferences": []
+    }
+  ]
+}

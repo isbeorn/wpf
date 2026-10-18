@@ -77,6 +77,9 @@ namespace MS.Internal.Portability.Rendering
                     double effective = absolute == 0 ? 0.25 : Math.Max(absolute, 1e-6);
                     double halfWidth = paint.StrokeWidth / 2;
                     bool dashed = pen.DashStyle != null && pen.DashStyle.Dashes.Count != 0;
+                    bool isolatedHollowRuns = dashed && IsIsolatedHollowRuns(source, pen);
+                    // A hollow figure contributes the native query origin, after any world transform.
+                    if (isolatedHollowRuns) result.Union(new Rect(0, 0, 0, 0));
                     if (dashed && halfWidth != 0 && !world.HasInverse)
                         throw new NotSupportedException("Portable dashed bounds do not support singular world transforms.");
                     double determinant = Math.Abs(world.M11 * world.M22 - world.M12 * world.M21);
@@ -85,10 +88,10 @@ namespace MS.Internal.Portability.Rendering
                     {
                         // MIL's skipped-pen fallback uses the geometry-space point without the world transform.
                         if (result.IsEmpty) result = new Rect(0, 0, 0, 0);
-                        if (!stroke.IsEmpty) result.Union(StrokeStart(stroke, Matrix.Identity));
+                        if (!stroke.IsEmpty) result.Union(StrokeStart(isolatedHollowRuns ? extent : stroke, Matrix.Identity));
                         return result;
                     }
-                    if (dashed) ValidateDashedBounds(source, stroke, singularGeometry);
+                    if (dashed) ValidateDashedBounds(source, stroke, singularGeometry, isolatedHollowRuns);
                     using SKPathEffect dashes = dashed ? PortableDashPattern.Create(pen) : null;
                     paint.PathEffect = dashes;
                     double scale = double.Hypot(double.Hypot(world.M11, world.M12), double.Hypot(world.M21, world.M22));
@@ -101,7 +104,7 @@ namespace MS.Internal.Portability.Rendering
                     paint.GetFillPath(stroke, outline, (float)resolution);
                     ApplyTransform(outline, world);
                     Rect strokeBounds = PathBounds(outline);
-                    result.Union(strokeBounds.IsEmpty && !stroke.IsEmpty ? StrokeStart(stroke, world) : strokeBounds);
+                    result.Union(strokeBounds.IsEmpty && !stroke.IsEmpty && !isolatedHollowRuns ? StrokeStart(stroke, world) : strokeBounds);
                     result.Union(CollapsedContourBounds(stroke, (float)halfWidth, pen.StartLineCap, world));
                 }
             }
@@ -109,9 +112,34 @@ namespace MS.Internal.Portability.Rendering
             return result.IsEmpty ? new Rect(0, 0, 0, 0) : result;
         }
 
-        private static void ValidateDashedBounds(Geometry source, SKPath stroke, bool singularGeometry)
+        private static bool IsIsolatedHollowRuns(Geometry source, Pen pen)
         {
-            if (source != null && !(source is LineGeometry))
+            if (pen.StartLineCap != PenLineCap.Flat || pen.EndLineCap != PenLineCap.Flat || pen.DashCap != PenLineCap.Flat)
+                return false;
+            PathGeometry path = source as PathGeometry;
+            if (source is StreamGeometry stream) path = stream.GetAsPathGeometry();
+            if (path == null || path.Figures.Count != 1) return false;
+            PathFigure figure = path.Figures[0];
+            if (figure.IsFilled || figure.IsClosed) return false;
+            Point previous = figure.StartPoint;
+            bool previousStroked = false;
+            int runs = 0;
+            foreach (PathSegment segment in figure.Segments)
+            {
+                if (!(segment is LineSegment line)) return false;
+                if (line.IsStroked)
+                {
+                    if (previousStroked || previous == line.Point) return false;
+                    runs++;
+                }
+                previousStroked = line.IsStroked;
+                previous = line.Point;
+            }
+            return runs >= 2;
+        }
+        private static void ValidateDashedBounds(Geometry source, SKPath stroke, bool singularGeometry, bool isolatedHollowRuns)
+        {
+            if (!isolatedHollowRuns && source != null && !(source is LineGeometry))
             {
                 PathGeometry path = source as PathGeometry;
                 if (source is StreamGeometry stream) path = stream.GetAsPathGeometry();

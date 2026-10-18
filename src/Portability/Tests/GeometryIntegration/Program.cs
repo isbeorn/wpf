@@ -3,6 +3,11 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Media;
 
+if (args.Length == 1 && args[0] == "--capture-grid-affine")
+{
+    Console.WriteLine(JsonSerializer.Serialize(GridBoundsCases.CaptureAffine(), new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
 #if !PORTABLE_GEOMETRY_TESTS
 if (args.Length == 1 && args[0] == "--capture-combine-sampling")
 {
@@ -152,6 +157,7 @@ CombineCases.Run(Check);
 OutlineCases.Run(Check);
 BoundsCases.Run(Check);
 DashedBoundsCases.Run(Check);
+GridBoundsCases.Run(Check);
 MixedStrokeCases.Run(Check);
 Console.WriteLine(JsonSerializer.Serialize(new
 {

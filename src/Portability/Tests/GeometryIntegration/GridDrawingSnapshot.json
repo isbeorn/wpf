@@ -1,0 +1,258 @@
+{
+  "visibleVisuals": 229,
+  "rootDpi": {
+    "DpiScaleX": 1,
+    "DpiScaleY": 1,
+    "PixelsPerDip": 1,
+    "PixelsPerInchX": 96,
+    "PixelsPerInchY": 96
+  },
+  "dashedDrawings": [
+    {
+      "visual": "/System.Windows.Window/System.Windows.Controls.Border/System.Windows.Documents.AdornerDecorator/System.Windows.Controls.ContentPresenter/AvalonDock.DockingManager/System.Windows.Controls.Border/System.Windows.Controls.Grid/System.Windows.Controls.ContentPresenter/AvalonDock.Controls.LayoutPanelControl/AvalonDock.Controls.LayoutAnchorablePaneControl/System.Windows.Controls.Grid/System.Windows.Controls.Border#ContentPanel/System.Windows.Controls.ContentPresenter#PART_SelectedContentHost/AvalonDock.Controls.LayoutAnchorableControl/System.Windows.Controls.Border/System.Windows.Controls.Grid/System.Windows.Controls.ContentPresenter/System.Windows.Controls.ContentPresenter/NINA.View.Equipment.Guider.GuiderGraph#UC/System.Windows.Controls.Border/System.Windows.Controls.ContentPresenter/System.Windows.Controls.Grid/OxyPlot.Wpf.Plot/System.Windows.Controls.Border/System.Windows.Controls.Grid#PART_Grid/System.Windows.Controls.Canvas/System.Windows.Shapes.Path",
+      "drawingWorld": [
+        1,
+        0,
+        0,
+        1,
+        723,
+        16
+      ],
+      "geometry": {
+        "type": "System.Windows.Media.StreamGeometry",
+        "transform": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "rectangle": null,
+        "fillRule": "EvenOdd",
+        "pathTransform": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ],
+        "figures": [
+          {
+            "StartPoint": {
+              "X": 31.5,
+              "Y": 768.5
+            },
+            "IsClosed": false,
+            "IsFilled": false,
+            "segments": [
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": true,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 469.5,
+                    "Y": 768.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": false,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 31.5,
+                    "Y": 673.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": true,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 469.5,
+                    "Y": 673.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": false,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 31.5,
+                    "Y": 579.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": true,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 469.5,
+                    "Y": 579.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": false,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 31.5,
+                    "Y": 485.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": true,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 469.5,
+                    "Y": 485.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": false,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 31.5,
+                    "Y": 391.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": true,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 469.5,
+                    "Y": 391.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": false,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 31.5,
+                    "Y": 297.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": true,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 469.5,
+                    "Y": 297.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": false,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 31.5,
+                    "Y": 203.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": true,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 469.5,
+                    "Y": 203.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": false,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 31.5,
+                    "Y": 109.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": true,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 469.5,
+                    "Y": 109.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": false,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 31.5,
+                    "Y": 14.5
+                  }
+                ]
+              },
+              {
+                "type": "System.Windows.Media.LineSegment",
+                "IsStroked": true,
+                "IsSmoothJoin": false,
+                "points": [
+                  {
+                    "X": 469.5,
+                    "Y": 14.5
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "fill": null,
+      "stroke": "#64BDC3C7",
+      "Thickness": 1,
+      "startCap": "Flat",
+      "endCap": "Flat",
+      "dashCap": "Flat",
+      "lineJoin": "Miter",
+      "MiterLimit": 10,
+      "pattern": [
+        10,
+        1
+      ],
+      "offset": 0
+    }
+  ],
+  "errors": [],
+  "scope": "Public retained GetDrawing inspection only. No Drawing.Bounds, hit-test bounds or rendering suppression."
+}
