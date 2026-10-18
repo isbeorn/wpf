@@ -4473,9 +4473,1200 @@
           "bytes": 555
         }
       ]
+    },
+    {
+      "label": "classic-control-component",
+      "capturedAtUtc": "2026-10-18T14:34:32.1013489Z",
+      "headCommit": "f2363124d7a9070a382c9f8144bfaa2708360288",
+      "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
+      "scope": "Committed f2363124d builds full original Classic theme and supplies four immutable scrollbar metrics. Private Classic layout4/4 and20-check settings profiles pass bothOS, with independent reviews and normalWindows build/208 regressions. Live profile, packaged delivery and unchanged NINA replay remain separate gates.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/system-metric-integration/frozen-manifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/system-metric-integration/frozen-manifest.json",
+          "sha256": "f9b247ee29d9520d4eb9cc87ac4e1c789edce216b0ba27d8c4b8f9c82ccfef56",
+          "bytes": 3295
+        },
+        {
+          "path": "artifacts/portability/system-metric-integration/classic-layout-linux-red.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/system-metric-integration/classic-layout-linux-red.json",
+          "sha256": "9fdc7e6df9b1b1a920a02136713a2f075ed430f00f022e406cbcce009305f699",
+          "bytes": 13894,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/handoff.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/handoff.json",
+          "sha256": "3f72bcae3ce03598d50c4cd5378ac6ea6569b2ac6dea9eaae78eb18d9cf38b09",
+          "bytes": 31959
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/readme-revision.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/readme-revision.json",
+          "sha256": "6cbd9fea029e3c73af2a9aca84ce316e860033579ac7ccf56b17981567eda2a4",
+          "bytes": 1021
+        },
+        {
+          "path": "artifacts/portability/windows-scroll-metrics-regression-20261018.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/windows-scroll-metrics-regression-20261018.log",
+          "sha256": "70b84bc68163bb97d8403d092ce21dcd8f9bf2ebd2537c9cc323cd62c9749b88",
+          "bytes": 44307
+        },
+        {
+          "path": "artifacts/portability/upstream-threading-scroll-metrics-20261018.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/upstream-threading-scroll-metrics-20261018.log",
+          "sha256": "e7c0cbdd1998d5d721ee6b64e82879beb1bdf2c795fe6336b93e653c3f60f54d",
+          "bytes": 341
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/source-stability.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/source-stability.json",
+          "sha256": "ca53936923c54ac78ce73835cf4f2b745776651007aef6342e2862b8e46ba005",
+          "bytes": 447
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/source-before.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/source-before.json",
+          "sha256": "5e73441c5de8fd3bbc0c2ca181dcc540b4b6cec47018f70c4b609487eeb8a72c",
+          "bytes": 1293215
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/source-after.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/source-after.json",
+          "sha256": "c73396baaa0ac061f11867b9e740283d5e2316c366e4a77be67b76ad8bb5d125",
+          "bytes": 1293217
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/settings-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/settings-windows.json",
+          "sha256": "c3def4e7801a45f95574ca492759dd2dd4fdabf54cc8c5419a26e25c27b0be60",
+          "bytes": 7308,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/settings-windows-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/settings-windows-process.json",
+          "sha256": "7fcb17227c90c706e5c67784e29a7d8c67921574471d9609874b8c5a18741875",
+          "bytes": 30
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/settings-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/settings-linux.json",
+          "sha256": "2eff6fc30d357185fced7d28435281056673fab7415a8d5e62e38d1e43fba7b5",
+          "bytes": 5207,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/settings-linux-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/settings-linux-process.json",
+          "sha256": "734eba09683f929043618c930a121e9bce4740d5be6ba333a141381f037d6cf3",
+          "bytes": 22
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/provenance.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/provenance.json",
+          "sha256": "6c2c12b7f3bc2fb4e7793209b1b3e869c77ef5e3e3d38e6d676bcff90f197af5",
+          "bytes": 734
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/PortableSystemSettings.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/PortableSystemSettings.cs",
+          "sha256": "ccf98eea6c70647568044423ad2b7a96ee04fde2c1095ece16074de42c699e39",
+          "bytes": 10797
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/pdb-source-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/pdb-source-linux.json",
+          "sha256": "fef43a593696531bed49696a9d0dc5ebaf1d3e00057a954828622b076a2c0c19",
+          "bytes": 528
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/metric-settings-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/metric-settings-windows.json",
+          "sha256": "0d320c2641e8d70df7bcb650e6fe0a7b7ca5832872ef1e1e3df1564112cd80f1",
+          "bytes": 7307,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/metric-settings-windows-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/metric-settings-windows-process.json",
+          "sha256": "7fcb17227c90c706e5c67784e29a7d8c67921574471d9609874b8c5a18741875",
+          "bytes": 30
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/metric-settings-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/metric-settings-linux.json",
+          "sha256": "ff47a780223e3dcc63fcdb61f976b12d1cffd3db89917f0e05d8259d4329d277",
+          "bytes": 5206,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/metric-settings-linux-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/metric-settings-linux-process.json",
+          "sha256": "734eba09683f929043618c930a121e9bce4740d5be6ba333a141381f037d6cf3",
+          "bytes": 22
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/highcontrast-metric-settings-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/highcontrast-metric-settings-windows.json",
+          "sha256": "4434651fe3a6fece8756ffe18e2afe6fc96a3a952e1f26518d3b2b40b49f7d59",
+          "bytes": 7313,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/highcontrast-metric-settings-windows-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/highcontrast-metric-settings-windows-process.json",
+          "sha256": "7fcb17227c90c706e5c67784e29a7d8c67921574471d9609874b8c5a18741875",
+          "bytes": 30
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/highcontrast-metric-settings-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/highcontrast-metric-settings-linux.json",
+          "sha256": "eea96796c604cbd1d59692d01db109be1318b588c754bbb6188fd0c8dfab1019",
+          "bytes": 5212,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/highcontrast-metric-settings-linux-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/highcontrast-metric-settings-linux-process.json",
+          "sha256": "734eba09683f929043618c930a121e9bce4740d5be6ba333a141381f037d6cf3",
+          "bytes": 22
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/default-layout-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/default-layout-windows.json",
+          "sha256": "2d63a600d356921dbd1a5f23f6ca3bae5d4e2ec4c703a3220c054270200c3849",
+          "bytes": 2920,
+          "results": [
+            {
+              "status": "pass",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/default-layout-windows-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/default-layout-windows-process.json",
+          "sha256": "7fcb17227c90c706e5c67784e29a7d8c67921574471d9609874b8c5a18741875",
+          "bytes": 30
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/default-layout-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/default-layout-linux.json",
+          "sha256": "a7031a5b773c91d28f85c09fc2570215dced12939c0ba24a7d24046d4e416678",
+          "bytes": 2811,
+          "results": [
+            {
+              "status": "pass",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/default-layout-linux-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/default-layout-linux-process.json",
+          "sha256": "734eba09683f929043618c930a121e9bce4740d5be6ba333a141381f037d6cf3",
+          "bytes": 22
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/compiled-source.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/compiled-source.json",
+          "sha256": "86069f47a6e22752b42c3fa6319059d39c99326a1d1c86f58bd0ce656e655ac8",
+          "bytes": 1343
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/ClassicRehearsal.targets",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/ClassicRehearsal.targets",
+          "sha256": "3b67e674f76c3b238be94767a208e94b4062e1875215208ad9c1ea45d4fd8c1e",
+          "bytes": 894
+        },
+        {
+          "path": "artifacts/portability/classic/rehearsal-metrics/asset-closure.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/classic/rehearsal-metrics/asset-closure.json",
+          "sha256": "baea48b5bb38138315bac6c1e4ac65c020cb92c165039cbd1dc062b2f944bc38",
+          "bytes": 1839
+        },
+        {
+          "path": "artifacts/portability/pat-metrics-review/asymmetric-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/pat-metrics-review/asymmetric-linux.json",
+          "sha256": "03e8d2d2f1af585dda103721562fef40d659beedda29cd3f1d23151e6cf8b203",
+          "bytes": 5140,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/pat-metrics-review/asymmetric-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/pat-metrics-review/asymmetric-windows.json",
+          "sha256": "748401e2fbc8557dc8dd111bed1eb4c8eb16a9537948f46ac330d1b775b3a14b",
+          "bytes": 7191,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/pat-metrics-review/default-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/pat-metrics-review/default-linux.json",
+          "sha256": "b62be9aee90c5fa58817fd91b039a295be2b02dd04b3e9e19a5d5bea22f820d1",
+          "bytes": 5141,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/pat-metrics-review/default-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/pat-metrics-review/default-windows.json",
+          "sha256": "d29034cf95d5553099a4bbb2415928bf29103a660f7aacb1808a7bacaeca6280",
+          "bytes": 7192,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/pat-metrics-review/high-contrast-asymmetric-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/pat-metrics-review/high-contrast-asymmetric-linux.json",
+          "sha256": "42e4806de419258afb99e277519384a95feb62d0df0e33b8398c5a7cc2ad41d6",
+          "bytes": 5146,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/pat-metrics-review/high-contrast-asymmetric-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/pat-metrics-review/high-contrast-asymmetric-windows.json",
+          "sha256": "8dd28df32dd90921b063f81c82d981a5d74f0d0735383ae370e028282c18c977",
+          "bytes": 7197,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/della-classic-review/review-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/della-classic-review/review-results.json",
+          "sha256": "bb28fce7826818fe7bca03f9228a02e86c20a016c8a08d1bccc12939d81acd3b",
+          "bytes": 5708
+        },
+        {
+          "path": "artifacts/portability/foghorn-classic-review/classic-asymmetric.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/foghorn-classic-review/classic-asymmetric.json",
+          "sha256": "0b94dfaf46e71cfbb442a22151c73e2b250e62b9ff562e870ab46b88fdf1d996",
+          "bytes": 5154,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/foghorn-classic-review/classic-default.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/foghorn-classic-review/classic-default.json",
+          "sha256": "94b6f0e79229381182f9218403048bfa5bec6acde14661919f2783d45e99900d",
+          "bytes": 5155,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/foghorn-classic-review/classic-highcontrast.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/foghorn-classic-review/classic-highcontrast.json",
+          "sha256": "75027043716fdd1fe7487631a624a37fbdc7e38eff75beef22f970f20a265b85",
+          "bytes": 5160,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/foghorn-classic-review/classic-layout.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/foghorn-classic-review/classic-layout.json",
+          "sha256": "9a76b469c1ec3e1fc4f21166898b44656d050026cbc8969afd607778c527176b",
+          "bytes": 2655,
+          "results": [
+            {
+              "status": "pass",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/foghorn-classic-review/generic-classic-expectation-negative.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/foghorn-classic-review/generic-classic-expectation-negative.json",
+          "sha256": "9626d702516c99f7a384954ef914f3148a282f422eb8e2924fc1bf4e54ce9112",
+          "bytes": 5736,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 19
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/foghorn-classic-review/generic-default.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/foghorn-classic-review/generic-default.json",
+          "sha256": "5928f4c9ed7b3abb2a8d8a86db5ec4a56ad28666e930346f50a612d16c97cd74",
+          "bytes": 5155,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/foghorn-classic-review/generic-layout-negative.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/foghorn-classic-review/generic-layout-negative.json",
+          "sha256": "7ea5ef359b5b1e57c5d8389bf9da3fe499fa44b5a0686c74f86295b5f142ee0b",
+          "bytes": 2393,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/foghorn-classic-review/integrity.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/foghorn-classic-review/integrity.json",
+          "sha256": "5cc13d2a6d84d6b5b9d11c2f7278287b07a8e8c977a0b408e7c996ce6b317f21",
+          "bytes": 89
+        },
+        {
+          "path": "artifacts/portability/foghorn-classic-review/replay-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/foghorn-classic-review/replay-summary.json",
+          "sha256": "189cd3e4f1a321733bbe62013d09e7673e8f5b7435f5cb28d39a20f6b3e477a9",
+          "bytes": 2438
+        },
+        {
+          "path": "artifacts/portability/foghorn-classic-review/source-input-integrity.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-control-component/artifacts/portability/foghorn-classic-review/source-input-integrity.json",
+          "sha256": "5e5f0c4a29e3ecf4714c786d0cdbb6c7b31c0ea5706dda6e85f4e84b396b4c28",
+          "bytes": 56
+        }
+      ]
+    },
+    {
+      "label": "gnome-desktop-startup-diagnostic",
+      "capturedAtUtc": "2026-10-18T14:34:55.7954711Z",
+      "headCommit": "f2363124d7a9070a382c9f8144bfaa2708360288",
+      "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
+      "scope": "Hyper-V Ubuntu22.04 GNOME42.9 XWayland native startup fails before WPFWindow/input because distance is absent, published time400 valid. Raw payload independently decoded. Separate GTK query effective5pixels/400ms, unchanged desktop properties. User approved declared5pixel fallback only for absent distance; implementation/fresh-package replay pending.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/probe-outcome.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/probe-outcome.json",
+          "sha256": "faafc10ea5afb6e2fbde898d18f48678874a3f049da48ddf05fd8e195d1392c3",
+          "bytes": 8958
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/first-probe-plan.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/first-probe-plan.json",
+          "sha256": "68c2d1f313465784a616c30c17a9f6bb180f5ecd2cc3b5ab8a9d5b9609369833",
+          "bytes": 4959
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/inventory.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/inventory.txt",
+          "sha256": "d0e9b606dd70fc93b9bc744907ef2bc3116e8a81997b9435c8da0e05b2db9367",
+          "bytes": 6245
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/display-inventory.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/display-inventory.txt",
+          "sha256": "400a82c833b6aabc78182e5e2203db591c6092115c2f24c23f3928cb3da8cf22",
+          "bytes": 1803
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/diagnosis-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/diagnosis-freeze.json",
+          "sha256": "b09ea65d9759c7cbd69789b561db4b77c8b29d9fab9c9bd1e2832fabb4b1d0f6",
+          "bytes": 4376
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/gtk-effective-outcome.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/gtk-effective-outcome.json",
+          "sha256": "f68a4149cc18b147a343bd244d780b57e93d7e67c004cd281d5b7b4051dbd6f5",
+          "bytes": 6871
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/build-consumer.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/build-consumer.log",
+          "sha256": "86a066211412c6907c48ff3299dd7c0211b79c5edeb07b199e5bf83d57146c02",
+          "bytes": 4060
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/build-snapshot.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/build-snapshot.log",
+          "sha256": "8ffb8894612da5c69f0ad8b9261f6443e6095b1bccc46246e43b501cb42aeb85",
+          "bytes": 430
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/compiler-origins.xml",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/compiler-origins.xml",
+          "sha256": "44b7df635162cad3ab7c0e256c40b170a4d99866d5ce0adc968fe8e7517dd387",
+          "bytes": 4069
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/consumer-desktop.patch",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/consumer-desktop.patch",
+          "sha256": "5effe8dc6e5d4343cf01d6e348d869110f642b2ee704d4d8cb1f1b2cdaf2acf4",
+          "bytes": 3642
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/native-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/native-results.json",
+          "sha256": "294897da9892d0dadddadef9e18d2fa059bd063b10ecd04b1186897329d41ec7",
+          "bytes": 952,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/native.stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/native.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/original-source-hashes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/original-source-hashes.json",
+          "sha256": "3d6b591ed54d0fc6899444ef171025d8719de56302e8fc5b18f747319a4d9e24",
+          "bytes": 6299
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/package-provenance.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/package-provenance.json",
+          "sha256": "c1a2f1d1e6776cf6d6e0e6d24adfc3d549ddb1dc642876a20af83758c49ef6eb",
+          "bytes": 1149
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/probe-exit.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/probe-exit.txt",
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+          "bytes": 2
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/probe-pid.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/probe-pid.txt",
+          "sha256": "092f18772dfcf0fbbeacecffbe8e6041ccd4c4b881ba92926cf224179964e578",
+          "bytes": 7
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/process-cleanup.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/process-cleanup.txt",
+          "sha256": "2a0eb5216cba571e27972a6134139469a3031fa9482bc123456cd608dbb60aac",
+          "bytes": 72
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/remote-manifest-after.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/remote-manifest-after.txt",
+          "sha256": "270ebea619aacbda66e2f69a3a331d2f51522601f03b36c3e66b2bf437e06b3e",
+          "bytes": 10606
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/remote-manifest-check.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/remote-manifest-check.txt",
+          "sha256": "270ebea619aacbda66e2f69a3a331d2f51522601f03b36c3e66b2bf437e06b3e",
+          "bytes": 10606
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/remote-native-linkage.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/remote-native-linkage.txt",
+          "sha256": "6ec5154ab6769005922c86ab18b1b765dbadffe87e4b33adc2336df1ae51729d",
+          "bytes": 1301
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/remote-runtimes.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/remote-runtimes.txt",
+          "sha256": "177458f4804a0da608094d3ea6e41beab7d2b802c77855983b36b3b442d89872",
+          "bytes": 318
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/run-session.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/run-session.txt",
+          "sha256": "aa674d19f16c82173d327f2a608cbfe400ca778c5ca2ad34e8056f042524be95",
+          "bytes": 219
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/settings-after.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/settings-after.json",
+          "sha256": "784adb567d8c58053b78e15357217bd37d21f06ab113e2f1bf98d2e6612f0777",
+          "bytes": 507
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/settings-after.stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/settings-after.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/settings-before.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/settings-before.json",
+          "sha256": "784adb567d8c58053b78e15357217bd37d21f06ab113e2f1bf98d2e6612f0777",
+          "bytes": 507
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/settings-before.stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/settings-before.stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/settings-preservation.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/desktop-probe-1/evidence/remote/settings-preservation.txt",
+          "sha256": "873f1db68413f1354306b487c8356ce2eeafa2980a4d8928d2782815c03a243a",
+          "bytes": 72
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/xsettings.bin",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/xsettings.bin",
+          "sha256": "b8d5495ad53fa16ec0e96cbb5c9d8502e4de59dfdb2bed357307fe9c6c412f57",
+          "bytes": 2044
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/source-api-notes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/source-api-notes.json",
+          "sha256": "355035f23e6d947ff2758d89e15c3988d8ea46ee21395591d5d364658ec99c7f",
+          "bytes": 2371
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/remote-capture.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/remote-capture.txt",
+          "sha256": "99bcc86fd0209d83119f7c5274139150e7697a5face6b524b3a351d0f5fc87f6",
+          "bytes": 701
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/read-only-raw-capture.patch",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/read-only-raw-capture.patch",
+          "sha256": "576363848b1005b73853a28e3b6135462aeb585eddb09598589affbff8946f86",
+          "bytes": 1173
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-query-man.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-query-man.txt",
+          "sha256": "02fe7710c9e8fd59eb26a1779ba63b62fce3b39373d53aa699119728b7703e07",
+          "bytes": 1633
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-query-help.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-query-help.txt",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective-query.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective-query.txt",
+          "sha256": "418424e7e8eecffbdc36e57591474e558adfb20901f9ab94643b0e92765f3aba",
+          "bytes": 393
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/utility-hash.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/utility-hash.txt",
+          "sha256": "16cb96e8f04833d44fbbc02694e18359dc1e74b0a5ee9579d385303924dd7975",
+          "bytes": 94
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/settings-before.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/settings-before.json",
+          "sha256": "784adb567d8c58053b78e15357217bd37d21f06ab113e2f1bf98d2e6612f0777",
+          "bytes": 507
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/settings-after.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/settings-after.json",
+          "sha256": "784adb567d8c58053b78e15357217bd37d21f06ab113e2f1bf98d2e6612f0777",
+          "bytes": 507
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/session.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/session.txt",
+          "sha256": "060d3152c819bf746c09e4f700e5a54df81653dafe07231b46dacd9d4532a76b",
+          "bytes": 201
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/preservation.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/preservation.txt",
+          "sha256": "f4b7a062fc479bc8f8d1075774a5d03726dda94af412d9f6ed81dbe62d417fd3",
+          "bytes": 58
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/gtk-version.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/gtk-version.txt",
+          "sha256": "54fd4cd17a5beb4898f1842c0980a62206c07b7ffeab4ac55b4fbc1645bf9a82",
+          "bytes": 36
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/gtk-double-click-time.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/gtk-double-click-time.txt",
+          "sha256": "890dca9749bd737a99d4c5835a46173979836af8c7737563b88ddf27d88cbb56",
+          "bytes": 41
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/gtk-double-click-time.exit.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/gtk-double-click-time.exit.txt",
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+          "bytes": 2
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/gtk-double-click-distance.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/gtk-double-click-distance.txt",
+          "sha256": "deb5f32b9e5b40474e05c8c9983c5973eabfa06d824893479be1543faf55b575",
+          "bytes": 39
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/gtk-double-click-distance.exit.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/gtk-double-click-distance.exit.txt",
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+          "bytes": 2
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/evidence.sha256",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/evidence.sha256",
+          "sha256": "31244341b19a86f1c0469339a0abb468de86b85b54e46177ebb574a0e338c696",
+          "bytes": 1380
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/cleanup.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-effective/cleanup.txt",
+          "sha256": "755382e4fa362b3899065dd2b586155465c9e143f813540da34c38baa22b04ce",
+          "bytes": 194
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-availability.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/gtk-availability.txt",
+          "sha256": "aa13d71d8b2567c6eb088c262cd0db2a692de07ddb89a1cc0b1c92fc567dae0b",
+          "bytes": 595
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/decoded-relevant.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/decoded-relevant.json",
+          "sha256": "dd9f3a035a473f645a4060e3394a0a612c6477ceeea3d9dd442172507ac04a71",
+          "bytes": 738
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/capture.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gnome-desktop-startup-diagnostic/artifacts/portability/hyperv-desktop/settings-diagnosis-1/evidence/capture.json",
+          "sha256": "784adb567d8c58053b78e15357217bd37d21f06ab113e2f1bf98d2e6612f0777",
+          "bytes": 507
+        }
+      ]
+    },
+    {
+      "label": "classic-live-source-profile",
+      "capturedAtUtc": "2026-10-18T14:42:35.9882189Z",
+      "headCommit": "000afc7a2589c88a8e1304a7710cc9e0510662a9",
+      "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
+      "scope": "Committed db753499b selects genuine Classic through two source-profile lines, with original lookup unchanged. Normal source graphs without overlays pass20-check profiles and four default-layout cases on bothOS; policy-negative cases remain explicit. Package delivery and unchanged NINA replay pending.",
+      "artifacts": [
+        {
+          "path": "src/Microsoft.DotNet.Wpf/src/PresentationCore/MS/internal/Portability/Settings/PortableSystemSettings.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/src/Microsoft.DotNet.Wpf/src/PresentationCore/MS/internal/Portability/Settings/PortableSystemSettings.cs",
+          "sha256": "ccf98eea6c70647568044423ad2b7a96ee04fde2c1095ece16074de42c699e39",
+          "bytes": 10797
+        },
+        {
+          "path": "src/Portability/Tests/SystemSettingsIntegration/Program.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/src/Portability/Tests/SystemSettingsIntegration/Program.cs",
+          "sha256": "5d7cfd280bd908276dd606578845f6b9e6e5dabb6470da33b37949707d26c822",
+          "bytes": 27829
+        },
+        {
+          "path": "src/Portability/Tests/SystemSettingsIntegration/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/src/Portability/Tests/SystemSettingsIntegration/README.md",
+          "sha256": "083349f67e58aaef7cfa2baab88004f6064846998a19d19f8da714ab1a487004",
+          "bytes": 8256
+        },
+        {
+          "path": "src/Portability/Framework/PresentationFramework.Classic/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/src/Portability/Framework/PresentationFramework.Classic/README.md",
+          "sha256": "68915c1579799eb4835571b3c13a2943b100aeb71c9c7f3ba663288186db900a",
+          "bytes": 5746
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/source-stability.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/source-stability.json",
+          "sha256": "47642b2999a441beda98d081e17293436925195323a9ca296b10963dc9cbddb0",
+          "bytes": 425
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/source-before.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/source-before.json",
+          "sha256": "531c25f6381e179b32db22956a01d3a4c1e77fe269f29734802b8fb37d7a11f7",
+          "bytes": 1293215
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/source-after.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/source-after.json",
+          "sha256": "0fa309f16d8178878d1692a6815809657f27649db724f5aa74409850f08d44ba",
+          "bytes": 1293217
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/settings-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/settings-windows.json",
+          "sha256": "e3d7367c09a0a4992ad2f1f33c7d2042da4184fec482b1d3633de921f0986a9a",
+          "bytes": 7295,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/settings-windows-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/settings-windows-process.json",
+          "sha256": "7fcb17227c90c706e5c67784e29a7d8c67921574471d9609874b8c5a18741875",
+          "bytes": 30
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/settings-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/settings-linux.json",
+          "sha256": "f49767cab15fc44a41c27d7f2a449da0c80eeaa4cbe648922fbd5558183a3d7d",
+          "bytes": 5194,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/settings-linux-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/settings-linux-process.json",
+          "sha256": "734eba09683f929043618c930a121e9bce4740d5be6ba333a141381f037d6cf3",
+          "bytes": 22
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/metric-settings-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/metric-settings-windows.json",
+          "sha256": "a6f22f2b0f0bbb64fa222478be1788546f91da2386f18c9306f4cc76ff5dbfa9",
+          "bytes": 7294,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/metric-settings-windows-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/metric-settings-windows-process.json",
+          "sha256": "7fcb17227c90c706e5c67784e29a7d8c67921574471d9609874b8c5a18741875",
+          "bytes": 30
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/metric-settings-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/metric-settings-linux.json",
+          "sha256": "cbe985b96c78faad791d6e5545da4b9a62d5170481b992c89bf57202ee891c1b",
+          "bytes": 5193,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/metric-settings-linux-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/metric-settings-linux-process.json",
+          "sha256": "734eba09683f929043618c930a121e9bce4740d5be6ba333a141381f037d6cf3",
+          "bytes": 22
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/highcontrast-metric-settings-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/highcontrast-metric-settings-windows.json",
+          "sha256": "e7a930a1dc9fcb503d205cc1122372d2b7511a4d4a27417cd5b9b40ceda4ceb0",
+          "bytes": 7300,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/highcontrast-metric-settings-windows-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/highcontrast-metric-settings-windows-process.json",
+          "sha256": "7fcb17227c90c706e5c67784e29a7d8c67921574471d9609874b8c5a18741875",
+          "bytes": 30
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/highcontrast-metric-settings-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/highcontrast-metric-settings-linux.json",
+          "sha256": "3445280780bf6ce718f24fe86a6a8199b2f75003b18b997804b74c7a02cac2d2",
+          "bytes": 5199,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/highcontrast-metric-settings-linux-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/highcontrast-metric-settings-linux-process.json",
+          "sha256": "734eba09683f929043618c930a121e9bce4740d5be6ba333a141381f037d6cf3",
+          "bytes": 22
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/explicit-classic-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/explicit-classic-windows.json",
+          "sha256": "e3d7367c09a0a4992ad2f1f33c7d2042da4184fec482b1d3633de921f0986a9a",
+          "bytes": 7295,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/explicit-classic-windows-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/explicit-classic-windows-process.json",
+          "sha256": "7fcb17227c90c706e5c67784e29a7d8c67921574471d9609874b8c5a18741875",
+          "bytes": 30
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/explicit-classic-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/explicit-classic-linux.json",
+          "sha256": "f49767cab15fc44a41c27d7f2a449da0c80eeaa4cbe648922fbd5558183a3d7d",
+          "bytes": 5194,
+          "results": [
+            {
+              "status": "pass",
+              "count": 20
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/explicit-classic-linux-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/explicit-classic-linux-process.json",
+          "sha256": "734eba09683f929043618c930a121e9bce4740d5be6ba333a141381f037d6cf3",
+          "bytes": 22
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/expect-generic-negative-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/expect-generic-negative-windows.json",
+          "sha256": "7c29d1c1dd6b1be8182643f7aa5debb8faa95d43adbc1e93e297565d173925ab",
+          "bytes": 8102,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 19
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/expect-generic-negative-windows-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/expect-generic-negative-windows-process.json",
+          "sha256": "caf4cb0744099c01f005d26ac6dbc86dab0c8b3f7065965bbb9021b9d229625f",
+          "bytes": 30
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/expect-generic-negative-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/expect-generic-negative-linux.json",
+          "sha256": "0549a9b3603ab4cdff9e5c7ff80b4496905aa8a575fe7e9295072f8a5e1a7483",
+          "bytes": 5775,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 19
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/expect-generic-negative-linux-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/expect-generic-negative-linux-process.json",
+          "sha256": "9a119cf0f64137d63a0d0672fdd56a2bc712387950e9ce2abd5abe14e98d2de6",
+          "bytes": 22
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/default-layout-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/default-layout-windows.json",
+          "sha256": "61b8eb7160449f135ea5ae21ca0770d5376e4e6b4282920689d063a9687f439a",
+          "bytes": 2881,
+          "results": [
+            {
+              "status": "pass",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/default-layout-windows-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/default-layout-windows-process.json",
+          "sha256": "7fcb17227c90c706e5c67784e29a7d8c67921574471d9609874b8c5a18741875",
+          "bytes": 30
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/default-layout-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/default-layout-linux.json",
+          "sha256": "da70730083f7ba49236166c2f5dad6dfc76b58b35cc1a2257430ac618c047b5e",
+          "bytes": 2772,
+          "results": [
+            {
+              "status": "pass",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/default-layout-linux-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/default-layout-linux-process.json",
+          "sha256": "734eba09683f929043618c930a121e9bce4740d5be6ba333a141381f037d6cf3",
+          "bytes": 22
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/conflicting-expectations-negative-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/conflicting-expectations-negative-windows.json",
+          "sha256": "ee88f32b196cdd84b8f6f17b65f0cfe3f276e9323806655be9e0dd84bdacd041",
+          "bytes": 1053,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/conflicting-expectations-negative-windows-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/conflicting-expectations-negative-windows-process.json",
+          "sha256": "caf4cb0744099c01f005d26ac6dbc86dab0c8b3f7065965bbb9021b9d229625f",
+          "bytes": 30
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/conflicting-expectations-negative-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/conflicting-expectations-negative-linux.json",
+          "sha256": "0abdb3c6b5c60e6ff208d998e29b273a9dabfb39b662ad67e67ecbb1fd46d732",
+          "bytes": 1015,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/conflicting-expectations-negative-linux-process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/conflicting-expectations-negative-linux-process.json",
+          "sha256": "9a119cf0f64137d63a0d0672fdd56a2bc712387950e9ce2abd5abe14e98d2de6",
+          "bytes": 22
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/compiled-source.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/compiled-source.json",
+          "sha256": "94d23c95a33a4143366dd0e341e6f0974169da216cc1bfc57b1a49b2a6affafd",
+          "bytes": 602
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/classic-assets.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/classic-assets.json",
+          "sha256": "21f42bef01e7eebf7bf61a8652855b27d3f246ac5c1f3e2f48ec36c1b96aef1a",
+          "bytes": 1417
+        },
+        {
+          "path": "artifacts/portability/classic/live-source/handoff.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/classic/live-source/handoff.json",
+          "sha256": "86d362b01e087805741d17108315cf7adbb1879c9eb2b7b6d786bdd3bd23cca6",
+          "bytes": 40320
+        },
+        {
+          "path": "artifacts/portability/della-classic-live-review/review-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-live-source-profile/artifacts/portability/della-classic-live-review/review-results.json",
+          "sha256": "42ca898b84c9e22db3da5a9ca927d0a3472c7ab842aa97732ec5e667004edded",
+          "bytes": 465
+        }
+      ]
+    },
+    {
+      "label": "classic-package-preparation",
+      "capturedAtUtc": "2026-10-18T14:43:37.8514403Z",
+      "headCommit": "000afc7a2589c88a8e1304a7710cc9e0510662a9",
+      "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
+      "scope": "Committed000afc7 adds fullClassic runtimeasset and isolatedfreshPBT path/inputcapture. Oldgenericfeed fails only new default-controlcheck; static/evaluation and independentreviews pass. Positive clean-checkout producer and full12/14consumer matrix remain pending.",
+      "artifacts": [
+        {
+          "path": "src/Portability/Packaging/Stage/Stage.csproj",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/src/Portability/Packaging/Stage/Stage.csproj",
+          "sha256": "c0b7b24e79aabd6b23d63ca39823e197d1f4b2f1c47564bb04dca2e3cff2972b",
+          "bytes": 1247
+        },
+        {
+          "path": "src/Portability/Packaging/PackageProfile.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/src/Portability/Packaging/PackageProfile.json",
+          "sha256": "aa33e22dd64002c3f905f61bdc92cf1cb85109ffeeac060447197d0724e23324",
+          "bytes": 2267
+        },
+        {
+          "path": "src/Portability/Packaging/IsolatedBuild.props",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/src/Portability/Packaging/IsolatedBuild.props",
+          "sha256": "760dfc873736d3980b27d3f7ecc43427152a8659c9b285c333e1a155fde80225",
+          "bytes": 1375
+        },
+        {
+          "path": "eng/portability/Build-PortablePackages.ps1",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/eng/portability/Build-PortablePackages.ps1",
+          "sha256": "ee768dda90528e8920e030f3a0d10091a1d1121a341645b8b8d28fb02902d114",
+          "bytes": 14831
+        },
+        {
+          "path": "eng/portability/Test-PortablePackageContents.ps1",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/eng/portability/Test-PortablePackageContents.ps1",
+          "sha256": "c8299e4ef21509773856ed86466cf09cb64433e8e6e3a2333429b90d7e3bebb5",
+          "bytes": 9297
+        },
+        {
+          "path": "src/Portability/Packaging/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/src/Portability/Packaging/README.md",
+          "sha256": "620997ba2320da249cc72c251e3259e53b3a9de0099dd88c3faba1cca450aea1",
+          "bytes": 8145
+        },
+        {
+          "path": "src/Portability/Packaging/Consumer/App/Program.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/src/Portability/Packaging/Consumer/App/Program.cs",
+          "sha256": "a6afd26e28b699eefdce94b43eb7e6a2b7892744713ea48682eacdbc1aed6764",
+          "bytes": 21739
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/machinery-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/artifacts/portability/classic-package-preparation/machinery-freeze.json",
+          "sha256": "fad233e2fa138598af541708a055d10b3b32f931307a3cf0a464e42eb14b289c",
+          "bytes": 1719
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/previous-feed-red/regression-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/artifacts/portability/classic-package-preparation/previous-feed-red/regression-results.json",
+          "sha256": "1fa82b01f0307854dc6f2369463ac6bc97b3f5b14412b8e7ff5e7fbaa585f2d6",
+          "bytes": 1625
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/compiler-evaluation.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/artifacts/portability/classic-package-preparation/compiler-evaluation.json",
+          "sha256": "6992f628e5aa50155a9737f4a282efb3f20ae67082f592085e6e34a644253fd1",
+          "bytes": 2052
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/ignored-input-inventory.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/artifacts/portability/classic-package-preparation/ignored-input-inventory.json",
+          "sha256": "dd5923f6b52afbb7c4d70c433782a8ed9f49f8bbacf43f7f3f026247c35faccf",
+          "bytes": 1842
+        },
+        {
+          "path": "artifacts/portability/classic-package-preparation/nuget-cache-inventory.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/artifacts/portability/classic-package-preparation/nuget-cache-inventory.json",
+          "sha256": "9316350f91407e521169494652c61bd7fd380c2c9929745bc2daa6a7a3c30d33",
+          "bytes": 26781
+        },
+        {
+          "path": "artifacts/portability/basil-classic-package-review/classic-evaluation.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/artifacts/portability/basil-classic-package-review/classic-evaluation.json",
+          "sha256": "388b8bb40cce31fe95d016c321353f1f8d557003d90cf4e115124e3b67deb52e",
+          "bytes": 7928
+        },
+        {
+          "path": "artifacts/portability/basil-classic-package-review/pbt-evaluation.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/artifacts/portability/basil-classic-package-review/pbt-evaluation.json",
+          "sha256": "083b95fdb3fa8594c54b41f0c82d62f70d75b02b0d0f3b5c4de188185621005f",
+          "bytes": 2231
+        },
+        {
+          "path": "artifacts/portability/donald-classic-package-review/empty-manifest-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/artifacts/portability/donald-classic-package-review/empty-manifest-results.json",
+          "sha256": "150abac2204f8647430dd3f066c907cf2a83ac89db0c1a9237c45140680efede",
+          "bytes": 183
+        },
+        {
+          "path": "artifacts/portability/donald-classic-package-review/parse-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-package-preparation/artifacts/portability/donald-classic-package-review/parse-results.json",
+          "sha256": "22c9007a61ca059e7630158cf6b95a61a31fe39b09e7774b745d9e2ac802ba8e",
+          "bytes": 388
+        }
+      ]
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",
   "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
-  "phase3Status": "unchanged-direct-view-construction-passed-default-theme-layout-failed"
+  "phase3Status": "classic-source-controls-passed-packaged-nina-replay-pending",
+  "phase5Status": "gnome-xwayland-startup-failed-absent-distance-policy-approved-repair-pending"
 }

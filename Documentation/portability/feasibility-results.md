@@ -42,7 +42,7 @@ These results have different scopes and must not be added into a general compati
 | [Native dispatcher](../../src/Portability/Tests/NativeDispatcherIntegration/README.md) | Builds; runtime intentionally unsupported | 17 checks pass on native Xvfb | Actual WPF dispatcher with pinned Avalonia X11/GLib pump, native input, pending queues, nested frames, inline Send, disabled-processing waits and callback exception safety |
 | [PresentationSource](../../src/Portability/Tests/PresentationSourceIntegration/README.md) | 29 checks pass | 29 checks pass | Real source/root ownership, layout, rendering, DPI, reentrant callouts and stale callback cleanup with a managed host |
 | [Core input](../../src/Portability/Tests/InputIntegration/README.md) | 36 checks pass | 36 checks pass | Actual InputManager staging, routed events, commands, focus, capture and cursor visibility with a managed host |
-| [Settings](../../src/Portability/Tests/SystemSettingsIntegration/README.md) | 19 checks pass | 19 checks pass | Explicit immutable palette and editing preferences, genuine resource/theme lookup and XAML access policy |
+| [Settings](../../src/Portability/Tests/SystemSettingsIntegration/README.md) | 20 checks pass | 20 checks pass | Explicit immutable palette, editing preferences and four scrollbar metrics, genuine resource/theme lookup and XAML access policy; source-built Classic control layout has a separate four-case result |
 | [Window lifecycle](../../src/Portability/Tests/WindowLifecycleIntegration/README.md) | 66 checks pass; stock oracle 26/26 | 66 checks pass | Genuine Window ownership, modal cleanup, asynchronous bounds, content sizing and public Application.Run startup/shutdown; independent lifetime, fractional acknowledgment and explicit-request replays pass |
 | [Native WPF Window](../../src/Portability/Tests/NativeWindowIntegration/README.md) | Builds; runtime intentionally unsupported | 22/22 for each XSETTINGS byte order; nine rejection cases pass | Genuine WPF Window, Button.Click, TextBox input, synchronous dialog, scientific bitmap mutation, cover/uncover, five-button state, capture and minimum-pixel DPI behavior on Xvfb |
 | [Native window manager](../../src/Portability/Tests/NativeWindowIntegration/README.md) | Not applicable | Ten fresh Openbox runs, 13/13 each | Actual state, frame extents, maximize/minimize/restore, pending bounds intents, callback-triggered close and settled native pixels |
@@ -166,9 +166,27 @@ Linux passes unchanged-binary and BAML construction checks then fails positive
 content layout: the UserControl has no template or visual children and its
 original Grid remains unmeasured. The same stock view has a ContentPresenter and
 an arranged 800x450 Grid. This isolates a missing default-theme profile rather
-than establishing a layout pass. No NINA template is replaced. A genuine
-source-built Classic theme is the next bounded implementation; broader view,
-control-library and shell qualification remain open.
+than establishing a layout pass. No NINA template is replaced.
+
+Commit `f2363124d` builds the complete original Classic theme and supplies four
+immutable scrollbar metrics with declared 17-DIP defaults. The original XAML and
+eight original compile items remain intact. Windows and Linux produce identical
+Classic BAML. Ordinary UserControl, Button and TextBox layout plus custom-control
+generic fallback and explicit-style removal pass four checks on each OS using a
+private Classic profile. All three 20-check settings profiles pass, and independent
+correctness and maintainability reviews pass. The normal Windows build/pack and
+208 upstream threading tests also pass after the metric changes.
+
+Commit `db753499b` selects that Classic profile through the two source mapping
+lines. Normal source graphs without an overlay pass the same settings and layout
+checks on both OSes. Commit `000afc7` adds the theme to the runtime package graph
+and selects a fresh isolated markup compiler for its genuine BAML build. Package
+preparation passes independent review and detects the missing theme in the older
+feed. Positive package qualification is running from a clean committed checkout
+before a fresh unchanged NINA replay.
+PresentationUI remains compile-only and was not copied or loaded by these cases.
+The full deferred document-resource closure, broader views, control libraries
+and shell qualification remain open.
 
 ## Review and repaired failures
 
@@ -197,6 +215,17 @@ Raw negative cases remain alongside the passing results. Local changes and commi
 | Phases 3 through 5 | Gates not passed | Real NINA view/control interactions, simulated shell/overnight session and packaged native Linux qualification |
 
 Scientific Gray16/Rgb48 source storage and readback pass the bounded imaging slice. Gray16 conversion differs by at most one output level at the small measured native WIC boundary samples; this does not establish scaled-image display parity. The large-frame workflow has larger observed display differences while scientific source samples remain exact. Image codecs, conversion graphs and large-frame memory/performance remain open. IME, accessibility, physical desktop focus/DPI transitions, native Wayland, ARM64 and macOS remain unqualified. CPU rendering and short disposal loops do not establish overnight memory or responsiveness bounds.
+
+The first additional desktop target is Ubuntu 22.04.5 with GNOME 42.9 and
+XWayland on Hyper-V. Its package-only probe stops during native startup before
+any WPF Window or input: GNOME publishes a valid 400 ms double-click time but
+omits distance. Independent decoding confirms the parser's result. A separate
+read-only GTK query reports an effective 5-pixel distance. Desktop settings owner,
+XSETTINGS bytes and RESOURCE_MANAGER bytes remain unchanged after both probes.
+The user approved a declared 5-pixel fallback only for absent distance, preserving
+published values and all invalid-data failures. Implementation and a fresh
+packaged desktop replay remain pending. This is neither a desktop pass nor a
+native Wayland result.
 
 The initial native X11 Window profile requires at least one physical client pixel on each axis. Explicit application requests for zero or subpixel client extents are an unsupported boundary, checked before issuing native configure requests. Stock Windows WPF instead coerces these requests to its desktop-specific native minimum and publishes that accepted size through Width/Height, ActualWidth/ActualHeight and RestoreBounds. Matching that behavior needs a logical/native minimum-size contract; this profile does not claim it. Preserving an already valid native window during a DPI change is a separate requirement and must not emit an illegal zero-pixel configure request.
 

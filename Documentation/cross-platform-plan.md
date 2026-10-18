@@ -109,6 +109,17 @@ with its own qualified resource and chrome closure; it does not promise Aero2
 pixels or native Linux theming. NINA's original styles and custom-control generic
 dictionaries retain precedence and identity.
 
+The user-approved initial X11 pointer profile preserves positive integer
+XSETTINGS double-click values. If `Net/DoubleClickDistance` alone is absent, it
+uses a declared portable fallback of 5 raw client pixels on each axis. This is
+product policy, not an OS-detected distance. The native GNOME reference publishes
+`Net/DoubleClickTime=400` but omits distance; its separate GTK query reports an
+effective 5-pixel distance. Published distance values take precedence. Missing
+time, absent settings ownership and malformed, duplicate, wrong-type or
+nonpositive values still fail explicitly. Validate the complete payload before
+resolving absent distance and retain per-field provenance. This policy adds no
+GTK runtime dependency or live settings subscription.
+
 ## Phased delivery
 
 Every phase produces a runnable artifact or an explicit design decision with evidence. Each gate records passed, failed, blocked and intentionally unsupported cases separately. A build, screenshot or stubbed startup alone does not pass a behavior gate.
