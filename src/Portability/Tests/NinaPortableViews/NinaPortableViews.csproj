@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
+    <NinaFixtureDirectory>$(NinaPortableArtifacts)/fixture</NinaFixtureDirectory>
+    <TargetFramework Condition="'$(NinaStockWindowsReference)' == 'true'">net10.0-windows</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Wpf.Portable.Runtime" Version="[10.0.0-portable.1]" Condition="'$(NinaStockWindowsReference)' != 'true'" />
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" Condition="'$(NinaStockWindowsReference)' == 'true'" />
+    <None Include="$(NinaFixtureDirectory)/Closure.json" Link="Closure.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Import Project="$(NinaFixtureDirectory)/References.props" Condition="Exists('$(NinaFixtureDirectory)/References.props')" />
+  <Target Name="RequirePreparedNinaClosure" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(NinaFixtureDirectory)/References.props')" Text="Run eng/portability/Run-NinaPortableViews.ps1 -HostProfile PrepareOnly to verify and prepare the unchanged NINA closure first." />
+  </Target>
+</Project>
