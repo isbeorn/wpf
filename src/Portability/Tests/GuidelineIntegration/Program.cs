@@ -21,6 +21,9 @@ using var reference = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContex
 var thread = new Thread(() =>
 {
     CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+    var visualGuidelines = VisualGuidelineCases.Run(Render);
+    results.AddRange(visualGuidelines);
+    failed |= visualGuidelines.Any(item => !item.passed);
     foreach (var scenario in Cases())
     {
         try

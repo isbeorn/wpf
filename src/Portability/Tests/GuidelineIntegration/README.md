@@ -33,6 +33,12 @@ Covered behavior:
 - Exact same-backend controls for snapped cubic paths, rotated empty frames,
   quadratic elevation, glyph baselines and single-guide conic translation. These controls compare the
   full bitmap, not just the stock samples.
+- Visual guideline collections normalize copies in double precision, matching
+  CompositionNode.SetGuidelineCollection. Complete rasters compare the actual
+  ClassicBorderDecorator capture X=[0,416,1,415,2,416], Y=[0,70,1,69,2,70]
+  with ordered controls, plus frozen fractional-DPI guides and both-axis reflection.
+  Original collections and duplicate guides are preserved. Visual NaN data and
+  DrawingContext GuidelineSet static/dynamic unsorted, NaN and odd-pair data still reject.
 
 Static snapping follows WpfGfx/core/common/guidelinecollection.cpp's
 StoreRangeStatic, StoreRangeDynamic, SnapCoordinate and SnapTransform.
@@ -139,8 +145,8 @@ in the raw results and must be explained by permitted source coordinates.
 
 ## Large sampling run
 
-The ordinary fixture includes 141 checks, including the unchanged 44 guideline
-checks. `--large-sampling` adds 51 cases with 6000x4000 Gray16, RGB48 and Pbgra32
+The ordinary fixture includes 150 checks, including nine visual-boundary checks
+and the unchanged 44 guideline checks. `--large-sampling` adds 51 cases with 6000x4000 Gray16, RGB48 and Pbgra32
 sources and 1184x811 output. Inputs include independent 16-bit low bytes,
 coordinate-coded high bytes and premultiplied alpha zones. Caller arrays are
 cleared and complete CopyPixels results must retain the exact input bytes.

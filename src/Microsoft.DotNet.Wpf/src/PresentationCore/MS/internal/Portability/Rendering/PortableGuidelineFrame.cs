@@ -20,20 +20,34 @@ namespace MS.Internal.Portability.Rendering
         internal float OffsetY(float value) => FindOffset(value, _y, _offsetY);
 
         internal static PortableGuidelineFrame Create(DoubleCollection x, DoubleCollection y, bool dynamic, SKMatrix matrix)
+            => Create(x, y, dynamic, matrix, false);
+
+        internal static PortableGuidelineFrame CreateVisual(DoubleCollection x, DoubleCollection y, SKMatrix matrix)
+            => Create(x, y, false, matrix, true);
+
+        private static PortableGuidelineFrame Create(DoubleCollection x, DoubleCollection y, bool dynamic, SKMatrix matrix, bool sortVisual)
         {
             // CSnappingFrame::PushFrame replaces the parent frame even when this transform cannot snap.
             if (matrix.SkewX != 0 || matrix.SkewY != 0 || matrix.Persp0 != 0 || matrix.Persp1 != 0 || matrix.Persp2 != 1)
                 return Empty;
             if ((x == null || x.Count == 0) && (y == null || y.Count == 0)) return Empty;
-            (float[] coordinatesX, float[] offsetsX) = Build(x, dynamic, matrix.ScaleX, matrix.TransX);
-            (float[] coordinatesY, float[] offsetsY) = Build(y, dynamic, matrix.ScaleY, matrix.TransY);
+            (float[] coordinatesX, float[] offsetsX) = Build(x, dynamic, matrix.ScaleX, matrix.TransX, sortVisual);
+            (float[] coordinatesY, float[] offsetsY) = Build(y, dynamic, matrix.ScaleY, matrix.TransY, sortVisual);
             return new PortableGuidelineFrame(coordinatesX, offsetsX, coordinatesY, offsetsY);
         }
 
-        private static (float[], float[]) Build(DoubleCollection values, bool dynamic, float scale, float translation)
+        private static (float[], float[]) Build(DoubleCollection values, bool dynamic, float scale, float translation, bool sortVisual)
         {
             int count = values == null ? 0 : values.Count;
             if (dynamic && count % 2 != 0) throw new ArgumentException("Dynamic guidelines require leading-coordinate and shift pairs.");
+            double[] sorted = null;
+            if (sortVisual && count > 1)
+            {
+                // CompositionNode.SetGuidelineCollection sorts visual copies before float conversion.
+                sorted = new double[count];
+                values.CopyTo(sorted, 0);
+                Array.Sort(sorted);
+            }
             int step = dynamic ? 2 : 1;
             count /= step;
             var coordinates = new float[count];
@@ -41,7 +55,7 @@ namespace MS.Internal.Portability.Rendering
             float previous = float.NegativeInfinity;
             for (int index = 0; index < count; index++)
             {
-                float leading = (float)values[index * step];
+                float leading = (float)(sorted == null ? values[index * step] : sorted[index * step]);
                 float shift = dynamic ? (float)values[index * step + 1] : 0;
                 float local = leading + shift;
                 if (float.IsNaN(local) || local < previous)

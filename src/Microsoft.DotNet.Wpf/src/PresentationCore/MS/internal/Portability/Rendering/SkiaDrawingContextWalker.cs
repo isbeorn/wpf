@@ -181,8 +181,8 @@ namespace MS.Internal.Portability.Rendering
             while (_guidelineStates.Count > state.Count) _guidelineStates.Pop();
             _guidelines = state.Frame;
         }
-        internal void SetVisualGuidelines(Visual visual) => _guidelines = PortableGuidelineFrame.Create(
-            visual.VisualXSnappingGuidelines, visual.VisualYSnappingGuidelines, false, Canvas.TotalMatrix);
+        internal void SetVisualGuidelines(Visual visual) => _guidelines = PortableGuidelineFrame.CreateVisual(
+            visual.VisualXSnappingGuidelines, visual.VisualYSnappingGuidelines, Canvas.TotalMatrix);
 
         public override void DrawLine(Pen pen, Point point0, AnimationClock point0Animations, Point point1, AnimationClock point1Animations)
         {
