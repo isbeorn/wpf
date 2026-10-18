@@ -84,6 +84,12 @@ var thread = new Thread(() =>
         root.UpdateLayout();
         var caret = FindVisual(root, "CaretElement") ?? throw new InvalidOperationException("The actual TextBox caret did not attach to the AdornerDecorator.");
         if (!ReferenceEquals(PresentationSource.FromVisual(caret), source)) throw new InvalidOperationException("The managed caret did not retain the actual presentation source.");
+        if (args.Contains("--managed-preedit"))
+        {
+            ManagedPreeditChecks.Run(host, source, box, root, args.Single(value => value.StartsWith("--font=", StringComparison.Ordinal))[7..]);
+            Dispatcher.CurrentDispatcher.InvokeShutdown();
+            return;
+        }
         if (args.Contains("--unicode-commits"))
         {
             UnicodeCommitChecks.Run(host,source,box,root,model,args.Single(value => value.StartsWith("--font=",StringComparison.Ordinal))[7..]);
@@ -228,7 +234,7 @@ static Visual? FindVisual(Visual visual, string name)
 
 sealed class TextModel { public string Value { get; set; } = ""; }
 sealed class ItemSelector : System.Windows.Controls.Primitives.Selector { }
-sealed class ControlsHost : IPortablePresentationHost, IPortableInputHost
+class ControlsHost : IPortablePresentationHost, IPortableInputHost
 {
     public PortablePresentationSource? Source { get; set; }
     public Size ClientSize => new(200, 40);

@@ -1478,6 +1478,10 @@ namespace MS.Internal
             if (te == null)
                 return false;
 
+#if PORTABLE_WPF
+            if (te.PortableComposition?.IsComposing == true)
+                return true;
+#endif
             System.Windows.Documents.TextStore ts = te.TextStore;
             if (ts == null)
                 return false;

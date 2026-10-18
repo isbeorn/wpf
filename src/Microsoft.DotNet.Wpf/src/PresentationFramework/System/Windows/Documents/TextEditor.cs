@@ -84,6 +84,13 @@ namespace System.Windows.Documents
 
             // Attach this instance of text editor to its uiScope
             _uiScope.SetValue(TextEditor.InstanceProperty, this);
+#if PORTABLE_WPF
+            if (_uiScope is TextBox)
+            {
+                PortableComposition = new MS.Internal.Portability.Input.PortableTextEditorComposition(this);
+                MS.Internal.Portability.Input.PortableTextCompositionSession.RegisterEditor(_uiScope, PortableComposition);
+            }
+#endif
 
             // The IsSpellerEnabled property might have been set before this
             // TextEditor was instantiated -- check if we need to rev
@@ -147,6 +154,9 @@ namespace System.Windows.Documents
         {
             Invariant.Assert(_textContainer != null);
 
+#if PORTABLE_WPF
+            PortableComposition?.Detach();
+#endif
             // Make sure the speller is shut down.
             SetSpellCheckEnabled(false);
 
@@ -883,6 +893,10 @@ namespace System.Windows.Documents
 
         // TextStore - needed in TextSelection to notify it about movements
         //  Instead TextStore should subscribe for TextSelection Moved event
+#if PORTABLE_WPF
+        internal MS.Internal.Portability.Input.PortableTextEditorComposition PortableComposition { get; }
+#endif
+
         internal TextStore TextStore
         {
             get { return _textstore; }
@@ -1644,6 +1658,10 @@ namespace System.Windows.Documents
 
             // Update the spell check status.
             This.SetSpellCheckEnabled(This.IsSpellCheckEnabled);
+
+#if PORTABLE_WPF
+            if ((bool)e.NewValue) This.PortableComposition?.Cancel();
+#endif
 
             // Finalize any active IME composition when transitioning to true.
             if ((bool)e.NewValue && This._textstore != null)

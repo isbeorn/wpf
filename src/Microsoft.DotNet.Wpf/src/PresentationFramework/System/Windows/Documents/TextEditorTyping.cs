@@ -394,6 +394,13 @@ namespace System.Windows.Documents
             // If this event is our Cicero TextStore composition, we always handles through ITextStore::SetText.
             if (composition != null)
             {
+#if PORTABLE_WPF
+                if (composition.Owner is MS.Internal.Portability.Input.PortableTextEditorComposition portable && ReferenceEquals(portable.Editor, This))
+                {
+                    portable.UpdateCompositionText(composition);
+                }
+                else
+#endif
                 if (composition.Owner == This.TextStore)
                 {
                     This.TextStore.UpdateCompositionText(composition);

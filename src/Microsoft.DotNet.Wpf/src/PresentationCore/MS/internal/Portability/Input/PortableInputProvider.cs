@@ -48,6 +48,11 @@ namespace MS.Internal.Portability.Input
             {
                 if ((keyboard.Actions & RawKeyboardActions.Activate) == 0 && _manager.PortableInputState.KeyboardSource != _source)
                     return false;
+                if ((keyboard.Actions & RawKeyboardActions.Deactivate) != 0)
+                {
+                    PortableTextCompositionSession.Current.CancelSource(_source);
+                    if (_disposed || _source.IsDisposed) return false;
+                }
                 _manager.PortableInputState.Update(keyboard, _host);
             }
             else if (report is RawMouseInputReport mouse)
@@ -92,6 +97,11 @@ namespace MS.Internal.Portability.Input
             return _site.ReportInput(report);
         }
 
+        private bool CanAcceptPreedit { get { _source.VerifyAccess(); return !_disposed && !_disposing && !_source.IsDisposed; } }
+        internal long BeginPreedit(string text, int caret) => CanAcceptPreedit ? PortableTextCompositionSession.Current.Begin(_source, text, caret) : 0;
+        internal bool UpdatePreedit(long generation, string text, int caret) => CanAcceptPreedit && PortableTextCompositionSession.Current.Update(_source, generation, text, caret);
+        internal bool CommitPreedit(long generation, string text) => CanAcceptPreedit && PortableTextCompositionSession.Current.Commit(_source, generation, text);
+        internal bool CancelPreedit(long generation) => CanAcceptPreedit && PortableTextCompositionSession.Current.Cancel(_source, generation);
         public bool AcquireFocus(bool checkOnly)
         {
             VerifyActive();
@@ -253,6 +263,7 @@ namespace MS.Internal.Portability.Input
             {
                 try
                 {
+                    PortableTextCompositionSession.Current.CancelSource(_source);
                     if (_captured) ReleaseMouseCapture();
                 }
                 finally

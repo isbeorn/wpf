@@ -14,6 +14,7 @@
     <Compile Include="$(WpfSourceDir)PresentationFramework/System/Windows/Window.Portable.cs" Condition="Exists('$(WpfSourceDir)PresentationFramework/System/Windows/Window.Portable.cs')" />
     <Compile Include="$(WpfSourceDir)PresentationFramework/Microsoft/Win32/FileDialog.Portable.cs" />
     <Compile Include="$(WpfSourceDir)PresentationFramework/MS/Internal/Portability/Windowing/*.cs" />
+    <Compile Include="$(WpfSourceDir)PresentationFramework/MS/Internal/Portability/Input/*.cs" />
     <EmbeddedResource Include="$(WpfResourceFile)" LogicalName="$(WpfResourceManifestName).resources" />
     <EmbeddedResource Include="$(WpfSourceDir)PresentationFramework/Resources/win32res/split.cur" LogicalName="SplitCursor" />
     <EmbeddedResource Include="$(WpfSourceDir)PresentationFramework/Resources/win32res/splitopen.cur" LogicalName="SplitOpenCursor" />

@@ -12,6 +12,12 @@ namespace MS.Internal.Portability.Input
         internal PortableTextInputReport(PresentationSource source, InputMode mode, int timestamp, string text)
             : base(source, InputType.Text, mode, timestamp)
         {
+            ValidateUtf16(text);
+            Text = text;
+        }
+
+        internal static void ValidateUtf16(string text)
+        {
             ArgumentNullException.ThrowIfNull(text);
             for (int index = 0; index < text.Length; index++)
             {
@@ -20,7 +26,6 @@ namespace MS.Internal.Portability.Input
                     throw new ArgumentException("Native committed text must contain well-formed UTF-16.", nameof(text));
                 index++;
             }
-            Text = text;
         }
 
         internal string Text { get; }
