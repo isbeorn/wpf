@@ -79,6 +79,8 @@ WPF remains the sole owner of WPF operation priorities, thread affinity and fram
 
 Text measurement, line breaking, shaping, fallback, glyph drawing, caret movement and hit testing must share a consistent contract. Evaluate open-source text infrastructure behind WPF's `TextFormatter` behavior, including an alternative to the missing native Line Services implementation. HarfBuzz supplies shaping, not a complete WPF text formatter.
 
+The accepted initial bidi contract follows Unicode 17. The user selected this behavior after a same-font Windows comparison found different legacy WPF bracket ordering in mixed Arabic/Hebrew text. Preserve that difference and measured Display-mode advance differences in the compatibility ledger; do not claim identical native text metrics or legacy ordering.
+
 Image storage retains original data, including Gray16 and Rgb48. Conversion to a display surface must not discard precision in `CopyPixels` or change channel order. A backend must preserve snapshot and ownership semantics when callers release or reuse source memory, plus the existing freeze and dispatcher handoff behavior.
 
 ### Backend selection
