@@ -25,6 +25,15 @@ namespace System.Windows.Media.Imaging
         {
             ArgumentNullException.ThrowIfNull(source);
 
+#if PORTABLE_WPF
+            if (cacheOption != BitmapCacheOption.OnLoad || (createOptions & ~BitmapCreateOptions.PreservePixelFormat) != 0)
+                throw new NotSupportedException("Portable CachedBitmap copies currently require OnLoad and no conversion options.");
+            var portable = new PortableBitmapBuffer(source.PixelWidth, source.PixelHeight, source.Format, mutable: false);
+            source.CopyPixels(new Int32Rect(0, 0, portable.Width, portable.Height), portable.BackBuffer, checked((int)portable.Size), portable.Stride);
+            InitializePortable(portable, source.DpiX, source.DpiY);
+            _createOptions = createOptions;
+            _cacheOption = cacheOption;
+#else
             BeginInit();
             _source = source;
             RegisterDownloadEventSource(_source);
@@ -33,6 +42,7 @@ namespace System.Windows.Media.Imaging
             _syncObject = source.SyncObject;
 
             EndInit();
+#endif
         }
 
         /// <summary>
@@ -141,6 +151,14 @@ namespace System.Windows.Media.Imaging
         /// </summary>
         private void CopyCommon(CachedBitmap sourceBitmap)
         {
+#if PORTABLE_WPF
+            if (PortableBuffer != null)
+            {
+                _createOptions = sourceBitmap._createOptions;
+                _cacheOption = sourceBitmap._cacheOption;
+                return;
+            }
+#endif
             // Avoid Animatable requesting resource updates for invalidations that occur during construction
             Animatable_IsResourceInvalidationNecessary = false;
 
@@ -340,6 +358,19 @@ namespace System.Windows.Media.Imaging
                     int stride
                     )
         {
+#if PORTABLE_WPF
+            if (buffer == IntPtr.Zero)
+                throw new ArgumentNullException(nameof(buffer));
+            if (bufferSize < 0)
+                throw new ArgumentOutOfRangeException(nameof(bufferSize));
+            if (palette != null)
+                throw new NotSupportedException("Portable in-memory bitmap palettes are not implemented.");
+            var portable = new PortableBitmapBuffer(pixelWidth, pixelHeight, pixelFormat, mutable: false);
+            portable.Write(new Int32Rect(0, 0, pixelWidth, pixelHeight), buffer, (uint)bufferSize, stride, 0, 0);
+            InitializePortable(portable, dpiX, dpiY);
+            _createOptions = BitmapCreateOptions.PreservePixelFormat;
+            _cacheOption = BitmapCacheOption.OnLoad;
+#else
             if (pixelFormat.Palettized && palette == null)
                 throw new InvalidOperationException(SR.Image_IndexedPixelFormatRequiresPalette);
 
@@ -401,6 +432,7 @@ namespace System.Windows.Media.Imaging
             _bitmapInit.EndInit();
 
             UpdateCachedSettings();
+#endif
         }
 
         private BitmapSource        _source;

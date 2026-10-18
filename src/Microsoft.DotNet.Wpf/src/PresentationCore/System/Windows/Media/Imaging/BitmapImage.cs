@@ -284,6 +284,9 @@ namespace System.Windows.Media.Imaging
         ///
         internal override void FinalizeCreation()
         {
+#if PORTABLE_WPF
+            throw new NotSupportedException("Portable BitmapImage codecs and URI/stream decoding are not implemented.");
+#else
             _bitmapInit.EnsureInitializedComplete();
             Uri uri = UriSource;
             if (_baseUri != null)
@@ -635,6 +638,7 @@ namespace System.Windows.Media.Imaging
             {
                 InsertInCache(uri);
             }
+#endif
         }
 
         private void UriCachePolicyPropertyChangedHook(DependencyPropertyChangedEventArgs e)
@@ -932,9 +936,11 @@ namespace System.Windows.Media.Imaging
         private BitmapCacheOption _cacheOption;
 
         // used to ensure the source isn't GC'd
+#if !PORTABLE_WPF
         private BitmapSource _finalSource;
 
         private BitmapImage _cachedBitmapImage;
+#endif
 
         // Captured in EndInit so deferred FinalizeCreation can enforce
         // XPS package boundary even after the ambient context has ended.

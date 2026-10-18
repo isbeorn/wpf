@@ -313,6 +313,10 @@ namespace System.Windows.Media.Imaging
         /// <param name="stream">Stream to save into</param>
         public virtual void Save(System.IO.Stream stream)
         {
+#if PORTABLE_WPF
+            VerifyAccess();
+            throw new NotSupportedException("Portable bitmap encoding is not implemented.");
+#else
             VerifyAccess();
             EnsureBuiltIn();
             EnsureUnmanagedEncoder();
@@ -453,6 +457,7 @@ namespace System.Windows.Media.Imaging
             }
 
             _hasSaved = true;
+#endif
         }
 
         #endregion
@@ -825,7 +830,9 @@ namespace System.Windows.Media.Imaging
         private IList<BitmapFrame> _frames;
 
         /// true if Save has been called.
+#if !PORTABLE_WPF
         private bool _hasSaved;
+#endif
 
         /// The below data members have been added for stress or remote dump debugging purposes
         /// By the time we get an exception in managed code, we loose all context of what was
@@ -851,7 +858,13 @@ namespace System.Windows.Media.Imaging
             EncoderCommitted = 13,
             FrameEncodeColorContextsSet = 14,
         };
+#if PORTABLE_WPF
+#pragma warning disable CS0414 // Native frame methods remain compiled, while portable Save rejects codecs.
+#endif
         private EncodeState _encodeState;
+#if PORTABLE_WPF
+#pragma warning restore CS0414
+#endif
 
         #endregion
     }

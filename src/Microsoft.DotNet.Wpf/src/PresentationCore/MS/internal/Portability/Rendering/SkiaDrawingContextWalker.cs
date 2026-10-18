@@ -140,8 +140,20 @@ namespace MS.Internal.Portability.Rendering
             RejectAnimation(opacityAnimations);
             PushOpacity(opacity);
         }
-        public override void DrawImage(ImageSource imageSource, Rect rectangle) => throw Unsupported("images");
-        public override void DrawImage(ImageSource imageSource, Rect rectangle, AnimationClock rectangleAnimations) => throw Unsupported("images");
+        public override void DrawImage(ImageSource imageSource, Rect rectangle)
+        {
+            if (imageSource == null || rectangle.IsEmpty) return;
+            if (!(imageSource is System.Windows.Media.Imaging.BitmapSource bitmap) || bitmap.PortableBuffer == null)
+                throw Unsupported("image sources without portable bitmap storage");
+            using (SKBitmap pixels = bitmap.PortableBuffer.CreateDisplayBitmap())
+                Canvas.DrawBitmap(pixels, ToRect(rectangle));
+            GC.KeepAlive(imageSource);
+        }
+        public override void DrawImage(ImageSource imageSource, Rect rectangle, AnimationClock rectangleAnimations)
+        {
+            RejectAnimation(rectangleAnimations);
+            DrawImage(imageSource, rectangle);
+        }
         public override void DrawVideo(MediaPlayer player, Rect rectangle) => throw Unsupported("video");
         public override void DrawVideo(MediaPlayer player, Rect rectangle, AnimationClock rectangleAnimations) => throw Unsupported("video");
         public override void PushOpacityMask(Brush opacityMask) => throw Unsupported("an opacity mask");

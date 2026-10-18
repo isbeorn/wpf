@@ -225,6 +225,9 @@ namespace System.Windows.Media.Imaging
             bool insertInDecoderCache
             )
         {
+#if PORTABLE_WPF
+            throw new NotSupportedException("Portable bitmap codecs and URI/stream decoding are not implemented.");
+#else
             Guid clsId = Guid.Empty;
             bool isOriginalWritable = false;
             SafeMILHandle decoderHandle = null;
@@ -437,6 +440,7 @@ namespace System.Windows.Media.Imaging
             }
 
             return decoder;
+#endif
         }
 
         /// <summary>
@@ -1007,6 +1011,9 @@ namespace System.Windows.Media.Imaging
             out SafeFileHandle safeFilehandle
             )
         {
+#if PORTABLE_WPF
+            throw new NotSupportedException("Portable bitmap codecs and URI/stream decoding are not implemented.");
+#else
             SafeMILHandle decoderHandle;
             IntPtr decoder = IntPtr.Zero;
             System.IO.Stream bitmapStream = null;
@@ -1190,6 +1197,7 @@ namespace System.Windows.Media.Imaging
             clsId = GetCLSIDFromDecoder(decoderHandle, out decoderMimeTypes);
 
             return decoderHandle;
+#endif
         }
 
         private static Stream ProcessHttpsFiles(Uri uri, Stream stream)

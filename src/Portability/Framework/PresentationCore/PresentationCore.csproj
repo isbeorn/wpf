@@ -14,6 +14,7 @@
     </AssemblyAttribute>
     <Compile Include="$(WpfSourceDir)PresentationCore/MS/internal/TextFormatting/Portable/*.cs" />
     <Compile Include="$(WpfSourceDir)PresentationCore/MS/internal/Portability/Rendering/*.cs" />
+    <Compile Include="$(WpfSourceDir)PresentationCore/System/Windows/Media/Imaging/Portable/*.cs" />
     <EmbeddedResource Include="$(WpfResourceFile)" LogicalName="$(WpfResourceManifestName).resources" />
     <EmbeddedResource Include="$(WpfSourceDir)PresentationCore/System/Windows/Media/Resources/ColorProfiles/ColorProfiles.resx" LogicalName="ColorProfiles.resources" />
     <ProjectReference Include="../WindowsBase/WindowsBase.csproj" />
