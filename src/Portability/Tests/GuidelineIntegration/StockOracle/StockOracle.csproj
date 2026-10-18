@@ -11,6 +11,7 @@
     <Compile Include="../BitmapSamplingMath.cs" Link="BitmapSamplingMath.cs" />
     <Compile Include="../BitmapSamplingCorpus.cs" Link="BitmapSamplingCorpus.cs" />
     <Compile Include="../VisualGuidelineCases.cs" Link="VisualGuidelineCases.cs" />
+    <Compile Include="../UniformGuidelineCases.cs" Link="UniformGuidelineCases.cs" />
     <Content Include="../../../Dependencies/TextUnicode/Original/tests/Avalonia.Skia.UnitTests/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

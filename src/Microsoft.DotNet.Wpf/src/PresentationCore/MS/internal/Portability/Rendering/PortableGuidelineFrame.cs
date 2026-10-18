@@ -13,11 +13,22 @@ namespace MS.Internal.Portability.Rendering
         internal static readonly PortableGuidelineFrame Empty = new PortableGuidelineFrame([], [], [], []);
         private readonly float[] _x, _offsetX, _y, _offsetY;
         private PortableGuidelineFrame(float[] x, float[] offsetX, float[] y, float[] offsetY)
-        { _x = x; _offsetX = offsetX; _y = y; _offsetY = offsetY; }
+        {
+            _x = x; _offsetX = offsetX; _y = y; _offsetY = offsetY;
+            IsSimple = HasUniformOffset(offsetX) && HasUniformOffset(offsetY);
+        }
         internal bool IsEmpty => _x.Length == 0 && _y.Length == 0;
-        internal bool IsSimple => _x.Length <= 1 && _y.Length <= 1;
+        internal bool IsSimple { get; }
         internal float OffsetX(float value) => FindOffset(value, _x, _offsetX);
         internal float OffsetY(float value) => FindOffset(value, _y, _offsetY);
+
+        private static bool HasUniformOffset(float[] offsets)
+        {
+            // Equal offsets make point snapping the existing device translation.
+            for (int index = 1; index < offsets.Length; index++)
+                if (offsets[index] != offsets[0]) return false;
+            return true;
+        }
 
         internal static PortableGuidelineFrame Create(DoubleCollection x, DoubleCollection y, bool dynamic, SKMatrix matrix)
             => Create(x, y, dynamic, matrix, false);

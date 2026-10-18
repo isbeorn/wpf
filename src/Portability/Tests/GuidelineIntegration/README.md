@@ -39,6 +39,13 @@ Covered behavior:
   with ordered controls, plus frozen fractional-DPI guides and both-axis reflection.
   Original collections and duplicate guides are preserved. Visual NaN data and
   DrawingContext GuidelineSet static/dynamic unsorted, NaN and odd-pair data still reject.
+- Uniform per-axis offsets use the existing device-translation path even with
+  multiple guides. Actual NINA rounded Border guides X/Y=[0,35], origin=(2.5,2.5),
+  size=35x35 and radius=1 match single-guide and explicit-translation full rasters
+  exactly for transparent and visible fills. Paired negative origins/offsets,
+  empty/duplicate axes, reflection, representative DPI, widened stroke and ellipse
+  cases cover the same constant-offset contract. Exact equality checks every offset;
+  a differing interior guide or near-equal offset must not enter the translation path.
 
 Static snapping follows WpfGfx/core/common/guidelinecollection.cpp's
 StoreRangeStatic, StoreRangeDynamic, SnapCoordinate and SnapTransform.
@@ -52,9 +59,14 @@ coordinate only. drawingcontext.cpp distinguishes a null drawing guideline set
 BoundsDrawingContextWalker deliberately leaves logical bounds unchanged.
 
 Qualification limits: dynamic animation detection/landing history is not ported.
-Multiple guidelines over rational conic paths raise a specific diagnostic because
-Skia's conics and native WPF's cubic shape controls differ. Single-guide conic
-translation is covered. Arbitrary curve pixel parity is not claimed. Stock and
+Nonuniform offsets over rational conic paths raise a specific diagnostic because
+Skia's conics and native WPF's cubic shape controls differ. Uniform-offset conic
+translation is covered, including multiple guides. The captured visible radius-1
+case differs from stock by at most 44 in eight corner-coverage channels; its portable
+multi-guide, single-guide and explicit-translation controls match exactly. This
+observation adds no new tolerance or general curve bound. The actual 35-unit span
+at 1.5x DPI remains explicitly unsupported because its offsets differ. Arbitrary
+curve pixel parity is not claimed. Stock and
 Skia antialiasing differ on curves/rotation, so those stock samples allow 64/255
 coverage variation while the explicit same-backend controls must match exactly.
 Bitmap interpolation differs in fixed-point precision; the stock color-gradient
@@ -145,8 +157,8 @@ in the raw results and must be explained by permitted source coordinates.
 
 ## Large sampling run
 
-The ordinary fixture includes 150 checks, including nine visual-boundary checks
-and the unchanged 44 guideline checks. `--large-sampling` adds 51 cases with 6000x4000 Gray16, RGB48 and Pbgra32
+The ordinary fixture includes 166 checks, including sixteen uniform-offset checks,
+nine visual-boundary checks and the unchanged 44 guideline checks. `--large-sampling` adds 51 cases with 6000x4000 Gray16, RGB48 and Pbgra32
 sources and 1184x811 output. Inputs include independent 16-bit low bytes,
 coordinate-coded high bytes and premultiplied alpha zones. Caller arrays are
 cleared and complete CopyPixels results must retain the exact input bytes.

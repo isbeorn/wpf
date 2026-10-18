@@ -24,6 +24,9 @@ var thread = new Thread(() =>
     var visualGuidelines = VisualGuidelineCases.Run(Render);
     results.AddRange(visualGuidelines);
     failed |= visualGuidelines.Any(item => !item.passed);
+    var uniformGuidelines = UniformGuidelineCases.Run(Render);
+    results.AddRange(uniformGuidelines);
+    failed |= uniformGuidelines.Any(item => !item.passed);
     foreach (var scenario in Cases())
     {
         try
