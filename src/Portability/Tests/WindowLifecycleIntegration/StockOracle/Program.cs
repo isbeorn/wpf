@@ -8,8 +8,10 @@ using System.Windows.Threading;
 internal static class Program
 {
     [STAThread]
-    private static int Main()
+    private static int Main(string[] args)
     {
+        if (args.Length == 2 && args[0] == "--application-run")
+            return ApplicationRunCases.RunChild(args[1]);
         var checks = new List<object>();
         bool failed = false;
         foreach (WindowState state in new[] { WindowState.Maximized, WindowState.Minimized })
@@ -140,8 +142,13 @@ internal static class Program
             checks.Add(new { name = "bare-window-content-notification", status = "fail", detail = exception.ToString() });
         }
         finally { contentProbe.Close(); }
+        foreach (ApplicationRunResult result in ApplicationRunCases.RunAll())
+        {
+            checks.Add(result);
+            failed |= result.status == "fail";
+        }
         Console.WriteLine(JsonSerializer.Serialize(new { probe = "stock-window-restore-oracle", os = RuntimeInformation.OSDescription,
-            scope = "Microsoft WindowsDesktop WPF native state and restore bounds", assembly = typeof(Window).Assembly.Location, checks }, new JsonSerializerOptions { WriteIndented = true }));
+            scope = "Microsoft WindowsDesktop WPF native state, restore bounds and process-isolated public Application.Run", assembly = typeof(Window).Assembly.Location, checks }, new JsonSerializerOptions { WriteIndented = true }));
         return failed ? 1 : 0;
     }
     private static bool Near(double left, double right) => Math.Abs(left - right) < 2;

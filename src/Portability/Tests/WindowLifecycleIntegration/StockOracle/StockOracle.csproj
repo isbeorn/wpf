@@ -5,4 +5,7 @@
     <OutputType>Exe</OutputType>
     <AssemblyName>Wpf.Stock.WindowRestoreOracle</AssemblyName>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../ApplicationRunCases.cs" Link="ApplicationRunCases.cs" />
+  </ItemGroup>
 </Project>

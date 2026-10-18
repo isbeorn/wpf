@@ -17,6 +17,7 @@ Behavior checklist:
 - Real whole-Window measure/arrange, client content layout, Loaded once, ContentRendered, red raster pixels, hidden/host resize and DPI changes with stable logical layout.
 - Dynamic resource replacement, explicit style precedence and local template replacement.
 - Application.Windows/MainWindow/OwnedWindows collection cleanup, including child Closing/Closed exceptions and sibling cleanup.
+- Public `Application.Run()` and `Run(window)` in separate processes, with Startup/Exit ordering, Startup arguments, MainWindow, queued Show, return/Exit override codes, all three shutdown policies, canceled last/main closes, forced shutdown, affinity validation and singleton/repeated-Run rejection.
 - RestoreBounds tracks normal geometry independently from displayed min/max geometry, including partial-axis edits, both callback orders, both state transitions, raw restore requests outside constraints and clamping when Normal geometry is confirmed.
 - Bounds edits from a Normal StateChanged handler wait for coherent Normal metrics, including externally observed state changes.
 - Width/Height retain the stock distinction between application-requested min/max transitions and externally observed transitions, which restore the dimension properties from RestoreBounds.
@@ -30,6 +31,10 @@ Behavior checklist:
 - Every newly pending size or position intent issues one peer request even when the first Normal snapshot already matches. A transient match before a late window-manager restore is not an acknowledgement of an unsent request. Tests cover both axis pairs, max/min, callback orders and clamped sizes without retrying unchanged layout.
 
 Native boundaries remain explicit. The initial profile does not support HWND interop, WindowStyle changes, ResizeMode changes (including CanResizeWithGrip), transparency, taskbar customization, icons, topmost, startup centering, FlowDirection changes or Fluent ThemeMode. These features throw named PlatformNotSupportedException errors rather than falling through to SourceWindowHelper. Native peer integration and raw input are separate fixtures. The managed fixture explicitly registers the portable light palette and test-only pointer preferences of 4 by 4 raw client pixels and 500 milliseconds before WPF reads settings. Those values are not native preference evidence.
+
+Portable Application.Run uses the existing WPF Startup, dispatcher, shutdown and Exit machinery without creating the Win32 parking HWND. Application-wide OS Activated/Deactivated and SessionEnding delivery, plus Windows CommonDialog ownership through that parking HWND, remain unqualified. This does not synthesize an application activation/session bridge or an HWND. Ordinary upstream Windows builds retain the original parking-window path. Window activation is tested separately through the peer contract.
+
+`ApplicationRunCases.cs` is shared unchanged with the stock oracle. Each scenario starts a fresh process because WPF permits only one Application lifetime per AppDomain. It invokes the public Run overloads, not a replacement Dispatcher.Run or Exit adapter. Normal exit clears Application.Current and MainWindow before dispatcher shutdown completes. The exceptional Exit-handler case preserves the stock behavior: the original exception escapes Run after ownership cleanup and ShutdownStarted, while ShutdownFinished has not occurred on that exceptional unwind.
 
 ## Run on Windows
 
@@ -50,6 +55,10 @@ On Linux use the same build properties with absolute Linux paths and a separate 
 `WindowTestAccess.targets` is a fixture-owned standard MSBuild extension hook. It grants the signed fixture internal access only in the explicitly isolated Core/PF variant selected above. Normal product wrappers do not emit this fixture friend. Do not point this hook at the canonical framework output directory.
 
 JSON output contains probe, os, scope and named checks. Any failed check returns a nonzero exit code. The original Linux constructor failure is recorded under artifacts/portability/window-lifecycle-linux/construction-before.json. Modal cleanup and missing content template failures before their repair are recorded under artifacts/portability/window-lifecycle/windows-before-cleanup.json.
+
+The public Run pre-fix reproduction is retained under `artifacts/portability/application-run-investigation/red-linux-results.json`: the existing 59 cases passed and all seven new Run cases failed at EnsureHwndSource/HwndWrapper/RegisterWindowMessage before Startup. The same public cases are calibrated against installed Microsoft WindowsDesktop WPF. Isolated before/after build logs, result JSON, warning baselines and source/binary hashes remain beside that evidence. These managed contract cases do not qualify the scientific workload's bitmap storage, timing or native display path; that original package workload must be rerun after a fresh producer includes the repair.
+
+Final SDK 10.0.401 verification on 2026-10-18 passed all 66 portable cases on Windows and Linux and all 26 stock oracle cases, including the seven shared Application cases. Full portable builds returned zero errors and the same nine warnings found in the pre-guard full source build; `warning-baseline.json` records their IDs and locations. Final fixture-only builds returned zero warnings and zero errors.
 
 ## Restore-bounds evidence limits
 

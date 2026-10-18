@@ -8,6 +8,14 @@ using System.Windows.Threading;
 using MS.Internal.Portability.Windowing;
 using MS.Internal.Portability.Settings;
 
+if (args.Length == 2 && args[0] == "--application-run")
+    return ApplicationRunCases.RunChild(args[1], () =>
+    {
+        PortableSystemSettingsProvider.Register(PortableSystemSettings.CreateInitialLightProfile(
+            pointerSettings: new PortablePointerSettings(4, 4, 500)));
+        PortableWindowPlatform.RegisterFactory(new ManagedFactory());
+    });
+
 var checks = new List<Check>();
 var thread = new Thread(() =>
 {
@@ -944,8 +952,10 @@ var thread = new Thread(() =>
 if (OperatingSystem.IsWindows()) thread.SetApartmentState(ApartmentState.STA);
 thread.Start();
 if (!thread.Join(TimeSpan.FromSeconds(30))) checks.Add(new("watchdog", "fail", "Window lifecycle exceeded 30 seconds."));
+foreach (ApplicationRunResult result in ApplicationRunCases.RunAll())
+    checks.Add(new(result.name, result.status, result.detail));
 Console.WriteLine(JsonSerializer.Serialize(new { probe = "window-lifecycle-integration", os = RuntimeInformation.OSDescription,
-    scope = "real source-built Window/PresentationSource with managed contract peer; no native host or raw input proof", checks }, new JsonSerializerOptions { WriteIndented = true }));
+    scope = "real source-built Window/PresentationSource with managed contract peer and process-isolated public Application.Run; no native host or raw input proof", checks }, new JsonSerializerOptions { WriteIndented = true }));
 return checks.Any(check => check.status == "fail") ? 1 : 0;
 
 static void Drain()
