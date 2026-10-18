@@ -1,0 +1,36 @@
+<Project>
+  <UsingTask TaskName="GeneratePortableResourceAccessors" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <ResourceFile ParameterType="System.String" Required="true" />
+      <ResourceNamespace ParameterType="System.String" Required="true" />
+      <ManifestName ParameterType="System.String" Required="true" />
+      <OutputFile ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Xml.Linq" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        var source = new StringBuilder("#nullable disable\nnamespace " + ResourceNamespace + " { internal partial class SR {\n");
+        source.Append("private static readonly global::System.Resources.ResourceManager s_resourceManager = new global::System.Resources.ResourceManager(\"").Append(ManifestName).Append("\", typeof(SR).Assembly);\n");
+        source.Append("internal static global::System.Resources.ResourceManager ResourceManager => s_resourceManager;\n");
+        foreach (var entry in XDocument.Load(ResourceFile).Root.Elements("data"))
+        {
+            var name = entry.Attribute("name").Value;
+            if (!System.Text.RegularExpressions.Regex.IsMatch(name, "^[A-Za-z_][A-Za-z0-9_]*$"))
+                throw new InvalidDataException("Unsupported resource identifier: " + name);
+            source.Append("internal static string @").Append(name).Append(" => GetResourceString(\"").Append(name).Append("\");\n");
+        }
+        source.Append("} }\n");
+        Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
+        var content = source.ToString();
+        if (!File.Exists(OutputFile) || File.ReadAllText(OutputFile) != content)
+            File.WriteAllText(OutputFile, content, new UTF8Encoding(false));
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="GeneratePortableResources" BeforeTargets="CoreCompile" Condition="'$(WpfResourceFile)' != ''">
+    <GeneratePortableResourceAccessors ResourceFile="$(WpfResourceFile)" ResourceNamespace="$(WpfResourceNamespace)" ManifestName="$(WpfResourceManifestName)" OutputFile="$(IntermediateOutputPath)SR.g.cs" />
+    <ItemGroup><Compile Include="$(IntermediateOutputPath)SR.g.cs" /></ItemGroup>
+  </Target>
+</Project>

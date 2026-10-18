@@ -204,6 +204,12 @@ namespace MS.Internal
 
         internal static bool IsWpfTracingEnabledInRegistry()
         {
+#if PORTABLE_WPF
+            if (!OperatingSystem.IsWindows())
+            {
+                return false;
+            }
+#endif
             // First time this is called, initialize from the registry
 
             if( _enabledInRegistry == null )
@@ -236,7 +242,11 @@ namespace MS.Internal
 
         internal static bool IsDebuggerAttached()
         {
+#if PORTABLE_WPF
+            return Debugger.IsAttached || (OperatingSystem.IsWindows() && SafeNativeMethods.IsDebuggerPresent());
+#else
             return Debugger.IsAttached || SafeNativeMethods.IsDebuggerPresent();
+#endif
         }
 
 

@@ -49,7 +49,7 @@ This choice keeps NINA's .NET 10 target and genuine version-10 Windows contract 
 
 Portable projects import the original source lists and resource messages. Public signing uses the original WPF public keys so existing friend contracts and tested type identities work. It does not authenticate these binaries as Microsoft builds. Distinct portable package IDs and a redistributable package remain later distribution work.
 
-The current source-built WindowsBase, System.Xaml and System.Windows.Primitives run app-local on Windows and Linux without a WindowsDesktop shared-framework requirement. A separate companion assembly exercises dependency properties, Freezable and XAML construction in the normal Default load context. Eight integration checks pass on each OS. The real dispatcher additionally passes 13 checks on each OS through its new internal pump boundary.
+The current source-built WindowsBase, System.Xaml and System.Windows.Primitives run app-local on Windows and Linux without a WindowsDesktop shared-framework requirement. A separate companion assembly exercises dependency properties, Freezable and XAML construction in the normal Default load context. Eight integration checks pass on each OS. The real dispatcher additionally passes 14 checks on Windows and 13 on Linux through its new internal pump boundary. Its Windows STA wait case is explicitly not applicable on Linux.
 
 Genuine WindowsDesktop private helper and DirectWriteForwarder metadata are interim compile dependencies for still-unported native paths. Their availability does not establish that those paths run on Linux. Linux packaging must exclude Windows native implementations and runtime tests must demonstrate that supported portable paths do not load them.
 
@@ -63,6 +63,6 @@ Raw results remain in ignored `artifacts/portability`:
 - `current-source-windows-build-locale-c.log`: successful source build and pack
 - `upstream-threading-tests.log`: 208 upstream Windows threading tests
 - `framework-identity-{windows,linux}.json`: eight actual foundation checks per OS
-- `dispatcher-integration/windows-results.json` and `dispatcher-integration-linux/linux-results.json`: 13 real dispatcher checks per OS
+- `dispatcher-integration/windows-results.json` and `dispatcher-integration-linux/linux-results.json`: 14 Windows passes and 13 Linux passes plus the explicitly inapplicable STA case
 
 See the [feasibility results](feasibility-results.md) for the complete gate status and the per-fixture READMEs for reproduction commands.

@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>WindowsBase</AssemblyName>
+    <DefineConstants>$(DefineConstants);BASE_NATIVEMETHODS;WINDOWS_BASE;PORTABLE_WPF</DefineConstants>
+    <WpfSourceProject>$(WpfSourceDir)WindowsBase/WindowsBase.csproj</WpfSourceProject>
+    <WpfResourceFile>$(WpfSourceDir)WindowsBase/Resources/Strings.resx</WpfResourceFile>
+    <WpfResourceNamespace>MS.Internal.WindowsBase</WpfResourceNamespace>
+    <WpfResourceManifestName>FxResources.WindowsBase.SR</WpfResourceManifestName>
+    <PerlCommand Condition="'$(PerlCommand)' == '' and '$(OS)' == 'Windows_NT'">C:/Program Files/Git/usr/bin/perl.exe</PerlCommand>
+    <PerlCommand Condition="'$(PerlCommand)' == ''">perl</PerlCommand>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="PortableFriendAssemblies.cs" />
+    <Compile Include="$(WpfSourceDir)WindowsBase/MS/Internal/Portability/*.cs" />
+    <EmbeddedResource Include="$(WpfResourceFile)" LogicalName="$(WpfResourceManifestName).resources" />
+    <ProjectReference Include="../System.Xaml/System.Xaml.csproj" />
+    <ProjectReference Include="../System.Windows.Primitives/System.Windows.Primitives.csproj" />
+    <PackageReference Include="System.Diagnostics.EventLog" Version="10.0.13" />
+    <PackageReference Include="System.Windows.Extensions" Version="10.0.13" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="10.0.13" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.13" />
+    <PackageReference Include="System.IO.Packaging" Version="10.0.13" />
+    <PackageReference Include="System.Security.Permissions" Version="10.0.13" />
+  </ItemGroup>
+  <Import Project="../Build/SourceManifest.targets" />
+  <Import Project="../Build/WindowsNativeContracts.props" />
+  <Import Project="../Build/SourceResources.targets" />
+  <Import Project="../Build/PublicSigning.targets" />
+  <Target Name="GeneratePackageXmlStringTable"
+          Inputs="$(MSBuildProjectFullPath);$(RepoRoot)eng/WpfArcadeSdk/tools/GenXmlStringTable.pl;$(WpfSourceDir)WindowsBase/MS/Internal/IO/Packaging/PackageXmlNamespaces.txt;$(WpfSourceDir)WindowsBase/MS/Internal/IO/Packaging/PackageXmlStrings.txt"
+          Outputs="$(IntermediateOutputPath)PackageXmlStringTable.g.cs">
+    <Exec Command="&quot;$(PerlCommand)&quot; &quot;$(RepoRoot)eng/WpfArcadeSdk/tools/GenXmlStringTable.pl&quot; -o &quot;$(IntermediateOutputPath)PackageXmlStringTable.g.cs&quot; -n &quot;$(WpfSourceDir)WindowsBase/MS/Internal/IO/Packaging/PackageXmlNamespaces.txt&quot; -x &quot;$(WpfSourceDir)WindowsBase/MS/Internal/IO/Packaging/PackageXmlStrings.txt&quot; -e MS.Internal.IO.Packaging.PackageXmlEnum -c MS.Internal.IO.Packaging.PackageXmlStringTable" />
+  </Target>
+  <Target Name="IncludePackageXmlStringTable" BeforeTargets="CoreCompile" DependsOnTargets="GeneratePackageXmlStringTable">
+    <ItemGroup><Compile Include="$(IntermediateOutputPath)PackageXmlStringTable.g.cs" /></ItemGroup>
+  </Target>
+</Project>

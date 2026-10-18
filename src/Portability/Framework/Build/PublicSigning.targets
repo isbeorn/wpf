@@ -1,0 +1,38 @@
+<Project>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign>true</PublicSign>
+    <WpfSigningKey Condition="'$(WpfSigningKey)' == ''">MicrosoftShared</WpfSigningKey>
+    <AssemblyOriginatorKeyFile>$(BaseIntermediateOutputPath)$(WpfSigningKey).public.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <UsingTask TaskName="ExtractWpfPublicKey" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <SourceFile ParameterType="System.String" Required="true" />
+      <OutputFile ParameterType="System.String" Required="true" />
+      <GeneratedKeysFile ParameterType="System.String" Required="true" />
+      <KeyKind ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.IO" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        var match = System.Text.RegularExpressions.Regex.Match(File.ReadAllText(SourceFile), "WCP_PUBLIC_KEY_STRING = \"([0-9a-f]+)\"");
+        if (!match.Success) throw new InvalidDataException("Original MicrosoftShared public key not found.");
+        var key = match.Groups[1].Value;
+        if (KeyKind != "MicrosoftShared" && KeyKind != "Ecma") throw new InvalidDataException("Unknown WPF signing key: " + KeyKind);
+        var signingKey = KeyKind == "Ecma" ? "00000000000000000400000000000000" : key;
+        var bytes = new byte[signingKey.Length / 2];
+        for (var i = 0; i < bytes.Length; i++) bytes[i] = System.Convert.ToByte(signingKey.Substring(i * 2, 2), 16);
+        Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
+        if (!File.Exists(OutputFile) || !System.Linq.Enumerable.SequenceEqual(File.ReadAllBytes(OutputFile), bytes))
+            File.WriteAllBytes(OutputFile, bytes);
+        var source = "internal static class PublicKeys { internal const string MicrosoftShared = \"" + key + "\"; internal const string Ecma = \"00000000000000000400000000000000\"; }\n";
+        if (!File.Exists(GeneratedKeysFile) || File.ReadAllText(GeneratedKeysFile) != source)
+            File.WriteAllText(GeneratedKeysFile, source);
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="PrepareWpfPublicSigningKey" BeforeTargets="CoreCompile">
+    <ExtractWpfPublicKey SourceFile="$(WpfSharedDir)RefAssemblyAttrs.cs" OutputFile="$(AssemblyOriginatorKeyFile)" GeneratedKeysFile="$(IntermediateOutputPath)PublicKeys.g.cs" KeyKind="$(WpfSigningKey)" />
+    <ItemGroup><Compile Include="$(IntermediateOutputPath)PublicKeys.g.cs" /></ItemGroup>
+  </Target>
+</Project>

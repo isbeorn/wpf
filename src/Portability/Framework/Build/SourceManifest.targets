@@ -1,0 +1,75 @@
+<Project>
+  <UsingTask TaskName="ReadPortableSourceManifest" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <SourceProject ParameterType="System.String" Required="true" />
+      <SourceRoot ParameterType="System.String" Required="true" />
+      <Sources ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
+      <RemovedSources ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Xml.Linq" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Linq" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        var directory = Path.GetDirectoryName(SourceProject);
+        var sources = new System.Collections.Generic.List<Microsoft.Build.Framework.ITaskItem>();
+        var removed = new System.Collections.Generic.List<Microsoft.Build.Framework.ITaskItem>();
+        System.Func<string, string> canonicalize = path =>
+        {
+            if (File.Exists(path) || Directory.Exists(path)) return path;
+            var current = Path.GetPathRoot(path);
+            foreach (var part in path.Substring(current.Length).Split(Path.DirectorySeparatorChar))
+            {
+                var matches = Directory.EnumerateFileSystemEntries(current)
+                    .Where(entry => string.Equals(Path.GetFileName(entry), part, System.StringComparison.OrdinalIgnoreCase)).ToArray();
+                if (matches.Length != 1) throw new FileNotFoundException("Original source path has no unique case-insensitive match", path);
+                current = matches[0];
+            }
+            return current;
+        };
+        foreach (var item in XDocument.Load(SourceProject).Descendants("Compile"))
+        {
+            var condition = item.Parent.Attribute("Condition");
+            if (condition != null)
+            {
+                if (condition.Value == "'" + "$" + "(WCP_REACH_API)' != ''") continue;
+                throw new InvalidDataException("Unsupported original compile condition: " + condition.Value);
+            }
+            var remove = item.Attribute("Remove");
+            var include = item.Attribute("Include") ?? remove;
+            if (include == null) continue;
+            var path = include.Value.Trim().Replace("$" + "(WpfSharedDir)", Path.Combine(SourceRoot, "Shared") + Path.DirectorySeparatorChar)
+                .Replace("$" + "(WpfCommonDir)", Path.Combine(SourceRoot, "Common") + Path.DirectorySeparatorChar)
+                .Replace("$" + "(WpfSourceDir)", SourceRoot)
+                .Replace('\\', Path.DirectorySeparatorChar);
+            if (path.Contains("$(")) throw new InvalidDataException("Unresolved source path: " + path);
+            path = Path.GetFullPath(Path.Combine(directory, path));
+            if (remove != null) removed.Add(new Microsoft.Build.Utilities.TaskItem(path));
+            else if (path.Contains("*"))
+            {
+                var recursiveMarker = Path.DirectorySeparatorChar + "**" + Path.DirectorySeparatorChar;
+                var markerIndex = path.IndexOf(recursiveMarker, System.StringComparison.Ordinal);
+                var root = markerIndex >= 0 ? path.Substring(0, markerIndex) : Path.GetDirectoryName(path);
+                var pattern = markerIndex >= 0 ? path.Substring(markerIndex + recursiveMarker.Length) : Path.GetFileName(path);
+                if (root.Contains("*") || pattern.Contains(Path.DirectorySeparatorChar.ToString()))
+                    throw new InvalidDataException("Unsupported original source glob: " + path);
+                foreach (var source in Directory.EnumerateFiles(canonicalize(root), pattern,
+                    markerIndex >= 0 ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly).OrderBy(value => value, System.StringComparer.Ordinal))
+                    sources.Add(new Microsoft.Build.Utilities.TaskItem(source));
+            }
+            else sources.Add(new Microsoft.Build.Utilities.TaskItem(canonicalize(path)));
+        }
+        Sources = sources.ToArray();
+        RemovedSources = removed.ToArray();
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="ImportPortableSourceManifest" BeforeTargets="CoreCompile">
+    <Error Condition="'$(WCP_REACH_API)' != ''" Text="The portable source manifest currently supports the production default with WCP_REACH_API disabled." />
+    <ReadPortableSourceManifest SourceProject="$(WpfSourceProject)" SourceRoot="$(WpfSourceDir)">
+      <Output TaskParameter="Sources" ItemName="Compile" />
+      <Output TaskParameter="RemovedSources" ItemName="OriginalRemovedSources" />
+    </ReadPortableSourceManifest>
+    <ItemGroup><Compile Remove="@(OriginalRemovedSources)" /></ItemGroup>
+  </Target>
+</Project>

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>System.Xaml</AssemblyName>
+    <DefineConstants>$(DefineConstants);OLDRESOURCES;SYSTEM_XAML</DefineConstants>
+    <Nullable>enable</Nullable>
+    <WpfSourceProject>$(WpfSourceDir)System.Xaml/System.Xaml.csproj</WpfSourceProject>
+    <WpfResourceFile>$(WpfSourceDir)System.Xaml/Resources/Strings.resx</WpfResourceFile>
+    <WpfResourceNamespace>System</WpfResourceNamespace>
+    <WpfResourceManifestName>FxResources.System.Xaml.SR</WpfResourceManifestName>
+    <WpfSigningKey>Ecma</WpfSigningKey>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(WpfSourceDir)System.Xaml/**/*.cs" Exclude="$(WpfSourceDir)System.Xaml/obj/**;$(WpfSourceDir)System.Xaml/bin/**" />
+    <EmbeddedResource Include="$(WpfResourceFile)" LogicalName="$(WpfResourceManifestName).resources" />
+    <PackageReference Include="System.Security.Permissions" Version="10.0.13" />
+    <PackageReference Include="System.Windows.Extensions" Version="10.0.13" />
+  </ItemGroup>
+  <Import Project="../Build/SourceManifest.targets" />
+  <Import Project="../Build/SourceResources.targets" />
+  <Import Project="../Build/PublicSigning.targets" />
+</Project>

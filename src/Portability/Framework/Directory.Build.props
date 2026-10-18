@@ -1,0 +1,22 @@
+<Project>
+  <Import Project="../Directory.Build.props" />
+  <PropertyGroup>
+    <RepoRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../../..'))</RepoRoot>
+    <WpfSourceDir>$(RepoRoot)src/Microsoft.DotNet.Wpf/src/</WpfSourceDir>
+    <WpfSharedDir>$(WpfSourceDir)Shared/</WpfSharedDir>
+    <WpfCommonDir>$(WpfSourceDir)Common/</WpfCommonDir>
+    <PortableFrameworkArtifactsDir Condition="'$(PortableFrameworkArtifactsDir)' == ''">$(RepoRoot)artifacts/portability/framework/</PortableFrameworkArtifactsDir>
+    <BaseOutputPath>$(PortableFrameworkArtifactsDir)bin/$(OS)/$(MSBuildProjectName)/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(PortableFrameworkArtifactsDir)obj/$(OS)/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+    <AssemblyVersion>10.0.0.0</AssemblyVersion>
+    <Version>10.0.0-portable.1</Version>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <NoWarn>$(NoWarn);0618;CS3016;CS8002</NoWarn>
+  </PropertyGroup>
+</Project>
