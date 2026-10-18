@@ -25,7 +25,9 @@ The [runtime baseline](../../Documentation/portability/runtime-baseline.md) reco
 | [WindowLifecycleIntegration](Tests/WindowLifecycleIntegration/README.md) | Real Window lifecycle, modal cleanup, asynchronous geometry and content sizing against a managed peer and stock Windows oracle |
 | [NativeWindowIntegration](Tests/NativeWindowIntegration/README.md) | Actual WPF controls, synchronous dialogs, mutable scientific images and native X11 input/pixels; window-manager results remain separate |
 | [Portable distribution](Packaging/README.md) | External local-feed SDK/runtime consumers, genuine BAML on case-sensitive Linux storage, preserved identities/forwarders, audited contents and native FDD/self-contained execution |
+| [Complete unchanged view](Packaging/Consumer/App/README.md) | Same native workflow under both compiler origins and Linux FDD/self-contained, with a shared stock Windows reference |
 | [NinaWindowsReference](Tests/NinaWindowsReference/README.md) | Nine unchanged pinned NINA view tests against stock Windows WPF, with explicit native payload omissions |
+| [NinaPortableViews](Tests/NinaPortableViews/README.md) | Unchanged pinned NINA view/dictionary construction, with the measured missing default-template layout boundary retained separately |
 
 | Experiment | Evidence and instructions |
 | --- | --- |
@@ -58,4 +60,4 @@ That collector uses read-only HTTPS requests. Downloaded NINA source stays in ig
 
 Each executable emits named JSON checks and returns a nonzero exit code for an actual failure. Read its `scope` and every check status. `unimplemented`, `not-tested` and `unproven` are evidence gaps and must not be counted as passes. An intentionally negative experiment passes its investigation only when it produces the expected failure; the underlying capability remains unsupported.
 
-The upstream Windows source build and selected pinned NINA Windows view tests pass. Phase 1 feasibility also passes its declared Linux x64 profile: both BAML origins, actual WPF dispatcher/native controls, retained rendering, bounded Unicode 17 paragraphs, window-manager state/lifetime and the final package-only distribution matrix. The [feasibility report](../../Documentation/portability/feasibility-results.md) records exact scopes, hashes and unsupported boundaries. Phase 2's same complete compiled view workflow and later NINA/physical desktop qualification remain open.
+The upstream Windows source build and selected pinned NINA Windows view tests pass. Phase 1 feasibility also passes its declared Linux x64 profile: both BAML origins, actual WPF dispatcher/native controls, retained rendering, bounded Unicode 17 paragraphs, window-manager state/lifetime and the final package-only distribution matrix. Phase 2's same compiled view workflow passes on stock Windows and all four Linux compiler-origin/deployment combinations. Its public Application.Run and large-frame performance gates remain open. The [feasibility report](../../Documentation/portability/feasibility-results.md) records exact scopes, hashes and unsupported boundaries. Real NINA workflows and physical desktop qualification remain later gates.

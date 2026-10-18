@@ -101,6 +101,14 @@ Prefer the highest existing WPF rendering seam that preserves retained behavior 
 
 Do not attempt a general Win32 emulation layer. Retain Windows interop signatures where compatibility requires them, keep their Windows behavior and classify non-Windows usage individually. Arbitrary `user32.dll` calls, embedded Win32 controls and COM cannot be made portable by returning a fabricated handle.
 
+The first default-control theme will reuse the complete source-built WPF Classic
+theme through the existing ThemeInfo and SystemResources lookup. The unchanged
+NINA view diagnostic establishes that the initial generic-only profile cannot
+present ordinary UserControl content. Classic is a fixed portable appearance,
+with its own qualified resource and chrome closure; it does not promise Aero2
+pixels or native Linux theming. NINA's original styles and custom-control generic
+dictionaries retain precedence and identity.
+
 ## Phased delivery
 
 Every phase produces a runnable artifact or an explicit design decision with evidence. Each gate records passed, failed, blocked and intentionally unsupported cases separately. A build, screenshot or stubbed startup alone does not pass a behavior gate.

@@ -1473,8 +1473,1412 @@
           "bytes": 1255
         }
       ]
+    },
+    {
+      "label": "phase2-component-repairs",
+      "capturedAtUtc": "2026-10-18",
+      "headCommit": "b3126d3a3d0c135a872cea680fc26a6e0d72d6b5",
+      "scope": "Phase2 component repairs, independent reviews clear, native final package execution pending",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/animation-investigation/clock-frames-fixed.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/animation-investigation/clock-frames-fixed.json",
+          "sha256": "a0c56b5d003845752daed103ba3a97f816c89a72d3f7cab791f0b38bd1b1e8e8",
+          "bytes": 22072
+        },
+        {
+          "path": "artifacts/portability/animation-investigation/core-linux-results.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/animation-investigation/core-linux-results.txt",
+          "sha256": "bdac397f1b04c42aa0c70c2f84b24044745e7648a1258afc79093a2b63a50e1f",
+          "bytes": 1061
+        },
+        {
+          "path": "artifacts/portability/animation-investigation/core-windows-results.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/animation-investigation/core-windows-results.txt",
+          "sha256": "76158d4e49ef82f10195357aacfd9211298a2dc8fbf352f758473402ce9f63ab",
+          "bytes": 1062
+        },
+        {
+          "path": "artifacts/portability/animation-investigation/fixed-hashes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/animation-investigation/fixed-hashes.json",
+          "sha256": "ba652c05a53e5fb22d665634bab8e4bd0ae9c20c8f39661b217d12c44669472b",
+          "bytes": 7193
+        },
+        {
+          "path": "artifacts/portability/animation-investigation/green-linux-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/animation-investigation/green-linux-results.json",
+          "sha256": "2667a70d13f617d526b6b0b4b2b70804f91a4db69039e23a98bfb9a0ac96ec4e",
+          "bytes": 3421
+        },
+        {
+          "path": "artifacts/portability/animation-investigation/green-windows-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/animation-investigation/green-windows-results.json",
+          "sha256": "41d0d35839631bf9430ffbc24481e7c6d4aba0214e8d542f5af4b26418179d4d",
+          "bytes": 3544
+        },
+        {
+          "path": "artifacts/portability/animation-investigation/red-windows-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/animation-investigation/red-windows-results.json",
+          "sha256": "bd606ea9c54208cae5aaca05ff597b8fe10857e3c2039318333ead07d241badd",
+          "bytes": 5231
+        },
+        {
+          "path": "artifacts/portability/animation-investigation/source-linux-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/animation-investigation/source-linux-results.json",
+          "sha256": "8f0f8ce93cbe9e09bc9d94fa601b5c1b25576ac5e7cb8117854b2666aeced98f",
+          "bytes": 5388
+        },
+        {
+          "path": "artifacts/portability/animation-investigation/source-windows-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/animation-investigation/source-windows-results.json",
+          "sha256": "f8bd48e01759117d84180a0a43000c3691e4e6a248a230eefaa5e894f1009886",
+          "bytes": 5553
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/complete-view-phase2-freeze.json",
+          "sha256": "1e25e79d092ea64e00e045b41573f2ba27b2f35b65e726b25c79f17e9adb85a1",
+          "bytes": 2226
+        },
+        {
+          "path": "artifacts/portability/complete-view-windows-reference-final/compile-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/complete-view-windows-reference-final/compile-freeze.json",
+          "sha256": "526930329da2247122db9659bb92ea01def2f029dc0d667ab3a82ed6f76a30b1",
+          "bytes": 12220
+        },
+        {
+          "path": "artifacts/portability/upstream-threading-phase2-text-animation-20261018.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/upstream-threading-phase2-text-animation-20261018.log",
+          "sha256": "04e0a1f33cff52ce00ab33e45052c0ed4991800a179b033a97651ab4bf2e31d7",
+          "bytes": 221
+        },
+        {
+          "path": "artifacts/portability/windows-phase2-text-animation-regression-20261018.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/windows-phase2-text-animation-regression-20261018.log",
+          "sha256": "0836e27f6365b4b43340b10d22549166872e0b4482ff26e2e1a9545446f909dd",
+          "bytes": 29014
+        },
+        {
+          "path": "artifacts/portability/word-selection-investigation/final-source-differences.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/word-selection-investigation/final-source-differences.json",
+          "sha256": "2670ea8c4a331edba2a4d8d3164053cd96972799fe3080f2e37ddae085695401",
+          "bytes": 195523
+        },
+        {
+          "path": "artifacts/portability/word-selection-investigation/final-source-oracle.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/word-selection-investigation/final-source-oracle.json",
+          "sha256": "8305725167389ab2597de08de24f8e58552251b87d490c7b483d85cd980d1015",
+          "bytes": 46461
+        },
+        {
+          "path": "artifacts/portability/word-selection-investigation/linux-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/word-selection-investigation/linux-results.json",
+          "sha256": "fba17d50bc3c60e86126100bf5e02e28ffe296ff00185fad1d5dabe6057d7e60",
+          "bytes": 21174
+        },
+        {
+          "path": "artifacts/portability/word-selection-investigation/main-linux-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/word-selection-investigation/main-linux-results.json",
+          "sha256": "2538cca3872e1f1e704247636b8fe9d103bc740095b05fe1430e9a7996415246",
+          "bytes": 81339
+        },
+        {
+          "path": "artifacts/portability/word-selection-investigation/main-windows-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/word-selection-investigation/main-windows-results.json",
+          "sha256": "c9401be7f86c259cd2c4b798b371c5b77db5726a4dba2131ba60b65a85fd71d5",
+          "bytes": 83101
+        },
+        {
+          "path": "artifacts/portability/word-selection-investigation/portable-commands-red.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/word-selection-investigation/portable-commands-red.json",
+          "sha256": "d258705f94b256e9576b27a265756e30625d1bb7d702e962843b667e0d2591a7",
+          "bytes": 121233
+        },
+        {
+          "path": "artifacts/portability/word-selection-investigation/portable-red.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/word-selection-investigation/portable-red.json",
+          "sha256": "77439cbaa3d0a236b249e12a2b7750a6e13cae0dfb12e44188ff5ac84b07b223",
+          "bytes": 65008
+        },
+        {
+          "path": "artifacts/portability/word-selection-investigation/review-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/word-selection-investigation/review-freeze.json",
+          "sha256": "2b0cddd34f11408af5f87e9169b57d7d0a391dc98ff8429c307b23c61481cdf5",
+          "bytes": 5694
+        },
+        {
+          "path": "artifacts/portability/word-selection-investigation/stock-word-reference.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/word-selection-investigation/stock-word-reference.json",
+          "sha256": "34481f00451cc92ad2241c7069f7cb31769e4491187cd6a2122da24c33449e12",
+          "bytes": 69769
+        },
+        {
+          "path": "artifacts/portability/word-selection-investigation/stock.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/word-selection-investigation/stock.json",
+          "sha256": "32da8b747ef605cbafb23c5f8bea6d7c7e43ebb5ff88170816ff758a0468fde7",
+          "bytes": 37919
+        },
+        {
+          "path": "artifacts/portability/word-selection-investigation/windows-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/artifacts/portability/word-selection-investigation/windows-results.json",
+          "sha256": "eb661f1ad9b1388ec0be4eadb50b40ab25dc609ab7c64d4529712cf9d64b8c90",
+          "bytes": 22039
+        },
+        {
+          "path": "src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Documents/SelectionWordBreaker.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/src/Microsoft.DotNet.Wpf/src/PresentationFramework/System/Windows/Documents/SelectionWordBreaker.cs",
+          "sha256": "03779e331ee4f5a8e41efdcc06bb8e298cb974fe869e8a32dba6f12849013867",
+          "bytes": 19395
+        },
+        {
+          "path": "src/Portability/Tests/TextIntegration/Compatibility.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/src/Portability/Tests/TextIntegration/Compatibility.md",
+          "sha256": "289370978f0e5f106ba2e354cb70b4542e849d1c373825ddf50496257251f948",
+          "bytes": 5433
+        },
+        {
+          "path": "src/Portability/Tests/TextIntegration/Controls/Program.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/src/Portability/Tests/TextIntegration/Controls/Program.cs",
+          "sha256": "6ca217c38c245f7229bb3a152d74d5171284a8e594972eb08f380e841c3804aa",
+          "bytes": 5994
+        },
+        {
+          "path": "src/Portability/Tests/TextIntegration/Controls/TextControlsIntegration.csproj",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/src/Portability/Tests/TextIntegration/Controls/TextControlsIntegration.csproj",
+          "sha256": "5bd9b30f83e7b769eb5870af6d6f4cfbfacb5a9afb930e738dbaf6b72cf8c959",
+          "bytes": 599
+        },
+        {
+          "path": "src/Portability/Tests/TextIntegration/Controls/WordSelectionCases.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/src/Portability/Tests/TextIntegration/Controls/WordSelectionCases.cs",
+          "sha256": "6fa87a81951138773b548526183bf189ce4ba66bc762c87d62102793770fd1a8",
+          "bytes": 6063
+        },
+        {
+          "path": "src/Portability/Tests/TextIntegration/Controls/WordSelectionReference.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/src/Portability/Tests/TextIntegration/Controls/WordSelectionReference.json",
+          "sha256": "34481f00451cc92ad2241c7069f7cb31769e4491187cd6a2122da24c33449e12",
+          "bytes": 69769
+        },
+        {
+          "path": "src/Portability/Tests/TextIntegration/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/src/Portability/Tests/TextIntegration/README.md",
+          "sha256": "f7c6981246ba38073844e92ccfd5b72cf1ca87bf2dbc2d213c27c75545000362",
+          "bytes": 11678
+        },
+        {
+          "path": "src/Portability/Tests/TextIntegration/StockOracle/Program.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/src/Portability/Tests/TextIntegration/StockOracle/Program.cs",
+          "sha256": "859f3f9e8f6f40cd8ebcd57b1295a1d1c7a4e836534c1b703dbb223eac76cf7e",
+          "bytes": 2437
+        },
+        {
+          "path": "src/Portability/Tests/TextIntegration/StockOracle/StockOracle.csproj",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-component-repairs/src/Portability/Tests/TextIntegration/StockOracle/StockOracle.csproj",
+          "sha256": "52c591b63dc0bc5a23eaf960e6c3803e98edcef6ebdb1ffde01783a3468ca0f5",
+          "bytes": 567
+        }
+      ]
+    },
+    {
+      "label": "phase2-integrated-view",
+      "capturedAtUtc": "2026-10-18T13:37:51.6259788Z",
+      "headCommit": "479ba971e",
+      "phase2Status": "integrated-view-passed-startup-and-performance-pending",
+      "scope": "Same C075 workflow passes stock Windows15 per origin and Linux19 in four compiler-origin/FDD-SC processes; retained distribution matrix and independent package audits pass. Explicit templates and virtual X11 remain bounded scope. Public Application.Run and large-frame budgets remain pending.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/final-qualification-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/final-qualification-results.json",
+          "sha256": "80755bf3d2b9bd83fbbe0ba04df04e81ac54f6a0a9f2d3f07eb9ca888caa8dcc",
+          "bytes": 4695
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/producer-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/producer-freeze.json",
+          "sha256": "ef923b108fc3b362d50b7e40496cea3f33006bbee7d9782534919f80653c133d",
+          "bytes": 5536
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/producer-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/producer-results.json",
+          "sha256": "2bb27f63265e40da340dd4cab9a927b480c0647d005695bee269e8ba2db315c1",
+          "bytes": 559
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/runtime/BuildInputs.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/runtime/BuildInputs.json",
+          "sha256": "2ffa766033dbcd4f6237116b7cfac4a287cac8bf2079f0b154ec005bdf8bda2d",
+          "bytes": 724821
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/runtime/Provenance.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/runtime/Provenance.json",
+          "sha256": "f07485759f09418fe6597c57d8f69f88c5821e2a88c2d3dc121fb0f9264c5713",
+          "bytes": 138904
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/runtime/RuntimeContentManifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/runtime/RuntimeContentManifest.json",
+          "sha256": "852ef8393603e7acb2b109abbf20b40c0b8cf25e21818c7053d750efc52a5eca",
+          "bytes": 19789
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/runtime/RuntimeManifest.xml",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/runtime/RuntimeManifest.xml",
+          "sha256": "630774280571f9f0b65f25918452dd515cfaf70f167cd6fc3b1d6ca4bc413aa4",
+          "bytes": 10936
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/sdk/SdkManifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/sdk/SdkManifest.json",
+          "sha256": "dfbe7df45d59efc66fa2c09ce0062b8ba19777d75b4475bf55e13da13651566a",
+          "bytes": 3555
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/external-windows/bin-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/external-windows/bin-results.json",
+          "sha256": "63634d8fcf51ff832a21cb816035a3d40bb3b28e7bbff4723e484c2c442c48ae",
+          "bytes": 3762,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/external-windows/publish-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/external-windows/publish-results.json",
+          "sha256": "261c663503f02834a8aee42ba53a3e913a1b468c28fdb6842043a056899efb9a",
+          "bytes": 3672,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/external-windows/custom-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/external-windows/custom-results.json",
+          "sha256": "c6b1881022c187b927d400277fb35d7685610429b5aee2fe51a5c52e4ecc6cbc",
+          "bytes": 3804,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/external-windows/incremental-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/external-windows/incremental-results.json",
+          "sha256": "3d191667961ee818a14369cb28fcfda3604a1ea3b009bb6c9f5cffd3ef96812b",
+          "bytes": 1275,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/external-preparelinux/bin-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/external-preparelinux/bin-results.json",
+          "sha256": "6b3a12f2a9e67ebb91b8adccc961f5ef25fac1e6710b00217254af43e006976e",
+          "bytes": 5365,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/external-preparelinux/custom-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/external-preparelinux/custom-results.json",
+          "sha256": "b2ebcdbb39e04731cdb2120c2a2b0e16dc4e094fa8495b3ead7ea05b4fcc1c38",
+          "bytes": 5407,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/external-preparelinux/incremental-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/external-preparelinux/incremental-results.json",
+          "sha256": "ba97faf45c5c607126ab9eba4f83b6a2a2940c542a0671a7c749b9a86241b697",
+          "bytes": 179,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/external-preparelinux/case-sensitivity-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/external-preparelinux/case-sensitivity-results.json",
+          "sha256": "c2f32b472de3642ba030ee7ce5c0f1584c82c07c735e994f6618905d8bb47e3f",
+          "bytes": 282,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/external-preparelinux/publish-fdd-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/external-preparelinux/publish-fdd-results.json",
+          "sha256": "c6a97dab31443b1e76044f1eb8b94b2bf392d260b24f55386becabfe813938f2",
+          "bytes": 5293,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/external-preparelinux/publish-linux-fdd-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/external-preparelinux/publish-linux-fdd-results.json",
+          "sha256": "e2e6c46f0a3944dd230639c82fd153f8c50703ef38103ab2fa68cfc42ef92292",
+          "bytes": 5329,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/external-preparelinux/publish-linux-sc-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/external-preparelinux/publish-linux-sc-results.json",
+          "sha256": "17a77219b1a4832435648508f1baa671d7cf5837b57c576bfd0bdca07fae4950",
+          "bytes": 5012,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/external-preparelinux/native-fdd-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/external-preparelinux/native-fdd-results.json",
+          "sha256": "01b15f096bc34bb4c6ef7d49a9422cf45212a4fed00a9539a0d7248f8cfc0140",
+          "bytes": 8634,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/external-preparelinux/native-sc-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/external-preparelinux/native-sc-results.json",
+          "sha256": "dbe24f33462e5c0dc45960ffceb202e914de682bba8e1a8f4fa9b8fa03fefb41",
+          "bytes": 8315,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/package-audit-windows-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/package-audit-windows-results.json",
+          "sha256": "7a6631ce445e7bae5cf576ddbc76b445a3df1c48044be42d03a88f879950cb81",
+          "bytes": 1255,
+          "results": [
+            {
+              "status": "pass",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/package-audit-linux-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/package-audit-linux-results.json",
+          "sha256": "43ce37f828b393e0c68a8424bfe91e37637a1aa232e41aa2587805eb1e9c7028",
+          "bytes": 1672,
+          "results": [
+            {
+              "status": "pass",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/dependency-policy-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/dependency-policy-results.json",
+          "sha256": "385d54bc743cdb2c5a7ae531db1584641ae8a8773ca6a8ec84ed5c385e389a30",
+          "bytes": 1496,
+          "results": [
+            {
+              "status": "pass",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/runtime-policy-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/runtime-policy-results.json",
+          "sha256": "d2accdfc57255cb40ddbaadb44d0c70b3fdc45564435339a11580ed9bd1a35b3",
+          "bytes": 2650,
+          "results": [
+            {
+              "status": "pass",
+              "count": 14
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/feed/Wpf.Portable.Runtime.10.0.0-portable.1.nupkg",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/feed/Wpf.Portable.Runtime.10.0.0-portable.1.nupkg",
+          "sha256": "eddaa19aca776d356ec6be90df0fe443e41a1a7f229ea7bd31a898e7ff74cff2",
+          "bytes": 14670909
+        },
+        {
+          "path": "artifacts/portability/distribution-phase2-final-1/feed/Wpf.Portable.Sdk.10.0.0-portable.1.nupkg",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/distribution-phase2-final-1/feed/Wpf.Portable.Sdk.10.0.0-portable.1.nupkg",
+          "sha256": "62f9e6099af9d7f2e5876ae2b8dcef4dbe09d192d6138c120456850d8d71fd95",
+          "bytes": 3362017
+        },
+        {
+          "path": "artifacts/portability/review-webby-distribution-phase2-final-1/record-verification.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/review-webby-distribution-phase2-final-1/record-verification.json",
+          "sha256": "0cf98f3877d63a69d21b1b34c809624db6d24b40c46d36e939a93216e111f46f",
+          "bytes": 2106
+        },
+        {
+          "path": "artifacts/portability/review-webby-distribution-phase2-final-1/windows-audit-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/review-webby-distribution-phase2-final-1/windows-audit-results.json",
+          "sha256": "7a6631ce445e7bae5cf576ddbc76b445a3df1c48044be42d03a88f879950cb81",
+          "bytes": 1255,
+          "results": [
+            {
+              "status": "pass",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/review-webby-distribution-phase2-final-1/linux-audit-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/review-webby-distribution-phase2-final-1/linux-audit-results.json",
+          "sha256": "43ce37f828b393e0c68a8424bfe91e37637a1aa232e41aa2587805eb1e9c7028",
+          "bytes": 1672,
+          "results": [
+            {
+              "status": "pass",
+              "count": 8
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/evidence-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/evidence-summary.json",
+          "sha256": "d1432f0b1b9d62985950a6d8d48deff36dab1fed214137235744840a78452d8b",
+          "bytes": 2974
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-freeze.json",
+          "sha256": "0f30de480d7172a9967547bdab9e39ece5cd4e01440d450b04d387eb1845870f",
+          "bytes": 2198
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Microsoft/results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Microsoft/results.json",
+          "sha256": "5e98ce2edbe6bf804e458b511f6327ebe0f3e7c6cfc9fe726e5837832bd900dd",
+          "bytes": 11486,
+          "results": [
+            {
+              "status": "pass",
+              "count": 19
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Port/results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Port/results.json",
+          "sha256": "f53af8e6fe3b1706603bdbfc36ab7394a66b30c65bcf58dd3d252ac6c3552378",
+          "bytes": 11440,
+          "results": [
+            {
+              "status": "pass",
+              "count": 19
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Microsoft/results-sc.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Microsoft/results-sc.json",
+          "sha256": "f8c37f64aecec190ec2f40e2fab6983439b53025260ecfd1b40a2fc14c124696",
+          "bytes": 11154,
+          "results": [
+            {
+              "status": "pass",
+              "count": 19
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Port/results-sc.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Port/results-sc.json",
+          "sha256": "289a9268f634e3b2d83e40c807eebb4b022f44c9439e442943747cd82c930747",
+          "bytes": 11073,
+          "results": [
+            {
+              "status": "pass",
+              "count": 19
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Microsoft/audit-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Microsoft/audit-results.json",
+          "sha256": "06366bae6589a846e88798f9b19682b249242474fcc546b39d7143ab53ecb9fe",
+          "bytes": 167,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Port/audit-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Port/audit-results.json",
+          "sha256": "06366bae6589a846e88798f9b19682b249242474fcc546b39d7143ab53ecb9fe",
+          "bytes": 167,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Microsoft/audit-results-sc.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Microsoft/audit-results-sc.json",
+          "sha256": "06366bae6589a846e88798f9b19682b249242474fcc546b39d7143ab53ecb9fe",
+          "bytes": 167,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Port/audit-results-sc.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Port/audit-results-sc.json",
+          "sha256": "06366bae6589a846e88798f9b19682b249242474fcc546b39d7143ab53ecb9fe",
+          "bytes": 167,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Microsoft/source-hash-results.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Microsoft/source-hash-results.txt",
+          "sha256": "b6bdd6980733ee4d1a387c3cf0fc70269a6c54644428045ea47b619ba9e67f48",
+          "bytes": 696
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Port/source-hash-results.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Port/source-hash-results.txt",
+          "sha256": "b6bdd6980733ee4d1a387c3cf0fc70269a6c54644428045ea47b619ba9e67f48",
+          "bytes": 696
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Microsoft/CompleteViewOrigin.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Microsoft/CompleteViewOrigin.json",
+          "sha256": "5e765f81cba35c327eaa7ea3005b0b54e38db82ecc9b9692efd90450027a654a",
+          "bytes": 2340
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Port/CompleteViewOrigin.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Port/CompleteViewOrigin.json",
+          "sha256": "bdf206e1631c49e6acc39bcbe3070a0410d01155aa8f6141d90c88f2afec8652",
+          "bytes": 2334
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Microsoft/compiler-origins.xml",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Microsoft/compiler-origins.xml",
+          "sha256": "02f6f069f6f42115e2fe55a5ff1c3737b73c3963ac1dc98ee701315b066414c3",
+          "bytes": 3697
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Port/compiler-origins.xml",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Port/compiler-origins.xml",
+          "sha256": "d07ac279379deb49cff91ca797cb63e188bc8a6dccfc4ccde539ffb93be9544f",
+          "bytes": 3637
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Port/fixture-compiler-origins.xml",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Port/fixture-compiler-origins.xml",
+          "sha256": "d07ac279379deb49cff91ca797cb63e188bc8a6dccfc4ccde539ffb93be9544f",
+          "bytes": 3637
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-2/Microsoft/phase1-default-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-2/Microsoft/phase1-default-results.json",
+          "sha256": "1c0cac75eec0b9f3496b62948cfe84989c6c09a73d6b386ba04bd8e33417cc06",
+          "bytes": 8662,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-close-diagnostic/observations.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-close-diagnostic/observations.json",
+          "sha256": "aa8f1cc318e5cf6fb38b85a01306ff3fb465c443eb5df553a60e149b0b97dc20",
+          "bytes": 757
+        },
+        {
+          "path": "artifacts/portability/complete-view-close-diagnostic/results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-close-diagnostic/results.json",
+          "sha256": "d1d66e7bbecdd8b5bc29af092c4ea2dd2cfb379252fa9ec6841cbc0d2a36185d",
+          "bytes": 11810
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-1/Microsoft/results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-1/Microsoft/results.json",
+          "sha256": "6bfc7e5f72c5030148a59e18e1ee63d26cd3cebfa11bf9ecc3b402dfcdd0027f",
+          "bytes": 12698,
+          "results": [
+            {
+              "status": "fail",
+              "count": 2
+            },
+            {
+              "status": "pass",
+              "count": 17
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-1/Microsoft/results-sc.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-1/Microsoft/results-sc.json",
+          "sha256": "0f1d36127f2ad2d78223148d5d625ea709865904272b737b4f8071abe0f0e213",
+          "bytes": 12366,
+          "results": [
+            {
+              "status": "fail",
+              "count": 2
+            },
+            {
+              "status": "pass",
+              "count": 17
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-1/Port/results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-1/Port/results.json",
+          "sha256": "259bc9471eda3d6ad1e048f573baf93f7857e1062085c7850b207b7f164737de",
+          "bytes": 12622,
+          "results": [
+            {
+              "status": "fail",
+              "count": 2
+            },
+            {
+              "status": "pass",
+              "count": 17
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-phase2-final-1/Port/results-sc.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-phase2-final-1/Port/results-sc.json",
+          "sha256": "4beb53ae4143611e3c56ad88646a8e53484ec1402c3a23a5ab03e94cdbab2379",
+          "bytes": 12255,
+          "results": [
+            {
+              "status": "fail",
+              "count": 2
+            },
+            {
+              "status": "pass",
+              "count": 17
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-windows-reference-phase2-final-2/final-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-windows-reference-phase2-final-2/final-freeze.json",
+          "sha256": "ce83ea067670a86c923e96379854ed65016ee5e3c5ed5df6b516b6f10f4e487c",
+          "bytes": 17019
+        },
+        {
+          "path": "artifacts/portability/complete-view-windows-reference-phase2-final-2/compile-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-windows-reference-phase2-final-2/compile-freeze.json",
+          "sha256": "ed55c367495fdf25287d45e785bc270f0e87f80d19d7fa03948abfdc3360f92b",
+          "bytes": 14003
+        },
+        {
+          "path": "artifacts/portability/complete-view-windows-reference-phase2-final-2/process-exits.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-windows-reference-phase2-final-2/process-exits.json",
+          "sha256": "9a22adf93ee776a3ec8b37b367c4edecb540c2e196ec2d862797c0d7804c867e",
+          "bytes": 261
+        },
+        {
+          "path": "artifacts/portability/complete-view-windows-reference-phase2-final-2/microsoft-final.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-windows-reference-phase2-final-2/microsoft-final.json",
+          "sha256": "f56f8b0fd53768195733ea6c2e441962da7c3bf97645241a836798f3a4e4acc3",
+          "bytes": 71029,
+          "results": [
+            {
+              "status": "pass",
+              "count": 15
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/complete-view-windows-reference-phase2-final-2/port-final.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/artifacts/portability/complete-view-windows-reference-phase2-final-2/port-final.json",
+          "sha256": "28635fa3b81dc117e827db6d98ba0cf0f0362aecbd68e5973d0eaa80e8ee77a8",
+          "bytes": 71295,
+          "results": [
+            {
+              "status": "pass",
+              "count": 15
+            }
+          ]
+        },
+        {
+          "path": "src/Portability/Tests/CompleteViewWindowsReference/app.manifest",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/src/Portability/Tests/CompleteViewWindowsReference/app.manifest",
+          "sha256": "748f3e40a845b049beac61834825bf0ccf263a059c4f9252191ff56569d35a8e",
+          "bytes": 528
+        },
+        {
+          "path": "src/Portability/Tests/CompleteViewWindowsReference/CompleteViewWindowsReference.csproj",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/src/Portability/Tests/CompleteViewWindowsReference/CompleteViewWindowsReference.csproj",
+          "sha256": "67c61c8a02a249aa20d535659180288d587d9b95b9bae9e1a2acfa1116b80441",
+          "bytes": 4022
+        },
+        {
+          "path": "src/Portability/Tests/CompleteViewWindowsReference/Directory.Build.props",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/src/Portability/Tests/CompleteViewWindowsReference/Directory.Build.props",
+          "sha256": "aed7e7f0450ff3426e116437f48c947d27cecdf2ea11ce251109cbf428316d9b",
+          "bytes": 668
+        },
+        {
+          "path": "src/Portability/Tests/CompleteViewWindowsReference/Program.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/src/Portability/Tests/CompleteViewWindowsReference/Program.cs",
+          "sha256": "14f824ffaa3f5e1f027e70b2ef7795f2212f8bfde43aca4153b3fbc057dfd5a6",
+          "bytes": 7811
+        },
+        {
+          "path": "src/Portability/Tests/CompleteViewWindowsReference/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/src/Portability/Tests/CompleteViewWindowsReference/README.md",
+          "sha256": "9a567b195547ac49dc070b0febc8d61ab309a4e108ef7236293b76930cbef60a",
+          "bytes": 5813
+        },
+        {
+          "path": "src/Portability/Tests/CompleteViewWindowsReference/WindowsDesktop.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/src/Portability/Tests/CompleteViewWindowsReference/WindowsDesktop.cs",
+          "sha256": "3a7109ae5bbfb8f94aafa1157e106963c1fd1573e81f3158a9a817311e53b91a",
+          "bytes": 19051
+        },
+        {
+          "path": "src/Portability/Packaging/Consumer/App/App.csproj",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/src/Portability/Packaging/Consumer/App/App.csproj",
+          "sha256": "4044e53231da318176e3e62f49bd7c05f8e80235c29d8252ef07a9cd6a985fe6",
+          "bytes": 1385
+        },
+        {
+          "path": "src/Portability/Packaging/Consumer/App/Program.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/src/Portability/Packaging/Consumer/App/Program.cs",
+          "sha256": "28d3cb3f1997c0725b37844cd1d80190ab8ff80b6ccc6ec54a7afe9e70853f16",
+          "bytes": 18112
+        },
+        {
+          "path": "src/Portability/Packaging/Consumer/App/CompleteViewWorkflow.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/src/Portability/Packaging/Consumer/App/CompleteViewWorkflow.cs",
+          "sha256": "c075cddf3963f510d3676f96e6c1770da62b885914412865dcba9ad910e1b8a4",
+          "bytes": 25618
+        },
+        {
+          "path": "src/Portability/Packaging/Consumer/App/WorkflowResources.xaml",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/src/Portability/Packaging/Consumer/App/WorkflowResources.xaml",
+          "sha256": "9ce276ffd754bfd99a6d9f582fe588aced8defaca05a980176288634eef6bbc7",
+          "bytes": 2242
+        },
+        {
+          "path": "src/Portability/Packaging/Consumer/App/X11CompleteViewDesktop.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/src/Portability/Packaging/Consumer/App/X11CompleteViewDesktop.cs",
+          "sha256": "d466a4c0c6d092e44d2819c4d89b45e723b52ac98a9afbf6ee43181e14bf5877",
+          "bytes": 1654
+        },
+        {
+          "path": "src/Portability/Packaging/Consumer/App/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/src/Portability/Packaging/Consumer/App/README.md",
+          "sha256": "40cb402ef0a2e36fc48489372afcb580e8718500629e848daf467a492f1099c6",
+          "bytes": 4129
+        },
+        {
+          "path": "src/Portability/Packaging/Consumer/FixtureControls/FixtureControls.csproj",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/src/Portability/Packaging/Consumer/FixtureControls/FixtureControls.csproj",
+          "sha256": "94e968e9d3496893b07bba27ff96fac98aa57fd6fc7b555692aad97f4fad39ab",
+          "bytes": 373
+        },
+        {
+          "path": "eng/portability/Prepare-CompleteView.ps1",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/eng/portability/Prepare-CompleteView.ps1",
+          "sha256": "528cf571337d992f6b151d1a2b27f0d5ee12da0238263607344c6df86de8ee6d",
+          "bytes": 5129
+        },
+        {
+          "path": "eng/portability/Test-CompleteView.sh",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-phase2-integrated-view/eng/portability/Test-CompleteView.sh",
+          "sha256": "83e666ebc94953546e9b9cdc50878d13fcc95d10ae4d71c182c2a221030e01bb",
+          "bytes": 3583
+        }
+      ]
+    },
+    {
+      "label": "nina-default-theme-diagnostic",
+      "capturedAtUtc": "2026-10-18T13:37:51.8574446Z",
+      "headCommit": "479ba971e",
+      "phase2Status": "integrated-view-passed-startup-and-performance-pending",
+      "scope": "Unchanged NINA binary/BAML and six original dictionaries construct on Linux, but content layout fails because default UserControl template is absent. Same-host stock reference passes; source rebuild, native display and validation interactions are not qualified.",
+      "artifacts": [
+        {
+          "path": "src/Portability/Tests/NinaPortableViews/Program.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/src/Portability/Tests/NinaPortableViews/Program.cs",
+          "sha256": "22695aece1c795f96b261af16c2249497315907c06d4a74bf653aeb097febae9",
+          "bytes": 14539
+        },
+        {
+          "path": "src/Portability/Tests/NinaPortableViews/NinaPortableViews.csproj",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/src/Portability/Tests/NinaPortableViews/NinaPortableViews.csproj",
+          "sha256": "e16b3c140ff0cfaf5a86eada1fd049bab77e2b7385b1a6acc39eb9c2a645ac3e",
+          "bytes": 1208
+        },
+        {
+          "path": "src/Portability/Tests/NinaPortableViews/Directory.Build.props",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/src/Portability/Tests/NinaPortableViews/Directory.Build.props",
+          "sha256": "a5445e4f4dc313ef9b06d1637eb54517a11c079fddf0935b7ff18e9f976c8007",
+          "bytes": 818
+        },
+        {
+          "path": "src/Portability/Tests/NinaPortableViews/Directory.Build.targets",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/src/Portability/Tests/NinaPortableViews/Directory.Build.targets",
+          "sha256": "17284cb74605517cbec8a8153505da71a685b28694b67b5ef80608cd79b1c0ea",
+          "bytes": 12
+        },
+        {
+          "path": "src/Portability/Tests/NinaPortableViews/BaselinePin.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/src/Portability/Tests/NinaPortableViews/BaselinePin.json",
+          "sha256": "5c6716c2ef43f121174ebb7b95c271c9f373cbe48bd40db2f80b8b3e62e9a869",
+          "bytes": 482
+        },
+        {
+          "path": "src/Portability/Tests/NinaPortableViews/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/src/Portability/Tests/NinaPortableViews/README.md",
+          "sha256": "d0630971148557fcfaedf4092a58d8abd95a6b831ed244cdc555c49ef60c109c",
+          "bytes": 4754
+        },
+        {
+          "path": "eng/portability/Run-NinaPortableViews.ps1",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/eng/portability/Run-NinaPortableViews.ps1",
+          "sha256": "f3524adb9a1a40d08246b58a7fbade5619066a15a684ddd60c0232e5ec39c6f2",
+          "bytes": 14136
+        },
+        {
+          "path": "artifacts/portability/nina-portable-views/runtime-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/artifacts/portability/nina-portable-views/runtime-linux.json",
+          "sha256": "212bf79d1a49b908f423b28efc15c902bc1fc7cb8a6e5756ff1b765f3930e699",
+          "bytes": 267327,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/nina-portable-views/runtime-stock-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/artifacts/portability/nina-portable-views/runtime-stock-windows.json",
+          "sha256": "71c789b591585d44fd4eacb71a96493e7239f25576adca5abfb04348e04337b5",
+          "bytes": 278918,
+          "results": [
+            {
+              "status": "pass",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/nina-portable-views/process-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/artifacts/portability/nina-portable-views/process-linux.json",
+          "sha256": "9a119cf0f64137d63a0d0672fdd56a2bc712387950e9ce2abd5abe14e98d2de6",
+          "bytes": 22
+        },
+        {
+          "path": "artifacts/portability/nina-portable-views/process-stock-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/artifacts/portability/nina-portable-views/process-stock-windows.json",
+          "sha256": "7fcb17227c90c706e5c67784e29a7d8c67921574471d9609874b8c5a18741875",
+          "bytes": 30
+        },
+        {
+          "path": "artifacts/portability/nina-portable-views/build-linux.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/artifacts/portability/nina-portable-views/build-linux.log",
+          "sha256": "9ecb8515a4e3fbe16bcb21e729bfd7466d80c52334ab2cba54bc711a06857a3b",
+          "bytes": 286
+        },
+        {
+          "path": "artifacts/portability/nina-portable-views/build-stock-windows.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/artifacts/portability/nina-portable-views/build-stock-windows.log",
+          "sha256": "937acabcb698d56d57a94dfe0f9c1ca2745adb19ff2ee3180c7340744dc26275",
+          "bytes": 311
+        },
+        {
+          "path": "artifacts/portability/nina-portable-views/fixture/Closure.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/artifacts/portability/nina-portable-views/fixture/Closure.json",
+          "sha256": "3a7aaaa212a8dcf34462615e7663c6dd384bb4aec048d34b3f6e62cbda0fa52d",
+          "bytes": 236340
+        },
+        {
+          "path": "artifacts/portability/nina-portable-views/host-source.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/artifacts/portability/nina-portable-views/host-source.json",
+          "sha256": "a5401ec3817f97bc155ebd08758f8eaef9d9526ae228842d1f2b629caf9ec5a7",
+          "bytes": 13559
+        },
+        {
+          "path": "artifacts/portability/basil-nina-review/stock.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/artifacts/portability/basil-nina-review/stock.json",
+          "sha256": "71c789b591585d44fd4eacb71a96493e7239f25576adca5abfb04348e04337b5",
+          "bytes": 278918,
+          "results": [
+            {
+              "status": "pass",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/basil-nina-review/linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-nina-default-theme-diagnostic/artifacts/portability/basil-nina-review/linux.json",
+          "sha256": "212bf79d1a49b908f423b28efc15c902bc1fc7cb8a6e5756ff1b765f3930e699",
+          "bytes": 267327,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "scientific-reference-and-startup-red",
+      "capturedAtUtc": "2026-10-18T13:41:17.5186339Z",
+      "headCommit": "479ba971e",
+      "phase2Status": "integrated-view-passed-startup-and-performance-pending",
+      "scope": "Stock Windows SoftwareOnly30 measured full-size Gray16/RGB48 frames per format pass exact source validation. Transaction metrics are not presentation latency or accepted budgets. Same extracted Linux workload builds and audits but fails Application.Run before image allocation; no Linux performance result.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/scientific-workload-reference/Program.cs",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/Program.cs",
+          "sha256": "4ebe5fbb5ac752b99ad8f2682dc36254fefa2b18593693183eadc0d8357b0e11",
+          "bytes": 27187
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/ScientificReference.csproj",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/ScientificReference.csproj",
+          "sha256": "b96f125adaaf200657972163ceca922d0ae93d1231aad9dfbadfd1647943bdf1",
+          "bytes": 546
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/run-reference.ps1",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/run-reference.ps1",
+          "sha256": "c506ad1eb5ed154bee9f71c5568bc5991974da517f2b04ff28aa756a8aaff777",
+          "bytes": 3295
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/README.md",
+          "sha256": "4b4f5384a0289c2f594c99eb2554c12e43da52c92173873e11cfc6432ea00b6d",
+          "bytes": 3822
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/RESULTS.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/RESULTS.md",
+          "sha256": "e9a1eee3dae8f5edca25a5516b0d7d6bb452cf14f145c332f5f96a293cd70b9d",
+          "bytes": 7031
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reconciliation/Program.csharp",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/reconciliation/Program.csharp",
+          "sha256": "f1cd1b158a8dd8f61d3bd53b4472855331ed18475ed0d39aef99ed9cd51839bb",
+          "bytes": 5457
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reconciliation/Reconcile.csproj",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/reconciliation/Reconcile.csproj",
+          "sha256": "7269153ff166a7059e9d3a004b301c7255be51b0635f457b4dba113b03538f6c",
+          "bytes": 546
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/final-source-hashes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/final-source-hashes.json",
+          "sha256": "d645090cd9586014679cd2f2c1a2fb2cc8df490ab656830d863f0a2ab37cfb10",
+          "bytes": 1413
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/host-cpu.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/host-cpu.json",
+          "sha256": "98bbdbdfcbee7203ac5b422e9a25813c2833b5602e4656b29ca36383bbd08c87",
+          "bytes": 437
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/adaptation-after-measurement.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/adaptation-after-measurement.json",
+          "sha256": "5d52f69ffcb8c65774803eab1a51efc0ebcc5e24cc18e115c8ebcceb019ac4cb",
+          "bytes": 1329
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/setup.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/setup.json",
+          "sha256": "30a112ccc05dce26a61dc7872a908b3a1ac01699c438d0ff7eedb43f4c9c1ae4",
+          "bytes": 3291
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/source-hashes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/source-hashes.json",
+          "sha256": "39922d470d0024166af491a4848ab9d0982dd16544852d7857de936d9ffd9100",
+          "bytes": 1426
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/native-pixel-reconciliation.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/native-pixel-reconciliation.json",
+          "sha256": "add50cf94f22dbd02cebe0267673abe4cab7dc4a5c353115343371dc27cfb95a",
+          "bytes": 6417
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/measured-source/Program.cs.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/measured-source/Program.cs.txt",
+          "sha256": "1eb624f4c9bad38a5555fb360b920856ce0215f46311144700eba366b358bd7d",
+          "bytes": 26320
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/measured-source/README.md.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/measured-source/README.md.txt",
+          "sha256": "5c5177b03de3ca16279a5b1804dd93a8efa925f1db32a7d7205d90216115bfe1",
+          "bytes": 3347
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/measured-source/run-reference.ps1.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/measured-source/run-reference.ps1.txt",
+          "sha256": "c2fa05342eff0ecdee5729e7715af170802e6938e3cb3418b9845336d8ba08e2",
+          "bytes": 2844
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/measured-source/ScientificReference.csproj.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/measured-source/ScientificReference.csproj.txt",
+          "sha256": "21606e14d6288ea49fc4c569372c5ec40dac79feb8a5fb54c893e8445cc673f0",
+          "bytes": 479
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/measured-source/ScientificReference.deps.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/measured-source/ScientificReference.deps.json",
+          "sha256": "93ef5b756d3c23fb057ad24a8f61d61ea965d7da0d65a2c800f84051097b8c18",
+          "bytes": 451
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/measured-source/ScientificReference.dll",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/measured-source/ScientificReference.dll",
+          "sha256": "c8c3435d2cfee0dc4af9e208c848b63b4816dc51e1bcdbdfa471770a9826767e",
+          "bytes": 86528
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/measured-source/ScientificReference.runtimeconfig.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/measured-source/ScientificReference.runtimeconfig.json",
+          "sha256": "d52c768770009ba1f335a4f8436a0bfb8298fc9b8818b44a3f6624b2ba9f0ea0",
+          "bytes": 552
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/environment.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/environment.json",
+          "sha256": "7967dc9c18f1eab5ad4cd4e402c59ad085d65ab354e397ae6f7b30f1d03c9555",
+          "bytes": 1090
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/summary.json",
+          "sha256": "db65ad0d779ebe6676c2ed07120eb2c7477355afcafcfd2d423cb0afef018971",
+          "bytes": 4973
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/frames.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/frames.json",
+          "sha256": "31d3f21f15aab754f3c9badab418df46cb607ade5f9423e79df7affb90aab924",
+          "bytes": 31269
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/memory-samples.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/memory-samples.json",
+          "sha256": "41d69fa0f9cb3b783710b1b640ce42bf9b93204cad9a56128ccc59d4fec1289c",
+          "bytes": 114701
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/process.json",
+          "sha256": "d533d1172b8f0ac7c1c58f614812ee452d0f6d87ecb2cd28782efd23f1010534",
+          "bytes": 157
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/native-pixels-first.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/native-pixels-first.json",
+          "sha256": "95c03bf2361cb1e2e7cf3add4a19a1b3404ca69bf52258b2ec986f365dd7d57d",
+          "bytes": 1530
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/native-pixels-last.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/native-pixels-last.json",
+          "sha256": "c3a5dfefdf4fed7d33233ada34b168613f411b673ee9b1ff250f037fff711dca",
+          "bytes": 1544
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/native-pixels-zoom-frame15.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Gray16/native-pixels-zoom-frame15.json",
+          "sha256": "8c75675031b536899f5fea24c62ad1a46f3bee9348f7cff0288792aceca66981",
+          "bytes": 1545
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/environment.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/environment.json",
+          "sha256": "befd0be8c8f8c5bf819e7778130d09a3060ea5530b5f827537d5de61a5d9bfbf",
+          "bytes": 1090
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/summary.json",
+          "sha256": "a7a09786f032c5b5508e6083a5ca39c0deb0d20764e14f3b28e00594ca01988e",
+          "bytes": 5000
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/frames.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/frames.json",
+          "sha256": "a0f4f22dcd2c069c99a4a62f5d2fa08bcfde4d8e260807291fc12113f3b2db45",
+          "bytes": 31313
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/memory-samples.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/memory-samples.json",
+          "sha256": "70d3ded6b778a17d8bf8261530894b00eadd1553101a84c1ff492107eb2fa890",
+          "bytes": 114705
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/process.json",
+          "sha256": "1d6c590780aa972d2af4c4a04075944d6db830c228670d620fd1713ad535242f",
+          "bytes": 157
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/native-pixels-first.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/native-pixels-first.json",
+          "sha256": "23ff64f96c327f1e8da9b560767e0fca5921d92d4d4d454c91c536023ff358d9",
+          "bytes": 1532
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/native-pixels-last.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/native-pixels-last.json",
+          "sha256": "568ba0fb97b6a3c97c5848a6f2591aeefea4d01d4ffb53aa6a285bdf59dfbb65",
+          "bytes": 1538
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/native-pixels-zoom-frame15.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/runs/20261018-143137/Rgb48/native-pixels-zoom-frame15.json",
+          "sha256": "4adc19a1063069df9031b28460741597475e04bbab780cc586fadc27e158de2b",
+          "bytes": 1547
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/LINUX-STATUS.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/LINUX-STATUS.md",
+          "sha256": "f92c4198dbe8f50a576c899cad1c1240e41fcaf305a9b81b0c2fbd543553c609",
+          "bytes": 2545
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/sources.sha256",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/sources.sha256",
+          "sha256": "08d3156d9d15417a0cfde4ee7b43d0d036716e7a5f444747cf5a85a748e9e14a",
+          "bytes": 1392
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/shared/Workload.csharp",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/shared/Workload.csharp",
+          "sha256": "4caa26f3287ff66a06cd6794a4ee8d76fd340fac0161f7ec7b5921006c7fb685",
+          "bytes": 20408
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/shared/Viewport.csharp",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/shared/Viewport.csharp",
+          "sha256": "99553877a49a154e18229ccc64905dc58137126fc705482a0ac552c25bf0269f",
+          "bytes": 1094
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/windows-peer/Platform.csharp",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/windows-peer/Platform.csharp",
+          "sha256": "6360705b0ee6224479eafa12a982b415511dc958959a7eb86bf7f117de8eab4b",
+          "bytes": 7785
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/windows-peer/WindowsPeer.csproj",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/windows-peer/WindowsPeer.csproj",
+          "sha256": "ba71d2655186e49c2b750b33728194ce9f50ed753dcbb09c734f971c63587718",
+          "bytes": 970
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/linux-peer/Platform.csharp",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/linux-peer/Platform.csharp",
+          "sha256": "8644f1358aa6c58a4a2145e448fca76347ca3f522f2090baad26d93e290be239",
+          "bytes": 12027
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/linux-peer/X11Fixture.csharp",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/linux-peer/X11Fixture.csharp",
+          "sha256": "b179a1da376478af24d41171011e8c2af8d409b692e7e08f7e4decfadf5cde73",
+          "bytes": 21020
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/linux-peer/LinuxPeer.csproj",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/linux-peer/LinuxPeer.csproj",
+          "sha256": "7843f2330c3d42795f634bb8542bfd07a322c3b03d2bf615b51bbd2b590d5643",
+          "bytes": 1011
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/global.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/global.json",
+          "sha256": "e0c0882461e712f6c2c66241bf2f175c60832e3ff077dc26091ff8c661d4193e",
+          "bytes": 55
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/Prepare.ps1",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/Prepare.ps1",
+          "sha256": "1662a83bed0db936cc7d6b1e05de36f006ab97b3a756f092aa5fc545f2557034",
+          "bytes": 4134
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/run-windows-short.ps1",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/run-windows-short.ps1",
+          "sha256": "75964bf11b5be411225e5abc62cafd46bbfbbd10edc900962d6452b8671b026a",
+          "bytes": 2148
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/run-linux.sh",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/run-linux.sh",
+          "sha256": "94ab4ad1e7f49baff0a46e1174b474014f04ab0a2ab0501f84b49b2dd396aa9a",
+          "bytes": 4741
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/source-map.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/source-map.json",
+          "sha256": "360cc4a57242f9361cba4749dbeb954c78200f5d5b079f6e0c62ec0320a596a8",
+          "bytes": 1058
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/extraction.diff",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/extraction.diff",
+          "sha256": "46000ee4e2a66faabdc06415e4a3fa826f693ca09b2e6163b8b0757f55c8dfcd",
+          "bytes": 11147
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/provenance.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/provenance.json",
+          "sha256": "ff03443cf013ab8ad78b16d746ffa1c292dc8d70a2e1da444256f454400b7c92",
+          "bytes": 524
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/README.md",
+          "sha256": "67fbb7cfd513179e268dca3b8644442a1e2ad567eb8af2b0509f2f42c70af4d5",
+          "bytes": 4586
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/preparation-checkpoint.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/preparation-checkpoint.json",
+          "sha256": "02eeb504c57698ac463d6bc3a943e0e80730e7e4c0b25e9cf0d59931dcd626a7",
+          "bytes": 477
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/build.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/build.log",
+          "sha256": "6965b821cccadb6bd3a39514befa85fc66172c962aa124f0dbc6a5863ec8de58",
+          "bytes": 810
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/feed-selection.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/feed-selection.json",
+          "sha256": "a5d95f9b2e156b2e13e3d0566ab3c84a22956f121429979eb91a2d5751fdc76a",
+          "bytes": 337
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/runner-exit.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/runner-exit.json",
+          "sha256": "7364aff98392bf9e1de05b97fe12340f0c663bb1520dfeda0581778968598b20",
+          "bytes": 80
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/compiled-source-hashes.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/compiled-source-hashes.txt",
+          "sha256": "6d994c914c4ca6791908638aa099b9fabc78505e10fa01e81aa32c9ebbce8e85",
+          "bytes": 460
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/runs/preflight-Gray16/process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/runs/preflight-Gray16/process.json",
+          "sha256": "1903de9b4b939ca4a77dea8f63a82810406a79145d361745a727145a6a1d6efa",
+          "bytes": 17
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/runs/preflight-Gray16/runtime-audit.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/runs/preflight-Gray16/runtime-audit.json",
+          "sha256": "c54d2e4f2e1a671d97f61574ecec8140b09804bdb38aa8b3dafbdcd0ee5c2d47",
+          "bytes": 30310
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/runs/preflight-Gray16/stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/runs/preflight-Gray16/stderr.log",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "bytes": 0
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/runs/preflight-Gray16/stdout.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-scientific-reference-and-startup-red/artifacts/portability/scientific-workload-reference/countermeasurement/runs/linux-20261018-132516/runs/preflight-Gray16/stdout.log",
+          "sha256": "6e1388322917ea28db128d343731525bff509048f2be87bbeca1578e66aaebc2",
+          "bytes": 3088
+        }
+      ]
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",
-  "phase2Status": "not-yet-qualified"
+  "phase2Status": "integrated-view-passed-startup-and-performance-pending",
+  "phase3Status": "unchanged-direct-view-construction-passed-default-theme-layout-failed"
 }
