@@ -304,7 +304,9 @@ namespace System.Windows.Media.TextFormatting
         /// </summary>
         protected void OnPropertiesChanged()
         {
+#if !PORTABLE_WPF
             _features = null;
+#endif
         }
         
         /// <summary>
@@ -314,14 +316,24 @@ namespace System.Windows.Media.TextFormatting
         {
             get
             {
+#if PORTABLE_WPF
+                throw new NotSupportedException("The native DirectWrite typography feature cache is not available in portable WPF.");
+#else
                 return _features;
+#endif
             }
             set
             {
+#if PORTABLE_WPF
+                throw new NotSupportedException("The native DirectWrite typography feature cache is not available in portable WPF.");
+#else
                 _features = value;
+#endif
             }
         }
 
+#if !PORTABLE_WPF
         private DWriteFontFeature[] _features = null;
+#endif
 }
 }

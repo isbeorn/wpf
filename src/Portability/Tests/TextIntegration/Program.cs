@@ -284,6 +284,50 @@ try
     Expect<NotSupportedException>(() => _ = face.AdvanceHeights[h], "reject-unported-vertical-metrics");
     var disposed = TextFormatter.Create(); disposed.Dispose();
     Expect<ObjectDisposedException>(() => disposed.FormatLine(new Source("x", properties), 0, 1000, paragraph, null), "disposed-formatter");
+    Regression("managed-typography-construction", () =>
+    {
+        var typography = new TestTypography();
+        typography.Invalidate();
+        Require(typography.StandardLigatures && typography.Kerning && typography.Variants == FontVariants.Normal,
+            "typography-base-construction-and-invalidation", "An actual TextRunTypographyProperties subclass constructs and invalidates its cache without loading native feature storage.");
+    });
+    Regression("actual-span-vector-construction", () =>
+    {
+        Type vectorType = typeof(FormattedText).Assembly.GetType("MS.Internal.SpanVector", throwOnError: true)!;
+        object vector = Activator.CreateInstance(vectorType, [null])!;
+        vectorType.GetMethod("SetReference", [typeof(int), typeof(int), typeof(object)])!.Invoke(vector, [0, 3, "abc"]);
+        Require((int)vectorType.GetProperty("Count")!.GetValue(vector)! == 1,
+            "managed-span-vector-source-container", "The actual source SpanVector constructs and stores a range without loading the C++/CLI span container.");
+    });
+    Regression("public-formatted-text", () =>
+    {
+        const string text = "NINA exposure";
+        var formatted = new FormattedText(text, CultureInfo.GetCultureInfo("en-US"), FlowDirection.LeftToRight,
+            new Typeface(family), 20, Brushes.Green, 1) { Trimming = TextTrimming.None };
+        double original = formatted.Width;
+        formatted.SetFontSize(30, 5, 8);
+        Require(formatted.Width > original && formatted.Height > 20,
+            "formatted-text-range-split", "Public FormattedText range formatting splits the actual span vector and updates measured metrics.");
+        formatted.SetFontSize(20, 5, 8);
+        Require(Near(formatted.Width, original), "formatted-text-range-restore",
+            "Restoring the range's font size rejoins equivalent formatting and restores the original measurement.");
+        formatted.SetForegroundBrush(Brushes.Blue, 5, 8);
+        var formattedVisual = new DrawingVisual();
+        using (var context = formattedVisual.RenderOpen())
+            context.DrawText(formatted, new Point(8, 10));
+        var output = FindGlyphs(formattedVisual.Drawing).ToArray();
+        Require(output.Length == 2 && output.SelectMany(run => run.GlyphRun.Characters).SequenceEqual(text) &&
+            ReferenceEquals(output[1].ForegroundBrush, Brushes.Blue), "formatted-text-retained-glyphs",
+            "DrawingContext.DrawText records actual GlyphRuns for both styled source ranges.");
+        using var formattedTarget = new Target(formattedVisual, 320, 100);
+        Drain();
+        using var bitmap = formattedTarget.Snapshot();
+        var bounds = InkBounds(bitmap);
+        Require(bounds.Right > bounds.Left && bounds.Bottom > bounds.Top, "formatted-text-retained-pixels",
+            "Public FormattedText construction, measurement and drawing reach real retained software pixels.");
+    });
+    Require(!AppDomain.CurrentDomain.GetAssemblies().Any(assembly => assembly.GetName().Name is "DirectWriteForwarder" or "System.Windows.Input.Manipulations"),
+        "no-windows-interop-loads", "All exercised text paths complete without loading Windows-only interop assemblies.");
 }
 catch (Exception exception)
 {

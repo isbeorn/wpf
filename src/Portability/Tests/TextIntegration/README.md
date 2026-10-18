@@ -39,11 +39,23 @@ compares rendered pixel extents against measured glyph bounds and checks that
 a mutable text brush causes an actual dispatcher render with changed pixels.
 It writes `formatted-text.png` below the test artifact directory.
 
+Public `FormattedText` construction, range font-size split/restore, brush range
+formatting, metrics and `DrawingContext.DrawText` are also exercised through
+retained pixels. Actual `SpanVector` construction and a public typography
+subclass cover the two previously eager C++/CLI dependencies. The portable
+span element preserves the reference semantics and two fields of
+`DirectWriteForwarder/CPP/DWriteWrapper/ItemSpan.{h,cpp}`; the existing vector's
+mutation and range algorithms are unchanged. This is a managed container port,
+not a replacement for DirectWrite itemization.
+
 The JSON report records the actual loaded framework assembly, loaded
 `DirectWriteForwarder`/manipulation assemblies and Linux `/proc/self/maps`
 entries for Windows WPF modules. Compile-time metadata references remain in
 the full source closure. Successful bounded active paths do not establish that
 every assembly method or reflected type can execute without Windows natives.
+The exercised paths assert that no Windows interop assembly was loaded. A
+successful run also requires process exit code zero, since JSON emitted before
+shutdown alone does not establish that native module cleanup succeeded.
 
 ## Supported initial contract and open gates
 
@@ -61,6 +73,9 @@ collapsing, optimal paragraph caches and native Line Services contexts. Font
 style simulations, font collections/face indexes and non-file sources remain
 unsupported. The current line limit is 32767 UTF-16 units. Only Unicode cmap
 formats 4 and 12 are supported by `CharacterToGlyphMap`.
+The legacy `TypefaceMap.GetShapeableText` DirectWrite itemizer and native
+typography feature cache remain unavailable. Portable typography construction
+and invalidation do not implement custom OpenType feature controls.
 
 `GlyphTypeface`'s supported data includes file identity/stream, style, weight,
 stretch, horizontal normalized line metrics, `GlyphCount`, Unicode character

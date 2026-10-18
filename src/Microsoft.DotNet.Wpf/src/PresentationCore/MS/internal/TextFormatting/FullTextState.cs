@@ -8,6 +8,11 @@ using System.Globalization;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using MS.Internal.Generic;
+#if PORTABLE_WPF
+using ItemSpan = MS.Internal.TextFormatting.Portable.PortableSpan;
+#else
+using ItemSpan = MS.Internal.Span;
+#endif
 
 
 namespace MS.Internal.TextFormatting
@@ -286,7 +291,7 @@ namespace MS.Internal.TextFormatting
             int lsccp = lscpLim - _store.CpFirst;
             Debug.Assert(lsccp > 0, "Zero-length text line!");
 
-            foreach (Span span in _store.PlsrunVector)
+            foreach (ItemSpan span in _store.PlsrunVector)
             {
                 if (lsccp <= 0)
                     break;
@@ -368,7 +373,7 @@ namespace MS.Internal.TextFormatting
 
             do
             {
-                Span span = plsrunVector[i];
+                ItemSpan span = plsrunVector[i];
                 Plsrun plsrun = (Plsrun)span.element;
                 lsrun = _store.GetRun(plsrun);
 

@@ -12,6 +12,11 @@
 
 using System.Collections;
 using MS.Utility;
+#if PORTABLE_WPF
+using ItemSpan = MS.Internal.TextFormatting.Portable.PortableSpan;
+#else
+using ItemSpan = MS.Internal.Span;
+#endif
 
 namespace MS.Internal
 {
@@ -26,13 +31,13 @@ namespace MS.Internal
         public SpanVector(object defaultObject)
             : this(
                 defaultObject,
-                new FrugalStructList<Span>()
+                new FrugalStructList<ItemSpan>()
                 )
         {}
 
         internal SpanVector(
             object      defaultObject,
-            FrugalStructList<Span>   spans
+            FrugalStructList<ItemSpan>   spans
             )
         {
             _defaultObject = defaultObject;
@@ -51,7 +56,7 @@ namespace MS.Internal
         /// <summary>
         /// Add a new span to vector
         /// </summary>
-        private void Add(Span span)
+        private void Add(ItemSpan span)
         {
             _spans.Add(span);
         }
@@ -83,7 +88,7 @@ namespace MS.Internal
         private void Insert(int index, int count)
         {
             for (int c = 0; c < count; c++)
-                _spans.Insert(index, new Span(null, 0));
+                _spans.Insert(index, new ItemSpan(null, 0));
         }
 
         #region Public operation
@@ -223,7 +228,7 @@ namespace MS.Internal
                 if (fc < first)
                 {
                     // Create default run up to first
-                    Add(new Span(_defaultObject, first - fc));
+                    Add(new ItemSpan(_defaultObject, first - fc));
                 }
 
                 if (   Count > 0 
@@ -240,7 +245,7 @@ namespace MS.Internal
                 }
                 else
                 {
-                    Add(new Span(element, length));
+                    Add(new ItemSpan(element, length));
                 }
             }
             else
@@ -315,7 +320,7 @@ namespace MS.Internal
                                 throw new OutOfMemoryException();
                         }
                         _spans[fs].length = first - fc;
-                        _spans[fs + 1] = new Span(element, length);
+                        _spans[fs + 1] = new ItemSpan(element, length);
                     }
                     else
                     {
@@ -325,7 +330,7 @@ namespace MS.Internal
                             if (!Resize(fs + 1))
                                 throw new OutOfMemoryException();
                         }
-                        _spans[fs] = new Span(element, length);
+                        _spans[fs] = new ItemSpan(element, length);
                     }
                 }
                 else
@@ -360,7 +365,7 @@ namespace MS.Internal
                         // Initialize inserted Spans
                         for (int i = 0; i < spanDelta; i++)
                         {
-                            _spans[fs + 1 + i] = new Span(null, 0);
+                            _spans[fs + 1 + i] = new ItemSpan(null, 0);
                         }
                     }
 
@@ -377,7 +382,7 @@ namespace MS.Internal
 
                     // Record Element type for updated range
 
-                    _spans[fs] = new Span(element, length);
+                    _spans[fs] = new ItemSpan(element, length);
                     fs++;
                     fc += length;
 
@@ -385,7 +390,7 @@ namespace MS.Internal
 
                     if (lc < first + length)
                     {
-                        _spans[fs] = new Span(trailingElement, trailingLength);
+                        _spans[fs] = new ItemSpan(trailingElement, trailingLength);
                     }
                 }
             }
@@ -414,7 +419,7 @@ namespace MS.Internal
         /// <summary>
         /// Span accessor at nth element
         /// </summary>
-        public Span this[int index]
+        public ItemSpan this[int index]
         {
             get { return _spans[index]; }
         }
@@ -427,7 +432,7 @@ namespace MS.Internal
             {
                 for (int c = 0; c < targetCount - Count; c++)
                 {
-                    _spans.Add(new Span(null, 0));
+                    _spans.Add(new ItemSpan(null, 0));
                 }
             }
             else if (targetCount < Count)
@@ -440,7 +445,7 @@ namespace MS.Internal
         private static Equals _referenceEquals = new Equals(Object.ReferenceEquals);
         private static Equals _equals = new Equals(Object.Equals);
 
-        private FrugalStructList<Span>  _spans;
+        private FrugalStructList<ItemSpan>  _spans;
         private object                  _defaultObject;
         #endregion
     }

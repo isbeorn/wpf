@@ -1,0 +1,50 @@
+using System.Windows;
+using System.Windows.Media.TextFormatting;
+
+sealed class TestTypography : TextRunTypographyProperties
+{
+    public void Invalidate() => OnPropertiesChanged();
+    public override bool StandardLigatures => true;
+    public override bool ContextualLigatures => true;
+    public override bool DiscretionaryLigatures => false;
+    public override bool HistoricalLigatures => false;
+    public override bool ContextualAlternates => true;
+    public override bool HistoricalForms => false;
+    public override bool Kerning => true;
+    public override bool CapitalSpacing => false;
+    public override bool CaseSensitiveForms => false;
+    public override bool StylisticSet1 => false;
+    public override bool StylisticSet2 => false;
+    public override bool StylisticSet3 => false;
+    public override bool StylisticSet4 => false;
+    public override bool StylisticSet5 => false;
+    public override bool StylisticSet6 => false;
+    public override bool StylisticSet7 => false;
+    public override bool StylisticSet8 => false;
+    public override bool StylisticSet9 => false;
+    public override bool StylisticSet10 => false;
+    public override bool StylisticSet11 => false;
+    public override bool StylisticSet12 => false;
+    public override bool StylisticSet13 => false;
+    public override bool StylisticSet14 => false;
+    public override bool StylisticSet15 => false;
+    public override bool StylisticSet16 => false;
+    public override bool StylisticSet17 => false;
+    public override bool StylisticSet18 => false;
+    public override bool StylisticSet19 => false;
+    public override bool StylisticSet20 => false;
+    public override bool SlashedZero => false;
+    public override bool MathematicalGreek => false;
+    public override bool EastAsianExpertForms => false;
+    public override FontVariants Variants => default;
+    public override FontCapitals Capitals => default;
+    public override FontFraction Fraction => default;
+    public override FontNumeralStyle NumeralStyle => default;
+    public override FontNumeralAlignment NumeralAlignment => default;
+    public override FontEastAsianWidths EastAsianWidths => default;
+    public override FontEastAsianLanguage EastAsianLanguage => default;
+    public override int StandardSwashes => 0;
+    public override int ContextualSwashes => 0;
+    public override int StylisticAlternates => 0;
+    public override int AnnotationAlternates => 0;
+}

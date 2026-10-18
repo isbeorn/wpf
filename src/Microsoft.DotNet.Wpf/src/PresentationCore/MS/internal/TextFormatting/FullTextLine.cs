@@ -8,6 +8,11 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
+#if PORTABLE_WPF
+using ItemSpan = MS.Internal.TextFormatting.Portable.PortableSpan;
+#else
+using ItemSpan = MS.Internal.Span;
+#endif
 
 namespace MS.Internal.TextFormatting
 {
@@ -2067,7 +2072,7 @@ namespace MS.Internal.TextFormatting
 
                 for (int i = 0; i < _plsrunVector.Count && cchLeft > 0; i++)
                 {
-                    Span plsrunSpan = _plsrunVector[i];
+                    ItemSpan plsrunSpan = _plsrunVector[i];
 
                     int cch = CpCount(plsrunSpan);
                     cch = Math.Min(cch, cchLeft);
@@ -2666,7 +2671,7 @@ namespace MS.Internal.TextFormatting
                 int cpTarget = cp;
                 cp = lscp;
 
-                foreach(Span span in _plsrunVector)
+                foreach(ItemSpan span in _plsrunVector)
                 {
                     int ccp = CpCount(span);
 
@@ -2720,7 +2725,7 @@ namespace MS.Internal.TextFormatting
             /// </summary>
             /// <param name="plsrunSpan">span of plsrun</param>
             /// <returns>lsrun actual cp</returns>
-            internal int CpCount(Span plsrunSpan)
+            internal int CpCount(ItemSpan plsrunSpan)
             {
                 Plsrun plsrun = (Plsrun)plsrunSpan.element;
 

@@ -76,6 +76,9 @@ namespace MS.Internal.Shaping
             TextFormattingMode          textFormattingMode
             )
         {
+#if PORTABLE_WPF
+            throw new NotSupportedException("Legacy DirectWrite text itemization is not available in portable WPF; portable TextFormatter uses its own shaping path.");
+#else
             SpanVector<int> cachedScaledTypefaceIndexSpans;
             
             int ichItem = 0;
@@ -195,6 +198,7 @@ namespace MS.Internal.Shaping
 
                 ich += cch;
             }
+#endif
         }
 
 
