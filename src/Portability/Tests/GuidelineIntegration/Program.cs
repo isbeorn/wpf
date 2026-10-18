@@ -21,6 +21,13 @@ using var reference = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContex
 var thread = new Thread(() =>
 {
     CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+    if (!args.Contains("--visibility-only") && !args.Contains("--visual-brush-only"))
+    {
+        var dashes = DashedPenCases.Run(Render, args);
+        results.AddRange(dashes);
+        failed |= dashes.Any(item => !item.passed);
+        if (args.Contains("--dashes-only")) { Dispatcher.CurrentDispatcher.InvokeShutdown(); return; }
+    }
     if (!args.Contains("--visual-brush-only"))
     {
         var visibility = VisibilityCases.Run(Render);

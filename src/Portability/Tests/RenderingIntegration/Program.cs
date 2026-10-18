@@ -26,6 +26,7 @@ if (args.Contains("--visibility-only"))
     Console.WriteLine(JsonSerializer.Serialize(new { probe = "retained-visibility", checks }, new JsonSerializerOptions { WriteIndented = true }));
     return failed ? 1 : 0;
 }
+Run("retained-dashes-mutate-clear-restore-sibling-and-recover", () => DashedPenRetentionChecks.Run(Drain));
 Run("retained-command-bounds-survive-render-and-mutation", () =>
 {
     var transform = new MatrixTransform(2, 0, 0, 3, 8, 9);
