@@ -34,7 +34,8 @@ namespace MS.Internal.Portability.Rendering
         public override void DrawRoundedRectangle(Brush brush, Pen pen, Rect rectangle, double radiusX, double radiusY)
         {
             if (rectangle.IsEmpty) return;
-            Paint(brush, pen, paint => Canvas.DrawRoundRect(ToRect(rectangle), (float)Math.Abs(radiusX), (float)Math.Abs(radiusY), paint));
+            Paint(brush, pen, paint => Canvas.DrawRoundRect(ToRect(rectangle),
+                (float)Math.Min(Math.Abs(radiusX), rectangle.Width / 2), (float)Math.Min(Math.Abs(radiusY), rectangle.Height / 2), paint));
         }
 
         public override void DrawEllipse(Brush brush, Pen pen, Point center, double radiusX, double radiusY)

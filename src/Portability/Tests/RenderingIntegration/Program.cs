@@ -9,6 +9,28 @@ using SkiaSharp;
 
 var checks = new List<object>();
 var failed = false;
+Run("rounded-rectangle-independent-radius-clamping", () =>
+{
+    var root = new DrawingVisual();
+    using (var drawing = root.RenderOpen())
+    {
+        drawing.DrawGeometry(Brushes.Red, null, new RectangleGeometry(new Rect(0, 0, 20, 20), 100, 2));
+        drawing.DrawGeometry(Brushes.Blue, null, new RectangleGeometry(new Rect(24, 0, 20, 20), 2, 100));
+        drawing.DrawRoundedRectangle(Brushes.Green, null, new Rect(48, 0, 20, 20), 100, 2);
+        drawing.DrawRoundedRectangle(Brushes.Magenta, null, new Rect(72, 0, 20, 20), 2, 100);
+    }
+    using var target = new Target(root, 96, 24);
+    Drain();
+    using var pixels = target.Snapshot();
+    Pixel(pixels, 0, 0, SKColors.Transparent);
+    Pixel(pixels, 24, 0, SKColors.Transparent);
+    Pixel(pixels, 48, 0, SKColors.Transparent);
+    Pixel(pixels, 72, 0, SKColors.Transparent);
+    Pixel(pixels, 10, 10, SKColors.Red);
+    Pixel(pixels, 34, 10, SKColors.Blue);
+    Pixel(pixels, 58, 10, SKColors.Green);
+    Pixel(pixels, 82, 10, SKColors.Magenta);
+});
 Run("first-root-dpi-registration-and-child-inheritance", () =>
 {
     var root = new ContainerVisual();

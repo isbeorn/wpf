@@ -377,6 +377,10 @@ namespace System.Windows.Media
         /// <param name="type">The way the error tolerance will be interpreted - relative or absolute</param>
         internal virtual bool ContainsInternal(Pen pen, Point hitPoint, double tolerance, ToleranceType type)
         {
+#if PORTABLE_WPF
+            ReadPreamble();
+            return MS.Internal.Portability.Rendering.SkiaGeometry.Contains(this, pen, hitPoint, tolerance, type);
+#else
             if (IsObviouslyEmpty())
             {
                 return false;
@@ -432,6 +436,7 @@ namespace System.Windows.Media
             }
 
             return contains;
+#endif
         }
 
         /// <summary>
@@ -440,6 +445,10 @@ namespace System.Windows.Media
         internal unsafe bool ContainsInternal(Pen pen, Point hitPoint, double tolerance, ToleranceType type, 
                                                 Point *pPoints, uint pointCount, byte *pTypes, uint typeCount)
         {
+#if PORTABLE_WPF
+            ReadPreamble();
+            return MS.Internal.Portability.Rendering.SkiaGeometry.Contains(this, pen, hitPoint, tolerance, type);
+#else
             bool contains = false;
 
             MilMatrix3x2D matrix = CompositionResourceManager.TransformToMilMatrix3x2D(Transform);
@@ -477,6 +486,7 @@ namespace System.Windows.Media
             }
 
             return contains;
+#endif
         }
 
         /// <summary>

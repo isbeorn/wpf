@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><DefineConstants>$(DefineConstants);PORTABLE_GEOMETRY_TESTS</DefineConstants></PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Reference/**" />
+    <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" />
+    <ProjectReference Include="../../Framework/WindowsBase/WindowsBase.csproj" />
+  </ItemGroup>
+  <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+</Project>

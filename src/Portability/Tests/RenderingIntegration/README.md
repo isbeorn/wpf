@@ -16,6 +16,7 @@ The output is JSON and failures return exit code 1. Each check runs on an isolat
 The behavior checklist covers:
 
 - Actual recorded clipped and transformed rectangles with composite opacity.
+- Rounded rectangle radii clamped independently on each axis, through both retained geometry and the direct drawing command.
 - Real `UIElement.Measure`/`Arrange`, retained `OnRender` pixels, brush invalidation and `InvalidateVisual`/`UpdateLayout` recording.
 - Brush and transform mutation repainting without another `RenderOpen`, including restoring values.
 - Content replacement removing subscriptions to the original resources, checked through actual dispatcher render postings.
