@@ -10,17 +10,20 @@ internal sealed class X11Fixture : IDisposable
     internal string SettingsOrigin => "_XSETTINGS_S" + XDefaultScreen(_display) + "/owner=0x" +
         _settingsOwner.ToInt64().ToString("x") + "/_XSETTINGS_SETTINGS";
 
-    internal X11Fixture(string settings)
+    internal X11Fixture(string settings, byte[]? settingsPayload = null)
     {
         _display = XOpenDisplay(IntPtr.Zero);
         if (_display == IntPtr.Zero) throw new InvalidOperationException("XOpenDisplay failed for the native fixture.");
         _root = XDefaultRootWindow(_display);
+        var selection = XInternAtom(_display, "_XSETTINGS_S" + XDefaultScreen(_display), false);
+        if (XGetSelectionOwner(_display, selection) != IntPtr.Zero)
+            throw new InvalidOperationException("The native fixture refuses to replace an existing XSETTINGS selection owner. Use a dedicated Xvfb server.");
         if (settings == "absent") return;
         _settingsOwner = XCreateSimpleWindow(_display, _root, 0, 0, 1, 1, 0, IntPtr.Zero, IntPtr.Zero);
-        byte[] data = Settings(settings);
+        byte[] data = settingsPayload ?? Settings(settings);
         var property = XInternAtom(_display, "_XSETTINGS_SETTINGS", false);
-        XChangeProperty(_display, _settingsOwner, property, property, 8, 0, data, data.Length);
-        XSetSelectionOwner(_display, XInternAtom(_display, "_XSETTINGS_S" + XDefaultScreen(_display), false), _settingsOwner, IntPtr.Zero);
+        if (settings != "absent-property") XChangeProperty(_display, _settingsOwner, property, property, 8, 0, data, data.Length);
+        XSetSelectionOwner(_display, selection, _settingsOwner, IntPtr.Zero);
         XSync(_display, false);
     }
 
@@ -284,19 +287,43 @@ internal sealed class X11Fixture : IDisposable
 
     private static byte[] Settings(string variant)
     {
-        var bytes = new List<byte> { variant == "big" ? (byte)1 : (byte)0, 0, 0, 0 };
-        bool little = variant != "big";
-        Add32(1); Add32(variant == "duplicate" ? 3u : 2u);
-        Entry("Net/DoubleClickTime", 450, variant == "value-type" ? (byte)1 : (byte)0);
-        Entry("Net/DoubleClickDistance", 5);
+        string nameVariant = variant.EndsWith("-little", StringComparison.Ordinal) ? variant[..^7] : variant.EndsWith("-big", StringComparison.Ordinal) ? variant[..^4] : variant;
+        string[] extraNames = nameVariant switch
+        {
+            "name-illegal-distance" => ["Net/DoubleClickDistanc?"],
+            "name-unknown-illegal" => ["Other/invalid?"],
+            "name-nonascii" => ["Other/\u00ff"],
+            "name-nul" => ["Other/\0"],
+            "name-empty" => [""],
+            "name-leading-slash" => ["/Other"],
+            "name-trailing-slash" => ["Other/"],
+            "name-empty-segment" => ["Other//Name"],
+            "name-digit-start" => ["0Other"],
+            "name-digit-segment" => ["Other/0Name"],
+            "name-valid" => ["Other/valid_name0", "_111/_background", "_background"],
+            _ => []
+        };
+        bool missingDistance = variant.StartsWith("missing-distance", StringComparison.Ordinal) || variant == "both-absent" || extraNames.Length != 0;
+        bool missingTime = variant is "missing-time" or "both-absent";
+        bool little = variant != "big" && !variant.EndsWith("-big", StringComparison.Ordinal);
+        var bytes = new List<byte> { little ? (byte)0 : (byte)1, 0, 0, 0 };
+        Add32(1); Add32((uint)((missingDistance ? 0 : 1) + (missingTime ? 0 : 1) + extraNames.Length + (variant is "duplicate" or "distance-duplicate" or "missing-distance-duplicate" ? 1 : 0)));
+        if (!missingTime) Entry("Net/DoubleClickTime", variant == "published-min" ? 1u : missingDistance || variant == "published-max" ? 400u : variant.StartsWith("published", StringComparison.Ordinal) ? 725u : 450u,
+            variant is "value-type" or "missing-distance-value-type" ? (byte)1 : (byte)0);
+        if (!missingDistance) Entry("Net/DoubleClickDistance", variant == "distance-range" ? 0u : variant == "published-min" ? 1u : variant == "published-max" ? int.MaxValue : variant.StartsWith("published", StringComparison.Ordinal) ? 11u : 5u,
+            variant == "distance-value-type" ? (byte)1 : (byte)0);
+        foreach (string name in extraNames) Entry(name, 11);
         if (variant == "duplicate") Entry("Net/DoubleClickTime", 400);
-        if (variant == "trailing") bytes.Add(0);
+        if (variant == "distance-duplicate") Entry("Net/DoubleClickDistance", 6);
+        if (variant == "missing-distance-duplicate") Entry("Net/DoubleClickTime", 400);
+        if (variant is "trailing" or "missing-distance-trailing") bytes.Add(0);
         var result = bytes.ToArray();
-        if (variant == "header") result[0] = 2;
-        if (variant == "count") BinaryPrimitives.WriteUInt32LittleEndian(result.AsSpan(8), 5000);
-        if (variant == "truncated") Array.Resize(ref result, result.Length - 1);
-        if (variant == "type") result[12] = 9;
-        if (variant == "range") BinaryPrimitives.WriteInt32LittleEndian(result.AsSpan(40), 0);
+        if (variant is "header" or "missing-distance-header") result[0] = 2;
+        if (variant is "count" or "missing-distance-count") BinaryPrimitives.WriteUInt32LittleEndian(result.AsSpan(8), 5000);
+        if (variant == "missing-distance-under-count") BinaryPrimitives.WriteUInt32LittleEndian(result.AsSpan(8), 0);
+        if (variant is "truncated" or "missing-distance-truncated") Array.Resize(ref result, result.Length - 1);
+        if (variant is "type" or "missing-distance-type") result[12] = 9;
+        if (variant is "range" or "missing-distance-range") BinaryPrimitives.WriteInt32LittleEndian(result.AsSpan(40), 0);
         return result;
 
         void Add32(uint value)
@@ -304,9 +331,10 @@ internal sealed class X11Fixture : IDisposable
         void Entry(string name, uint value, byte type = 0)
         {
             bytes.Add(type); bytes.Add(0);
+            byte[] nameBytes = Encoding.UTF8.GetBytes(name);
             Span<byte> length = stackalloc byte[2];
-            if (little) BinaryPrimitives.WriteUInt16LittleEndian(length, (ushort)name.Length); else BinaryPrimitives.WriteUInt16BigEndian(length, (ushort)name.Length);
-            bytes.AddRange(length.ToArray()); bytes.AddRange(Encoding.ASCII.GetBytes(name));
+            if (little) BinaryPrimitives.WriteUInt16LittleEndian(length, (ushort)nameBytes.Length); else BinaryPrimitives.WriteUInt16BigEndian(length, (ushort)nameBytes.Length);
+            bytes.AddRange(length.ToArray()); bytes.AddRange(nameBytes);
             while (bytes.Count % 4 != 0) bytes.Add(0);
             Add32(1);
             if (type == 1)
@@ -342,6 +370,7 @@ internal sealed class X11Fixture : IDisposable
         public IntPtr Screen;
     }
     [DllImport("libX11.so.6")] private static extern IntPtr XOpenDisplay(IntPtr name);
+    [DllImport("libX11.so.6")] private static extern IntPtr XGetSelectionOwner(IntPtr display, IntPtr selection);
     [DllImport("libX11.so.6")] private static extern int XCloseDisplay(IntPtr display);
     [DllImport("libX11.so.6")] private static extern IntPtr XDefaultRootWindow(IntPtr display);
     [DllImport("libX11.so.6")] private static extern int XDefaultScreen(IntPtr display);

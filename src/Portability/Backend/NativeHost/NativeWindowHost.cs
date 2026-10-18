@@ -12,19 +12,37 @@ namespace Wpf.Portable.NativeHost;
 
 public static class NativeWindowHost
 {
+    private const int DeclaredDoubleClickDistancePixels = 5;
+    internal static NativePointerPreferences? PointerPreferences { get; private set; }
+
     public static void InitializeForCurrentThread(AppBuilder builder)
     {
         NativeDispatcherHost.InitializeForCurrentThread(builder, softwareFramebuffer: true);
-        var (data, _) = ExternalWindowBridge.ReadPointerSettingsProperty();
-        var preferences = XSettingsPointerPreferences.Parse(data);
+        var (data, origin) = ExternalWindowBridge.ReadPointerSettingsProperty();
+        var preferences = ResolvePointerPreferences(XSettingsPointerPreferences.Parse(data), origin);
         PortableSystemSettingsProvider.Register(PortableSystemSettings.CreateInitialLightProfile(pointerSettings:
             new PortablePointerSettings(preferences.Distance, preferences.Distance, preferences.Time)));
         PortableWindowPlatform.RegisterFactory(new NativeWindowFactory(
             AvaloniaLocator.Current.GetRequiredService<IWindowingPlatform>()));
+        PointerPreferences = preferences;
+    }
+
+    private static NativePointerPreferences ResolvePointerPreferences(XSettingsPointerPreferences parsed, string origin)
+    {
+        if (parsed.Time is null)
+            throw new PlatformNotSupportedException("Native XSETTINGS must supply Net/DoubleClickTime as a positive integer preference.");
+        return new(parsed.Distance ?? DeclaredDoubleClickDistancePixels, parsed.Time.Value, origin,
+            parsed.Distance.HasValue ? PointerPreferenceSource.XSettings : PointerPreferenceSource.DeclaredFallback,
+            PointerPreferenceSource.XSettings);
     }
 }
 
-internal readonly record struct XSettingsPointerPreferences(int Distance, int Time)
+internal enum PointerPreferenceSource { XSettings, DeclaredFallback }
+
+internal readonly record struct NativePointerPreferences(int Distance, int Time, string Origin,
+    PointerPreferenceSource DistanceSource, PointerPreferenceSource TimeSource);
+
+internal readonly record struct XSettingsPointerPreferences(int? Distance, int? Time)
 {
     internal static XSettingsPointerPreferences Parse(ReadOnlySpan<byte> data)
     {
@@ -43,7 +61,9 @@ internal readonly record struct XSettingsPointerPreferences(int Distance, int Ti
             offset += 2;
             int length = Read16(data, ref offset, little);
             Need(data, offset, length);
-            string name = Encoding.ASCII.GetString(data.Slice(offset, length));
+            ReadOnlySpan<byte> nameBytes = data.Slice(offset, length);
+            ValidateName(nameBytes);
+            string name = Encoding.ASCII.GetString(nameBytes);
             offset = Align(checked(offset + length));
             Read32(data, ref offset, little);
             int? value = null;
@@ -62,16 +82,29 @@ internal readonly record struct XSettingsPointerPreferences(int Distance, int Ti
             if (name == "Net/DoubleClickDistance") Assign(ref distance, value, name);
             if (name == "Net/DoubleClickTime") Assign(ref time, value, name);
         }
-        if (distance is not > 0 || time is not > 0)
-            throw new PlatformNotSupportedException("Native XSETTINGS must supply valid Net/DoubleClickDistance and Net/DoubleClickTime integer preferences.");
         if (offset != data.Length) throw new InvalidDataException("The native XSETTINGS property contains trailing or truncated bytes.");
-        return new(distance.Value, time.Value);
+        return new(distance, time);
+    }
+
+    private static void ValidateName(ReadOnlySpan<byte> name)
+    {
+        bool segmentStart = true;
+        foreach (byte character in name)
+        {
+            if (character == (byte)'/' && !segmentStart) segmentStart = true;
+            else if (character is >= (byte)'A' and <= (byte)'Z' or >= (byte)'a' and <= (byte)'z' or (byte)'_' ||
+                (!segmentStart && character is >= (byte)'0' and <= (byte)'9')) segmentStart = false;
+            else throw new InvalidDataException("The native XSETTINGS entry name is invalid.");
+        }
+        if (segmentStart) throw new InvalidDataException("The native XSETTINGS entry name is empty or has an empty segment.");
     }
 
     private static void Assign(ref int? destination, int? value, string name)
     {
         if (destination.HasValue || !value.HasValue)
             throw new InvalidDataException("The native XSETTINGS preference '" + name + "' is duplicated or has an invalid type.");
+        if (value <= 0)
+            throw new InvalidDataException("The native XSETTINGS preference '" + name + "' must be a positive integer.");
         destination = value;
     }
 

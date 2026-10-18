@@ -22,14 +22,24 @@ Requested behavior checklist:
 - Direct close from native StateChanged and DpiChanged, followed by an unrelated Window frame to detect invalid upstream native continuations.
 - Real Window ownership and synchronous ShowDialog nested-frame input/close.
 - Native close cancellation, accepted disposal acknowledgement and a single Closed event.
-- Actual XSETTINGS origin, both byte orders and named failure for missing/malformed preferences.
+- Actual XSETTINGS origin, both byte orders, per-field published/fallback provenance and failure for missing time or malformed preferences.
 - Watchdog, nonzero failures and completion guard; all native dispatcher regressions remain required, including same-thread Send and DisableProcessing boundaries.
 
 Build the complete graph with a unique absolute `PortableFrameworkArtifactsDir` ending in `/`, for example `artifacts/portability/native-window-framework/`. Do not reuse canonical outputs predating the current Core/PF input/window contracts. Outputs and intermediate files for this fixture and backend are separated by OS.
 
-The executable accepts `--font=<absolute verified pinned DejaVuSans.ttf>` and `--settings=little|big`. It creates an actual XSETTINGS owner/property with declared test values: `Net/DoubleClickDistance=5` physical client pixels and `Net/DoubleClickTime=450` milliseconds. It records the exact selection owner XID/property origin. Those are fixture values, not desktop preferences. The production host requires real preferences and has no silent fallback to Avalonia's fixed defaults.
+The executable accepts `--font=<absolute verified pinned DejaVuSans.ttf>` and `--settings=little|big`. It creates an actual XSETTINGS owner/property with declared test values: `Net/DoubleClickDistance=5` physical client pixels and `Net/DoubleClickTime=450` milliseconds. It records the exact selection owner XID/property origin. Those are fixture values, not desktop preferences. The fixture refuses to replace an existing XSETTINGS owner; run it only on its dedicated Xvfb server.
+
+`--settings-only` exercises genuine NativeWindowHost initialization and verifies that resolved values and per-field provenance reach the existing immutable WPF pointer snapshot. Generated `missing-distance-little` and `missing-distance-big` cases publish time=400 and verify the declared 5-physical-pixel fallback. `published-little` and `published-big` retain distance=11/time=725; `published-min` and `published-max` preserve positive distance boundaries. No published positive distance is replaced by a default.
+
+`--settings=captured-gnome --settings-payload=<absolute xsettings.bin> --settings-only` installs the unchanged captured GNOME payload on the fixture-owned server. It requires 2044 bytes and SHA-256 `B8D5495AD53FA16EC0E96CBB5C9D8502E4DE59DFDB2BED357307FE9C6C412F57`, preserving its 52 original entries. The observed time=400 is published; the missing distance receives the declared fallback. This never reads or replaces a live GNOME selection.
 
 `--settings=absent|header|count|truncated|type|range|duplicate|value-type|trailing` exercises real missing or malformed server properties, including duplicate preferences, a recognized string value where an integer is required and extra trailing bytes. These cases succeed only when native initialization rejects the property. No production test friend or test-only WPF interface is added.
+
+Additional rejection cases are `absent-property`, `missing-time`, `both-absent`, `distance-duplicate`, `distance-value-type` and `distance-range`. Prefixing `header`, `count`, `under-count`, `truncated`, `type`, `value-type`, `range`, `duplicate` or `trailing` with `missing-distance-` verifies that the fallback cannot mask corrupt or incomplete payloads.
+
+Name grammar cases use `name-<case>-little` or `name-<case>-big`. The cases `illegal-distance`, `unknown-illegal`, `nonascii`, `nul`, `empty`, `leading-slash`, `trailing-slash`, `empty-segment`, `digit-start` and `digit-segment` must reject the entire property despite a valid published time=400. The `valid` case accepts unknown `Other/valid_name0`, `_111/_background` and `_background` entries while applying the absent-distance fallback. All names are checked before decoding, including unknown entries.
+
+`--settings=missing-distance-little --click-thresholds-only` uses actual native windows at 96/192 DPI and exact controlled raw reports through their real source providers. Routed click counts check physical deltas +/-4 and +/-5 on both axes and timestamp deltas 399/400ms. These are deterministic input-pipeline boundary checks, not claims of exact XTest/server timing or sleep accuracy. Existing mouse comparisons remain strict, so delta=5 or time=400 resets the count.
 
 `--wm-only` runs the retained frame/image checks and genuine Window state/restore cases under a real EWMH window manager. The local qualification uses workspace-extracted Ubuntu Openbox on its own Xvfb server, with archive signatures, hashes and runtime closure recorded under ignored artifacts. It checks actual `_NET_WM_STATE`, mapped state, geometry and native pixels. This is separate from the no-window-manager Xvfb input/control run.
 
@@ -94,7 +104,7 @@ Select an unused display number. This subshell starts and stops only its retaine
 )
 ```
 
-Both normal runs must return zero with all 22 checks passed. Each of the nine negative-settings processes must return zero with its two rejection/completion checks passed. Unsupported explicit zero/subpixel geometry is an expected named rejection in this initial native profile, followed by supported-size recovery; valid one-pixel DPI transitions remain supported. Any unrelated native error still fails the run.
+Both normal runs must return zero with all 23 checks passed. Each of the nine negative-settings processes must return zero with its two rejection/completion checks passed. Unsupported explicit zero/subpixel geometry is an expected named rejection in this initial native profile, followed by supported-size recovery; valid one-pixel DPI transitions remain supported. Any unrelated native error still fails the run.
 
 ## Optional Openbox state and restore fixture
 

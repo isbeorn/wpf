@@ -24,11 +24,15 @@ Dispatcher? dispatcher = null;
 string settings = args.FirstOrDefault(value => value.StartsWith("--settings=", StringComparison.Ordinal))?[11..] ?? "little";
 string? fontPath = args.FirstOrDefault(value => value.StartsWith("--font=", StringComparison.Ordinal))?[7..];
 string? settingsOrigin = null;
+string? settingsPayloadPath = args.FirstOrDefault(value => value.StartsWith("--settings-payload=", StringComparison.Ordinal))?[19..];
+object? resolvedSettings = null;
+bool settingsOnly = args.Contains("--settings-only", StringComparer.Ordinal);
 bool wmOnly = args.Contains("--wm-only", StringComparer.Ordinal);
 bool traceHostMetrics = args.Contains("--trace-host-metrics", StringComparer.Ordinal);
 var windowManagerTrace = new ConcurrentQueue<object>();
 var guidelineCapture = new ConcurrentQueue<object>();
 var frameTransitions = new ConcurrentQueue<object>();
+var clickThresholds = new ConcurrentQueue<object>();
 using var watchdog = new Timer(_ =>
 {
     checks.Enqueue(new("watchdog", "fail", "The genuine native Window fixture did not finish within 40 seconds."));
@@ -38,12 +42,16 @@ using var watchdog = new Timer(_ =>
 try
 {
     if (!OperatingSystem.IsLinux()) throw new PlatformNotSupportedException("This fixture requires a native Linux X11 server.");
-    using var native = new X11Fixture(settings);
+    byte[]? settingsPayload = settingsPayloadPath is null ? null : File.ReadAllBytes(settingsPayloadPath);
+    if (settings == "captured-gnome")
+        Require(settingsPayload is { Length: 2044 } && Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(settingsPayload)) == "B8D5495AD53FA16EC0E96CBB5C9D8502E4DE59DFDB2BED357307FE9C6C412F57",
+            "The captured GNOME payload is not the verified unchanged 2044-byte observation.");
+    using var native = new X11Fixture(settings, settingsPayload);
     settingsOrigin = native.SettingsOrigin;
-    bool negative = settings is not ("little" or "big");
+    bool negative = settings is not ("little" or "big" or "captured-gnome" or "missing-distance-little" or "missing-distance-big" or "published-little" or "published-big" or "published-min" or "published-max" or "name-valid-little" or "name-valid-big");
     try { NativeWindowHost.InitializeForCurrentThread(AppBuilder.Configure<Application>()); }
     catch (Exception exception) when (negative && exception.Message.Contains("XSETTINGS", StringComparison.Ordinal) &&
-        (exception is PlatformNotSupportedException || exception is InvalidDataException))
+        (exception is PlatformNotSupportedException || exception is InvalidDataException || exception is InvalidOperationException))
     {
         checks.Enqueue(new("native-settings-negative-" + settings, "pass", exception.Message));
         completed = true;
@@ -51,20 +59,108 @@ try
     if (!completed)
     {
         Require(!negative, "Invalid native settings were accepted.");
+        Run("native-settings-resolution-and-provenance", VerifyPointerPreferences);
+        if (settingsOnly) { completed = true; }
+        else
+        {
         dispatcher = Dispatcher.CurrentDispatcher;
         _ = dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() =>
         {
-            try { Exercise(native); }
+            try
+            {
+                if (args.Contains("--click-thresholds-only", StringComparer.Ordinal))
+                {
+                    Run("resolved-settings-controlled-report-click-thresholds", () => VerifyClickThresholds(native));
+                    completed = true;
+                }
+                else Exercise(native);
+            }
             catch (Exception exception) { checks.Enqueue(new("unhandled-native-window-fixture", "fail", exception.ToString())); }
             finally { dispatcher.BeginInvokeShutdown(DispatcherPriority.Send); }
         }));
         Dispatcher.Run();
+        }
     }
 }
 catch (Exception exception) { checks.Enqueue(new("native-window-initialization-or-loop", "fail", exception.ToString())); }
 checks.Enqueue(new("all-checks-completed", completed ? "pass" : "fail", completed ? "All requested checks returned." : "The fixture stopped before all checks completed."));
 WriteResults();
 return checks.All(check => check.status == "pass") ? 0 : 1;
+
+void VerifyPointerPreferences()
+{
+    bool fallback = settings is "captured-gnome" or "missing-distance-little" or "missing-distance-big" or "name-valid-little" or "name-valid-big";
+    int distance = settings == "published-min" ? 1 : settings == "published-max" ? int.MaxValue : settings.StartsWith("published", StringComparison.Ordinal) ? 11 : 5;
+    int time = settings == "published-min" ? 1 : fallback || settings == "published-max" ? 400 : settings.StartsWith("published", StringComparison.Ordinal) ? 725 : 450;
+    var property = typeof(NativeWindowHost).GetProperty("PointerPreferences", BindingFlags.Static | BindingFlags.NonPublic)!;
+    object resolved = property.GetValue(null)!;
+    object Read(string name) => resolved.GetType().GetProperty(name)!.GetValue(resolved)!;
+    Require((int)Read("Distance") == distance && (int)Read("Time") == time, "Startup changed a published preference or failed to apply the approved absent-distance fallback.");
+    Require((string)Read("Origin") == settingsOrigin && Read("DistanceSource").ToString() == (fallback ? "DeclaredFallback" : "XSettings") && Read("TimeSource").ToString() == "XSettings",
+        "Per-field preference provenance or actual selection/property origin was discarded.");
+    var core = typeof(Mouse).Assembly;
+    object profile = core.GetType("MS.Internal.Portability.Settings.PortableSystemSettingsProvider")!.GetProperty("Current", BindingFlags.Static | BindingFlags.NonPublic)!.GetValue(null)!;
+    object pointer = profile.GetType().GetProperty("PointerSettings", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(profile)!;
+    object Pointer(string name) => pointer.GetType().GetProperty(name, BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(pointer)!;
+    Require((int)Pointer("DoubleClickWidth") == distance && (int)Pointer("DoubleClickHeight") == distance && (int)Pointer("DoubleClickTimeMilliseconds") == time,
+        "Resolved settings did not reach the existing immutable WPF pointer snapshot in physical pixels/milliseconds.");
+    resolvedSettings = new { distance, time, origin = Read("Origin"), distanceSource = Read("DistanceSource").ToString(), timeSource = Read("TimeSource").ToString() };
+}
+
+void VerifyClickThresholds(X11Fixture native)
+{
+    Require(settings is "captured-gnome" or "missing-distance-little" or "missing-distance-big", "Threshold cases require the resolved 5-pixel/400ms profile.");
+    var core = typeof(Mouse).Assembly;
+    Type reportType = core.GetType("System.Windows.Input.RawMouseInputReport")!;
+    Type actionsType = core.GetType("System.Windows.Input.RawMouseActions")!;
+    object mode = Enum.Parse(core.GetType("System.Windows.Input.InputMode")!, "Foreground");
+    int ordinal = 0;
+    try
+    {
+        foreach (int dpi in new[] { 96, 192 })
+        {
+            native.SetDpi(dpi); Drain();
+            var window = new Window { Title = "Resolved pointer thresholds " + dpi, Width = 180, Height = 120,
+                ShowActivated = false, Content = new Border { Background = Brushes.Red } };
+            try
+            {
+                window.Show();
+                Wait(() => PresentationSource.FromVisual(window) != null && VisualTreeHelper.GetDpi(window).DpiScaleX == dpi / 96d);
+                var xid = native.FindWindow(window.Title);
+                Wait(() => native.IsMapped(xid));
+                native.Click(xid, 10, 10); Drain();
+                var source = PresentationSource.FromVisual(window)!;
+                object provider = typeof(PresentationSource).GetMethod("GetInputProvider", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(source, [typeof(MouseDevice)])!;
+                var report = provider.GetType().GetMethods(BindingFlags.Instance | BindingFlags.NonPublic).Single(method => method.Name == "ReportInput" && method.GetParameters().Length == 1);
+                var counts = new List<int>();
+                window.PreviewMouseDown += (_, e) => counts.Add(e.ClickCount);
+                foreach (var (dx, dy, delay, expected) in new[]
+                {
+                    (4, 0, 1, 2), (5, 0, 1, 1), (-4, 0, 1, 2), (-5, 0, 1, 1),
+                    (0, 4, 1, 2), (0, 5, 1, 1), (0, -4, 1, 2), (0, -5, 1, 1),
+                    (0, 0, 399, 2), (0, 0, 400, 1)
+                })
+                {
+                    counts.Clear();
+                    int first = unchecked(Environment.TickCount + 10000 + ordinal++ * 2000);
+                    Click(first, 80, 80);
+                    Click(unchecked(first + delay), 80 + dx, 80 + dy);
+                    Require(counts.SequenceEqual(new[] { 1, expected }), $"Physical delta ({dx},{dy}), timestamp delta {delay}ms at {dpi} DPI produced [{string.Join(',', counts)}].");
+                    clickThresholds.Enqueue(new { dpi, physicalDeltaX = dx, physicalDeltaY = dy, timestampDeltaMilliseconds = delay, clickCount = counts[1], delivery = "controlled raw reports through actual source provider, not OS timing" });
+                }
+                void Click(int timestamp, int x, int y)
+                {
+                    Send("AbsoluteMove, Button1Press");
+                    Send("Button1Release");
+                    void Send(string actions) => report.Invoke(provider, [Activator.CreateInstance(reportType,
+                        [mode, timestamp, source, Enum.Parse(actionsType, actions), x, y, 0, IntPtr.Zero])!]);
+                }
+            }
+            finally { window.Close(); }
+        }
+    }
+    finally { native.SetDpi(96); Drain(); }
+}
 
 void Exercise(X11Fixture native)
 {
@@ -865,11 +961,11 @@ void WriteResults() => Console.WriteLine(JsonSerializer.Serialize(new
     windowManagerTrace,
     guidelineCapture,
     frameTransitions,
+    clickThresholds,
     assemblies = new[] { typeof(Window).Assembly, typeof(Visual).Assembly, typeof(Dispatcher).Assembly, typeof(NativeWindowHost).Assembly }
         .Select(assembly => new { name = assembly.GetName().Name, version = assembly.GetName().Version?.ToString(),
             publicKeyToken = Convert.ToHexString(assembly.GetName().GetPublicKeyToken() ?? Array.Empty<byte>()), path = assembly.Location }),
-    settings = settings is "little" or "big" ? "fixture-owned XSETTINGS " + settings + "; distance=5 physical client pixels, time=450ms" :
-        "fixture-owned XSETTINGS " + settings + "; intentionally absent or malformed, no preferences accepted",
+    settings, resolvedSettings,
     checks
 }, new JsonSerializerOptions { WriteIndented = true }));
 internal sealed record Check(string name, string status, string detail);
