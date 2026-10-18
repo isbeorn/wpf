@@ -84,6 +84,9 @@ internal static class Program
             Require(view.Clicks == 1, "Generated event connector did not invoke code behind.");
         });
         Check("classic-default-controls-and-resource-origin", () => classicTheme = VerifyClassicDefaultControls());
+        if(checks[^1].status=="pass") checks[^1]=checks[^1] with {detail=OperatingSystem.IsLinux()
+            ? "Classic templates, UserControl content and Button/TextBox positive geometry/text layout; packaged Linux native dependencies."
+            : "Classic managed templates/content host and native-free UserControl/Grid layout; Button/TextBox text layout is not qualified on this host."};
         Check("pack-resource-case-and-content", () =>
         {
             using var reader = new StreamReader(System.Windows.Application.GetResourceStream(new Uri("/App;component/Assets/CaseSensitive.txt",UriKind.Relative)).Stream);
@@ -187,7 +190,7 @@ internal static class Program
         JsonElement? completeViewOrigin = completeViewDocument?.RootElement.Clone();
         watchdog.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         Console.WriteLine(JsonSerializer.Serialize(new { probe=completeView?"complete-portable-wpf-view":"portable-package-consumer",os=System.Runtime.InteropServices.RuntimeInformation.OSDescription,
-            scope=completeView?"Unchanged FixtureControls with explicit host templates, CPU rendering and virtual X11/XTest input; declared XSETTINGS test values, physical desktop unqualified":"Local package net10 Linux x64 profile; Classic default UserControl/Button/TextBox and explicit-template Xvfb input qualify bounded slices.",checks,
+            scope=completeView?"Unchanged FixtureControls with explicit host templates, CPU rendering and virtual X11/XTest input; declared XSETTINGS test values, physical desktop unqualified":"Local net10 Linux x64 package; Windows managed Classic templates, Linux positive text layout and explicit-template Xvfb input qualify bounded slices.",checks,
             completeViewOrigin,settingsOrigin,classicTheme,
             sharedFrameworks,coreLibrary=typeof(object).Assembly.Location,nativeModules,
             assemblies=assemblies.Select(a=>new { identity=a.FullName,path=a.Location,sha256=Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(a.Location))) }) }));
@@ -197,28 +200,37 @@ internal static class Program
 
     private static object VerifyClassicDefaultControls()
     {
-        static void Layout(Control control)
+        static void Prepare(Control control)
         {
             control.BeginInit(); control.EndInit();
+            control.ApplyTemplate();
+            Require(control.ReadLocalValue(Control.TemplateProperty)==DependencyProperty.UnsetValue,
+                "The default control check supplied a local template.");
+            Require(control.Template is not null && VisualTreeHelper.GetChildrenCount(control)>0,
+                control.GetType().Name+" did not resolve and construct its ordinary default template.");
+        }
+        static void Layout(Control control)
+        {
             control.Measure(new Size(320,200));
             control.Arrange(new Rect(0,0,320,200));
             control.UpdateLayout();
-            Require(control.ReadLocalValue(Control.TemplateProperty)==DependencyProperty.UnsetValue,
-                "The default control check supplied a local template.");
-            Require(control.Template is not null && VisualTreeHelper.GetChildrenCount(control)>0 &&
-                control.IsMeasureValid && control.IsArrangeValid && control.ActualWidth>0 && control.ActualHeight>0,
+            Require(control.IsMeasureValid && control.IsArrangeValid && control.ActualWidth>0 && control.ActualHeight>0,
                 control.GetType().Name+" did not resolve and lay out its ordinary default template.");
         }
         var content=new Grid {Width=80,Height=30};
         var userControl=new UserControl {Content=content};
+        Prepare(userControl);
         Layout(userControl);
         Require(VisualTreeHelper.GetParent(content) is ContentPresenter && content.IsMeasureValid && content.IsArrangeValid &&
             content.ActualWidth==80 && content.ActualHeight==30,"The default UserControl template did not connect and lay out content.");
-        Layout(new Button {Content="Classic",Width=120,Height=32});
+        var button=new Button {Content="Classic",Width=120,Height=32};
+        Prepare(button);
         var textBox=new TextBox {Text="Classic",Width=160,Height=32};
-        Layout(textBox);
+        Prepare(textBox);
         Require(textBox.Template.FindName("PART_ContentHost",textBox) is ScrollViewer,
             "The default TextBox template did not connect its genuine ScrollViewer content host.");
+        bool measuredTextLayout=OperatingSystem.IsLinux();
+        if(measuredTextLayout) { Layout(button); Layout(textBox); }
         var classic=AppDomain.CurrentDomain.GetAssemblies().Single(assembly=>assembly.GetName().Name=="PresentationFramework.Classic");
         var identity=classic.GetName();
         Require(identity.Version==new Version(10,0,0,0) && Convert.ToHexString(identity.GetPublicKeyToken()!)=="31BF3856AD364E35" &&
@@ -240,8 +252,14 @@ internal static class Program
         Require(bamlSha256 is not null,"Classic's resource manifest omitted its real theme dictionary.");
         Require(!AppDomain.CurrentDomain.GetAssemblies().Any(assembly=>assembly.GetName().Name=="PresentationUI"),
             "The ordinary Classic control path loaded compile-only PresentationUI.");
+        var windowsNativeTextModules=OperatingSystem.IsWindows()?Process.GetCurrentProcess().Modules.Cast<ProcessModule>()
+            .Where(module=>module.ModuleName.Equals("libHarfBuzzSharp.dll",StringComparison.OrdinalIgnoreCase) ||
+                module.ModuleName.Equals("libSkiaSharp.dll",StringComparison.OrdinalIgnoreCase))
+            .Select(module=>module.FileName).ToArray():[];
+        Require(windowsNativeTextModules.Length==0,"Managed Windows template verification loaded a native text library.");
         return new {identity=classic.FullName,path=classic.Location,loadContext=AssemblyLoadContext.GetLoadContext(classic)?.Name,
-            sha256=Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(classic.Location))),resourceName,bamlKey,bamlSha256};
+            sha256=Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(classic.Location))),resourceName,bamlKey,bamlSha256,
+            measuredTextLayout,userControlContentWidth=content.ActualWidth,userControlContentHeight=content.ActualHeight,windowsNativeTextModules};
     }
 
     private static void AuditRuntimeAssets()
