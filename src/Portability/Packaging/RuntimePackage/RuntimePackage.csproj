@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Wpf.Portable.Runtime</PackageId>
+    <Version>10.0.0-portable.1</Version>
+    <Authors>Portable WPF contributors</Authors>
+    <Description>Experimental app-local portable WPF runtime, qualified for .NET 10 on Linux x64.</Description>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(RuntimeStageDirectory)/**/*" Pack="true" PackagePath="" />
+  </ItemGroup>
+</Project>

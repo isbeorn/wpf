@@ -1,0 +1,101 @@
+<Project>
+  <Import Project="../policy/PortableProfile.targets" />
+  <ItemGroup>
+    <None Include="$(MSBuildThisFileDirectory)../ThirdPartyNotices/**/*" Link="ThirdPartyNotices/Wpf.Portable.Runtime/%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" Visible="false" />
+    <None Include="$(MSBuildThisFileDirectory)../LICENSE.txt" Link="ThirdPartyNotices/Wpf.Portable.Runtime/LICENSE.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" Visible="false" />
+    <None Include="$(MSBuildThisFileDirectory)../RuntimeManifest.xml" Link="PortableWpf/RuntimeManifest.xml" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" Visible="false" />
+    <None Include="$(MSBuildThisFileDirectory)../Provenance.json" Link="PortableWpf/Provenance.json" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" Visible="false" />
+  </ItemGroup>
+  <UsingTask TaskName="ValidatePortableRuntimeAssets" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <Manifest ParameterType="System.String" Required="true" />
+      <CompileItems ParameterType="Microsoft.Build.Framework.ITaskItem[]" />
+      <RuntimeItems ParameterType="Microsoft.Build.Framework.ITaskItem[]" />
+      <RuntimeTargetItems ParameterType="Microsoft.Build.Framework.ITaskItem[]" />
+      <RemoveCompile ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
+      <RemoveRuntime ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
+      <RemoveRuntimeTargets ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Linq" />
+      <Using Namespace="System.Collections.Generic" />
+      <Using Namespace="System.Security.Cryptography" />
+      <Using Namespace="System.Xml.Linq" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        try
+        {
+        var document = XDocument.Load(Manifest);
+        var root = document.Root;
+        var files = root.Elements("file").Where(file => (string)file.Attribute("kind") == "managed" || (string)file.Attribute("kind") == "native")
+            .ToDictionary(file => Path.GetFileName((string)file.Attribute("path")), StringComparer.OrdinalIgnoreCase);
+        var packageVersion = (string)root.Attribute("version");
+        var packageRoot = Path.GetDirectoryName(Manifest);
+        var removals = new List<Microsoft.Build.Framework.ITaskItem[]>();
+        foreach (var group in new[] { CompileItems, RuntimeItems, RuntimeTargetItems })
+        {
+            var remove = new List<Microsoft.Build.Framework.ITaskItem>();
+            foreach (var item in group ?? Array.Empty<Microsoft.Build.Framework.ITaskItem>())
+            {
+                XElement expected;
+                if (!files.TryGetValue(Path.GetFileName(item.ItemSpec), out expected))
+                {
+                    if (string.Equals(item.GetMetadata("AssetType"), "native", StringComparison.OrdinalIgnoreCase))
+                        throw new InvalidOperationException("Consumer native asset is outside the qualified Linux x64 runtime manifest: " + item.ItemSpec +
+                            ". Qualify that dependency and RID explicitly before using it with this portable profile.");
+                    continue;
+                }
+                string packageId = item.GetMetadata("NuGetPackageId");
+                string version = item.GetMetadata("NuGetPackageVersion");
+                if (packageId.Equals("Wpf.Portable.Runtime", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (version != packageVersion) throw new InvalidOperationException("Portable runtime package version is outside its manifest: " + version);
+                    string expectedPath = Path.GetFullPath(Path.Combine(packageRoot, (string)expected.Attribute("path")));
+                    if (!Path.GetFullPath(item.ItemSpec).Equals(expectedPath, Path.DirectorySeparatorChar == '\\' ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal))
+                        throw new InvalidOperationException("Portable runtime asset came from an unexpected path: " + item.ItemSpec);
+                    string digest;
+                    using (var hash = SHA256.Create()) digest = BitConverter.ToString(hash.ComputeHash(File.ReadAllBytes(item.ItemSpec))).Replace("-", "");
+                    if (digest != (string)expected.Attribute("sha256")) throw new InvalidOperationException("Portable runtime asset hash differs from its package manifest: " + item.ItemSpec);
+                    continue;
+                }
+                bool qualified = expected.Elements("compatiblePackage").Any(package =>
+                    string.Equals((string)package.Attribute("id"), packageId, StringComparison.OrdinalIgnoreCase) && (string)package.Attribute("version") == version);
+                if (!qualified)
+                    throw new InvalidOperationException("Consumer dependency '" + packageId + " " + version + "' supplies '" + Path.GetFileName(item.ItemSpec) +
+                        "' outside the portable runtime's qualified manifest. Align the dependency with the pinned portable profile or qualify a new version explicitly.");
+                remove.Add(item);
+            }
+            removals.Add(remove.ToArray());
+        }
+        RemoveCompile = removals[0]; RemoveRuntime = removals[1]; RemoveRuntimeTargets = removals[2];
+        }
+        catch (InvalidOperationException exception)
+        {
+            Log.LogError(exception.Message);
+            return false;
+        }
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="ResolveQualifiedPortableRuntimeAssets" AfterTargets="ResolvePackageAssets">
+    <ValidatePortableRuntimeAssets Manifest="$(MSBuildThisFileDirectory)../RuntimeManifest.xml"
+                                   CompileItems="@(ResolvedCompileFileDefinitions)"
+                                   RuntimeItems="@(RuntimeCopyLocalItems)"
+                                   RuntimeTargetItems="@(RuntimeTargetsCopyLocalItems)">
+      <Output TaskParameter="RemoveCompile" ItemName="_PortableQualifiedDuplicateCompile" />
+      <Output TaskParameter="RemoveRuntime" ItemName="_PortableQualifiedDuplicateRuntime" />
+      <Output TaskParameter="RemoveRuntimeTargets" ItemName="_PortableQualifiedDuplicateRuntimeTargets" />
+    </ValidatePortableRuntimeAssets>
+    <ItemGroup>
+      <ResolvedCompileFileDefinitions Remove="@(_PortableQualifiedDuplicateCompile)" />
+      <RuntimeCopyLocalItems Remove="@(_PortableQualifiedDuplicateRuntime)" />
+      <RuntimeTargetsCopyLocalItems Remove="@(_PortableQualifiedDuplicateRuntimeTargets)" />
+    </ItemGroup>
+  </Target>
+  <Target Name="ExcludeCoreWindowsBaseShim" AfterTargets="ResolveTargetingPackAssets" BeforeTargets="_HandlePackageFileConflicts;ResolveAssemblyReferences">
+    <ItemGroup>
+      <Reference Remove="@(Reference)" Condition="'%(Reference.AssemblyName)' == 'WindowsBase' and '%(Reference.ExternallyResolved)' == 'true'" />
+    </ItemGroup>
+  </Target>
+</Project>

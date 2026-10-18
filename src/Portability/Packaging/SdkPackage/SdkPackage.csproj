@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <PackageId>Wpf.Portable.Sdk</PackageId>
+    <Version>10.0.0-portable.1</Version>
+    <Authors>Portable WPF contributors</Authors>
+    <Description>App-local SDK and genuine WPF markup compiler for the .NET 10 Linux x64 portable profile.</Description>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <NoPackageAnalysis>true</NoPackageAnalysis>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="$(SdkStageDirectory)/**/*" Pack="true" PackagePath="" />
+  </ItemGroup>
+</Project>

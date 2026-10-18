@@ -1,0 +1,15 @@
+<Project>
+  <Target Name="ValidatePortableWpfProfile" BeforeTargets="_GenerateRestoreGraphProjectEntry;CollectPackageReferences;PrepareForBuild;ResolveFrameworkReferences">
+    <Error Condition="'$(NETCoreSdkVersion)' != '10.0.401'" Text="The portable WPF profile currently qualifies .NET SDK 10.0.401. Pin that SDK in the consumer's global.json." />
+    <Error Condition="'$(TargetFrameworks)' != ''" Text="The portable WPF profile currently requires the single TargetFramework net10.0; remove TargetFrameworks." />
+    <Error Condition="'$(TargetFramework)' != 'net10.0'" Text="The portable WPF profile is qualified only for net10.0. Remove WindowsDesktop targeting and select net10.0 explicitly." />
+    <Error Condition="'$(PublishTrimmed)' == 'true' or '$(PublishAot)' == 'true' or '$(PublishSingleFile)' == 'true'" Text="Trimming, NativeAOT and single-file publication require separate portable WPF qualification." />
+    <Error Condition="'$(RuntimeIdentifier)' != '' and '$(RuntimeIdentifier)' != 'linux-x64'" Text="The portable WPF profile currently qualifies only an empty RID or linux-x64." />
+    <Error Condition="'$(RuntimeIdentifiers)' != '' and '$(RuntimeIdentifiers)' != 'linux-x64'" Text="The portable WPF profile does not qualify a multi-RID restore outside linux-x64." />
+    <Error Condition="'$(UseWPF)' == 'true'" Text="The portable WPF profile supplies markup through Wpf.Portable.Sdk. Remove UseWPF=true to avoid the stock WindowsDesktop framework." />
+    <ItemGroup>
+      <_PortableDesktopFramework Include="@(FrameworkReference)" Condition="'%(FrameworkReference.Identity)' == 'Microsoft.WindowsDesktop.App' or '%(FrameworkReference.Identity)' == 'Microsoft.WindowsDesktop.App.WPF' or '%(FrameworkReference.Identity)' == 'Microsoft.WindowsDesktop.App.WindowsForms'" />
+    </ItemGroup>
+    <Error Condition="'@(_PortableDesktopFramework)' != ''" Text="The portable WPF profile cannot reference Microsoft.WindowsDesktop.App. Use its app-local Wpf.Portable.Runtime reference." />
+  </Target>
+</Project>

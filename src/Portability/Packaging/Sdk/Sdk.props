@@ -1,0 +1,12 @@
+<Project>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <TargetFramework Condition="'$(TargetFramework)' == ''">net10.0</TargetFramework>
+    <WpfPortableVersion>10.0.0-portable.1</WpfPortableVersion>
+    <EnableDefaultPageItems Condition="'$(EnableDefaultPageItems)' == ''">true</EnableDefaultPageItems>
+    <EnableDefaultApplicationDefinition Condition="'$(EnableDefaultApplicationDefinition)' == ''">true</EnableDefaultApplicationDefinition>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Wpf.Portable.Runtime" Version="[$(WpfPortableVersion)]" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,18 @@
+<Project>
+  <PropertyGroup>
+    <_OriginalPortableProjectProps>$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildProjectDirectory)'))</_OriginalPortableProjectProps>
+  </PropertyGroup>
+  <Import Project="$(_OriginalPortableProjectProps)" />
+  <PropertyGroup>
+    <BaseOutputPath>$(PortableDistributionBuildRoot)bin/$(MSBuildProjectName)/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(PortableDistributionBuildRoot)obj/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+    <NuGetLockFilePath>$(BaseIntermediateOutputPath)packages.lock.json</NuGetLockFilePath>
+  </PropertyGroup>
+  <Target Name="CapturePortableDistributionInputs" AfterTargets="CoreCompile">
+    <ItemGroup>
+      <_PortableDistributionInput Include="@(Compile);@(EmbeddedResource);@(AdditionalFiles);@(Analyzer);$(MSBuildAllProjects)" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(IntermediateOutputPath)portable-inputs.txt" Lines="@(_PortableDistributionInput->'%(FullPath)')" Overwrite="true" WriteOnlyWhenDifferent="true" />
+  </Target>
+</Project>
