@@ -7,9 +7,9 @@ The experiments establish a viable open-source Linux x64 path for this fork. Act
 The Phase 0 reference/runtime gate and Phase 1 feasibility gate pass within the scopes recorded below. Phases 2 through 5 have not passed. The accepted [plan](../cross-platform-plan.md) remains the behavior contract. Physical desktop, full application and sustained-workload qualification remain later gates. Component checks, source compilation and managed test peers do not substitute for native WPF control behavior.
 
 The evidence supports high confidence in technical feasibility. Confidence in the
-full agreed NINA coverage remains moderate: actual GuiderGraph construction still
-reaches an unported screen metric on Linux, imaging has open retained-rendering
-boundaries and live desktop services, IME and screen-reader workflows remain
+full agreed NINA coverage remains moderate: actual GuiderGraph now constructs in
+an unshown native-initialized source diagnostic, but mapped plot input, broader
+imaging, strict live picker workflows, IME and screen-reader workflows remain
 unqualified.
 
 ## Baseline and environment
@@ -25,7 +25,7 @@ unqualified.
 | Linux execution | Ubuntu 24.04.1 under WSL2, x86_64; WSLg and isolated native Xvfb tests recorded separately |
 | Linux SDK archive SHA-256 | `137268c8ad939c064ff1ee2a6fdf0899d8725377114ea012fbd1ad5fa2550418` |
 
-The exact pinned Windows SDK was recovered from the official CI feed after its primary endpoint returned 404. The ordinary `build.cmd -pack -plat x64 -c Release` passed with zero warnings and errors after selecting a supported Perl locale. The latest recorded working-tree build/pack and all 208 upstream threading tests also pass, after the committed AT-SPI/uniform-offset changes and the uncommitted preedit source merge. This is a Windows regression result, not combined portable preedit or IME qualification. The preceding font/guideline logs remain historical evidence. The [runtime decision](runtime-baseline.md) records commands, provenance and signing policy.
+The exact pinned Windows SDK was recovered from the official CI feed after its primary endpoint returned 404. The ordinary `build.cmd -pack -plat x64 -c Release` passed with zero warnings and errors after selecting a supported Perl locale. The primary-screen regression build/pack passes with zero warnings/errors and all 208 upstream threading tests pass. The newer original Windows build after the exact five-file hidden-composition merge also passes with zero warnings/errors in 2m1.86s; no newer threading result is inferred from that build. This does not qualify native IME. Earlier font/guideline and managed-preedit Windows logs remain historical evidence. The [runtime decision](runtime-baseline.md) records commands, provenance and signing policy.
 
 The portable projects compile this fork's actual implementation and resources with a consistent version-10 contract suitable for the pinned NINA runtime. Genuine Windows metadata remains an interim compile dependency for unported paths. Public signing preserves tested type identity; it does not authenticate these builds as Microsoft binaries.
 
@@ -41,16 +41,16 @@ These results have different scopes and must not be added into a general compati
 | [BAML source runtime](../../src/Portability/Tests/MarkupRuntimeIntegration/README.md) | Fork-produced fixture 7/7; frozen Microsoft-produced fixture 5/5 | Fork-produced fixture 7/7; frozen Microsoft-produced fixture 5/5 | Real source PresentationFramework construction, generated fields/events, templates, bindings, dictionaries and pack resources; no native window qualification |
 | [Retained rendering](../../src/Portability/Tests/RenderingIntegration/README.md) | 19 checks pass | 19 checks pass | Actual DrawingVisual/UIElement, RenderData, layout, MediaContext, geometry, brushes, glyphs, invalidation, independent DPI scales, surface lifetime and animation scheduling without starving Background observations |
 | [Geometry](../../src/Portability/Tests/GeometryIntegration/README.md) | 268 checks pass; stock oracle 262/262 | 268 checks pass | Actual containment, outline topology, glyph counters, transforms, widened stroke bounds, mixed stroked/unstroked runs and retained drawing-content bounds |
-| [Guideline snapping](../../src/Portability/Tests/GuidelineIntegration/README.md) | Expanded corpus 166 checks pass; stock 142/142 | Expanded corpus 166 checks pass | Native-derived snapping, visual-order normalization and exact uniform-offset conic translation; nonuniform conics remain explicitly unsupported |
+| [Guideline snapping](../../src/Portability/Tests/GuidelineIntegration/README.md) | Combined corpus 227 checks pass; preceding stock 142/142 | Combined corpus 227 checks pass | Native-derived snapping and bounded retained VisualBrush integration; stock 142 belongs to the earlier uniform-offset slice, not all 227 cases |
 | [WPF text](../../src/Portability/Tests/TextIntegration/README.md) | 344 checks pass | 344 checks pass | Actual paragraph wrapping, fallback, Unicode 17 bidi, combining marks, source-run spans, caret/selection geometry and retained glyph pixels within the declared profile |
 | [Word selection](../../src/Portability/Tests/TextIntegration/Compatibility.md) | 210 control checks pass | 210 control checks pass | Actual TextBox move/select word commands in both flow directions; the user-approved Unicode 17 classification retains WPF's RichEdit algorithm and Latin table |
 | [Scientific bitmaps](../../src/Portability/Tests/ImagingIntegration/README.md) | 12 groups pass | 12 groups pass | Actual CachedBitmap/WriteableBitmap, exact Gray16/Rgb48 samples, caller ownership, nested locks, dirty publication, cloning/freezing and retained DrawImage |
 | [Native dispatcher](../../src/Portability/Tests/NativeDispatcherIntegration/README.md) | Builds; runtime intentionally unsupported | 17 checks pass on native Xvfb | Actual WPF dispatcher with pinned Avalonia X11/GLib pump, native input, pending queues, nested frames, inline Send, disabled-processing waits and callback exception safety |
 | [PresentationSource](../../src/Portability/Tests/PresentationSourceIntegration/README.md) | 29 checks pass | 29 checks pass | Real source/root ownership, layout, rendering, DPI, reentrant callouts and stale callback cleanup with a managed host |
 | [Core input](../../src/Portability/Tests/InputIntegration/README.md) | 36 checks pass | 36 checks pass | Actual InputManager staging, routed events, commands, focus, capture and cursor visibility with a managed host |
-| [Settings](../../src/Portability/Tests/SystemSettingsIntegration/README.md) | 27 checks per declared profile; Classic 4/4 | 27 checks per declared profile; Classic 4/4 | Immutable palette, editing preferences, scrollbar metrics, declared portable font roles/no-shadow policy and genuine resource/theme lookup; no desktop font discovery or native Popup qualification |
+| [Settings](../../src/Portability/Tests/SystemSettingsIntegration/README.md) | 155 checks across seven processes | 155 checks across seven processes | Immutable settings, optional observed primary-screen pair and declared Classic defaults; no desktop font discovery, multiscreen updates or native Popup qualification |
 | [Window lifecycle](../../src/Portability/Tests/WindowLifecycleIntegration/README.md) | 66 checks pass; stock oracle 26/26 | 66 checks pass | Genuine Window ownership, modal cleanup, asynchronous bounds, content sizing and public Application.Run startup/shutdown; independent lifetime, fractional acknowledgment and explicit-request replays pass |
-| [Native WPF Window](../../src/Portability/Tests/NativeWindowIntegration/README.md) | Builds; runtime intentionally unsupported | Original byte-order suites pass; absent-distance repair adds 56 startup cases, two 23-check native suites and 20 threshold observations | Genuine WPF Window, Button.Click, TextBox input, synchronous dialog, scientific bitmap mutation, cover/uncover, five-button state, capture and minimum-pixel DPI behavior on Xvfb; fresh packaged GNOME replay remains pending |
+| [Native WPF Window](../../src/Portability/Tests/NativeWindowIntegration/README.md) | Builds; runtime intentionally unsupported | Original byte-order suites pass; absent-distance repair adds 56 startup cases, two 23-check native suites and 20 threshold observations | Genuine WPF Window, Button.Click, TextBox input, synchronous dialog, scientific bitmap mutation, cover/uncover, five-button state, capture and minimum-pixel DPI behavior on Xvfb; live GNOME clipboard passes while strict picker/closure postconditions remain open |
 | [Native window manager](../../src/Portability/Tests/NativeWindowIntegration/README.md) | Not applicable | Ten fresh Openbox runs, 13/13 each | Actual state, frame extents, maximize/minimize/restore, pending bounds intents, callback-triggered close and settled native pixels |
 | [App-local SDK/runtime](../../src/Portability/Packaging/README.md) | Classic feed: external consumer 12 checks per build/publish/custom path; archive/output audit 6/6 | Classic feed: external consumer 12 checks per path; native FDD and self-contained 14/14 each; archive/output audit 8/8 | Local-feed restore, actual compiler, both BAML origins, default Classic templates, companion assembly, forwarders, case-sensitive compilation, identities, licenses and exact contents; Windows package checks exclude native text layout |
 | [Complete unchanged view](../../src/Portability/Packaging/Consumer/App/README.md) | Stock reference 15/15 for each compiler origin | 19/19 in each of four package-only processes | Same compiled view and original dictionary, native validation/editing/commands, owned dialogs, bound RGB48, resources, clocks, both DPI directions and fresh lifetimes; explicit host templates remain part of this profile |
@@ -275,7 +275,35 @@ five prerequisites, then fails during ComboBox construction:
 construction, update, mapped presentation or input is claimed. The revision-2
 observer fixes the stock harness's unshown-Window measurement assumption by
 laying out the actual view directly; it does not replace NINA resources or
-templates. This result must not be inferred from the passing base OxyPlot slice.
+templates. This historical c21 failure remains preserved independently of the
+passing base OxyPlot slice.
+
+After explicit early native initialization, an isolated source diagnostic passes
+12 unchanged-GuiderGraph checks with all 33 dictionaries, real guide-history
+updates and original Contrib objects. It preserves the stock fixture's direct
+actual-view layout and leaves the Window unshown. The diagnostic substitutes
+15 files and adds 90 source-stage files to the old package output, so it does not
+qualify that package or a future feed. Mapped pixels, plot input, original
+GuiderVM commands and equipment behavior remain unexecuted.
+
+The genuine ImageControlVM stock reference separately passes 26 checks using
+the unchanged ImageControlView/ImageView BAML, original mediators, 33 dictionaries
+and real public VM commands. No NINA source is rebuilt. Its coherent Linux source
+diagnostic passes seven checks, fails the first Gray16 raster check and leaves
+18 checks unreached, with no native load failures. All 143 consumed stage files,
+160 original NINA closure files and exact image source bytes/geometry verify.
+The failing null ImageBrush belongs to the Collapsed Bahtinov overlay with its
+original VM flag false; the scientific image body uses a separate VisualBrush.
+This does not establish a visible ImageBrush requirement or successful Linux
+rotate/flip/crosshair/RGB48 rendering.
+
+A paired renderer diagnostic passes 11 stock checks but reproduces eight
+invisible-subtree failures on each portable OS, including Hidden/Collapsed
+content, zero-opacity traversal and a hidden consumer's stale VisualBrush source
+registration. It also verifies that an unattached visible offscreen root must
+still paint. The zero-opacity traversal repair is under implementation, not
+qualified by these failing records. Neither the stock reference nor the
+GuiderGraph diagnostic clears this Linux imaging gate.
 
 ## Review and repaired failures
 
@@ -301,9 +329,9 @@ Raw negative cases remain alongside the passing results. Local changes and commi
 | Phase 1 retained rendering | Drawing-content seam, native cover/uncover, image mutation and packaged presentation pass | Bound Image control, animation, large frames and sustained workloads remain later gates |
 | Phase 1 replacement text | Bounded paragraphs, fallback, Unicode 17 bidi, caret/selection and complete Unicode commits pass | Native IME preedit/engines and broader document behavior remain open |
 | Phase 2 integrated view | Functional Windows/Linux comparison, public Application.Run and refreshed 24 MP short 1 Hz callback cadence pass; phase gate open | Complete display qualification, presentation latency, measured budgets and sustained-memory bounds remain open |
-| Phase 3 NINA controls/resources | Selected unchanged editor and base OxyPlot workflows pass; gate open | Actual GuiderGraph Linux construction, broader imaging, plugins, docking and sequencer coverage remain open |
+| Phase 3 NINA controls/resources | Selected unchanged editor/base OxyPlot workflows and unshown native-initialized GuiderGraph diagnostic pass; gate open | Mapped original plot input, Linux ImageControlVM, broader imaging, plugins, docking and sequencer coverage remain open |
 | Phase 4 application shell | Gate open | Simulated equipment session, complete shell lifecycle and overnight stability remain open |
-| Phase 5 packaged desktop | f7 package and bounded Window/Button AT-SPI source protocols pass; gate open | Fresh live GNOME service retry, real IME, screen-reader workflows and other platform/session gates remain open |
+| Phase 5 packaged desktop | f7 package, live GNOME text clipboard and bounded Window/Button AT-SPI source protocols pass; gate open | Strict live picker selection/cancellation, real IME, screen-reader workflows and other platform/session gates remain open |
 
 Scientific Gray16/Rgb48 source storage and readback pass the bounded imaging slice. Gray16 conversion differs by at most one output level at the small measured native WIC boundary samples; this does not establish scaled-image display parity. The large-frame workflow has larger observed display differences while scientific source samples remain exact. Image codecs, conversion graphs and large-frame memory/performance remain open. IME, accessibility, physical desktop focus/DPI transitions, native Wayland, ARM64 and macOS remain unqualified. CPU rendering and short disposal loops do not establish overnight memory or responsiveness bounds.
 
@@ -402,6 +430,15 @@ differs by 4/255; the preserved stock native/offscreen pair itself differs by
 6/255 there. Neither golden data nor tolerances were changed. Raw results,
 conditions and comparison limits are retained in
 `artifacts/portability/scientific-workload-reference/foundation-5D66DB6D4D59291D/RESULTS-canonical-1.md`.
+
+A later stock Gray16 capture diagnosis keeps source bytes and geometry fixed.
+Settled and repeated RenderTargetBitmap captures are byte-identical; the initial
+capture differs transiently. Linux differs from the settled offscreen comparison
+by at most 2/255. Three native 22-point grids are stable, but only 20 points match
+the settled RTB: two retain differences of 38 and 31 levels. Independent review
+rehashes the raw records and reproduces these observations. This narrows the
+reference problem without clearing the display gate, proving a whole native
+raster or establishing the cause of the remaining differences.
 
 In the initial pre-repair run, the 18 paired native pixel samples differ by up to 57/255. All 18 Windows samples
 match their stock offscreen references, while Linux's first Gray16 center is 4
@@ -515,9 +552,28 @@ records pass; root rehashes 3,850 actual build inputs and 7,766 clean tracked
 inputs. Package-only default-CLR helper, clipboard 9, manager 4 and private
 portal 31 checks pass. This feed includes the earlier HQ/Fant, Unicode commits,
 managed peers and visual-order repair. It excludes native AT-SPI `9bd249881`,
-uniform conic translation `9a90ed9b2`, VisualBrush and preedit. It is staged only
-for the second native-services GNOME probe, which still awaits fresh readiness;
-live clipboard/picker behavior is not yet qualified.
+uniform conic translation `9a90ed9b2`, VisualBrush and later preedit work. The
+subsequent live GNOME probe 3 passes genuine bound-TextBox Copy/Cut/Paste and
+all four dialogs return with native owner modality restored. Strict Open/Save
+path and cancellation postconditions still fail, followed by an unrelated
+fixture `XQueryTree` failure. Public filenames are not captured portal wire
+URIs, so these observations do not prove a production selection-mapping defect.
+The user subsequently confirmed intentionally selecting README in the first Open
+dialog and clicking Save in the fourth dialog, which the fixture expected to
+cancel. Those two failed postconditions match the reported actions and are not
+evidence of production path-mapping or cancellation defects. The first Save
+filename is not remembered, so that postcondition remains inconclusive. The
+raw failed run is unchanged and no retry is running or requested. Raw settings
+and service-owner records are preserved, exact app PIDs are gone and earlier
+probe failures remain immutable. The live picker workflow has not passed.
+
+An isolated diagnostic reproduces the global recursive X11 lookup race against
+unrelated destroyed windows. Its owned-XID/DestroyNotify proposal passes 22
+private native protocol checks and compiles the proposed full app with zero
+warnings/errors. The WPF owned-handle getter has not executed in that proposal,
+and no live payload was staged or run. This is a fixture repair proposal, not a
+reclassification of the preserved picker results or proof of the original failed
+XID's identity.
 
 | Font/guideline desktop retry package | SHA-256 |
 | --- | --- |
@@ -563,12 +619,50 @@ explicit nonuniform failures. Independent Lisa and Scrooge replays pass. General
 nonuniform conic snapping remains unsupported, and post-fix NINA ImageView,
 package and native presentation checks are pending.
 
-VisualBrush retained auto-layout and recovery findings remain under repair.
-The preedit candidate has clear focused read-only reviews at freeze 3 and is now
-merged into the working tree, but remains uncommitted while its combined portable
-matrix is pending. Neither workstream is complete, and neither
-establishes a real IME engine. These open boundaries, actual GuiderGraph's screen
-metric and the pending live GNOME retry keep Phases 2 through 5 open.
+Commit `d85b4fc74` closes the bounded retained VisualBrush auto-layout and recovery
+slice. The combined source graph passes 227 full guideline checks and 61 focused
+VisualBrush checks per OS, plus Rendering 19, Geometry 268, Text 344 and Imaging
+12 per OS. Linux native Window 23 also passes with the same Core bytes. All 13
+processes exit zero with empty stderr; builds have zero errors and retain their
+recorded warnings. Non-tiled fills are qualified within the explicit profile;
+tiling, effects, opacity masks, pen/glyph foreground and recursive sources remain
+named unsupported boundaries. This source graph is not a released package or
+physical desktop qualification.
+
+Commit `a18122207` supplies observed primary-screen dimensions as an immutable
+positive finite DIP pair, with explicit failure when no observation exists.
+The native host acquires the observation before WPF settings consumption.
+Classic animation/repeat values are declared product defaults rather than
+desktop preference discovery. Five 30-check settings profiles, the unavailable
+screen check and four theme/layout cases pass on each OS, totaling 155 per OS.
+The corrected private-Xvfb follow-up passes 11 processes with 114 named checks
+and 20 threshold observations. Prior runner/display-start failures remain
+preserved. This is a source graph, not package, multiscreen or live monitor-change
+qualification. The original Windows build/pack passes with zero warnings/errors
+and all 208 upstream threading tests pass after this integration.
+
+The accepted hidden-composition contract restores original selected text while
+retaining the generation, latest candidate/caret and deferred automatic binding
+ownership. Show resumes it; hidden Commit replaces the original range once with
+one undo/redo step. Application text, selection and binding intervention wins.
+Commit `8fbb2a7a3` preserves the exact five independently reviewed files. Its
+final combined graph passes managed preedit 30, automation 10 and Core input 36
+per OS, plus all nine existing regression processes per OS. Both separate native
+graphs build successfully. Linux's eight private native modes pass: ordinary
+Window 23 with and without service, Unicode 5, AT-SPI 9, managed peers 3,
+clipboard 9, manager 4 and portal 31, totaling 107 checks. Fourteen final PDB
+source checks match, and the freeze pins 658 runtime files and 1,154 derived
+inputs. Root rehashes 219 evidence records, 13 manifests and all five main source
+files. Della and Foghorn report no supported findings. Existing build warnings,
+native registry prefixes and corrected setup/runner failures remain recorded;
+they are not discarded or reported as zero-warning portable graphs. Native
+focused-editor lease/caret attachment, real IME engines and a fresh package/live
+desktop replay remain unqualified.
+
+A genuine Classic ComboBox mouse click exposes a separate next boundary:
+`ItemsControl.AutoScrollTimeout` still reaches user32 `GetDoubleClickTime` before
+native Popup construction. The expected-red diagnostic preserves the original
+template and real input path. Phases 2 through 5 remain open.
 
 The accepted bidi contract follows Unicode 17. All 91,707 Unicode bidi character level cases pass after a bounded correction to the pinned managed dependency. This algorithm result is separate from paragraph layout, fallback, glyph positioning and native editing qualification. Legacy Windows WPF bracket ordering and measured Display-mode metric differences are recorded compatibility differences, not silently relaxed test tolerances.
 

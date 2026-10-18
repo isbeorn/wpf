@@ -175,6 +175,15 @@ cancel only while the session still owns that range; application text or
 selection changes invalidate it and take precedence. This is a required design
 contract for the next slice, not a claim of implemented native IME support.
 
+While composition is hidden, restore the original selected text and selection
+without ending its generation or releasing deferred automatic binding ownership.
+Retain the latest complete candidate and caret; Show resumes that same
+composition, and a hidden Commit replaces the original range once with one
+undo/redo step. Hide is distinct from a visible empty candidate, Cancel or
+Commit. Application text, selection or binding intervention takes precedence
+over retained composition state. Native focused-editor/caret attachment and
+real engine qualification remain separate gates.
+
 ## Phased delivery
 
 Every phase produces a runnable artifact or an explicit design decision with evidence. Each gate records passed, failed, blocked and intentionally unsupported cases separately. A build, screenshot or stubbed startup alone does not pass a behavior gate.

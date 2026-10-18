@@ -11895,11 +11895,1705 @@
       ],
       "sourceCommit": null,
       "outcome": "pass"
+    },
+    {
+      "label": "retained-visual-brush-combined-source",
+      "capturedAtUtc": "2026-10-18T19:59:47.6123119Z",
+      "headCommit": "a18122207e81faef96dbe2e6a87cced9e8000af6",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Committed d85 bounded non-tiled VisualBrush source graph passes full guidelines227/focused61 plus Rendering19/Geometry268/Text344/Imaging12 per OS and actual Linux native Window23 with the same Core. Thirteen processes exit0 with empty stderr; recorded build warnings remain. Exact source/helper/closure audits and independent reviews pass. No new package, physical desktop or general tiled/effects/opacity-mask/recursive-source profile is claimed.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/combined-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/combined-freeze.json",
+          "sha256": "0d11db8cb36da0f634120962ffb1d660ca9d2f7983bbfeedcb1b06c282a58a6c",
+          "bytes": 24631,
+          "results": [
+            {
+              "status": "pass",
+              "count": 13
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/handoff.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/handoff.md",
+          "sha256": "99a50b308e63e697632219f12b0576880ec7054f112121c08d748cc990ecb20a",
+          "bytes": 4056
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/result-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/result-summary.json",
+          "sha256": "90a34f4f7de02cb8605e62c3144059921ac5cd688e9a5b192b77bd8f4942f340",
+          "bytes": 2738
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/build-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/build-summary.json",
+          "sha256": "0edab2c243503869d41963b6e328e9a02890c28de9ffd8c2e46c4d26a366ea90",
+          "bytes": 1212
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/root-integration-verification.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/root-integration-verification.json",
+          "sha256": "799ce4336c25691480d9f78052482b462fd4ec8bd8e338a39aac7d61efd70f23",
+          "bytes": 460
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/behavior-checklist.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/behavior-checklist.json",
+          "sha256": "ac0c757f18b5c51381e0d96bc72bb0b08329fe87da82e19b99ca0215de2eb2bd",
+          "bytes": 1221
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/integration-inputs.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/integration-inputs.json",
+          "sha256": "53d96648928eb8fa4e3e909140edaf5a1c6b581dd50b4fc9aef4c11cafbc9031",
+          "bytes": 3974
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/runtime-closures.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/runtime-closures.json",
+          "sha256": "f00318825218d792795a31fb473604b397e9887bb96dcd5eac9002c11a3f5929",
+          "bytes": 419927
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/source-drift-diagnostic.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/source-drift-diagnostic.json",
+          "sha256": "8bd6b5638ff1c0a284c5acf62c54d7487b8b6915718f16ff7c542007e6313730",
+          "bytes": 482
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/known-test-output-files.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/known-test-output-files.json",
+          "sha256": "2ff2759fda918e0424402b307b377f93d4f7be139b3d74e357624ba67c73a342",
+          "bytes": 385
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/windows-guidelines-full.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/windows-guidelines-full.json",
+          "sha256": "08b765f58465f1ae79bb218cace4ce733eae4ae106cca361d62765b4809b7683",
+          "bytes": 594480
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/windows-visual-brush-focused.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/windows-visual-brush-focused.json",
+          "sha256": "4f754bf841102e813f84f5fd448ff7637f071b05d2c1772491437492c82d785c",
+          "bytes": 7759
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/windows-rendering.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/windows-rendering.json",
+          "sha256": "2e37888908aff996575614fbd272764a25dbe595e901dc5a777ec16de36d7e20",
+          "bytes": 3559,
+          "results": [
+            {
+              "status": "pass",
+              "count": 19
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/windows-geometry.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/windows-geometry.json",
+          "sha256": "e9fd4e199009bb3f7708c0983744e7f726c17437a80ffbf8178f15c23ec666d4",
+          "bytes": 37547,
+          "results": [
+            {
+              "status": "pass",
+              "count": 268
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/windows-text.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/windows-text.json",
+          "sha256": "476ac4a87432af656f71fa0d1e0ac61bd4ed19543ac8ae5db07998a0fc324c38",
+          "bytes": 83191,
+          "results": [
+            {
+              "status": "pass",
+              "count": 344
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/windows-imaging.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/windows-imaging.json",
+          "sha256": "cb0578f381b82af1b821376ec52ed805ee900d94f450fd07a089caa389bd042f",
+          "bytes": 2498,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/linux-guidelines-full.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/linux-guidelines-full.json",
+          "sha256": "ab7766871435e7391498b4920adeb79191dfe79783951bf0fe0b25bfed594c10",
+          "bytes": 588422
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/linux-visual-brush-focused.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/linux-visual-brush-focused.json",
+          "sha256": "e2bd63b5823896e09d4e73fc082ebc2ef7a2fc005ea26b109633feed451835d5",
+          "bytes": 7431
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/linux-rendering.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/linux-rendering.json",
+          "sha256": "9f76308424413c6ca375645b72a42341f0abbf659c39f4ae586b718aad84a68e",
+          "bytes": 3429,
+          "results": [
+            {
+              "status": "pass",
+              "count": 19
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/linux-geometry.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/linux-geometry.json",
+          "sha256": "4d6c1e59a4f8b5e42c392ca1e2b2a57fab6bb87ba74acab5b26358e334a9591f",
+          "bytes": 35908,
+          "results": [
+            {
+              "status": "pass",
+              "count": 268
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/linux-text.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/linux-text.json",
+          "sha256": "485a50af236346983e26bf7abf5b60a7ad36f747dc3c2430e79e9463e7feeece",
+          "bytes": 81405,
+          "results": [
+            {
+              "status": "pass",
+              "count": 344
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/linux-imaging.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/linux-imaging.json",
+          "sha256": "6e791fa91987ce201db452bd2111c4b9ea08911bf3bd038a1ee8705b9c5edf15",
+          "bytes": 2409,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/visual-brush-combined-main-1/linux-native23.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/visual-brush-combined-main-1/linux-native23.json",
+          "sha256": "bf3627e6e5b371788c10e46c5700fc96172f0704518e1467fa903cea9db9a846",
+          "bytes": 13567,
+          "results": [
+            {
+              "status": "pass",
+              "count": 23
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/foghorn-visual-brush-review/review-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/foghorn-visual-brush-review/review-summary.json",
+          "sha256": "9d31d166947f859439360920d3680c698a9fed4a6ae0c536305b4c4d8a58425f",
+          "bytes": 1911
+        },
+        {
+          "path": "artifacts/portability/basil-visual-brush-review-revision2/windows-focused.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/basil-visual-brush-review-revision2/windows-focused.json",
+          "sha256": "239cc70b7241cb39adb41aed79c29c9b029997c64e8a8fc87339163df694857c",
+          "bytes": 7711
+        },
+        {
+          "path": "artifacts/portability/basil-visual-brush-review-revision2/linux-focused.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-visual-brush-combined-source/artifacts/portability/basil-visual-brush-review-revision2/linux-focused.json",
+          "sha256": "465cc43b5a4fd68d4bdae7e66b7f904823a000024d0c120ca2c9610420c207c8",
+          "bytes": 7394
+        }
+      ],
+      "sourceCommit": "d85b4fc748e154ad36b200b051101fb321834dea",
+      "outcome": "pass"
+    },
+    {
+      "label": "observed-primary-screen-classic-defaults-combined",
+      "capturedAtUtc": "2026-10-18T19:59:48.0908111Z",
+      "headCommit": "a18122207e81faef96dbe2e6a87cced9e8000af6",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Committed a181 source graph passes155 settings checks per OS and corrected private-Xvfb follow-up11 processes/114 checks plus20 threshold observations. Optional observed immutable primary DIP dimensions, explicit absence and declared Classic animation/repeat policy preserve original resource behavior. Native stage append/helper differences and prior runner/display-start failures remain visible. Ordinary Windows build/pack0warnings/errors and threading208 pass. No package, multiscreen, live monitor update or physical desktop qualification.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/combined-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/combined-freeze.json",
+          "sha256": "5e76d76a99c86fef6a996b1bb486c72a2ea808f50de99c99c56b7cbbc1e53e64",
+          "bytes": 30177,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/result-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/result-summary.json",
+          "sha256": "d9930c5fc0e16846a128123a4c892f5ac391fe9f5cf3c978cb486265acff8dd4",
+          "bytes": 2825
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/native-results.tsv",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/native-results.tsv",
+          "sha256": "599631c35109c19b34608b3c0a582127fdb1ac92cd62098cb77248c3dcdd9289",
+          "bytes": 144
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/runner-correction.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/runner-correction.json",
+          "sha256": "4a18da7aec6c6c269e08a12796bd440b41c9f4543ffaea82f4fa30bc6ce54b29",
+          "bytes": 356
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/prior-runner-attempts.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/prior-runner-attempts.json",
+          "sha256": "35828e9ec179610be6602e592341e03bfde91ec25497150df86c8bb75dbd3b83",
+          "bytes": 2496
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/primary-1.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/primary-1.json",
+          "sha256": "c2884006bd32b9d917d3b513b4e5f2f91df5314d88a13b463ec6cd57f06a57b2",
+          "bytes": 1059,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/primary-1.25.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/primary-1.25.json",
+          "sha256": "5132c09c85d1bb5427a3bff7745a162db453ca854575add793e6a6baa90bfddf",
+          "bytes": 1067,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/threshold.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/threshold.json",
+          "sha256": "ba5648f878a0d8d5dc5224b4bcc9597fbd3dc545624d8d43c7eaadbf6f4bc723",
+          "bytes": 7036,
+          "results": [
+            {
+              "status": "pass",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/native-default.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/native-default.json",
+          "sha256": "4dc0626a0c92f8eaaaa300d0b5ec92e0599c00ecbabbbb6e7bb55b2f162d7837",
+          "bytes": 13428,
+          "results": [
+            {
+              "status": "pass",
+              "count": 23
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/native-big.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/native-big.json",
+          "sha256": "b01b47b7d8a6c7694399058367befad301b5555859b1a7d58f0ccfb57346e127",
+          "bytes": 13425,
+          "results": [
+            {
+              "status": "pass",
+              "count": 23
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/unicode.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/unicode.json",
+          "sha256": "fbdd4e2b3644ac2e64fd1d0d2a993818bf1a0a2a43de1aca25089c7b66224fae",
+          "bytes": 3515,
+          "results": [
+            {
+              "status": "pass",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/managed-peers.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/managed-peers.json",
+          "sha256": "f5444669b4a282a4b677b7491b3198e12b44b1182a67d1271085d16f8eed2373",
+          "bytes": 3097,
+          "results": [
+            {
+              "status": "pass",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/atspi.result.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/atspi.result.json",
+          "sha256": "ede89805c0f4f53b72f0da1d412e12b5187b537f79ae2190f1932054103c9f3f",
+          "bytes": 3403,
+          "results": [
+            {
+              "status": "pass",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/clipboard.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/clipboard.json",
+          "sha256": "5396099fe9357ffd0cf4af5e7749425b53d062f1368a5183602fc8c75d55e96d",
+          "bytes": 3466,
+          "results": [
+            {
+              "status": "pass",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/clipboard-manager.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/clipboard-manager.json",
+          "sha256": "be1fa43689a40092bb0033b1983e2a5dfaa71c66264ff890399d838d9d2ed0bb",
+          "bytes": 2485,
+          "results": [
+            {
+              "status": "pass",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/portal.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision4/attempt2/portal.json",
+          "sha256": "bc1aa448085f1308db54ed6c6edce170703ea68023e419ecd35295b1962a63e9",
+          "bytes": 13411,
+          "results": [
+            {
+              "status": "pass",
+              "count": 31
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/combined-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/combined-freeze.json",
+          "sha256": "0d2e2f44da8271383a67ad6247a3b53ee19dc6768287c9283f0d21bd397c21cc",
+          "bytes": 32353,
+          "results": [
+            {
+              "status": "blocked-before-fixture-start",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 14
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/result-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/result-summary.json",
+          "sha256": "0e91b9446d28b2ecea4762d1d8de635c5f85cb3a60c0f56512c2d73049b8a2ac",
+          "bytes": 4231
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/build-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/build-summary.json",
+          "sha256": "3ee285dab683a11e19e4908c9d0679179df0cf50b13533e27e00c82fab3c4a85",
+          "bytes": 527
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/behavior-checklist.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/behavior-checklist.json",
+          "sha256": "814b43521d5781da6febba428e56c7c09492c0340484023f32e68a66472e6d9d",
+          "bytes": 1462
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/helper-skia-flavors.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/helper-skia-flavors.json",
+          "sha256": "0d0bebeb383ec7b168b4a7f3ace161695cbc763c40e230bd747c053d5ded0a43",
+          "bytes": 20732
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/windows-settings-default.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/windows-settings-default.json",
+          "sha256": "53c4313c4f542ac6b7ad480725fe7cd0c033f13427b4f6dc6503a5ae8bd9d3f8",
+          "bytes": 10217,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/windows-settings-all-alternate.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/windows-settings-all-alternate.json",
+          "sha256": "80cf875725b66a3ed30c5c25f24c5a8f598b6fe7bc3fcca5ad135fb16fc36a28",
+          "bytes": 10306,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/windows-settings-highcontrast-missing.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/windows-settings-highcontrast-missing.json",
+          "sha256": "4caffc3a6d825cb806945e4b30e0693da24d6f2785a8f8b06a10391370aab7ca",
+          "bytes": 10223,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/windows-settings-screen.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/windows-settings-screen.json",
+          "sha256": "7317b70dbbb64796411bc10c24436372a475552df3cbb4e9ace8de4e2e956730",
+          "bytes": 10312,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/windows-settings-screen-scroll.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/windows-settings-screen-scroll.json",
+          "sha256": "99c19ba92390a1b16cc3c37191f0fd1b440626c120be29e776f522dc28de06d8",
+          "bytes": 10311,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/windows-settings-theme-layout.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/windows-settings-theme-layout.json",
+          "sha256": "e40f9126910ad51aacddd883deeebe736976873885ce898f398bc075e1b6d904",
+          "bytes": 2974,
+          "results": [
+            {
+              "status": "pass",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/windows-settings-unavailable.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/windows-settings-unavailable.json",
+          "sha256": "c6c687c3bad609e49c01fc0c43fe007fa14ed757ba6291e07fae05e7a7f6745c",
+          "bytes": 303,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/linux-settings-default.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/linux-settings-default.json",
+          "sha256": "df7597ea45b23f83c79f59c396a4a776753fdcdb54e2652d3e9f7155f20de842",
+          "bytes": 7609,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/linux-settings-all-alternate.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/linux-settings-all-alternate.json",
+          "sha256": "690e2fee8e214e3b71237d89fc8f5a7a5aa1e88427c800a1c5cc44ef601cb6eb",
+          "bytes": 7665,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/linux-settings-highcontrast-missing.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/linux-settings-highcontrast-missing.json",
+          "sha256": "e472d43c449304b8a7fbca111f2c08cc198bbd52a15b6922c52c6de755f0e815",
+          "bytes": 7615,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/linux-settings-screen.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/linux-settings-screen.json",
+          "sha256": "b15b03110a98d836f44daca107558605b05cf5cc93892add7d41cfbf800a9a8b",
+          "bytes": 7671,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/linux-settings-screen-scroll.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/linux-settings-screen-scroll.json",
+          "sha256": "46604c0f0c8d68e8478a47942bb560425fe6bb9c91ef176ebe1339629f56ce07",
+          "bytes": 7670,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/linux-settings-theme-layout.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/linux-settings-theme-layout.json",
+          "sha256": "4b5a74d54f7cb4b99a8fc56a342a45f307ce2ff88aef27ccd00497aef8d4b46d",
+          "bytes": 2853,
+          "results": [
+            {
+              "status": "pass",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/primary-screen-combined-main-1/revision2/linux-settings-unavailable.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/primary-screen-combined-main-1/revision2/linux-settings-unavailable.json",
+          "sha256": "f6a9af3688b4a804b5cb13f80aaffa0771486edc3ff749a29cc00e604e411a43",
+          "bytes": 293,
+          "results": [
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/windows-primary-screen-regression-20261018.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/windows-primary-screen-regression-20261018.log",
+          "sha256": "5ac1a0d101532459dbb2c4990a98253af710ed5eee65e34cf0524b13866217ab",
+          "bytes": 44333
+        },
+        {
+          "path": "artifacts/portability/upstream-threading-primary-screen-20261018.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/upstream-threading-primary-screen-20261018.log",
+          "sha256": "6add83491805d8c25cec3fe352f2de2592d287e340658f32af41ab41473f6932",
+          "bytes": 341
+        },
+        {
+          "path": "artifacts/portability/foghorn-primary-screen-review/review-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/foghorn-primary-screen-review/review-summary.json",
+          "sha256": "0bd393fce0a2da7196ce0dcea98ee69a5c8b7898404908933fb53b52a2e02e35",
+          "bytes": 2712
+        },
+        {
+          "path": "artifacts/portability/basil-primary-screen-review/native-primary-1.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/basil-primary-screen-review/native-primary-1.json",
+          "sha256": "99d1917399773cdeb8946501bc9aa53ac2a71913b48ef05f42eb3c78f594b1ae",
+          "bytes": 884,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/basil-primary-screen-review/native-primary-1.25.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-observed-primary-screen-classic-defaults-combined/artifacts/portability/basil-primary-screen-review/native-primary-1.25.json",
+          "sha256": "ff3fbbbe14307922a0d3e1fa683d4239d05880d500c178d47120b5823e302ecd",
+          "bytes": 892,
+          "results": [
+            {
+              "status": "pass",
+              "count": 2
+            }
+          ]
+        }
+      ],
+      "sourceCommit": "a18122207e81faef96dbe2e6a87cced9e8000af6",
+      "outcome": "pass"
+    },
+    {
+      "label": "hidden-managed-preedit-reviewed-candidate",
+      "capturedAtUtc": "2026-10-18T19:59:48.344246Z",
+      "headCommit": "a18122207e81faef96dbe2e6a87cced9e8000af6",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Accepted hidden contract restores original selection/text while retaining generation/latest candidate/caret and automatic binding deferral; Show resumes, hidden Commit owns one undo and application intervention wins. Reviewed five-file candidate passes preedit30/automation10/Core36 and all9 regression processes per OS; Della/Foghorn clear. Candidate is integrated but uncommitted and fresh main combined verification is pending. No native focused-editor lease/caret attachment or real IME engine is qualified.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/managed-preedit-visibility/review-freeze-2/HANDOFF.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility/review-freeze-2/HANDOFF.md",
+          "sha256": "36585b4744621c413f022ec1c7f7fbc75df4bce6178cd23588330349a9c3f2b6",
+          "bytes": 4516
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility/review-freeze-2/source-manifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility/review-freeze-2/source-manifest.json",
+          "sha256": "76fedef268514cc45b107183b178ad449fa7fe54946fbe352f5c1ce2fd421a96",
+          "bytes": 1091
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility/review-freeze-2/output-manifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility/review-freeze-2/output-manifest.json",
+          "sha256": "4d01c0a75307b3dfeafe2b326e2d8f3c9a0a800c3c5c805a3f2afd37b26c6616",
+          "bytes": 78451
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility/review-freeze-2/controls-output-manifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility/review-freeze-2/controls-output-manifest.json",
+          "sha256": "5220a17fca53f843a3f73d42fb5473cba38b7bbf6d8554d7ec0104288ce7722f",
+          "bytes": 40029
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility/review-freeze-2/pdb-source-correspondence.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility/review-freeze-2/pdb-source-correspondence.json",
+          "sha256": "d25f7d923db15f06aaf0f0ffd802da1c4cea9ae21d74aee9c1bb51664eb69ac9",
+          "bytes": 6143
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility/review-freeze-2/verification.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility/review-freeze-2/verification.json",
+          "sha256": "60b66cf005fb89100c822cd8f9a5e24080355535539d8c270febaf2e297a3cdf",
+          "bytes": 361
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility/review-freeze-2/final-ledger.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility/review-freeze-2/final-ledger.json",
+          "sha256": "b2a8aed0dd3d95d1a7fb5ddd3652c9144ad5ecbacd30011ed584bc8e7a69c213",
+          "bytes": 92000
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility/review-freeze-2/encoding-comparison.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility/review-freeze-2/encoding-comparison.json",
+          "sha256": "dfdbee06ed2117a6d7e4e327e6aeadad6334f85e82c346d2c0020d4918953f1e",
+          "bytes": 887
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility/review-freeze-2/baseline-check-preservation.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility/review-freeze-2/baseline-check-preservation.json",
+          "sha256": "0c27518c6bcfc5573508c3cea9cbcc896a6b6b564611dd4bfede8683f76e8676",
+          "bytes": 94
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility/review-freeze-2/delta-from-freeze-1.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility/review-freeze-2/delta-from-freeze-1.json",
+          "sha256": "bf568568d9efd2009ad8ac16204f78fa9d97fa6fc39309bb89dc8b03cf6b4a5f",
+          "bytes": 588
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility/review-freeze-2/evidence/green-windows-checks.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility/review-freeze-2/evidence/green-windows-checks.json",
+          "sha256": "2baa85c4b61741e51bccc905b033de353e905b5d4bc795b220e50d033f92df4f",
+          "bytes": 6613,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility/review-freeze-2/evidence/green-linux-checks.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility/review-freeze-2/evidence/green-linux-checks.json",
+          "sha256": "505b5eb13714fbe1b76d4bc63ed9cec4825965414a6c08b29214b8b2951c9604",
+          "bytes": 6378,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility/review-freeze-2/evidence/regression-windows-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility/review-freeze-2/evidence/regression-windows-results.json",
+          "sha256": "68b621e0a79bfda9829aefc3b41f1495f33a19b83ac775d016932cdb9a88ccbe",
+          "bytes": 518
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility/review-freeze-2/evidence/regression-linux-results.tsv",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility/review-freeze-2/evidence/regression-linux-results.tsv",
+          "sha256": "be017b4d1723a67d800b25ae214ab5acc6c903c3c038a8042882a6b4aa524692",
+          "bytes": 131
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-design/accepted-design.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility-design/accepted-design.md",
+          "sha256": "fd30a0f66eb75fdbfc8ce1c1ef4388b568cbd79045c35857291d032bce8c9d5a",
+          "bytes": 2852
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/integration-inputs.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/managed-preedit-visibility-combined-main-1/integration-inputs.json",
+          "sha256": "42c20fc1adf73453b27cef1a8992d30ccab82abdc336effb461149be6b1f1a1b",
+          "bytes": 2707
+        },
+        {
+          "path": "artifacts/portability/della-preedit-visibility-review/review-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/della-preedit-visibility-review/review-results.json",
+          "sha256": "5f8f97ad525739aba3e26b9a6517807d0efeb1f3fbd74a91093c082b0ad1b9a8",
+          "bytes": 2023
+        },
+        {
+          "path": "artifacts/portability/della-preedit-visibility-review/restoration-callback-probes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/della-preedit-visibility-review/restoration-callback-probes.json",
+          "sha256": "b06c17fbf8b4432b1b3cf52469be78c1e32b18c38d836a75d6a54a1d180d0686",
+          "bytes": 3499
+        },
+        {
+          "path": "artifacts/portability/foghorn-managed-preedit-visibility-review/review-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-reviewed-candidate/artifacts/portability/foghorn-managed-preedit-visibility-review/review-summary.json",
+          "sha256": "0ac29d3053af916c748b016ed7bbba36102c8a5c0c61da5121f5334270e77466",
+          "bytes": 791
+        }
+      ],
+      "sourceCommit": null,
+      "outcome": "partial"
+    },
+    {
+      "label": "unchanged-guidergraph-native-bootstrap-unshown-diagnostic",
+      "capturedAtUtc": "2026-10-18T19:59:48.4746007Z",
+      "headCommit": "a18122207e81faef96dbe2e6a87cced9e8000af6",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Original NINA4742 closure/BAML/33 dictionaries and real guide-history events pass12 Linux checks after explicit early native initialization on private Xvfb. Window remains unshown and direct actual-view layout is retained. Diagnostic substitutes15 old package files and appends90 source-stage files, with native/helper flavor differences explicit. Historical stock11/c21 user32 red remains preserved. No package, mapped plot pixels/input, original GuiderVM commands or equipment behavior is qualified.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/verification.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-unchanged-guidergraph-native-bootstrap-unshown-diagnostic/artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/verification.json",
+          "sha256": "ad6f39999237f49116fafc48a4c35f27c15e85ca381eb1371509a1a44f7c2e41",
+          "bytes": 6095
+        },
+        {
+          "path": "artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/findings.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-unchanged-guidergraph-native-bootstrap-unshown-diagnostic/artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/findings.md",
+          "sha256": "25d6efd715f3587ff05504bdb6fe36710592ac80d1e9e09a94f965eb4b3469d5",
+          "bytes": 4276
+        },
+        {
+          "path": "artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/evidence.sha256.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-unchanged-guidergraph-native-bootstrap-unshown-diagnostic/artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/evidence.sha256.json",
+          "sha256": "77e50caaba14e8f0b1c2f287f954dcab88eedede1f31bb76d79414abe35c4990",
+          "bytes": 4945
+        },
+        {
+          "path": "artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/root-release.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-unchanged-guidergraph-native-bootstrap-unshown-diagnostic/artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/root-release.json",
+          "sha256": "47db8d49531e0fd65ed281560f8b85d7a2715857a6299b40a1ef31a0d82a06be",
+          "bytes": 1083
+        },
+        {
+          "path": "artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/preparation.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-unchanged-guidergraph-native-bootstrap-unshown-diagnostic/artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/preparation.json",
+          "sha256": "52b14a7697f416de635d56776a4a76a6bc9fc3d95fbb1bb98696313bdd89456d",
+          "bytes": 2503
+        },
+        {
+          "path": "artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/source-evidence.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-unchanged-guidergraph-native-bootstrap-unshown-diagnostic/artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/source-evidence.json",
+          "sha256": "8551dd6b086db8b37c8003daef2a06131365983142eaed9ae33a013dba6e5330",
+          "bytes": 11933
+        },
+        {
+          "path": "artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/native-bootstrap.diff",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-unchanged-guidergraph-native-bootstrap-unshown-diagnostic/artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/native-bootstrap.diff",
+          "sha256": "23e7b7d0561a0d5a7abe37b307139283d902c02c490a30b4621cbfeafcb28ff2",
+          "bytes": 4122
+        },
+        {
+          "path": "artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/run-01/runtime-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-unchanged-guidergraph-native-bootstrap-unshown-diagnostic/artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/run-01/runtime-linux.json",
+          "sha256": "379923a392aa9192bcbf3fd2ae477da8ace6478f538b61fd73c5ea1e9715b20c",
+          "bytes": 43878,
+          "results": [
+            {
+              "status": "pass",
+              "count": 12
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/run-01/process-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-unchanged-guidergraph-native-bootstrap-unshown-diagnostic/artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/run-01/process-linux.json",
+          "sha256": "88933a8fb122622aedada02b396f26e7d44506b07f174486ca65280e6339d9e4",
+          "bytes": 113
+        },
+        {
+          "path": "artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/run-01/source-validation.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-unchanged-guidergraph-native-bootstrap-unshown-diagnostic/artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/run-01/source-validation.json",
+          "sha256": "745f7312ebefcf4ded095bf4cc543a8b2b8f1cae0d466709ad9208540612479a",
+          "bytes": 470
+        },
+        {
+          "path": "artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/run-01/consumed-source-stage.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-unchanged-guidergraph-native-bootstrap-unshown-diagnostic/artifacts/portability/nina-guider-graph-native-screen-diagnostic/revision-1/run-01/consumed-source-stage.json",
+          "sha256": "dc2ff5faf0eab9595be4903f37bc358e3ef764c3384be47f1fff70331322706c",
+          "bytes": 34876
+        }
+      ],
+      "sourceCommit": null,
+      "outcome": "pass"
+    },
+    {
+      "label": "genuine-imagecontrolvm-stock-reference",
+      "capturedAtUtc": "2026-10-18T19:59:48.5882899Z",
+      "headCommit": "a18122207e81faef96dbe2e6a87cced9e8000af6",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Unchanged NINA4742 ImageControlVM with original mediators/ImageControlView/ImageView BAML,33 dictionaries and public command/binding paths passes26 stock offscreen checks including Gray16/Rgb48 rotate/flip/crosshair/removal/disposal. No NINA source rebuild or application/equipment bootstrap. Linux replay is not qualified by this reference.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-reference/revision-2/verification.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-stock-reference/artifacts/portability/nina-imagecontrolvm-reference/revision-2/verification.json",
+          "sha256": "e457811263d4d73405122075f25b4d21701af1d61861485542e116d946294d00",
+          "bytes": 4521
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-reference/revision-2/findings.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-stock-reference/artifacts/portability/nina-imagecontrolvm-reference/revision-2/findings.md",
+          "sha256": "ddfcf4b2d24a2853baf7c16b62921e304ad463fc2273a87188d1bf17550b240b",
+          "bytes": 5232
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-reference/revision-2/evidence.sha256.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-stock-reference/artifacts/portability/nina-imagecontrolvm-reference/revision-2/evidence.sha256.json",
+          "sha256": "7009aa8a6f3678de7a332ddce1f79d7da474efe03c0bd449e3a72813c3787f87",
+          "bytes": 7731
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-reference/revision-2/root-release.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-stock-reference/artifacts/portability/nina-imagecontrolvm-reference/revision-2/root-release.json",
+          "sha256": "47db8d49531e0fd65ed281560f8b85d7a2715857a6299b40a1ef31a0d82a06be",
+          "bytes": 1083
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-reference/revision-2/PreparedFreeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-stock-reference/artifacts/portability/nina-imagecontrolvm-reference/revision-2/PreparedFreeze.json",
+          "sha256": "4384091bef35386f1dcb4d5b58183d59e1eb15e4a6e8946ef7c654b9dcaf718d",
+          "bytes": 62146
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-reference/revision-2/source-evidence.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-stock-reference/artifacts/portability/nina-imagecontrolvm-reference/revision-2/source-evidence.json",
+          "sha256": "822159e7f8943be916e1e926cfa92561188d58302d4b49192c121dadb7f5c42d",
+          "bytes": 15475
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-reference/revision-2/image-body-oracle.diff",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-stock-reference/artifacts/portability/nina-imagecontrolvm-reference/revision-2/image-body-oracle.diff",
+          "sha256": "3191dd6a4a4f9af6b60ddea0fb8fde6f002cf5ab3600eaa44d76fdffa16bb5fa",
+          "bytes": 3595
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-reference/revision-2/stock/run-01/runtime-stock.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-stock-reference/artifacts/portability/nina-imagecontrolvm-reference/revision-2/stock/run-01/runtime-stock.json",
+          "sha256": "c1fc35d085416a2930ff87290dcbf3c404695568e99f114890d62f5e34df7642",
+          "bytes": 62899,
+          "results": [
+            {
+              "status": "pass",
+              "count": 26
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-reference/revision-2/stock/run-01/process-stock.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-stock-reference/artifacts/portability/nina-imagecontrolvm-reference/revision-2/stock/run-01/process-stock.json",
+          "sha256": "d0e63d093c8da5f0739ba6e77f4240b5eb08ad814d52ea5b3def265fd65b99c4",
+          "bytes": 281
+        }
+      ],
+      "sourceCommit": null,
+      "outcome": "partial"
+    },
+    {
+      "label": "gray16-settled-reference-and-native-grid-diagnostic",
+      "capturedAtUtc": "2026-10-18T19:59:48.7507141Z",
+      "headCommit": "a18122207e81faef96dbe2e6a87cced9e8000af6",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Fixed-source/geometry stock capture diagnosis shows identical settled/repeated RTB PNG and decoded bytes while early RTB differs transiently. Linux max2 against settled offscreen is bounded comparison evidence. Three native22-point grids stay identical:20 match settled RTB and2 retain38/31-level differences. Webby independently rehashes12 raw records and analyzes saved data. No complete native raster, root cause, display gate clearance or performance remeasurement is claimed.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/preparation-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/preparation-freeze.json",
+          "sha256": "b4d2916b2f35345753bf9d4450c2d010269bc2728f4bcc583038c002b66b3c03",
+          "bytes": 7420
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/prepared-source-hashes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/prepared-source-hashes.json",
+          "sha256": "c6d9dcaa7af7c70f8829031d3158d603069aa47ccec21736a3d9f725c4683a77",
+          "bytes": 812
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/compiled-sources.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/compiled-sources.json",
+          "sha256": "2d330ccf1dd8a994a4030731a8ee4df334537953a8ac3197fe07485288ff39a9",
+          "bytes": 4410
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/revision2-observer.diff",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/revision2-observer.diff",
+          "sha256": "e48b499003a8e492e9c9eb8cd0d6bea24f7df75c7f8b325f8431fb040f4f1664",
+          "bytes": 7563
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/revision2-runner.diff",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/revision2-runner.diff",
+          "sha256": "1cbef9761193850ffe74b4f02bd4cc55bd689ddd53476848edb669f16ac93a07",
+          "bytes": 1141
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/failure-analysis.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/failure-analysis.json",
+          "sha256": "29b567076820fc4fa84ba4f61a5cf8d89db9639ebb6c352f2018858e42d489bc",
+          "bytes": 433
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/runs/gray16-grid-1/capture-stages.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/runs/gray16-grid-1/capture-stages.json",
+          "sha256": "82974c35abafafc796aa9a7f0ed2774e4046fd3506d779df72450eb88a4978db",
+          "bytes": 26102
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/runs/gray16-grid-1/environment.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/runs/gray16-grid-1/environment.json",
+          "sha256": "c85672517be56e7e51b634e9401097848d793aeade6941717727f9f634263958",
+          "bytes": 1090
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/runs/gray16-grid-1/process.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/runs/gray16-grid-1/process.json",
+          "sha256": "9710fb9495b886bce35a1d17c71f6e47ca1c9038dd4fa6089e6c1287972ae77d",
+          "bytes": 218
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/runs/gray16-grid-1/offscreen-grid.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/runs/gray16-grid-1/offscreen-grid.json",
+          "sha256": "7a36c5cbb1bdf417df7bea3bc90d3693809779b390e2bcef329f7f384328f7e2",
+          "bytes": 15070
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/runs/gray16-grid-1/native-after-early-rtb.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/runs/gray16-grid-1/native-after-early-rtb.json",
+          "sha256": "b49be19b32335c8314ddd97d1ae33a2173d62ecb7a1f58ba10e0730ed80bde92",
+          "bytes": 4516
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/runs/gray16-grid-1/native-before-settled-rtb.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/runs/gray16-grid-1/native-before-settled-rtb.json",
+          "sha256": "ba6a547ab95cd62ff4f2553905d571b6efccae212626c1158df7835aa452499a",
+          "bytes": 4516
+        },
+        {
+          "path": "artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/runs/gray16-grid-1/native-after-settled-rtb.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/scientific-workload-reference/reference-capture-diagnosis-revision2/runs/gray16-grid-1/native-after-settled-rtb.json",
+          "sha256": "e6713687e1c82495841c3f9b7cceaff1bd5a46c7a00612ae36d4b132da4a73f0",
+          "bytes": 4516
+        },
+        {
+          "path": "artifacts/portability/webby-gray16-grid-review/summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/webby-gray16-grid-review/summary.json",
+          "sha256": "b68e5c7f01711e66d0a36c58c5afa3cd193de33077a7be6ca7bfd389e5a45541",
+          "bytes": 1692
+        },
+        {
+          "path": "artifacts/portability/webby-gray16-grid-review/comparisons.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/webby-gray16-grid-review/comparisons.json",
+          "sha256": "200b33cf4ea7cd5f84e81a92ac4f28178c88b213a1eb5448d2532809ce982d42",
+          "bytes": 56906
+        },
+        {
+          "path": "artifacts/portability/webby-gray16-grid-review/raw-evidence-hashes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-gray16-settled-reference-and-native-grid-diagnostic/artifacts/portability/webby-gray16-grid-review/raw-evidence-hashes.json",
+          "sha256": "d5de5fb652a7f15f0cf462288a53e88158cdb840ef2ef3cfc1063b4a6c165cb1",
+          "bytes": 3396
+        }
+      ],
+      "sourceCommit": null,
+      "outcome": "partial"
+    },
+    {
+      "label": "live-gnome-f7-clipboard-pass-picker-postconditions-red",
+      "capturedAtUtc": "2026-10-18T19:59:48.8891739Z",
+      "headCommit": "a18122207e81faef96dbe2e6a87cced9e8000af6",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Actual GNOME/XWayland f7 package probe passes startup/bound TextBox and live Copy/Cut/Paste. All4 dialogs return with owner disabled/restored, but strict Open/Save path/cancellation postconditions fail and final unrelated fixture XQueryTree fails;4 of8 required groups pass. Public filenames do not prove portal wire selection mapping. User action clarification remains pending. Settings/service-owner evidence and reaped PIDs are retained; old probes unchanged. No strict live picker workflow or general desktop-service gate pass.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/hyperv-desktop/native-services-probe-3/live-failure-outcome-1.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-gnome-f7-clipboard-pass-picker-postconditions-red/artifacts/portability/hyperv-desktop/native-services-probe-3/live-failure-outcome-1.json",
+          "sha256": "1727635bec9f2e1c7d220cc3938f0797dfdd0c3504e63e96f08de7390132de18",
+          "bytes": 50325,
+          "results": [
+            {
+              "status": "fail",
+              "count": 4
+            },
+            {
+              "status": "pass",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/native-services-probe-3/live-run-1-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-gnome-f7-clipboard-pass-picker-postconditions-red/artifacts/portability/hyperv-desktop/native-services-probe-3/live-run-1-freeze.json",
+          "sha256": "e34aab8c3ba5e29154a0f5b3548a9942ee4f5832fff68d9461093409b4506e8f",
+          "bytes": 7077
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/native-services-probe-3/plan.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-gnome-f7-clipboard-pass-picker-postconditions-red/artifacts/portability/hyperv-desktop/native-services-probe-3/plan.json",
+          "sha256": "8e52b677bf94b1f6fb21409d49094edf080824c8ca4928163cb2202552bbd73e",
+          "bytes": 3704
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/native-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-gnome-f7-clipboard-pass-picker-postconditions-red/artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/native-results.json",
+          "sha256": "eb15cc54400666eaa289cc7da38cb55b5213fcdb8e2ebf0ae6bde962096479c2",
+          "bytes": 25845,
+          "results": [
+            {
+              "status": "fail",
+              "count": 4
+            },
+            {
+              "status": "pass",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/native.stderr.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-gnome-f7-clipboard-pass-picker-postconditions-red/artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/native.stderr.log",
+          "sha256": "a62701be047b79bbab37b0d0a637dcaa7901b7e161832c7222eb2b8b1f179e1e",
+          "bytes": 324
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/settings-before.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-gnome-f7-clipboard-pass-picker-postconditions-red/artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/settings-before.json",
+          "sha256": "a07f5fd06127f77a7d847cf0fcae63bb7f5e56542b712c8d51edf3209cb64dd8",
+          "bytes": 3463
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/settings-after.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-gnome-f7-clipboard-pass-picker-postconditions-red/artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/settings-after.json",
+          "sha256": "a07f5fd06127f77a7d847cf0fcae63bb7f5e56542b712c8d51edf3209cb64dd8",
+          "bytes": 3463
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/settings-preservation.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-gnome-f7-clipboard-pass-picker-postconditions-red/artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/settings-preservation.txt",
+          "sha256": "692f2afbb932da36212f053422b4d32100f152318a78b19690f018585ce0531a",
+          "bytes": 78
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/services-before.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-gnome-f7-clipboard-pass-picker-postconditions-red/artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/services-before.txt",
+          "sha256": "3b1a4292efa2b75b93e3fe5433ac6428182945fc49441f747b040129e09c7d3d",
+          "bytes": 122
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/services-after.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-gnome-f7-clipboard-pass-picker-postconditions-red/artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/services-after.txt",
+          "sha256": "3b1a4292efa2b75b93e3fe5433ac6428182945fc49441f747b040129e09c7d3d",
+          "bytes": 122
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/process-cleanup.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-gnome-f7-clipboard-pass-picker-postconditions-red/artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/process-cleanup.txt",
+          "sha256": "0d41def8741f0e1ff8e6adef0900933836b0359146e71d0f14ad0c81d088e1d1",
+          "bytes": 118
+        },
+        {
+          "path": "artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/probe-exit.txt",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-gnome-f7-clipboard-pass-picker-postconditions-red/artifacts/portability/hyperv-desktop/native-services-probe-3/evidence/remote-run-1/probe-exit.txt",
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+          "bytes": 2
+        }
+      ],
+      "sourceCommit": "f7dcb2312164de7fdbbca592dd4b3892927cd3ed",
+      "outcome": "partial"
+    },
+    {
+      "label": "classic-combobox-native-popup-opening-red",
+      "capturedAtUtc": "2026-10-18T19:59:49.0994918Z",
+      "headCommit": "a18122207e81faef96dbe2e6a87cced9e8000af6",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Actual XTest press/release on genuine Classic ComboBox reaches IsDropDownOpen then ItemsControl.AutoScrollTimeout/GetDoubleClickTime user32 failure before native Popup construction. Original template and binding path remain unchanged; no popup opacity/compositor claim. Private source-stage diagnostic preserves closed-template setup red separately and reaps owned native resources. This is a known next boundary, not package/live popup qualification.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/popup-native-boundary/review-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-combobox-native-popup-opening-red/artifacts/portability/popup-native-boundary/review-freeze.json",
+          "sha256": "2f8941f53b07ce42f153c3ceeba3c8f4caa0de288eb9f3b3cfb473915254e699",
+          "bytes": 35445
+        },
+        {
+          "path": "artifacts/portability/popup-native-boundary/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-combobox-native-popup-opening-red/artifacts/portability/popup-native-boundary/README.md",
+          "sha256": "74c6f12a467b4f62badbdc0f56f20ad930c5aacd442423ea96d89e4e8dc83dd9",
+          "bytes": 3479
+        },
+        {
+          "path": "artifacts/portability/popup-native-boundary/results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-combobox-native-popup-opening-red/artifacts/portability/popup-native-boundary/results.json",
+          "sha256": "8c30489af49c7cefc7decee4a80a9deeba0611179077bb661a5feb42c993e970",
+          "bytes": 59124,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/popup-native-boundary/click-binding-red-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-combobox-native-popup-opening-red/artifacts/portability/popup-native-boundary/click-binding-red-results.json",
+          "sha256": "1f3df739dca83915e6ff2c03075b8a44aa7923b0360579c8de0ae0476afd6194",
+          "bytes": 32562,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/popup-native-boundary/stage-provenance.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-classic-combobox-native-popup-opening-red/artifacts/portability/popup-native-boundary/stage-provenance.json",
+          "sha256": "89cf3221f23661de43313ccd82c086d65a972b2ead07de74244c5d2642338ead",
+          "bytes": 28360
+        }
+      ],
+      "sourceCommit": null,
+      "outcome": "partial"
+    },
+    {
+      "label": "live-picker-human-clarification-owned-observer-proposal",
+      "capturedAtUtc": "2026-10-18T20:05:14.258074Z",
+      "headCommit": "a18122207e81faef96dbe2e6a87cced9e8000af6",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Post-run human clarification explains first Open README and final Save-versus-Cancel mismatches as user actions, not production mapping/cancel defects. First Save filename is unremembered and inconclusive. Raw failure remains immutable; no live retry requested/running. Private owned-XID/DestroyNotify proposal passes 22 checks and the full app compiles with 0 warnings/errors, but WPF getter has not executed and proposal is not staged/live. Global recursive lookup race reproduced privately does not identify the original failed XID.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/feasibility-ledger-chooser-clarification-update/user-clarification.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-picker-human-clarification-owned-observer-proposal/artifacts/portability/feasibility-ledger-chooser-clarification-update/user-clarification.json",
+          "sha256": "109768e2b635d74b16ede9d3dc9ce339d85d0c45919c74b8c643055a1e241b95",
+          "bytes": 1127
+        },
+        {
+          "path": "artifacts/portability/x11-owned-window-observation-1/freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-picker-human-clarification-owned-observer-proposal/artifacts/portability/x11-owned-window-observation-1/freeze.json",
+          "sha256": "7aea99c91133e5c340b77e2a70c92421d40faa081417a4336dc5d8f6d2370dcc",
+          "bytes": 38535
+        },
+        {
+          "path": "artifacts/portability/x11-owned-window-observation-1/outcome.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-picker-human-clarification-owned-observer-proposal/artifacts/portability/x11-owned-window-observation-1/outcome.json",
+          "sha256": "1f48207c82236c5fd43167ee5e12fce58ff54c6d2fdd4c25bded83e264005efd",
+          "bytes": 2014
+        },
+        {
+          "path": "artifacts/portability/x11-owned-window-observation-1/results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-picker-human-clarification-owned-observer-proposal/artifacts/portability/x11-owned-window-observation-1/results.json",
+          "sha256": "3a7ea79ab5a145a92d58362e91acd1e278f281303ef37457e51a5020fdc01668",
+          "bytes": 5597,
+          "results": [
+            {
+              "status": "pass",
+              "count": 22
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/x11-owned-window-observation-1/README.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-live-picker-human-clarification-owned-observer-proposal/artifacts/portability/x11-owned-window-observation-1/README.md",
+          "sha256": "25f9b7a2df4ed20902cee250517790fc8ec8307971914e2d572660c769630d7a",
+          "bytes": 3101
+        }
+      ],
+      "sourceCommit": null,
+      "outcome": "partial"
+    },
+    {
+      "label": "windows-hidden-composition-merge-build",
+      "capturedAtUtc": "2026-10-18T20:05:14.3333062Z",
+      "headCommit": "a18122207e81faef96dbe2e6a87cced9e8000af6",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Original Windows build/pack after exact five-file hidden-composition merge passes with 0 warnings/errors in 2m1.86s. No newer threading result, portable combined freeze, native editor attachment or IME qualification is inferred.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/windows-hidden-preedit-regression-20261018.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-hidden-composition-merge-build/artifacts/portability/windows-hidden-preedit-regression-20261018.log",
+          "sha256": "6c884072cb1fe391add6eaa0ffd00ee6faa80c5dcec2638e143b0409067eb90e",
+          "bytes": 29106
+        }
+      ],
+      "sourceCommit": null,
+      "outcome": "pass"
+    },
+    {
+      "label": "hidden-managed-preedit-committed-combined",
+      "capturedAtUtc": "2026-10-18T20:18:57.4447599Z",
+      "headCommit": "8fbb2a7a3f544637d7413950529ac03c4a9223e2",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit 8fbb2a7a3 preserves all five independently reviewed visibility files. Final combined graph passes preedit 30, automation 10, Core 36 and all nine existing regression modes per OS. Separate native graphs build; eight Linux modes pass 107 named checks. Fourteen PDB-source matches, 658 runtime files and 1154 derived inputs are frozen. All 219 evidence records and 13 bound manifests rehash here. Earlier candidate, setup failures, warnings and registry output remain preserved. No package, native focused-editor/caret attachment, real IME engine or live desktop completion claim.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/HANDOFF.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/HANDOFF.md",
+          "sha256": "24920ede7ae400b539b15af9cf51335f2daa52eea06687151e35462dcf1ab71c",
+          "bytes": 4926
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/final-ledger.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/final-ledger.json",
+          "sha256": "657f227e1d8dafe2017429d783b13b9ffcc0b5b26ab1e1db081a8ef209419777",
+          "bytes": 35782
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/verification-manifests.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/verification-manifests.json",
+          "sha256": "5eaa303bd874eb93c03fd6dca0062b1fabf82a470c24d3ef56d2e89adb31da05",
+          "bytes": 1747
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/freeze-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/freeze-summary.json",
+          "sha256": "872418d8cf1e03cdee0dc2e850cad588118fbe8081cc90b0c67f4fd14fb18fb2",
+          "bytes": 191
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/integration-inputs.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/integration-inputs.json",
+          "sha256": "42c20fc1adf73453b27cef1a8992d30ccab82abdc336effb461149be6b1f1a1b",
+          "bytes": 2707
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/main-five-at-finish.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/main-five-at-finish.json",
+          "sha256": "cdddb365b2541111c274a613e5498d28efc5bbb4056601d9d60ea2ecfc84b287",
+          "bytes": 1137
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/pdb-source-correspondence.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/pdb-source-correspondence.json",
+          "sha256": "d48354235bfcefaee526bb98623c12fa59e9ab0dc6a6daaac769d8b405294d7e",
+          "bytes": 7582
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/test-access-separation.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/test-access-separation.json",
+          "sha256": "3c04f86c12001617bbb8f89aa45959702687866f23b8dc178839fc0f209dceba",
+          "bytes": 1625
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/managed-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/managed-summary.json",
+          "sha256": "471611f60efb4d3a52348ee49ce7d2101ac4d29288091d797395f4f7a7c865f7",
+          "bytes": 391
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/linux-native-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/linux-native-summary.json",
+          "sha256": "92168b390ba884a2e110830b89804240ef16dc522be2e5e1334851f6d6612058",
+          "bytes": 2692
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/runtime-closures.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/runtime-closures.json",
+          "sha256": "2651a52f9afcb22ad1b31bdc84061da937031f0dab6786e0c8a7aec54259977f",
+          "bytes": 167284
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/build-derived-inputs.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/build-derived-inputs.json",
+          "sha256": "da00e456d9df32d9f5854860731a6fba3e47aca9fa95ee389a18207df131647b",
+          "bytes": 284827
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/source-drift.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/source-drift.json",
+          "sha256": "b2e184d5ff82f83145ea22521f26379f96823ee3fb37ead52258be55ec9e51c4",
+          "bytes": 48
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/native-rerun-completion.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/native-rerun-completion.json",
+          "sha256": "db26b1a5bee358eb74b3af62214092d26b6d3864c785b065eb7d3078bb318342",
+          "bytes": 255
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/windows-managed-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/windows-managed-results.json",
+          "sha256": "65cd3c3b6a73a2e1f5ad3d0e3db059f574d6973444e2dfad5038ac98f9a4730b",
+          "bytes": 572
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/linux-managed-results.tsv",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/linux-managed-results.tsv",
+          "sha256": "7023929682038a2a073aecb0a925138d37ab22d37264f1c76e51fdd1f98d04c2",
+          "bytes": 141
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/windows-preedit-checks.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/windows-preedit-checks.json",
+          "sha256": "2baa85c4b61741e51bccc905b033de353e905b5d4bc795b220e50d033f92df4f",
+          "bytes": 6613,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/linux-preedit-checks.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/linux-preedit-checks.json",
+          "sha256": "505b5eb13714fbe1b76d4bc63ed9cec4825965414a6c08b29214b8b2951c9604",
+          "bytes": 6378,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/windows-automation-checks.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/windows-automation-checks.json",
+          "sha256": "a7fae23ace1e8f634919f8cbf4fccde52e796699b9f735bec5e73153df19a145",
+          "bytes": 1718,
+          "results": [
+            {
+              "status": "pass",
+              "count": 10
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/linux-automation-checks.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/linux-automation-checks.json",
+          "sha256": "8496363eb0074ad4823ad624263b9bea5e2e377680658171132f300bc519b8ab",
+          "bytes": 1547,
+          "results": [
+            {
+              "status": "pass",
+              "count": 10
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/ordinary-no-service.result.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/ordinary-no-service.result.json",
+          "sha256": "6fe444d318f761cdb0c583df48365c1c6ca0573b92b18602817bfa0a53264708",
+          "bytes": 14111,
+          "results": [
+            {
+              "status": "pass",
+              "count": 23
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/ordinary-service.result.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/ordinary-service.result.json",
+          "sha256": "3a8ee4ec0c2a8695d6cbe7d3ded0e99f5f80431912064ce64780c3981f642566",
+          "bytes": 14111,
+          "results": [
+            {
+              "status": "pass",
+              "count": 23
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/unicode.result.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/unicode.result.json",
+          "sha256": "9ba45dcf052f673a4c0b5d64093ae7fc149a11038021ca9105e96d36937955a5",
+          "bytes": 3831,
+          "results": [
+            {
+              "status": "pass",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/atspi.result.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/atspi.result.json",
+          "sha256": "b9b35b4975fd0c369740f07357311e20a30b6c5e9ec9ae873dea590d87791c69",
+          "bytes": 3692,
+          "results": [
+            {
+              "status": "pass",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/managed-peers.result.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/managed-peers.result.json",
+          "sha256": "c2ab3bf69a9201f32542a377df98d3701aa7ab58f99c63ddc1817e6761a748ac",
+          "bytes": 3397,
+          "results": [
+            {
+              "status": "pass",
+              "count": 3
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/clipboard.result.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/clipboard.result.json",
+          "sha256": "c2e5927324267193a0087ee1b6bbc463bc9478b3dcdbbbbf29c39a2bb219dd63",
+          "bytes": 3757,
+          "results": [
+            {
+              "status": "pass",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/clipboard-manager.result.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/clipboard-manager.result.json",
+          "sha256": "a55077e25908f7e0d271c3072ba490675e8fcc51c57575ec602fe388b0e64065",
+          "bytes": 2751,
+          "results": [
+            {
+              "status": "pass",
+              "count": 4
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/managed-preedit-visibility-combined-main-1/portal.result.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-hidden-managed-preedit-committed-combined/artifacts/portability/managed-preedit-visibility-combined-main-1/portal.result.json",
+          "sha256": "e8e4146a033ac6b527c35080f86eccb666fedfd3081177331245391b2eb38cb7",
+          "bytes": 13875,
+          "results": [
+            {
+              "status": "pass",
+              "count": 31
+            }
+          ]
+        }
+      ],
+      "sourceCommit": "8fbb2a7a3f544637d7413950529ac03c4a9223e2",
+      "outcome": "pass"
+    },
+    {
+      "label": "genuine-imagecontrolvm-linux-collapsed-subtree-red",
+      "capturedAtUtc": "2026-10-18T20:18:57.6879641Z",
+      "headCommit": "8fbb2a7a3f544637d7413950529ac03c4a9223e2",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Unchanged genuine ImageControlVM Linux source diagnostic verifies 143 stage files and 160 NINA closure files, then passes seven checks, fails first Gray16 raster and leaves 18 unreached with no native load failures. Exact image body source bytes/geometry pass; null ImageBrush is under actual Collapsed Bahtinov Grid with original VM flag false. Paired stock 11 passes while both portable backends retain eight invisible-subtree failures. Zero-opacity traversal/source-dependency repair is under implementation, not qualified. No successful Linux VM imaging workflow or package claim.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/verification.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/verification.json",
+          "sha256": "1f50af7f0d7fdae4c403956ff7fef0d59c42722e8b3f419792e45cc585620da8",
+          "bytes": 2498
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/findings.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/findings.md",
+          "sha256": "c43b4fc9bd5c5d33f122c4dc2e36fb6a96692a8830441301ec43c75f588c6f48",
+          "bytes": 5524
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/root-nina-diagnostic-release.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/root-nina-diagnostic-release.json",
+          "sha256": "2fb14e8c25a8a812a2c8cda799cc27b6697cf530b52141e87e103b9fadce1ea9",
+          "bytes": 568
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/consumption-pin.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/consumption-pin.json",
+          "sha256": "0c4e72964aa49909ab85a7ef9f4701845d274c50a7f5360c27f6c3e92f3b3c50",
+          "bytes": 49442
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/observed-tile-brushes.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/observed-tile-brushes.json",
+          "sha256": "78f72532ec7a984fc3bb2fded1ab2443bd9aea606d4ffd5114a171ecf6054595",
+          "bytes": 10124
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/brush-source-proof.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/brush-source-proof.json",
+          "sha256": "2cd43e7328c67b790a1544d7c0817b8d5f5249bb32a3791fd61df6f153562063",
+          "bytes": 1447
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/stock26-comparison.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/stock26-comparison.json",
+          "sha256": "d44cdf759f43806575c058e84f890e234d1ca86087b740b5f41ed7a21654eb30",
+          "bytes": 2805
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/source-evidence.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/source-evidence.json",
+          "sha256": "822159e7f8943be916e1e926cfa92561188d58302d4b49192c121dadb7f5c42d",
+          "bytes": 15475
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/observation-only.diff",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/observation-only.diff",
+          "sha256": "150de8804a6e643fc40595e73f5ab576cf4327edacea1ebf472b706a5cc783ef",
+          "bytes": 5711
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/run-01/runtime-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/run-01/runtime-linux.json",
+          "sha256": "d42710b7444fb9767f08ee08dd6e0c80747a5a3b8e7b3824c7c5b83a83c911bf",
+          "bytes": 72909,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 7
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/run-01/process-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/run-01/process-linux.json",
+          "sha256": "9005674e6837d19e18cb00d073c3e0a65e8f52fbd7fc3e39b5dc17f075e8fa89",
+          "bytes": 101
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/run-01/input-verification.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/run-01/input-verification.json",
+          "sha256": "8a54a707be16b6348f60c1bcfcac55056fb7dc5d5c1f65b5626c65cb1fb7c615",
+          "bytes": 30227
+        },
+        {
+          "path": "artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/run-01/output-verification.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/nina-imagecontrolvm-linux-diagnostic/revision-5/run-01/output-verification.json",
+          "sha256": "d5fa15da6fb415f1c6a343d2db0cf9b4d0765cb1ebbabf349e75bd8cb8767d57",
+          "bytes": 4456
+        },
+        {
+          "path": "artifacts/portability/invisible-render-investigation/diagnosis-freeze.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/invisible-render-investigation/diagnosis-freeze.json",
+          "sha256": "9a7c27544486a59d4a4bef157af08893f1a83d00a03521d682684a1b0ad4b3d1",
+          "bytes": 26492
+        },
+        {
+          "path": "artifacts/portability/invisible-render-investigation/findings.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/invisible-render-investigation/findings.md",
+          "sha256": "f1ccf62b6ef69ee6e9d4621556f6cfcce6ba25418f6da5ba0679de2a8dcd587a",
+          "bytes": 5045
+        },
+        {
+          "path": "artifacts/portability/invisible-render-investigation/stock-results-gated.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/invisible-render-investigation/stock-results-gated.json",
+          "sha256": "c55a380c80b4ff4f8035e05d4d118c47f50da60223cf60548946c4c357fc25f1",
+          "bytes": 2007,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/invisible-render-investigation/portable-windows-gated.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/invisible-render-investigation/portable-windows-gated.json",
+          "sha256": "449b428731fe4ce644b8deeccd3d5077a86ca06a2058f3c6b50e699ec38df324",
+          "bytes": 24697,
+          "results": [
+            {
+              "status": "fail",
+              "count": 8
+            },
+            {
+              "status": "pass",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/invisible-render-investigation/portable-linux-gated.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/invisible-render-investigation/portable-linux-gated.json",
+          "sha256": "1ce642bce5192a4236c47ab82eea427a886aae709dffc687f52a5c81a6985557",
+          "bytes": 24415,
+          "results": [
+            {
+              "status": "fail",
+              "count": 8
+            },
+            {
+              "status": "pass",
+              "count": 6
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/invisible-render-investigation/exits.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-genuine-imagecontrolvm-linux-collapsed-subtree-red/artifacts/portability/invisible-render-investigation/exits.json",
+          "sha256": "e9db05ae1fcdf773ed710321954a8ea97eb2e68f22cadca96317710adfa75cb3",
+          "bytes": 80
+        }
+      ],
+      "sourceCommit": null,
+      "outcome": "partial"
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",
   "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
   "phase3Status": "selected-unchanged-nina-editor-native-contract-passed-broader-imaging-and-shell-pending",
-  "phase5Status": "gnome-startup-and-desktop-package-protocols-passed-live-gnome-services-ime-and-accessibility-pending",
+  "phase5Status": "gnome-startup-and-live-text-clipboard-passed-picker-selection-ime-and-accessibility-pending",
   "phase0Status": "passed-bounded-feasibility"
 }
