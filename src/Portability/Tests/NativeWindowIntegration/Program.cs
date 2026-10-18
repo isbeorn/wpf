@@ -76,7 +76,39 @@ try
         {
             try
             {
-                if (automationOnly)
+                if (args.Contains("--popup-placement-only", StringComparer.Ordinal))
+                {
+                    Run("genuine-Classic-native-popup-placement-DPI", () => PopupCases.PlacementByNativeClick(native, Drain, fontPath!));
+                    completed = true;
+                }
+                else if (args.Contains("--popup-reconciliation-only", StringComparer.Ordinal))
+                {
+                    Run("native-Popup-capture-release-source-reconciliation", () => PopupCases.ReleaseSourceReconciliation(native, Drain));
+                    completed = true;
+                }
+                else if (args.Contains("--popup-alpha-only", StringComparer.Ordinal))
+                {
+                    Run("genuine-Popup-native-alpha-and-StaysOpen", () => PopupCases.TransparentPopupStorage(native, Drain));
+                    Run("genuine-Popup-initial-capture-failure-and-retry", () => PopupCases.InitialCaptureFailure(native, Drain));
+                    completed = true;
+                }
+                else if (args.Contains("--popup-prerequisite-only", StringComparer.Ordinal) || args.Contains("--popup-only", StringComparer.Ordinal))
+                {
+                    Run("observed-pointer-autoscroll-time-consumer", PopupCases.VerifyAutoScrollTime);
+                    Run("fixed-portable-menu-alignment-resource", PopupCases.VerifyMenuDropAlignment);
+                    if (args.Contains("--popup-only", StringComparer.Ordinal))
+                    {
+                        Run("genuine-Classic-native-popup-click", () => PopupCases.OpenByNativeClick(native, Wait, Drain, fontPath!, args.Contains("--popup-origin-zero", StringComparer.Ordinal), args.Contains("--popup-mouse-only", StringComparer.Ordinal)));
+                        Run("genuine-Popup-callback-reentry", () => PopupCases.ReentryByNativeClick(native, Drain, fontPath!));
+                        Run("genuine-Classic-Popup-owner-lifecycle", () => PopupCases.OwnerLifecycle(native, Drain, fontPath!));
+                        Run("genuine-Classic-native-popup-placement-DPI", () => PopupCases.PlacementByNativeClick(native, Drain, fontPath!));
+                        Run("native-Popup-capture-release-source-reconciliation", () => PopupCases.ReleaseSourceReconciliation(native, Drain));
+                        Run("genuine-Popup-native-alpha-and-StaysOpen", () => PopupCases.TransparentPopupStorage(native, Drain));
+                        Run("genuine-Popup-initial-capture-failure-and-retry", () => PopupCases.InitialCaptureFailure(native, Drain));
+                    }
+                    completed = true;
+                }
+                else if (automationOnly)
                 {
                     Run("native-window-managed-peers-bounds-focus-dpi-and-close", () => managedAutomationTrace = NativeAutomationChecks.Run(native, Wait, Drain));
                     completed = true;
@@ -996,6 +1028,7 @@ static ControlTemplate TextTemplate()
 }
 void WriteResults() => Console.WriteLine(JsonSerializer.Serialize(new
 {
+    popupObservations = PopupCases.Observations,
     textCommitObservations = NativeTextCommitChecks.Observations,
     probe = wmOnly ? "genuine-wpf-native-window-manager" : "genuine-wpf-native-window", os = System.Runtime.InteropServices.RuntimeInformation.OSDescription,
     scope = automationOnly ? "native virtual X11 server; genuine managed peers and native source bounds; no AT-SPI export or physical desktop qualification" : wmOnly ? "native virtual X11 server with workspace Openbox; genuine Window state, geometry and retained frame; physical desktop unqualified" :

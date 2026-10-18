@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -101,6 +102,42 @@ public sealed class ExternalWindowBridge : IDisposable
         return provider ?? throw new PlatformNotSupportedException("The desktop file chooser portal is unavailable; GTK fallback is not enabled.");
     }
 
+    public bool ConfigurePopupTransparency()
+    {
+        Verify();
+        var attributes = new XWindowAttributes();
+        var visual = _platform.Info.TransparentVisualInfo;
+        if (XGetWindowAttributes(_platform.Display, _handle, ref attributes) == 0 ||
+            visual is null || attributes.depth != 32 || attributes.visual != visual.Value.visual ||
+            visual.Value.red_mask.ToInt64() != 0xff0000 || visual.Value.green_mask.ToInt64() != 0xff00 || visual.Value.blue_mask.ToInt64() != 0xff)
+            throw new PlatformNotSupportedException("Transparent native Popups require the actual X11 ARGB32 visual.");
+        _window.SetTransparencyLevelHint(new[] { WindowTransparencyLevel.Transparent });
+        return _window.TransparencyLevel == WindowTransparencyLevel.Transparent;
+    }
+
+    public void SetPopupHitTestable(bool value)
+    {
+        Verify();
+        if (!value && !_platform.Info.HasXFixes)
+            throw new PlatformNotSupportedException("Disabling native Popup input requires XFixes input regions.");
+    }
+
+    public static PixelRect GetPopupScreenBounds(Rect targetBounds, PixelPoint targetPoint, bool useWorkArea)
+    {
+        Dispatcher.UIThread.VerifyAccess();
+        var platform = AvaloniaLocator.Current.GetRequiredService<AvaloniaX11Platform>();
+        var screens = platform.Screens ?? throw new PlatformNotSupportedException("Native Popup placement requires observed X11 screens.");
+        var target = new PixelRect(checked((int)Math.Floor(targetBounds.X)), checked((int)Math.Floor(targetBounds.Y)),
+            checked((int)Math.Ceiling(targetBounds.Width)), checked((int)Math.Ceiling(targetBounds.Height)));
+        var screen = screens.ScreenFromRect(target) ?? screens.AllScreens.OrderBy(s =>
+        {
+            double dx = targetPoint.X - Math.Clamp(targetPoint.X, s.Bounds.X, s.Bounds.Right);
+            double dy = targetPoint.Y - Math.Clamp(targetPoint.Y, s.Bounds.Y, s.Bounds.Bottom);
+            return dx * dx + dy * dy;
+        }).FirstOrDefault() ?? throw new PlatformNotSupportedException("No observed X11 screen can contain this Popup.");
+        return useWorkArea && screen.WorkingArea.Contains(targetPoint) ? screen.WorkingArea : screen.Bounds;
+    }
+
     public void RequestClientSize(Size clientSize)
     {
         Verify();
@@ -160,18 +197,25 @@ public sealed class ExternalWindowBridge : IDisposable
     {
         Verify();
         if (_captured) return true;
+        nuint requestSerial = XNextRequest(_platform.Display);
         var result = XGrabPointer(_platform.Display, _handle, false,
             EventMask.ButtonPressMask | EventMask.ButtonReleaseMask | EventMask.PointerMotionMask |
             EventMask.EnterWindowMask | EventMask.LeaveWindowMask,
             GrabMode.GrabModeAsync, GrabMode.GrabModeAsync, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
         XFlush(_platform.Display);
-        return _captured = result == GrabResult.GrabSuccess;
+        if (result != GrabResult.GrabSuccess) return false;
+        s_observer!.PointerCaptureSerial = requestSerial;
+        s_observer.PointerCaptureOwner = this;
+        foreach (var peer in s_observer!.Windows.Values) peer._captured = ReferenceEquals(peer, this);
+        return true;
     }
 
     public void ReleaseMouseCapture()
     {
         Verify();
         if (!_captured) return;
+        s_observer!.PointerCaptureSerial = XNextRequest(_platform.Display);
+        s_observer.PointerCaptureOwner = null;
         XUngrabPointer(_platform.Display, IntPtr.Zero);
         XFlush(_platform.Display);
         _captured = false;
@@ -347,19 +391,46 @@ public sealed class ExternalWindowBridge : IDisposable
 
     private sealed class Observer : X11EventDispatcher.IEventHook
     {
+        private readonly int _inputOpcode;
         public Dictionary<IntPtr, ExternalWindowBridge> Windows { get; } = new();
         public X11EventDispatcher.IEventHook? Previous { get; }
+        public nuint PointerCaptureSerial { get; set; }
+        public ExternalWindowBridge? PointerCaptureOwner { get; set; }
 
         public Observer(AvaloniaX11Platform platform)
         {
+            _inputOpcode = platform.Info.XInputOpcode;
             Previous = platform.DispatcherImpl.EventDispatcher.EventHook;
             platform.DispatcherImpl.EventDispatcher.EventHook = this;
         }
 
-        public bool TryHandleEvent(in XEvent evt)
+        private bool IsObsoleteCrossing(nuint serial, ExternalWindowBridge peer) =>
+            // Xlib expands request serials to native unsigned long; compare within half its range.
+            unchecked((nint)(serial - PointerCaptureSerial)) < 0 ||
+            (serial == PointerCaptureSerial && PointerCaptureOwner != null && PointerCaptureOwner != peer);
+
+        public unsafe bool TryHandleEvent(in XEvent evt)
         {
+            if (evt.type == XEventName.GenericEvent && evt.GenericEventCookie.extension == _inputOpcode && evt.GenericEventCookie.data != null)
+            {
+                var input = (XIEvent*)evt.GenericEventCookie.data;
+                if (input->evtype == XiEventType.XI_Enter || input->evtype == XiEventType.XI_Leave)
+                {
+                    var crossing = (XIEnterLeaveEvent*)input;
+                    if ((crossing->mode == (int)NotifyMode.NotifyGrab || crossing->mode == (int)NotifyMode.NotifyUngrab) &&
+                        Windows.TryGetValue(crossing->EventWindow, out var crossingPeer) && IsObsoleteCrossing(crossing->serial, crossingPeer))
+                        return true;
+                }
+            }
             if (Windows.TryGetValue(evt.AnyEvent.window, out var peer))
             {
+                if ((evt.type == XEventName.EnterNotify || evt.type == XEventName.LeaveNotify) &&
+                    (evt.CrossingEvent.mode == NotifyMode.NotifyGrab || evt.CrossingEvent.mode == NotifyMode.NotifyUngrab))
+                {
+                    nuint serial = unchecked((nuint)evt.AnyEvent.serial.ToInt64());
+                    if (IsObsoleteCrossing(serial, peer))
+                        return true;
+                }
                 if (evt.type == XEventName.FocusIn && evt.FocusChangeEvent.mode == (int)NotifyMode.NotifyNormal)
                     peer.FocusChanged?.Invoke(true);
                 else if (evt.type == XEventName.FocusOut && evt.FocusChangeEvent.mode == (int)NotifyMode.NotifyNormal)
@@ -369,6 +440,8 @@ public sealed class ExternalWindowBridge : IDisposable
                      evt.CrossingEvent.mode == NotifyMode.NotifyUngrab)))
                 {
                     peer._captured = false;
+                    if (PointerCaptureOwner == peer)
+                        PointerCaptureOwner = null;
                     peer.CaptureLost?.Invoke();
                 }
             }
@@ -378,6 +451,8 @@ public sealed class ExternalWindowBridge : IDisposable
 
     [DllImport("libX11.so.6")]
     private static extern int XGetInputFocus(IntPtr display, out IntPtr focus, out int revert);
+    [DllImport("libX11.so.6")]
+    private static extern nuint XNextRequest(IntPtr display);
     [DllImport("libX11.so.6")]
     private static extern int XQueryKeymap(IntPtr display, [Out] byte[] keys);
     [DllImport("libX11.so.6")]

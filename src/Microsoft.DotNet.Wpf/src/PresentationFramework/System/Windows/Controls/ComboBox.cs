@@ -1671,11 +1671,19 @@ namespace System.Windows.Controls
                     if (MenuBase.IsDescendant(comboBox, e.OriginalSource as DependencyObject))
                     {
                         // Take capture if one of our children gave up capture (by closing their drop down)
+#if PORTABLE_WPF
+                        if (comboBox.IsDropDownOpen && Mouse.Captured == null)
+                        {
+                            e.Handled = Mouse.Capture(comboBox, CaptureMode.SubTree);
+                            if (!e.Handled) comboBox.Close();
+                        }
+#else
                         if (comboBox.IsDropDownOpen && Mouse.Captured == null && MS.Win32.SafeNativeMethods.GetCapture() == IntPtr.Zero)
                         {
                             Mouse.Capture(comboBox, CaptureMode.SubTree);
                             e.Handled = true;
                         }
+#endif
                     }
                     else
                     {
@@ -1912,7 +1920,11 @@ namespace System.Windows.Controls
                 Panel itemsHost = ItemsHost;
                 if (itemsHost != null)
                 {
+#if PORTABLE_WPF
+                    PresentationSource source = PresentationSource.CriticalFromVisual(itemsHost);
+#else
                     HwndSource source = PresentationSource.CriticalFromVisual(itemsHost) as HwndSource;
+#endif
 
                     if (source != null && !source.IsDisposed && source.RootVisual != null)
                     {

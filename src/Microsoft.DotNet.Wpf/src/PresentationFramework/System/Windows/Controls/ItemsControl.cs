@@ -3311,7 +3311,11 @@ namespace System.Windows.Controls
                 //     gpsi->dtLBSearch = dtTime * 4;            // dtLBSearch   =  4  * gdtDblClk
                 //     gpsi->dtScroll = gpsi->dtLBSearch / 5;  // dtScroll     = 4/5 * gdtDblClk
 
+#if PORTABLE_WPF
+                return TimeSpan.FromMilliseconds(MS.Internal.Portability.Settings.PortableSystemSettingsProvider.Current.PointerSettings.DoubleClickTimeMilliseconds * 0.8);
+#else
                 return TimeSpan.FromMilliseconds(MS.Win32.SafeNativeMethods.GetDoubleClickTime() * 0.8);
+#endif
             }
         }
 

@@ -37,6 +37,18 @@ namespace MS.Internal.Portability.Windowing
         void Close();
     }
 
+    internal interface IPortablePopupPeer : IPortablePresentationHost, IDisposable
+    {
+        Point DesktopPosition { get; }
+        event Action OwnerDeactivated;
+        event Action OwnerClosing;
+        void SetClientSize(Size size);
+        void SetDesktopPosition(Point position);
+        void SetHitTestable(bool value);
+        void Show();
+        void Hide();
+    }
+
     internal sealed class PortableWindowOptions
     {
         internal string Title { get; init; }
@@ -51,6 +63,10 @@ namespace MS.Internal.Portability.Windowing
     internal interface IPortableWindowFactory
     {
         IPortableWindowPeer CreateWindow(PresentationSource source, PortableWindowOptions options);
+        IPortablePopupPeer CreatePopup(PresentationSource source, PresentationSource owner, bool transparent) =>
+            throw new PlatformNotSupportedException("The registered backend does not support native Popups.");
+        Rect GetPopupScreenBounds(PresentationSource owner, Rect targetBounds, Point targetPoint, bool useWorkArea) =>
+            throw new PlatformNotSupportedException("The registered backend does not supply Popup screen bounds.");
     }
 
     internal static class PortableWindowPlatform

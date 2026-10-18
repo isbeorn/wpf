@@ -1013,6 +1013,10 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                // Initial portable Classic placement policy, without an inferred desktop preference.
+                return false;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MenuDropAlignment])
@@ -1030,6 +1034,7 @@ namespace System.Windows
                     }
                 }
                 return _menuDropAlignment;
+#endif
             }
         }
 
@@ -6056,7 +6061,9 @@ namespace System.Windows
         private static double _mouseHoverHeight;
         private static double _mouseHoverWidth;
 
+#if !PORTABLE_WPF
         private static bool _menuDropAlignment;
+#endif
         private static bool _menuFade;
         private static int _menuShowDelay;
 

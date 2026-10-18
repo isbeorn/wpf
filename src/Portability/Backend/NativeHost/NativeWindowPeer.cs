@@ -1,5 +1,6 @@
 extern alias WpfFork;
 
+using System.Runtime.ExceptionServices;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Platform;
@@ -15,6 +16,7 @@ using WpfFork::MS.Internal.Portability.Windowing;
 using WpfFork::System.Windows.Input;
 using WpfPoint = WpfFork::System.Windows.Point;
 using WpfSize = WpfFork::System.Windows.Size;
+using WpfRect = WpfFork::System.Windows.Rect;
 using WpfDpi = WpfFork::System.Windows.DpiScale;
 using WpfSource = WpfFork::System.Windows.PresentationSource;
 using WpfState = WpfFork::System.Windows.WindowState;
@@ -41,10 +43,42 @@ internal sealed class NativeWindowFactory(IWindowingPlatform platform) : IPortab
         }
         catch { implementation.Dispose(); throw; }
     }
+
+    public IPortablePopupPeer CreatePopup(WpfSource source, WpfSource ownerSource, bool transparent)
+    {
+        source.VerifyAccess();
+        var owner = _windows.Values.SingleOrDefault(peer => peer.Source == ownerSource)
+            ?? throw new InvalidOperationException("The Popup placement source has no live native peer.");
+        IWindowImpl implementation = owner.CreateNativePopup();
+        try
+        {
+            var peer = new NativeWindowPeer(implementation, source, _windows,
+                new PortableWindowOptions { Owner = owner, IsEnabled = true, ShowInTaskbar = false }, owner, transparent);
+            _windows.Add(implementation, peer);
+            return peer;
+        }
+        catch { implementation.Dispose(); throw; }
+    }
+
+    public WpfRect GetPopupScreenBounds(WpfSource owner, WpfRect targetBounds, WpfPoint point, bool useWorkArea)
+    {
+        owner.VerifyAccess();
+        if (!_windows.Values.Any(peer => peer.Source == owner)) throw new InvalidOperationException("The Popup owner source is detached.");
+        var screen = ExternalWindowBridge.GetPopupScreenBounds(new Rect(targetBounds.X, targetBounds.Y, targetBounds.Width, targetBounds.Height),
+            new PixelPoint(checked((int)point.X), checked((int)point.Y)), useWorkArea);
+        return new WpfRect(screen.X, screen.Y, screen.Width, screen.Height);
+    }
 }
 
-internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost, IPortableFileDialogHost
+internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer, IPortableInputHost, IPortableFileDialogHost
 {
+    private readonly NativeWindowPeer? _popupOwner;
+    private NativeWindowPeer? _keyboardRecipient;
+    private readonly bool _popupTransparent;
+    internal bool PopupComposited { get; }
+    internal WpfSource Source => _source;
+    public event Action? OwnerDeactivated;
+    public event Action? OwnerClosing;
     private readonly IWindowImpl _window;
     private readonly WpfSource _source;
     private readonly Dictionary<IWindowImpl, NativeWindowPeer> _windows;
@@ -68,8 +102,10 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
     private CancellationTokenSource? _fileDialogCancellation;
 
     internal NativeWindowPeer(IWindowImpl window, WpfSource source,
-        Dictionary<IWindowImpl, NativeWindowPeer> windows, PortableWindowOptions options)
+        Dictionary<IWindowImpl, NativeWindowPeer> windows, PortableWindowOptions options, NativeWindowPeer? popupOwner = null, bool transparent = false)
     {
+        _popupOwner = popupOwner;
+        _popupTransparent = transparent;
         _window = window;
         _source = source;
         _windows = windows;
@@ -77,6 +113,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
         _native = new ExternalWindowBridge(window, _automation);
         try
         {
+            if (transparent) PopupComposited = _native.ConfigurePopupTransparency();
             _framebuffer = window.Surfaces.OfType<IFramebufferPlatformSurface>().FirstOrDefault()?.CreateFramebufferRenderTarget()
                 ?? throw new PlatformNotSupportedException("The native X11 peer has no CPU framebuffer surface.");
             window.Closing = _ => { if (!_closing && !_closed) CloseRequested?.Invoke(); return true; };
@@ -94,12 +131,13 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
             window.Input = OnInput;
             _native.FocusChanged += OnFocus;
             _native.CaptureLost += OnCaptureLost;
-            SetTitle(options.Title);
+            if (_popupOwner == null) SetTitle(options.Title);
             if (options.DesktopPosition is { } position) SetDesktopPosition(position);
             SetOwner(options.Owner);
             SetShowInTaskbar(options.ShowInTaskbar);
             SetEnabled(options.IsEnabled);
-            SetWindowState(options.WindowState);
+            if (_popupOwner == null) SetWindowState(options.WindowState);
+            else window.Move(new PixelPoint(checked((int)_popupOwner._clientScreenOrigin.X), checked((int)_popupOwner._clientScreenOrigin.Y)));
             if (options.ClientSize is { } size) SetClientSize(size);
             RefreshMetrics();
             _constructing = false;
@@ -181,7 +219,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
             premultipliedBgra.Length < checked(stride * (pixelHeight - 1) + rowBytes))
             throw new ArgumentException("The premultiplied BGRA frame dimensions or stride are invalid.");
         var scene = new IRenderTarget.RenderTargetSceneInfo(new PixelSize(pixelWidth, pixelHeight),
-            DpiScale.DpiScaleX, new Size(ClientSize.Width, ClientSize.Height), CompositionTransparencyLevel.None);
+            DpiScale.DpiScaleX, new Size(ClientSize.Width, ClientSize.Height), _popupTransparent ? CompositionTransparencyLevel.Transparent : CompositionTransparencyLevel.None);
         using (var target = _framebuffer.Lock(scene, out _))
         {
             int targetRowBytes = checked(target.Size.Width * 4);
@@ -260,7 +298,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
         _automation.Attach();
         _window.Show(activate, false);
         IsVisible = true;
-        ApplyWindowState();
+        if (_popupOwner == null) ApplyWindowState();
         if (activate && _requestedState != WpfState.Minimized) Activate();
     }
     public void Hide()
@@ -269,6 +307,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
         if (!_stateRequestPending) _requestedState = ToWpf(_native.ReadWindowState());
         _stateRequestPending |= _requestedState != WpfState.Normal;
         IsVisible = false;
+        ClearPopupKeyboardRecipient();
         if (_captured) { ReleaseMouseCapture(); ReportMouse(RawMouseActions.CancelCapture); }
         if (!CanNotify || IsVisible) return;
         _window.Hide();
@@ -292,10 +331,14 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
     {
         Verify();
         if (!IsEnabled || !IsVisible || _closed) return false;
-        bool result = _native.AcquireFocus(checkOnly);
+        var keyboardOwner = KeyboardOwner;
+        bool result = _popupOwner == null ? _native.AcquireFocus(checkOnly) : keyboardOwner._native.AcquireFocus(true);
         if (result && !checkOnly)
         {
-            _keySnapshot = _native.ReadKeyboardState();
+            var previous = keyboardOwner._keyboardRecipient ?? keyboardOwner;
+            if (previous != this) previous._keyboardActive = false;
+            keyboardOwner._keyboardRecipient = this == keyboardOwner ? null : this;
+            _keySnapshot = keyboardOwner._native.ReadKeyboardState();
             _keyboardActive = true;
         }
         return result;
@@ -319,10 +362,29 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
     {
         Verify();
         _captured = IsEnabled && IsVisible && _native.CaptureMouse();
-        if (_captured) _mouseActive = true;
+        if (_captured)
+        {
+            foreach (var peer in _windows.Values) peer._captured = ReferenceEquals(peer, this);
+            MarkMouseActive();
+        }
         return _captured;
     }
-    public void ReleaseMouseCapture() { Verify(); _native.ReleaseMouseCapture(); _captured = false; }
+    public void ReleaseMouseCapture()
+    {
+        Verify();
+        bool released = _captured;
+        _native.ReleaseMouseCapture();
+        _captured = false;
+        if (!released) return;
+        _ = _source.Dispatcher.BeginInvoke(WpfFork::System.Windows.Threading.DispatcherPriority.Send, new Action(() =>
+        {
+            if (!CanNotify || Mouse.PrimaryDevice.ActiveSource != _source || _windows.Values.Any(peer => peer._captured)) return;
+            var (position, _) = _native.ReadPointerState();
+            if (SourceFromScreenPoint(ClientToScreen(new WpfPoint(position.X, position.Y))) != null) return;
+            _mouseActive = false;
+            ReportMouse(RawMouseActions.Deactivate);
+        }));
+    }
     public bool SetCursor(WpfCursor cursor)
     {
         Verify();
@@ -373,9 +435,15 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
         Verify();
         if (_closed || _closing) return;
         _closing = true;
-        try { _window.Dispose(); }
-        finally { _closing = false; }
-        AcknowledgeClose();
+        var popupFailure = CloseOwnedPopups();
+        try
+        {
+            ClearPopupKeyboardRecipient();
+            try { _window.Dispose(); }
+            finally { _closing = false; }
+            AcknowledgeClose();
+        }
+        finally { popupFailure?.Throw(); }
     }
     private void OnNativeClosed() { if (!_closing) AcknowledgeClose(); }
     private void AcknowledgeClose()
@@ -389,16 +457,22 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
     {
         if (_disposed) return;
         Verify();
-        _fileDialogCancellation?.Cancel();
-        _window.Input = null; _window.Paint = null; _window.Closing = null;
-        _window.Resized = null; _window.ScalingChanged = null; _window.PositionChanged = null;
-        _window.WindowStateChanged = null; _window.Closed = null;
-        _native.Dispose();
-        _framebuffer.Dispose();
-        _windows.Remove(_window);
-        _disposed = true;
-        try { if (!_closed) _window.Dispose(); }
-        finally { _automation.Dispose(); }
+        var popupFailure = CloseOwnedPopups();
+        try
+        {
+            ClearPopupKeyboardRecipient();
+            _fileDialogCancellation?.Cancel();
+            _window.Input = null; _window.Paint = null; _window.Closing = null;
+            _window.Resized = null; _window.ScalingChanged = null; _window.PositionChanged = null;
+            _window.WindowStateChanged = null; _window.Closed = null;
+            _native.Dispose();
+            _framebuffer.Dispose();
+            _windows.Remove(_window);
+            _disposed = true;
+            try { if (!_closed) _window.Dispose(); }
+            finally { _automation.Dispose(); }
+        }
+        finally { popupFailure?.Throw(); }
     }
 
     private void OnFocus(bool active)
@@ -408,12 +482,17 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
         _isActive = active;
         if (active)
         {
-            _keySnapshot = _native.ReadKeyboardState();
-            _keyboardActive = true;
-            ReportKey(RawKeyboardActions.Activate, Environment.TickCount, 0);
+            var recipient = KeyboardRecipient;
+            recipient._keySnapshot = _native.ReadKeyboardState();
+            recipient._keyboardActive = true;
+            recipient.ReportKey(RawKeyboardActions.Activate, Environment.TickCount, 0);
         }
         else
         {
+            ClearPopupKeyboardRecipient();
+            foreach (var popup in _windows.Values.Where(peer => peer._popupOwner == this).ToArray())
+                _ = _source.Dispatcher.BeginInvoke(WpfFork::System.Windows.Threading.DispatcherPriority.Send,
+                    new Action(() => { if (popup.CanNotify) popup.OwnerDeactivated?.Invoke(); }));
             if (_captured) { ReleaseMouseCapture(); ReportMouse(RawMouseActions.CancelCapture); }
             if (!CanNotify) return;
             if (_keyboardActive) ReportKey(RawKeyboardActions.Deactivate, Environment.TickCount, 0);
@@ -476,18 +555,19 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
             case RawKeyEventArgs key:
                 if (!Enum.TryParse<WpfKey>(key.Key.ToString(), out var mapped) || KeyInterop.VirtualKeyFromKey(mapped) == 0)
                     throw new PlatformNotSupportedException("The native logical key '" + key.Key + "' has no WPF key mapping.");
-                if (!_keyboardActive)
+                var recipient = KeyboardRecipient;
+                if (!recipient._keyboardActive)
                 {
-                    _keySnapshot = _native.ReadKeyboardState();
-                    _keyboardActive = true;
-                    ReportKey(RawKeyboardActions.Activate, timestamp, 0);
+                    recipient._keySnapshot = KeyboardOwner._native.ReadKeyboardState();
+                    recipient._keyboardActive = true;
+                    recipient.ReportKey(RawKeyboardActions.Activate, timestamp, 0);
                 }
-                RawInput?.Invoke(new RawKeyboardInputReport(_source, InputMode.Foreground, timestamp,
+                recipient.RawInput?.Invoke(new RawKeyboardInputReport(recipient._source, InputMode.Foreground, timestamp,
                     key.Type == RawKeyEventType.KeyDown ? RawKeyboardActions.KeyDown : RawKeyboardActions.KeyUp,
                     0, false, (key.Modifiers & RawInputModifiers.Alt) != 0, KeyInterop.VirtualKeyFromKey(mapped), IntPtr.Zero));
                 break;
             case RawTextInputEventArgs text:
-                RawInput?.Invoke(new PortableTextInputReport(_source, InputMode.Foreground, timestamp, text.Text));
+                var textRecipient = KeyboardRecipient; textRecipient.RawInput?.Invoke(new PortableTextInputReport(textRecipient._source, InputMode.Foreground, timestamp, text.Text));
                 break;
             case RawPointerEventArgs pointer:
                 if (pointer.Type == RawPointerEventType.CancelCapture) { OnCaptureLost(); break; }
@@ -520,7 +600,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
                     wheel = checked((int)Math.Round(scroll.Delta.Y * 120));
                 }
                 if (!_mouseActive) action |= RawMouseActions.Activate;
-                _mouseActive = true;
+                MarkMouseActive();
                 RawInput?.Invoke(new RawMouseInputReport(InputMode.Foreground, timestamp, _source,
                     action | RawMouseActions.AbsoluteMove,
                     checked((int)Math.Round(pointer.Position.X * _window.RenderScaling)),
@@ -528,6 +608,48 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
                 break;
             default: throw new PlatformNotSupportedException("The native raw input report '" + args.GetType().Name + "' is outside the initial mouse/keyboard/text contract.");
         }
+    }
+    internal IWindowImpl CreateNativePopup()
+    {
+        Verify();
+        return _window.CreatePopup() as IWindowImpl ?? throw new PlatformNotSupportedException("The X11 backend must supply a genuine native Popup; overlay popups are unsupported.");
+    }
+    void IPortablePopupPeer.Show() => Show(false);
+    public void SetHitTestable(bool value)
+    {
+        Verify();
+        if (_window is not IPopupImpl popup) throw new InvalidOperationException("Only a native Popup has a hit-testable popup surface.");
+        _native.SetPopupHitTestable(value);
+        popup.SetHitTestVisible(value);
+    }
+    private NativeWindowPeer KeyboardOwner => _popupOwner?.KeyboardOwner ?? this;
+    private NativeWindowPeer KeyboardRecipient => KeyboardOwner._keyboardRecipient is { CanNotify: true, IsVisible: true } recipient ? recipient : KeyboardOwner;
+    private void ClearPopupKeyboardRecipient()
+    {
+        var owner = KeyboardOwner;
+        var recipient = owner._keyboardRecipient;
+        if (recipient == null || (this != owner && recipient != this)) return;
+        owner._keyboardRecipient = null;
+        if (recipient._keyboardActive && recipient.CanNotify)
+            recipient.ReportKey(RawKeyboardActions.Deactivate, Environment.TickCount, 0);
+        recipient._keyboardActive = false;
+    }
+    private ExceptionDispatchInfo? CloseOwnedPopups()
+    {
+        ExceptionDispatchInfo? failure = null;
+        foreach (var popup in _windows.Values.Where(peer => peer._popupOwner == this).ToArray())
+        {
+            try { if (popup.CanNotify) popup.OwnerClosing?.Invoke(); }
+            catch (Exception exception) { failure ??= ExceptionDispatchInfo.Capture(exception); }
+            try { if (popup.CanNotify) popup.Close(); }
+            catch (Exception exception) { failure ??= ExceptionDispatchInfo.Capture(exception); }
+        }
+        return failure;
+    }
+
+    private void MarkMouseActive()
+    {
+        foreach (var peer in _windows.Values) peer._mouseActive = ReferenceEquals(peer, this);
     }
     private void ReportKey(RawKeyboardActions actions, int timestamp, int virtualKey) =>
         RawInput?.Invoke(new RawKeyboardInputReport(_source, InputMode.Foreground, timestamp, actions, 0, false, false, virtualKey, IntPtr.Zero));

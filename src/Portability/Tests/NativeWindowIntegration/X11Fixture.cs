@@ -28,6 +28,7 @@ internal sealed class X11Fixture : IDisposable
     }
 
     internal IntPtr FindWindow(string title) => FindWindow(_root, title, 0);
+    internal (int Width, int Height) ScreenSize => Size(_root);
 
     private IntPtr FindWindow(IntPtr parent, string title, int depth)
     {
@@ -155,6 +156,25 @@ internal sealed class X11Fixture : IDisposable
         }
     }
 
+    internal IDisposable HoldPointerGrab()
+    {
+        int result = XGrabPointer(_display, _root, false, 0, 1, 1, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+        XSync(_display, false);
+        if (result != 0) throw new InvalidOperationException("The independent fixture connection could not hold native pointer capture.");
+        return new PointerGrabLease(this);
+    }
+
+    private sealed class PointerGrabLease(X11Fixture owner) : IDisposable
+    {
+        private bool _disposed;
+        public void Dispose()
+        {
+            if (_disposed) return;
+            _disposed = true;
+            XUngrabPointer(owner._display, IntPtr.Zero);
+            XSync(owner._display, false);
+        }
+    }
     internal bool CanAcquirePointerGrab()
     {
         int result = XGrabPointer(_display, _root, false, 0, 1, 1, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
@@ -206,13 +226,34 @@ internal sealed class X11Fixture : IDisposable
         if (!down || !up) throw new InvalidOperationException("XTest keyboard press/release injection failed.");
     }
 
-    internal uint Pixel(IntPtr window, int x, int y)
+    internal uint Pixel(IntPtr window, int x, int y, bool preserveAlpha = false)
     {
         XSync(_display, false);
         IntPtr image = XGetImage(_display, window, x, y, 1, 1, unchecked((nuint)~0UL), 2);
         if (image == IntPtr.Zero) throw new InvalidOperationException("Native XGetImage returned no surface pixels.");
-        try { return (uint)XGetPixel(image, 0, 0).ToUInt64() & 0x00ffffff; }
+        try { return (uint)XGetPixel(image, 0, 0).ToUInt64() & (preserveAlpha ? uint.MaxValue : 0x00ffffff); }
         finally { XDestroyImage(image); }
+    }
+
+    internal (int Depth, bool OverrideRedirect) PopupAttributes(IntPtr window)
+    {
+        if (XGetWindowAttributes(_display, window, out var attributes) == 0) throw new InvalidOperationException("Popup has no native attributes.");
+        return (attributes.Depth, attributes.OverrideRedirect != 0);
+    }
+    internal IReadOnlyList<IntPtr> RootChildren
+    {
+        get
+        {
+            if (XQueryTree(_display, _root, out _, out _, out var children, out int count) == 0) throw new InvalidOperationException("Cannot query owned native root children.");
+            try
+            {
+                if (count < 0 || count > 4096) throw new InvalidOperationException("Unexpected native root child count.");
+                var result = new IntPtr[count];
+                for (int i = 0; i < count; i++) result[i] = Marshal.ReadIntPtr(children, i * IntPtr.Size);
+                return result;
+            }
+            finally { if (children != IntPtr.Zero) XFree(children); }
+        }
     }
 
     internal bool IsMapped(IntPtr window) => window != IntPtr.Zero &&

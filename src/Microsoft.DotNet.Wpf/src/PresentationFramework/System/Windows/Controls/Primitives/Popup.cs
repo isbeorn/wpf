@@ -1170,8 +1170,13 @@ namespace System.Windows.Controls.Primitives
                     // When the mouse is not already captured, we will consider the following:
                     // In all cases but Modeless, we want the popup and subtree to receive
                     // mouse events and prevent other elements from receiving those messages.
+#if PORTABLE_WPF
+                    _cacheValid[(int)CacheBits.CaptureEngaged] = Mouse.Capture(_popupRoot, CaptureMode.SubTree);
+                    if (!_cacheValid[(int)CacheBits.CaptureEngaged]) SetCurrentValueInternal(IsOpenProperty, BooleanBoxes.FalseBox);
+#else
                     Mouse.Capture(_popupRoot, CaptureMode.SubTree);
                     _cacheValid[(int)CacheBits.CaptureEngaged] = true;
+#endif
                 }
             }
         }
@@ -1225,12 +1230,20 @@ namespace System.Windows.Controls.Primitives
                 //
                 // Note we do not reestablish capture if we are losing capture
                 // ourselves.
+#if PORTABLE_WPF
+                bool reestablishCapture = e.OriginalSource != root && Mouse.Captured == null;
+#else
                 bool reestablishCapture = e.OriginalSource != root && Mouse.Captured == null && MS.Win32.SafeNativeMethods.GetCapture() == IntPtr.Zero;
+#endif
 
                 if(reestablishCapture)
                 {
                     popup.EstablishPopupCapture();
+#if PORTABLE_WPF
+                    e.Handled = popup._cacheValid[(int)CacheBits.CaptureEngaged];
+#else
                     e.Handled = true;
+#endif
                 }
                 else
                 {
@@ -1552,7 +1565,9 @@ namespace System.Windows.Controls.Primitives
                 isWindowAlive = _secHelper.IsWindowAlive();
                 if (isWindowAlive)
                 {
+#if !PORTABLE_WPF
                     _secHelper.ForceMsaaToUiaBridge(_popupRoot);
+#endif
                 }
             }
             else
@@ -1565,7 +1580,11 @@ namespace System.Windows.Controls.Primitives
             if (isWindowAlive)
             {
                 ShowWindow();
+#if PORTABLE_WPF
+                if (IsOpen && _secHelper.IsWindowAlive()) OnOpened(EventArgs.Empty);
+#else
                 OnOpened(EventArgs.Empty);
+#endif
             }
         }
 
@@ -1607,7 +1626,15 @@ namespace System.Windows.Controls.Primitives
                 ? new NativeMethods.POINT(_positionInfo.X, _positionInfo.Y)
                 : PopupInitialPlacementHelper.GetPlacementOrigin(this);
 
+#if PORTABLE_WPF
+            _secHelper.BuildWindow(origin.x, origin.y, targetVisual, IsTransparent, PopupFilterMessage, OnWindowResize, OnDpiChanged, () => HandleDeactivateApp(null), () =>
+            {
+                SetCurrentValueInternal(IsOpenProperty, BooleanBoxes.FalseBox);
+                ForceClose();
+            });
+#else
             _secHelper.BuildWindow(origin.x, origin.y, targetVisual, IsTransparent, PopupFilterMessage, OnWindowResize, OnDpiChanged);
+#endif
         }
 
         /// <summary>
@@ -1658,9 +1685,14 @@ namespace System.Windows.Controls.Primitives
 
                 // Always set hittestable for non layered windows
                 SetHitTestable(HitTestable || !IsTransparent);
+#if PORTABLE_WPF
+                _secHelper.ShowWindow();
+                if (IsOpen && _secHelper.IsWindowAlive()) EstablishPopupCapture();
+#else
                 EstablishPopupCapture();
 
                 _secHelper.ShowWindow();
+#endif
             }
         }
 
@@ -2660,6 +2692,9 @@ namespace System.Windows.Controls.Primitives
                 return _secHelper.GetParentWindowRect();
             }
 
+#if PORTABLE_WPF
+            return _secHelper.GetScreenBounds(boundingBox, p, Child is MenuBase || Child is ToolTip || TemplatedParent is MenuItem);
+#else
             NativeMethods.RECT rect = new NativeMethods.RECT(0, 0, 0, 0);
 
             NativeMethods.RECT nativeBounds = PointUtil.FromRect(boundingBox);
@@ -2692,6 +2727,7 @@ namespace System.Windows.Controls.Primitives
             }
 
             return PointUtil.ToRect(rect);
+#endif
         }
 
         private Rect GetMouseRect(PlacementMode placement)
@@ -2949,6 +2985,72 @@ namespace System.Windows.Controls.Primitives
         /// </summary>
         private class PopupSecurityHelper
         {
+#if PORTABLE_WPF
+            private MS.Internal.Portability.Windowing.PortablePopupHost _host;
+            private PresentationSource _owner;
+            internal bool IsChildPopup => false;
+            internal bool IsWindowAlive() => _host != null && _host.IsAlive;
+            internal Point ClientToScreen(Visual rootVisual, Point clientPoint)
+            {
+                PresentationSource source = GetPresentationSource(rootVisual);
+                var provider = source?.GetInputProvider(typeof(MouseDevice)) as MS.Internal.Portability.Input.PortableInputProvider;
+                return provider?.ClientToScreen(clientPoint) ?? throw new PlatformNotSupportedException("Popup placement requires an attached portable input source.");
+            }
+            internal NativeMethods.POINT GetMouseCursorPos(Visual targetVisual)
+            {
+                throw new PlatformNotSupportedException("Mouse-relative portable Popup placement is not qualified.");
+            }
+            internal void SetPopupPos(bool position, int x, int y, bool size, int width, int height)
+            {
+                if (position) _host.Peer.SetDesktopPosition(new Point(x, y));
+                if (size)
+                {
+                    DpiScale dpi = _host.Peer.DpiScale;
+                    _host.Peer.SetClientSize(new Size(width / dpi.DpiScaleX, height / dpi.DpiScaleY));
+                }
+            }
+            internal Rect GetParentWindowRect()
+            {
+                Visual root = _owner?.RootVisual;
+                if (root is not UIElement element) return Rect.Empty;
+                Point origin = ClientToScreen(root, new Point());
+                Matrix transform = GetTransformToDevice(root);
+                return new Rect(origin, (Size)transform.Transform((Point)element.RenderSize));
+            }
+            internal Rect GetWindowRect()
+            {
+                if (!IsWindowAlive()) return Rect.Empty;
+                Size size = _host.Peer.ClientSize;
+                DpiScale dpi = _host.Peer.DpiScale;
+                return new Rect(_host.Peer.DesktopPosition, new Size(size.Width * dpi.DpiScaleX, size.Height * dpi.DpiScaleY));
+            }
+            internal Matrix GetTransformToDevice() => _host.Source.CompositionTarget.TransformToDevice;
+            internal static Matrix GetTransformToDevice(Visual visual) => GetPresentationSource(visual)?.CompositionTarget?.TransformToDevice ?? Matrix.Identity;
+            internal Matrix GetTransformFromDevice() => _host.Source.CompositionTarget.TransformFromDevice;
+            internal void SetWindowRootVisual(Visual visual) => _host.SetRoot(visual);
+            internal static bool IsVisualPresentationSourceNull(Visual visual) => GetPresentationSource(visual) == null;
+            private static PresentationSource GetPresentationSource(Visual visual) => visual == null ? null : PresentationSource.CriticalFromVisual(visual);
+            internal void ShowWindow() => _host.Peer.Show();
+            internal void HideWindow() => _host.Peer.Hide();
+            internal void SetHitTestable(bool value) => _host.Peer.SetHitTestable(value);
+            internal Rect GetScreenBounds(Rect targetBounds, Point targetPoint, bool useWorkArea) =>
+                MS.Internal.Portability.Windowing.PortableWindowPlatform.Factory.GetPopupScreenBounds(_owner, targetBounds, targetPoint, useWorkArea);
+            internal void BuildWindow(int x, int y, Visual target, bool transparent, HwndSourceHook hook, AutoResizedEventHandler resized, HwndDpiChangedEventHandler dpiChanged, Action ownerDeactivated, Action ownerClosing)
+            {
+                _owner = GetPresentationSource(target) ?? throw new PlatformNotSupportedException("A portable Popup requires an attached placement target.");
+                _host = new MS.Internal.Portability.Windowing.PortablePopupHost(_owner, transparent,
+                    size => resized(this, new AutoResizedEventArgs(size)), ownerDeactivated, ownerClosing);
+                _host.Peer.SetDesktopPosition(new Point(x, y));
+            }
+            internal void DestroyWindow(HwndSourceHook hook, AutoResizedEventHandler resized, HwndDpiChangedEventHandler dpiChanged)
+            {
+                var host = _host;
+                _host = null;
+                _owner = null;
+                host?.Dispose();
+            }
+#else
+
             /// <summary>
             /// Helper constructor
             /// </summary>
@@ -3475,6 +3577,7 @@ namespace System.Windows.Controls.Primitives
             private HwndSource _window;
 
             private const string WebOCWindowClassName = "Shell Embedding";
+#endif
         }
 
         #endregion
@@ -3502,6 +3605,9 @@ namespace System.Windows.Controls.Primitives
             {
                 get
                 {
+#if PORTABLE_WPF
+                    return false;
+#else
                     if (!HwndTarget.IsPerMonitorDpiScalingEnabled)
                     {
                         return false;
@@ -3517,6 +3623,7 @@ namespace System.Windows.Controls.Primitives
                     // HwndTarget.IsProcessPerMonitorDpiAware is not queryable.
                     // Let's use the current process' DPI awareness as a proxy.
                     return DpiUtil.GetProcessDpiAwareness(IntPtr.Zero) == NativeMethods.PROCESS_DPI_AWARENESS.PROCESS_PER_MONITOR_DPI_AWARE;
+#endif
                 }
             }
 
