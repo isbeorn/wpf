@@ -15,10 +15,25 @@ namespace MS.Internal.Portability.Rendering
     internal sealed class SkiaDrawingContextWalker : DrawingContextWalker
     {
         internal SKCanvas Canvas { get; }
+        private BitmapScalingMode _bitmapScalingMode = BitmapScalingMode.Linear;
+        private readonly SKColorFilter _linearSamplingPrecision;
         private PortableGuidelineFrame _guidelines = PortableGuidelineFrame.Empty;
         private readonly System.Collections.Generic.Stack<PortableGuidelineFrame> _guidelineStates = new();
 
-        internal SkiaDrawingContextWalker(SKCanvas canvas) => Canvas = canvas;
+        internal SkiaDrawingContextWalker(SKCanvas canvas, SKColorFilter linearSamplingPrecision)
+        {
+            Canvas = canvas;
+            _linearSamplingPrecision = linearSamplingPrecision;
+        }
+
+        internal override BitmapScalingMode PushBitmapScalingMode(BitmapScalingMode mode)
+        {
+            BitmapScalingMode previous = _bitmapScalingMode;
+            if (mode != BitmapScalingMode.Unspecified) _bitmapScalingMode = mode;
+            return previous;
+        }
+
+        internal override void RestoreBitmapScalingMode(BitmapScalingMode previous) => _bitmapScalingMode = previous;
 
         public override void DrawLine(Pen pen, Point point0, Point point1)
         {
@@ -201,21 +216,26 @@ namespace MS.Internal.Portability.Rendering
             if (imageSource == null || rectangle.IsEmpty) return;
             if (!(imageSource is System.Windows.Media.Imaging.BitmapSource bitmap) || bitmap.PortableBuffer == null)
                 throw Unsupported("image sources without portable bitmap storage");
+            SKFilterMode filter = _bitmapScalingMode switch
+            {
+                BitmapScalingMode.Linear => SKFilterMode.Linear,
+                BitmapScalingMode.NearestNeighbor => SKFilterMode.Nearest,
+                BitmapScalingMode.HighQuality => throw Unsupported("HighQuality/Fant bitmap sampling, which requires image prefiltering"),
+                _ => throw Unsupported($"bitmap scaling mode {_bitmapScalingMode}")
+            };
             using (SKBitmap pixels = bitmap.PortableBuffer.CreateDisplayBitmap())
             {
-                if (_guidelines.IsEmpty) Canvas.DrawBitmap(pixels, ToRect(rectangle));
-                else
-                {
-                    SKMatrix sampling = SKMatrix.Concat(Canvas.TotalMatrix, new SKMatrix(
-                        (float)(rectangle.Width / pixels.Width), 0, (float)rectangle.Left,
-                        0, (float)(rectangle.Height / pixels.Height), (float)rectangle.Top, 0, 0, 1));
-                    using SKShader shader = pixels.ToShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp,
-                        new SKSamplingOptions(SKFilterMode.Linear), sampling);
-                    using var paint = new SKPaint { Shader = shader, IsAntialias = true };
-                    using var path = new SKPath();
-                    path.AddRect(ToRect(rectangle));
-                    DrawSnappedPath(path, paint);
-                }
+                SKMatrix sampling = new SKMatrix(
+                    (float)(rectangle.Width / pixels.Width), 0, (float)rectangle.Left,
+                    0, (float)(rectangle.Height / pixels.Height), (float)rectangle.Top, 0, 0, 1);
+                if (!_guidelines.IsEmpty) sampling = SKMatrix.Concat(Canvas.TotalMatrix, sampling);
+                using SKShader shader = pixels.ToShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp,
+                    new SKSamplingOptions(filter), sampling);
+                using SKShader precise = filter == SKFilterMode.Linear ? shader.WithColorFilter(_linearSamplingPrecision) : null;
+                using var paint = new SKPaint { Shader = precise ?? shader, IsAntialias = true };
+                using var path = new SKPath();
+                path.AddRect(ToRect(rectangle));
+                DrawSnappedPath(path, paint);
             }
             GC.KeepAlive(imageSource);
         }

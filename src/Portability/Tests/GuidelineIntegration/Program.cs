@@ -90,11 +90,14 @@ var thread = new Thread(() =>
         if (!differsOnX || !differsOnY) throw new InvalidOperationException("The source-sampling controls cannot distinguish stretching on both axes.");
     });
 #endif
+    var sampling = BitmapSamplingCases.Run(Render, args);
+    results.AddRange(sampling);
+    failed |= sampling.Any(item => !item.passed);
     Dispatcher.CurrentDispatcher.InvokeShutdown();
 }) { IsBackground = true };
 if (OperatingSystem.IsWindows()) thread.SetApartmentState(ApartmentState.STA);
 thread.Start();
-if (!thread.Join(TimeSpan.FromSeconds(30))) throw new TimeoutException("Guideline fixture exceeded its watchdog.");
+if (!thread.Join(TimeSpan.FromSeconds(args.Contains("--large-sampling") ? 240 : 30))) throw new TimeoutException("Guideline fixture exceeded its watchdog.");
 string corePath = typeof(Visual).Assembly.Location;
 Console.WriteLine(JsonSerializer.Serialize(new { core = corePath, coreIdentity = typeof(Visual).Assembly.FullName,
     coreSha256 = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(corePath))), results }, new JsonSerializerOptions { WriteIndented = true }));
@@ -273,17 +276,17 @@ static IEnumerable<(string Name, Visual Visual, DpiScale Dpi)> Cases()
     }
 }
 
-static byte[] Render(Visual visual, DpiScale dpi)
+static byte[] Render(Visual visual, DpiScale dpi, int width = 32, int height = 24)
 {
 #if STOCK
-    var bitmap = new RenderTargetBitmap(32, 24, 96 * dpi.DpiScaleX, 96 * dpi.DpiScaleY, PixelFormats.Pbgra32);
+    var bitmap = new RenderTargetBitmap(width, height, 96 * dpi.DpiScaleX, 96 * dpi.DpiScaleY, PixelFormats.Pbgra32);
     bitmap.Render(visual);
-    byte[] pixels = new byte[32 * 24 * 4];
-    bitmap.CopyPixels(pixels, 32 * 4, 0);
+    byte[] pixels = new byte[width * height * 4];
+    bitmap.CopyPixels(pixels, width * 4, 0);
     return pixels;
 #else
     Type type = typeof(Visual).Assembly.GetType("MS.Internal.Portability.Rendering.PortableRenderTarget", true)!;
-    object target = Activator.CreateInstance(type, BindingFlags.Instance | BindingFlags.NonPublic, null, [visual, 32, 24, dpi], null)!;
+    object target = Activator.CreateInstance(type, BindingFlags.Instance | BindingFlags.NonPublic, null, [visual, width, height, dpi], null)!;
     try
     {
         Invoke(type, target, "Render");

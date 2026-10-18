@@ -139,6 +139,11 @@ namespace System.Windows.Media
         /// </summary>        
         internal override void WalkCurrentValue(DrawingContextWalker ctx)
         {            
+#if PORTABLE_WPF
+            BitmapScalingMode bitmapScalingMode = ctx.PushBitmapScalingMode(RenderOptions.GetBitmapScalingMode(this));
+            try
+            {
+#endif
             int popCount = 0;
 
             // We avoid unneccessary ShouldStopWalking checks based on assumptions
@@ -266,6 +271,13 @@ namespace System.Windows.Media
             {
                 ctx.Pop();                    
             }            
+#if PORTABLE_WPF
+            }
+            finally
+            {
+                ctx.RestoreBitmapScalingMode(bitmapScalingMode);
+            }
+#endif
         }
 
          

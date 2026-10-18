@@ -54,7 +54,7 @@ coverage variation while the explicit same-backend controls must match exactly.
 Bitmap interpolation differs in fixed-point precision; the stock color-gradient
 comparison allows 16/255 and the bilinear checkerboard allows 32/255, while the
 preserved sampling-phase checks are exact. Integral polygon edge comparisons
-allow only 3/255. Unguided image sampling retains the existing backend behavior.
+allow only 3/255. Image sampling also observes the scoped mode contract below.
 
 Run from E:/Projects/wpf/src/Portability:
 
@@ -75,3 +75,91 @@ cd /mnt/e/Projects/wpf/src/Portability
 The portable fixture exits nonzero on any failed comparison and has a 30-second
 watchdog. --capture skips stock sample assertions for diagnosis; it still runs
 the exact raster relationship checks and must not be used as acceptance evidence.
+
+
+## Retained bitmap sampling
+
+`BitmapSamplingCases.cs` exercises real UIElement OnRender, DrawingVisual content,
+DrawingGroup recursion and the real dispatcher. The portable root defaults to
+Linear. Unspecified preserves the active mode during the walk; this is render
+state, not dependency-property inheritance. Linear/LowQuality are aliases.
+NearestNeighbor selects the pinned Skia nearest sampler. Visuals and nested
+DrawingGroups restore the previous state, including exception paths. Tests cover
+ancestor/local override and clear in both directions, siblings, drawing groups,
+guidelines, bitmap mutation and successful-frame callbacks. A persistent target
+repaints those changes while the UIElement's OnRender count remains one.
+HighQuality/Fant raises a named prefiltering diagnostic. Its implementation and
+qualification are a separate required slice; no Linear fallback is claimed.
+
+The target owns one identity color filter for its lifetime, including resize.
+Walkers borrow it and image shaders/paints remain draw-local. Target disposal and
+constructor failure release it. This selects Skia's raster-stage Linear path
+rather than its legacy four-bit interpolation path. It does not change the color
+matrix or select cubic/mipmap filtering. The pinned implementation is SkiaSharp
+3.119.4's Skia submodule
+[7dbfc07d](https://github.com/mono/skia/tree/7dbfc07dd33181f84e0958afb7ee805c6c769f0b):
+SkImageShader.cpp, SkColorFilterShader.cpp and SkBitmapProcState_opts.h.
+
+The accepted profile documents backend differences rather than emulating Windows
+software pixels. Every raster channel is checked. Each image has a genuine WPF
+DrawGeometry(RectangleGeometry) white coverage control with the same transform,
+clip and guidelines, rendered separately on each backend. Opaque image alpha must
+match that control exactly. Premultiplied color comparisons use coverage
+cross-products, with no division by low alpha. The edge inequality is abs(A*Cs-E*Cp) <= T*Cs*Cp+Cs+Cp: T is the case color bound and the final two terms account for covered-byte quantization. Exterior pixels must be exactly
+transparent. Uniform sources with alpha 0, 1, 16, 128 and 255 independently check
+pixels reached by only one backend's coverage. No edge pixels are discarded.
+Each control also has independent geometric constraints: outward-rounded device
+rectangle bounds, intersected with the transformed clip, identify guaranteed
+fully covered interior cells and guaranteed transparent exterior cells. Static
+guidelines enlarge the uncertain boundary by their maximum half-pixel movement.
+These constraints inspect both controls separately and do not use image pixels
+or observed coverage to classify cells. Corruption checks blank and shift paired
+image/control rasters, punch interior holes and paint exterior pixels for Linear
+and Nearest, on either backend and both together.
+
+Measured Linear interior bounds for the small corpus are 1/255 for RGB48 and
+2/255 for Gray16/Pbgra32. The 6000x4000 corpus additionally measures RGB48 fit/DPI
+at 2/255 and guided reduction at 3/255 for all three formats. These limits are
+explicit per case. The original 1-2/255 observations and fractional-DPI edge
+maximum 17/255 were not universal bounds: the large fitted edge reaches 32/255
+because backend coverage differs. That raw difference is reported and explained
+by each backend's geometry control, not accepted as a global color tolerance.
+Native bilinearspan.cpp uses 16.16 coefficients and eight-bit interpolation
+weights, so its accumulation phase differs from Skia's floating-point sampler.
+
+Nearest boundary candidates are computed before reading image pixels, from
+outward-rounded single-precision axis arithmetic and native 16.16 origin/step
+quantization. Each arithmetic operation is rounded outwards to adjacent float values. The native scan-step bound also includes float subtraction/division rounding and at most (viewportWidth+2)/131072 source pixels from 16.16 quantization. Any native clipped scan is bounded by the viewport width. A case
+whose uncertainty admits more than adjacent source texels fails. Both stock and
+portable pixels must match a permitted source texel with their own geometry
+coverage. Fully covered RGB pixels away from those boundaries are exact; Gray16
+retains its independently measured one-value display-conversion bound. There is
+no 239/255 or 255/255 channel allowance. Large adjacent differences remain visible
+in the raw results and must be explained by permitted source coordinates.
+
+## Large sampling run
+
+The ordinary fixture includes 115 checks, including the unchanged 44 guideline
+checks. `--large-sampling` adds 42 cases with 6000x4000 Gray16, RGB48 and Pbgra32
+sources and 1184x811 output. Inputs include independent 16-bit low bytes,
+coordinate-coded high bytes and premultiplied alpha zones. Caller arrays are
+cleared and complete CopyPixels results must retain the exact input bytes.
+Views cover fitted reduction, positive/negative pan, distant coordinates,
+reflection, asymmetric DPI, rectangle clipping and guidelines.
+
+Capture stock first, then run portable Windows and Linux against that directory:
+
+```text
+dotnet <stock-output>/StockOracle.dll --large-sampling <evidence-directory>
+dotnet <windows-output>/GuidelineIntegration.dll --large-sampling <evidence-directory>
+<linux-dotnet>/dotnet <linux-output>/GuidelineIntegration.dll --large-sampling <evidence-directory>
+```
+
+The stock oracle does not compare itself against portable limits. It writes
+`stock-*.bgra` and `stock-*.coverage`; portable runs write separate `windows-*`
+and `linux-*` files. Large binary rasters stay in ignored artifacts. JSON records
+source/raster hashes and full-raster statistics. Small stock color/coverage
+rasters are checked in as StockBitmapSamplingReference.json. The opt-in large
+run has a 240-second watchdog; ordinary runs retain the 30-second watchdog.
+This qualifies the measured CPU sampling profile. It does not assert native
+window presentation parity, arbitrary transformed-image parity or Fant support.

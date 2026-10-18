@@ -14,6 +14,11 @@ namespace System.Windows.Media
     /// </summary>
     internal abstract partial class DrawingContextWalker : DrawingContext
     {
+#if PORTABLE_WPF
+        internal virtual BitmapScalingMode PushBitmapScalingMode(BitmapScalingMode mode) => BitmapScalingMode.Unspecified;
+        internal virtual void RestoreBitmapScalingMode(BitmapScalingMode previous) { }
+#endif
+
         /// <summary>
         /// Constructor for DrawingContextWalker
         /// </summary>
