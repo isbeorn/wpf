@@ -3,6 +3,11 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Controls/**/*.cs;StockOracle/**/*.cs" />
+    <Content Include="BidiCharacterCases.txt" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="StockPositionReference.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../../Dependencies/TextUnicode/Original/tests/Avalonia.Skia.UnitTests/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../../Dependencies/TextUnicode/Original/src/Avalonia.Fonts.Inter/Assets/Inter-Regular.ttf" Link="Fonts/Inter-Regular.ttf" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" />
     <ProjectReference Include="../../Framework/WindowsBase/WindowsBase.csproj" />
   </ItemGroup>

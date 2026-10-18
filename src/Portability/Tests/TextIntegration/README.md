@@ -23,7 +23,14 @@ paragraph terminators, empty paragraphs, greedy word wrapping, overflow modes,
 min/max widths, baseline/height, ink bounds and Display advance rounding.
 Wrapping regressions cover exact fitting word boundaries, widths on both sides,
 repeated spaces and both wrapping modes. CRLF split across differently styled
-source runs preserves both consumed spans. Signed overhang checks compare
+source runs preserves both consumed spans. Mandatory LS, PS, NEL, VT and FF
+separators also preserve consumed spans across source chunks and empty lines.
+Combining sequences, surrogate pairs and ligatures may cross source chunks
+with equivalent formatting. Paint must share its brush object or use equal
+frozen solid brushes so later independent brush changes cannot be lost.
+Selection rectangles and `TextRunBounds` project merged glyphs back onto
+original source chunks, including partial graphemes and wrapped absolute offsets.
+Signed overhang checks compare
 actual glyph ink with positive side margins, negative italic overhang and
 trailing whitespace excluded from visible width.
 
@@ -57,21 +64,61 @@ The exercised paths assert that no Windows interop assembly was loaded. A
 successful run also requires process exit code zero, since JSON emitted before
 shutdown alone does not establish that native module cleanup succeeded.
 
-## Supported initial contract and open gates
+## Unicode 17 paragraph extension
 
-This is an initial horizontal, LTR physical-font contract. It supports left
-alignment, ordinary space-delimited greedy wrapping and explicit source runs.
-Each run may contain one strong Unicode script plus common/inherited
-characters. Real font files are retained by their `GlyphTypeface`; per-operation
+The same WPF model now supports horizontal mixed Arabic, Hebrew, Latin and
+digit paragraphs in both directions. Whole-paragraph Unicode 17 bidi analysis,
+grapheme boundaries and legal line breaks precede script/direction/font
+segmentation. HarfBuzz receives actual line context across formatting runs;
+wrapping reshapes the final boundary. Real managed TextLineBreak objects retain
+the paragraph through independent clones and reject disposed continuation.
+Trailing whitespace levels reset before visual run reordering.
+
+GlyphRuns keep logical cluster maps/source ranges while drawing uses visual
+order. Carets include grapheme boundaries inside ligatures. Hit distances and
+selections use the paragraph leading edge; RTL drawing uses its supplied right
+edge. Multiple and reversed selection ranges retain direction-specific bounds.
+Empty/end caret bounds preserve actual TextBoxLine's fallback contract.
+
+The new cases use byte-verified, unmodified DejaVu Sans and Inter from the pinned
+dependency, with full licenses under ../../Dependencies/TextUnicode/Licenses.
+A known missing Inter grapheme must select the expected DejaVu file as a whole.
+Retained RTL drawing is checked after formatter/line disposal and collection,
+including Ideal/Display, asymmetric DPI and repeated native shaping lifetimes.
+
+The 48 identified official rows in BidiCharacterCases.txt exercise actual WPF
+paragraph levels. Verify-UnicodeBidi.ps1 independently checks all 91,707 official
+Unicode 17 rows and input preservation, comparing the original and exactly two
+guarded N0 corrections. This full-corpus probe qualifies levels, not rendering
+or visual order. Original source bytes and per-file licenses remain preserved.
+
+StockOracle runs the same fonts against actual Windows WPF. Eight explicit
+GlyphRun geometry cases in StockPositionReference.json cover LTR/RTL,
+Ideal/Display, two DPI values, a zero-advance mark and nonzero offsets.
+Controls/TextControlsIntegration.csproj measures and draws a real TextBlock
+with its actual User/AsCulture default number-substitution properties. Existing
+WPF DigitState resolution accepts no-op settings and rejects required changes.
+See [Compatibility.md](Compatibility.md) for the accepted Unicode 17 policy and
+measured native Windows differences. The main fixture accepts --capture-oracle;
+StockOracle also accepts --controls.
+
+Windows WPF graphics module absence is checked on both operating systems:
+successful execution on Windows must not hide an unported native call.
+
+## Supported contract and open gates
+
+This is a horizontal LTR/RTL physical-font contract. It supports left alignment,
+Unicode legal greedy wrapping and explicit source runs. Script/direction/font
+segments are internal implementation details. Real font files are retained by their `GlyphTypeface`; per-operation
 fonts and shaping buffers are disposed independently.
 
-Named `NotSupportedException` diagnostics reject tabs, RTL scripts and bidi
-controls, mixed-script run itemization, unsupported/missing glyph fallback,
-formatting boundaries inside a grapheme, justification, custom line heights,
-indentation, markers, paragraph decorations, effects, number substitution,
-collapsing, optimal paragraph caches and native Line Services contexts. Font
+Named `NotSupportedException` diagnostics reject tabs, discretionary hyphen
+insertion, uncovered graphemes, custom OpenType typography, non-baseline inline
+alignment, changed formatting inside a grapheme, justification, custom line heights,
+indentation, markers, paragraph decorations and effects,
+required digit substitution, collapsing, optimal paragraph caches and native Line Services contexts. Font
 style simulations, font collections/face indexes and non-file sources remain
-unsupported. The current line limit is 32767 UTF-16 units. Only Unicode cmap
+unsupported. The current paragraph limit is 32767 UTF-16 units. Only Unicode cmap
 formats 4 and 12 are supported by `CharacterToGlyphMap`.
 The legacy `TypefaceMap.GetShapeableText` DirectWrite itemizer and native
 typography feature cache remain unavailable. Portable typography construction
@@ -85,11 +132,13 @@ vertical advances and side-bearing access are unimplemented. They are not
 qualified by these tests. The preserved full native implementation is still
 compiled for other paths; this is not a full native dependency removal.
 
-The portable font catalog scans existing local `.ttf`/`.otf` files. It does not
-download or redistribute fonts. Arial/Segoe UI Symbol are used on Windows and
-DejaVu Sans on Linux. This is not a same-font Windows WPF metric or raster parity
-test. OpenType feature controls, language-dependent fallback, full UAX bidi and
-line breaking, ligature editing policy, text decorations, IME, accessibility,
+The production font catalog scans existing local `.ttf`/`.otf` files. Fallback
+uses complete graphemes, style ranking then ordinal paths in the primary font's
+directory. It downloads no fonts. Older regression cases still use installed
+Arial/Segoe UI Symbol on Windows and DejaVu Sans on Linux; new reference cases
+use identical pinned fonts. Full DirectWrite metric/raster parity is not claimed.
+OpenType feature controls, language-dependent fallback, advanced paragraph
+breaking, text decorations, IME, accessibility,
 per-monitor DPI behavior and native window integration remain separate gates.
 
 ## Run from this checkout
@@ -120,3 +169,13 @@ dotnet artifacts/portability/text-integration/linux/bin/TextIntegration/debug/Te
 
 The test process exits nonzero on any failed assertion or unexpected exception.
 Unsupported-case checks verify rejection, not implemented feature support.
+
+Run the same executable with `--measure-continuations` to measure public
+`FormatLine`/`TextLineBreak` loops at 7,998, 15,996 and 32,760 UTF-16 units.
+The fixture warms up first and uses the pinned DejaVu font at size 20, with
+widths 100 and 1,000,000 to cover many narrow lines and one wide line, using
+both a whole-string source run and constant-time one-character source runs. It verifies
+source consumption and expected line counts and reports timings without a
+machine-dependent threshold. The formatter brackets legal break candidates
+exponentially then searches the bracket, avoiding full-suffix shaping on every
+narrow line and a scan of increasingly long prefixes on a wide line.

@@ -5,7 +5,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
@@ -30,45 +29,75 @@ namespace MS.Internal.TextFormatting.Portable
             TextParagraphProperties properties, TextLineBreak previous, TextRunCache cache)
         {
             Validate(source, first, width, properties, previous);
-            var input = Read(source, first);
-            int length = input.Text.Length;
-            bool truncated = false;
-            if (properties.TextWrapping != TextWrapping.NoWrap && width > 0 && length > 0 &&
-                Measure(input, length, source.PixelsPerDip) > width)
+            PortableParagraph input;
+            var continuation = previous?.PortableContinuation;
+            if (continuation != null)
             {
-                int[] boundaries = StringInfo.ParseCombiningCharacters(input.Text).Concat(new[] { length }).ToArray();
-                int low = 1, high = boundaries.Length - 1;
+                input = continuation.Paragraph;
+                if (!ReferenceEquals(source, input.Source) || first != continuation.Next ||
+                    input.BaseLevel != (properties.FlowDirection == FlowDirection.RightToLeft ? 1 : 0))
+                    throw new ArgumentException("The portable line break belongs to a different source, source position or paragraph direction.", nameof(previous));
+            }
+            else
+            {
+                var read = Read(source, first);
+                input = new PortableParagraph(source, first, read.Text, read.Runs, read.NewlineLength, read.Terminators, properties.FlowDirection);
+            }
+            int start = first - input.First;
+            int length = input.Text.Length - start;
+            bool truncated = false;
+            if (properties.TextWrapping != TextWrapping.NoWrap && width > 0 && length > 0)
+            {
+                int low = 0, high = input.Breaks.Length;
                 while (low < high)
                 {
-                    int middle = (low + high + 1) / 2;
-                    if (Measure(input, boundaries[middle], source.PixelsPerDip) <= width)
-                        low = middle;
-                    else
-                        high = middle - 1;
+                    int middle = (low + high) / 2;
+                    if (input.Breaks[middle].Wrap <= start) low = middle + 1;
+                    else high = middle;
                 }
-                length = boundaries[low];
-                if (length < input.Text.Length && input.Text[length] != ' ' && input.Text[length - 1] != ' ')
+                int firstBreak = low;
+                int fitting = firstBreak - 1, failing = input.Breaks.Length;
+                int candidate = firstBreak, step = 1;
+                bool Fits(int index) => Measure(input, start, Math.Max(start, input.Breaks[index].Measure) - start, source.PixelsPerDip) <= width;
+                while (true)
                 {
-                    int wordEnd = input.Text.LastIndexOf(' ', length - 1) + 1;
-                    if (wordEnd > 0)
-                        length = wordEnd;
-                    else if (properties.TextWrapping == TextWrapping.WrapWithOverflow)
-                    {
-                        int nextSpace = input.Text.IndexOf(' ', length);
-                        length = nextSpace < 0 ? input.Text.Length : nextSpace;
-                    }
-                    else
-                        truncated = true;
+                    if (!Fits(candidate)) { failing = candidate; break; }
+                    fitting = candidate;
+                    if (candidate == input.Breaks.Length - 1) break;
+                    candidate = Math.Min(input.Breaks.Length - 1, firstBreak + step);
+                    step *= 2;
                 }
-                while (length < input.Text.Length && input.Text[length] == ' ')
-                    length++;
+                while (fitting + 1 < failing)
+                {
+                    int middle = (fitting + failing) / 2;
+                    if (Fits(middle)) fitting = middle;
+                    else failing = middle;
+                }
+                int wrap = fitting < firstBreak ? start : input.Breaks[fitting].Wrap;
+                if (wrap == start)
+                {
+                    if (properties.TextWrapping == TextWrapping.WrapWithOverflow)
+                        wrap = input.Breaks[firstBreak].Wrap;
+                    else
+                    {
+                        low = Array.BinarySearch(input.GraphemeStarts, start) + 1;
+                        high = Array.BinarySearch(input.GraphemeStarts, input.Breaks[firstBreak].Wrap);
+                        while (low < high)
+                        {
+                            int middle = (low + high + 1) / 2;
+                            if (Measure(input, start, input.GraphemeStarts[middle] - start, source.PixelsPerDip) <= width) low = middle;
+                            else high = middle - 1;
+                        }
+                        wrap = input.GraphemeStarts[low];
+                        truncated = true;
+                    }
+                }
+                length = wrap - start;
             }
-            int newline = length == input.Text.Length ? input.NewlineLength : 0;
+            int newline = start + length == input.Text.Length ? input.NewlineLength : 0;
             if ((long)first + length + newline > int.MaxValue)
                 throw new ArgumentOutOfRangeException(nameof(first), "The formatted source range exceeds Int32 source positions.");
-            return new PortableTextLine(first, input.Text.Substring(0, length), newline,
-                input.Runs, properties, source.PixelsPerDip, _mode, width, truncated, input.Terminators,
-                input.Text.Length + input.NewlineLength - length - newline);
+            return new PortableTextLine(input, start, length, newline, properties, source.PixelsPerDip, _mode, width, truncated);
         }
 
         internal override TextLine RecreateLine(TextSource source, int first, int length, double width,
@@ -94,31 +123,24 @@ namespace MS.Internal.TextFormatting.Portable
             TextParagraphProperties properties, TextRunCache cache)
         {
             Validate(source, first, double.MaxValue, properties, null);
-            var input = Read(source, first);
-            double maximum = Measure(input, input.Text.Length, source.PixelsPerDip);
+            var read = Read(source, first);
+            var input = new PortableParagraph(source, first, read.Text, read.Runs, read.NewlineLength, read.Terminators, properties.FlowDirection);
+            double maximum = Measure(input, 0, input.Text.Length, source.PixelsPerDip);
             double minimum = 0;
             int start = 0;
-            for (int index = 0; index <= input.Text.Length; index++)
+            foreach (var item in input.Breaks)
             {
-                if (index == input.Text.Length || input.Text[index] == ' ')
-                {
-                    var segment = Slice(input, start, index - start);
-                    minimum = Math.Max(minimum, Measure(segment, segment.Text.Length, source.PixelsPerDip));
-                    start = index + 1;
-                }
+                minimum = Math.Max(minimum, Measure(input, start, Math.Max(start, item.Measure) - start, source.PixelsPerDip));
+                start = item.Wrap;
             }
             return new MinMaxParagraphWidth(minimum, maximum);
         }
 
-        private double Measure(Input input, int length, double pixelsPerDip)
+        private double Measure(PortableParagraph input, int first, int length, double pixelsPerDip)
         {
             double width = 0;
-            foreach (Run run in input.Runs)
-            {
-                int count = Math.Min(length - run.Start, run.Length);
-                if (count > 0)
-                    width += PortableTextLine.Shape(input.Text.Substring(run.Start, count), run.Value.Properties, pixelsPerDip, _mode).Width;
-            }
+            foreach (var segment in input.Segments(first, length))
+                width += PortableTextLine.Shape(input.Text, segment, pixelsPerDip, _mode, first, length).Width;
             return width;
         }
 
@@ -131,11 +153,11 @@ namespace MS.Internal.TextFormatting.Portable
             if (double.IsNaN(width) || width < 0 || double.IsNaN(source.PixelsPerDip) || source.PixelsPerDip <= 0 || double.IsInfinity(source.PixelsPerDip))
                 throw new ArgumentOutOfRangeException(nameof(width));
             if ((previous != null && (previous.BreakRecord != IntPtr.Zero || previous.TextModifierScope != null)) ||
-                properties.FlowDirection != FlowDirection.LeftToRight || properties.TextAlignment != TextAlignment.Left ||
+                properties.TextAlignment != TextAlignment.Left ||
                 properties.LineHeight != 0 || properties.Indent != 0 || properties.ParagraphIndent != 0 || properties.TextMarkerProperties != null ||
                 (properties.Tabs != null && properties.Tabs.Count != 0) || (properties.TextDecorations != null && properties.TextDecorations.Count != 0) ||
                 properties.AlwaysCollapsible)
-                throw new NotSupportedException("Portable text currently supports horizontal LTR, left-aligned greedy paragraphs without markers, tabs, decorations or custom line heights.");
+                throw new NotSupportedException("Portable text supports horizontal left-aligned greedy paragraphs without markers, tabs, decorations or custom line heights.");
         }
 
         private static Input Read(TextSource source, int first)
@@ -160,7 +182,8 @@ namespace MS.Internal.TextFormatting.Portable
                 for (int index = 0; index < run.Length; index++)
                 {
                     char character = buffer.CharacterBuffer[buffer.OffsetToFirstChar + index];
-                    if (character == '\r' || character == '\n')
+                    if (character == '\r' || character == '\n' || character == '\u0085' || character == '\u000b' ||
+                        character == '\u000c' || character == '\u2028' || character == '\u2029')
                     {
                         int newline = character == '\r' && index + 1 < run.Length && buffer.CharacterBuffer[buffer.OffsetToFirstChar + index + 1] == '\n' ? 2 : 1;
                         var terminators = new List<TextSpan<TextRun>> { new TextSpan<TextRun>(newline, run) };
@@ -181,9 +204,10 @@ namespace MS.Internal.TextFormatting.Portable
                             runs.Add(new Run(start, index, run));
                         return new Input(text.ToString(), runs, newline, terminators);
                     }
-                    if (character == '\t' || (character >= '\u0590' && character <= '\u08ff') ||
-                        (character >= '\u202a' && character <= '\u202e') || (character >= '\u2066' && character <= '\u2069'))
-                        throw new NotSupportedException("Tabs, RTL scripts and bidi controls require the full portable paragraph adapter.");
+                    if (character == '\t')
+                        throw new NotSupportedException("Portable paragraph tab stops are not implemented.");
+                    if (character == '\u00ad')
+                        throw new NotSupportedException("Portable discretionary hyphen insertion is not implemented.");
                     text.Append(character);
                     if (text.Length >= 32768)
                         throw new NotSupportedException("Portable text lines currently have a 32767 UTF-16 code-unit limit.");
@@ -192,10 +216,6 @@ namespace MS.Internal.TextFormatting.Portable
             }
             throw new NotSupportedException("Portable paragraph is too long.");
         }
-
-        private static Input Slice(Input input, int first, int length) => new Input(input.Text.Substring(first, length),
-            input.Runs.Where(run => run.Start < first + length && run.Start + run.Length > first)
-                .Select(run => new Run(Math.Max(0, run.Start - first), Math.Min(run.Start + run.Length, first + length) - Math.Max(run.Start, first), run.Value)).ToList(), 0);
 
         internal sealed record Run(int Start, int Length, TextRun Value);
         private sealed record Input(string Text, List<Run> Runs, int NewlineLength, IList<TextSpan<TextRun>> Terminators = null);

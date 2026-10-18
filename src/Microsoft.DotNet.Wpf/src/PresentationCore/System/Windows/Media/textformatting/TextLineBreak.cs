@@ -17,6 +17,25 @@ namespace System.Windows.Media.TextFormatting
     {
         private TextModifierScope  _currentScope;
         private IntPtr             _breakRecord;
+#if PORTABLE_WPF
+        private readonly MS.Internal.TextFormatting.Portable.PortableParagraphContinuation _portableContinuation;
+        private bool _portableDisposed;
+
+        internal TextLineBreak(MS.Internal.TextFormatting.Portable.PortableParagraphContinuation continuation)
+            : this(null, IntPtr.Zero)
+        {
+            _portableContinuation = continuation;
+        }
+
+        internal MS.Internal.TextFormatting.Portable.PortableParagraphContinuation PortableContinuation
+        {
+            get
+            {
+                ObjectDisposedException.ThrowIf(_portableDisposed, this);
+                return _portableContinuation;
+            }
+        }
+#endif
 
         #region Constructors
 
@@ -66,6 +85,13 @@ namespace System.Windows.Media.TextFormatting
         /// </summary>
         public TextLineBreak Clone()
         {
+#if PORTABLE_WPF
+            if (_portableContinuation != null)
+            {
+                ObjectDisposedException.ThrowIf(_portableDisposed, this);
+                return new TextLineBreak(_portableContinuation);
+            }
+#endif
             IntPtr pbreakrec = IntPtr.Zero;
 
             if (_breakRecord != IntPtr.Zero)
@@ -89,6 +115,9 @@ namespace System.Windows.Media.TextFormatting
         /// </summary>
         private void DisposeInternal(bool finalizing)
         {
+#if PORTABLE_WPF
+            _portableDisposed = true;
+#endif
             if (_breakRecord != IntPtr.Zero)
             {
                 UnsafeNativeMethods.LoDisposeBreakRecord(_breakRecord, finalizing);

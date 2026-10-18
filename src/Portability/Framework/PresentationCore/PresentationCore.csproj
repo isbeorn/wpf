@@ -40,6 +40,7 @@
       <HintPath>$(NuGetPackageRoot)/microsoft.windowsdesktop.app.runtime.win-x64/10.0.13/runtimes/win-x64/lib/net10.0/%(Identity).dll</HintPath>
     </Reference>
   </ItemGroup>
+  <Import Project="../../Dependencies/TextUnicode/TextUnicode.targets" />
   <Import Project="../Build/SourceManifest.targets" />
   <Import Project="../Build/WindowsNativeContracts.props" />
   <Import Project="../Build/SourceResources.targets" />

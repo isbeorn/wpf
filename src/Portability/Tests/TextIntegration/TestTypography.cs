@@ -1,7 +1,7 @@
 using System.Windows;
 using System.Windows.Media.TextFormatting;
 
-sealed class TestTypography : TextRunTypographyProperties
+sealed class TestTypography(bool disableKerning = false, bool stylisticSet = false) : TextRunTypographyProperties
 {
     public void Invalidate() => OnPropertiesChanged();
     public override bool StandardLigatures => true;
@@ -10,7 +10,7 @@ sealed class TestTypography : TextRunTypographyProperties
     public override bool HistoricalLigatures => false;
     public override bool ContextualAlternates => true;
     public override bool HistoricalForms => false;
-    public override bool Kerning => true;
+    public override bool Kerning => !disableKerning;
     public override bool CapitalSpacing => false;
     public override bool CaseSensitiveForms => false;
     public override bool StylisticSet1 => false;
@@ -19,7 +19,7 @@ sealed class TestTypography : TextRunTypographyProperties
     public override bool StylisticSet4 => false;
     public override bool StylisticSet5 => false;
     public override bool StylisticSet6 => false;
-    public override bool StylisticSet7 => false;
+    public override bool StylisticSet7 => stylisticSet;
     public override bool StylisticSet8 => false;
     public override bool StylisticSet9 => false;
     public override bool StylisticSet10 => false;

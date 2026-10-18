@@ -2470,6 +2470,9 @@ namespace System.Windows.Media
 #if !PORTABLE_WPF
         private object              _inkBoundingBox;    // Used when CacheInkBounds is on
 #endif
+#if PORTABLE_WPF
+        internal TextFormattingMode PortableTextFormattingMode => _textFormattingMode;
+#endif
         private TextFormattingMode      _textFormattingMode;
         private float               _pixelsPerDip = MS.Internal.FontCache.Util.PixelsPerDip;
 

@@ -8,6 +8,21 @@ using System.Windows.Threading;
 using SkiaSharp;
 
 var checks = new List<object>();
+if (args.Contains("--capture-oracle"))
+{
+    Console.WriteLine(JsonSerializer.Serialize(TextOracleCases.Capture(), new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
+if (args.Contains("--capture-boundaries"))
+{
+    Console.WriteLine(JsonSerializer.Serialize(TextOracleCases.CaptureBoundaries(), new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
+if (args.Contains("--measure-continuations"))
+{
+    Console.WriteLine(JsonSerializer.Serialize(ContinuationBenchmark.Capture(), new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
 int exit = 0;
 try
 {
@@ -15,6 +30,7 @@ try
     var properties = new RunProperties(new Typeface(family));
     var paragraph = new Paragraph(properties);
     using var formatter = TextFormatter.Create();
+    BidiTests.Run(formatter, Require, Regression);
     Regression("empty-and-end-caret-bounds-regression", () =>
     {
         foreach (string text in new[] { "", "abc", "abc\r\n" })
@@ -287,9 +303,13 @@ try
     }
 
     Expect<NotSupportedException>(() => formatter.FormatLine(new Source("a\tb", properties), 0, 1000, paragraph, null), "reject-tab-layout");
-    Expect<NotSupportedException>(() => formatter.FormatLine(new Source("\u05d0", properties), 0, 1000, paragraph, null), "reject-unsupported-bidi");
-    Expect<NotSupportedException>(() => formatter.FormatLine(new Source("\U0001e900", properties), 0, 1000, paragraph, null), "reject-supplementary-rtl-script");
-    Expect<NotSupportedException>(() => formatter.FormatLine(new Source("latin\u03b1", properties), 0, 1000, paragraph, null), "reject-unitemized-mixed-script");
+    Expect<NotSupportedException>(() => formatter.FormatLine(new Source("soft\u00adhyphen", properties), 0, 1000, paragraph, null), "reject-discretionary-hyphen-insertion");
+    using (var hebrew = formatter.FormatLine(new Source("\u05d0", properties), 0, 1000, paragraph, null))
+        Require(hebrew.GetIndexedGlyphRuns().Single().GlyphRun.BidiLevel == 1, "supported-hebrew-bidi", "Hebrew produces a genuine RTL glyph run.");
+    var fixedProperties = BidiTests.Properties("DejaVuSans.ttf", "DejaVu Sans");
+    Expect<NotSupportedException>(() => formatter.FormatLine(new Source("\U0001e900", fixedProperties), 0, 1000, new Paragraph(fixedProperties), null), "reject-uncovered-supplementary-glyph");
+    using (var scripts = formatter.FormatLine(new Source("latin\u03b1", properties), 0, 1000, paragraph, null))
+        Require(scripts.GetIndexedGlyphRuns().Count() == 2, "supported-mixed-script-itemization", "Latin and Greek are itemized into separately shaped WPF glyph runs.");
     Expect<NotSupportedException>(() => formatter.FormatLine(new Source(new[] { ("q", properties), ("\u0301", larger) }), 0, 1000, paragraph, null), "reject-formatting-inside-grapheme");
     Expect<NotSupportedException>(() => formatter.FormatLine(new Source("x", properties), 0, 1000, new Paragraph(properties, alignment: TextAlignment.Justify), null), "reject-justification");
     Expect<NotSupportedException>(() => formatter.FormatLine(new Source(char.ConvertFromUtf32(0x10ffff), properties), 0, 1000, paragraph, null), "reject-missing-font-glyph");
@@ -343,6 +363,9 @@ try
     });
     Require(!AppDomain.CurrentDomain.GetAssemblies().Any(assembly => assembly.GetName().Name is "DirectWriteForwarder" or "System.Windows.Input.Manipulations"),
         "no-windows-interop-loads", "All exercised text paths complete without loading Windows-only interop assemblies.");
+    Require(!System.Diagnostics.Process.GetCurrentProcess().Modules.Cast<System.Diagnostics.ProcessModule>().Any(module =>
+        module.ModuleName.Contains("wpfgfx", StringComparison.OrdinalIgnoreCase) || module.ModuleName.Contains("PresentationNative", StringComparison.OrdinalIgnoreCase)),
+        "no-windows-wpf-native-modules", "Actual formatter, drawing and glyph-geometry paths complete without loading Windows WPF graphics DLLs on either operating system.");
 }
 catch (Exception exception)
 {
@@ -350,7 +373,7 @@ catch (Exception exception)
     exit = 1;
 }
 Console.WriteLine(JsonSerializer.Serialize(new { probe = "actual-wpf-text-integration", os = Environment.OSVersion.Platform.ToString(),
-    scope = "Source-built WPF TextFormatter, TextLine, Typeface, GlyphTypeface, GlyphRun and DrawingContext integration; bounded LTR support.",
+    scope = "Source-built WPF TextFormatter/TextLine/Typeface/GlyphTypeface/GlyphRun and retained drawing; horizontal Unicode17 LTR/RTL paragraphs with an explicitly bounded feature profile.",
     frameworkAssembly = new { name = typeof(TextFormatter).Assembly.FullName, path = typeof(TextFormatter).Assembly.Location },
     loadedWindowsInteropAssemblies = AppDomain.CurrentDomain.GetAssemblies()
         .Where(assembly => assembly.GetName().Name is "DirectWriteForwarder" or "System.Windows.Input.Manipulations")
@@ -417,7 +440,8 @@ IEnumerable<GlyphRunDrawing> FindGlyphs(Drawing drawing)
             foreach (var result in FindGlyphs(child)) yield return result;
 }
 
-sealed class RunProperties(Typeface typeface, double size = 20, Brush? foreground = null) : TextRunProperties
+sealed class RunProperties(Typeface typeface, double size = 20, Brush? foreground = null, NumberSubstitution? substitution = null,
+    CultureInfo? culture = null, TextRunTypographyProperties? typography = null) : TextRunProperties
 {
     public override Typeface Typeface => typeface;
     public override double FontRenderingEmSize => size;
@@ -425,12 +449,14 @@ sealed class RunProperties(Typeface typeface, double size = 20, Brush? foregroun
     public override TextDecorationCollection TextDecorations => null!;
     public override Brush ForegroundBrush => foreground ?? Brushes.Black;
     public override Brush BackgroundBrush => null!;
-    public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("en-US");
+    public override CultureInfo CultureInfo => culture ?? CultureInfo.GetCultureInfo("en-US");
+    public override NumberSubstitution NumberSubstitution => substitution!;
+    public override TextRunTypographyProperties TypographyProperties => typography!;
     public override TextEffectCollection TextEffects => null!;
 }
-sealed class Paragraph(RunProperties properties, TextWrapping wrapping = TextWrapping.NoWrap, TextAlignment alignment = TextAlignment.Left) : TextParagraphProperties
+sealed class Paragraph(RunProperties properties, TextWrapping wrapping = TextWrapping.NoWrap, TextAlignment alignment = TextAlignment.Left, FlowDirection flow = FlowDirection.LeftToRight) : TextParagraphProperties
 {
-    public override FlowDirection FlowDirection => FlowDirection.LeftToRight;
+    public override FlowDirection FlowDirection => flow;
     public override TextAlignment TextAlignment => alignment;
     public override double LineHeight => 0;
     public override bool FirstLineInParagraph => true;
@@ -442,9 +468,11 @@ sealed class Paragraph(RunProperties properties, TextWrapping wrapping = TextWra
 sealed class Source : TextSource
 {
     private readonly (string Text, RunProperties Properties)[] _segments;
+    private readonly int _chunkSize;
     public string Text { get; }
     public int Length => Text.Length;
     public Source(string text, RunProperties properties) : this(new[] { (text, properties) }) { }
+    public Source(string text, RunProperties properties, int chunkSize) : this(text, properties) { _chunkSize = chunkSize; }
     public Source((string Text, RunProperties Properties)[] segments)
     {
         _segments = segments;
@@ -456,7 +484,8 @@ sealed class Source : TextSource
         foreach (var segment in _segments)
         {
             if (index < start + segment.Text.Length)
-                return new TextCharacters(segment.Text, index - start, segment.Text.Length - (index - start), segment.Properties);
+                return new TextCharacters(segment.Text, index - start,
+                    Math.Min(segment.Text.Length - (index - start), _chunkSize == 0 ? int.MaxValue : _chunkSize), segment.Properties);
             start += segment.Text.Length;
         }
         return new TextEndOfParagraph(1);
@@ -470,8 +499,11 @@ sealed class Target : IDisposable
 {
     private readonly Type _type = typeof(Visual).Assembly.GetType("MS.Internal.Portability.Rendering.PortableRenderTarget", throwOnError: true)!;
     private readonly object _instance;
-    public Target(Visual visual, int width, int height) =>
-        _instance = Activator.CreateInstance(_type, BindingFlags.Instance | BindingFlags.NonPublic, null, [visual, width, height], null)!;
+    public Target(Visual visual, int width, int height, DpiScale? dpi = null)
+    {
+        object[] arguments = dpi.HasValue ? [visual, width, height, dpi.Value] : [visual, width, height];
+        _instance = Activator.CreateInstance(_type, BindingFlags.Instance | BindingFlags.NonPublic, null, arguments, null)!;
+    }
     public SKBitmap Snapshot() => (SKBitmap)_type.GetMethod("Snapshot", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(_instance, null)!;
     public void Dispose() => ((IDisposable)_instance).Dispose();
 }

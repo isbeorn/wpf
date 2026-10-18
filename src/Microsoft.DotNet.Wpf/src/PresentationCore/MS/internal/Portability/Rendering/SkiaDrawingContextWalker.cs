@@ -89,8 +89,8 @@ namespace MS.Internal.Portability.Rendering
         public override void DrawGlyphRun(Brush foregroundBrush, GlyphRun glyphRun)
         {
             if (glyphRun == null || foregroundBrush == null) return;
-            if (glyphRun.IsSideways || (glyphRun.BidiLevel & 1) != 0)
-                throw Unsupported("sideways or right-to-left glyph runs");
+            if (glyphRun.IsSideways)
+                throw Unsupported("sideways glyph runs");
             using (var font = new SKFont(glyphRun.GlyphTypeface.PortableFontFace.Typeface, (float)glyphRun.FontRenderingEmSize))
             using (SKPaint paint = CreateBrush(foregroundBrush))
             {
@@ -100,7 +100,7 @@ namespace MS.Internal.Portability.Rendering
                 for (int index = 0; index < glyphs.Length; index++)
                 {
                     Point offset = glyphRun.GlyphOffsets == null || glyphRun.GlyphOffsets.Count == 0 ? default : glyphRun.GlyphOffsets[index];
-                    positions[index] = new SKPoint((float)(advance + offset.X), (float)-offset.Y);
+                    positions[index] = new SKPoint((float)glyphRun.GlyphTypeface.PortableFontFace.GetGlyphOrigin(glyphRun, glyphs[index], advance, offset), (float)-offset.Y);
                     advance += glyphRun.AdvanceWidths[index];
                 }
                 using (var builder = new SKTextBlobBuilder())
