@@ -2,7 +2,7 @@
 
 Checkpoint date: 18 October 2026. Branch: `codex/nina-cross-platform`.
 
-The Phase 1 experiments establish a viable open-source Linux x64 path for this fork. Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded text implementation and native controls run through the selected X11 adapter. The app-local SDK compiles genuine BAML on Linux and its runtime runs both new and unchanged Microsoft-produced fixtures. Framework-dependent and self-contained package consumers pass. The same complete compiled view workflow now also passes on stock Windows and all four Linux compiler-origin/deployment combinations. Public Application.Run startup and large-frame performance remain open; NINA itself has not passed the Linux compatibility gates.
+The Phase 1 experiments establish a viable open-source Linux x64 path for this fork. Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded text implementation and native controls run through the selected X11 adapter. The app-local SDK compiles genuine BAML on Linux and its runtime runs both new and unchanged Microsoft-produced fixtures. Framework-dependent and self-contained package consumers pass. The same complete compiled view workflow now also passes on stock Windows and all four Linux compiler-origin/deployment combinations. Public Application.Run startup is repaired. Large-frame measurements expose a missed RGB48 update cadence and display differences; NINA itself has not passed the Linux compatibility gates.
 
 The Phase 0 reference/runtime gate and Phase 1 feasibility gate pass within the scopes recorded below. Phases 2 through 5 have not passed. The accepted [plan](../cross-platform-plan.md) remains the behavior contract. Physical desktop, full application and sustained-workload qualification remain later gates. Component checks, source compilation and managed test peers do not substitute for native WPF control behavior.
 
@@ -43,7 +43,7 @@ These results have different scopes and must not be added into a general compati
 | [PresentationSource](../../src/Portability/Tests/PresentationSourceIntegration/README.md) | 29 checks pass | 29 checks pass | Real source/root ownership, layout, rendering, DPI, reentrant callouts and stale callback cleanup with a managed host |
 | [Core input](../../src/Portability/Tests/InputIntegration/README.md) | 36 checks pass | 36 checks pass | Actual InputManager staging, routed events, commands, focus, capture and cursor visibility with a managed host |
 | [Settings](../../src/Portability/Tests/SystemSettingsIntegration/README.md) | 19 checks pass | 19 checks pass | Explicit immutable palette and editing preferences, genuine resource/theme lookup and XAML access policy |
-| [Window lifecycle](../../src/Portability/Tests/WindowLifecycleIntegration/README.md) | 59 checks pass; stock oracle 19/19 | 59 checks pass | Genuine Window ownership, modal cleanup, asynchronous bounds and content sizing with a managed peer; independent lifetime, fractional acknowledgment and explicit-request replays pass |
+| [Window lifecycle](../../src/Portability/Tests/WindowLifecycleIntegration/README.md) | 66 checks pass; stock oracle 26/26 | 66 checks pass | Genuine Window ownership, modal cleanup, asynchronous bounds, content sizing and public Application.Run startup/shutdown; independent lifetime, fractional acknowledgment and explicit-request replays pass |
 | [Native WPF Window](../../src/Portability/Tests/NativeWindowIntegration/README.md) | Builds; runtime intentionally unsupported | 22/22 for each XSETTINGS byte order; nine rejection cases pass | Genuine WPF Window, Button.Click, TextBox input, synchronous dialog, scientific bitmap mutation, cover/uncover, five-button state, capture and minimum-pixel DPI behavior on Xvfb |
 | [Native window manager](../../src/Portability/Tests/NativeWindowIntegration/README.md) | Not applicable | Ten fresh Openbox runs, 13/13 each | Actual state, frame extents, maximize/minimize/restore, pending bounds intents, callback-triggered close and settled native pixels |
 | [App-local SDK/runtime](../../src/Portability/Packaging/README.md) | External consumer 11 checks per build/publish/custom path; archive/output audit 6/6 | External consumer 11 checks per path; native FDD and self-contained 13/13 each; archive/output audit 8/8 | Local-feed restore, actual compiler, two BAML origins, companion assembly, forwarders, case-sensitive Linux compilation, Unicode pack resources, identities, compiler origins, licenses and exact runtime/native contents |
@@ -117,13 +117,36 @@ exact local package bytes under `artifacts/portability/distribution-phase2-final
 | Wpf.Portable.Runtime | `EDDAA19ACA776D356EC6BE90DF0FE443E41A1A7F229EA7BD31A898E7FF74CFF2` |
 | Wpf.Portable.Sdk | `62F9E6099AF9D7F2E5876AE2B8DCEF4DBE09D192D6138C120456850D8D71FD95` |
 
-The functional comparison is passed. Phase 2 remains open while public
-`Application.Run` startup and the approved large-frame performance workload are
-completed. The first Linux workload preflight builds and audits successfully but
-fails before bitmap allocation because `Application.Run` still creates its
-Windows parking HWND. That failure is a framework startup gap, not an image-size
-or throughput result. A real public-entry-point repair is in progress; the
-measurement does not substitute a fixture dispatcher loop.
+Commit `360e1f601` repairs public `Application.Run` by excluding the Win32 parking
+HWND from the portable path. The existing managed startup, showing, shutdown and
+exit logic remains in use. Seven new process-isolated public-entry-point cases
+fail before the repair and pass afterward, alongside the original lifecycle
+cases: 66/66 on each OS and 26/26 in the stock oracle. Independent replays pass.
+The ordinary Windows build/pack passes with zero warnings/errors and all 208
+upstream threading tests pass. Application-wide native activation/session messages
+and CommonDialog ownership remain separate unqualified services.
+
+A fresh producer from that commit passes the retained package matrix, audits and
+policy checks. All 3,554 input hashes matched at capture. Its local feed is
+`artifacts/portability/distribution-phase2-final-2`:
+
+| Local package | SHA-256 |
+| --- | --- |
+| Wpf.Portable.Runtime | `D4D12C5FA1FC17732D6BDA321F8318835F07A2ADA1A26E8439873D8FA5B912E5` |
+| Wpf.Portable.Sdk | `D6C4B11A307343FE43E90E16E27B1F83D85E162A67A8CF26BDFE94774F30FB9B` |
+
+The unchanged workflow passes 19/19 in all four Linux processes again with these
+packages. Its newly built fixture has identical BAML, resources and executable
+IL to the fixture in the stock reference. PE differences are confined to MVID,
+deterministic timestamps and debug records. Stock executed the earlier fixture
+bytes; the later binary retains its separate Linux qualification. The source
+index preserves the detailed comparison and both compiler-origin records.
+
+The functional comparison and public startup pass. Phase 2 remains open for
+display fidelity and the approved large-frame workload. Earlier native startup
+failures remain preserved. The matched workload now executes the real public
+entry point, with no fixture dispatcher-loop substitute. Explicit Manual window
+placement is shared by both measurement peers; CenterScreen remains unqualified.
 
 ## Pinned NINA reference and dependency closure
 
@@ -170,10 +193,10 @@ Raw negative cases remain alongside the passing results. Local changes and commi
 | Phase 1 event loop/window/input | Native dispatcher, WPF controls/dialogs, window-manager and packaged native checks pass | Combine validation, command and dialog interactions in Phase 2; physical desktop services remain later qualification |
 | Phase 1 retained rendering | Drawing-content seam, native cover/uncover, image mutation and packaged presentation pass | Bound Image control, animation, large frames and sustained workloads remain later gates |
 | Phase 1 replacement text | Bounded paragraphs, fallback, Unicode 17 bidi, caret/selection and native BMP editing pass | Integrated validated editing in Phase 2; full IME and supplementary committed input remain open |
-| Phase 2 integrated view | Functional Windows/Linux comparison passed; phase gate open | Public Application.Run startup and measured large-frame budgets remain incomplete |
+| Phase 2 integrated view | Functional Windows/Linux comparison and public Application.Run pass; phase gate open | RGB48 misses the approved 1 Hz cadence in WSL/Xvfb; display fidelity, measured budgets and sustained-memory bounds remain open |
 | Phases 3 through 5 | Gates not passed | Real NINA view/control interactions, simulated shell/overnight session and packaged native Linux qualification |
 
-Scientific Gray16/Rgb48 source storage and readback now pass the bounded imaging slice. Gray16 display differs by at most one output level from the measured native WIC boundary samples; scientific source samples remain exact. Image codecs, conversion graphs and large-frame memory/performance remain open. IME, accessibility, physical desktop focus/DPI transitions, native Wayland, ARM64 and macOS remain unqualified. CPU rendering and short disposal loops do not establish overnight memory or responsiveness bounds.
+Scientific Gray16/Rgb48 source storage and readback pass the bounded imaging slice. Gray16 conversion differs by at most one output level at the small measured native WIC boundary samples; this does not establish scaled-image display parity. The large-frame workflow has larger observed display differences while scientific source samples remain exact. Image codecs, conversion graphs and large-frame memory/performance remain open. IME, accessibility, physical desktop focus/DPI transitions, native Wayland, ARM64 and macOS remain unqualified. CPU rendering and short disposal loops do not establish overnight memory or responsiveness bounds.
 
 The initial native X11 Window profile requires at least one physical client pixel on each axis. Explicit application requests for zero or subpixel client extents are an unsupported boundary, checked before issuing native configure requests. Stock Windows WPF instead coerces these requests to its desktop-specific native minimum and publishes that accepted size through Width/Height, ActualWidth/ActualHeight and RestoreBounds. Matching that behavior needs a logical/native minimum-size contract; this profile does not claim it. Preserving an already valid native window during a DPI change is a separate requirement and must not emit an illegal zero-pixel configure request.
 
@@ -183,23 +206,46 @@ The native implementation is committed as `cf4a52c96`. A pinned two-line Avaloni
 
 The [source integration summary](source-integration-evidence.json) records hashes and named status counts for raw result files. The older [component evidence](feasibility-evidence.json) is retained separately. Raw logs, downloaded source, packages, SDKs and rendered images stay in ignored `artifacts/portability`. The [source index](../../src/Portability/README.md) links reproduction instructions.
 
-Continue into Phase 2's unchanged compiled view using the qualified local package feed. Keep one owner for the combined workflow and send measured framework failures to the existing component owners. Native Xvfb demonstrates real WPF controls, synchronous dialogs and mutable scientific bitmap presentation. Core input separately passes 36 checks per OS with independent capture/focus/cursor repair review; its host is managed. These scoped results do not establish complete application or physical desktop compatibility.
+Continue Phase 2's measured image-display and performance repairs alongside the bounded NINA default-theme work. Keep one owner for each production boundary and send measured framework failures to that owner. Native Xvfb demonstrates real WPF controls, synchronous dialogs and mutable scientific bitmap presentation. Core input separately passes 36 checks per OS with independent capture/focus/cursor repair review; its host is managed. These scoped results do not establish complete application or physical desktop compatibility.
 
 The user-approved performance workload is 6000 x 4000 scientific frames, Gray16 and RGB48 measured separately, at one full-frame update per second with interactive zoom/pan. Measure Windows reference and Linux results, including startup, input-to-binding/presentation latency, allocations and post-warmup memory growth, before setting numerical budgets. The small correctness fixture does not establish large-frame throughput or an overnight bound.
 
-The stock Windows SoftwareOnly reference completed 30 measured updates plus
-three warmups for each format with exact full-size 16-bit readback. On the
-declared Ryzen 9 7950X host and 1184x811 viewport, mean WritePixels calls were
-2.38 ms for Gray16 and 6.16 ms for RGB48. Dispatcher/render-callback transactions
-had means of 24.03/55.40 ms and p95 values of 38.93/69.60 ms. These boundaries
-include work before presentation and do not measure presentation latency.
-Sampled peak private bytes were 526.31/799.51 MiB, including retained 48/144 MB
-source and validation arrays. Short-run growth and weak-reference observations
-do not establish leaks or overnight bounds. The matching Linux workload shares
-the same extracted update algorithms and timing blocks; its public startup
-failure is recorded above, so there is no Linux performance verdict or accepted
-numerical budget yet. Raw measurements, source hashes and limitations are under
-`artifacts/portability/scientific-workload-reference`.
+Matching Windows SoftwareOnly and Linux CPU-backend runs completed three warmups
+and 30 measured updates per format, plus six separate dirty-only updates. Both
+use the same extracted algorithms, actual 1184x811 viewport at scale 1 and exact
+full-size 16-bit validation. The Ryzen 9 7950X host also runs WSL2 with 32 logical
+CPUs; host activity was not isolated. Linux execution uses Xvfb and the freshly
+qualified package bytes above.
+
+| Measurement | Windows Gray16 | WSL2 Gray16 | Windows RGB48 | WSL2 RGB48 |
+| --- | ---: | ---: | ---: | ---: |
+| Mean full WritePixels | 2.28 ms | 13.51 ms | 6.50 ms | 42.96 ms |
+| Mean dispatcher/render-callback transaction | 26.75 ms | 828.41 ms | 55.38 ms | 1581.07 ms |
+| Transaction p95 | 39.04 ms | 883.07 ms | 71.93 ms | 1834.58 ms |
+| Thirty-update span | 29.033 s | 29.824 s | 29.056 s | 47.549 s |
+| Sampled private-counter peak | 526.04 MiB | 738.03 MiB | 894.11 MiB | 1489.63 MiB |
+
+Linux RGB48 accumulates 17.02 seconds of start lateness and cannot sustain the
+approved one-second update interval in this configuration. Dirty-only publication
+also remains expensive: mean callback transactions are 1163.69/2144.74 ms on
+Linux versus 8.26/8.51 ms on Windows. These measurements do not yet identify the
+cost owner. A separate bounded diagnosis precedes renderer optimization.
+
+The 18 paired native pixel samples differ by up to 57/255. All 18 Windows samples
+match their stock offscreen references, while Linux's first Gray16 center is 4
+versus Windows 53. Source bit depth, channel order and complete readback remain
+exact. Display parity is unqualified; expected pixels have not been changed to
+hide this result.
+
+The timings end at dispatcher/render callbacks, not confirmed presentation.
+Native observations occur outside those timers and do not prove the latest
+submitted frame. Memory includes retained 48/144 MB source and validation arrays;
+Linux private counters are not equivalent to Windows commit. Short runs, bitmap
+replacements and in-scope scene objects prevent leak or overnight conclusions.
+Numerical latency, allocation and memory budgets remain unset. Raw runs, matching
+source hashes and limitations are under
+`artifacts/portability/scientific-workload-reference/countermeasurement`; the
+earlier canonical Windows baseline remains unchanged.
 
 The accepted bidi contract follows Unicode 17. All 91,707 Unicode bidi character level cases pass after a bounded correction to the pinned managed dependency. This algorithm result is separate from paragraph layout, fallback, glyph positioning and native editing qualification. Legacy Windows WPF bracket ordering and measured Display-mode metric differences are recorded compatibility differences, not silently relaxed test tolerances.
 
