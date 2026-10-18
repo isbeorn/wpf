@@ -236,6 +236,30 @@ internal sealed class X11Fixture : IDisposable
         return atoms.Contains(XInternAtom(_display, "_NET_WM_STATE_MAXIMIZED_HORZ", false)) &&
             atoms.Contains(XInternAtom(_display, "_NET_WM_STATE_MAXIMIZED_VERT", false)) ? "Maximized" : "Normal";
     }
+    internal bool SkipsTaskbar(IntPtr window) => Property(window, "_NET_WM_STATE", 4).Contains(XInternAtom(_display, "_NET_WM_STATE_SKIP_TASKBAR", false));
+    internal IntPtr TransientOwner(IntPtr window) => Property(window, "WM_TRANSIENT_FOR", 33).SingleOrDefault();
+    internal IntPtr FocusedWindow { get { XGetInputFocus(_display, out var window, out _); return window; } }
+    internal void ObserveTaskbarRequests()
+    {
+        XSelectInput(_display, _root, (IntPtr)(1 << 19));
+        XSync(_display, false);
+    }
+    internal IReadOnlyList<int> TakeTaskbarRequests(IntPtr window)
+    {
+        var requests = new List<int>();
+        IntPtr state = XInternAtom(_display, "_NET_WM_STATE", false);
+        IntPtr skip = XInternAtom(_display, "_NET_WM_STATE_SKIP_TASKBAR", false);
+        while (XCheckTypedEvent(_display, 33, out var message) != 0)
+        {
+            var client = message.Client;
+            if (client.Window != window || client.MessageType != state ||
+                client.Data1 != skip && client.Data2 != skip) continue;
+            if (client.Format != 32 || client.Data0 != IntPtr.Zero && client.Data0 != (IntPtr)1)
+                throw new InvalidDataException("Malformed native taskbar state request.");
+            requests.Add(checked((int)client.Data0));
+        }
+        return requests;
+    }
     internal bool HasWindowManager => Property(_root, "_NET_SUPPORTING_WM_CHECK", 33).Count == 1;
     private List<IntPtr> Property(IntPtr window, string name, int expectedType)
     {
@@ -373,6 +397,8 @@ internal sealed class X11Fixture : IDisposable
     [DllImport("libX11.so.6")] private static extern IntPtr XOpenDisplay(IntPtr name);
     [DllImport("libX11.so.6")] private static extern IntPtr XGetSelectionOwner(IntPtr display, IntPtr selection);
     [DllImport("libX11.so.6")] private static extern int XCloseDisplay(IntPtr display);
+    [DllImport("libX11.so.6")] private static extern int XSelectInput(IntPtr display, IntPtr window, IntPtr mask);
+    [DllImport("libX11.so.6")] private static extern int XCheckTypedEvent(IntPtr display, int type, out XEvent message);
     [DllImport("libX11.so.6")] private static extern IntPtr XDefaultRootWindow(IntPtr display);
     [DllImport("libX11.so.6")] private static extern int XDefaultScreen(IntPtr display);
     [DllImport("libX11.so.6")] private static extern IntPtr XCreateSimpleWindow(IntPtr display, IntPtr parent, int x, int y, int width, int height, int border, IntPtr borderColor, IntPtr background);

@@ -74,7 +74,6 @@ namespace System.Windows
             if (ResizeMode == ResizeMode.CanResizeWithGrip) throw PortableUnsupported(nameof(ResizeMode) + ".CanResizeWithGrip");
             if (AllowsTransparency) throw PortableUnsupported(nameof(AllowsTransparency));
             if (TaskbarItemInfo != null) throw PortableUnsupported(nameof(TaskbarItemInfo));
-            if (!ShowInTaskbar) throw PortableUnsupported(nameof(ShowInTaskbar));
             if (WindowStartupLocation != WindowStartupLocation.Manual) throw PortableUnsupported(nameof(WindowStartupLocation));
 
             var source = new PortablePresentationSource(PortableLayoutRoot);
@@ -84,6 +83,7 @@ namespace System.Windows
                 peer = PortableWindowPlatform.Factory.CreateWindow(source, new PortableWindowOptions
                 {
                     Title = Title,
+                    ShowInTaskbar = ShowInTaskbar,
                     Owner = _ownerWindow?._portablePeer,
                     IsEnabled = IsEnabled,
                     WindowState = WindowState

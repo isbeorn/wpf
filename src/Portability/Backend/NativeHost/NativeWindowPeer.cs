@@ -97,6 +97,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
             SetTitle(options.Title);
             if (options.DesktopPosition is { } position) SetDesktopPosition(position);
             SetOwner(options.Owner);
+            SetShowInTaskbar(options.ShowInTaskbar);
             SetEnabled(options.IsEnabled);
             SetWindowState(options.WindowState);
             if (options.ClientSize is { } size) SetClientSize(size);
@@ -201,6 +202,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
     }
 
     public void SetTitle(string title) { Verify(); _window.SetTitle(title); }
+    public void SetShowInTaskbar(bool show) { Verify(); _window.ShowTaskbarIcon(show); }
     public void SetDesktopPosition(WpfPoint position)
     {
         Verify();

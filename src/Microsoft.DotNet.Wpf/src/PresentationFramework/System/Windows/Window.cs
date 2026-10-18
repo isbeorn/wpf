@@ -5235,7 +5235,7 @@ namespace System.Windows
         private void OnShowInTaskbarChanged()
         {
 #if PORTABLE_WPF
-            throw PortableUnsupported("ShowInTaskbar");
+            _portablePeer?.SetShowInTaskbar(ShowInTaskbar);
 #else
             // this call ends up throwing an exception if accessing
             // ShowInTaskbar is not allowed

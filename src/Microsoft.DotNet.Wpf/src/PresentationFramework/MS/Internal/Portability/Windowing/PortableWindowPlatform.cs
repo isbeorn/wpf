@@ -20,6 +20,7 @@ namespace MS.Internal.Portability.Windowing
         event Action<bool> ActivationChanged;
         event Action<WindowState> StateChanged;
         void SetTitle(string title);
+        void SetShowInTaskbar(bool show);
         void SetClientSize(Size size);
         void SetDesktopPosition(Point position);
         void SetClientSizeConstraints(Size minimum, Size maximum);
@@ -39,6 +40,7 @@ namespace MS.Internal.Portability.Windowing
     internal sealed class PortableWindowOptions
     {
         internal string Title { get; init; }
+        internal bool ShowInTaskbar { get; init; } = true;
         internal Size? ClientSize { get; init; }
         internal Point? DesktopPosition { get; init; }
         internal IPortableWindowPeer Owner { get; init; }

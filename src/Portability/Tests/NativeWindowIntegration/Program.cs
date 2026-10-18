@@ -105,6 +105,11 @@ try
                     ClipboardCases.Exercise(fontPath!, Run, Wait, TextTemplate);
                     completed = true;
                 }
+                else if (args.Contains("--taskbar-only", StringComparer.Ordinal))
+                {
+                    TaskbarChecks.Exercise(native, Run, Wait, Drain, item => windowManagerTrace.Enqueue(item));
+                    completed = true;
+                }
                 else if (args.Contains("--atspi-only", StringComparer.Ordinal))
                 {
                     AtSpiChecks.Exercise(native, Run, Wait, Drain, ButtonTemplate);

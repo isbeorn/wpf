@@ -607,6 +607,7 @@ internal static class ManagedPreeditChecks
         public new event Action? Exposed;
         public new event Action? Closed;
         public void SetTitle(string title) { }
+        public void SetShowInTaskbar(bool show) { }
         public void SetClientSize(Size size) => MetricsChanged?.Invoke();
         public void SetDesktopPosition(Point position) { DesktopPosition = position; MetricsChanged?.Invoke(); }
         public void SetClientSizeConstraints(Size minimum, Size maximum) { }

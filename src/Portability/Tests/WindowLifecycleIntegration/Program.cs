@@ -41,6 +41,64 @@ var thread = new Thread(() =>
         Assert(window.Title == "Before" && window.Width == 320 && window.Height == 240, "Initial values");
         window.Close();
     });
+    Run("taskbar-before-source-and-source-initialized-latest-value", () =>
+    {
+        var window = new Window { ShowActivated = false };
+        int before = factory.CreateCount;
+        try
+        {
+            Assert(window.ShowInTaskbar, "Default ShowInTaskbar must remain true.");
+            window.ShowInTaskbar = false; window.ShowInTaskbar = true; window.ShowInTaskbar = false;
+            Assert(PresentationSource.FromVisual(window) == null && factory.CreateCount == before, "Pre-source taskbar changes created a peer.");
+            window.Show();
+            var peer = factory.Last;
+            Assert(!peer.ShowInTaskbar && !peer.TaskbarAtShow, "The initial false taskbar option was not applied before Show.");
+        }
+        finally { window.Close(); }
+        var during = new Window { ShowActivated = false };
+        during.SourceInitialized += (_, _) => during.ShowInTaskbar = false;
+        try
+        {
+            during.Show();
+            Assert(!factory.Last.TaskbarAtShow && !during.ShowInTaskbar, "SourceInitialized taskbar change missed the first Show.");
+        }
+        finally { during.Close(); }
+    });
+    Run("taskbar-live-hidden-owner-and-lifetime-preserved", () =>
+    {
+        var owner = new Window(); owner.Show(); var ownerPeer = factory.Last;
+        var window = new Window { Owner = owner, ShowActivated = false };
+        int initialized = 0, closed = 0;
+        window.SourceInitialized += (_, _) => initialized++;
+        window.Closed += (_, _) => closed++;
+        try
+        {
+            window.Show(); var peer = factory.Last; var source = PresentationSource.FromVisual(window);
+            Assert(peer.ShowInTaskbar && peer.TaskbarAtShow, "Default true was not applied before Show.");
+            int created = factory.CreateCount, shows = peer.ShowCount, hides = peer.HideCount;
+            bool active = window.IsActive, ownerActive = owner.IsActive;
+            window.ShowInTaskbar = false; window.ShowInTaskbar = true; window.ShowInTaskbar = false;
+            Assert(peer.TaskbarRequests.SequenceEqual(new[] { false, true, false }), "Live taskbar changes were not forwarded in both directions.");
+            Assert(factory.CreateCount == created && peer.ShowCount == shows && peer.HideCount == hides &&
+                initialized == 1 && closed == 0 && ReferenceEquals(source, PresentationSource.FromVisual(window)),
+                "Taskbar changes recreated, showed, hid or closed the source.");
+            Assert(ReferenceEquals(window.Owner, owner) && ReferenceEquals(peer.Owner, ownerPeer) && owner.OwnedWindows.Count == 1 &&
+                window.IsActive == active && owner.IsActive == ownerActive, "Taskbar changes altered ownership or activation.");
+            window.Hide();
+            window.ShowInTaskbar = true; Assert(peer.ShowInTaskbar, "Hidden taskbar enable did not reach the peer.");
+            window.ShowInTaskbar = false; Assert(!peer.ShowInTaskbar, "Hidden taskbar disable did not reach the peer.");
+            window.Show();
+            Assert(!peer.TaskbarAtShow && factory.Last == peer && ReferenceEquals(source, PresentationSource.FromVisual(window)) && initialized == 1,
+                "Hide/edit/show lost taskbar state or source identity.");
+            System.ComponentModel.CancelEventHandler cancel = (_, e) => e.Cancel = true;
+            window.Closing += cancel; window.Close();
+            Assert(!peer.Disposed && closed == 0 && ReferenceEquals(window.Owner, owner), "Canceled close lost taskbar peer ownership.");
+            window.ShowInTaskbar = true; Assert(peer.ShowInTaskbar, "Canceled close prevented a later taskbar change.");
+            window.Closing -= cancel;
+        }
+        finally { window.Close(); owner.Close(); }
+        Assert(closed == 1 && owner.OwnedWindows.Count == 0, "Taskbar window did not close exactly once.");
+    });
     Run("source-show-hide-activation-close", () =>
     {
         var window = new Window { Title = "Before", Width = 320, Height = 240 };
@@ -970,6 +1028,7 @@ sealed class MarkerException : Exception;
 sealed class ManagedFactory : IPortableWindowFactory
 {
     public ManagedPeer Last { get; private set; } = null!;
+    public int CreateCount { get; private set; }
     public bool FailNextShow { get; set; }
     public bool GeometryFirst { get; set; }
     public bool DecorateOnShow { get; set; }
@@ -983,7 +1042,7 @@ sealed class ManagedFactory : IPortableWindowFactory
     }
     public IPortableWindowPeer CreateWindow(PresentationSource source, PortableWindowOptions options)
     {
-        Last = new ManagedPeer(this, options); return Last;
+        CreateCount++; Last = new ManagedPeer(this, options); return Last;
     }
 }
 sealed class ManagedPeer : IPortableWindowPeer
@@ -992,6 +1051,7 @@ sealed class ManagedPeer : IPortableWindowPeer
     public ManagedPeer(ManagedFactory factory, PortableWindowOptions options)
     {
         _factory = factory; Title = options.Title; Owner = options.Owner; IsEnabled = options.IsEnabled;
+        ShowInTaskbar = options.ShowInTaskbar;
         _initialState = options.WindowState; DpiScale = factory.InitialDpi;
         if (factory.DecorateOnShow) _frameSize = new Size();
         if (options.DesktopPosition is Point position) { DesktopPosition = position; _positionRequested = true; }
@@ -1035,6 +1095,11 @@ sealed class ManagedPeer : IPortableWindowPeer
     public int PixelWidth { get; private set; }
     public int PixelHeight { get; private set; }
     public string Title { get; private set; }
+    public bool ShowInTaskbar { get; private set; } = true;
+    public bool TaskbarAtShow { get; private set; }
+    public List<bool> TaskbarRequests { get; } = new();
+    public int ShowCount { get; private set; }
+    public int HideCount { get; private set; }
     public IPortableWindowPeer? Owner { get; private set; }
     public WindowState State { get; private set; }
     public WindowState WindowState => State;
@@ -1051,6 +1116,7 @@ sealed class ManagedPeer : IPortableWindowPeer
     public Action<bool>? BeforeSetEnabled { get; set; }
     public Action? BeforeActivate { get; set; }
     public void SetTitle(string title) => Title = title;
+    public void SetShowInTaskbar(bool show) { TaskbarRequests.Add(show); ShowInTaskbar = show; }
     public void SetClientSize(Size size)
     {
         BoundsRequests++;
@@ -1096,6 +1162,7 @@ sealed class ManagedPeer : IPortableWindowPeer
     }
     public void Show(bool activate)
     {
+        ShowCount++; TaskbarAtShow = ShowInTaskbar;
         IsVisible = true;
         if (_factory.DecorateOnShow)
         {
@@ -1107,7 +1174,7 @@ sealed class ManagedPeer : IPortableWindowPeer
         if (_initialState != WindowState.Normal && State == WindowState.Normal) SetWindowState(_initialState);
         if (activate) Activate(); Exposed?.Invoke();
     }
-    public void Hide() { IsVisible = false; IsActive = false; ActivationChanged?.Invoke(false); }
+    public void Hide() { HideCount++; IsVisible = false; IsActive = false; ActivationChanged?.Invoke(false); }
     public bool Activate() { BeforeActivate?.Invoke(); _factory.Activate(this); IsActive = true; ActivationChanged?.Invoke(true); return true; }
     public void Deactivate() { IsActive = false; ActivationChanged?.Invoke(false); }
     public bool CaptureMouse() => true;
