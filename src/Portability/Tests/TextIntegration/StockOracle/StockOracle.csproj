@@ -6,6 +6,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="../OracleCases.cs" Link="OracleCases.cs" />
+    <Compile Include="../Controls/WordSelectionCases.cs" Link="WordSelectionCases.cs" />
     <Content Include="../../../Dependencies/TextUnicode/Original/tests/Avalonia.Skia.UnitTests/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

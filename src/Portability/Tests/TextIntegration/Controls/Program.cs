@@ -15,6 +15,7 @@ var thread = new Thread(() =>
     try
     {
         CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+        foreach (object result in WordSelectionCases.Verify()) results.Add(result);
         var block = new TextBlock { Text = "Default 123", FontSize = 24,
             FontFamily = new FontFamily(new Uri(Path.Combine(AppContext.BaseDirectory, "Fonts") + Path.DirectorySeparatorChar), "./#DejaVu Sans") };
         var paragraph = (TextParagraphProperties)typeof(TextBlock).GetMethod("GetLineProperties", BindingFlags.Instance | BindingFlags.NonPublic,
@@ -61,7 +62,7 @@ var thread = new Thread(() =>
 if (OperatingSystem.IsWindows()) thread.SetApartmentState(ApartmentState.STA);
 thread.Start();
 thread.Join();
-Console.WriteLine(JsonSerializer.Serialize(new { fixture = "actual-textblock-default-run-properties", results, failure = failure?.ToString() }, new JsonSerializerOptions { WriteIndented = true }));
+Console.WriteLine(JsonSerializer.Serialize(new { fixture = "actual-text-controls-and-word-selection", results, failure = failure?.ToString() }, new JsonSerializerOptions { WriteIndented = true }));
 return failure == null ? 0 : 1;
 
 sealed class ControlParagraph(TextRunProperties properties) : TextParagraphProperties

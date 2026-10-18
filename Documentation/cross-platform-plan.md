@@ -81,6 +81,8 @@ Text measurement, line breaking, shaping, fallback, glyph drawing, caret movemen
 
 The accepted initial bidi contract follows Unicode 17. The user selected this behavior after a same-font Windows comparison found different legacy WPF bracket ordering in mixed Arabic/Hebrew text. Preserve that difference and measured Display-mode advance differences in the compatibility ledger; do not claim identical native text metrics or legacy ordering.
 
+The user separately selected Unicode 17 character classification for word selection and Ctrl+Arrow navigation. Retain WPF's existing RichEdit-based selection algorithm and Latin table, replace the Windows character-query dependency with open Unicode data and document differences from Windows NLS punctuation, whitespace and East Asian classification. This does not adopt a different general word-breaking algorithm.
+
 Image storage retains original data, including Gray16 and Rgb48. Conversion to a display surface must not discard precision in `CopyPixels` or change channel order. A backend must preserve snapshot and ownership semantics when callers release or reuse source memory, plus the existing freeze and dispatcher handoff behavior.
 
 ### Backend selection

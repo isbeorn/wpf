@@ -14,7 +14,8 @@ var thread = new Thread(() =>
 {
     try
     {
-        if (args.Contains("--controls"))
+        if (args.Contains("--words")) result = WordSelectionCases.Capture();
+        else if (args.Contains("--controls"))
         {
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
             var block = new TextBlock { Text = "Default 123", FontSize = 24,

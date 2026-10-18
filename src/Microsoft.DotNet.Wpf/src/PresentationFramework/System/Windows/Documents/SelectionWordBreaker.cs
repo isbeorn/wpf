@@ -3,6 +3,9 @@
 
 using MS.Win32;
 using MS.Internal; // Invariant
+#if PORTABLE_WPF
+using MS.Internal.Portability.Text.Unicode;
+#endif
 
 //
 // Description: Word breaker used for TextSelection's auto-word selection and
@@ -75,7 +78,12 @@ namespace System.Windows.Documents
             Span<UInt16> charType3 = stackalloc UInt16[2];
             ReadOnlySpan<char> sourceChars = [text[position - 1], text[position]];
 
+#if PORTABLE_WPF
+            charType3[0] = GetPortableCharacterType(sourceChars[0], SafeNativeMethods.CT_CTYPE3);
+            charType3[1] = GetPortableCharacterType(sourceChars[1], SafeNativeMethods.CT_CTYPE3);
+#else
             SafeNativeMethods.GetStringTypeEx(0 /* ignored */, SafeNativeMethods.CT_CTYPE3, sourceChars, charType3);
+#endif
 
             // Otherwise we're at a word boundary if the classes of the surrounding text differ.
             return IsWordBoundary(text[position - 1], text[position]) ||
@@ -227,7 +235,11 @@ namespace System.Windows.Documents
                 }
                 else
                 {
+#if PORTABLE_WPF
+                    charType1 = GetPortableCharacterType(ch, SafeNativeMethods.CT_CTYPE1);
+#else
                     SafeNativeMethods.GetStringTypeEx(0 /* ignored */, SafeNativeMethods.CT_CTYPE1, [ch], new Span<UInt16>(ref charType1));
+#endif
 
                     if ((charType1 & SafeNativeMethods.C1_SPACE) != 0)
                     {
@@ -261,10 +273,51 @@ namespace System.Windows.Documents
         {
             UInt16 charType3 = UInt16.MinValue;
 
+#if PORTABLE_WPF
+            charType3 = GetPortableCharacterType(ch, SafeNativeMethods.CT_CTYPE3);
+#else
             SafeNativeMethods.GetStringTypeEx(0 /* ignored */, SafeNativeMethods.CT_CTYPE3, [ch], new Span<UInt16>(ref charType3));
+#endif
 
             return (charType3 & (SafeNativeMethods.C3_DIACRITIC | SafeNativeMethods.C3_NONSPACING | SafeNativeMethods.C3_VOWELMARK | SafeNativeMethods.C3_KASHIDA)) != 0;
         }
+
+#if PORTABLE_WPF
+        private static ushort GetPortableCharacterType(char character, uint type)
+        {
+            GeneralCategory category = UnicodeData.GetGeneralCategory(character);
+            if (type == SafeNativeMethods.CT_CTYPE1)
+            {
+                if (category is GeneralCategory.SpaceSeparator or GeneralCategory.LineSeparator or GeneralCategory.ParagraphSeparator ||
+                    character is >= '\u0009' and <= '\u000d' or '\u0085')
+                    return (ushort)(SafeNativeMethods.C1_SPACE | (character is '\t' or ' ' or '\u00a0' or '\u3000' ? SafeNativeMethods.C1_BLANK : 0));
+                return category is GeneralCategory.ConnectorPunctuation or GeneralCategory.DashPunctuation or GeneralCategory.ClosePunctuation or
+                    GeneralCategory.FinalPunctuation or GeneralCategory.InitialPunctuation or GeneralCategory.OtherPunctuation or GeneralCategory.OpenPunctuation
+                    ? SafeNativeMethods.C1_PUNCT : (ushort)0;
+            }
+
+            ushort flags = 0;
+            Script script = UnicodeData.GetScript(character);
+            if (script == Script.Han && (category is GeneralCategory.OtherLetter or GeneralCategory.LetterNumber) || character == '\u3006')
+                flags |= SafeNativeMethods.C3_IDEOGRAPH;
+            bool kanaModifier = ((character >= '\u3000' && character <= '\u30ff') || (character >= '\uff00' && character <= '\uffef')) &&
+                (category is GeneralCategory.ModifierLetter or GeneralCategory.NonspacingMark or GeneralCategory.ModifierSymbol) || character == '\u30a0';
+            if (script == Script.Hiragana || kanaModifier && UnicodeData.HasScriptExtension(character, Script.Hiragana))
+                flags |= SafeNativeMethods.C3_HIRAGANA;
+            if (script == Script.Katakana || kanaModifier && UnicodeData.HasScriptExtension(character, Script.Katakana) || character is '\u30fb' or '\uff65')
+                flags |= SafeNativeMethods.C3_KATAKANA;
+            EastAsianWidthClass width = UnicodeData.GetEastAsianWidthClass(character);
+            if (width == EastAsianWidthClass.Halfwidth) flags |= SafeNativeMethods.C3_HALFWIDTH;
+            if (width == EastAsianWidthClass.Fullwidth || script == Script.Katakana && width == EastAsianWidthClass.Wide)
+                flags |= SafeNativeMethods.C3_FULLWIDTH;
+            if (category is GeneralCategory.NonspacingMark or GeneralCategory.EnclosingMark) flags |= SafeNativeMethods.C3_NONSPACING;
+            if (category == GeneralCategory.SpacingMark) flags |= SafeNativeMethods.C3_VOWELMARK;
+            if (character == '\u0640') flags |= SafeNativeMethods.C3_KASHIDA;
+            // Unicode 17 PropList Diacritic entries with punctuation categories.
+            if (character is '\u00b7' or '\u1cd3' or '\ua92e') flags |= SafeNativeMethods.C3_DIACRITIC;
+            return flags;
+        }
+#endif
 
         // Returns true if a character falls within a specified code point range.
         private static bool IsInRange(uint lower, char ch, uint upper)

@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
   <ItemGroup>
+    <Content Include="WordSelectionReference.json" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="../../../Framework/PresentationFramework/PresentationFramework.csproj" />
     <Content Include="../../../Dependencies/TextUnicode/Original/tests/Avalonia.Skia.UnitTests/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>

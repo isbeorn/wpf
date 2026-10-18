@@ -105,6 +105,15 @@ StockOracle also accepts --controls.
 Windows WPF graphics module absence is checked on both operating systems:
 successful execution on Windows must not hide an unported native call.
 
+The Controls fixture also executes real TextBox word movement and selection
+commands corresponding to Ctrl+Left/Right and Ctrl+Shift+Left/Right. It checks
+both flow directions, full forward/backward traces and minimum/maximum clamps.
+The stock `--words` capture supplies common-case reference traces; explicit
+Unicode 17 cases record the separately accepted word-classification differences.
+These command checks exercise WPF editing behavior without requiring a native
+window. The complete-view native repeated-click workflow provides the mouse
+integration check after resize and DPI transitions.
+
 ## Supported contract and open gates
 
 This is a horizontal LTR/RTL physical-font contract. It supports left alignment,

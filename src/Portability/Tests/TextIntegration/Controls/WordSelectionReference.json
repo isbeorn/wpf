@@ -1,0 +1,4486 @@
+[
+  {
+    "Name": "words",
+    "Text": "alpha beta",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 10,
+        "Length": 0
+      },
+      {
+        "Start": 10,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 10,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 10
+      },
+      {
+        "Start": 0,
+        "Length": 10
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 10,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 10
+      },
+      {
+        "Start": 0,
+        "Length": 10
+      }
+    ]
+  },
+  {
+    "Name": "words",
+    "Text": "alpha beta",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 10,
+        "Length": 0
+      },
+      {
+        "Start": 10,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 10,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 10
+      },
+      {
+        "Start": 0,
+        "Length": 10
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 10,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 10
+      },
+      {
+        "Start": 0,
+        "Length": 10
+      }
+    ]
+  },
+  {
+    "Name": "digits",
+    "Text": "12 34",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ]
+  },
+  {
+    "Name": "digits",
+    "Text": "12 34",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ]
+  },
+  {
+    "Name": "punctuation",
+    "Text": "a-b.c!",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 4,
+        "Length": 2
+      },
+      {
+        "Start": 3,
+        "Length": 3
+      },
+      {
+        "Start": 2,
+        "Length": 4
+      },
+      {
+        "Start": 1,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "punctuation",
+    "Text": "a-b.c!",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 4,
+        "Length": 2
+      },
+      {
+        "Start": 3,
+        "Length": 3
+      },
+      {
+        "Start": 2,
+        "Length": 4
+      },
+      {
+        "Start": 1,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "apostrophe",
+    "Text": "can\u0027t won\u0027t",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 11,
+        "Length": 0
+      },
+      {
+        "Start": 11,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 11,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 11
+      },
+      {
+        "Start": 0,
+        "Length": 11
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 11,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 11
+      },
+      {
+        "Start": 0,
+        "Length": 11
+      }
+    ]
+  },
+  {
+    "Name": "apostrophe",
+    "Text": "can\u0027t won\u0027t",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 11,
+        "Length": 0
+      },
+      {
+        "Start": 11,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 11,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 11
+      },
+      {
+        "Start": 0,
+        "Length": 11
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 11,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 11
+      },
+      {
+        "Start": 0,
+        "Length": 11
+      }
+    ]
+  },
+  {
+    "Name": "curly-apostrophe",
+    "Text": "a\u2019b c",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ]
+  },
+  {
+    "Name": "curly-apostrophe",
+    "Text": "a\u2019b c",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ]
+  },
+  {
+    "Name": "soft-hyphen",
+    "Text": "a\u00ADb c",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ]
+  },
+  {
+    "Name": "soft-hyphen",
+    "Text": "a\u00ADb c",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ]
+  },
+  {
+    "Name": "line-whitespace",
+    "Text": "a\tb\r\nc",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 3,
+        "Length": 3
+      },
+      {
+        "Start": 2,
+        "Length": 4
+      },
+      {
+        "Start": 1,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "line-whitespace",
+    "Text": "a\tb\r\nc",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 3,
+        "Length": 3
+      },
+      {
+        "Start": 2,
+        "Length": 4
+      },
+      {
+        "Start": 1,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "unicode-whitespace",
+    "Text": "\u2003a\u00A0b\u3000c",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 3,
+        "Length": 3
+      },
+      {
+        "Start": 1,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "unicode-whitespace",
+    "Text": "\u2003a\u00A0b\u3000c",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 3,
+        "Length": 3
+      },
+      {
+        "Start": 1,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "combining",
+    "Text": "q\u0301x y",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ]
+  },
+  {
+    "Name": "combining",
+    "Text": "q\u0301x y",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      }
+    ]
+  },
+  {
+    "Name": "vedic-diacritic",
+    "Text": "a\u1CD3b",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "vedic-diacritic",
+    "Text": "a\u1CD3b",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "kayah-li-diacritic",
+    "Text": "a\uA92Eb",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "kayah-li-diacritic",
+    "Text": "a\uA92Eb",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "hebrew",
+    "Text": "\u05D0\u05D1\u05F3\u05D2 \u05D3",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 3,
+        "Length": 3
+      },
+      {
+        "Start": 2,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "hebrew",
+    "Text": "\u05D0\u05D1\u05F3\u05D2 \u05D3",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 3,
+        "Length": 3
+      },
+      {
+        "Start": 2,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "hebrew-quote",
+    "Text": "\u05D0\u05D1\u0022\u05D2 \u05D3",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 3,
+        "Length": 3
+      },
+      {
+        "Start": 2,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "hebrew-quote",
+    "Text": "\u05D0\u05D1\u0022\u05D2 \u05D3",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 3,
+        "Length": 3
+      },
+      {
+        "Start": 2,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "arabic",
+    "Text": "\u0633\u064E\u0644\u0627\u0645 \u0661\u0662",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 8,
+        "Length": 0
+      },
+      {
+        "Start": 8,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 8,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 8,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      }
+    ]
+  },
+  {
+    "Name": "arabic",
+    "Text": "\u0633\u064E\u0644\u0627\u0645 \u0661\u0662",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 8,
+        "Length": 0
+      },
+      {
+        "Start": 8,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 8,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 8,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      }
+    ]
+  },
+  {
+    "Name": "kana-cjk",
+    "Text": "\u3042\u3044\u30A2\u30A4\uFF71\uFF72\u6F22\u5B57",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 8,
+        "Length": 0
+      },
+      {
+        "Start": 8,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 8,
+        "Length": 0
+      },
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 8,
+        "Length": 0
+      },
+      {
+        "Start": 7,
+        "Length": 1
+      },
+      {
+        "Start": 6,
+        "Length": 2
+      },
+      {
+        "Start": 4,
+        "Length": 4
+      },
+      {
+        "Start": 2,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      }
+    ]
+  },
+  {
+    "Name": "kana-cjk",
+    "Text": "\u3042\u3044\u30A2\u30A4\uFF71\uFF72\u6F22\u5B57",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 8,
+        "Length": 0
+      },
+      {
+        "Start": 8,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 8,
+        "Length": 0
+      },
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 8,
+        "Length": 0
+      },
+      {
+        "Start": 7,
+        "Length": 1
+      },
+      {
+        "Start": 6,
+        "Length": 2
+      },
+      {
+        "Start": 4,
+        "Length": 4
+      },
+      {
+        "Start": 2,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      },
+      {
+        "Start": 0,
+        "Length": 8
+      }
+    ]
+  },
+  {
+    "Name": "kana-punctuation",
+    "Text": "\u30A2\u30FB\u30A4 \uFF71\uFF65\uFF72",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 7,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      }
+    ]
+  },
+  {
+    "Name": "kana-punctuation",
+    "Text": "\u30A2\u30FB\u30A4 \uFF71\uFF65\uFF72",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 7,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      }
+    ]
+  },
+  {
+    "Name": "kana-prolonged",
+    "Text": "\u3042\u30FC\u30A2 \uFF71\uFF70\uFF72",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 7,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 3
+      },
+      {
+        "Start": 1,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      }
+    ]
+  },
+  {
+    "Name": "kana-prolonged",
+    "Text": "\u3042\u30FC\u30A2 \uFF71\uFF70\uFF72",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 7,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 4
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 7,
+        "Length": 0
+      },
+      {
+        "Start": 4,
+        "Length": 3
+      },
+      {
+        "Start": 1,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      },
+      {
+        "Start": 0,
+        "Length": 7
+      }
+    ]
+  },
+  {
+    "Name": "cjk-numeric",
+    "Text": "\u6F22\u3007\u5B57",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 1
+      },
+      {
+        "Start": 1,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "cjk-numeric",
+    "Text": "\u6F22\u3007\u5B57",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 1
+      },
+      {
+        "Start": 1,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "emoji-surrogate",
+    "Text": "a\uD83D\uDE00b c",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "emoji-surrogate",
+    "Text": "a\uD83D\uDE00b c",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "cjk-surrogate",
+    "Text": "a\uD840\uDC00b c",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "cjk-surrogate",
+    "Text": "a\uD840\uDC00b c",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "kana-surrogate",
+    "Text": "a\uD82C\uDC00b c",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "kana-surrogate",
+    "Text": "a\uD82C\uDC00b c",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 6,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 5
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 6,
+        "Length": 0
+      },
+      {
+        "Start": 5,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      },
+      {
+        "Start": 0,
+        "Length": 6
+      }
+    ]
+  },
+  {
+    "Name": "unicode17-punctuation",
+    "Text": "a\u061Db",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "unicode17-punctuation",
+    "Text": "a\u061Db",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "unicode17-symbol",
+    "Text": "a\u166Db",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 1
+      },
+      {
+        "Start": 1,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "unicode17-symbol",
+    "Text": "a\u166Db",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 1
+      },
+      {
+        "Start": 1,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "unicode17-format",
+    "Text": "a\u180Eb",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 1
+      },
+      {
+        "Start": 1,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "unicode17-format",
+    "Text": "a\u180Eb",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 0
+      },
+      {
+        "Start": 1,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 1
+      },
+      {
+        "Start": 0,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 2,
+        "Length": 1
+      },
+      {
+        "Start": 1,
+        "Length": 2
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "unicode17-kana",
+    "Text": "a\u3300b",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "unicode17-kana",
+    "Text": "a\u3300b",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "unicode17-ideograph",
+    "Text": "a\u4DB6b",
+    "Flow": "LeftToRight",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  },
+  {
+    "Name": "unicode17-ideograph",
+    "Text": "a\u4DB6b",
+    "Flow": "RightToLeft",
+    "MoveForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 3,
+        "Length": 0
+      }
+    ],
+    "MoveBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 0
+      }
+    ],
+    "SelectForward": [
+      {
+        "Start": 0,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ],
+    "SelectBackward": [
+      {
+        "Start": 3,
+        "Length": 0
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      },
+      {
+        "Start": 0,
+        "Length": 3
+      }
+    ]
+  }
+]

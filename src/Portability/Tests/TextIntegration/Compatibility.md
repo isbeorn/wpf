@@ -16,6 +16,41 @@ is a reference, not an alternate formatter or hidden compatibility mode.
 | Default numbers | Existing WPF DigitState resolves no-op settings | Actual TextBlock uses User/AsCulture, en-US/en-us, native digits 0-9 and DigitSubstitution.None in the pinned reference |
 | Required substitution | Named unsupported diagnostic | Arabic Context, NativeNational and Traditional settings remain outside the profile |
 | Fallback | One face per complete grapheme, style-ranked then ordinal local path | The fixed fixture forces Inter's missing Arabic coverage to DejaVu; installed font differences are excluded |
+| Word selection | User separately selected Unicode 17 category/script/width data within WPF's existing RichEdit selection algorithm and Latin table | Win32 classification is retained on normal Windows builds; portable differences below are deliberate, independent of the earlier bidi decision |
+
+## Word selection classification
+
+The portable classifier supplies the CType flags consumed by
+`SelectionWordBreaker`. Word movement, selection direction, apostrophe rules,
+kana grouping and whitespace handling still run through the existing WPF
+algorithm. This does not introduce general UAX #29 word segmentation.
+
+On Windows build 26200 with stock WPF 10.0.1226.42308, the initial category
+prototype differed in 142 BMP `GetClasses` results: 138 punctuation characters,
+three historical symbol classifications and U+180E. The final classifier has
+141 differences because Unicode 17's punctuation Diacritic entries preserve
+U+1CD3's existing alphanumeric treatment. U+00B7 and U+A92E are the other
+punctuation Diacritic entries from Unicode 17 PropList.
+
+The operational C3 comparison invokes actual stock `IsSameClass` for each BMP
+unit against seven representative neighbors in both orders. Its 222 changed
+characters are U+3300..3357, U+4DB6..4DBF, U+9FC4..9FFF and U+FA2E..FA6D.
+Raw flag differences also include fullwidth bits that do not change the
+selection algorithm's result.
+
+For example, `a<U+061D>b`, `a<U+3300>b` and `a<U+4DB6>b` have new boundaries;
+`a<U+166D>b` and `a<U+180E>b` become single words. The controls fixture checks
+these explicitly and preserves the unmodified stock reference separately.
+Valid supplementary pairs and isolated surrogate units have no consumed C3
+flags in the observed native pair/single-unit calls. The portable path retains
+UTF-16 code-unit classification and real TextBox insertion-position handling.
+
+`Controls/WordSelectionReference.json` records stock command traces for both
+flow directions. Regenerate it with StockOracle `--words`; the portable fixture
+uses the stock traces for common cases and explicit Unicode 17 expectations
+for the changed cases. Investigation and full-BMP diagnostics are under
+`artifacts/portability/word-selection-investigation`; their NLS data is test
+evidence and is not a runtime classification table.
 
 StockPositionReference.json records actual stock WPF file version
 10.0.1226.42308 and the pinned font SHA. Reproduce captures with StockOracle and
