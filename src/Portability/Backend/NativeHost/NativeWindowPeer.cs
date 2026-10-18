@@ -49,6 +49,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
     private readonly WpfSource _source;
     private readonly Dictionary<IWindowImpl, NativeWindowPeer> _windows;
     private readonly ExternalWindowBridge _native;
+    private readonly NativeAutomationRoot _automation;
     private readonly IFramebufferRenderTarget _framebuffer;
     private IReadOnlyDictionary<Avalonia.Input.Key, int> _keySnapshot = new Dictionary<Avalonia.Input.Key, int>();
     private bool _disposed, _closing, _closed, _isActive, _mouseActive, _keyboardActive, _captured;
@@ -72,7 +73,8 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
         _window = window;
         _source = source;
         _windows = windows;
-        _native = new ExternalWindowBridge(window);
+        _automation = new NativeAutomationRoot(source, window);
+        _native = new ExternalWindowBridge(window, _automation);
         try
         {
             _framebuffer = window.Surfaces.OfType<IFramebufferPlatformSurface>().FirstOrDefault()?.CreateFramebufferRenderTarget()
@@ -101,7 +103,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
             RefreshMetrics();
             _constructing = false;
         }
-        catch { _framebuffer?.Dispose(); _native.Dispose(); throw; }
+        catch { _framebuffer?.Dispose(); _native.Dispose(); _automation.Dispose(); throw; }
     }
 
     private bool CanNotify => !_constructing && !_disposed && !_closed && !_source.IsDisposed;
@@ -253,6 +255,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
     public void Show(bool activate)
     {
         Verify();
+        _automation.Attach();
         _window.Show(activate, false);
         IsVisible = true;
         ApplyWindowState();
@@ -392,7 +395,8 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortableInputHost
         _framebuffer.Dispose();
         _windows.Remove(_window);
         _disposed = true;
-        if (!_closed) _window.Dispose();
+        try { if (!_closed) _window.Dispose(); }
+        finally { _automation.Dispose(); }
     }
 
     private void OnFocus(bool active)

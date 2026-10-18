@@ -103,6 +103,11 @@ try
                     ClipboardCases.Exercise(fontPath!, Run, Wait, TextTemplate);
                     completed = true;
                 }
+                else if (args.Contains("--atspi-only", StringComparer.Ordinal))
+                {
+                    AtSpiChecks.Exercise(native, Run, Wait, Drain, ButtonTemplate);
+                    completed = true;
+                }
                 else Exercise(native);
             }
             catch (Exception exception) { checks.Enqueue(new("unhandled-native-window-fixture", "fail", exception.ToString())); }

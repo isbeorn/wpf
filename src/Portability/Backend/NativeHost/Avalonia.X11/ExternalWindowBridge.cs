@@ -26,13 +26,15 @@ public sealed class ExternalWindowBridge : IDisposable
     private bool _disposed;
     private static Observer? s_observer;
 
-    public ExternalWindowBridge(IWindowImpl window)
+    public ExternalWindowBridge(IWindowImpl window) : this(window, null) { }
+
+    public ExternalWindowBridge(IWindowImpl window, Control? automationRoot)
     {
         Dispatcher.UIThread.VerifyAccess();
         _window = window as X11Window ?? throw new ArgumentException("The native peer requires an X11 platform window.", nameof(window));
         _platform = AvaloniaLocator.Current.GetRequiredService<AvaloniaX11Platform>();
         _handle = window.Handle?.Handle ?? throw new InvalidOperationException("The X11 window has no native handle.");
-        window.SetInputRoot(new InputRoot());
+        window.SetInputRoot(new InputRoot(automationRoot ?? new InputElement()));
         s_observer ??= new Observer(_platform);
         s_observer.Windows.Add(_handle, this);
     }
@@ -304,13 +306,13 @@ public sealed class ExternalWindowBridge : IDisposable
         ObjectDisposedException.ThrowIf(_disposed, this);
     }
 
-    private sealed class InputRoot : IInputRoot
+    private sealed class InputRoot(InputElement root) : IInputRoot
     {
         public IFocusManager? FocusManager => null;
         public IInputElement? PointerOverElement { get; set; }
         public IInputElement? CursorElement { get; set; }
         public ITextInputMethodImpl? InputMethod => null;
-        public InputElement RootElement { get; } = new InputElement();
+        public InputElement RootElement { get; } = root;
         public InputElement FocusRoot => RootElement;
         public void PointerOverInvalidated() { }
     }
