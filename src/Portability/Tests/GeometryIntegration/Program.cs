@@ -109,6 +109,7 @@ Reject("unsupported-combined-stroke", () => combined.StrokeContains(new Pen(Brus
 Reject("unsupported-mixed-end-caps", () => line.StrokeContains(new Pen(Brushes.Red, 4) { EndLineCap = PenLineCap.Round }, new Point(10, 0)), "end caps");
 #endif
 
+OutlineCases.Run(Check);
 Console.WriteLine(JsonSerializer.Serialize(new
 {
     probe = "actual-geometry-containment",

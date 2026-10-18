@@ -51,6 +51,10 @@ namespace System.Windows.Media
         { 
             get
             {
+#if PORTABLE_WPF
+                ReadPreamble();
+                return MS.Internal.Portability.Rendering.SkiaGeometry.GetBounds(this);
+#else
                 return PathGeometry.GetPathBounds(
                     GetPathGeometryData(),
                     null,   // pen
@@ -58,6 +62,7 @@ namespace System.Windows.Media
                     StandardFlatteningTolerance, 
                     ToleranceType.Absolute,
                     false); // Do not skip non-fillable figures
+#endif
             }
         }
 
@@ -818,6 +823,9 @@ namespace System.Windows.Media
         {
             ReadPreamble();
 
+#if PORTABLE_WPF
+            return MS.Internal.Portability.Rendering.PortableGeometryOutline.Create(this, tolerance, type);
+#else
             if (IsObviouslyEmpty())
             {
                 return new PathGeometry();
@@ -867,6 +875,7 @@ namespace System.Windows.Media
             }
 
             return resultGeometry;
+#endif
         }
 
         /// <summary>

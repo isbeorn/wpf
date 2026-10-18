@@ -6,5 +6,8 @@
     <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
     <RollForward>Disable</RollForward>
   </PropertyGroup>
-  <ItemGroup><Compile Include="../Program.cs" Link="Program.cs" /></ItemGroup>
+  <ItemGroup>
+    <Compile Include="../Program.cs" Link="Program.cs" />
+    <Compile Include="../OutlineCases.cs" Link="OutlineCases.cs" />
+  </ItemGroup>
 </Project>

@@ -677,6 +677,9 @@ namespace System.Windows.Media
             {
                 ReadPreamble();
 
+#if PORTABLE_WPF
+                return MS.Internal.Portability.Rendering.SkiaGeometry.GetBounds(this);
+#else
                 if (IsEmpty())
                 {
                     return Rect.Empty;
@@ -699,6 +702,7 @@ namespace System.Windows.Media
 
                     return _bounds.AsRect;
                 }
+#endif
             }
         }
 

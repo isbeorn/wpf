@@ -9,6 +9,27 @@ using SkiaSharp;
 
 var checks = new List<object>();
 var failed = false;
+Run("outlined-geometry-retains-union-pixels", () =>
+{
+    var geometry = new GeometryGroup { FillRule = FillRule.Nonzero };
+    geometry.Children.Add(new RectangleGeometry(new Rect(0, 0, 20, 20)));
+    geometry.Children.Add(new RectangleGeometry(new Rect(10, 0, 20, 20)));
+    PathGeometry outline = geometry.GetOutlinedPathGeometry();
+    var root = new DrawingVisual();
+    using (var drawing = root.RenderOpen())
+    {
+        drawing.DrawGeometry(Brushes.Red, null, geometry);
+        drawing.PushTransform(new TranslateTransform(40, 0));
+        drawing.DrawGeometry(Brushes.Red, null, outline);
+        drawing.Pop();
+    }
+    using var target = new Target(root, 80, 24);
+    Drain();
+    using var pixels = target.Snapshot();
+    for (int y = 0; y < 22; y++)
+        for (int x = 0; x < 32; x++)
+            Require(pixels.GetPixel(x, y) == pixels.GetPixel(x + 40, y), "Outlined union did not preserve retained source pixels.");
+});
 Run("rounded-rectangle-independent-radius-clamping", () =>
 {
     var root = new DrawingVisual();

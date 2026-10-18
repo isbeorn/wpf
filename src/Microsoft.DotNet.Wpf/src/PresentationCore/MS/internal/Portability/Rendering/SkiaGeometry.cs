@@ -11,6 +11,29 @@ namespace MS.Internal.Portability.Rendering
 {
     internal static class SkiaGeometry
     {
+        internal static Rect GetBounds(Geometry geometry)
+        {
+            try
+            {
+                using (SKPath path = Create(geometry, false, includeHollows: true))
+                {
+                    if (path.IsEmpty) return Rect.Empty;
+                    SKRect bounds = path.TightBounds;
+                    if (!Finite(bounds)) return Rect.Empty;
+                    return new Rect(bounds.Left, bounds.Top, (double)bounds.Right - bounds.Left, (double)bounds.Bottom - bounds.Top);
+                }
+            }
+            catch (ArithmeticException) { return Rect.Empty; }
+        }
+
+        internal static double AbsoluteTolerance(SKRect bounds, double tolerance, ToleranceType type)
+        {
+            double extent = Math.Max((double)bounds.Right - bounds.Left, (double)bounds.Bottom - bounds.Top);
+            return type == ToleranceType.Relative
+                ? Math.Max(double.IsNaN(tolerance) ? 0 : tolerance, 1e-12) * extent
+                : Math.Max(double.IsNaN(tolerance) ? 0 : tolerance, extent * 1e-12);
+        }
+
         internal static bool Contains(Geometry geometry, Pen pen, Point point, double tolerance, ToleranceType type)
         {
             try { return ContainsFinite(geometry, pen, point, tolerance, type); }
@@ -31,10 +54,7 @@ namespace MS.Internal.Portability.Rendering
                 SKRect bounds = boundsPath.TightBounds;
                 if (!Finite(bounds))
                     return false;
-                double extent = Math.Max((double)bounds.Right - bounds.Left, (double)bounds.Bottom - bounds.Top);
-                double absolute = type == ToleranceType.Relative
-                    ? Math.Max(double.IsNaN(tolerance) ? 0 : tolerance, 1e-12) * extent
-                    : Math.Max(double.IsNaN(tolerance) ? 0 : tolerance, extent * 1e-12);
+                double absolute = AbsoluteTolerance(bounds, tolerance, type);
                 if (double.IsNaN(absolute))
                     return false;
                 if (pen == null)
