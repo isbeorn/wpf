@@ -106,8 +106,10 @@ each backend. NearestNeighbor may select an adjacent texel only at boundaries
 justified by the samplers' coordinate arithmetic. Verify large image coordinates,
 both pan directions, flips, clipping and DPI before declaring those cases
 supported. Retain raw comparisons and document each qualified limit. HighQuality
-and Fant prefiltering remain separate required NINA work and must fail explicitly
-until implemented and qualified.
+and Fant use native trilinear mip filtering of a private immutable display copy.
+Qualify their reduction quality separately from Linear, including actual source
+mutation and exact 16-bit readback. Source-corpus qualification does not establish
+native-window display or large-frame performance for these modes.
 
 ### Backend selection
 
@@ -155,6 +157,23 @@ and TextBox commands, with external-process transfers in both directions.
 Preserve selection ownership and dispatcher responsiveness, distinguish CLIPBOARD
 from PRIMARY and diagnose unsupported formats explicitly. Image, file-drop and
 rich-text support require their own subsequent qualification.
+
+The selected X11 backend bounds optional clipboard-manager acknowledgement to
+one second after acquiring session ownership. A timeout leaves that successful
+copy usable and lets Cut finish. Native ownership and request errors still
+propagate. This is a bounded best-effort native operation, not a persistence
+guarantee.
+
+The initial Linux preedit session uses the actual WPF TextBox editor, routed
+composition events, selection and undo ownership. Ordinary automatic
+PropertyChanged binding updates defer while composition is active; application
+TextChanged handlers can still observe tentative text. Cancel/reset on focus
+loss or accepted source closure, matching the native reset path, and document
+the difference from Windows paths that finalize composition on focus loss.
+An application-canceled close retains the session. Restore original content on
+cancel only while the session still owns that range; application text or
+selection changes invalidate it and take precedence. This is a required design
+contract for the next slice, not a claim of implemented native IME support.
 
 ## Phased delivery
 

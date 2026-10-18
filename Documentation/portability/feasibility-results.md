@@ -2,7 +2,7 @@
 
 Checkpoint date: 18 October 2026. Branch: `codex/nina-cross-platform`.
 
-The Phase 1 experiments establish a viable open-source Linux x64 path for this fork. Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded text implementation and native controls run through the selected X11 adapter. The app-local SDK compiles genuine BAML on Linux and its runtime runs both new and unchanged Microsoft-produced fixtures. Framework-dependent and self-contained package consumers pass. The same complete compiled view workflow now also passes on stock Windows and all four Linux compiler-origin/deployment combinations. Public Application.Run startup is repaired. Large-frame measurements expose a missed RGB48 update cadence and display differences; NINA itself has not passed the Linux compatibility gates.
+The experiments establish a viable open-source Linux x64 path for this fork. Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded text implementation and native controls run through the selected X11 adapter. The app-local SDK compiles genuine BAML on Linux and runs unchanged Microsoft-produced fixtures. An unchanged NINA view now passes package-only construction/layout and native presentation checks. The refreshed 24 MP workload sustains the requested short 1 Hz callback cadence after the conversion repair. Full NINA compatibility, complete display qualification and long-running stability remain open.
 
 The Phase 0 reference/runtime gate and Phase 1 feasibility gate pass within the scopes recorded below. Phases 2 through 5 have not passed. The accepted [plan](../cross-platform-plan.md) remains the behavior contract. Physical desktop, full application and sustained-workload qualification remain later gates. Component checks, source compilation and managed test peers do not substitute for native WPF control behavior.
 
@@ -34,7 +34,7 @@ These results have different scopes and must not be added into a general compati
 | [Markup compiler](../../src/Portability/Tests/MarkupIntegration/README.md) | 3 artifact checks and 3 stock runtime checks pass | 4 artifact checks and native wrong-case rejection pass | Original PresentationBuildTasks/WinFX targets, pass2, generated hookup and byte-identical cross-OS BAML/resources |
 | [BAML source runtime](../../src/Portability/Tests/MarkupRuntimeIntegration/README.md) | Fork-produced fixture 7/7; frozen Microsoft-produced fixture 5/5 | Fork-produced fixture 7/7; frozen Microsoft-produced fixture 5/5 | Real source PresentationFramework construction, generated fields/events, templates, bindings, dictionaries and pack resources; no native window qualification |
 | [Retained rendering](../../src/Portability/Tests/RenderingIntegration/README.md) | 19 checks pass | 19 checks pass | Actual DrawingVisual/UIElement, RenderData, layout, MediaContext, geometry, brushes, glyphs, invalidation, independent DPI scales, surface lifetime and animation scheduling without starving Background observations |
-| [Geometry](../../src/Portability/Tests/GeometryIntegration/README.md) | 194 checks pass; stock oracle 188/188 | 194 checks pass | Actual containment, outline topology, glyph counters, transforms, widened stroke bounds and retained drawing-content bounds |
+| [Geometry](../../src/Portability/Tests/GeometryIntegration/README.md) | 268 checks pass; stock oracle 262/262 | 268 checks pass | Actual containment, outline topology, glyph counters, transforms, widened stroke bounds, mixed stroked/unstroked runs and retained drawing-content bounds |
 | [Guideline snapping](../../src/Portability/Tests/GuidelineIntegration/README.md) | 44 checks pass; separate stock raster oracle | 44 checks pass | Native-derived geometry, image and glyph-baseline snapping, nested scopes and visual-boundary isolation |
 | [WPF text](../../src/Portability/Tests/TextIntegration/README.md) | 344 checks pass | 344 checks pass | Actual paragraph wrapping, fallback, Unicode 17 bidi, combining marks, source-run spans, caret/selection geometry and retained glyph pixels within the declared profile |
 | [Word selection](../../src/Portability/Tests/TextIntegration/Compatibility.md) | 210 control checks pass | 210 control checks pass | Actual TextBox move/select word commands in both flow directions; the user-approved Unicode 17 classification retains WPF's RichEdit algorithm and Latin table |
@@ -209,10 +209,55 @@ requires every namespace candidate before resolving `Validation`. Commit
 continuing to load available contributors. Required types, explicit assembly
 loads, malformed identities and dependency failures retain their errors. The
 source suite passes 11 checks and the unchanged Microsoft BAML oracle passes
-five checks on each OS, with independent replay. Fresh package qualification and
-the unchanged NINA layout replay remain pending. The
+five checks on each OS, with independent replay. The later foundation package
+and unchanged NINA layout replays below pass. The
 Windows portable replay instead reaches the bundle's known lack of Windows
 HarfBuzz native assets. Stock Windows retains its separate six-check baseline.
+
+The subsequent committed foundation at `c21e514bb` qualifies all 17 distribution
+records with 3,567 rehashed inputs, 53 managed assets and two Linux native
+libraries. It combines Classic, the BAML repair, retained Linear/Nearest
+sampling, disconnected strokes, the pointer fallback and bitmap metadata hoist.
+The local feed is `artifacts/portability/distribution-phase3-foundation-final-1`:
+
+| Local package | SHA-256 |
+| --- | --- |
+| Wpf.Portable.Runtime | `5D66DB6D4D59291D1F59786F86C6F94A804CA440D3891902A9C5BBC5937B5B3A` |
+| Wpf.Portable.Sdk | `53EDFB0D0A22C511EEE3EBF43C402D7BFFFFC22D42B753131347E18DC989ED8D` |
+
+The unchanged package-only NINA Linux replay now passes all six checks with no
+assembly overlay. The genuine view has its template and ContentPresenter, an
+arranged 800x450 original Grid and the stock-observed column widths. Both replay
+builds have zero warnings and errors. Windows passes five checks before the
+known Linux-only native-font asset boundary. Interactive validation of NINA's
+original controls remains a separate gate. The newer helper runtime profile,
+clipboard, file dialogs, HighQuality/Fant, IME and accessibility are outside
+this foundation package's qualification.
+
+Subsequent stock and package-only Linux native observation each pass 13
+non-input checks plus the completion guard. The original profile, three
+UnitTextBox templates, actual bindings and rule boundaries are present. Linux
+uses the genuine native Window with fresh 1000x600 layout after actual visual
+attachment and observes nonuniform native pixels. This is presentation evidence,
+not pixel parity or readability qualification. A subsequent identical-source
+native editor replay passes 14 workflow/prerequisite checks plus its completion
+guard on both stock Windows and package-only Linux. All 22 real edits match:
+15 accepted values, seven rejections, per-keystroke profile retention until
+actual focus departure, recovery and bound changes from 8 to 4 to 8. All seven
+errors belong to the original outer BindingExpression and original validation
+rule; inner errors remain empty. Independent review checks every case and the
+native event traces. This qualifies the selected in-memory editor workflow,
+not durable autosave or the full application. Linux public
+RenderTargetBitmap export remains unsupported; the observation uses the existing
+native pixel helper. No production template or reparenting repair was needed.
+
+The unchanged OxyPlot 2.2 binaries and BAML also pass nine package-only Linux
+checks on this foundation feed, without an assembly overlay. Actual zoom/pan,
+both right-button releases and capture cleanup pass. Reverse pan approaches the
+starting axis by over 99% while preserving its span. The fixture accounts for
+the real scale change after tick-label layout rather than requiring an exact
+inverse from equal screen-pixel deltas. This remains a selected control workflow,
+not the full NINA shell.
 
 ## Review and repaired failures
 
@@ -236,8 +281,8 @@ Raw negative cases remain alongside the passing results. Local changes and commi
 | Phase 1 markup/BAML | Both origins and case-sensitive packaged compiler path pass | Run the same complete view workflow under both origins in Phase 2 |
 | Phase 1 event loop/window/input | Native dispatcher, WPF controls/dialogs, window-manager and packaged native checks pass | Combine validation, command and dialog interactions in Phase 2; physical desktop services remain later qualification |
 | Phase 1 retained rendering | Drawing-content seam, native cover/uncover, image mutation and packaged presentation pass | Bound Image control, animation, large frames and sustained workloads remain later gates |
-| Phase 1 replacement text | Bounded paragraphs, fallback, Unicode 17 bidi, caret/selection and native BMP editing pass | Integrated validated editing in Phase 2; full IME and supplementary committed input remain open |
-| Phase 2 integrated view | Functional Windows/Linux comparison and public Application.Run pass; phase gate open | RGB48 misses the approved 1 Hz cadence in WSL/Xvfb; display fidelity, measured budgets and sustained-memory bounds remain open |
+| Phase 1 replacement text | Bounded paragraphs, fallback, Unicode 17 bidi, caret/selection and complete Unicode commits pass | Native IME preedit/engines and broader document behavior remain open |
+| Phase 2 integrated view | Functional Windows/Linux comparison, public Application.Run and refreshed 24 MP short 1 Hz callback cadence pass; phase gate open | Complete display qualification, presentation latency, measured budgets and sustained-memory bounds remain open |
 | Phases 3 through 5 | Gates not passed | Real NINA view/control interactions, simulated shell/overnight session and packaged native Linux qualification |
 
 Scientific Gray16/Rgb48 source storage and readback pass the bounded imaging slice. Gray16 conversion differs by at most one output level at the small measured native WIC boundary samples; this does not establish scaled-image display parity. The large-frame workflow has larger observed display differences while scientific source samples remain exact. Image codecs, conversion graphs and large-frame memory/performance remain open. IME, accessibility, physical desktop focus/DPI transitions, native Wayland, ARM64 and macOS remain unqualified. CPU rendering and short disposal loops do not establish overnight memory or responsiveness bounds.
@@ -257,6 +302,18 @@ setting names; the original failures remain preserved. These are dedicated Xvfb
 checks, including replay of the captured GNOME property. A fresh packaged desktop
 replay remains pending. This is neither a desktop pass nor a native Wayland result.
 
+The refreshed foundation package subsequently passes 14 startup/render/close
+checks on that Hyper-V GNOME XWayland session, exit 0 with empty stderr. A genuine
+320x220 WPF Window maps, displays the expected native green pixel and closes
+with one source detachment and eventual native-window disappearance. The probe
+observes published 400 ms and declared-fallback 5 px provenance directly.
+Settings ownership, all 2,044 XSETTINGS bytes and all 144 RESOURCE_MANAGER bytes
+are identical before and after. Package/source hashes and 55 runtime assets are
+verified on the VM. An artifact-only absent-fixture return moves before the
+existing-owner rejection so the probe never acquires settings ownership. No
+keyboard/mouse input or DPI changes occur. This qualifies startup/render/close
+on that XWayland VM; interactive desktop, IME and screen-reader gates remain open.
+
 The initial native X11 Window profile requires at least one physical client pixel on each axis. Explicit application requests for zero or subpixel client extents are an unsupported boundary, checked before issuing native configure requests. Stock Windows WPF instead coerces these requests to its desktop-specific native minimum and publishes that accepted size through Width/Height, ActualWidth/ActualHeight and RestoreBounds. Matching that behavior needs a logical/native minimum-size contract; this profile does not claim it. Preserving an already valid native window during a DPI change is a separate requirement and must not emit an illegal zero-pixel configure request.
 
 The native implementation is committed as `cf4a52c96`. A pinned two-line Avalonia derivative preserves an existing window's one-pixel minimum when DPI conversion would truncate an axis to zero. Both asymmetric axes and the one-by-one case pass repeated 96/144-DPI round trips, including unrelated frames after each profile. Independent callback replay passes direct close during state, DPI, location and resize changes. No-change Windows/Linux builds preserve the signing key, both derived source files and X11 DLL bytes and timestamps while skipping compilation. The later patch-file context cleanup produces exactly the same verified derivative bytes.
@@ -270,11 +327,11 @@ Continue Phase 2's measured image-display and performance repairs alongside the 
 The user-approved performance workload is 6000 x 4000 scientific frames, Gray16 and RGB48 measured separately, at one full-frame update per second with interactive zoom/pan. Measure Windows reference and Linux results, including startup, input-to-binding/presentation latency, allocations and post-warmup memory growth, before setting numerical budgets. The small correctness fixture does not establish large-frame throughput or an overnight bound.
 
 Matching Windows SoftwareOnly and Linux CPU-backend runs completed three warmups
-and 30 measured updates per format, plus six separate dirty-only updates. Both
+and 30 measured updates per format, plus six separate dirty-only updates. The initial runs below
 use the same extracted algorithms, actual 1184x811 viewport at scale 1 and exact
 full-size 16-bit validation. The Ryzen 9 7950X host also runs WSL2 with 32 logical
 CPUs; host activity was not isolated. Linux execution uses Xvfb and the freshly
-qualified package bytes above.
+qualified Phase 2 package bytes. The refreshed foundation run follows below.
 
 | Measurement | Windows Gray16 | WSL2 Gray16 | Windows RGB48 | WSL2 RGB48 |
 | --- | ---: | ---: | ---: | ---: |
@@ -304,9 +361,29 @@ source samples remain exact and independent review reproduces the raw results.
 The diagnostic source preserves the original callback boundary but adds tracing
 and does not traverse the full zoom/replacement sequence. It measures an
 intermediate renderer state in a fixed run order. The fresh combined-package
-30-frame workload and performance gate remain open.
+30-frame workload was subsequently rerun on the qualified foundation package.
 
-The 18 paired native pixel samples differ by up to 57/255. All 18 Windows samples
+That package-only rerun retains the original workload and viewport helper,
+three warmups, 30 measured full transactions per format and six dirty-only
+transactions per format. All six processes exit 0 and all 55 runtime assets
+match the released package. Mean full callback transactions are 370.75 ms
+Gray16 and 437.52 ms RGB48; p95 is 445.72/628.75 ms and maximum is
+461.59/675.97 ms. All 60 full transactions finish below 1000 ms, with maximum
+start lateness 3.61/4.10 ms. Dirty-only means are 475.21/482.68 ms. Exact
+whole-buffer scientific source and caller-ownership checks pass. Independent
+review recomputes all timing/memory rows and image comparisons from raw data.
+
+This establishes a bounded WSL2/Xvfb callback cadence, not monitor presentation
+latency or an overnight memory result. Sampled private peaks are 747.75 MiB
+Gray16 and 1494.13 MiB RGB48. Initial Gray16 whole-image differences remain
+unresolved against the stock offscreen capture, while final Gray16 and all
+RGB48 comparisons differ by at most 2/255. One dirty Gray16 native sample
+differs by 4/255; the preserved stock native/offscreen pair itself differs by
+6/255 there. Neither golden data nor tolerances were changed. Raw results,
+conditions and comparison limits are retained in
+`artifacts/portability/scientific-workload-reference/foundation-5D66DB6D4D59291D/RESULTS-canonical-1.md`.
+
+In the initial pre-repair run, the 18 paired native pixel samples differ by up to 57/255. All 18 Windows samples
 match their stock offscreen references, while Linux's first Gray16 center is 4
 versus Windows 53. Source bit depth, channel order and complete readback remain
 exact. Display parity is unqualified; expected pixels have not been changed to
@@ -329,9 +406,20 @@ uncertainty intervals, never through a global pixel-error allowance. Complete
 scientific source buffers remain exact. Independent review found a test blind
 spot where a blank image and blank coverage control could pass together; the
 repair rejects that case and 23 related corruptions without production changes.
-The original failures and both reviews remain preserved. HighQuality/Fant
-prefiltering remains required by the NINA image paths and is not qualified by
-these results. Fresh combined-package native display checks remain pending.
+The original failures and both reviews remain preserved. These Linear/Nearest
+results do not qualify HighQuality/Fant.
+
+Commit `c7902d7d1` implements HighQuality/Fant using native trilinear mip filtering
+over an immutable private display copy, with draw-local image/shader ownership.
+Source and caller scientific buffers remain untouched. The expanded sampling
+corpus passes 192 checks per OS and 179 stock-reference checks; rendering 19,
+geometry 268, text 344 and imaging 12 also pass per OS. Independent copied
+headless replays pass 141 checks per OS and verify all 306 raster/coverage files.
+Quality assertions reject a real Linear fallback and retain mode inheritance,
+mutation, clipping, alpha and exception recovery. The native Skia quality profile
+documents weaker reductions and possible native mip allocation fallback. It
+does not promise Windows pixel parity. Fresh package, native-window and
+performance checks of HighQuality/Fant remain pending.
 
 The timings end at dispatcher/render callbacks, not confirmed presentation.
 Native observations occur outside those timers and do not prove the latest
@@ -351,9 +439,58 @@ duplicating WPF's managed data store or enabling OLE on Linux. Default-CLR
 managed DataObject construction and interface access pass on both OSes without a
 ReadyToRun environment switch. All 261 extracted source files match their
 pinned Git blobs, all 46 resource strings match the official helper and
-independent review passes. Normal shared-graph reference, package-profile and
-native clipboard integration remain separate work; this component proof is not
-a packaged clipboard qualification.
+independent review passes. Commit `13b3b14ba` selects that helper through the
+normal project graph, retains genuine managed DataObject storage and JSON
+retrieval and promotes the helper into the next runtime profile. Both default-CLR
+managed smokes pass, with no generator version substitution. Independent review
+also caught and closed an archive audit that inspected unmatched loose helper
+bytes. The newer 54-managed-asset profile is qualified separately below.
+
+The native clipboard source slice passes nine groups and four manager-specific
+checks. Independent review reproduced an indefinite wait after successful
+session ownership; the one-hunk pinned backend repair now bounds only optional
+manager acknowledgement to one second. Actual Cut, external Unicode text,
+replacement and clear pass independent replay. Native Open/Save source checks
+pass 31 cases through real WPF APIs on a private portal bus. Review caught and
+closed a hidden-owner cleanup defect with one guard change and three real
+regressions. These results retain ordinary native filename and session-clipboard
+behavior. The committed `804d13bc3` package then passes all 17 distribution
+records, plus package-only clipboard 9/9, manager 4/4 and portal protocol 31/31
+checks. All 3,849 actual producer inputs and 56 runtime assets match their
+manifests, including the IL-only helper under ordinary CoreCLR settings.
+
+| Native desktop package | SHA-256 |
+| --- | --- |
+| Wpf.Portable.Runtime | `F4CB5C5872FD33D265332E69D3CDA9BE8F39A01D2B772182FA500A3A45A70D1F` |
+| Wpf.Portable.Sdk | `8A23104303AF54108E92765F82DB056A01E60CB75329B3D18EF12C6683189112` |
+
+These packages exclude the later HighQuality/Fant, Unicode input, IME and
+accessibility work. A live GNOME service probe passes package startup and pointer
+provenance but stops while rendering its ordinary Classic TextBox, before any
+clipboard command or native picker. PortableGuidelineFrame rejects its driven
+coordinates; the precise cause requires local reproduction. Settings bytes and
+service owners stay unchanged and the process is reaped. Live desktop
+clipboard/picker interoperability therefore remains unqualified.
+
+Commit `55287c201` preserves each complete, well-formed native UTF-16 commit
+through the existing WPF composition route. Independent replays and fresh
+combined-source checks pass on both OSes, including real TextBox selection,
+binding and one undo/redo. Linux callback/control-key checks pass 5/5 and the
+existing native suite passes 23/23; clipboard 9, manager 4 and portal 31 also
+pass on that same combined host. This proves the native callback-to-editor
+seam, not an actual IME engine or preedit session. Accepted-Tab layout, one
+terminal-LF selection case and uncovered font glyphs remain explicit neighboring
+limits. The ordinary Windows build/pack after the desktop, Unicode and managed
+peer integration passes with zero warnings/errors and all 208 upstream
+threading checks pass.
+
+Commit `2cf305d65` enables genuine managed Button, TextBox, CheckBox and Window
+automation peers. Ten peer/metadata/action checks pass on each OS, with real
+commands, binding-preserving Value changes and Name/Label/Title precedence.
+Native source bounds, movement, focus and close pass at 96 and 192 DPI. The
+combined graph retains the existing input, Unicode and desktop protocol results.
+This is the managed peer foundation. Native UIA export still fails explicitly;
+AT-SPI transport, Orca and full text accessibility require their own gates.
 
 The accepted bidi contract follows Unicode 17. All 91,707 Unicode bidi character level cases pass after a bounded correction to the pinned managed dependency. This algorithm result is separate from paragraph layout, fallback, glyph positioning and native editing qualification. Legacy Windows WPF bracket ordering and measured Display-mode metric differences are recorded compatibility differences, not silently relaxed test tolerances.
 
