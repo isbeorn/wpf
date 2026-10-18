@@ -286,4 +286,4 @@ The design review should confirm these recommendations before implementation:
 7. Keep NINA's other Windows dependencies separate, while recording the application adaptations needed for each framework integration milestone.
 8. Scale parallel agents by independent contracts and file ownership, with one integration owner and independent review.
 
-Preparation of this proposal changed documentation only. The Linux experiments, Windows reference builds and platform qualification described here are future implementation work, not completed verification.
+Current implementation evidence and phase gate status are recorded in the [feasibility results](portability/feasibility-results.md). The gates described here are acceptance requirements, not claims that those phases have passed.

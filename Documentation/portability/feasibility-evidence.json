@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "checkpointDate": "2026-10-18",
+  "branch": "codex/nina-cross-platform",
+  "wpfSourceRevision": "65d15adece1df9a73e3d1abc11f8bbf99e9fc7a9",
+  "ninaSourceRevision": "4742afae0a09c79be772f23fcf163fb5852d2775",
+  "phase0": "partial",
+  "phase1": "partial",
+  "phases2Through5": "not-started",
+  "interpretation": "Bounded component evidence only. Non-pass statuses remain evidence gaps. Negative experiments require their expected nonzero exit and do not establish capability support.",
+  "results": [
+    {
+      "file": "artifacts/portability/assembly-identity-windows-core.json",
+      "sha256": "d551ee48555d9483feb9a7e0aee479b3771c011b1b8a33af6f025dd87374e31e",
+      "expectedExitCode": 0,
+      "probe": "assembly-identity",
+      "os": "Microsoft Windows 10.0.26200",
+      "scope": "ordinary-net-core-host",
+      "checkCounts": {
+        "pass": 2
+      }
+    },
+    {
+      "file": "artifacts/portability/assembly-identity-windows-desktop.json",
+      "sha256": "51ac87b1fa844ffe4102ac9982e6b3246fbffa5e6538c2f44e9a8f24e1486013",
+      "expectedExitCode": 0,
+      "probe": "assembly-identity",
+      "os": "Microsoft Windows 10.0.26200",
+      "scope": "stock-windows-desktop-runtime-not-fork",
+      "checkCounts": {
+        "pass": 1
+      }
+    },
+    {
+      "file": "artifacts/portability/assembly-identity-windows-candidate.json",
+      "sha256": "edaa6601af06f3da7be9a965fe6813007edfb3e7f9a1774c10ccedbc99427fc9",
+      "expectedExitCode": 0,
+      "probe": "assembly-identity",
+      "os": "Microsoft Windows 10.0.26200",
+      "scope": "supplied-runtime-isolated-context-not-source-build-or-app-local-publish-proof",
+      "checkCounts": {
+        "pass": 3
+      }
+    },
+    {
+      "file": "artifacts/portability/results/identity-linux.json",
+      "sha256": "73bad80efc7dbb4d02e165ae7922d577451f02c77fe08e82837c1d5010c1aa3e",
+      "expectedExitCode": 0,
+      "probe": "assembly-identity",
+      "os": "Ubuntu 24.04.1 LTS",
+      "scope": "ordinary-net-core-host",
+      "checkCounts": {
+        "pass": 2
+      }
+    },
+    {
+      "file": "artifacts/portability/results/identity-linux-stock-candidate.json",
+      "sha256": "d2f06def456f03b00df647b727a8b69312e75a4e8b65b9a449e0db3c35ab0648",
+      "expectedExitCode": 1,
+      "probe": "assembly-identity",
+      "os": "Ubuntu 24.04.1 LTS",
+      "scope": "supplied-runtime-isolated-context-not-source-build-or-app-local-publish-proof",
+      "checkCounts": {
+        "fail": 1,
+        "pass": 1
+      }
+    },
+    {
+      "file": "artifacts/portability/windows-reference/results.json",
+      "sha256": "05a98161b881cd6e71e79406aaf4be2c8851bcf66eef539b1ba93ca6a4ddd41d",
+      "expectedExitCode": 0,
+      "probe": "WindowsReference",
+      "os": "Microsoft Windows 10.0.26200",
+      "scope": "Windows stock WPF 10.0.12 reference fixture; not this fork build or a whole NINA baseline",
+      "checkCounts": {
+        "pass": 11
+      }
+    },
+    {
+      "file": "artifacts/portability/system-xaml/windows.json",
+      "sha256": "16225ea7ffe759abca2a59cce934cd7354a4ab22f584834b01f89370b3494fda",
+      "expectedExitCode": 0,
+      "probe": "system-xaml-real-source",
+      "os": "Microsoft Windows 10.0.26200",
+      "scope": "Current fork System.Xaml CLR object parsing and serialization only; WPF XAML, BAML, compiled markup and NINA execution are unsupported by this probe.",
+      "checkCounts": {
+        "pass": 7
+      }
+    },
+    {
+      "file": "artifacts/portability/system-xaml/linux.json",
+      "sha256": "71a8d9f47d53474f00b22d467cb927946767aac83bb849274b40df4885c73ce9",
+      "expectedExitCode": 0,
+      "probe": "system-xaml-real-source",
+      "os": "Ubuntu 24.04.1 LTS",
+      "scope": "Current fork System.Xaml CLR object parsing and serialization only; WPF XAML, BAML, compiled markup and NINA execution are unsupported by this probe.",
+      "checkCounts": {
+        "pass": 7
+      }
+    },
+    {
+      "file": "artifacts/portability/results/rendering-windows.json",
+      "sha256": "713004d1d9b1cfdac7841291e3efc0cb252b1410d9f4cfdcea0d3c2aed39672c",
+      "expectedExitCode": 0,
+      "probe": "rendering",
+      "os": "Microsoft Windows 10.0.26200",
+      "scope": "component: SkiaSharp CPU raster only; fork retained rendering unproven",
+      "checkCounts": {
+        "not-tested": 1,
+        "pass": 3
+      }
+    },
+    {
+      "file": "artifacts/portability/results/rendering-linux.json",
+      "sha256": "a921ebe4395f37230f172531062ce47b99f22a49fa239bbdf8aeed54fccd037a",
+      "expectedExitCode": 0,
+      "probe": "rendering",
+      "os": "Ubuntu 24.04.1 LTS",
+      "scope": "component: SkiaSharp CPU raster only; fork retained rendering unproven",
+      "checkCounts": {
+        "not-tested": 1,
+        "pass": 3
+      }
+    },
+    {
+      "file": "artifacts/portability/text/windows/results.json",
+      "sha256": "cb52cff9aca695d0cdd4bfe40c9ce611e047ba23ab2a7bccda3b24c7b846bbcd",
+      "expectedExitCode": 0,
+      "probe": "text-component",
+      "os": "windows",
+      "scope": "Standalone SkiaSharp/HarfBuzz run shaping, measurement and software rasterization; no WPF implementation or compatibility claim.",
+      "checkCounts": {
+        "pass": 9,
+        "unimplemented": 7
+      }
+    },
+    {
+      "file": "artifacts/portability/results/text-linux.json",
+      "sha256": "e4868fd65bb09628bbe6f8e0e9cf20a11e8c3b35730cb4e4db743fb18d706b60",
+      "expectedExitCode": 0,
+      "probe": "text-component",
+      "os": "linux",
+      "scope": "Standalone SkiaSharp/HarfBuzz run shaping, measurement and software rasterization; no WPF implementation or compatibility claim.",
+      "checkCounts": {
+        "pass": 9,
+        "unimplemented": 7
+      }
+    },
+    {
+      "file": "artifacts/portability/windowhost/windows-headless.json",
+      "sha256": "f30392465a2379aa4a060cf569a9e68d6dd1e62cf8e75b7bc6f93daef3df4d20",
+      "expectedExitCode": 0,
+      "probe": "open-source-window-host",
+      "os": "Microsoft Windows 10.0.26200",
+      "scope": "avalonia-headless-no-native-evidence",
+      "checkCounts": {
+        "pass": 13
+      }
+    },
+    {
+      "file": "artifacts/portability/windowhost/linux-headless.json",
+      "sha256": "efbdde7a7b76c93d31d8c77e925b654a8a331521da3af2a2c1f48a641cdede75",
+      "expectedExitCode": 0,
+      "probe": "open-source-window-host",
+      "os": "Ubuntu 24.04.1 LTS",
+      "scope": "avalonia-headless-no-native-evidence",
+      "checkCounts": {
+        "pass": 13
+      }
+    },
+    {
+      "file": "artifacts/portability/windowhost/linux-native.json",
+      "sha256": "a71bb22c75548215212ae274352d3c4dfa1b893ab89c18c4a4ac70a3f62699fe",
+      "expectedExitCode": 0,
+      "probe": "open-source-window-host",
+      "os": "Ubuntu 24.04.1 LTS",
+      "scope": "avalonia-native-host-only",
+      "checkCounts": {
+        "pass": 13,
+        "unproven": 1
+      }
+    },
+    {
+      "file": "artifacts/portability/windowhost/windows-early-close-after.json",
+      "sha256": "e7f4d761a65c364f6fe5b2eeb8e7353656f9031b0f0bb688d8ed03ea7cdd392f",
+      "expectedExitCode": 1,
+      "probe": "open-source-window-host",
+      "os": "Microsoft Windows 10.0.26200",
+      "scope": "avalonia-native-host-only",
+      "checkCounts": {
+        "fail": 1,
+        "pass": 4,
+        "unproven": 1
+      }
+    }
+  ]
+}
