@@ -8220,10 +8220,387 @@
           "bytes": 5001
         }
       ]
+    },
+    {
+      "label": "retained-sampling-reviewed",
+      "capturedAtUtc": "2026-10-18T16:15:44.2295376Z",
+      "headCommit": "d76a12ce9f56c315ab774357ab4d5809639f36cd",
+      "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
+      "scope": "Commit dc621a155: source CPU sampling/state corpus passes 157 per OS and stock145. Independent blank-image/control blind spot repaired with 24 corruption checks. Fresh combined package/native qualification pending.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/scientific-render-diagnosis/revision-manifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-sampling-reviewed/artifacts/portability/scientific-render-diagnosis/revision-manifest.json",
+          "sha256": "ab18ac6c0757d9f32d75d6ec35128829cc82868b2efb4acfffd3d23b3c8b54df",
+          "bytes": 96572
+        },
+        {
+          "path": "artifacts/portability/scientific-render-diagnosis/revision-repair-evidence.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-sampling-reviewed/artifacts/portability/scientific-render-diagnosis/revision-repair-evidence.json",
+          "sha256": "507b9f2868ec8c88ab1da929afe827545f5534c1b9d4fc27039fd4f1ffa36fc4",
+          "bytes": 1395
+        },
+        {
+          "path": "artifacts/portability/scientific-render-diagnosis/revision-coverage-red.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-sampling-reviewed/artifacts/portability/scientific-render-diagnosis/revision-coverage-red.json",
+          "sha256": "93af311721ccb7db9dfafa1c4b9ca744c9168f9154c7d0d0c685e8029a678284",
+          "bytes": 427194
+        },
+        {
+          "path": "artifacts/portability/scientific-render-diagnosis/revision-sampling-windows.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-sampling-reviewed/artifacts/portability/scientific-render-diagnosis/revision-sampling-windows.json",
+          "sha256": "90f871fbcc8e48cdea5e5e9d33e4571b5c1ab1588d237dbf61f0c3eaabf28919",
+          "bytes": 474845
+        },
+        {
+          "path": "artifacts/portability/scientific-render-diagnosis/revision-sampling-linux.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-sampling-reviewed/artifacts/portability/scientific-render-diagnosis/revision-sampling-linux.json",
+          "sha256": "a75f3df1e25f62f864fe0424edbf7731da3668a9dded977b574fd32b95d77dc5",
+          "bytes": 468586
+        },
+        {
+          "path": "artifacts/portability/scientific-render-diagnosis/revision-sampling-stock.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-sampling-reviewed/artifacts/portability/scientific-render-diagnosis/revision-sampling-stock.json",
+          "sha256": "ab72b92c6dee65a248a3fdf8539ffe50493731e92f389c8af1ff8a53ec8937e8",
+          "bytes": 442505
+        },
+        {
+          "path": "artifacts/portability/scientific-render-diagnosis/revision-build-windows.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-sampling-reviewed/artifacts/portability/scientific-render-diagnosis/revision-build-windows.log",
+          "sha256": "0c293308dc3f98c729fcda6f5ee6c4452f08af46e69d1e7c1e651c8549435228",
+          "bytes": 82
+        },
+        {
+          "path": "artifacts/portability/scientific-render-diagnosis/revision-build-linux.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-sampling-reviewed/artifacts/portability/scientific-render-diagnosis/revision-build-linux.log",
+          "sha256": "94a3097b0b8e3c2aaf759d36f7b0ba94ba9a8547509ce1ee79b1afafc8018d59",
+          "bytes": 76
+        },
+        {
+          "path": "artifacts/portability/scientific-render-diagnosis/revision-build-stock.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-sampling-reviewed/artifacts/portability/scientific-render-diagnosis/revision-build-stock.log",
+          "sha256": "5132d8dc61a504e16f94f2cfa29d191b7c008299bc8a2d0fed6206511c21be07",
+          "bytes": 82
+        },
+        {
+          "path": "artifacts/portability/donald-sampling-review/revision1/blank-nearest-controls.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-sampling-reviewed/artifacts/portability/donald-sampling-review/revision1/blank-nearest-controls.json",
+          "sha256": "05af83302aa21a4ca05360e29a26def635a2309a7ba10889e8b6056a72a2f899",
+          "bytes": 503
+        },
+        {
+          "path": "artifacts/portability/donald-sampling-review/revision1/windows-replay.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-sampling-reviewed/artifacts/portability/donald-sampling-review/revision1/windows-replay.json",
+          "sha256": "c7dff325b8c5c89335de7dd42696c562931d3b020ab0430ef4a24e63324c8fa5",
+          "bytes": 426702
+        },
+        {
+          "path": "artifacts/portability/webby-sampling-review/windows-revision1-replay.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-retained-sampling-reviewed/artifacts/portability/webby-sampling-review/windows-revision1-replay.json",
+          "sha256": "ae5a389016548719ab6bc35d2fd94b1f2721a42646c6a932ca8ea639922f1df1",
+          "bytes": 426714
+        }
+      ]
+    },
+    {
+      "label": "optional-namespace-reviewed",
+      "capturedAtUtc": "2026-10-18T16:15:44.4309744Z",
+      "headCommit": "d76a12ce9f56c315ab774357ab4d5809639f36cd",
+      "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
+      "scope": "Commit 3db204fb1: genuinely absent optional BAML namespace candidates are skipped while required loads and available contributors retain behavior. Source11 and unchanged Microsoft oracle5 per OS pass with independent replay. Fresh package and unchanged NINA layout pending.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/namespace-resolution/handoff.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/namespace-resolution/handoff.json",
+          "sha256": "23c8b52569021e9ad6ac8de814c4752da0f24926ae9f3540048dc8455b9c60ee",
+          "bytes": 51078
+        },
+        {
+          "path": "artifacts/portability/namespace-resolution/HANDOFF.md",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/namespace-resolution/HANDOFF.md",
+          "sha256": "e4efcb6100c74ed19e15e26179361c861ef0e09691bc13053a468e7193b01919",
+          "bytes": 4819
+        },
+        {
+          "path": "artifacts/portability/namespace-resolution/baml-payload-equivalence.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/namespace-resolution/baml-payload-equivalence.json",
+          "sha256": "8e1c3fb82c6b3f6782d8606d1434c68130b3768013fbf7bbbdcf852288ea5e19",
+          "bytes": 6189
+        },
+        {
+          "path": "artifacts/portability/namespace-resolution/bounded-validation-baml-metadata.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/namespace-resolution/bounded-validation-baml-metadata.json",
+          "sha256": "1acc540c90d5647019992470dcb500e9904c8b39b9c53b294e5a87361cc399df",
+          "bytes": 2365
+        },
+        {
+          "path": "artifacts/portability/namespace-resolution/red-windows-runtime.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/namespace-resolution/red-windows-runtime.json",
+          "sha256": "cf5cb9944578560fa7542a7cdf66706e6c0086cc166efe9b65ca4545e62c24de",
+          "bytes": 16875,
+          "results": [
+            {
+              "status": "fail",
+              "count": 2
+            },
+            {
+              "status": "pass",
+              "count": 9
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/namespace-resolution/guard-red-windows-runtime.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/namespace-resolution/guard-red-windows-runtime.json",
+          "sha256": "6d027f636fedab12c1c29b345d3da239f23880911df2b6b1417a6bdd90166852",
+          "bytes": 6186,
+          "results": [
+            {
+              "status": "fail",
+              "count": 1
+            },
+            {
+              "status": "pass",
+              "count": 10
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/namespace-resolution/green-windows-runtime.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/namespace-resolution/green-windows-runtime.json",
+          "sha256": "9d60530ff8260f9098dd981002bef65faa94503051c58601b023522309fe81e6",
+          "bytes": 5613,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/namespace-resolution/green-linux-runtime.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/namespace-resolution/green-linux-runtime.json",
+          "sha256": "19f904d4f364524140bf7bf0fa97fad6b866f7c44cfeed9ecbb8573a2f455b92",
+          "bytes": 5280,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/namespace-resolution/oracle-windows-runtime.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/namespace-resolution/oracle-windows-runtime.json",
+          "sha256": "d20714a012064c4210d0482d6d5c495948dbe348777eb28c42de04eacc5d4d40",
+          "bytes": 5805,
+          "results": [
+            {
+              "status": "pass",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/namespace-resolution/oracle-linux-runtime.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/namespace-resolution/oracle-linux-runtime.json",
+          "sha256": "e909262fc810adfd41e1c6f9f340bbbb2375b9d32b508aad5f547f97c9e9b638",
+          "bytes": 5454,
+          "results": [
+            {
+              "status": "pass",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/namespace-resolution/green-windows-build.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/namespace-resolution/green-windows-build.log",
+          "sha256": "bb361effc867b419070a61dc75affb6e4fce2c7989ed874bd0dc8faf5d0ccdf3",
+          "bytes": 10908
+        },
+        {
+          "path": "artifacts/portability/namespace-resolution/green-linux-build.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/namespace-resolution/green-linux-build.log",
+          "sha256": "654566dfa148b5f3bf9adf473d0795d57181862bf8417ad89497888b5b549d84",
+          "bytes": 15377
+        },
+        {
+          "path": "artifacts/portability/basil-namespace-review/Windows_NT-Runner.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/basil-namespace-review/Windows_NT-Runner.json",
+          "sha256": "23231365da734fbf33cf40a1b76e6ad95d080329316994627314e363db1ada67",
+          "bytes": 5173,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/basil-namespace-review/Unix-Runner.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/basil-namespace-review/Unix-Runner.json",
+          "sha256": "36636387726b37bd5aa82f062fbbdf95d5fec049e921ba3e11a99cba6ba4ca13",
+          "bytes": 4885,
+          "results": [
+            {
+              "status": "pass",
+              "count": 11
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/basil-namespace-review/Windows_NT-MicrosoftOracleRunner.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/basil-namespace-review/Windows_NT-MicrosoftOracleRunner.json",
+          "sha256": "c04dcf320c85a122688dfa6491ae0e6d6ac6fa6ed181d12a702ca40ab2552cea",
+          "bytes": 5277,
+          "results": [
+            {
+              "status": "pass",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/basil-namespace-review/Unix-MicrosoftOracleRunner.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/basil-namespace-review/Unix-MicrosoftOracleRunner.json",
+          "sha256": "58db23a3b9ea5406abe4b1dabbda598fe2849d0db55ba299a60455ff001ee4ba",
+          "bytes": 4980,
+          "results": [
+            {
+              "status": "pass",
+              "count": 5
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/foghorn-namespace-review/review-summary.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-optional-namespace-reviewed/artifacts/portability/foghorn-namespace-review/review-summary.json",
+          "sha256": "4af1d2f990bef26bf075a410e00ecbfb05046651a643d058d7de987c1da42558",
+          "bytes": 1361
+        }
+      ]
+    },
+    {
+      "label": "windows-core-il-component-reviewed",
+      "capturedAtUtc": "2026-10-18T16:15:44.6057381Z",
+      "headCommit": "d76a12ce9f56c315ab774357ab4d5809639f36cd",
+      "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
+      "scope": "Commit d76a12ce9: complete pinned original helper source builds IL-only with original identity/resources and default-CLR managed-store proof on both OSes. Independent review/replay pass. Shared graph, package profile and native clipboard integration remain separate.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/windows-core-source/qualification-checkpoint.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/windows-core-source/qualification-checkpoint.json",
+          "sha256": "91435ac3be95d6b377d7175c683bbd08750b81a795b389110484e1611068f5cc",
+          "bytes": 6176
+        },
+        {
+          "path": "artifacts/portability/windows-core-source/component-checkpoint.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/windows-core-source/component-checkpoint.json",
+          "sha256": "19c50d9d0367f986efc2465e07b40fcbd0195e458300700aee96605757b5fa0b",
+          "bytes": 3516
+        },
+        {
+          "path": "artifacts/portability/windows-core-source/vmr-source-manifest.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/windows-core-source/vmr-source-manifest.json",
+          "sha256": "33851205223d10e88b6b91bfa33d0f5564ac5df90ad1f0b236be6f3819e33e46",
+          "bytes": 7532
+        },
+        {
+          "path": "artifacts/portability/windows-core-source/pe-proof.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/windows-core-source/pe-proof.json",
+          "sha256": "8008633b6f0536385edca1fe01b75660db886b946b2b06c70937c2892599e244",
+          "bytes": 1587
+        },
+        {
+          "path": "artifacts/portability/windows-core-source/metadata-comparison.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/windows-core-source/metadata-comparison.json",
+          "sha256": "b21b14bcc8617736d2a8f1448ca313275834fd9baf6c7b7aac8b7a6fba0f67ad",
+          "bytes": 305
+        },
+        {
+          "path": "artifacts/portability/windows-core-source/static-checks.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/windows-core-source/static-checks.json",
+          "sha256": "4b96dcd8fdf382c0322b9317d55c95fa9b19620daa1a8383149b3d930d96a160",
+          "bytes": 159
+        },
+        {
+          "path": "artifacts/portability/windows-core-source/default-clr-windows-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/windows-core-source/default-clr-windows-results.json",
+          "sha256": "092783c3a22f7a27cb506e887c974e36497b9a5ca3699b2203442d2cf302cda1",
+          "bytes": 1222
+        },
+        {
+          "path": "artifacts/portability/windows-core-source/default-clr-linux-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/windows-core-source/default-clr-linux-results.json",
+          "sha256": "1ef69d7ab95cb7b17b059be9f6ae6b9566d654a2c533e7433b854452a4b190a4",
+          "bytes": 1212
+        },
+        {
+          "path": "artifacts/portability/windows-core-source/default-clr-native-load-proof.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/windows-core-source/default-clr-native-load-proof.json",
+          "sha256": "3c62625bb11375d8ecff10cf0856877f11e1395ead50364c8334bc110303647c",
+          "bytes": 556
+        },
+        {
+          "path": "artifacts/portability/windows-core-source/default-clr-traced-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/windows-core-source/default-clr-traced-results.json",
+          "sha256": "1ef69d7ab95cb7b17b059be9f6ae6b9566d654a2c533e7433b854452a4b190a4",
+          "bytes": 1212
+        },
+        {
+          "path": "artifacts/portability/windows-core-source/incremental-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/windows-core-source/incremental-results.json",
+          "sha256": "dc8232a1d21e391a0aac7bfe2698123bbf073a9537c7e3a6994eb5319a74f22e",
+          "bytes": 684
+        },
+        {
+          "path": "artifacts/portability/windows-core-source/build-windows-final.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/windows-core-source/build-windows-final.log",
+          "sha256": "8e273636a3abebce23d7cdec1d7541066a0c3ee4efced16aa04f30cd3d1a03ef",
+          "bytes": 802
+        },
+        {
+          "path": "artifacts/portability/windows-core-source/build-linux.log",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/windows-core-source/build-linux.log",
+          "sha256": "fb02cabb5a7fe5e613e1461266c4d8435a8793024b855b99d95f49ef6882a050",
+          "bytes": 990
+        },
+        {
+          "path": "artifacts/portability/windows-core-source/original.csproj",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/windows-core-source/original.csproj",
+          "sha256": "5294318a09fc0d1cb6039fc8a56f282da55e378c1bc77d8fe594699c989f7ecd",
+          "bytes": 1851
+        },
+        {
+          "path": "artifacts/portability/della-windows-core-review/review-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/della-windows-core-review/review-results.json",
+          "sha256": "1c7d0b8c00ca650e1d5380c53f14552f57d32a0389e613d2390117733299d7dd",
+          "bytes": 860
+        },
+        {
+          "path": "artifacts/portability/della-windows-core-review/replay-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/della-windows-core-review/replay-results.json",
+          "sha256": "523e29ec5a49b576b64f83480cd681b60c71c2bb4d8888e61fdc6eb5680eb845",
+          "bytes": 697
+        },
+        {
+          "path": "artifacts/portability/della-windows-core-review/Windows_NT-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/della-windows-core-review/Windows_NT-results.json",
+          "sha256": "12488d2f8ef584fdcc07adc5093b4eae13ba639379af1ba645ad68a36dba5b9f",
+          "bytes": 1211
+        },
+        {
+          "path": "artifacts/portability/della-windows-core-review/Unix-results.json",
+          "snapshotPath": "artifacts/portability/checkpoints/20261018-windows-core-il-component-reviewed/artifacts/portability/della-windows-core-review/Unix-results.json",
+          "sha256": "839da152c95144db5983f2386e9a5eba6bbf46404885cdb61d6c55da692fd11a",
+          "bytes": 1201
+        }
+      ]
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",
   "phase2Status": "public-startup-and-integrated-view-passed-performance-and-display-pending",
-  "phase3Status": "classic-package-passed-unchanged-nina-layout-failed-optional-ribbon-namespace-load",
+  "phase3Status": "classic-package-passed-optional-namespace-source-repair-passed-unchanged-nina-layout-replay-pending",
   "phase5Status": "native-absent-distance-repair-passed-packaged-gnome-replay-pending"
 }

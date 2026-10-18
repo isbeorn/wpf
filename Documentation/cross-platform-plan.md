@@ -97,9 +97,12 @@ software renderer rather than exact reproduction of its fixed-point sampler and
 8x8 edge grid. Preserve WPF sampling-mode selection, inherited drawing state and
 exact scientific source values. Qualify Linear interpolation with measured
 format-specific interior bounds and geometry-derived premultiplied edge checks.
-The calibration observed interior differences of 1-2/255 and edge-coverage
-differences up to 17/255; these are observations for that corpus, not a blanket
-pixel tolerance. NearestNeighbor may select an adjacent texel only at boundaries
+The initial calibration observed interior differences of 1-2/255 and edge-coverage
+differences up to 17/255. The larger qualified corpus requires case-specific
+interior bounds up to 3/255 and observes edge-coverage differences up to 32/255.
+These are observations for those cases, not a blanket pixel tolerance. Compare
+edge colors against an independently validated geometry coverage control from
+each backend. NearestNeighbor may select an adjacent texel only at boundaries
 justified by the samplers' coordinate arithmetic. Verify large image coordinates,
 both pan directions, flips, clipping and DPI before declaring those cases
 supported. Retain raw comparisons and document each qualified limit. HighQuality

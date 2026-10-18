@@ -204,8 +204,13 @@ layout while resolving `(Validation.Errors).CurrentItem.ErrorContent` in the
 original TextBox style. Its genuine Microsoft BAML maps the presentation xmlns
 to Ribbon and WindowsFormsIntegration as well as the core assemblies, although
 it references no Ribbon or WinForms control type. The schema loader eagerly
-requires every namespace candidate before resolving `Validation`. A narrow
-namespace-loading repair is in progress; this is not a NINA layout pass. The
+requires every namespace candidate before resolving `Validation`. Commit
+`3db204fb1` skips only genuinely absent optional namespace candidates while
+continuing to load available contributors. Required types, explicit assembly
+loads, malformed identities and dependency failures retain their errors. The
+source suite passes 11 checks and the unchanged Microsoft BAML oracle passes
+five checks on each OS, with independent replay. Fresh package qualification and
+the unchanged NINA layout replay remain pending. The
 Windows portable replay instead reaches the bundle's known lack of Windows
 HarfBuzz native assets. Stock Windows retains its separate six-check baseline.
 
@@ -312,9 +317,21 @@ while preserving WPF mode/state semantics and exact scientific source values.
 Calibration separates format-specific interior interpolation, geometry-derived
 edge coverage and coordinate-justified nearest-texel boundary choices. Observed
 1-2/255 interpolation and up to 17/255 edge-coverage differences are corpus
-measurements, not a global tolerance. Implementation, large-coordinate checks and
-native requalification remain in progress. HighQuality/Fant prefiltering remains
-required by the NINA image paths and is not qualified by that policy decision.
+measurements, not a global tolerance. Commit `dc621a155` implements
+inherited Linear and NearestNeighbor modes for visuals and retained drawing
+groups, including state restoration after exceptions. The larger axis-aligned
+CPU corpus passes 157 checks on Windows and Linux, with 145 stock-reference
+checks. Interior interpolation uses case-specific bounds up to 3/255. Edge
+colors use each backend's genuine geometry coverage control, independently
+checked against geometry; raw coverage differences reach 32/255 in this corpus.
+Adjacent nearest-texel choices are accepted only within precomputed coordinate
+uncertainty intervals, never through a global pixel-error allowance. Complete
+scientific source buffers remain exact. Independent review found a test blind
+spot where a blank image and blank coverage control could pass together; the
+repair rejects that case and 23 related corruptions without production changes.
+The original failures and both reviews remain preserved. HighQuality/Fant
+prefiltering remains required by the NINA image paths and is not qualified by
+these results. Fresh combined-package native display checks remain pending.
 
 The timings end at dispatcher/render callbacks, not confirmed presentation.
 Native observations occur outside those timers and do not prove the latest
@@ -325,6 +342,18 @@ Numerical latency, allocation and memory budgets remain unset. Raw runs, matchin
 source hashes and limitations are under
 `artifacts/portability/scientific-workload-reference/countermeasurement`; the
 earlier canonical Windows baseline remains unchanged.
+
+Commit `d76a12ce9` builds the complete pinned original
+`System.Private.Windows.Core` source as portable IL. Its 256 C# files are
+unchanged, with original generator inputs, resources, public identity and friend
+assemblies. This replaces the Windows ReadyToRun image-format barrier without
+duplicating WPF's managed data store or enabling OLE on Linux. Default-CLR
+managed DataObject construction and interface access pass on both OSes without a
+ReadyToRun environment switch. All 261 extracted source files match their
+pinned Git blobs, all 46 resource strings match the official helper and
+independent review passes. Normal shared-graph reference, package-profile and
+native clipboard integration remain separate work; this component proof is not
+a packaged clipboard qualification.
 
 The accepted bidi contract follows Unicode 17. All 91,707 Unicode bidi character level cases pass after a bounded correction to the pinned managed dependency. This algorithm result is separate from paragraph layout, fallback, glyph positioning and native editing qualification. Legacy Windows WPF bracket ordering and measured Display-mode metric differences are recorded compatibility differences, not silently relaxed test tolerances.
 
