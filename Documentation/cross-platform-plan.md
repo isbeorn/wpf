@@ -29,7 +29,7 @@ The initial promise is source compatibility for the pinned NINA corpus plus expl
 
 ## Source baseline and existing constraints
 
-The inspected WPF revision is `65d15adece1df9a73e3d1abc11f8bbf99e9fc7a9`. Its [global.json](../global.json) selects a .NET 12 alpha SDK, [Directory.Build.props](../Directory.Build.props) targets `net11.0` and [Versions.props](../eng/Versions.props) uses assembly major version 12. These settings must be reconciled into one supported build/runtime contract before implementation. Do not infer the baseline from the README.
+The inspected WPF revision is `65d15adece1df9a73e3d1abc11f8bbf99e9fc7a9`. Its [global.json](../global.json) selects a .NET 12 alpha SDK, [Directory.Build.props](../Directory.Build.props) targets `net11.0` and [Versions.props](../eng/Versions.props) uses assembly major version 12. The [baseline decision and build evidence](portability/runtime-baseline.md) retain this coherent upstream Windows build and select a separate opt-in .NET 10 portable product with assembly version 10 for NINA. Do not infer the baseline from the README.
 
 The candidate public NINA revision is [`4742afae0a09c79be772f23fcf163fb5852d2775`](https://github.com/isbeorn/nina/tree/4742afae0a09c79be772f23fcf163fb5852d2775), whose application targets .NET 10 Windows. A separate local NINA source tree supplied preliminary usage examples and differs from that public revision. Phase 0 must reproduce the inventory against the chosen revision and record dependency versions. Local counts or package versions are not release criteria.
 
