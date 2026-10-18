@@ -216,22 +216,29 @@ namespace MS.Internal.Portability.Rendering
             if (imageSource == null || rectangle.IsEmpty) return;
             if (!(imageSource is System.Windows.Media.Imaging.BitmapSource bitmap) || bitmap.PortableBuffer == null)
                 throw Unsupported("image sources without portable bitmap storage");
-            SKFilterMode filter = _bitmapScalingMode switch
+            SKSamplingOptions options = _bitmapScalingMode switch
             {
-                BitmapScalingMode.Linear => SKFilterMode.Linear,
-                BitmapScalingMode.NearestNeighbor => SKFilterMode.Nearest,
-                BitmapScalingMode.HighQuality => throw Unsupported("HighQuality/Fant bitmap sampling, which requires image prefiltering"),
+                BitmapScalingMode.Linear => new SKSamplingOptions(SKFilterMode.Linear),
+                BitmapScalingMode.NearestNeighbor => new SKSamplingOptions(SKFilterMode.Nearest),
+                BitmapScalingMode.HighQuality => new SKSamplingOptions(SKFilterMode.Linear, SKMipmapMode.Linear),
                 _ => throw Unsupported($"bitmap scaling mode {_bitmapScalingMode}")
             };
             using (SKBitmap pixels = bitmap.PortableBuffer.CreateDisplayBitmap())
             {
+                bool highQuality = _bitmapScalingMode == BitmapScalingMode.HighQuality;
+                // Only this private display copy is frozen. Skia can share it without copying the source pixels again.
+                if (highQuality) pixels.SetImmutable();
+                using SKImage image = highQuality
+                    ? SKImage.FromBitmap(pixels) ?? throw new InvalidOperationException("The portable high-quality display image could not be created.")
+                    : null;
                 SKMatrix sampling = new SKMatrix(
                     (float)(rectangle.Width / pixels.Width), 0, (float)rectangle.Left,
                     0, (float)(rectangle.Height / pixels.Height), (float)rectangle.Top, 0, 0, 1);
                 if (!_guidelines.IsEmpty) sampling = SKMatrix.Concat(Canvas.TotalMatrix, sampling);
-                using SKShader shader = pixels.ToShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp,
-                    new SKSamplingOptions(filter), sampling);
-                using SKShader precise = filter == SKFilterMode.Linear ? shader.WithColorFilter(_linearSamplingPrecision) : null;
+                using SKShader shader = highQuality
+                    ? image.ToShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, options, sampling)
+                    : pixels.ToShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, options, sampling);
+                using SKShader precise = options.Filter == SKFilterMode.Linear ? shader.WithColorFilter(_linearSamplingPrecision) : null;
                 using var paint = new SKPaint { Shader = precise ?? shader, IsAntialias = true };
                 using var path = new SKPath();
                 path.AddRect(ToRect(rectangle));

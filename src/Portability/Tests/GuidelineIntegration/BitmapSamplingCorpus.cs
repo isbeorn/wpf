@@ -5,6 +5,86 @@ using System.Windows.Media.Imaging;
 
 internal static class BitmapSamplingCorpus
 {
+    internal static byte[] CheckerBytes(int width, int height, PixelFormat format, int period)
+    {
+        int bytesPerPixel = format.BitsPerPixel / 8;
+        var bytes = new byte[width * height * bytesPerPixel];
+        for (int y = 0; y < height; y++) for (int x = 0; x < width; x++)
+        {
+            bool white = ((x / period + y / period) & 1) != 0;
+            int offset = (y * width + x) * bytesPerPixel;
+            if (format == PixelFormats.Pbgra32)
+            {
+                bytes[offset] = bytes[offset + 1] = bytes[offset + 2] = white ? (byte)255 : (byte)0;
+                bytes[offset + 3] = 255;
+            }
+            else for (int channel = 0; channel < bytesPerPixel / 2; channel++)
+            {
+                bytes[offset + channel * 2] = (byte)(x * 17 + y * 13 + channel * 19);
+                bytes[offset + channel * 2 + 1] = white ? (byte)255 : (byte)0;
+            }
+        }
+        return bytes;
+    }
+
+    internal static IEnumerable<BitmapSamplingCases.RasterCase> HighQualityCases(bool large)
+    {
+        foreach (PixelFormat format in new[] { PixelFormats.Gray16, PixelFormats.Rgb48, PixelFormats.Pbgra32 })
+            foreach (bool fullSize in large ? new[] { false, true } : new[] { false })
+            {
+                int width = fullSize ? 6000 : 64, height = fullSize ? 4000 : 32;
+                byte[] expected = CheckerBytes(width, height, format, fullSize ? 3 : 1);
+                byte[] caller = expected.ToArray();
+                BitmapSource source = BitmapSource.Create(width, height, 96, 96, format, null, caller, width * format.BitsPerPixel / 8);
+                Array.Clear(caller);
+                source.CopyPixels(caller, width * format.BitsPerPixel / 8, 0);
+                if (!caller.SequenceEqual(expected)) throw new InvalidOperationException("HQ changed scientific source bytes or caller ownership.");
+                var views = fullSize
+                    ? new[] { ("fit", 1184d / width, 1184d / width, (double?)13), ("half", .5, .5, (double?)88), ("one", 1d, 1d, (double?)null) }
+                    : new[] { ("one", 1d, 1d, (double?)null), ("up", 2.125, 2.125, (double?)null), ("reduced", .375, .375, (double?)5),
+                        ("five-eighths", .625, .625, (double?)35), ("threshold", .7, .7, (double?)44), ("asymmetric", .125, .75, (double?)1) };
+                foreach (var view in views)
+                    yield return new BitmapSamplingCases.RasterCase($"sampling-hq-{format}-{(fullSize ? "large-" : "")}{view.Item1}", source,
+                        new Rect(0, 0, width * view.Item2, height * view.Item3), new Vector(), new DpiScale(1, 1), BitmapScalingMode.HighQuality, Matrix.Identity, expected)
+                    {
+                        SurfaceWidth = fullSize ? 1184 : 32, SurfaceHeight = fullSize ? 811 : 24,
+                        SourceHash = Convert.ToHexString(SHA256.HashData(expected)), MaximumHighQualityContrast = view.Item4,
+                        MatchLinear = view.Item1 is "one" or "up", ExactTexels = view.Item1 == "one", GrayscaleSource = true
+                    };
+            }
+        foreach (var sample in AlphaEdgeCases())
+            yield return sample with
+            {
+                Name = sample.Name.Replace("sampling-uncovered", "sampling-hq-alpha"), Mode = BitmapScalingMode.Fant,
+                Dpi = new DpiScale(1.5, 1.25), Transform = new Matrix(-1, 0, 0, 1, 20, 0),
+                Clip = new Rect(0, 0, 8, 6), Guided = true
+            };
+        byte[] translucent = CheckerBytes(64, 32, PixelFormats.Pbgra32, 1);
+        for (int offset = 0; offset < translucent.Length; offset += 4)
+        {
+            byte alpha = translucent[offset];
+            translucent[offset] = alpha == 0 ? (byte)0 : (byte)127;
+            translucent[offset + 1] = alpha == 0 ? (byte)0 : (byte)63;
+            translucent[offset + 2] = alpha == 0 ? (byte)0 : (byte)191;
+            translucent[offset + 3] = alpha;
+        }
+        byte[] translucentCaller = translucent.ToArray();
+        BitmapSource translucentSource = BitmapSource.Create(64, 32, 96, 96, PixelFormats.Pbgra32, null, translucentCaller, 256);
+        Array.Clear(translucentCaller);
+        translucentSource.CopyPixels(translucentCaller, 256, 0);
+        if (!translucentCaller.SequenceEqual(translucent)) throw new InvalidOperationException("HQ alpha source/caller ownership changed.");
+        var alphaCase = new BitmapSamplingCases.RasterCase("sampling-hq-premultiplied-alpha-reduced", translucentSource,
+            new Rect(0, 0, 24, 12), new Vector(), new DpiScale(1, 1), BitmapScalingMode.HighQuality, Matrix.Identity, translucent)
+        { MeasureAlpha = true, MaximumHighQualityContrast = 5, HighQualityColorPerAlpha = [127, 63, 191, 255] };
+        yield return alphaCase;
+        yield return alphaCase with
+        {
+            Name = "sampling-hq-premultiplied-alpha-guided-edge", MaximumHighQualityContrast = null,
+            Pan = new Vector(.9375, .9375), Transform = new Matrix(-1, 0, 0, 1, 27, 0), Guided = true,
+            Clip = new Rect(0, 0, 23.5, 11.5)
+        };
+    }
+
     internal static IEnumerable<BitmapSamplingCases.RasterCase> AlphaEdgeCases()
     {
         foreach (byte alpha in new byte[] { 0, 1, 16, 128, 255 })

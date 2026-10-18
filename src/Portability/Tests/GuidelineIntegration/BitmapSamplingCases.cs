@@ -24,6 +24,12 @@ internal static class BitmapSamplingCases
         internal int SurfaceHeight { get; init; } = 24;
         internal string? SourceHash { get; init; }
         internal int? LinearColorLimit { get; init; }
+        internal double? MaximumHighQualityContrast { get; init; }
+        internal bool MatchLinear { get; init; }
+        internal bool ExactTexels { get; init; }
+        internal bool MeasureAlpha { get; init; }
+        internal byte[]? HighQualityColorPerAlpha { get; init; }
+        internal bool GrayscaleSource { get; init; }
     }
     private sealed record Scene(string Name, Visual Visual, DpiScale Dpi, RasterCase? Raster = null)
     {
@@ -74,9 +80,19 @@ internal static class BitmapSamplingCases
                 {
                     byte[] stockCoverage = large ? File.ReadAllBytes(Path.Combine(largeDirectory!, "stock-" + scenario.Name + ".coverage"))
                         : Convert.FromBase64String(reference.RootElement.EnumerateArray().Single(item => item.GetProperty("Name").GetString() == scenario.Name).GetProperty("coveragePixels").GetString()!);
-                    var statistics = scenario.Raster.Mode == BitmapScalingMode.Linear
-                        ? BitmapSamplingMath.CompareLinear(pixels, stock, coverage!, stockCoverage, scenario.Raster, width, height)
-                        : BitmapSamplingMath.CompareNearest(pixels, stock, coverage!, stockCoverage, scenario.Raster, width, height);
+                    var statistics = scenario.Raster.Mode switch
+                    {
+                        BitmapScalingMode.Linear => BitmapSamplingMath.CompareLinear(pixels, stock, coverage!, stockCoverage, scenario.Raster, width, height),
+                        BitmapScalingMode.HighQuality => BitmapSamplingMath.CompareHighQuality(pixels, stock, coverage!, stockCoverage, scenario.Raster, width, height,
+                            scenario.Raster.MatchLinear ? render(CreateRasterVisual(scenario.Raster with { Mode = BitmapScalingMode.Linear }, false), scenario.Dpi, width, height) : null),
+                        _ => BitmapSamplingMath.CompareNearest(pixels, stock, coverage!, stockCoverage, scenario.Raster, width, height)
+                    };
+                    if (scenario.Raster.Mode == BitmapScalingMode.HighQuality && scenario.Raster.MaximumHighQualityContrast == 5)
+                    {
+                        byte[] fallback = render(CreateRasterVisual(scenario.Raster with { Mode = BitmapScalingMode.Linear }, false), scenario.Dpi, width, height);
+                        if (BitmapSamplingMath.CompareHighQuality(fallback, stock, coverage!, stockCoverage, scenario.Raster, width, height, null).Failures == 0)
+                            throw new InvalidOperationException("The source-derived HQ quality assertion accepted an always-Linear fallback.");
+                    }
                     results.Add(new Result(scenario.Name, statistics.Failures == 0, statistics.FirstFailure, large ? null : Convert.ToBase64String(pixels), statistics, rasterFile, rasterHash, scenario.Raster.SourceHash,
                         large ? null : Convert.ToBase64String(coverage!), coverageFile, coverageHash));
                     continue;
@@ -91,6 +107,12 @@ internal static class BitmapSamplingCases
 #if !STOCK
         try
         {
+            BitmapHighQualityCases.CheckRetainedState();
+            results.Add(new Result("sampling-highquality-retained-state-mutation-and-alias", true));
+        }
+        catch (Exception exception) { results.Add(new Result("sampling-highquality-retained-state-mutation-and-alias", false, exception.ToString())); }
+        try
+        {
             CheckCoverageControlCorruption(reference.RootElement);
             results.Add(new Result("sampling-independent-coverage-corruption-guards", true));
         }
@@ -103,10 +125,10 @@ internal static class BitmapSamplingCases
         catch (Exception exception) { results.Add(new Result("sampling-retained-mode-and-bitmap-dispatcher-repaint", false, exception.ToString())); }
         try
         {
-            CheckUnsupportedQualityRecovery(reference.RootElement);
-            results.Add(new Result("sampling-highquality-fant-failure-and-recovery", true));
+            CheckQualityFailureRecovery(reference.RootElement);
+            results.Add(new Result("sampling-quality-opacity-mask-failure-and-recovery", true));
         }
-        catch (Exception exception) { results.Add(new Result("sampling-highquality-fant-failure-and-recovery", false, exception.ToString())); }
+        catch (Exception exception) { results.Add(new Result("sampling-quality-opacity-mask-failure-and-recovery", false, exception.ToString())); }
 #endif
         return results;
     }
@@ -193,13 +215,14 @@ internal static class BitmapSamplingCases
 
         foreach (var retained in RetainedCases()) yield return retained;
 
-        foreach (RasterCase sample in CalibrationCases().Concat(BitmapSamplingCorpus.AlphaEdgeCases()).Concat(large ? BitmapSamplingCorpus.LargeCases() : []))
+        foreach (RasterCase sample in CalibrationCases().Concat(BitmapSamplingCorpus.AlphaEdgeCases()).Concat(large ? BitmapSamplingCorpus.LargeCases() : [])
+            .Concat(BitmapSamplingCorpus.HighQualityCases(large)))
         {
             yield return new Scene(sample.Name, CreateRasterVisual(sample, false), sample.Dpi, sample);
         }
     }
 
-    private static DrawingVisual CreateRasterVisual(RasterCase sample, bool coverage)
+    internal static DrawingVisual CreateRasterVisual(RasterCase sample, bool coverage)
     {
         var group = new DrawingGroup();
         RenderOptions.SetBitmapScalingMode(group, sample.Mode);
@@ -305,13 +328,15 @@ internal static class BitmapSamplingCases
         catch (TargetInvocationException exception) { ExceptionDispatchInfo.Capture(exception.InnerException!).Throw(); throw; }
     }
 
-    private static void CheckUnsupportedQualityRecovery(JsonElement references)
+    private static void CheckQualityFailureRecovery(JsonElement references)
     {
         BitmapSource source = BitmapSource.Create(2, 2, 96, 96, PixelFormats.Pbgra32, null,
             new byte[] { 0, 0, 0, 255, 128, 0, 128, 255, 128, 128, 0, 255, 0, 128, 128, 255 }, 8);
         byte[] expectedLinear = Convert.FromBase64String(references.EnumerateArray().Single(item =>
             item.GetProperty("Name").GetString() == "sampling-retained-lowquality-alias-linear").GetProperty("pixels").GetString()!);
-        var element = new ImageElement(drawing => drawing.DrawImage(source, new Rect(0, 0, 8, 8)));
+        var failingGroup = new DrawingGroup();
+        failingGroup.Children.Add(new ImageDrawing(source, new Rect(0, 0, 8, 8)));
+        var element = new ImageElement(drawing => drawing.DrawDrawing(failingGroup));
         element.Measure(new Size(32, 24));
         element.Arrange(new Rect(0, 0, 32, 24));
         Type targetType = typeof(Visual).Assembly.GetType("MS.Internal.Portability.Rendering.PortableRenderTarget", true)!;
@@ -323,10 +348,12 @@ internal static class BitmapSamplingCases
         foreach (BitmapScalingMode mode in new[] { BitmapScalingMode.HighQuality, BitmapScalingMode.Fant })
         {
             RenderOptions.SetBitmapScalingMode(element, mode);
+            failingGroup.OpacityMask = Brushes.White;
             int previousFrames = frames;
-            ExpectQualityFailure(() => Invoke(targetType, target, "Render"));
+            ExpectMaskFailure(() => Invoke(targetType, target, "Render"));
             if (frames != previousFrames) throw new InvalidOperationException("A failed quality frame raised FrameRendered.");
             element.ClearValue(RenderOptions.BitmapScalingModeProperty);
+            failingGroup.OpacityMask = null;
             Invoke(targetType, target, "Render");
             using var snapshot = (SKBitmap)Invoke(targetType, target, "Snapshot")!;
             Compare(snapshot.GetPixelSpan().ToArray(), expectedLinear, "quality-frame-recovery");
@@ -342,8 +369,9 @@ internal static class BitmapSamplingCases
             var walker = (DrawingContext)Activator.CreateInstance(walkerType, BindingFlags.Instance | BindingFlags.NonPublic, null, [surface.Canvas, precision], null)!;
             var group = new DrawingGroup();
             RenderOptions.SetBitmapScalingMode(group, mode);
+            group.OpacityMask = Brushes.White;
             group.Children.Add(new ImageDrawing(source, new Rect(0, 0, 8, 8)));
-            ExpectQualityFailure(() => walker.DrawDrawing(group));
+            ExpectMaskFailure(() => walker.DrawDrawing(group));
             walker.DrawImage(source, new Rect(0, 0, 8, 8));
             surface.Canvas.Flush();
             using SKImage image = surface.Snapshot();
@@ -352,11 +380,11 @@ internal static class BitmapSamplingCases
         }
     }
 
-    private static void ExpectQualityFailure(Action action)
+    private static void ExpectMaskFailure(Action action)
     {
         try { action(); }
-        catch (NotSupportedException exception) when (exception.Message.Contains("HighQuality/Fant", StringComparison.Ordinal)) { return; }
-        throw new InvalidOperationException("Unimplemented quality prefiltering did not raise its named diagnostic.");
+        catch (NotSupportedException exception) when (exception.Message.Contains("opacity mask", StringComparison.Ordinal)) { return; }
+        throw new InvalidOperationException("Unsupported opacity mask did not raise its named diagnostic.");
     }
 #endif
 
@@ -470,7 +498,7 @@ internal static class BitmapSamplingCases
             throw new InvalidOperationException($"{name}: {count} differing channels, maximum {maximum}; first pixel ({first / 4 % 32},{first / 4 / 32}) channel {first % 4} was {actual[first]}, stock WPF was {expected[first]}.");
     }
 
-    private sealed class ImageElement(Action<DrawingContext> draw) : UIElement
+    internal sealed class ImageElement(Action<DrawingContext> draw) : UIElement
     {
         internal int RenderCount { get; private set; }
         private VisualCollection? _children;

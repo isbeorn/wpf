@@ -88,8 +88,8 @@ DrawingGroups restore the previous state, including exception paths. Tests cover
 ancestor/local override and clear in both directions, siblings, drawing groups,
 guidelines, bitmap mutation and successful-frame callbacks. A persistent target
 repaints those changes while the UIElement's OnRender count remains one.
-HighQuality/Fant raises a named prefiltering diagnostic. Its implementation and
-qualification are a separate required slice; no Linear fallback is claimed.
+HighQuality/Fant selects the pinned native trilinear mip sampler. Its source-copy
+ownership and measured quality profile are described below.
 
 The target owns one identity color filter for its lifetime, including resize.
 Walkers borrow it and image shaders/paints remain draw-local. Target disposal and
@@ -139,8 +139,8 @@ in the raw results and must be explained by permitted source coordinates.
 
 ## Large sampling run
 
-The ordinary fixture includes 115 checks, including the unchanged 44 guideline
-checks. `--large-sampling` adds 42 cases with 6000x4000 Gray16, RGB48 and Pbgra32
+The ordinary fixture includes 141 checks, including the unchanged 44 guideline
+checks. `--large-sampling` adds 51 cases with 6000x4000 Gray16, RGB48 and Pbgra32
 sources and 1184x811 output. Inputs include independent 16-bit low bytes,
 coordinate-coded high bytes and premultiplied alpha zones. Caller arrays are
 cleared and complete CopyPixels results must retain the exact input bytes.
@@ -162,4 +162,45 @@ source/raster hashes and full-raster statistics. Small stock color/coverage
 rasters are checked in as StockBitmapSamplingReference.json. The opt-in large
 run has a 240-second watchdog; ordinary runs retain the 30-second watchdog.
 This qualifies the measured CPU sampling profile. It does not assert native
-window presentation parity, arbitrary transformed-image parity or Fant support.
+window presentation parity or arbitrary transformed-image parity.
+
+## Native HighQuality/Fant
+
+Numeric alias 2 selects Linear filtering with Linear mip-level interpolation.
+Only the new private display bitmap is marked immutable and wrapped in a
+draw-local SKImage, allowing Skia to share its pixels. The shader, image and
+private bitmap are disposed in that order. Scientific source storage, caller
+buffers, transforms, clips, guidelines and the target-owned precision filter keep
+their existing responsibilities. No retained source/image cache is added.
+
+This is native Skia minification, not a reproduction of Windows Fant pixels.
+Pinned Skia's mip-level selection has a sharpening bias, so filtering around
+0.625/0.7 is weaker than stock WPF; asymmetric shrinking can blur the less
+reduced axis. SkiaSharp 3.119.4 exposes no explicit mip creation/status API.
+Native mip acquisition can fall back to the base image. That backend limitation
+is documented rather than reported as a managed allocation-success guarantee.
+
+The original 157 portable/145 stock checks and raw evidence are preserved.
+The expanded ordinary fixture has 141 checks and the large run 192; stock has 179.
+The obsolete HQ-unsupported assertion now exercises real opacity-mask failure
+and recovery. New retained checks cover HQ/Fant alias equality, ancestor/local
+override and clear, siblings, nested groups, failed-group restoration and bitmap
+mutation while OnRender remains recorded once.
+
+HQ full-raster differences against stock are reported without a Windows pixel
+tolerance. Every channel still receives extent, transparency and premultiplication
+checks against independently validated geometry controls. Opaque grayscale
+sources must retain equal RGB channels. Uniform alpha/color sources are checked
+at every edge. A transparent/colored checker also preserves its source-derived
+premultiplied color/alpha ratio within two byte quantizations, including guided,
+clipped reflected edges; no division by low alpha is used.
+
+Source-derived checker quality checks use a geometry-defined inner rectangle.
+Mean must remain 126..129 and RMS contrast about 127.5 must not exceed these
+case-specific limits: 0.375 reduction 5, 0.625 reduction 35, 0.7 reduction 44,
+asymmetric 0.125x/0.75x 1, 24 MP fit 13 and 24 MP half 88. These are bounds for the
+declared patterns, not general image tolerances. The 0.375 assertion explicitly
+rejects an actual Linear fallback on the same source. At 1:1 HQ also satisfies
+independent nearest-source texel checks; both 1:1 and magnification must match
+the native Linear raster exactly. Gray16/RGB48 low bytes remain independent and
+complete source CopyPixels comparisons remain exact after clearing caller data.

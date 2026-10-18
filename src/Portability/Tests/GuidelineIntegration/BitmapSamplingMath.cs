@@ -4,7 +4,70 @@ internal static class BitmapSamplingMath
 {
     internal sealed record Statistics(int DifferentChannels, int MaximumDifference, int InteriorMaximum,
         int EdgeMaximum, int BoundaryPixels, int Failures, string? FirstFailure,
-        string? BoundaryExample = null, double MaximumCoordinateUncertainty = 0);
+        string? BoundaryExample = null, double MaximumCoordinateUncertainty = 0,
+        double? HighQualityMean = null, double? HighQualityContrast = null);
+
+    internal static Statistics CompareHighQuality(byte[] actual, byte[] stock, byte[] geometry, byte[] stockGeometry,
+        BitmapSamplingCases.RasterCase sample, int width, int height, byte[]? linear)
+    {
+        EnsureAxisAligned(sample);
+        if (actual.Length != checked(width * height * 4) || stock.Length != actual.Length ||
+            geometry.Length != width * height || stockGeometry.Length != width * height)
+            throw new InvalidOperationException("HQ raster or coverage dimensions differ.");
+        int failures = 0, different = 0, maximum = 0, interiorMaximum = 0, edgeMaximum = 0;
+        string? first = null;
+        void Fail(int x, int y, string reason) { failures++; first ??= $"{sample.Name}: ({x},{y}): {reason}"; }
+        ValidateGeometryControls(geometry, stockGeometry, sample, width, height, Fail);
+        byte[]? uniform = UniformPremultipliedSource(sample);
+        bool opaque = sample.Source.Format != PixelFormats.Pbgra32 ||
+            Enumerable.Range(0, sample.SourceBytes.Length / 4).All(index => sample.SourceBytes[index * 4 + 3] == 255);
+        double sum = 0, squared = 0;
+        int count = 0;
+        for (int y = 0; y < height; y++) for (int x = 0; x < width; x++)
+        {
+            int pixel = y * width + x, offset = pixel * 4;
+            if (sample.GrayscaleSource && (actual[offset] != actual[offset + 1] || actual[offset] != actual[offset + 2]))
+                Fail(x, y, "HQ introduced color into the grayscale display source.");
+            if (opaque && (actual[offset + 3] != geometry[pixel] || stock[offset + 3] != stockGeometry[pixel]))
+                Fail(x, y, "Opaque HQ alpha differs from its independently validated geometry control.");
+            for (int channel = 0; channel < 4; channel++)
+            {
+                int a = actual[offset + channel], e = stock[offset + channel], difference = Math.Abs(a - e);
+                if (difference != 0) different++;
+                maximum = Math.Max(maximum, difference);
+                if (geometry[pixel] == 255 && stockGeometry[pixel] == 255) interiorMaximum = Math.Max(interiorMaximum, difference);
+                else edgeMaximum = Math.Max(edgeMaximum, difference);
+                if (channel < 3 && (a > actual[offset + 3] || e > stock[offset + 3])) Fail(x, y, "HQ color is not premultiplied.");
+                if ((geometry[pixel] == 0 && a != 0) || (stockGeometry[pixel] == 0 && e != 0)) Fail(x, y, "HQ exterior is not transparent.");
+                if (uniform != null && (Math.Abs(a - uniform[channel] * geometry[pixel] / 255d) > 1 ||
+                    Math.Abs(e - uniform[channel] * stockGeometry[pixel] / 255d) > 1)) Fail(x, y, "HQ changed uniform source color or alpha at an edge.");
+                if (sample.HighQualityColorPerAlpha is byte[] color && channel < 3 &&
+                    (Math.Abs(a * 255 - color[channel] * actual[offset + 3]) > 2 * 255 ||
+                    Math.Abs(e * 255 - color[channel] * stock[offset + 3]) > 2 * 255))
+                    Fail(x, y, "HQ changed the source-derived premultiplied color/alpha relationship.");
+                if (linear != null && a != linear[offset + channel]) Fail(x, y, "HQ 1:1/magnification differs from native Linear.");
+                if (sample.MaximumHighQualityContrast != null && (sample.MeasureAlpha ? channel == 3 : channel < 3) && x >= sample.Rectangle.Left + 2 &&
+                    x + 3 <= sample.Rectangle.Right && y >= sample.Rectangle.Top + 2 && y + 3 <= sample.Rectangle.Bottom)
+                { sum += a; squared += (a - 127.5) * (a - 127.5); count++; }
+            }
+        }
+        double? mean = count == 0 ? null : sum / count, contrast = count == 0 ? null : Math.Sqrt(squared / count);
+        if (sample.MaximumHighQualityContrast is double limit)
+        {
+            if (!sample.Transform.IsIdentity || sample.Pan != new System.Windows.Vector() || sample.Dpi.DpiScaleX != 1 || sample.Dpi.DpiScaleY != 1)
+                throw new InvalidOperationException("HQ checker contrast requires its declared untransformed geometry.");
+            if (mean == null || mean < 126 || mean > 129 || contrast > limit)
+                Fail(0, 0, $"HQ checker mean {mean}, contrast {contrast} exceeds the declared mean 126..129/contrast {limit} profile.");
+        }
+        if (sample.ExactTexels)
+        {
+            Statistics exact = CompareNearest(actual, stock, geometry, stockGeometry, sample, width, height);
+            failures += exact.Failures;
+            first ??= exact.FirstFailure;
+        }
+        return new Statistics(different, maximum, interiorMaximum, edgeMaximum, 0, failures, first,
+            HighQualityMean: mean, HighQualityContrast: contrast);
+    }
 
     internal static Statistics CompareNearest(byte[] actual, byte[] stock, byte[] actualGeometry, byte[] stockGeometry, BitmapSamplingCases.RasterCase sample, int width, int height)
     {
