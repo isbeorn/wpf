@@ -3,6 +3,7 @@
   <ItemGroup>
     <Compile Include="../RuntimeAssemblyEvidence.cs" />
     <ProjectReference Include="../Fixture/Fixture.csproj" />
+    <ProjectReference Include="../NamespaceContributor/NamespaceContributor.csproj" />
     <ProjectReference Include="../../../Framework/PresentationFramework-SystemCore/PresentationFramework-SystemCore.csproj" />
     <ProjectReference Include="../../../Framework/PresentationFramework-SystemData/PresentationFramework-SystemData.csproj" />
     <ProjectReference Include="../../../Framework/PresentationFramework-SystemDrawing/PresentationFramework-SystemDrawing.csproj" />

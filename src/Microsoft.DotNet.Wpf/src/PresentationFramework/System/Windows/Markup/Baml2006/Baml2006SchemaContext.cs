@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.IO;
 using System.Reflection;
 using System.Xaml;
 using System.Xaml.Schema;
@@ -446,11 +447,49 @@ namespace System.Windows.Baml2006
             {
                 foreach (short assembly in assemblies)
                 {
+#if PORTABLE_WPF
+                    try
+                    {
+                        GetAssembly(assembly);
+                    }
+                    catch (FileNotFoundException exception) when (IsMissingXmlnsAssembly(exception, GetAssemblyName(assembly)))
+                    {
+                        // A namespace can include optional assemblies that do not define the requested type.
+                    }
+#else
                     // Ensure that the assembly is loaded
                     GetAssembly(assembly);
+#endif
                 }
             }
         }
+
+#if PORTABLE_WPF
+        private static bool IsMissingXmlnsAssembly(FileNotFoundException exception, string requestedIdentity)
+        {
+            if (string.IsNullOrEmpty(exception.FileName) || exception.InnerException != null)
+            {
+                return false;
+            }
+
+            try
+            {
+                AssemblyName missing = new AssemblyName(exception.FileName);
+                AssemblyName requested = new AssemblyName(requestedIdentity);
+                return string.Equals(missing.Name, requested.Name, StringComparison.OrdinalIgnoreCase)
+                    && MS.Internal.PresentationFramework.SafeSecurityHelper.IsSameKeyToken(
+                        missing.GetPublicKeyToken() ?? Array.Empty<byte>(), requested.GetPublicKeyToken() ?? Array.Empty<byte>());
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+            catch (FileLoadException)
+            {
+                return false;
+            }
+        }
+#endif
 
         private Assembly ResolveAssembly(BamlAssembly bamlAssembly)
         {

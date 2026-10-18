@@ -9,11 +9,19 @@
   <ItemGroup>
     <ProjectReference Include="../../../Framework/PresentationFramework/PresentationFramework.csproj" />
     <Compile Include="../../MarkupIntegration/Fixture/ProbeView.cs" />
+    <Compile Include="NamespaceFixtureTypes.cs" />
     <Page Include="../../MarkupIntegration/Fixture/Views/Orbit View Ω.xaml" Link="Views/Orbit View Ω.xaml" />
     <Page Include="../../MarkupIntegration/Fixture/Dictionaries/Palette.xaml" Link="Dictionaries/Palette.xaml" />
+    <Page Include="NamespaceValidation.xaml" />
     <Resource Include="../../MarkupIntegration/Fixture/Assets/CaseSensitive Ω.txt" Link="Assets/CaseSensitive Ω.txt" />
     <Resource Include="Assets/Opaque Payload Ω.fixtureopaque" />
     <Resource Include="Assets/Opaque Payload Ω.fixtureopaque" Link="Assets/NoExtension Ω" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Controls.Ribbon">
+      <HintPath>$(NuGetPackageRoot)/microsoft.windowsdesktop.app.runtime.win-x64/10.0.13/runtimes/win-x64/lib/net10.0/System.Windows.Controls.Ribbon.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
   <Import Project="../../../Framework/Build/PortableWpfReferences.targets" />

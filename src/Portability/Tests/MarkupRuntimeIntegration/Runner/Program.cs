@@ -37,6 +37,10 @@ internal static class Program
             return failed ? 1 : 0;
         }
         Check("actual-portable-framework-assembly-identities", PortableAssemblies);
+        Check("baml-optional-namespace-assembly", NamespaceResolutionChecks.MissingNamespaceCandidate);
+        Check("baml-loads-available-namespace-contributor", NamespaceResolutionChecks.AvailableNamespaceContributor);
+        Check("baml-explicit-assembly-and-dependency-errors", NamespaceResolutionChecks.RequiredAssemblyFailures);
+        Check("compiled-attached-validation-template", NamespaceResolutionChecks.CompiledValidationTemplate);
         Check("portable-message-font-profile-and-real-formatting", VerifyMessageFont);
         Check("text-element-inherits-portable-message-font", VerifyTextElement);
         Check("real-baml-usercontrol-construction", () =>

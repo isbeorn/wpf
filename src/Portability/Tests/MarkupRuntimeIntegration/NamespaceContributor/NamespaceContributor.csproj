@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Portability.Markup.NamespaceContributor</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../Framework/System.Xaml/System.Xaml.csproj" />
+  </ItemGroup>
+</Project>
