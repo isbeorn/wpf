@@ -9,5 +9,7 @@
   <ItemGroup>
     <Compile Include="../Program.cs" Link="Program.cs" />
     <Compile Include="../OutlineCases.cs" Link="OutlineCases.cs" />
+    <Compile Include="../BoundsCases.cs" Link="BoundsCases.cs" />
+    <None Include="../BoundsPrecisionReference.json" Link="BoundsPrecisionReference.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

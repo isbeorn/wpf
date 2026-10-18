@@ -3,6 +3,12 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Media;
 
+if (args.Length == 1 && args[0] == "--capture-bounds-precision")
+{
+    Console.WriteLine(JsonSerializer.Serialize(BoundsCases.CapturePrecision(), new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
+
 var checks = new List<object>();
 var failed = false;
 var rectangle = new RectangleGeometry(new Rect(10, 10, 20, 20));
@@ -110,6 +116,7 @@ Reject("unsupported-mixed-end-caps", () => line.StrokeContains(new Pen(Brushes.R
 #endif
 
 OutlineCases.Run(Check);
+BoundsCases.Run(Check);
 Console.WriteLine(JsonSerializer.Serialize(new
 {
     probe = "actual-geometry-containment",

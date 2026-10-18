@@ -127,6 +127,9 @@ namespace System.Windows.Media
         /// </summary>
         internal virtual Rect GetBoundsInternal(Pen pen, Matrix matrix, double tolerance, ToleranceType type)
         {
+#if PORTABLE_WPF
+            return MS.Internal.Portability.Rendering.SkiaGeometry.GetRenderBounds(this, pen, matrix, tolerance, type);
+#else
             if (IsObviouslyEmpty())
             {
                 return Rect.Empty;
@@ -141,6 +144,7 @@ namespace System.Windows.Media
                 tolerance,
                 type,
                 skipHollows: true);
+#endif
         }
         
         /// <summary>
@@ -165,6 +169,11 @@ namespace System.Windows.Media
             ToleranceType type,
             bool fSkipHollows)
         {
+#if PORTABLE_WPF
+            return MS.Internal.Portability.Rendering.SkiaGeometry.GetRenderBounds(
+                Pen.ContributesToBounds(pen) ? pen : null, *pWorldMatrix, pPoints, pTypes, pointCount, segmentCount,
+                pGeometryMatrix == null ? Matrix.Identity : *pGeometryMatrix, tolerance, type);
+#else
             MIL_PEN_DATA penData;
             double[] dashArray = null;
 
@@ -218,6 +227,7 @@ namespace System.Windows.Media
             }
 
             return bounds;
+#endif
         }
 
         internal virtual void TransformPropertyChangedHook(DependencyPropertyChangedEventArgs e)

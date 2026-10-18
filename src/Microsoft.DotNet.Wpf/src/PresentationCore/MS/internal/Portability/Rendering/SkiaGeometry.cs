@@ -9,7 +9,7 @@ using SkiaSharp;
 
 namespace MS.Internal.Portability.Rendering
 {
-    internal static class SkiaGeometry
+    internal static partial class SkiaGeometry
     {
         internal static Rect GetBounds(Geometry geometry)
         {

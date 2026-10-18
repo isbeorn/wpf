@@ -9,6 +9,47 @@ using SkiaSharp;
 
 var checks = new List<object>();
 var failed = false;
+Run("retained-command-bounds-survive-render-and-mutation", () =>
+{
+    var transform = new MatrixTransform(2, 0, 0, 3, 8, 9);
+    var root = new DrawingVisual();
+    using (DrawingContext drawing = root.RenderOpen())
+    {
+        drawing.PushTransform(transform);
+        drawing.DrawRectangle(Brushes.Red, new Pen(Brushes.Blue, 2), new Rect(0, 0, 10, 10));
+        drawing.Pop();
+    }
+    Rect before = VisualTreeHelper.GetContentBounds(root);
+    Require(before == new Rect(6, 6, 24, 36), $"Retained bounds before rendering were {before}.");
+    using var target = new Target(root, 48, 56);
+    Drain();
+    Require(VisualTreeHelper.GetContentBounds(root) == before, "Rendering changed retained rectangle bounds.");
+    using (SKBitmap pixels = target.Snapshot()) Pixel(pixels, 16, 18, SKColors.Red);
+    Matrix shifted = transform.Matrix;
+    shifted.OffsetX = 12;
+    transform.Matrix = shifted;
+    Drain();
+    Require(VisualTreeHelper.GetContentBounds(root) == new Rect(10, 6, 24, 36), "Retained transform mutation did not update command bounds.");
+    using SKBitmap moved = target.Snapshot();
+    Pixel(moved, 7, 18, SKColors.Transparent);
+    Pixel(moved, 20, 18, SKColors.Red);
+});
+Run("retained-cubic-geometry-bounds-survive-render", () =>
+{
+    var curve = new PathGeometry([new PathFigure(new Point(0, 0),
+        [new BezierSegment(new Point(0, 20), new Point(20, 20), new Point(20, 0), true)], true)])
+        { Transform = new MatrixTransform(2, 0, 0, 3, 4, 8) };
+    var root = new DrawingVisual();
+    using (DrawingContext drawing = root.RenderOpen()) drawing.DrawGeometry(Brushes.Red, null, curve);
+    Rect before = VisualTreeHelper.GetContentBounds(root);
+    Require(before == new Rect(4, 8, 40, 45), $"Retained cubic bounds were {before}.");
+    using var target = new Target(root, 52, 60);
+    Drain();
+    Require(VisualTreeHelper.GetContentBounds(root) == before, "Rendering changed retained cubic bounds.");
+    using SKBitmap pixels = target.Snapshot();
+    Pixel(pixels, 24, 24, SKColors.Red);
+    Pixel(pixels, 24, 56, SKColors.Transparent);
+});
 Run("outlined-geometry-retains-union-pixels", () =>
 {
     var geometry = new GeometryGroup { FillRule = FillRule.Nonzero };

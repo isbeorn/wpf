@@ -2,6 +2,7 @@
   <PropertyGroup><OutputType>Exe</OutputType><DefineConstants>$(DefineConstants);PORTABLE_GEOMETRY_TESTS</DefineConstants></PropertyGroup>
   <ItemGroup>
     <Compile Remove="Reference/**" />
+    <None Update="BoundsPrecisionReference.json" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" />
     <ProjectReference Include="../../Framework/WindowsBase/WindowsBase.csproj" />
   </ItemGroup>

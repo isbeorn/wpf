@@ -18,6 +18,7 @@ The behavior checklist covers:
 - Actual recorded clipped and transformed rectangles with composite opacity.
 - Rounded rectangle radii clamped independently on each axis, through both retained geometry and the direct drawing command.
 - A real outlined Boolean union preserving the source geometry's retained pixels.
+- Genuine rectangle-command and cubic-geometry content bounds before and after retained rendering, including transform mutation and corresponding changed pixels.
 - Real `UIElement.Measure`/`Arrange`, retained `OnRender` pixels, brush invalidation and `InvalidateVisual`/`UpdateLayout` recording.
 - Brush and transform mutation repainting without another `RenderOpen`, including restoring values.
 - Content replacement removing subscriptions to the original resources, checked through actual dispatcher render postings.
