@@ -21,15 +21,24 @@ internal static class Program
     [STAThread]
     public static int Main(string[] args)
     {
-        var checks = new List<object>(); bool failed = false;
-        using var watchdog = new Timer(_ => Environment.Exit(3), null, TimeSpan.FromSeconds(45), Timeout.InfiniteTimeSpan);
+        if (args.Length == 2 && args[0] == "--audit-complete-view-results") return AuditCompleteViewResults(args[1]);
+        var checks = new List<CheckResult>(); bool failed = false;
+        bool completeView = args.Contains("--complete-view");
+        using var watchdog = new Timer(_ =>
+        {
+            if (completeView) Console.WriteLine(JsonSerializer.Serialize(new { probe="complete-portable-wpf-view", os=System.Runtime.InteropServices.RuntimeInformation.OSDescription,
+                scope="Packaged unchanged view watchdog", checks=new[] { new { name="watchdog", status="fail", detail="The complete view workflow exceeded 45 seconds." } } }));
+            Environment.Exit(3);
+        }, null, TimeSpan.FromSeconds(45), Timeout.InfiniteTimeSpan);
+        bool interactive = completeView && !args.Contains("--verify");
+        if (interactive) watchdog.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
         void Check(string name, Action action)
         {
-            try { action(); checks.Add(new { name, status="pass", detail="Observed through packaged framework assemblies." }); }
-            catch (Exception exception) { failed=true; checks.Add(new { name, status="fail", detail=exception.ToString() }); }
+            try { action(); checks.Add(new(name,"pass","Observed through packaged framework assemblies.")); }
+            catch (Exception exception) { failed=true; checks.Add(new(name,"fail",exception.ToString())); }
         }
         X11Fixture? native = null;
-        if (args.Contains("--native"))
+        if (args.Contains("--native") || completeView)
         {
             Check("native-startup", () =>
             {
@@ -37,6 +46,16 @@ internal static class Program
                 NativeWindowHost.InitializeForCurrentThread(Avalonia.AppBuilder.Configure<Avalonia.Application>());
             });
         }
+        if (completeView)
+        {
+            Check("complete-view-setup-and-cleanup", () =>
+            {
+                Require(native is not null, "Native startup failed.");
+                CompleteViewWorkflow.Run(new X11CompleteViewDesktop(native!), interactive, Check, Wait);
+            });
+        }
+        else
+        {
         View? view = null;
         Check("application-definition-and-xclass-baml", () =>
         {
@@ -125,20 +144,6 @@ internal static class Program
             text.Dispatcher.Invoke(()=>{},DispatcherPriority.ApplicationIdle);
             Require(text.Text=="9" && ((SolidColorBrush)dictionary["FixtureAccent"]).Color.ToString()=="#FF1177BB","Unchanged dictionary or templated-parent binding differed.");
         });
-        Check("runtime-manifest-bytes-and-compile-contract-exclusion",()=>
-        {
-            var manifest=XDocument.Load(Path.Combine(AppContext.BaseDirectory,"PortableWpf/RuntimeManifest.xml"));
-            foreach(var file in manifest.Root!.Elements("file"))
-            {
-                var name=Path.GetFileName((string)file.Attribute("path")!);
-                var candidates=new[]{Path.Combine(AppContext.BaseDirectory,name),Path.Combine(AppContext.BaseDirectory,(string)file.Attribute("path")!)}.Distinct().Where(File.Exists).ToArray();
-                Require(candidates.Length==1,"Runtime asset is absent or has ambiguous deployment locations: "+name);
-                Require(Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(candidates[0])))==(string?)file.Attribute("sha256"),"Runtime manifest mismatch: "+name);
-            }
-            foreach(var name in new[]{"System.Private.Windows.Core","System.Private.Windows.GdiPlus","DirectWriteForwarder","ReachFramework","System.Printing","PresentationUI"})
-                Require(!File.Exists(Path.Combine(AppContext.BaseDirectory,name+".dll")),"Compile-only contract reached runtime output: "+name);
-            Require(Directory.Exists(Path.Combine(AppContext.BaseDirectory,"ThirdPartyNotices/Wpf.Portable.Runtime/TextUnicode")),"Unicode source notices were not propagated into application output.");
-        });
         if (native is not null && !failed)
         {
             Check("packaged-native-window-input-and-baml", () =>
@@ -159,6 +164,9 @@ internal static class Program
                 finally { window.Close(); }
             });
         }
+        }
+        Check("runtime-manifest-bytes-and-compile-contract-exclusion",AuditRuntimeAssets);
+        string? settingsOrigin = native?.SettingsOrigin;
         native?.Dispose();
         var assemblies=new[]{typeof(DependencyObject).Assembly,typeof(Visual).Assembly,typeof(Window).Assembly,
             typeof(System.Xaml.XamlServices).Assembly,typeof(XamlAccessLevel).Assembly,typeof(NativeWindowHost).Assembly};
@@ -167,14 +175,64 @@ internal static class Program
             .Where(path=>path.Contains("/shared/",StringComparison.Ordinal)).Select(path=>path.Split("/shared/",StringSplitOptions.None)[1].Split('/')[0]).Distinct().ToArray();
         Check("netcore-only-framework-load",()=>Require(sharedFrameworks.All(name=>name=="Microsoft.NETCore.App") &&
             !AppDomain.CurrentDomain.GetAssemblies().Any(a=>a.GetName().Name!.StartsWith("Microsoft.AspNetCore",StringComparison.Ordinal)),"An application framework outside NETCore.App was loaded."));
+        if (completeView) Check("complete-view-all-checks-completed", () => VerifyRequiredChecks(checks.Select(check => check.name), interactive, includeCompletion:false));
         var nativeModules=OperatingSystem.IsLinux()?Process.GetCurrentProcess().Modules.Cast<ProcessModule>()
             .Where(module=>module.FileName.Contains(".so",StringComparison.Ordinal))
             .Select(module=>new {name=module.ModuleName,path=module.FileName}).ToArray():[];
-        Console.WriteLine(JsonSerializer.Serialize(new { probe="portable-package-consumer",os=System.Runtime.InteropServices.RuntimeInformation.OSDescription,
-            scope="Local package net10 Linux x64 profile; explicit templates and Xvfb input qualify a bounded native slice.",checks,
+        using var completeViewDocument = completeView ? JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory,"CompleteViewOrigin.json"))) : null;
+        JsonElement? completeViewOrigin = completeViewDocument?.RootElement.Clone();
+        watchdog.Change(Timeout.InfiniteTimeSpan, Timeout.InfiniteTimeSpan);
+        Console.WriteLine(JsonSerializer.Serialize(new { probe=completeView?"complete-portable-wpf-view":"portable-package-consumer",os=System.Runtime.InteropServices.RuntimeInformation.OSDescription,
+            scope=completeView?"Unchanged FixtureControls with explicit host templates, CPU rendering and virtual X11/XTest input; declared XSETTINGS test values, physical desktop unqualified":"Local package net10 Linux x64 profile; explicit templates and Xvfb input qualify a bounded native slice.",checks,
+            completeViewOrigin,settingsOrigin,
             sharedFrameworks,coreLibrary=typeof(object).Assembly.Location,nativeModules,
             assemblies=assemblies.Select(a=>new { identity=a.FullName,path=a.Location,sha256=Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(a.Location))) }) }));
         return failed?1:0;
+    }
+    private sealed record CheckResult(string name, string status, string detail);
+
+    private static void AuditRuntimeAssets()
+    {
+        var manifest=XDocument.Load(Path.Combine(AppContext.BaseDirectory,"PortableWpf/RuntimeManifest.xml"));
+        foreach(var file in manifest.Root!.Elements("file"))
+        {
+            var name=Path.GetFileName((string)file.Attribute("path")!);
+            var candidates=new[]{Path.Combine(AppContext.BaseDirectory,name),Path.Combine(AppContext.BaseDirectory,(string)file.Attribute("path")!)}.Distinct().Where(File.Exists).ToArray();
+            Require(candidates.Length==1,"Runtime asset is absent or has ambiguous deployment locations: "+name);
+            Require(Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(candidates[0])))==(string?)file.Attribute("sha256"),"Runtime manifest mismatch: "+name);
+        }
+        foreach(var name in new[]{"System.Private.Windows.Core","System.Private.Windows.GdiPlus","DirectWriteForwarder","ReachFramework","System.Printing","PresentationUI"})
+            Require(!File.Exists(Path.Combine(AppContext.BaseDirectory,name+".dll")),"Compile-only contract reached runtime output: "+name);
+        Require(Directory.Exists(Path.Combine(AppContext.BaseDirectory,"ThirdPartyNotices/Wpf.Portable.Runtime/TextUnicode")),"Unicode source notices were not propagated into application output.");
+    }
+
+    private static void VerifyRequiredChecks(IEnumerable<string> names, bool interactive, bool includeCompletion)
+    {
+        string[] expected=CompleteViewWorkflow.RequiredChecks(interactive).Concat(new[] {"native-startup", "complete-view-setup-and-cleanup",
+            "runtime-manifest-bytes-and-compile-contract-exclusion", "ordinary-default-load-context", "netcore-only-framework-load"})
+            .Concat(includeCompletion ? new[] {"complete-view-all-checks-completed"} : Array.Empty<string>()).ToArray();
+        string[] actual=names.ToArray();
+        Require(actual.Length==expected.Length && new HashSet<string>(actual,StringComparer.Ordinal).SetEquals(expected),
+            "The complete view result omitted, duplicated or added a required check. Expected="+string.Join(",",expected)+"; actual="+string.Join(",",actual));
+    }
+
+    private static int AuditCompleteViewResults(string path)
+    {
+        try
+        {
+            using var document=JsonDocument.Parse(File.ReadAllText(path));
+            Require(document.RootElement.GetProperty("probe").GetString()=="complete-portable-wpf-view","The result has the wrong probe identity.");
+            var checks=document.RootElement.GetProperty("checks").EnumerateArray().ToArray();
+            VerifyRequiredChecks(checks.Select(check=>check.GetProperty("name").GetString()!),interactive:false,includeCompletion:true);
+            Require(checks.All(check=>check.GetProperty("status").GetString()=="pass"),"The complete view contains a failed check.");
+            Console.WriteLine(JsonSerializer.Serialize(new {probe="complete-view-result-audit",checks=new[]{new{name="required-probe-and-check-set",status="pass",detail="All 19 required checks completed once and passed."}}}));
+            return 0;
+        }
+        catch(Exception exception)
+        {
+            Console.WriteLine(JsonSerializer.Serialize(new {probe="complete-view-result-audit",checks=new[]{new{name="required-probe-and-check-set",status="fail",detail=exception.ToString()}}}));
+            return 1;
+        }
     }
     private static void Require(bool condition,string message) { if(!condition) throw new InvalidOperationException(message); }
     private sealed class PrivateModel { public string Value { get; set; }=""; }

@@ -6,14 +6,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
+    <FixtureOrigin Condition="'$(FixtureOrigin)' == ''">Microsoft</FixtureOrigin>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../Companion/Companion.csproj" />
-    <Reference Include="FixtureControls" HintPath="../Frozen/FixtureControls.dll" Private="true" />
+    <Reference Include="FixtureControls" HintPath="../Frozen/FixtureControls.dll" Private="true" Condition="'$(FixtureOrigin)' == 'Microsoft'" />
+    <ProjectReference Include="../FixtureControls/FixtureControls.csproj" Condition="'$(FixtureOrigin)' == 'Port'" />
     <None Include="../Frozen/MicrosoftCompilerOracle.json" Link="MicrosoftCompilerOracle.json" CopyToOutputDirectory="PreserveNewest" />
     <Resource Include="Assets/CaseSensitive.txt" />
     <Resource Include="Assets/Διάγραμμα.txt" />
     <None Include="../DejaVuSans.ttf" Link="DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../CompleteViewOrigin.json" Link="CompleteViewOrigin.json" CopyToOutputDirectory="PreserveNewest" Condition="Exists('../CompleteViewOrigin.json')" />
   </ItemGroup>
   <Import Project="../CompilerEvidence.targets" />
 </Project>
