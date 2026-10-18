@@ -1,0 +1,10 @@
+<Project>
+  <Target Name="ValidateSourceClosureScope" BeforeTargets="PrepareForBuild">
+    <Error Condition="'$(MSBuildProjectName)' != 'System.Xaml'"
+           Text="This bounded source closure experiment only supports System.Xaml." />
+  </Target>
+  <!-- Handwritten ref projects do not supply implementation dependencies for System.Xaml. -->
+  <ItemGroup>
+    <ProjectReference Remove="@(ProjectReference)" />
+  </ItemGroup>
+</Project>
