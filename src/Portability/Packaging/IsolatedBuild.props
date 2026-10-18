@@ -4,8 +4,10 @@
   </PropertyGroup>
   <Import Project="$(_OriginalPortableProjectProps)" />
   <PropertyGroup>
-    <BaseOutputPath>$(PortableDistributionBuildRoot)bin/$(MSBuildProjectName)/</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(PortableDistributionBuildRoot)obj/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+    <_PortableDistributionProjectName>$(MSBuildProjectName)</_PortableDistributionProjectName>
+    <_PortableDistributionProjectName Condition="'$(_TargetAssemblyProjectName)' != ''">$(_TargetAssemblyProjectName)</_PortableDistributionProjectName>
+    <BaseOutputPath>$(PortableDistributionBuildRoot)bin/$(_PortableDistributionProjectName)/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(PortableDistributionBuildRoot)obj/$(_PortableDistributionProjectName)/</BaseIntermediateOutputPath>
     <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
     <NuGetLockFilePath>$(BaseIntermediateOutputPath)packages.lock.json</NuGetLockFilePath>
     <CustomAfterMicrosoftCommonTargets Condition="'$(MSBuildProjectName)' == 'PresentationBuildTasks'">$(MSBuildThisFileDirectory)CompilerClosure.targets</CustomAfterMicrosoftCommonTargets>
