@@ -18,7 +18,7 @@ namespace MS.Internal.Portability.Rendering
             try
             {
                 using (SKPath fill = Create(geometry, false))
-                using (SKPath stroke = pen == null ? null : Create(geometry, true))
+                using (SKPath stroke = pen == null ? null : CreateStrokePath(geometry, pen))
                 using (SKPath extent = Create(geometry, false, includeHollows: true))
                     return RenderBounds(fill, stroke, extent, pen, world, tolerance, type);
             }

@@ -97,7 +97,7 @@ namespace MS.Internal.Portability.Rendering
                     using (SKPaint paint = CreateBrush(brush)) DrawSnappedPath(fill, paint);
             }
             if (pen != null && pen.Brush != null && pen.Thickness != 0)
-                using (SKPath stroke = SkiaGeometry.Create(geometry, true))
+                using (SKPath stroke = SkiaGeometry.CreateStrokePath(geometry, pen))
                 using (SKPaint paint = CreatePen(pen)) DrawSnappedPath(stroke, paint);
         }
 

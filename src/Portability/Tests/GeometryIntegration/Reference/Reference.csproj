@@ -10,6 +10,7 @@
     <Compile Include="../Program.cs" Link="Program.cs" />
     <Compile Include="../OutlineCases.cs" Link="OutlineCases.cs" />
     <Compile Include="../BoundsCases.cs" Link="BoundsCases.cs" />
+    <Compile Include="../MixedStrokeCases.cs" Link="MixedStrokeCases.cs" />
     <None Include="../BoundsPrecisionReference.json" Link="BoundsPrecisionReference.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

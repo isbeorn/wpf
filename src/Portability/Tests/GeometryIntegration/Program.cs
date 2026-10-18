@@ -117,6 +117,7 @@ Reject("unsupported-mixed-end-caps", () => line.StrokeContains(new Pen(Brushes.R
 
 OutlineCases.Run(Check);
 BoundsCases.Run(Check);
+MixedStrokeCases.Run(Check);
 Console.WriteLine(JsonSerializer.Serialize(new
 {
     probe = "actual-geometry-containment",

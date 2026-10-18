@@ -46,7 +46,7 @@ namespace MS.Internal.Portability.Rendering
                 return false;
             if (pen != null && (pen.Thickness == 0 || double.IsNaN(pen.Thickness)))
                 return false;
-            using (SKPath path = Create(geometry, pen != null, closeFillContours: pen == null))
+            using (SKPath path = pen == null ? Create(geometry, false, closeFillContours: true) : CreateStrokePath(geometry, pen))
             using (SKPath boundsPath = Create(geometry, false, includeHollows: true))
             {
                 if (path.IsEmpty)
@@ -192,46 +192,119 @@ namespace MS.Internal.Portability.Rendering
         private static SKPoint ToPoint(Point point) => new SKPoint(Scalar(point.X), Scalar(point.Y));
         private static SKRect ToRect(Rect rect) => new SKRect(Scalar(rect.Left), Scalar(rect.Top), Scalar(rect.Right), Scalar(rect.Bottom));
 
+        internal static SKPath CreateStrokePath(Geometry geometry, Pen pen)
+        {
+            if ((pen.StartLineCap != pen.DashCap || pen.EndLineCap != pen.DashCap) && HasGaps(geometry))
+                throw new NotSupportedException("Portable mixed-segment strokes require matching outer and gap caps.");
+            return Create(geometry, true);
+        }
+
+        private static bool HasGaps(Geometry geometry)
+        {
+            if (geometry is GeometryGroup group)
+            {
+                foreach (Geometry child in group.Children)
+                    if (HasGaps(child)) return true;
+            }
+            PathGeometry path = geometry as PathGeometry;
+            if (geometry is StreamGeometry stream) path = stream.GetAsPathGeometry();
+            if (path != null)
+                foreach (PathFigure figure in path.Figures)
+                    foreach (PathSegment segment in figure.Segments)
+                        if (!segment.IsStroked && SegmentEnd(segment).HasValue) return true;
+            return false;
+        }
+
         private static void AppendFigures(SKPath path, PathGeometry geometry, bool stroke, bool closeFillContours, bool includeHollows)
         {
             path.FillType = geometry.FillRule == FillRule.EvenOdd ? SKPathFillType.EvenOdd : SKPathFillType.Winding;
             foreach (PathFigure figure in geometry.Figures)
             {
                 if (!stroke && !includeHollows && !figure.IsFilled) continue;
-                path.MoveTo(ToPoint(figure.StartPoint));
-                foreach (PathSegment segment in figure.Segments)
+                int gap = -1;
+                if (stroke)
+                    for (int index = 0; index < figure.Segments.Count; index++)
+                        if (!figure.Segments[index].IsStroked && SegmentEnd(figure.Segments[index]).HasValue)
+                        { gap = index; break; }
+
+                // Start a closed mixed figure after a gap so its closing edge still joins its first run.
+                bool mixed = gap >= 0;
+                if (!figure.IsClosed) gap = -1;
+                Point? nextStart = gap < 0 ? figure.StartPoint : SegmentEnd(figure.Segments[gap]).Value;
+                if (!mixed) { path.MoveTo(ToPoint(nextStart.Value)); nextStart = null; }
+                for (int offset = 0; offset < figure.Segments.Count; offset++)
                 {
-                    if (stroke && !segment.IsStroked)
-                        throw new NotSupportedException("Portable rendering does not support unstroked segments in a stroked path.");
-                    switch (segment)
+                    int index = gap < 0 ? offset : (gap + 1 + offset) % figure.Segments.Count;
+                    if (gap >= 0 && index == 0)
                     {
-                        case LineSegment line:
-                            path.LineTo(ToPoint(line.Point)); break;
-                        case BezierSegment cubic:
-                            path.CubicTo(ToPoint(cubic.Point1), ToPoint(cubic.Point2), ToPoint(cubic.Point3)); break;
-                        case QuadraticBezierSegment quadratic:
-                            path.QuadTo(ToPoint(quadratic.Point1), ToPoint(quadratic.Point2)); break;
-                        case PolyLineSegment lines:
-                            foreach (Point point in lines.Points) path.LineTo(ToPoint(point)); break;
-                        case PolyBezierSegment cubics:
-                            for (int index = 0; index + 2 < cubics.Points.Count; index += 3)
-                                path.CubicTo(ToPoint(cubics.Points[index]), ToPoint(cubics.Points[index + 1]), ToPoint(cubics.Points[index + 2]));
-                            break;
-                        case PolyQuadraticBezierSegment quadratics:
-                            for (int index = 0; index + 1 < quadratics.Points.Count; index += 2)
-                                path.QuadTo(ToPoint(quadratics.Points[index]), ToPoint(quadratics.Points[index + 1]));
-                            break;
-                        case ArcSegment arc:
-                            path.ArcTo(Scalar(arc.Size.Width), Scalar(arc.Size.Height), Scalar(arc.RotationAngle),
-                                arc.IsLargeArc ? SKPathArcSize.Large : SKPathArcSize.Small,
-                                arc.SweepDirection == SweepDirection.Clockwise ? SKPathDirection.Clockwise : SKPathDirection.CounterClockwise,
-                                Scalar(arc.Point.X), Scalar(arc.Point.Y));
-                            break;
-                        default:
-                            throw new NotSupportedException($"Portable rendering does not support path segment {segment.GetType().FullName}.");
+                        if (nextStart.HasValue) path.MoveTo(ToPoint(nextStart.Value));
+                        path.LineTo(ToPoint(figure.StartPoint));
+                        nextStart = null;
+                    }
+                    PathSegment segment = figure.Segments[index];
+                    if (stroke && !segment.IsStroked)
+                    {
+                        Point? end = SegmentEnd(segment);
+                        if (end.HasValue) nextStart = end;
+                    }
+                    else if (SegmentEnd(segment).HasValue)
+                    {
+                        if (nextStart.HasValue) path.MoveTo(ToPoint(nextStart.Value));
+                        AppendSegment(path, segment);
+                        nextStart = null;
                     }
                 }
-                if (figure.IsClosed || closeFillContours) path.Close();
+                if (!mixed && (figure.IsClosed || closeFillContours)) path.Close();
+            }
+        }
+
+        private static Point? SegmentEnd(PathSegment segment)
+        {
+            switch (segment)
+            {
+                case LineSegment line: return line.Point;
+                case BezierSegment cubic: return cubic.Point3;
+                case QuadraticBezierSegment quadratic: return quadratic.Point2;
+                case ArcSegment arc: return arc.Point;
+                case PolyLineSegment lines: return lines.Points.Count == 0 ? null : lines.Points[lines.Points.Count - 1];
+                case PolyBezierSegment cubics:
+                    int cubicCount = cubics.Points.Count / 3 * 3;
+                    return cubicCount == 0 ? null : cubics.Points[cubicCount - 1];
+                case PolyQuadraticBezierSegment quadratics:
+                    int quadraticCount = quadratics.Points.Count / 2 * 2;
+                    return quadraticCount == 0 ? null : quadratics.Points[quadraticCount - 1];
+                default: throw new NotSupportedException($"Portable rendering does not support path segment {segment.GetType().FullName}.");
+            }
+        }
+
+        private static void AppendSegment(SKPath path, PathSegment segment)
+        {
+            switch (segment)
+            {
+                case LineSegment line:
+                    path.LineTo(ToPoint(line.Point)); break;
+                case BezierSegment cubic:
+                    path.CubicTo(ToPoint(cubic.Point1), ToPoint(cubic.Point2), ToPoint(cubic.Point3)); break;
+                case QuadraticBezierSegment quadratic:
+                    path.QuadTo(ToPoint(quadratic.Point1), ToPoint(quadratic.Point2)); break;
+                case PolyLineSegment lines:
+                    foreach (Point point in lines.Points) path.LineTo(ToPoint(point)); break;
+                case PolyBezierSegment cubics:
+                    for (int index = 0; index + 2 < cubics.Points.Count; index += 3)
+                        path.CubicTo(ToPoint(cubics.Points[index]), ToPoint(cubics.Points[index + 1]), ToPoint(cubics.Points[index + 2]));
+                    break;
+                case PolyQuadraticBezierSegment quadratics:
+                    for (int index = 0; index + 1 < quadratics.Points.Count; index += 2)
+                        path.QuadTo(ToPoint(quadratics.Points[index]), ToPoint(quadratics.Points[index + 1]));
+                    break;
+                case ArcSegment arc:
+                    path.ArcTo(Scalar(arc.Size.Width), Scalar(arc.Size.Height), Scalar(arc.RotationAngle),
+                        arc.IsLargeArc ? SKPathArcSize.Large : SKPathArcSize.Small,
+                        arc.SweepDirection == SweepDirection.Clockwise ? SKPathDirection.Clockwise : SKPathDirection.CounterClockwise,
+                        Scalar(arc.Point.X), Scalar(arc.Point.Y));
+                    break;
+                default:
+                    throw new NotSupportedException($"Portable rendering does not support path segment {segment.GetType().FullName}.");
             }
         }
     }
