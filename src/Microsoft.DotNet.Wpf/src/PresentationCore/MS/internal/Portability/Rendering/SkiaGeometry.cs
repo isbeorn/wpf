@@ -92,11 +92,11 @@ namespace MS.Internal.Portability.Rendering
                 return edge.GetFillPath(path, boundary) && boundary.Contains((float)point.X, (float)point.Y);
         }
 
-        private static SKPaint CreateStroke(Pen pen)
+        private static SKPaint CreateStroke(Pen pen, bool allowDashes = false)
         {
             if (pen.StartLineCap != pen.EndLineCap || pen.StartLineCap == PenLineCap.Triangle)
                 throw new NotSupportedException("Portable geometry containment does not support different line end caps or triangle caps.");
-            if (pen.DashStyle != null && pen.DashStyle.Dashes.Count != 0)
+            if (!allowDashes && pen.DashStyle != null && pen.DashStyle.Dashes.Count != 0)
                 throw new NotSupportedException("Portable geometry containment does not support dashed pens.");
             if (!float.IsFinite((float)pen.Thickness))
                 throw new NotSupportedException("Portable geometry containment requires a finite stroke width representable by the raster backend.");
@@ -196,6 +196,9 @@ namespace MS.Internal.Portability.Rendering
         {
             if ((pen.StartLineCap != pen.DashCap || pen.EndLineCap != pen.DashCap) && HasGaps(geometry))
                 throw new NotSupportedException("Portable mixed-segment strokes require matching outer and gap caps.");
+            if (geometry is RectangleGeometry rectangle && (rectangle.RadiusX == 0 || rectangle.RadiusY == 0) &&
+                pen.DashStyle != null && pen.DashStyle.Dashes.Count != 0)
+                geometry = rectangle.GetAsPathGeometry();
             return Create(geometry, true);
         }
 

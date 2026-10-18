@@ -20,7 +20,7 @@ namespace MS.Internal.Portability.Rendering
                 using (SKPath fill = Create(geometry, false))
                 using (SKPath stroke = pen == null ? null : CreateStrokePath(geometry, pen))
                 using (SKPath extent = Create(geometry, false, includeHollows: true))
-                    return RenderBounds(fill, stroke, extent, pen, world, tolerance, type);
+                    return RenderBounds(fill, stroke, extent, pen, world, tolerance, type, geometry);
             }
             catch (ArithmeticException) { return Rect.Empty; }
         }
@@ -52,14 +52,14 @@ namespace MS.Internal.Portability.Rendering
                         throw new ArgumentException("Portable polygon bounds received unused source points.");
                     if ((types[0] & (byte)MILCoreSegFlags.SegClosed) != 0) path.Close();
                     ApplyTransform(path, geometry);
-                    return RenderBounds(path, pen == null ? null : path, path, pen, world, tolerance, type);
+                    return RenderBounds(path, pen == null ? null : path, path, pen, world, tolerance, type, singularGeometry: !geometry.HasInverse);
                 }
             }
             catch (ArithmeticException) { return Rect.Empty; }
         }
 
         private static Rect RenderBounds(SKPath fill, SKPath stroke, SKPath extent, Pen pen, Matrix world,
-            double tolerance, ToleranceType type)
+            double tolerance, ToleranceType type, Geometry source = null, bool singularGeometry = false)
         {
             Rect result;
             using (var transformed = new SKPath(fill))
@@ -70,12 +70,15 @@ namespace MS.Internal.Portability.Rendering
             if (pen != null && double.IsNaN(pen.Thickness)) return Rect.Empty;
             if (pen != null)
             {
-                using (SKPaint paint = CreateStroke(pen))
+                using (SKPaint paint = CreateStroke(pen, allowDashes: true))
                 using (var outline = new SKPath())
                 {
                     double absolute = StrokeTolerance(extent, pen, world, tolerance, type);
                     double effective = absolute == 0 ? 0.25 : Math.Max(absolute, 1e-6);
                     double halfWidth = paint.StrokeWidth / 2;
+                    bool dashed = pen.DashStyle != null && pen.DashStyle.Dashes.Count != 0;
+                    if (dashed && halfWidth != 0 && !world.HasInverse)
+                        throw new NotSupportedException("Portable dashed bounds do not support singular world transforms.");
                     double determinant = Math.Abs(world.M11 * world.M22 - world.M12 * world.M21);
                     double threshold = effective * 0.004;
                     if (halfWidth == 0 || halfWidth * halfWidth * determinant < threshold * threshold)
@@ -85,6 +88,9 @@ namespace MS.Internal.Portability.Rendering
                         if (!stroke.IsEmpty) result.Union(StrokeStart(stroke, Matrix.Identity));
                         return result;
                     }
+                    if (dashed) ValidateDashedBounds(source, stroke, singularGeometry);
+                    using SKPathEffect dashes = dashed ? PortableDashPattern.Create(pen) : null;
+                    paint.PathEffect = dashes;
                     double scale = double.Hypot(double.Hypot(world.M11, world.M12), double.Hypot(world.M21, world.M22));
                     // Sub-float requests can make Skia's offset solver discard curves instead of refining them.
                     if (effective < CoordinatePrecision(stroke, paint.StrokeWidth) * scale && HasNonconstantCurve(stroke))
@@ -101,6 +107,50 @@ namespace MS.Internal.Portability.Rendering
             }
             // MIL returns an origin point when a nonempty path contains only hollow figures.
             return result.IsEmpty ? new Rect(0, 0, 0, 0) : result;
+        }
+
+        private static void ValidateDashedBounds(Geometry source, SKPath stroke, bool singularGeometry)
+        {
+            if (source != null && !(source is LineGeometry))
+            {
+                PathGeometry path = source as PathGeometry;
+                if (source is StreamGeometry stream) path = stream.GetAsPathGeometry();
+                if (path == null)
+                    throw new NotSupportedException($"Portable dashed bounds do not support geometry type {source.GetType().FullName}.");
+                foreach (PathFigure figure in path.Figures)
+                {
+                    if (!figure.IsFilled)
+                        throw new NotSupportedException("Portable dashed bounds do not support hollow figures.");
+                    foreach (PathSegment segment in figure.Segments)
+                        if (!segment.IsStroked)
+                            throw new NotSupportedException("Portable dashed bounds do not support unstroked segments.");
+                }
+            }
+            // Inspect the raster-space contour after the geometry transform, before widening.
+            using (SKPath.RawIterator iterator = stroke.CreateRawIterator())
+            {
+                var points = new SKPoint[4];
+                bool contour = false, nonconstant = false;
+                SKPathVerb verb;
+                while ((verb = iterator.Next(points)) != SKPathVerb.Done)
+                {
+                    if (verb == SKPathVerb.Move)
+                    {
+                        if (contour && !nonconstant) RejectCollapsed();
+                        contour = true;
+                        nonconstant = false;
+                    }
+                    else if (verb == SKPathVerb.Line)
+                        nonconstant |= points[0] != points[1];
+                    else if (verb != SKPathVerb.Close)
+                        throw new NotSupportedException("Portable dashed bounds require linear contours.");
+                }
+                if (!contour || !nonconstant) RejectCollapsed();
+            }
+            if (singularGeometry || source?.Transform != null && !source.Transform.Value.HasInverse)
+                throw new NotSupportedException("Portable dashed bounds do not support singular geometry transforms.");
+
+            static void RejectCollapsed() => throw new NotSupportedException("Portable dashed bounds do not support collapsed contours.");
         }
 
         private static double StrokeTolerance(SKPath extent, Pen pen, Matrix world, double tolerance, ToleranceType type)

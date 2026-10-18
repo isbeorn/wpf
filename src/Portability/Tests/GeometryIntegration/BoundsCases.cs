@@ -109,7 +109,7 @@ internal static class BoundsCases
                 { Transform = new TranslateTransform(0, 0) }.GetRenderBounds(capped), expected), true);
         }
 #if PORTABLE_GEOMETRY_TESTS
-        check("render-bounds-dashed-pen-diagnostic", () => Unsupported(() => path.GetRenderBounds(new Pen(Brushes.Red, 4) { DashStyle = DashStyles.Dash }), "dashed"), true);
+        check("render-bounds-dashed-mixed-cap-diagnostic", () => Unsupported(() => path.GetRenderBounds(new Pen(Brushes.Red, 4) { DashStyle = DashStyles.Dash }), "caps"), true);
         check("render-bounds-mixed-cap-diagnostic", () => Unsupported(() => path.GetRenderBounds(new Pen(Brushes.Red, 4) { EndLineCap = PenLineCap.Round }), "caps"), true);
 #endif
     }

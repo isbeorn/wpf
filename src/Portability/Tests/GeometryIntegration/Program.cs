@@ -18,6 +18,24 @@ if (args.Length == 1 && args[0] == "--capture-combine-contracts")
     return 0;
 }
 
+if (args.Length == 1 && args[0] == "--capture-dashed-rectangle-routes")
+{
+    Console.WriteLine(JsonSerializer.Serialize(DashedBoundsCases.CaptureRectangleRoutes(), new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
+
+if (args.Length == 1 && args[0] == "--capture-dashed-bounds-ink")
+{
+    Console.WriteLine(JsonSerializer.Serialize(DashedBoundsCases.CaptureInk(), new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
+
+if (args.Length == 1 && args[0] == "--capture-dashed-bounds")
+{
+    Console.WriteLine(JsonSerializer.Serialize(DashedBoundsCases.Capture(), new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
+
 if (args.Length == 1 && args[0] == "--capture-bounds-precision")
 {
     Console.WriteLine(JsonSerializer.Serialize(BoundsCases.CapturePrecision(), new JsonSerializerOptions { WriteIndented = true }));
@@ -133,6 +151,7 @@ Reject("unsupported-mixed-end-caps", () => line.StrokeContains(new Pen(Brushes.R
 CombineCases.Run(Check);
 OutlineCases.Run(Check);
 BoundsCases.Run(Check);
+DashedBoundsCases.Run(Check);
 MixedStrokeCases.Run(Check);
 Console.WriteLine(JsonSerializer.Serialize(new
 {

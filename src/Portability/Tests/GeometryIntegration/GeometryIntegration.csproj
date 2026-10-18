@@ -3,6 +3,7 @@
   <ItemGroup>
     <Compile Remove="Reference/**" />
     <None Update="BoundsPrecisionReference.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="DashedBoundsReference.json" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" />
     <ProjectReference Include="../../Framework/PresentationFramework/PresentationFramework.csproj" />
     <ProjectReference Include="../../Framework/WindowsBase/WindowsBase.csproj" />
