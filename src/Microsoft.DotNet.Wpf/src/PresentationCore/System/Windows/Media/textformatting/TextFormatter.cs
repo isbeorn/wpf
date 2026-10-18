@@ -46,7 +46,11 @@ namespace System.Windows.Media.TextFormatting
             }
             
             // create a new instance of TextFormatter which allows the use of multiple contexts.
+#if PORTABLE_WPF
+            return new MS.Internal.TextFormatting.Portable.PortableTextFormatter(textFormattingMode);
+#else
             return new TextFormatterImp(textFormattingMode);
+#endif
         }
 
         /// <summary>
@@ -56,7 +60,7 @@ namespace System.Windows.Media.TextFormatting
         public static TextFormatter Create()
         {
             // create a new instance of TextFormatter which allows the use of multiple contexts.
-            return new TextFormatterImp();
+            return Create(TextFormattingMode.Ideal);
         }
 
 
@@ -71,9 +75,13 @@ namespace System.Windows.Media.TextFormatting
         internal static TextFormatter CreateFromContext(TextFormatterContext soleContext)
 #endif
         {
+#if PORTABLE_WPF
+            throw new NotSupportedException("Portable native Line Services contexts are not supported.");
+#else
             // create a new instance of TextFormatter for the specified context.
             // This creation prohibits the use of multiple contexts within the same TextFormatter via reentrance.
             return new TextFormatterImp(soleContext, TextFormattingMode.Ideal);
+#endif
         }
 
         /// <summary>
@@ -87,9 +95,13 @@ namespace System.Windows.Media.TextFormatting
         internal static TextFormatter CreateFromContext(TextFormatterContext soleContext, TextFormattingMode textFormattingMode)
 #endif
         {
+#if PORTABLE_WPF
+            throw new NotSupportedException("Portable native Line Services contexts are not supported.");
+#else
             // create a new instance of TextFormatter for the specified context.
             // This creation prohibits the use of multiple contexts within the same TextFormatter via reentrance.
             return new TextFormatterImp(soleContext, textFormattingMode);
+#endif
         }
 
 
@@ -124,11 +136,11 @@ namespace System.Windows.Media.TextFormatting
             TextFormatter defaultTextFormatter;
             if (textFormattingMode == TextFormattingMode.Display)
             {
-                defaultTextFormatter = (TextFormatterImp)dispatcher.Reserved4;
+                defaultTextFormatter = (TextFormatter)dispatcher.Reserved4;
             }
             else
             {
-                defaultTextFormatter = (TextFormatterImp)dispatcher.Reserved1;
+                defaultTextFormatter = (TextFormatter)dispatcher.Reserved1;
             }
                         
             if (defaultTextFormatter == null)

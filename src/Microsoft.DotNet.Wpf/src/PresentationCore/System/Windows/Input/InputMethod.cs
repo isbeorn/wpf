@@ -1778,7 +1778,11 @@ namespace System.Windows.Input
         private DefaultTextStore _defaulttextstore;
 
         // If the system is IMM enabled, this is true.
+#if PORTABLE_WPF
+        private static bool _immEnabled = OperatingSystem.IsWindows() && SafeSystemMetrics.IsImmEnabled;
+#else
         private static bool _immEnabled = SafeSystemMetrics.IsImmEnabled ; 
+#endif
 
         // the default imc. The default imc is per thread and we cache it in ThreadStatic.
         [ThreadStatic]

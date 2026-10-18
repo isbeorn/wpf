@@ -293,15 +293,22 @@ namespace MS.Internal.FontCache
         private const string EmptyFontFamilyReference = "#";
         private const string EmptyCanonicalName = "";
 
+#if !PORTABLE_WPF
         private static readonly object _dpiLock = new object();
         private static int    _dpi;
         private static bool   _dpiInitialized = false;
+#endif
 
         static Util()
         {
+#if PORTABLE_WPF
+            string s = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "share", "fonts") + System.IO.Path.DirectorySeparatorChar;
+            _windowsFontsLocalPath = s;
+#else
             string s = Environment.GetEnvironmentVariable(WinDir) + @"\Fonts\";
 
             _windowsFontsLocalPath = s.ToUpperInvariant();
+#endif
 
             _windowsFontsUriObject = new Uri(_windowsFontsLocalPath, UriKind.Absolute);
 
@@ -340,6 +347,9 @@ namespace MS.Internal.FontCache
         {
             get
             {
+#if PORTABLE_WPF
+                return 96;
+#else
                 if (!_dpiInitialized)
                 {
                     lock (_dpiLock)
@@ -370,6 +380,7 @@ namespace MS.Internal.FontCache
                     }
                 }
                 return _dpi;
+#endif
             }
         }
 

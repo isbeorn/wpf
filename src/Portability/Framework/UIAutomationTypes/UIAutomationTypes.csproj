@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>UIAutomationTypes</AssemblyName>
+    <DefineConstants>$(DefineConstants);UIAUTOMATIONTYPES;PORTABLE_WPF</DefineConstants>
+    <WpfSourceProject>$(WpfSourceDir)UIAutomation/UIAutomationTypes/UIAutomationTypes.csproj</WpfSourceProject>
+    <WpfResourceFile>$(WpfSourceDir)UIAutomation/UIAutomationTypes/Resources/Strings.resx</WpfResourceFile>
+    <WpfResourceNamespace>System</WpfResourceNamespace>
+    <WpfResourceManifestName>FxResources.UIAutomationTypes.SR</WpfResourceManifestName>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="$(WpfResourceFile)" LogicalName="$(WpfResourceManifestName).resources" />
+    <ProjectReference Include="../WindowsBase/WindowsBase.csproj" />
+    <ProjectReference Include="../System.Xaml/System.Xaml.csproj" />
+  </ItemGroup>
+  <Import Project="../Build/SourceManifest.targets" />
+  <Import Project="../Build/WindowsNativeContracts.props" />
+  <Import Project="../Build/SourceResources.targets" />
+  <Import Project="../Build/PublicSigning.targets" />
+  <Import Project="../Build/PortableWpfReferences.targets" />
+</Project>

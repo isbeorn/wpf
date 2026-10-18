@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PresentationCore</AssemblyName>
+    <DefineConstants>$(DefineConstants);CORE_NATIVEMETHODS;PRESENTATION_CORE;COMMONDPS;PORTABLE_WPF</DefineConstants>
+    <WpfSourceProject>$(WpfSourceDir)PresentationCore/PresentationCore.csproj</WpfSourceProject>
+    <WpfResourceFile>$(WpfSourceDir)PresentationCore/Resources/Strings.resx</WpfResourceFile>
+    <WpfResourceNamespace>MS.Internal.PresentationCore</WpfResourceNamespace>
+    <WpfResourceManifestName>FxResources.PresentationCore.SR</WpfResourceManifestName>
+    <NoWarn>$(NoWarn);0436;1058;1705;3001;3002;3003;3009;3024;SYSLIB5005</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <AssemblyAttribute Include="System.CLSCompliantAttribute">
+      <_Parameter1>true</_Parameter1>
+    </AssemblyAttribute>
+    <Compile Include="$(WpfSourceDir)PresentationCore/MS/internal/TextFormatting/Portable/*.cs" />
+    <Compile Include="$(WpfSourceDir)PresentationCore/MS/internal/Portability/Rendering/*.cs" />
+    <EmbeddedResource Include="$(WpfResourceFile)" LogicalName="$(WpfResourceManifestName).resources" />
+    <EmbeddedResource Include="$(WpfSourceDir)PresentationCore/System/Windows/Media/Resources/ColorProfiles/ColorProfiles.resx" LogicalName="ColorProfiles.resources" />
+    <ProjectReference Include="../WindowsBase/WindowsBase.csproj" />
+    <ProjectReference Include="../System.Windows.Primitives/System.Windows.Primitives.csproj" />
+    <ProjectReference Include="../System.Xaml/System.Xaml.csproj" />
+    <ProjectReference Include="../UIAutomationTypes/UIAutomationTypes.csproj" />
+    <ProjectReference Include="../UIAutomationProvider/UIAutomationProvider.csproj" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.13" />
+    <PackageReference Include="System.Windows.Extensions" Version="10.0.13" />
+    <PackageReference Include="System.IO.Packaging" Version="10.0.13" />
+    <PackageReference Include="System.Formats.Nrbf" Version="10.0.13" />
+    <PackageReference Include="SkiaSharp" Version="3.119.4" />
+    <PackageReference Include="SkiaSharp.HarfBuzz" Version="3.119.4" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="3.119.4" />
+    <PackageReference Include="HarfBuzzSharp" Version="8.3.1.5" />
+    <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="8.3.1.5" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="DirectWriteForwarder" Private="false">
+      <HintPath>$(NuGetPackageRoot)/microsoft.windowsdesktop.app.runtime.win-x64/10.0.13/runtimes/win-x64/lib/net10.0/DirectWriteForwarder.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Input.Manipulations">
+      <HintPath>$(NuGetPackageRoot)/microsoft.windowsdesktop.app.runtime.win-x64/10.0.13/runtimes/win-x64/lib/net10.0/%(Identity).dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="../Build/SourceManifest.targets" />
+  <Import Project="../Build/WindowsNativeContracts.props" />
+  <Import Project="../Build/SourceResources.targets" />
+  <Import Project="../Build/PublicSigning.targets" />
+  <Import Project="../Build/PortableWpfReferences.targets" />
+</Project>

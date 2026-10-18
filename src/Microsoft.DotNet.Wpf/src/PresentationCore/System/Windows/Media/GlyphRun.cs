@@ -1223,6 +1223,9 @@ namespace System.Windows.Media
         public Rect ComputeInkBoundingBox()
         {
             CheckInitialized(); // This can only be called on fully initialized GlyphRun
+#if PORTABLE_WPF
+            return _glyphTypeface.PortableFontFace.GetInkBounds(this);
+#else
 
             if ((_flags & GlyphRunFlags.CacheInkBounds) != 0)
             {
@@ -1405,6 +1408,7 @@ namespace System.Windows.Media
             }
 
             return bounds;
+#endif
         }
 
         private double AdjustAdvanceForDisplayLayout(double advance,
@@ -2463,7 +2467,9 @@ namespace System.Windows.Media
         private IList<bool>         _caretStops;
         private XmlLanguage         _language;
         private string              _deviceFontName;
+#if !PORTABLE_WPF
         private object              _inkBoundingBox;    // Used when CacheInkBounds is on
+#endif
         private TextFormattingMode      _textFormattingMode;
         private float               _pixelsPerDip = MS.Internal.FontCache.Util.PixelsPerDip;
 

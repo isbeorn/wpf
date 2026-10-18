@@ -110,6 +110,15 @@ namespace System.Windows.Media
 
         private void Initialize(Uri typefaceSource, StyleSimulations styleSimulations)
         {
+#if PORTABLE_WPF
+            ArgumentNullException.ThrowIfNull(typefaceSource);
+            if (styleSimulations != StyleSimulations.None)
+                throw new NotSupportedException("Portable font style simulation is not implemented.");
+            _portableFontFace = new MS.Internal.TextFormatting.Portable.PortableFontFace(typefaceSource);
+            _originalUri = typefaceSource;
+            _styleSimulations = styleSimulations;
+            _initializationState = InitializationState.IsInitialized;
+#else
             ArgumentNullException.ThrowIfNull(typefaceSource);
 
             if (!typefaceSource.IsAbsoluteUri)
@@ -153,6 +162,7 @@ namespace System.Windows.Media
 
 
             _initializationState = InitializationState.IsInitialized; // fully initialized
+#endif
         }        
 
         #endregion Constructors
@@ -221,6 +231,9 @@ namespace System.Windows.Media
         public byte[] ComputeSubset(ICollection<ushort> glyphs)
         {
             CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+            throw new NotSupportedException("Portable font subsetting is not implemented.");
+#else
 
             ArgumentNullException.ThrowIfNull(glyphs);
 
@@ -247,6 +260,7 @@ namespace System.Windows.Media
             {
                 pinnedFontSource.Close();
             }
+#endif
         }
 
         /// <summary>
@@ -256,7 +270,11 @@ namespace System.Windows.Media
         public Stream GetFontStream()
         {
             CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+            return File.OpenRead(_originalUri.LocalPath);
+#else
             return FontSource.GetStream();
+#endif
         }
 
         #endregion Public Methods
@@ -308,6 +326,9 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                throw new NotSupportedException("Portable localized font metadata is not implemented.");
+#else
                 MS.Internal.Text.TextInterface.LocalizedStrings localizedStrings;
                 if (
                    _font.GetInformationalStrings(MS.Internal.Text.TextInterface.InformationalStringID.PreferredFamilyNames, out localizedStrings)
@@ -321,6 +342,7 @@ namespace System.Windows.Media
                 {
                     return null;
                 }
+#endif
             }
         }
 
@@ -336,6 +358,9 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                throw new NotSupportedException("Portable localized font metadata is not implemented.");
+#else
                 MS.Internal.Text.TextInterface.LocalizedStrings localizedStrings;
                 if (
                    _font.GetInformationalStrings(MS.Internal.Text.TextInterface.InformationalStringID.PreferredSubFamilyNames, out localizedStrings)
@@ -349,6 +374,7 @@ namespace System.Windows.Media
                 {
                     return null;
                 }
+#endif
             }
         }
 
@@ -382,6 +408,9 @@ namespace System.Windows.Media
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
 
+#if PORTABLE_WPF
+                throw new NotSupportedException("Portable localized face metadata is not implemented.");
+#else
                 IDictionary<CultureInfo, string> adjustedFaceNames = _font.FaceNames;
                 IDictionary<XmlLanguage, string> adjustedLanguageFaceNames = new Dictionary<XmlLanguage, string>(adjustedFaceNames.Count);
 
@@ -391,6 +420,7 @@ namespace System.Windows.Media
                 }
 
                 return adjustedLanguageFaceNames;
+#endif
             }
         }
 
@@ -561,7 +591,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                return PortableFontFace.Typeface.IsItalic ? FontStyles.Italic : FontStyles.Normal;
+#else
                 return new FontStyle((int)_font.Style);
+#endif
             }
         }
 
@@ -574,7 +608,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                return FontWeight.FromOpenTypeWeight(PortableFontFace.Typeface.FontWeight);
+#else
                 return new FontWeight((int)_font.Weight);
+#endif
             }
         }
 
@@ -587,7 +625,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                return FontStretch.FromOpenTypeStretch(PortableFontFace.Typeface.FontWidth);
+#else
                 return new FontStretch((int)_font.Stretch);
+#endif
             }
         }
 
@@ -599,7 +641,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                throw new NotSupportedException("Portable font version metadata is not implemented.");
+#else
                 return _font.Version;
+#endif
             }
         }
 
@@ -611,7 +657,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                return -PortableFontFace.Metrics.Ascent + PortableFontFace.Metrics.Descent;
+#else
                 return (double)(_font.Metrics.Ascent + _font.Metrics.Descent) / _font.Metrics.DesignUnitsPerEm;
+#endif
             }
         }
 
@@ -623,7 +673,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                return -PortableFontFace.Metrics.Ascent;
+#else
                 return (double)_font.Metrics.Ascent / _font.Metrics.DesignUnitsPerEm;
+#endif
             }
         }
 
@@ -635,7 +689,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                return PortableFontFace.Metrics.CapHeight;
+#else
                 return (double)_font.Metrics.CapHeight / _font.Metrics.DesignUnitsPerEm;
+#endif
             }
         }
 
@@ -647,7 +705,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                return PortableFontFace.Metrics.XHeight;
+#else
                 return (double)_font.Metrics.XHeight / _font.Metrics.DesignUnitsPerEm;
+#endif
             }
         }
 
@@ -660,7 +722,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                throw new NotSupportedException("Portable symbol-font classification is not implemented.");
+#else
                 return _font.IsSymbolFont;
+#endif
             }
         }
 
@@ -673,7 +739,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                return -(PortableFontFace.Metrics.UnderlinePosition ?? 0);
+#else
                 return (double)_font.Metrics.UnderlinePosition / _font.Metrics.DesignUnitsPerEm;
+#endif
             }
         }
 
@@ -685,7 +755,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                return PortableFontFace.Metrics.UnderlineThickness ?? 0;
+#else
                 return (double)_font.Metrics.UnderlineThickness / _font.Metrics.DesignUnitsPerEm;
+#endif
             }
         }
 
@@ -698,7 +772,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                return -(PortableFontFace.Metrics.StrikeoutPosition ?? 0);
+#else
                 return (double)_font.Metrics.StrikethroughPosition / _font.Metrics.DesignUnitsPerEm;
+#endif
             }
         }
 
@@ -710,7 +788,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                return PortableFontFace.Metrics.StrikeoutThickness ?? 0;
+#else
                 return (double)_font.Metrics.StrikethroughThickness / _font.Metrics.DesignUnitsPerEm;
+#endif
             }
         }
 
@@ -723,7 +805,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                throw new NotSupportedException("Portable embedding-rights metadata is not implemented.");
+#else
                 return _fontFace.EmbeddingRights;
+#endif
             }
         }
 
@@ -923,7 +1009,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                return PortableFontFace.CharacterMap;
+#else
                 return _fontFace.CharacterMap;
+#endif
             }
         }
 
@@ -955,6 +1045,9 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+                return PortableFontFace.Typeface.GlyphCount;
+#else
                 int glyphCount;
 
                 MS.Internal.Text.TextInterface.FontFace fontFaceDWrite = _font.GetFontFace();
@@ -968,6 +1061,7 @@ namespace System.Windows.Media
                 }
 
                 return glyphCount;
+#endif
             }
         }
 
@@ -983,7 +1077,11 @@ namespace System.Windows.Media
 
         internal bool HasCharacter(uint unicodeValue)
         {
+#if PORTABLE_WPF
+            return PortableFontFace.GetGlyph(checked((int)unicodeValue)) != 0;
+#else
             return FontDWrite.HasCharacter(unicodeValue);
+#endif
         }
         
         internal MS.Internal.Text.TextInterface.Font FontDWrite
@@ -1011,6 +1109,11 @@ namespace System.Windows.Media
                                         bool               isSideways)
         {
             CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+            if (isSideways)
+                throw new NotSupportedException("Portable vertical font metrics are not implemented.");
+            return PortableFontFace.GetAdvance(glyph);
+#else
 
             // We manually expand GetGlyphMetrics call because GetAdvanceWidth is a very frequently used function.
             // When we get to using GetAdvanceHeight for vertical writing, we need to consider doing the same optimization there.
@@ -1020,6 +1123,7 @@ namespace System.Windows.Media
 
                 return (double)glyphMetrics.AdvanceWidth / DesignEmHeight;
             }
+#endif
         }
 
         private double GetAdvanceHeight(ushort glyph,
@@ -1176,6 +1280,9 @@ namespace System.Windows.Media
             )
         {
             CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
+#if PORTABLE_WPF
+            throw new NotSupportedException("Portable side-bearing and vertical glyph metrics are not implemented.");
+#else
 
             unsafe
             {
@@ -1204,6 +1311,7 @@ namespace System.Windows.Media
                     baseline = designToEm * BaselineHelper(glyphMetrics) * scalingFactor;
                 }
             }
+#endif
         }
 
         /// <summary>
@@ -1250,6 +1358,11 @@ namespace System.Windows.Media
                                               double renderingEmSize)
         {
             CheckInitialized();
+#if PORTABLE_WPF
+            if (sideways)
+                throw new NotSupportedException("Portable sideways glyph outlines are not implemented.");
+            return PortableFontFace.GetOutline(glyphIndex, renderingEmSize);
+#else
 
             unsafe
             {
@@ -1293,6 +1406,7 @@ namespace System.Windows.Media
     
                 return ctx.GetPathGeometry();
             }
+#endif
         }
 
         /// <summary>
@@ -1611,7 +1725,11 @@ namespace System.Windows.Media
             get
             {
                 CheckInitialized();
+#if PORTABLE_WPF
+                throw new NotSupportedException("Portable glyph resources cannot be submitted as DirectWrite font pointers.");
+#else
                 return _font.DWriteFontAddRef;
+#endif
             }
         }
         
@@ -1627,6 +1745,9 @@ namespace System.Windows.Media
 
         private IDictionary<CultureInfo, string> GetFontInfo(MS.Internal.Text.TextInterface.InformationalStringID informationalStringID)
         {
+#if PORTABLE_WPF
+            throw new NotSupportedException("Portable localized font metadata is not implemented.");
+#else
             MS.Internal.Text.TextInterface.LocalizedStrings localizedStrings;
             if (_font.GetInformationalStrings(informationalStringID, out localizedStrings))
             {
@@ -1636,6 +1757,7 @@ namespace System.Windows.Media
             {
                 return new MS.Internal.Text.TextInterface.LocalizedStrings();
             }
+#endif
         }
  
         #endregion Private Methods
@@ -1691,6 +1813,9 @@ namespace System.Windows.Media
         /// </summary>
         private GlyphIndexer CreateGlyphIndexer(GlyphAccessor accessor)
         {
+#if PORTABLE_WPF
+            return new GlyphIndexer(accessor, checked((ushort)GlyphCount));
+#else
             GlyphIndexer indexer;
 
             MS.Internal.Text.TextInterface.FontFace fontFaceDWrite = _font.GetFontFace();
@@ -1704,6 +1829,7 @@ namespace System.Windows.Media
             }
 
             return indexer;
+#endif
         }
 
         #endregion
@@ -1963,6 +2089,18 @@ namespace System.Windows.Media
         #region Private Fields
 
         private FontFaceLayoutInfo          _fontFace;
+
+#if PORTABLE_WPF
+        private MS.Internal.TextFormatting.Portable.PortableFontFace _portableFontFace;
+        internal MS.Internal.TextFormatting.Portable.PortableFontFace PortableFontFace
+        {
+            get
+            {
+                CheckInitialized();
+                return _portableFontFace;
+            }
+        }
+#endif
 
         private StyleSimulations            _styleSimulations;
 
