@@ -7,6 +7,7 @@
     <Compile Remove="GenericFixture/**/*.cs" />
     <ProjectReference Include="GenericFixture/GenericFixture.csproj" />
     <ProjectReference Include="../../Framework/PresentationFramework/PresentationFramework.csproj" />
+    <ProjectReference Include="../../Framework/PresentationFramework.Classic/PresentationFramework.Classic.csproj" />
     <ProjectReference Include="../MarkupRuntimeIntegration/Fixture/Fixture.csproj" />
     <ProjectReference Include="../../Framework/PresentationFramework-SystemCore/PresentationFramework-SystemCore.csproj" />
     <ProjectReference Include="../../Framework/PresentationFramework-SystemData/PresentationFramework-SystemData.csproj" />

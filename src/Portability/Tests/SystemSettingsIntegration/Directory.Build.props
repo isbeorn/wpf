@@ -3,8 +3,9 @@
   <PropertyGroup>
     <PortabilityRepositoryRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../../../../'))</PortabilityRepositoryRoot>
     <SystemSettingsProjectDirectory>$([System.IO.Path]::GetFileName('$(MSBuildProjectDirectory)'))</SystemSettingsProjectDirectory>
-    <BaseOutputPath>$(PortabilityRepositoryRoot)artifacts/portability/system-settings-integration/bin/$(OS)/$(SystemSettingsProjectDirectory)/</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(PortabilityRepositoryRoot)artifacts/portability/system-settings-integration/obj/$(OS)/$(SystemSettingsProjectDirectory)/</BaseIntermediateOutputPath>
+    <SystemSettingsArtifactsDirectory Condition="'$(SystemSettingsArtifactsDirectory)' == ''">$(PortabilityRepositoryRoot)artifacts/portability/system-settings-integration/</SystemSettingsArtifactsDirectory>
+    <BaseOutputPath>$(SystemSettingsArtifactsDirectory)bin/$(OS)/$(SystemSettingsProjectDirectory)/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(SystemSettingsArtifactsDirectory)obj/$(OS)/$(SystemSettingsProjectDirectory)/</BaseIntermediateOutputPath>
     <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
   </PropertyGroup>
 </Project>

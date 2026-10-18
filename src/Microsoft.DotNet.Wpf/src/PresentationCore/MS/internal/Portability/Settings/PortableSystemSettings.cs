@@ -27,6 +27,33 @@ namespace MS.Internal.Portability.Settings
         internal int DoubleClickTimeMilliseconds { get; }
     }
 
+    internal sealed class PortableScrollBarMetrics
+    {
+        internal PortableScrollBarMetrics(double horizontalScrollBarButtonWidthDip, double horizontalScrollBarHeightDip,
+            double verticalScrollBarWidthDip, double verticalScrollBarButtonHeightDip)
+        {
+            if (!double.IsFinite(horizontalScrollBarButtonWidthDip) || horizontalScrollBarButtonWidthDip <= 0)
+                throw new ArgumentOutOfRangeException(nameof(horizontalScrollBarButtonWidthDip), "Scroll bar button width must be finite and positive in DIPs.");
+            if (!double.IsFinite(horizontalScrollBarHeightDip) || horizontalScrollBarHeightDip <= 0)
+                throw new ArgumentOutOfRangeException(nameof(horizontalScrollBarHeightDip), "Scroll bar height must be finite and positive in DIPs.");
+            if (!double.IsFinite(verticalScrollBarWidthDip) || verticalScrollBarWidthDip <= 0)
+                throw new ArgumentOutOfRangeException(nameof(verticalScrollBarWidthDip), "Scroll bar width must be finite and positive in DIPs.");
+            if (!double.IsFinite(verticalScrollBarButtonHeightDip) || verticalScrollBarButtonHeightDip <= 0)
+                throw new ArgumentOutOfRangeException(nameof(verticalScrollBarButtonHeightDip), "Scroll bar button height must be finite and positive in DIPs.");
+            HorizontalScrollBarButtonWidthDip = horizontalScrollBarButtonWidthDip;
+            HorizontalScrollBarHeightDip = horizontalScrollBarHeightDip;
+            VerticalScrollBarWidthDip = verticalScrollBarWidthDip;
+            VerticalScrollBarButtonHeightDip = verticalScrollBarButtonHeightDip;
+        }
+
+        // Declared portable Classic geometry in DIPs, independent of desktop preferences.
+        internal static PortableScrollBarMetrics Classic { get; } = new PortableScrollBarMetrics(17, 17, 17, 17);
+        internal double HorizontalScrollBarButtonWidthDip { get; }
+        internal double HorizontalScrollBarHeightDip { get; }
+        internal double VerticalScrollBarWidthDip { get; }
+        internal double VerticalScrollBarButtonHeightDip { get; }
+    }
+
     internal sealed class PortableSystemSettings
     {
         private readonly PortablePointerSettings? _pointerSettings;
@@ -34,7 +61,8 @@ namespace MS.Internal.Portability.Settings
         internal PortableSystemSettings(string profileName, IReadOnlyDictionary<PortableSystemColor, uint> colors,
             bool keyboardCues, bool highContrast, PortablePointerSettings? pointerSettings = null,
             double caretWidthDip = 1.0, int caretBlinkTimeMilliseconds = 500, bool mouseVanish = false,
-            double minimumHorizontalDragDistanceDip = 4.0, double minimumVerticalDragDistanceDip = 4.0)
+            double minimumHorizontalDragDistanceDip = 4.0, double minimumVerticalDragDistanceDip = 4.0,
+            PortableScrollBarMetrics? scrollBarMetrics = null)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(profileName);
             ArgumentNullException.ThrowIfNull(colors);
@@ -68,6 +96,7 @@ namespace MS.Internal.Portability.Settings
             MouseVanish = mouseVanish;
             MinimumHorizontalDragDistanceDip = minimumHorizontalDragDistanceDip;
             MinimumVerticalDragDistanceDip = minimumVerticalDragDistanceDip;
+            ScrollBarMetrics = scrollBarMetrics ?? PortableScrollBarMetrics.Classic;
         }
 
         internal string ProfileName { get; }
@@ -79,6 +108,7 @@ namespace MS.Internal.Portability.Settings
         internal bool MouseVanish { get; }
         internal double MinimumHorizontalDragDistanceDip { get; }
         internal double MinimumVerticalDragDistanceDip { get; }
+        internal PortableScrollBarMetrics ScrollBarMetrics { get; }
         internal string ThemeName => "generic";
         internal string ThemedResourceName => "themes/generic";
         internal PortablePointerSettings PointerSettings => _pointerSettings ?? throw new PlatformNotSupportedException(
@@ -89,7 +119,8 @@ namespace MS.Internal.Portability.Settings
 
         internal static PortableSystemSettings CreateInitialLightProfile(bool keyboardCues = false, PortablePointerSettings? pointerSettings = null,
             double caretWidthDip = 1.0, int caretBlinkTimeMilliseconds = 500, bool mouseVanish = false,
-            double minimumHorizontalDragDistanceDip = 4.0, double minimumVerticalDragDistanceDip = 4.0) =>
+            double minimumHorizontalDragDistanceDip = 4.0, double minimumVerticalDragDistanceDip = 4.0,
+            PortableScrollBarMetrics? scrollBarMetrics = null) =>
             new PortableSystemSettings("portable-light-v1", new Dictionary<PortableSystemColor, uint>
             {
                 [PortableSystemColor.ActiveBorder] = 0xFF6B7280,
@@ -130,7 +161,7 @@ namespace MS.Internal.Portability.Settings
                 [PortableSystemColor.AccentDark2] = 0xFF123253,
                 [PortableSystemColor.AccentDark3] = 0xFF09192A
             }, keyboardCues, highContrast: false, pointerSettings, caretWidthDip, caretBlinkTimeMilliseconds, mouseVanish,
-                minimumHorizontalDragDistanceDip, minimumVerticalDragDistanceDip);
+                minimumHorizontalDragDistanceDip, minimumVerticalDragDistanceDip, scrollBarMetrics);
     }
 }
 #endif

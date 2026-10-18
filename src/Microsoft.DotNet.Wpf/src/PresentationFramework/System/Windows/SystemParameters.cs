@@ -2604,6 +2604,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.ScrollBarMetrics.HorizontalScrollBarButtonWidthDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.HorizontalScrollBarButtonWidth])
@@ -2614,6 +2617,7 @@ namespace System.Windows
                 }
 
                 return _horizontalScrollBarButtonWidth;
+#endif
             }
         }
 
@@ -2624,6 +2628,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.ScrollBarMetrics.HorizontalScrollBarHeightDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.HorizontalScrollBarHeight])
@@ -2634,6 +2641,7 @@ namespace System.Windows
                 }
 
                 return _horizontalScrollBarHeight;
+#endif
             }
         }
 
@@ -3346,6 +3354,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.ScrollBarMetrics.VerticalScrollBarWidthDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.VerticalScrollBarWidth])
@@ -3356,6 +3367,7 @@ namespace System.Windows
                 }
 
                 return _verticalScrollBarWidth;
+#endif
             }
         }
 
@@ -3366,6 +3378,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.ScrollBarMetrics.VerticalScrollBarButtonHeightDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.VerticalScrollBarButtonHeight])
@@ -3376,6 +3391,7 @@ namespace System.Windows
                 }
 
                 return _verticalScrollBarButtonHeight;
+#endif
             }
         }
 
@@ -5334,11 +5350,13 @@ namespace System.Windows
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.FixedFrameVerticalBorderWidth))
                             changed |= _fixedFrameVerticalBorderWidth != FixedFrameVerticalBorderWidth;
 
+#if !PORTABLE_WPF
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.HorizontalScrollBarButtonWidth))
                             changed |= _horizontalScrollBarButtonWidth != HorizontalScrollBarButtonWidth;
 
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.HorizontalScrollBarHeight))
                             changed |= _horizontalScrollBarHeight != HorizontalScrollBarHeight;
+#endif
 
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.HorizontalScrollBarThumbWidth))
                             changed |= _horizontalScrollBarThumbWidth != HorizontalScrollBarThumbWidth;
@@ -5421,11 +5439,13 @@ namespace System.Windows
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.SmallWindowCaptionButtonHeight))
                             changed |= _smallWindowCaptionButtonHeight != SmallWindowCaptionButtonHeight;
 
+#if !PORTABLE_WPF
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.VerticalScrollBarWidth))
                             changed |= _verticalScrollBarWidth != VerticalScrollBarWidth;
 
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.VerticalScrollBarButtonHeight))
                             changed |= _verticalScrollBarButtonHeight != VerticalScrollBarButtonHeight;
+#endif
 
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.WindowCaptionHeight))
                             changed |= _windowCaptionHeight != WindowCaptionHeight;
@@ -6040,8 +6060,10 @@ namespace System.Windows
         private static double _focusVerticalBorderWidth;
         private static double _fullPrimaryScreenHeight;
         private static double _fullPrimaryScreenWidth;
+#if !PORTABLE_WPF
         private static double _horizontalScrollBarHeight;
         private static double _horizontalScrollBarButtonWidth;
+#endif
         private static double _horizontalScrollBarThumbWidth;
         private static double _iconWidth;
         private static double _iconHeight;
@@ -6075,8 +6097,10 @@ namespace System.Windows
         private static double _smallWindowCaptionButtonHeight;
         private static double _virtualScreenWidth;
         private static double _virtualScreenHeight;
+#if !PORTABLE_WPF
         private static double _verticalScrollBarWidth;
         private static double _verticalScrollBarButtonHeight;
+#endif
         private static double _windowCaptionHeight;
         private static double _kanjiWindowHeight;
         private static double _menuBarHeight;

@@ -1,0 +1,4 @@
+<Project>
+  <Target Name="PreparePortableClassicMarkupInputs" BeforeTargets="MarkupCompilePass1"
+          DependsOnTargets="ImportPortableSourceManifest;PrepareWpfPublicSigningKey" />
+</Project>

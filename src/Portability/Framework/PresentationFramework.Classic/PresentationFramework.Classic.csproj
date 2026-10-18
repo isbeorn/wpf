@@ -1,0 +1,31 @@
+<Project>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <AssemblyName>PresentationFramework.Classic</AssemblyName>
+    <DefineConstants>$(DefineConstants);THEME_CLASSIC</DefineConstants>
+    <WpfSourceProject>$(WpfSourceDir)Themes/PresentationFramework.Classic/PresentationFramework.Classic.csproj</WpfSourceProject>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <InternalMarkupCompilation>true</InternalMarkupCompilation>
+    <NoInternalTypeHelper>true</NoInternalTypeHelper>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Page Include="$(WpfSourceDir)Themes/PresentationFramework.Classic/Themes/Classic.xaml" Link="Themes/Classic.xaml" />
+    <ProjectReference Include="../PresentationFramework/PresentationFramework.csproj" />
+    <ProjectReference Include="../PresentationCore/PresentationCore.csproj" />
+    <ProjectReference Include="../WindowsBase/WindowsBase.csproj" />
+    <ProjectReference Include="../System.Xaml/System.Xaml.csproj" />
+    <PackageDownload Include="Microsoft.WindowsDesktop.App.Runtime.win-x64" Version="[10.0.13]" />
+    <Reference Include="PresentationUI">
+      <HintPath>$(NuGetPackageRoot)/microsoft.windowsdesktop.app.runtime.win-x64/10.0.13/runtimes/win-x64/lib/net10.0/PresentationUI.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="../Build/SourceManifest.targets" />
+  <Import Project="../Build/PublicSigning.targets" />
+  <Import Project="../Build/PortableWpfReferences.targets" />
+  <Import Project="../../Markup/PortableMarkup.targets" />
+  <Import Project="$(RepoRoot)eng/WpfArcadeSdk/tools/NoInternalTypeHelper.targets" />
+  <Import Project="ClassicBuild.targets" />
+</Project>
