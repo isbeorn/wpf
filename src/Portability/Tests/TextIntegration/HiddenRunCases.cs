@@ -136,6 +136,34 @@ static class HiddenRunCases
                 "TrailingWhitespaceLength consumes the measured stock source suffix, including only hidden positions after the first trailing visible whitespace, or the entire hidden-only line.");
         }
     }
+    internal static void VerifyAutomaticHeight(Action<bool, string, string> require)
+    {
+        var properties = new Properties();
+        foreach (TextFormattingMode mode in new[] { TextFormattingMode.Ideal, TextFormattingMode.Display })
+        foreach (FlowDirection flow in new[] { FlowDirection.LeftToRight, FlowDirection.RightToLeft })
+        {
+            using var formatter = TextFormatter.Create(mode);
+            var source = new RunSource(new object[] { "x" }, properties);
+            using var automatic = formatter.FormatLine(source, 0, 32000, new Paragraph(properties, flow: flow, lineHeight: double.NaN), null!);
+            using var zero = formatter.FormatLine(source, 0, 32000, new Paragraph(properties, flow: flow), null!);
+            var automaticWidths = formatter.FormatMinMaxParagraphWidth(source, 0, new Paragraph(properties, flow: flow, lineHeight: double.NaN));
+            var zeroWidths = formatter.FormatMinMaxParagraphWidth(source, 0, new Paragraph(properties, flow: flow));
+            require(automatic.Length == zero.Length && Near(automatic.Width, zero.Width) && Near(automatic.Height, zero.Height) &&
+                Near(automatic.Baseline, zero.Baseline) && Near(automatic.Extent, zero.Extent) &&
+                Near(automaticWidths.MinWidth, zeroWidths.MinWidth) && Near(automaticWidths.MaxWidth, zeroWidths.MaxWidth),
+                "automatic-NaN-line-height-" + mode + "-" + flow,
+                "The original AvalonEdit default-metrics contract uses NaN automatic LineHeight; it preserves the same real metrics as zero automatic height.");
+        }
+        foreach (double height in new[] { -1.0, 24.0, double.PositiveInfinity, double.NegativeInfinity })
+        {
+            bool rejected = false;
+            using var formatter = TextFormatter.Create();
+            try { using var line = formatter.FormatLine(new RunSource(new object[] { "x" }, properties), 0, 32000, new Paragraph(properties, lineHeight: height), null!); }
+            catch (NotSupportedException) { rejected = true; }
+            require(rejected, "custom-line-height-remains-unsupported-" + height,
+                "Accepting the standard automatic NaN sentinel does not implement finite custom heights or infinite values.");
+        }
+    }
     private static bool Near(double left, double right) => Math.Abs(left - right) < 0.001;
     private static int Position(CharacterHit hit) => hit.FirstCharacterIndex + hit.TrailingLength;
     internal sealed class Properties : TextRunProperties
@@ -149,11 +177,11 @@ static class HiddenRunCases
         public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("en-US");
         public override TextEffectCollection TextEffects => null!;
     }
-    internal sealed class Paragraph(Properties properties, TextWrapping wrapping = TextWrapping.NoWrap, FlowDirection flow = FlowDirection.LeftToRight) : TextParagraphProperties
+    internal sealed class Paragraph(Properties properties, TextWrapping wrapping = TextWrapping.NoWrap, FlowDirection flow = FlowDirection.LeftToRight, double lineHeight = 0) : TextParagraphProperties
     {
         public override FlowDirection FlowDirection => flow;
         public override TextAlignment TextAlignment => TextAlignment.Left;
-        public override double LineHeight => 0;
+        public override double LineHeight => lineHeight;
         public override bool FirstLineInParagraph => true;
         public override TextRunProperties DefaultTextRunProperties => properties;
         public override TextWrapping TextWrapping => wrapping;

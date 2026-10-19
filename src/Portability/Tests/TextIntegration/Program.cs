@@ -44,6 +44,7 @@ try
     BidiTests.Run(formatter, Require, Regression);
     Regression("hidden-source-runs", () => HiddenRunCases.Verify(formatter, Require));
     Regression("hidden-source-suffix", () => HiddenRunCases.VerifySourceSuffix(formatter, Require));
+    Regression("automatic-line-height", () => HiddenRunCases.VerifyAutomaticHeight(Require));
     Regression("empty-and-end-caret-bounds-regression", () =>
     {
         foreach (string text in new[] { "", "abc", "abc\r\n" })

@@ -156,7 +156,7 @@ namespace MS.Internal.TextFormatting.Portable
                 throw new ArgumentOutOfRangeException(nameof(width));
             if ((previous != null && (previous.BreakRecord != IntPtr.Zero || previous.TextModifierScope != null)) ||
                 (properties.TextAlignment != TextAlignment.Left && properties.TextAlignment != TextAlignment.Center && properties.TextAlignment != TextAlignment.Right) ||
-                properties.LineHeight != 0 || properties.Indent != 0 || properties.ParagraphIndent != 0 || properties.TextMarkerProperties != null ||
+                (properties.LineHeight != 0 && !double.IsNaN(properties.LineHeight)) || properties.Indent != 0 || properties.ParagraphIndent != 0 || properties.TextMarkerProperties != null ||
                 (properties.Tabs != null && properties.Tabs.Count != 0) || (properties.TextDecorations != null && properties.TextDecorations.Count != 0) ||
                 properties.AlwaysCollapsible)
                 throw new NotSupportedException("Portable text supports horizontal Left, Center and Right greedy paragraphs without markers, tabs, decorations or custom line heights.");
