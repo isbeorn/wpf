@@ -4,6 +4,7 @@
 #if PORTABLE_WPF
 using System;
 using System.Windows;
+using System.Windows.Media;
 
 namespace MS.Internal.Portability.Windowing
 {
@@ -20,6 +21,8 @@ namespace MS.Internal.Portability.Windowing
         event Action<bool> ActivationChanged;
         event Action<WindowState> StateChanged;
         void SetTitle(string title);
+        void SetIcon(ImageSource icon) =>
+            throw new PlatformNotSupportedException("The registered window peer does not support bitmap icons.");
         void SetShowInTaskbar(bool show);
         void SetWindowStyle(WindowStyle style) =>
             throw new PlatformNotSupportedException("The registered window peer does not support decoration changes.");

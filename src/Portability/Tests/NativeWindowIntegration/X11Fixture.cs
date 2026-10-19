@@ -433,6 +433,37 @@ internal sealed class X11Fixture : IDisposable
         return requests;
     }
     internal bool HasWindowManager => Property(_root, "_NET_SUPPORTING_WM_CHECK", 33).Count == 1;
+    internal (long Standard, long Extended) IconRequestLimits => ((long)XMaxRequestSize(_display), (long)XExtendedMaxRequestSize(_display));
+    [DllImport("libX11.so.6")] private static extern IntPtr XMaxRequestSize(IntPtr display);
+    [DllImport("libX11.so.6")] private static extern IntPtr XExtendedMaxRequestSize(IntPtr display);
+    internal uint[]? WindowIcon(IntPtr window)
+    {
+        var property = XInternAtom(_display, "_NET_WM_ICON", true);
+        if (property == IntPtr.Zero) return null;
+        if (XGetWindowProperty(_display, window, property, IntPtr.Zero, IntPtr.Zero, false, (IntPtr)6,
+                out var type, out var format, out var count, out var remaining, out var data) != 0)
+            throw new InvalidOperationException("Cannot measure the native window icon property.");
+        try
+        {
+            if (type == IntPtr.Zero) return null;
+            if (type != (IntPtr)6 || format != 32 || count != IntPtr.Zero || remaining.ToInt64() < 0 || remaining.ToInt64() % 4 != 0)
+                throw new InvalidDataException("The native window icon is not a CARDINAL32 property.");
+        }
+        finally { if (data != IntPtr.Zero) XFree(data); }
+        int length = checked((int)(remaining.ToInt64() / 4));
+        if (XGetWindowProperty(_display, window, property, IntPtr.Zero, (IntPtr)length, false, (IntPtr)6,
+                out type, out format, out count, out remaining, out data) != 0)
+            throw new InvalidOperationException("Cannot read the complete native window icon property.");
+        try
+        {
+            if (type != (IntPtr)6 || format != 32 || count.ToInt64() != length || remaining != IntPtr.Zero || (length != 0 && data == IntPtr.Zero))
+                throw new InvalidDataException("The native window icon changed or was truncated during readback.");
+            var result = new uint[length];
+            for (int index = 0; index < length; index++) result[index] = unchecked((uint)Marshal.ReadIntPtr(data, checked(index * IntPtr.Size)).ToInt64());
+            return result;
+        }
+        finally { if (data != IntPtr.Zero) XFree(data); }
+    }
     private List<IntPtr> Property(IntPtr window, string name, int expectedType)
     {
         var property = XInternAtom(_display, name, true);

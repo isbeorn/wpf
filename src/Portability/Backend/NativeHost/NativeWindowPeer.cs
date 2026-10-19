@@ -15,6 +15,10 @@ using WpfState = WpfFork::System.Windows.WindowState;
 using WpfStyle = WpfFork::System.Windows.WindowStyle;
 using WpfKey = WpfFork::System.Windows.Input.Key;
 using WpfCursor = WpfFork::System.Windows.Input.Cursor;
+using WpfImageSource = WpfFork::System.Windows.Media.ImageSource;
+using WpfBitmapSource = WpfFork::System.Windows.Media.Imaging.BitmapSource;
+using WpfBitmapFrame = WpfFork::System.Windows.Media.Imaging.BitmapFrame;
+using WpfIconBitmapDecoder = WpfFork::System.Windows.Media.Imaging.IconBitmapDecoder;
 using KeyStates = WpfFork::System.Windows.Input.KeyStates;
 
 namespace Wpf.Portable.NativeHost;
@@ -192,6 +196,56 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
     }
 
     public void SetTitle(string title) { Verify(); _window.SetTitle(title); }
+    public void SetIcon(WpfImageSource? icon)
+    {
+        Verify();
+        if (icon is null) { _window.SetIcon(null); return; }
+        WpfBitmapSource[] frames = icon is WpfBitmapFrame frame && frame.Decoder is WpfIconBitmapDecoder decoder
+            ? decoder.Frames.Cast<WpfBitmapSource>().ToArray()
+            : icon is WpfBitmapSource single ? [single]
+            : throw new PlatformNotSupportedException("Native window icons require a bitmap-backed ImageSource.");
+        if (frames.Length == 0) throw new ArgumentException("A window icon must contain at least one bitmap.", nameof(icon));
+        int capacity = _window.IconCapacity;
+        long length = 0;
+        foreach (var bitmap in frames)
+        {
+            bitmap.VerifyAccess();
+            if (bitmap.PixelWidth <= 0 || bitmap.PixelHeight <= 0)
+                throw new ArgumentException("Window icon dimensions must be positive.", nameof(icon));
+            length = checked(length + 2 + (long)bitmap.PixelWidth * bitmap.PixelHeight);
+            if (length > capacity) throw new ArgumentException("The complete window icon exceeds the X server's negotiated request capacity.", nameof(icon));
+            if (bitmap.PortableBuffer is null)
+                throw new PlatformNotSupportedException("The window icon has no supported portable bitmap storage.");
+        }
+        var values = new nuint[checked((int)length)];
+        int position = 0;
+        foreach (var bitmap in frames)
+        {
+            using var snapshot = bitmap.PortableBuffer.CreateDisplayBitmap();
+            if (snapshot.Width != bitmap.PixelWidth || snapshot.Height != bitmap.PixelHeight)
+                throw new InvalidOperationException("The window icon bitmap dimensions changed during conversion.");
+            values[position++] = (nuint)snapshot.Width;
+            values[position++] = (nuint)snapshot.Height;
+            var pixels = snapshot.GetPixelSpan();
+            bool premultiplied = snapshot.AlphaType == SkiaSharp.SKAlphaType.Premul;
+            for (int y = 0; y < snapshot.Height; y++)
+                for (int x = 0; x < snapshot.Width; x++)
+                {
+                    int offset = checked(y * snapshot.RowBytes + x * 4);
+                    uint blue = pixels[offset], green = pixels[offset + 1], red = pixels[offset + 2], alpha = pixels[offset + 3];
+                    if (premultiplied)
+                    {
+                        blue = UnpremultiplyIcon(blue, alpha);
+                        green = UnpremultiplyIcon(green, alpha);
+                        red = UnpremultiplyIcon(red, alpha);
+                    }
+                    values[position++] = alpha << 24 | red << 16 | green << 8 | blue;
+                }
+        }
+        _window.SetIcon(values);
+    }
+    private static uint UnpremultiplyIcon(uint component, uint alpha) =>
+        alpha == 0 ? 0 : Math.Min(255u, (component * 255 + alpha / 2) / alpha);
     public void SetShowInTaskbar(bool show) { Verify(); _window.SetShowInTaskbar(show); }
     public void SetWindowStyle(WpfStyle style)
     {

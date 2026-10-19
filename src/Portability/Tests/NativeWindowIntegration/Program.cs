@@ -123,6 +123,11 @@ try
                     Run("resolved-settings-controlled-report-click-thresholds", () => VerifyClickThresholds(native));
                     completed = true;
                 }
+                else if (args.Contains("--icon-only", StringComparer.Ordinal))
+                {
+                    IconCases.Exercise(native, Run, Wait, Drain, args.FirstOrDefault(value => value.StartsWith("--icon-file=", StringComparison.Ordinal))?[12..]);
+                    completed = true;
+                }
                 else if (args.Contains("--owned-input-only", StringComparer.Ordinal))
                 {
                     Require(fontPath is not null && File.Exists(fontPath), "Pass the pinned font path.");

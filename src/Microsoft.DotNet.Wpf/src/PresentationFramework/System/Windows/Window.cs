@@ -5183,7 +5183,8 @@ namespace System.Windows
         private void OnIconChanged(ImageSource newIcon)
         {
 #if PORTABLE_WPF
-            throw PortableUnsupported("Icon");
+            _icon = newIcon;
+            _portablePeer?.SetIcon(newIcon);
 #else
             // No need to dispose previous _icon.
             // _icon is a ref to the ImageSource object

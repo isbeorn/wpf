@@ -5,6 +5,8 @@ namespace Wpf.Portable.NativeHost.Linux;
 internal static partial class X11WindowNative
 {
     internal const string Xlib = "libX11.so.6";
+    [DllImport(Xlib)] internal static extern nint XMaxRequestSize(nint display);
+    [DllImport(Xlib)] internal static extern nint XExtendedMaxRequestSize(nint display);
     [StructLayout(LayoutKind.Sequential)]
     internal struct VisualInfo
     {

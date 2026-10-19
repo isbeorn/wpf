@@ -178,6 +178,38 @@ internal sealed class X11Window : IDisposable
         XStoreName(Connection.Display, Handle, [.. bytes, 0]);
         Connection.Flush();
     }
+    internal int IconCapacity
+    {
+        get
+        {
+            Verify();
+            // ChangeProperty has six 32-bit header units; BIG-REQUESTS adds one.
+            long capacity = Math.Max((long)XMaxRequestSize(Connection.Display) - 6, (long)XExtendedMaxRequestSize(Connection.Display) - 7);
+            if (capacity < 2) throw new InvalidOperationException("The X server cannot accept a window icon property.");
+            return checked((int)Math.Min(int.MaxValue, capacity));
+        }
+    }
+    public void SetIcon(nuint[]? values)
+    {
+        Verify();
+        if (values is null) XDeleteProperty(Connection.Display, Handle, Connection.GetAtom("_NET_WM_ICON"));
+        else
+        {
+            if (values.Length == 0 || values.Length > IconCapacity)
+                throw new ArgumentException("The complete window icon exceeds the X server's negotiated request capacity.", nameof(values));
+            for (int offset = 0; offset < values.Length;)
+            {
+                if (values.Length - offset < 2 || values[offset] is 0 or > int.MaxValue || values[offset + 1] is 0 or > int.MaxValue)
+                    throw new ArgumentException("The window icon contains invalid bitmap dimensions.", nameof(values));
+                long pixels = checked((long)values[offset] * (long)values[offset + 1]);
+                offset += 2;
+                if (pixels > values.Length - offset) throw new ArgumentException("The window icon bitmap pixels are incomplete.", nameof(values));
+                offset += checked((int)pixels);
+            }
+            XChangeLongProperty(Connection.Display, Handle, Connection.GetAtom("_NET_WM_ICON"), 6, 32, 0, values, values.Length);
+        }
+        Connection.Flush();
+    }
     public void SetOwner(X11Window? owner)
     {
         Verify();

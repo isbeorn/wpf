@@ -104,6 +104,7 @@ namespace System.Windows
                 peer.MetricsChanged += PortableOnMetricsChanged;
                 IsEnabledChanged += PortableOnIsEnabledChanged;
                 source.AttachHost(peer);
+                if (_icon != null) peer.SetIcon(_icon);
                 PortableInitializeBounds();
                 PortableUpdateBounds();
                 SetIWindowService();
