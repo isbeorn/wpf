@@ -16,6 +16,7 @@
     <Resource Include="../../MarkupIntegration/Fixture/Assets/CaseSensitive Ω.txt" Link="Assets/CaseSensitive Ω.txt" />
     <Resource Include="Assets/Opaque Payload Ω.fixtureopaque" />
     <Resource Include="Assets/Opaque Payload Ω.fixtureopaque" Link="Assets/NoExtension Ω" />
+    <Resource Include="../../ImagingIntegration/Assets/rgba8-dpi.png" Link="Assets/Png Sample Ω.png" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Windows.Controls.Ribbon">

@@ -30,6 +30,7 @@ Check("actual-scientific-source-precision-and-ownership", () =>
         Task.Run(() => { var cross = new ushort[input.Length]; source.CopyPixels(cross, 3 * channels * 2, 0); Require(cross.SequenceEqual(original), "Frozen cross-thread read changed samples."); }).GetAwaiter().GetResult();
     }
 });
+PortablePngCases.Run(Check);
 Check("pointer-source-copies-before-caller-release", () =>
 {
     IntPtr memory = Marshal.AllocHGlobal(8);

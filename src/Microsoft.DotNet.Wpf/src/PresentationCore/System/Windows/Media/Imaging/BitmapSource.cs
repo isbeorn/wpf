@@ -26,6 +26,12 @@ namespace System.Windows.Media.Imaging
         internal void InitializePortable(PortableBitmapBuffer buffer, double dpiX, double dpiY)
         {
             _bitmapInit.BeginInit();
+            InstallPortableBuffer(buffer, dpiX, dpiY);
+            _bitmapInit.EndInit();
+        }
+
+        internal void InstallPortableBuffer(PortableBitmapBuffer buffer, double dpiX, double dpiY)
+        {
             PortableBuffer = buffer;
             _useVirtuals = true;
             _format = buffer.Format;
@@ -37,7 +43,6 @@ namespace System.Windows.Media.Imaging
             _isSourceCached = true;
             _creationComplete = true;
             _syncObject = buffer;
-            _bitmapInit.EndInit();
         }
 #endif
         #region Constructor
@@ -1443,9 +1448,14 @@ namespace System.Windows.Media.Imaging
         private void CopyCommon(BitmapSource sourceBitmap)
         {
 #if PORTABLE_WPF
+            sourceBitmap.CompleteDelayedCreation();
             if (sourceBitmap.PortableBuffer != null)
             {
-                InitializePortable(sourceBitmap.PortableBuffer.Clone(this is WriteableBitmap), sourceBitmap.DpiX, sourceBitmap.DpiY);
+                PortableBitmapBuffer buffer = sourceBitmap.PortableBuffer.Clone(this is WriteableBitmap);
+                if (_bitmapInit.IsInInit)
+                    InstallPortableBuffer(buffer, sourceBitmap.DpiX, sourceBitmap.DpiY);
+                else
+                    InitializePortable(buffer, sourceBitmap.DpiX, sourceBitmap.DpiY);
                 return;
             }
 #endif

@@ -80,7 +80,11 @@ namespace System.Windows.Media.Imaging
             _xpsPackageOrigin = XpsLoadingContext.ActivePackageUri;
 
             // If the Uri is relative, use delay creation as the BaseUri could be set at a later point
-            if (UriSource != null && !UriSource.IsAbsoluteUri && CacheOption != BitmapCacheOption.OnLoad)
+            if (UriSource != null && !UriSource.IsAbsoluteUri && CacheOption != BitmapCacheOption.OnLoad
+#if PORTABLE_WPF
+                && PortableBuffer == null
+#endif
+                )
             {
                 DelayCreation = true;
             }
@@ -285,7 +289,7 @@ namespace System.Windows.Media.Imaging
         internal override void FinalizeCreation()
         {
 #if PORTABLE_WPF
-            throw new NotSupportedException("Portable BitmapImage codecs and URI/stream decoding are not implemented.");
+            FinalizePortableCreation();
 #else
             _bitmapInit.EnsureInitializedComplete();
             Uri uri = UriSource;
