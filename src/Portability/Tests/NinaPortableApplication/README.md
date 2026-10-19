@@ -15,7 +15,7 @@ The bootstrap hash is recorded separately in upstream.json; all 680 upstream sou
 Required inputs:
 
 - NinaSourceDirectory: root of the pinned, unchanged upstream source tree.
-- FrameworkRuntimeDirectory and FrameworkRuntimeManifest: one released whole143 Unix framework family and the existing stage-manifests.json containing its file hashes. The directory must contain exactly those 143 files.
+- FrameworkRuntimeDirectory and FrameworkRuntimeManifest: one released whole Unix Release framework family and its complete stage-manifests.json. Supply ExpectedFrameworkRuntimeManifestSha256 and ExpectedFrameworkRuntimeFileCount from the reviewed producer release. The helper requires the exact unique safe-relative path set, every file hash and all active profile runtime assemblies; it rejects extra, missing and legacy Avalonia runtime assets. A raw source-build Stage is a local qualification family, not a curated redistributable package runtime.
 - MarkupCompiler, WinFxTargets and PortableReferencesTargets: the coherent source-built portable PresentationBuildTasks DLL and existing Microsoft.WinFX.targets/PortableWpfReferences.targets imports.
 - OriginalManagedClosure: the original 160-PE fixture's Closure.json, with managed/ and satellites/ siblings. Its exact manifest and every PE hash are verified.
 - AvalonDockPath: the qualified source-adapted AvalonDock component pinned in upstream.json. Its runtime qualification remains limited to the declared programmatic docking paths.

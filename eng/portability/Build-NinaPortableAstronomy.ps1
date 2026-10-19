@@ -3,6 +3,8 @@ param(
     [Parameter(Mandatory)][string] $NinaSourceDirectory,
     [Parameter(Mandatory)][string] $FrameworkRuntimeDirectory,
     [Parameter(Mandatory)][string] $FrameworkRuntimeManifest,
+    [Parameter(Mandatory)][ValidatePattern('^[A-Fa-f0-9]{64}$')][string] $ExpectedFrameworkRuntimeManifestSha256,
+    [Parameter(Mandatory)][ValidateRange(1, 2147483647)][int] $ExpectedFrameworkRuntimeFileCount,
     [Parameter(Mandatory)][string] $MarkupCompiler,
     [Parameter(Mandatory)][string] $WinFxTargets,
     [Parameter(Mandatory)][string] $PortableReferencesTargets,
@@ -53,10 +55,32 @@ foreach ($file in $closure.files) {
     $group = if ($file.outputPath.Contains('/')) { 'satellites' } else { 'managed' }
     Assert-Hash "$closureDirectory/$group/$($file.outputPath)" $file.sha256
 }
-$family = @(Get-Content $FrameworkRuntimeManifest -Raw | ConvertFrom-Json | Where-Object os -eq Unix)
-if ($family.Count -ne 1 -or $family[0].files.Count -ne 143) { throw 'Expected coherent whole143 Unix family.' }
-foreach ($file in $family[0].files) { Assert-Hash "$FrameworkRuntimeDirectory/$($file.path)" $file.sha256 }
-if (@(Get-ChildItem -LiteralPath $FrameworkRuntimeDirectory -Recurse -File).Count -ne 143) { throw 'Framework runtime directory contains extra files.' }
+Assert-Hash $FrameworkRuntimeManifest $ExpectedFrameworkRuntimeManifestSha256.ToUpperInvariant()
+$family = @(Get-Content -LiteralPath $FrameworkRuntimeManifest -Raw | ConvertFrom-Json | Where-Object os -CEQ 'Unix')
+if ($family.Count -ne 1 -or $family[0].configuration -cne 'Release' -or $family[0].files.Count -ne $ExpectedFrameworkRuntimeFileCount) { throw 'Expected exactly one pinned whole Unix Release framework family with the supplied file count.' }
+$frameworkRoot = [IO.Path]::GetFullPath($FrameworkRuntimeDirectory).TrimEnd([IO.Path]::DirectorySeparatorChar, [IO.Path]::AltDirectorySeparatorChar)
+$frameworkPrefix = $frameworkRoot + [IO.Path]::DirectorySeparatorChar
+$frameworkPaths = [Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal)
+foreach ($file in $family[0].files) {
+    if ($file.path -isnot [string] -or [string]::IsNullOrWhiteSpace($file.path) -or [IO.Path]::IsPathRooted($file.path) -or $file.path -match '\\|:' -or @($file.path.Split('/') | Where-Object { $_ -in @('', '.', '..') }).Count) { throw 'Unsafe framework manifest path.' }
+    if (!$frameworkPaths.Add($file.path)) { throw 'Duplicate framework manifest path.' }
+    if ($file.sha256 -notmatch '^[A-Fa-f0-9]{64}$') { throw 'Invalid framework file SHA-256.' }
+    if ([IO.Path]::GetFileName($file.path) -match '^Avalonia(?:\.|$)' -and [IO.Path]::GetExtension($file.path) -in @('.dll', '.pdb', '.so', '.dylib')) { throw 'Legacy Avalonia runtime asset is outside the owned framework profile.' }
+    $path = [IO.Path]::GetFullPath((Join-Path $frameworkRoot $file.path))
+    if (!$path.StartsWith($frameworkPrefix, [StringComparison]::OrdinalIgnoreCase)) { throw 'Framework manifest path escapes the runtime directory.' }
+    Assert-Hash $path $file.sha256.ToUpperInvariant()
+    if ($file.PSObject.Properties.Name -contains 'bytes' -and (Get-Item -LiteralPath $path).Length -ne $file.bytes) { throw 'Framework file length differs from its manifest.' }
+}
+$frameworkFiles = @(Get-ChildItem -LiteralPath $frameworkRoot -Recurse -File -Force)
+if ($frameworkFiles.Count -ne $ExpectedFrameworkRuntimeFileCount) { throw 'Framework runtime directory file count differs from the pinned family.' }
+foreach ($file in $frameworkFiles) {
+    $relative = [IO.Path]::GetRelativePath($frameworkRoot, $file.FullName).Replace('\', '/')
+    if (!$frameworkPaths.Contains($relative)) { throw 'Framework runtime directory contains an unlisted file.' }
+}
+$frameworkProfile = Get-Content (Join-Path $PSScriptRoot '../../src/Portability/Packaging/PackageProfile.json') -Raw | ConvertFrom-Json
+foreach ($name in @($frameworkProfile.frameworkAssemblies) + @($frameworkProfile.backendAssemblies) + @($frameworkProfile.genuineManagedContracts)) {
+    if (!$frameworkPaths.Contains("$name.dll")) { throw "Required profile runtime assembly is missing: $name" }
+}
 foreach ($file in $pin.files) {
     if ($file.path -match '(^|/)\.\.(/|$)|\\|:') { throw 'Unsafe source manifest path.' }
     Assert-Hash "$NinaSourceDirectory/$($file.path)" $file.sha256
@@ -126,4 +150,4 @@ $outputs = foreach ($name in @('NINA.Core', 'NINA.Astrometry')) {
     $pdb = [IO.Path]::ChangeExtension($dll, '.pdb')
     [ordered]@{ name = $name; dll = $dll; sha256 = (Get-FileHash $dll).Hash; pdb = $pdb; pdbSha256 = (Get-FileHash $pdb).Hash; identity = [Reflection.AssemblyName]::GetAssemblyName($dll).FullName }
 }
-Save "$output/managed-build.json" ([ordered]@{ status = 'managed-source-build-pass-native-execution-separate'; revision = $pin.revision; frameworkManifestSha256 = (Get-FileHash $FrameworkRuntimeManifest).Hash; outputs = @($outputs); changes = @($changes) } | ConvertTo-Json -Depth 6)
+Save "$output/managed-build.json" ([ordered]@{ status = 'managed-source-build-pass-native-execution-separate'; revision = $pin.revision; frameworkManifestSha256 = (Get-FileHash $FrameworkRuntimeManifest).Hash; frameworkRuntimeFileCount = $ExpectedFrameworkRuntimeFileCount; frameworkRuntimeConfiguration = 'Release'; outputs = @($outputs); changes = @($changes) } | ConvertTo-Json -Depth 6)
