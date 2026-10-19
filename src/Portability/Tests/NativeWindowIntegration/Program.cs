@@ -517,10 +517,42 @@ void Exercise(X11Fixture native)
     Run("native-pointer-button-press-release-click", () =>
     {
         native.Focus(xid);
-        native.Click(xid, 100, 30);
-        Wait(() => clicked == 1 && released == 1);
-        Require(pressed == 1 && Mouse.LeftButton == MouseButtonState.Released && !button.IsMouseCaptured,
-            "Native mouse press/release did not complete genuine Button.Click and capture release.");
+        int beforeClicks = clicked, beforePresses = pressed, beforeReleases = released;
+        native.MovePointer(xid, 100, 30);
+        try
+        {
+            native.Button(1, true);
+            Wait(() => pressed == beforePresses + 1 && button.IsPressed && button.IsMouseCaptured && ReferenceEquals(Mouse.Captured, button));
+            Require(Mouse.LeftButton == MouseButtonState.Pressed && !native.CanAcquirePointerGrab(),
+                "The held native press did not retain both genuine Button state and the server grab.");
+        }
+        finally { native.Button(1, false); }
+        Wait(() => clicked == beforeClicks + 1 && released == beforeReleases + 1 && Mouse.LeftButton == MouseButtonState.Released && Mouse.Captured is null);
+        Require(!button.IsPressed && !button.IsMouseCaptured && native.CanAcquirePointerGrab(),
+            "Native mouse release did not complete exactly one genuine Button.Click and release the server grab.");
+    });
+    Run("native-held-button-outside-release-cancels-click", () =>
+    {
+        int beforeClicks = clicked, beforePresses = pressed, beforeReleases = released;
+        native.MovePointer(xid, 100, 30);
+        try
+        {
+            try
+            {
+                native.Button(1, true);
+                Wait(() => pressed == beforePresses + 1 && button.IsPressed && ReferenceEquals(Mouse.Captured, button));
+                native.MovePointer(xid, 300, 180);
+                Wait(() => Mouse.GetPosition(button).X > button.ActualWidth && Mouse.GetPosition(button).Y > button.ActualHeight &&
+                    !button.IsPressed && ReferenceEquals(Mouse.Captured, button));
+                Require(Mouse.LeftButton == MouseButtonState.Pressed && !native.CanAcquirePointerGrab(),
+                    "Moving outside the Button lost the held native grab.");
+            }
+            finally { native.Button(1, false); }
+            Wait(() => released == beforeReleases + 1 && Mouse.LeftButton == MouseButtonState.Released && Mouse.Captured is null);
+            Require(clicked == beforeClicks && !button.IsPressed && !button.IsMouseCaptured && native.CanAcquirePointerGrab(),
+                "An outside release emitted Click or retained genuine Button/native capture state.");
+        }
+        finally { native.MovePointer(xid, 100, 30); Drain(); }
     });
     Run("native-cursor-visibility-retains-latest-shape", () =>
     {

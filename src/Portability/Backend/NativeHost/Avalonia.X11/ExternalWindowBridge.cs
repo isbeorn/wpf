@@ -24,6 +24,7 @@ public sealed class ExternalWindowBridge : IDisposable
     private readonly X11Window _window;
     private readonly IntPtr _handle;
     private bool _captured;
+    private int _capturedDevice;
     private bool _disposed;
     private static Observer? s_observer;
 
@@ -197,17 +198,70 @@ public sealed class ExternalWindowBridge : IDisposable
     {
         Verify();
         if (_captured) return true;
-        nuint requestSerial = XNextRequest(_platform.Display);
-        var result = XGrabPointer(_platform.Display, _handle, false,
-            EventMask.ButtonPressMask | EventMask.ButtonReleaseMask | EventMask.PointerMotionMask |
-            EventMask.EnterWindowMask | EventMask.LeaveWindowMask,
-            GrabMode.GrabModeAsync, GrabMode.GrabModeAsync, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+        nuint requestSerial;
+        int device = 0;
+        GrabResult result;
+        if (_platform.XI2 is not null)
+            result = GrabSelectedPointer(out device, out requestSerial);
+        else
+        {
+            requestSerial = XNextRequest(_platform.Display);
+            result = XGrabPointer(_platform.Display, _handle, false,
+                EventMask.ButtonPressMask | EventMask.ButtonReleaseMask | EventMask.PointerMotionMask |
+                EventMask.EnterWindowMask | EventMask.LeaveWindowMask,
+                GrabMode.GrabModeAsync, GrabMode.GrabModeAsync, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero);
+        }
         XFlush(_platform.Display);
         if (result != GrabResult.GrabSuccess) return false;
         s_observer!.PointerCaptureSerial = requestSerial;
         s_observer.PointerCaptureOwner = this;
-        foreach (var peer in s_observer!.Windows.Values) peer._captured = ReferenceEquals(peer, this);
+        foreach (var peer in s_observer.Windows.Values)
+        {
+            peer._captured = ReferenceEquals(peer, this);
+            peer._capturedDevice = peer._captured ? device : 0;
+        }
         return true;
+    }
+
+    private unsafe GrabResult GrabSelectedPointer(out int device, out nuint requestSerial)
+    {
+        var masks = XIGetSelectedEvents(_platform.Display, _handle, out int count);
+        try
+        {
+            if (masks == null || count < 1 || count > 64)
+                throw new PlatformNotSupportedException("Native capture requires the window's selected XI2 master pointer.");
+            int pointerMask = 0;
+            foreach (var type in new[] { XiEventType.XI_ButtonPress, XiEventType.XI_ButtonRelease, XiEventType.XI_Motion, XiEventType.XI_Enter, XiEventType.XI_Leave })
+                XISetMask(ref pointerMask, type);
+            XIEventMask* selected = null;
+            for (int index = 0; index < count; index++)
+            {
+                var mask = &masks[index];
+                if (mask->MaskLen < 0 || mask->MaskLen > 4096 || (mask->MaskLen > 0 && mask->Mask == null))
+                    throw new InvalidOperationException("XIGetSelectedEvents returned an invalid event mask.");
+                if (mask->MaskLen < XiEventMaskLen || (*mask->Mask & pointerMask) != pointerMask) continue;
+                if (mask->Deviceid <= (int)XiPredefinedDeviceId.XIAllMasterDevices || selected != null)
+                    throw new PlatformNotSupportedException("Native capture requires one explicitly selected XI2 master pointer.");
+                selected = mask;
+            }
+            if (selected == null)
+                throw new PlatformNotSupportedException("The native window has no complete XI2 pointer selection.");
+            device = selected->Deviceid;
+            var info = (XIDeviceInfo*)XIQueryDevice(_platform.Display, device, out int devices);
+            try
+            {
+                if (info == null || devices != 1 || info->Use != XiDeviceType.XIMasterPointer)
+                    throw new PlatformNotSupportedException("The selected XI2 capture device is not a master pointer.");
+            }
+            finally { if (info != null) XIFreeDeviceInfo(info); }
+            if (s_observer!.PointerCaptureOwner is { } owner && owner._capturedDevice != device)
+                throw new PlatformNotSupportedException("Native capture cannot transfer between different pointer devices.");
+            var grabMask = new XIEventMask { Deviceid = device, MaskLen = XiEventMaskLen, Mask = &pointerMask };
+            requestSerial = XNextRequest(_platform.Display);
+            return XIGrabDevice(_platform.Display, device, _handle, IntPtr.Zero, IntPtr.Zero,
+                GrabMode.GrabModeAsync, GrabMode.GrabModeAsync, false, &grabMask);
+        }
+        finally { if (masks != null) XFree(masks); }
     }
 
     public void ReleaseMouseCapture()
@@ -216,9 +270,11 @@ public sealed class ExternalWindowBridge : IDisposable
         if (!_captured) return;
         s_observer!.PointerCaptureSerial = XNextRequest(_platform.Display);
         s_observer.PointerCaptureOwner = null;
-        XUngrabPointer(_platform.Display, IntPtr.Zero);
+        if (_capturedDevice != 0) XIUngrabDevice(_platform.Display, _capturedDevice, IntPtr.Zero);
+        else XUngrabPointer(_platform.Display, IntPtr.Zero);
         XFlush(_platform.Display);
         _captured = false;
+        _capturedDevice = 0;
     }
 
     public IWindowImpl? WindowAt(PixelPoint screenPoint)
@@ -418,8 +474,17 @@ public sealed class ExternalWindowBridge : IDisposable
                 {
                     var crossing = (XIEnterLeaveEvent*)input;
                     if ((crossing->mode == (int)NotifyMode.NotifyGrab || crossing->mode == (int)NotifyMode.NotifyUngrab) &&
-                        Windows.TryGetValue(crossing->EventWindow, out var crossingPeer) && IsObsoleteCrossing(crossing->serial, crossingPeer))
-                        return true;
+                        Windows.TryGetValue(crossing->EventWindow, out var crossingPeer))
+                    {
+                        if (IsObsoleteCrossing(crossing->serial, crossingPeer)) return true;
+                        if (crossing->mode == (int)NotifyMode.NotifyUngrab && crossingPeer._captured && crossingPeer._capturedDevice == crossing->deviceid)
+                        {
+                            crossingPeer._captured = false;
+                            crossingPeer._capturedDevice = 0;
+                            if (PointerCaptureOwner == crossingPeer) PointerCaptureOwner = null;
+                            crossingPeer.CaptureLost?.Invoke();
+                        }
+                    }
                 }
             }
             if (Windows.TryGetValue(evt.AnyEvent.window, out var peer))
@@ -440,6 +505,7 @@ public sealed class ExternalWindowBridge : IDisposable
                      evt.CrossingEvent.mode == NotifyMode.NotifyUngrab)))
                 {
                     peer._captured = false;
+                    peer._capturedDevice = 0;
                     if (PointerCaptureOwner == peer)
                         PointerCaptureOwner = null;
                     peer.CaptureLost?.Invoke();
@@ -457,6 +523,13 @@ public sealed class ExternalWindowBridge : IDisposable
     private static extern int XQueryKeymap(IntPtr display, [Out] byte[] keys);
     [DllImport("libX11.so.6")]
     private static extern int XkbGetNamedIndicator(IntPtr display, IntPtr name, out int index, out int state, IntPtr map, out int real);
+    [DllImport("libXi.so.6")]
+    private static extern unsafe XIEventMask* XIGetSelectedEvents(IntPtr display, IntPtr window, out int count);
+    [DllImport("libXi.so.6")]
+    private static extern unsafe GrabResult XIGrabDevice(IntPtr display, int device, IntPtr window, IntPtr time,
+        IntPtr cursor, GrabMode grabMode, GrabMode pairedDeviceMode, bool ownerEvents, XIEventMask* mask);
+    [DllImport("libXi.so.6")]
+    private static extern int XIUngrabDevice(IntPtr display, int device, IntPtr time);
     [DllImport("libXi.so.6")]
     private static extern int XIGetClientPointer(IntPtr display, IntPtr window, out int device);
     [DllImport("libXi.so.6")]
