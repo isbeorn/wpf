@@ -1,4 +1,11 @@
-# Open-source native host feasibility probe
+# Retired native host feasibility probe
+
+Retired on 19 October 2026 when the user selected the project-owned Linux host.
+The executable project, source and package lock are removed from active build
+discovery. The record below preserves the original probe's scope and historical
+results. Its commands are historical and require restoring the corresponding
+Git revision. Use NativeDispatcherIntegration and NativeWindowIntegration for
+the owned backend's current qualification.
 
 This executable tests public Avalonia APIs as a possible native window and event-loop host. It implements no WPF types and does not translate NINA views. Passing proves only the listed Avalonia behavior on the tested backend. It does not prove that WPF can use that backend.
 
