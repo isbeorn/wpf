@@ -11,6 +11,7 @@
     <Compile Include="../CombineCases.cs" Link="CombineCases.cs" />
     <Compile Include="../OutlineCases.cs" Link="OutlineCases.cs" />
     <Compile Include="../BoundsCases.cs" Link="BoundsCases.cs" />
+    <Compile Include="../CrosshairBoundsCases.cs" Link="CrosshairBoundsCases.cs" />
     <Compile Include="../DashedBoundsCases.cs" Link="DashedBoundsCases.cs" />
     <Compile Include="../GridBoundsCases.cs" Link="GridBoundsCases.cs" />
     <None Include="../GridDrawingSnapshot.json;../GridBoundsReference.json;../GridAffineReference.json" Link="%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />

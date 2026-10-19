@@ -18,12 +18,30 @@ namespace MS.Internal.Portability.Rendering
                 using (SKPath path = Create(geometry, false, includeHollows: true))
                 {
                     if (path.IsEmpty) return Rect.Empty;
-                    SKRect bounds = path.TightBounds;
+                    SKRect bounds = GetTightBounds(path);
                     if (!Finite(bounds)) return Rect.Empty;
                     return new Rect(bounds.Left, bounds.Top, (double)bounds.Right - bounds.Left, (double)bounds.Bottom - bounds.Top);
                 }
             }
             catch (ArithmeticException) { return Rect.Empty; }
+        }
+
+        private static SKRect GetTightBounds(SKPath path)
+        {
+            SKRect bounds = path.TightBounds;
+            // Skia can omit axis-aligned line extrema when the same path contains curves.
+            using (SKPath.RawIterator iterator = path.CreateRawIterator())
+            {
+                var points = new SKPoint[4];
+                SKPathVerb verb;
+                while ((verb = iterator.Next(points)) != SKPathVerb.Done)
+                    if (verb == SKPathVerb.Line)
+                        bounds = new SKRect(Math.Min(bounds.Left, Math.Min(points[0].X, points[1].X)),
+                            Math.Min(bounds.Top, Math.Min(points[0].Y, points[1].Y)),
+                            Math.Max(bounds.Right, Math.Max(points[0].X, points[1].X)),
+                            Math.Max(bounds.Bottom, Math.Max(points[0].Y, points[1].Y)));
+            }
+            return bounds;
         }
 
         internal static double AbsoluteTolerance(SKRect bounds, double tolerance, ToleranceType type)

@@ -156,6 +156,7 @@ Reject("unsupported-mixed-end-caps", () => line.StrokeContains(new Pen(Brushes.R
 CombineCases.Run(Check);
 OutlineCases.Run(Check);
 BoundsCases.Run(Check);
+CrosshairBoundsCases.Run(Check);
 DashedBoundsCases.Run(Check);
 GridBoundsCases.Run(Check);
 MixedStrokeCases.Run(Check);
