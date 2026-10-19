@@ -6,9 +6,9 @@ The user approved removing the Avalonia dependency. Replace the native adapter
 inside `Wpf.Portable.NativeHost` with project-maintained Linux code, not a copied
 or renamed Avalonia backend. Preserve the original WPF dispatcher, controls,
 bindings, layout and input semantics and the existing retained Skia renderer.
-This is an approved implementation direction, not an executed replacement or
-new compatibility pass. All 77 existing ledger checkpoints retain their
-historical scopes; Avalonia-backed runs do not qualify the owned backend.
+The owned host/delivery cutover now has bounded exact-source managed and native
+verification, as recorded below. Earlier ledger checkpoints retain their
+historical scopes. Avalonia-backed runs do not qualify the owned backend.
 
 Keep the focused SkiaSharp 3.119.4 and HarfBuzzSharp 8.3.1.5 bindings accepted after
 license review. Preserve the regular Linux Skia/Fontconfig native asset and add
@@ -42,6 +42,41 @@ not assumed. Native IME remains explicitly user-deferred. Basic XKB keyboard
 mapping and compose through the existing OS prerequisite libxkbcommon.so.0
 are required and are not covered by that deferral.
 
+### Owned family qualification checkpoint
+
+Commit `2e3e2174` integrates the [owned host/delivery source intake](../../artifacts/portability/owned-backend-main-intake/intake-manifest.json):
+69 changed files, 63 intake rows, 22 retired files, 16 preserved rows and ten
+delivery rows. Main retires the active Avalonia platform projects, source
+preparation and assembly dependencies while retaining the 34 attributed Unicode
+derivatives and audited SkiaSharp/HarfBuzzSharp dependencies. Four preserved
+helper source/PDB differences are only CRLF/LF; the final AtSpi fixture adds two
+wire checks. Historical Source4 results retain their original scope.
+
+The [sealed exact-source qualification](../../artifacts/portability/owned-current-main-qualification/README.md)
+uses fresh locked 11-project Windows/Linux builds of `2e3e2174`. Each OS passes
+1,031 managed checks; 18 private native X11 modes pass 161 checks. All those
+runtime processes exit zero with empty stderr. Source/PDB, runtime copies,
+dependencies and native assets have full family proof. The first path-substring
+oracle failure is retained: complete binary roots were relocated byte-exact to
+`<os>/portability/fixtures`, with before/after inventories and no assertion edit.
+
+The raw Unix Stage contains all 120 output files without exclusions. It is
+source-build output for local qualification, not a curated runtime package.
+Additional fresh AT-SPI wire runs on that family pass basic 8, TextBox 13 and
+disconnect 1 groups, with exact owned-process/display cleanup. Their retained
+D-Bus activation/disconnect messages are separate from fixture failures. Wire
+checks do not qualify actual Orca or GNOME/XWayland desktop interaction.
+
+Packages, actual GNOME X11/XWayland/Orca, NINA workflow replay and overnight
+simulation remain open. The [first actual App.Main attempt](../../artifacts/portability/nina-simulator-qualification-candidate/first-owned-shell-source2e3/handoff.json)
+enters original App.OnStartup, returns from real composition and reaches
+MainWindow.InitializeComponent. It fails at MainWindow.xaml line 37's original
+pack ICO through ImageSourceConverter/BitmapFrame/BitmapDecoder. MessageBox's
+user32 failure is secondary. No usable Window is observed; owned cleanup is
+verified afterward. There is no successful full-shell launch. The original
+21-check Markdown workflow still reaches unported RenderTargetBitmap; child/RTL/
+text-object work remains an unintegrated candidate.
+
 ## Replacement behavior checklist and gates
 
 Reuse existing fixtures and their observable WPF operations. Establish relevant
@@ -68,9 +103,9 @@ initialization or downloads. Record every application adaptation and keep its
 failures separate from framework failures. This is a pending shell workflow,
 not permission to replace the application with a synthetic host or fake VMs.
 
-Implementation is proceeding in isolated ownership lanes. Integration still
-requires a fresh coherent source/package family and the gates above. Phases 2
-through 5 remain open and the full NINA shell remains unlaunched. The user's
+The bounded source-family result above does not complete package or desktop
+qualification. Phases 2 through 5 remain open and there has been no successful
+full-shell launch. The user's
 accepted Rgb48 timing stands; no new CPU/latency budget or canceled conversion
 cache work is introduced.
 
@@ -80,9 +115,10 @@ The user approved an owned managed bottomless layout engine for NINA's Markdown.
 Keep FlowDocumentScrollViewer, FlowDocument, TextContainer, TextPointer,
 TextEditor, selection, undo and automation consumers genuine. Preserve ordinary
 Windows-native layout. Add no dependency, public API or replacement control tree.
-The checkout's PresentationNative redist project only copies packaged binaries;
-nonempty portable documents currently fail when acquiring the unavailable PTS
-engine. PresentationUI source/resource qualification does not resolve that gap.
+The checkout's PresentationNative redist project only copies packaged binaries.
+At acceptance, nonempty portable documents failed when acquiring the unavailable
+PTS engine. PresentationUI source/resource qualification alone did not resolve
+that gap; the bounded paragraph milestone below now bypasses it for its scope.
 
 Own the portable layout inside the existing formatter, page and text-view
 responsibilities. One page-owned committed snapshot supplies formatted lines,
@@ -110,7 +146,32 @@ after content/width/property changes and clean shutdown after failures.
 Pagination, printing, optimal breaking, general rich-text editing, arbitrary
 table spans, columns and floaters remain separate qualification targets. Native
 AT-SPI and Orca still require their own native evidence. This decision approves
-implementation and its test strategy; it is not a document-layout pass.
+implementation and its test strategy; approval alone is not a layout pass.
+
+The committed [hidden-run revision 2](../../artifacts/portability/flow-text-runs/hidden-revision2/handoff.md)
+in `49ecb1dea` preserves source symbols and caller run identities while shaping
+visible text. TextIntegration passes 373/373 on each OS, including 25 new checks.
+Modifier scopes, objects and markers are separate work.
+
+The [automatic-height guard](../../artifacts/portability/flow-text-runs/automatic-height-revision1/handoff.md)
+in `9eb8a6525` accepts NaN alongside zero, matching original AvalonEdit's standard
+metrics path and stock zero/NaN metrics. TextIntegration passes 381/381 on each
+OS and in fresh root Windows intake. Finite custom heights and infinities still
+fail explicitly; hidden revision 2's historical 373 checks remain unchanged.
+
+The [paragraph revision 2](../../artifacts/portability/managed-flow-document-tracer/paragraph-revision2/handoff.json)
+in `8972f8086` passes genuine FlowDocumentScrollViewer paragraph layout, ink,
+public line navigation, selection, hit testing, width restore, text mutation and
+A/B/A raster/Run-hit restoration with stock, Windows and Linux observations.
+Root intake changes only EOF bytes in four project/test files; production layout
+bytes remain unchanged. Its final build has zero warnings/errors, with paragraph
+1/1 and unchanged Markup 16/16 passing.
+
+This is paragraph-only progress. The selected real NINA Markdown, AvalonEdit
+children, list/link callbacks, table/local-image/decorated composite and broader
+document behavior remain unqualified. The owned-family results above do not
+qualify these NINA paths or packages. Phases 2 through 5 remain open, native IME
+is user-deferred and there has been no successful full-shell launch.
 
 ## Historical initial decision: 18 October 2026
 

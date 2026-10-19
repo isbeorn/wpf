@@ -14752,6 +14752,323 @@
       ],
       "sourceCommit": "05fdd11bb5b2c3490b98fd6ee19c24ccf7ba09a0",
       "outcome": "pass"
+    },
+    {
+      "label": "hidden-source-symbols-revision2-committed-49ec",
+      "capturedAtUtc": "2026-10-19T17:23:38.3441830Z",
+      "headCommit": "8972f808645ee05c283cce250bf6577bb4514ec6",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit 49ecb1dea changes seven files for hidden source-symbol support. Existing TextIntegration passes 373/373 on Windows and Linux: 348 prior plus 25 hidden-run checks. Visible shaping excludes hidden symbols while TextLine lengths, spans, continuations, caret/hit/range geometry and caller TextRun identities retain original source positions. Trailing-whitespace suffix cases are stock-backed; the causal red remains preserved. No public API or cross-assembly contract changed.",
+      "verification": "Owner revision2 compiled source checksums and PE/PDB identities match both copied closures. Root current Windows build and TextIntegration 373 pass with exit zero and empty test stderr; its build retains one existing CS9336 dependency warning and zero errors. Source manifest seven entries match the committed payload.",
+      "limitations": "Hidden-run support only. No modifier scopes, decorations, fixed-size objects, markers, arbitrary tabs/heights or NINA Markdown qualification. This is not NativeHost, no-Avalonia main/package or native cutover evidence. Phases 2-5 remain open and native IME user-deferred.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/flow-text-runs/hidden-revision2/handoff.md",
+          "sha256": "f061679dfc42618dbf97ed9005b678405648959929da3d76b058ee80d8c59018",
+          "bytes": 1736
+        },
+        {
+          "path": "artifacts/portability/flow-text-runs/hidden-revision2/source-manifest.json",
+          "sha256": "4a8658e273be910e34fb3a046d74d3ef8a7e4bc229eaf583963f17f2c3505418",
+          "bytes": 1315
+        },
+        {
+          "path": "artifacts/portability/flow-text-runs/hidden-revision2/source-pdb-correspondence.json",
+          "sha256": "9198bbde1d6ad7ab94ac39aa587b75bd2bdfb1d5eb9501c6ab7d6e684635190d",
+          "bytes": 8370
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-flow-text-runs-20261019/hidden-revision2/proof/hidden2-windows.json",
+          "sha256": "8cd8b35f86f449cf2609ea9f2ddc6c777e7d24b4aab6057ef60a05e1287fe044",
+          "bytes": 90113
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-flow-text-runs-20261019/hidden-revision2/proof/hidden2-linux.json",
+          "sha256": "9bdbc12fbe5c33a6627f1f44ad61aeec76ab19cf93f00560b81b507c8e2c2621",
+          "bytes": 88194
+        },
+        {
+          "path": "artifacts/portability/flow-text-runs/hidden-revision2/root-intake-text.stdout.json",
+          "sha256": "f37a02334e0d6472761d2f5bc4fcad434e8ff7504d52094490131942728d20b3",
+          "bytes": 89966
+        },
+        {
+          "path": "artifacts/portability/flow-text-runs/hidden-revision2/root-intake-build-correct-sdk.log",
+          "sha256": "dd6df07dec36b7edae187182c7033239ad50e36e217c03c367b5cda05e41c067",
+          "bytes": 3597
+        }
+      ],
+      "sourceCommit": "49ecb1deae5c9e29b5b003ee27e01b450410e6d7",
+      "outcome": "pass"
+    },
+    {
+      "label": "genuine-managed-flow-document-paragraph-revision2-committed-8972",
+      "capturedAtUtc": "2026-10-19T17:23:38.3560446Z",
+      "headCommit": "8972f808645ee05c283cce250bf6577bb4514ec6",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit 8972f8086 integrates the eleven-file paragraph-only FlowDocument tracer over hidden Core revision2. Genuine FlowDocumentScrollViewer/Paragraph/Run passes public layout, visible ink, character rectangles, snap/non-snap hits, zero/forward/reverse line-start navigation and forward/reverse selection. Narrow/wide restoration, text mutation, A/B/A raster restoration, actual Run hit identity and document detach are observed, with stock semantic calibration and Windows/Linux portable passes.",
+      "verification": "Revision2 source manifest and PE/PDB correspondence remain pinned; Della and Goldie focused reviews clear. Root intake normalizes only trailing EOF in four project/test files, recorded in root-eof-only-intake.json. All paragraph production layout bytes are unchanged. Root final build passes with zero warnings/errors, paragraph group 1/1 and unchanged Markup 16/16; owner portable processes exit zero with empty stderr. The stock public line-start/A-B-A fixture also passes.",
+      "limitations": "Accepted managed layout implementation direction remains recorded by 63a6d52c4; this is its bounded nonempty paragraph milestone, not full document qualification. Selected real NINA Markdown, genuine AvalonEdit child integration, lists, hyperlink callbacks, table/local-image/decorated composite, pagination/printing and general editing remain unqualified. Native cutover and no-Avalonia main/package verification remain pending. Phase 2 and Phases 3-5 remain open; full NINA shell unlaunched and native IME explicitly deferred.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/managed-flow-document-tracer/paragraph-revision2/handoff.json",
+          "sha256": "a9b126ac8bffaf91b6531fe1ac2e00ef515b3ba6ddc8a9f51ea6d7d19a6fc29f",
+          "bytes": 563
+        },
+        {
+          "path": "artifacts/portability/managed-flow-document-tracer/paragraph-revision2/source-manifest.json",
+          "sha256": "db76144302b96063d6e313fc2aaa59c96a920f056a078448820ba6379a64bcee",
+          "bytes": 3177
+        },
+        {
+          "path": "artifacts/portability/managed-flow-document-tracer/paragraph-revision2/source-pdb-correspondence.json",
+          "sha256": "9584cdc3c9136ed89237ff2642e3936004d20fc4c79695c16873a8748c93fc30",
+          "bytes": 18126
+        },
+        {
+          "path": "artifacts/portability/managed-flow-document-tracer/paragraph-revision2/root-eof-only-intake.json",
+          "sha256": "a9563e685651b064c8ed9e6bbd7778f2b27016d0895983583e68766938788855",
+          "bytes": 1358
+        },
+        {
+          "path": "artifacts/portability/managed-flow-document-tracer/paragraph-revision2/paragraph-repair-windows.json",
+          "sha256": "1812f42d7cd723f0f1a14a55c5e192dfca5e2bc7e76e9b40ff16e73a2dbf4770",
+          "bytes": 328
+        },
+        {
+          "path": "artifacts/portability/managed-flow-document-tracer/paragraph-revision2/paragraph-repair-linux.json",
+          "sha256": "dc19032d4005cd8e05e3486382b12d2d509d72b1a1a05eddfc3fa1b5cdcc9311",
+          "bytes": 319
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-managed-flow-document-20261019/paragraph-revision2/stock-review-line-start2.json",
+          "sha256": "2e4710e92f961b6f887d28c1a8d9a1078a421e0ae39b4047704da1397a99caa5",
+          "bytes": 197
+        },
+        {
+          "path": "artifacts/portability/managed-flow-document-tracer/paragraph-revision2/root-intake-paragraph-final.stdout.json",
+          "sha256": "1812f42d7cd723f0f1a14a55c5e192dfca5e2bc7e76e9b40ff16e73a2dbf4770",
+          "bytes": 328
+        },
+        {
+          "path": "artifacts/portability/managed-flow-document-tracer/paragraph-revision2/root-intake-markup-final.stdout.json",
+          "sha256": "c81fbb5655c0be1c84ad72a32b2cf83d841a1201da9bb11d5181e5e82e3a3025",
+          "bytes": 6594
+        },
+        {
+          "path": "artifacts/portability/managed-flow-document-tracer/paragraph-revision2/root-intake-build-final.log",
+          "sha256": "b971ef3d03ec0ee72e4d1daf500e3fe80ad21a305d090d8d482671cdcaea68ad",
+          "bytes": 3301
+        }
+      ],
+      "sourceCommit": "8972f808645ee05c283cce250bf6577bb4514ec6",
+      "outcome": "pass"
+    },
+    {
+      "label": "automatic-nan-line-height-revision1-committed-9eb8",
+      "capturedAtUtc": "2026-10-19T17:34:22.5652435Z",
+      "headCommit": "2e3e2174e2b2fde0a7f9ea0195024aa94c158124",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit 9eb8a6525 changes three files to accept NaN as the standard automatic LineHeight sentinel alongside zero in the existing portable formatter. Original AvalonEdit returns NaN for its default metrics path; no replacement editor or property normalization is used. Stock zero/NaN Width, Height, Baseline and Extent match. Finite custom heights and infinities still fail explicitly.",
+      "verification": "Owner Windows and Linux TextIntegration pass 381/381 with source/PE/PDB correspondence. Fresh root Windows TextIntegration 381 also exits zero with empty stderr. Root build has zero errors and one existing CS9336 dependency warning. Manifest includes the three-file payload and two unchanged Core context files. Earlier hidden 373-check evidence remains at its original scope.",
+      "limitations": "Automatic height only; not modifier/object/marker or NINA Markdown qualification. Phase 2 and Phases 3-5 remain open; native IME user-deferred.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/flow-text-runs/automatic-height-revision1/handoff.md",
+          "sha256": "a44228fff240a0ce64b45197353c0b4e44b8126095b5232ba776ab5cdaea5acc",
+          "bytes": 1319
+        },
+        {
+          "path": "artifacts/portability/flow-text-runs/automatic-height-revision1/source-manifest.json",
+          "sha256": "c07cfcf10ed699111bee501d19d578f831a7a9c48d1a8f3a37cfe68d43473df0",
+          "bytes": 967
+        },
+        {
+          "path": "artifacts/portability/flow-text-runs/automatic-height-revision1/source-pdb-correspondence.json",
+          "sha256": "26c6f65483e3e797a5145ad28b9477727d086854b2a0870696e2c8bddc480b36",
+          "bytes": 10598
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-flow-text-runs-20261019/automatic-height-revision1/proof/automatic-height-windows.json",
+          "sha256": "63ae6d737b8b1cd9783a43b3976d532cc5c6fed362e6ca18de585abbc5fb5811",
+          "bytes": 92078
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-flow-text-runs-20261019/automatic-height-revision1/proof/automatic-height-linux.json",
+          "sha256": "8f3eea63358192796050c7f450cfb0ecc1f45df78578fce118ba1f2234094293",
+          "bytes": 90123
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-flow-text-runs-20261019/automatic-height-revision1/proof/stock-automatic-height.json",
+          "sha256": "4a46c6a428441ae6a5787be2d7ed0c1dd7d5cd1235e23201a1ecbb19464264d8",
+          "bytes": 2278
+        },
+        {
+          "path": "artifacts/portability/flow-text-runs/automatic-height-revision1/root-intake-text.stdout.json",
+          "sha256": "c8f7339ddf44595f4c6cf5a8a2c0baca384fa0b9704e1e922fa777988fcab780",
+          "bytes": 91931
+        },
+        {
+          "path": "artifacts/portability/flow-text-runs/automatic-height-revision1/root-intake-build.log",
+          "sha256": "1cf62df016c4a885f0eea51bcf87b339b263ab259b962d261f1e49acff36cc68",
+          "bytes": 1858
+        }
+      ],
+      "sourceCommit": "9eb8a6525ed63e6ce25326f5797570fac4b6457a",
+      "outcome": "pass"
+    },
+    {
+      "label": "owned-linux-host-delivery-2e3-bounded-qualification",
+      "capturedAtUtc": "2026-10-19T17:52:42.6231043Z",
+      "headCommit": "44de8ccb30f4f23298f5a7875510c77ead7d8828",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Exact source 2e3e2174 passes fresh locked Release 11-project builds and 1,031 managed checks per OS: Imaging 17, Markup 16, Rendering 50, Guideline 324, Text 381, TextControls 211, Core 26, PUI 5 and genuine paragraph 1. Eighteen private native X11 modes pass 161 checks. Managed/native fixture processes exit zero with empty stderr; fresh builds retain ten existing source warnings each. This qualifies the declared owned family, not physical desktops or a package.",
+      "verification": "Each final family verifies 16 producer PE/PDB identities, 4,173 producer documents including 359 checksum-verified embedded generated documents and 85 fixture documents against frozen canonical source. Runtime copies, dependency closure, forbidden AssemblyRefs/imports and regular Linux Skia are checked. The pre-existing official System.Drawing.Common-selected System.Private.Windows.Core auxiliary is explicitly disclosed, not silently replaced.",
+      "fixtureProvenance": "Four preserved helper PDB source-byte differences are CRLF/LF only, documented in four-unchanged-fixture-eol-proof.json; the final AtSpi fixture intentionally has two additional wire checks. These facts do not make historical Source4 18-mode runtime results a current-2e3 pass.",
+      "limitations": "Bounded managed/private native X11 and separate wire qualification only. Historical Source4 modes are not relabeled. Separate first actual App.Main/OnStartup reaches real composition and original MainWindow icon conversion but fails before a usable Window; there is no successful full-shell launch. The decoder guard is primary and recovery MessageBox user32 is secondary. The original 21-check Markdown path still reaches unported RenderTargetBitmap; child/RTL/text-object work is unintegrated. Curated packages, GNOME X11/XWayland/Orca, overnight and broader NINA qualification remain open. Phases 2-5 remain open and native IME explicitly deferred.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/owned-backend-main-intake/intake-manifest.json",
+          "sha256": "0c70675f410783021e7a518b8d7415d62b2b0fbd332e04bb4814e96dd6d552f8",
+          "bytes": 97138
+        },
+        {
+          "path": "artifacts/portability/owned-backend-main-intake/root-source-intake.json",
+          "sha256": "53a9c92b052f37bfb57432e406b693ce8c7e525b46cb3f4c2e099320f408b5fb",
+          "bytes": 308
+        },
+        {
+          "path": "artifacts/portability/owned-backend-main-intake/root-host-assembly-info.json",
+          "sha256": "1e232c4f9b3f77c6e49f6c91e20c692b3ea22482b575c95b4912392cb0c3f947",
+          "bytes": 2465
+        },
+        {
+          "path": "artifacts/portability/owned-backend-main-intake/root-window-build-final.log",
+          "sha256": "c4d29202600bce731bc2ec7f641c96f5f0d1f9378515dec43eacb1a0bfe44764",
+          "bytes": 2040
+        },
+        {
+          "path": "artifacts/portability/owned-backend-main-intake/root-dispatcher-build-final.log",
+          "sha256": "a8d721b6b4dd41be6177a74486e1bd2ad5995a2e99e489363927fb60cf42f013",
+          "bytes": 1837
+        },
+        {
+          "path": "artifacts/portability/owned-backend-main-intake/four-unchanged-fixture-eol-proof.json",
+          "sha256": "232b386e02cf44d64e7569136b00aab741138c5f9f44518f9a59fadab0a155ce",
+          "bytes": 1264
+        },
+        {
+          "path": "artifacts/portability/feasibility-checkpoint-20261019/paragraph-milestones-candidate/owned-host-project.assets.json",
+          "sha256": "88554d6591a546d662f205980599ed8e66c0cc9b938bd3f26d90e498d67cb556",
+          "bytes": 73763
+        },
+        {
+          "path": "artifacts/portability/owned-current-main-qualification/README.md",
+          "sha256": "23a52426fb2f1775b67984455a0a846dddccdbdfa29a773779e1213fe62e3f47",
+          "bytes": 3878
+        },
+        {
+          "path": "artifacts/portability/owned-current-main-qualification/evidence-manifest.json",
+          "sha256": "a230212821d08fae0d6ec7b33520b11630d98df902b22f2a3ecab9db755c08ef",
+          "bytes": 37683
+        },
+        {
+          "path": "artifacts/portability/owned-current-main-qualification/qualification-summary.json",
+          "sha256": "1788c0dab5a8e795cec70ef65a9317bb7b8ad462b3c98fc72a2f6b01c43c3a7c",
+          "bytes": 41778
+        },
+        {
+          "path": "artifacts/portability/owned-current-main-qualification/output-path-adjustment.json",
+          "sha256": "dc3aa75fe0c82f7d6b0c2e099e087ac9378be41ef54091db9ea37ca8c532bfa4",
+          "bytes": 230078
+        },
+        {
+          "path": "artifacts/portability/owned-current-main-qualification/output-path-final-equality.json",
+          "sha256": "405e720648aa65d90cca151fd4069ffe30ae0d8604a2083fdef3547f172bcec7",
+          "bytes": 288897
+        },
+        {
+          "path": "artifacts/portability/owned-current-main-qualification/windows/family-proof.json",
+          "sha256": "0628807604d7491b174d7ad39cfb91afb6e31c5c8efe453f9cb846d9e881d0f0",
+          "bytes": 2771515
+        },
+        {
+          "path": "artifacts/portability/owned-current-main-qualification/linux/family-proof.json",
+          "sha256": "a8e380c37f8714f05e38913a0f6e96eaa2e0137330ff7398b50894c375d5f9aa",
+          "bytes": 2711763
+        },
+        {
+          "path": "artifacts/portability/owned-current-main-qualification/linux/stage-manifests.json",
+          "sha256": "19fea2d9581bd48f2d11028c30464efc2b427ab64c7906d219362b95febd1e3d",
+          "bytes": 23284
+        },
+        {
+          "path": "artifacts/portability/owned-current-main-qualification/linux/native-work-cleanup.json",
+          "sha256": "7902bb8a9e3248634779b076c4174078d8d347ad91284a3a141f339d762f8160",
+          "bytes": 4270
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-current-atspi-wire-20261019/handoff.json",
+          "sha256": "91c52f42e5c30ed60e49f5f0b45e6fc9e1392c7f8c79327321b22e4faa2391db",
+          "bytes": 2561
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-current-atspi-wire-20261019/results-summary.json",
+          "sha256": "e0fc895691363127eadc395f0c590a6f7ae8443bd43507d06a398d40f1d0096b",
+          "bytes": 13846
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-current-atspi-wire-20261019/source-pdb-checks.json",
+          "sha256": "a0e5b71657e1a1901b98adf882aecd65c52addde1dc5faeb0b2a63e2ccc8ee10",
+          "bytes": 3476
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-current-atspi-wire-20261019/family-pins.json",
+          "sha256": "7eaf3df70276359b65d746c28a22f4ac5459314848e2d5a7442d77fbf135fd41",
+          "bytes": 2913
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-current-atspi-wire-20261019/protocol-inputs.sha256",
+          "sha256": "f1bb4be21325a4058d556c17e9e8d0506ead2fe641f58b74c450b7587f615116",
+          "bytes": 29449
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-current-atspi-wire-20261019/postrun-input-verification.txt",
+          "sha256": "d6380b4b796e0363c1f631fe00d210639bf197c62fd7d77ec9f395a97edd3396",
+          "bytes": 22567
+        },
+        {
+          "path": "artifacts/portability/nina-simulator-qualification-candidate/first-owned-shell-source2e3/handoff.json",
+          "sha256": "a9cd4de8f2d0e22b6cc57bf80839702bf51daa6bca82213eb35d3c8d822cc512",
+          "bytes": 6540
+        },
+        {
+          "path": "artifacts/portability/nina-simulator-qualification-candidate/first-owned-shell-source2e3/freeze.json",
+          "sha256": "e612caffed94a67f7212ee6366ac446824fd3a4f8ab7ec98dd710f8a776d7f7a",
+          "bytes": 11199
+        }
+      ],
+      "sourceCommit": "2e3e2174e2b2fde0a7f9ea0195024aa94c158124",
+      "outcome": "pass",
+      "sourceIntake": "The 69-file cutover retains 63 intake rows/22 retired/16 preserved/10 delivery rows and 34 attributed Unicode derivatives/audited SkiaSharp-HarfBuzzSharp dependencies. Active Avalonia platform projects/source preparation/assemblies are removed. Earlier root locked Windows compile and 16-reference/no-Avalonia asset-graph evidence remain preserved below.",
+      "oracleHistory": "The original first Windows Text path-substring oracle failure remains under path-oracle-red. Entire binary roots were relocated byte-exact to final <os>/portability/fixtures without source, DLL or assertion changes; complete before/after inventories remain pinned. Four Linux RTL PNG outputs generated by intervening unchanged Text runs are recorded explicitly.",
+      "stage": "Raw Unix Stage has 120 files with no exclusions, manifest SHA 19FEA2D9581BD48F2D11028C30464EFC2B427AB64C7906D219362B95FEBD1E3D; Windows also has 120. Stage was unchanged after qualification. This is complete source-build output for local NINA qualification, not a curated redistributable package.",
+      "wireAccessibility": {
+        "scope": "Additional fresh genuine Window/Button/TextBox AT-SPI wire runs on the same sealed Linux output: basic 8, TextBox 13 and disconnect 1 groups pass, all fixture exits zero. Existing Source4 wire proof remains historical.",
+        "hostSha256": "5229F7834986150EBCF3C8CCCB79CDEFFFAB06983EF3C0EA21A5107688F461AD",
+        "fixtureSha256": "4F2A40054A8954BDB6F582767CE656905560D88F0B7CB91A8738A44C3AA35C6A",
+        "cleanup": "All exact fixture/session/a11y launcher/daemon/registry/Xvfb PID identities, display 1261 locks/path/abstract sockets and owned 0700 runtime paths are absent. Native 18 work directories/display 183 were separately removed with retained-process verification.",
+        "diagnostics": "Native D-Bus activation messages and intentional disconnect launcher message remain retained. No failed fixture check or unexpected managed exception; wire stderr is not claimed empty.",
+        "limits": "Wire protocol/provider checks do not qualify actual GNOME/XWayland/Orca interaction, general RichTextBox editing or native IME."
+      },
+      "firstShellAttempt": {
+        "status": "failed-before-usable-window",
+        "scope": "Separate source-adapted NINA simulator consumer on the exact source 2e3 raw 120-file Stage, not part of the 1,031 managed/161 native qualification. Core/Astrometry/App builds pass. Original App.Main/OnStartup executes, real composition returns and MainWindow.InitializeComponent is reached.",
+        "primary": "Original MainWindow.xaml line 37 Icon /NINA;component/Resources/Logo_Nina.ico -> ImageSourceConverter -> BitmapFrame -> BitmapDecoder portable codec guard. Original icon/BAML retained.",
+        "secondary": "Dispatcher recovery MessageBox.Show reaches user32 GetActiveWindow; this does not replace the primary decoder failure.",
+        "runtime": "No usable Window or successful workflow observed. Observer exit 90/launcher 91. Initial cleanup verifier failure is retained; post-audit all six exact retained PIDs, X1301 lock/path and owned listeners are absent. No clean normal lifecycle success claim.",
+        "limits": "No successful full-shell launch, plugin lifecycle or package qualification. 155 original PEs and five declared source-derived companions are recorded by the startup handoff; it is not an unchanged 160-binary application claim."
+      }
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",
