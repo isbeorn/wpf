@@ -1,0 +1,18 @@
+--- a/NINA/App.xaml.cs
++++ b/NINA/App.xaml.cs
+@@ -130,9 +130,13 @@
+         }
+ 
+         protected override void OnStartup(StartupEventArgs e) {
+-            AttachConsole(ATTACH_PARENT_PROCESS);
++            if (OperatingSystem.IsWindows()) {
++                AttachConsole(ATTACH_PARENT_PROCESS);
++            }
+             _commandLineOptions = new CommandLineOptions(e.Args);
+-            FreeConsole(ATTACH_PARENT_PROCESS);
++            if (OperatingSystem.IsWindows()) {
++                FreeConsole(ATTACH_PARENT_PROCESS);
++            }
+             if (_commandLineOptions.HasErrors) {
+ 
+                 Shutdown(STARTUP_ERROR_EXIT_CODE);

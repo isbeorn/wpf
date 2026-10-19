@@ -1,0 +1,2 @@
+App.xaml.cs.patch -text -whitespace
+LICENSE.txt -text -whitespace
