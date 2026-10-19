@@ -108,3 +108,9 @@ Edit-Text 'NOVAS31/NOVAS31/novas.c' {
     param($text)
     Replace-Once $text '                          long int star_num, double ra, double dec,' '                          int32_t star_num, double ra, double dec,'
 }
+Edit-Text 'NINA.Core/Utility/DocumentationIndex.cs' {
+    param($text)
+    $pattern = 'new UriBuilder\(Path\.Combine\(([^()\r\n]+)\)\)'
+    if ([regex]::Matches($text, $pattern).Count -ne 13) { throw 'Expected all thirteen original DocumentationIndex URI getters.' }
+    [regex]::Replace($text, $pattern, 'new UriBuilder(new Uri(Path.Combine($1), UriKind.Absolute))')
+}

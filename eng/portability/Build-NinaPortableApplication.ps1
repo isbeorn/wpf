@@ -106,7 +106,13 @@ foreach ($name in @($frameworkProfile.frameworkAssemblies) + @($frameworkProfile
     if (!$frameworkPaths.Contains("$name.dll")) { throw "Required profile runtime assembly is missing: $name" }
 }
 $closure = Get-Content -LiteralPath $OriginalManagedClosure -Raw | ConvertFrom-Json
-Assert-Hash $OriginalManagedClosure $pin.originalClosureManifestSha256
+$originalBaseline = 'historical-original160'
+if ((Get-FileHash $OriginalManagedClosure).Hash -cne $pin.originalClosureManifestSha256) {
+    $currentBaseline = Get-Content (Join-Path $fixture '../NinaPortableViews/CurrentBaselinePin.json') -Raw | ConvertFrom-Json
+    Assert-Hash $OriginalManagedClosure $currentBaseline.closureManifestSha256
+    if ($currentBaseline.revision -cne $pin.revision -or $closure.pinnedClosureSha256 -cne $currentBaseline.canonicalClosureSha256) { throw 'The named current stock baseline differs.' }
+    $originalBaseline = $currentBaseline.name
+}
 if ($closure.revision -cne $pin.revision -or $closure.files.Count -ne 160) { throw 'Expected the original pinned 160-PE closure.' }
 $closureDirectory = Split-Path $OriginalManagedClosure -Parent
 foreach ($file in $closure.files) {
@@ -151,6 +157,8 @@ foreach ($file in $pin.files) {
     [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($destination)) | Out-Null
     [IO.File]::Copy((Join-Path $NinaSourceDirectory $file.path), $destination)
 }
+Assert-Hash (Join-Path $NinaSourceDirectory '.editorconfig') $pin.editorConfigSha256
+[IO.File]::Copy((Join-Path $NinaSourceDirectory '.editorconfig'), "$output/source/.editorconfig")
 $appPath = "$output/source/NINA/App.xaml.cs"
 Assert-Hash $appPath $pin.consoleSourceSha256
 $source = [IO.File]::ReadAllText($appPath)
@@ -353,7 +361,7 @@ $result = [ordered]@{
     pdb = "$output/bin/Release/net10.0/NINA.pdb"; pdbSha256 = (Get-FileHash "$output/bin/Release/net10.0/NINA.pdb").Hash
     resourceKeys = $keys; bamlCount = 104; appMergedDictionaries = 34; sdk = $sdk; runtimeFrameworkVersion = '10.0.12'
     buildLog = "$output/build.log"; buildLogSha256 = (Get-FileHash "$output/build.log").Hash
-    originalManagedClosure = $OriginalManagedClosure; originalManagedClosureSha256 = (Get-FileHash $OriginalManagedClosure).Hash
+    originalManagedClosure = $OriginalManagedClosure; originalManagedClosureSha256 = (Get-FileHash $OriginalManagedClosure).Hash; originalBaseline = $originalBaseline; editorConfigSha256 = $pin.editorConfigSha256
     frameworkRuntimeManifest = [IO.Path]::GetFullPath($FrameworkRuntimeManifest); frameworkRuntimeManifestSha256 = (Get-FileHash $FrameworkRuntimeManifest).Hash; frameworkRuntimeFileCount = $ExpectedFrameworkRuntimeFileCount; frameworkRuntimeConfiguration = 'Release'; frameworkRuntimeDirectory = $FrameworkRuntimeDirectory
     markupCompiler = [IO.Path]::GetFullPath($MarkupCompiler); markupCompilerSha256 = (Get-FileHash $MarkupCompiler).Hash
     avalonDockSha256 = $pin.avalonDockSha256; systemEventsCompileContractSha256 = $pin.systemEventsContractSha256; systemEventsRuntimeSupplied = $systemEventsRuntimeSupplied; systemEventsRuntimeSha256 = $systemEventsRuntimeSha256

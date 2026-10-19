@@ -47,8 +47,14 @@ foreach ($tool in $pin.tools) {
     $path = Get-Variable $tool.parameter -ValueOnly
     Assert-Hash $path $tool.sha256
 }
-Assert-Hash $OriginalManagedClosure $pin.originalClosureSha256
 $closure = Get-Content $OriginalManagedClosure -Raw | ConvertFrom-Json
+$originalBaseline = 'historical-original160'
+if ((Get-FileHash $OriginalManagedClosure).Hash -cne $pin.originalClosureSha256) {
+    $currentBaseline = Get-Content (Join-Path $fixture '../NinaPortableViews/CurrentBaselinePin.json') -Raw | ConvertFrom-Json
+    Assert-Hash $OriginalManagedClosure $currentBaseline.closureManifestSha256
+    if ($currentBaseline.revision -cne $pin.revision -or $closure.pinnedClosureSha256 -cne $currentBaseline.canonicalClosureSha256) { throw 'The named current stock baseline differs.' }
+    $originalBaseline = $currentBaseline.name
+}
 if ($closure.revision -cne $pin.revision -or $closure.files.Count -ne 160) { throw 'Expected original160 closure.' }
 $closureDirectory = Split-Path $OriginalManagedClosure -Parent
 foreach ($file in $closure.files) {
@@ -88,12 +94,14 @@ foreach ($file in $pin.files) {
     [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($dest)) | Out-Null
     [IO.File]::Copy("$NinaSourceDirectory/$($file.path)", $dest)
 }
+Assert-Hash "$NinaSourceDirectory/.editorconfig" $pin.editorConfigSha256
+[IO.File]::Copy("$NinaSourceDirectory/.editorconfig", "$output/source/.editorconfig")
 & "$fixture/Apply-Boundary.ps1" -Source "$output/source"
 $changes = foreach ($file in $pin.files) {
     $hash = (Get-FileHash "$output/source/$($file.path)").Hash
     if ($hash -cne $file.sha256) { [ordered]@{ path = $file.path; before = $file.sha256; after = $hash } }
 }
-if (@($changes).Count -ne 6) { throw 'Expected exactly six adapted upstream files.' }
+if (@($changes).Count -ne 7) { throw 'Expected exactly seven adapted upstream files.' }
 Save "$output/adaptations.json" ($changes | ConvertTo-Json -Depth 4)
 Save "$output/global.json" '{"sdk":{"version":"10.0.401","rollForward":"disable"}}'
 Save "$output/Directory.Build.props" '<Project/>'
@@ -150,4 +158,4 @@ $outputs = foreach ($name in @('NINA.Core', 'NINA.Astrometry')) {
     $pdb = [IO.Path]::ChangeExtension($dll, '.pdb')
     [ordered]@{ name = $name; dll = $dll; sha256 = (Get-FileHash $dll).Hash; pdb = $pdb; pdbSha256 = (Get-FileHash $pdb).Hash; identity = [Reflection.AssemblyName]::GetAssemblyName($dll).FullName }
 }
-Save "$output/managed-build.json" ([ordered]@{ status = 'managed-source-build-pass-native-execution-separate'; revision = $pin.revision; frameworkManifestSha256 = (Get-FileHash $FrameworkRuntimeManifest).Hash; frameworkRuntimeFileCount = $ExpectedFrameworkRuntimeFileCount; frameworkRuntimeConfiguration = 'Release'; outputs = @($outputs); changes = @($changes) } | ConvertTo-Json -Depth 6)
+Save "$output/managed-build.json" ([ordered]@{ status = 'managed-source-build-pass-native-execution-separate'; revision = $pin.revision; originalBaseline = $originalBaseline; originalClosureManifestSha256 = (Get-FileHash $OriginalManagedClosure).Hash; editorConfigSha256 = $pin.editorConfigSha256; frameworkManifestSha256 = (Get-FileHash $FrameworkRuntimeManifest).Hash; frameworkRuntimeFileCount = $ExpectedFrameworkRuntimeFileCount; frameworkRuntimeConfiguration = 'Release'; outputs = @($outputs); changes = @($changes) } | ConvertTo-Json -Depth 6)
