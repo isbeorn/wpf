@@ -22,7 +22,7 @@ namespace MS.Internal.PtsHost
         /// Get MbpInfo from DependencyObject.
         /// </summary>
         /// <param name="o">DependencyObject for which MBP properties are retrieved.</param>
-        internal static MbpInfo FromElement(DependencyObject o, double pixelsPerDip)
+        internal static MbpInfo FromElement(DependencyObject o, double pixelsPerDip, Thickness? autoListPadding = null)
         {
             if (o is Block || o is AnchoredBlock || o is TableCell || o is ListItem)
             {
@@ -35,7 +35,7 @@ namespace MS.Internal.PtsHost
                 }
                 if (mbp.IsPaddingAuto)
                 {
-                    ResolveAutoPadding(mbp, o, lineHeight, pixelsPerDip);
+                    ResolveAutoPadding(mbp, o, lineHeight, pixelsPerDip, autoListPadding);
                 }
 
                 return mbp;
@@ -143,7 +143,7 @@ namespace MS.Internal.PtsHost
         /// <summary>
         /// Resolve Auto values for Padding.
         /// </summary>
-        private static void ResolveAutoPadding(MbpInfo mbp, DependencyObject o, double lineHeight, double pixelsPerDip)
+        private static void ResolveAutoPadding(MbpInfo mbp, DependencyObject o, double lineHeight, double pixelsPerDip, Thickness? autoListPadding)
         {
             Thickness defaultPadding;
             if (o is Figure || o is Floater)
@@ -152,7 +152,7 @@ namespace MS.Internal.PtsHost
             }
             else if (o is List)
             {
-                defaultPadding = ListMarkerSourceInfo.CalculatePadding((List)o, lineHeight, pixelsPerDip);
+                defaultPadding = autoListPadding ?? ListMarkerSourceInfo.CalculatePadding((List)o, lineHeight, pixelsPerDip);
             }
             else
             {

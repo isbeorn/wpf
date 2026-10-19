@@ -30,6 +30,15 @@ internal static class Program
             try { checks.Add(new { name, status = "pass", detail = action() }); }
             catch (Exception exception) { failed = true; checks.Add(new { name, status = "fail", detail = exception.ToString() }); }
         }
+        if (args.SequenceEqual(new[] { "--flow-document-blocks" }))
+        {
+            Check("genuine-flow-document-section-list-layout", FlowDocumentCases.SectionListLayout);
+            Check("genuine-flow-document-list-numbering-and-symbols", FlowDocumentCases.ListMarkers);
+            Check("genuine-flow-document-first-child-baselines", FlowDocumentCases.ListBaselines);
+            Check("genuine-flow-document-nested-child-failure", FlowDocumentCases.NestedBlockFailure);
+            Console.WriteLine(JsonSerializer.Serialize(new { checks }, new JsonSerializerOptions { WriteIndented = true }));
+            return failed ? 1 : 0;
+        }
         if (args.SequenceEqual(new[] { "--flow-document-inline" }))
         {
             Check("genuine-flow-document-inline-source-contracts", FlowDocumentCases.InlineSourceContracts);

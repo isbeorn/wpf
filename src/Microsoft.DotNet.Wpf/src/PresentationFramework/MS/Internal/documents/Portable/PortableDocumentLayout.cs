@@ -34,31 +34,19 @@ namespace MS.Internal.Documents
             var layout = new PortableDocumentLayout(document);
             try
             {
-                double y = margin.Top;
-                double previousBottom = 0;
-                foreach (Block block in document.Blocks)
-                {
-                    var spacing = PtsHost.MbpInfo.FromElement(block, document.PixelsPerDip).Margin;
-                    double top = spacing.Top;
-                    double bottom = spacing.Bottom;
-                    double left = spacing.Left;
-                    double right = spacing.Right;
-                    y += Math.Max(previousBottom, top);
-                    double available = Math.Max(1, width - margin.Left - margin.Right - left - right);
-                    if (block is Paragraph paragraph)
-                        y = layout.FormatParagraph(paragraph, margin.Left + left, y, available);
-                    else if (block is BlockUIContainer container)
-                        y = layout.FormatChild(container, margin.Left + left, y, available, previous);
-                    else
-                        throw new PlatformNotSupportedException("Portable FlowDocument block type is not supported: " + block.GetType().Name);
-                    previousBottom = bottom;
-                }
-                y += previousBottom + margin.Bottom;
+                double pendingMargin = 0;
+                double y = layout.FormatBlocks(document.Blocks, null, margin.Left, margin.Top,
+                    Math.Max(1, width - margin.Left - margin.Right), ref pendingMargin, true, document.FlowDirection, previous).Bottom;
+                y += pendingMargin + margin.Bottom;
                 layout.Size = new Size(width, y);
                 var drawing = new DrawingVisual();
                 using (DrawingContext dc = drawing.RenderOpen())
+                {
                     foreach (Line line in layout._lines)
                         line.Text.Draw(dc, line.Origin, InvertAxes.None);
+                    foreach (Marker marker in layout._markers)
+                        marker.Text.Draw(dc, marker.Origin, InvertAxes.None);
+                }
                 layout.Visual.Children.Add(drawing);
                 return layout;
             }
@@ -70,12 +58,12 @@ namespace MS.Internal.Documents
             }
         }
 
-        private double FormatParagraph(Paragraph paragraph, double x, double y, double width)
+        private double FormatParagraph(TextElement owner, double x, double y, double width)
         {
-            var source = new ParagraphSource(paragraph, _document.PixelsPerDip);
-            if (!double.IsNaN(paragraph.LineHeight) || paragraph.Padding != new Thickness() || paragraph.BorderThickness != new Thickness())
+            var source = new ParagraphSource(owner, _document.PixelsPerDip);
+            if (owner is Paragraph paragraph && (!double.IsNaN(paragraph.LineHeight) || paragraph.Padding != new Thickness() || paragraph.BorderThickness != new Thickness()))
                 throw new PlatformNotSupportedException("Portable paragraph custom line height, padding and borders are not yet supported.");
-            var properties = new LineProperties(paragraph, _document, source.DefaultProperties, null);
+            var properties = new LineProperties(owner, _document, source.DefaultProperties, null);
             int offset = 0;
             TextLineBreak previous = null;
             try
@@ -148,7 +136,13 @@ namespace MS.Internal.Documents
             Line line = FindLine(position);
             if (line == null) return Rect.Empty;
             int offset = Offset(line, position);
-            double x = line.Text.GetDistanceFromCharacterHit(new CharacterHit(offset, 0));
+            var hit = new CharacterHit(offset, 0);
+            if (position.LogicalDirection == LogicalDirection.Backward && offset > line.Offset)
+            {
+                CharacterHit previous = line.Text.GetPreviousCaretCharacterHit(hit);
+                hit = new CharacterHit(previous.FirstCharacterIndex, offset - previous.FirstCharacterIndex);
+            }
+            double x = line.Text.GetDistanceFromCharacterHit(hit);
             return new Rect(line.ToPageX(x), line.Origin.Y, 0, line.Text.Height);
         }
 
@@ -254,6 +248,8 @@ namespace MS.Internal.Documents
             Visual.Children.Clear();
             DisposeChildren();
             foreach (Line line in _lines) line.Text.Dispose();
+            foreach (Marker marker in _markers) marker.Text.Dispose();
+            _markers.Clear();
             _lines.Clear();
             _navigationLines.Clear();
             _formatter.Dispose();
@@ -289,7 +285,7 @@ namespace MS.Internal.Documents
             internal readonly int Length;
             internal readonly TextProperties DefaultProperties;
             private readonly double _pixelsPerDip;
-            internal ParagraphSource(Paragraph paragraph, double pixelsPerDip)
+            internal ParagraphSource(TextElement paragraph, double pixelsPerDip)
             {
                 Start = paragraph.ContentStart;
                 Length = Start.GetOffsetToPosition(paragraph.ContentEnd) + 1;
