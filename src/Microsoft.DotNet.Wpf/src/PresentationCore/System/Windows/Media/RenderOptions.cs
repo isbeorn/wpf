@@ -20,6 +20,10 @@ namespace System.Windows.Media
     /// </summary>
     public static class RenderOptions
     {
+#if PORTABLE_WPF
+        // Both preferences use the portable CPU profile; retain the process-wide request.
+        private static volatile RenderMode _processRenderMode = RenderMode.Default;
+#endif
         //
         // EdgeMode
         //
@@ -232,8 +236,12 @@ namespace System.Windows.Media
         {
             get
             {
+#if PORTABLE_WPF
+                return _processRenderMode;
+#else
                 return UnsafeNativeMethods.MilCoreApi.RenderOptions_IsSoftwareRenderingForcedForProcess() ?
                     RenderMode.SoftwareOnly : RenderMode.Default;
+#endif
             }
 
             set
@@ -243,9 +251,13 @@ namespace System.Windows.Media
                     throw new System.ComponentModel.InvalidEnumArgumentException("value", (int)value, typeof(RenderMode));
                 }
                 
+#if PORTABLE_WPF
+                _processRenderMode = value;
+#else
                 UnsafeNativeMethods.MilCoreApi.RenderOptions_ForceSoftwareRenderingModeForProcess(
                     value == RenderMode.SoftwareOnly
                     );
+#endif
             }
         }
     }

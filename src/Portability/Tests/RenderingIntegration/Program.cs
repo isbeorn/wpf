@@ -12,6 +12,32 @@ using SkiaSharp;
 
 var checks = new List<object>();
 var failed = false;
+Run("process-render-mode-preference-roundtrip-invalid-and-cpu-raster", () =>
+{
+    Require(RenderOptions.ProcessRenderMode == System.Windows.Interop.RenderMode.Default, "Initial process rendering preference must be Default.");
+    foreach (var mode in new[] { System.Windows.Interop.RenderMode.SoftwareOnly, System.Windows.Interop.RenderMode.Default, System.Windows.Interop.RenderMode.SoftwareOnly })
+    {
+        RenderOptions.ProcessRenderMode = mode;
+        Require(RenderOptions.ProcessRenderMode == mode, "Process rendering preference did not retain the requested value.");
+        Require(Task.Run(() => RenderOptions.ProcessRenderMode).GetAwaiter().GetResult() == mode, "Process rendering preference was not shared across threads.");
+        foreach (int invalid in new[] { -1, 2 })
+        {
+            var rejection = Expect<System.ComponentModel.InvalidEnumArgumentException>(() => RenderOptions.ProcessRenderMode = (System.Windows.Interop.RenderMode)invalid);
+            Require(rejection.ParamName == "value", "Invalid process preference lost its existing argument contract.");
+            Require(RenderOptions.ProcessRenderMode == mode, "Rejected process preference changed the stored value.");
+        }
+        using var target = new Target(Rectangle(Colors.Red, new Rect(0, 0, 8, 8)), 16, 16);
+        target.Render();
+        using var pixels = target.Snapshot();
+        Pixel(pixels, 4, 4, SKColors.Red);
+        Pixel(pixels, 12, 12, SKColors.Transparent);
+    }
+});
+if (args.Contains("--render-preference-only"))
+{
+    Console.WriteLine(JsonSerializer.Serialize(new { probe = "process-render-mode-preference", corePath = typeof(DrawingVisual).Assembly.Location, checks }, new JsonSerializerOptions { WriteIndented = true }));
+    return failed ? 1 : 0;
+}
 var visibility = new List<VisibilityCases.Result>();
 Run("visibility-cases-dispatcher", () => visibility.AddRange(VisibilityCases.Run((visual, dpi, width, height) =>
 {
