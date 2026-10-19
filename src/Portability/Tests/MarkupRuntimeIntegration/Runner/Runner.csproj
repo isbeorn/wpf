@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
   <ItemGroup>
+    <Content Include="../../Fixtures/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
     <Compile Include="../RuntimeAssemblyEvidence.cs" />
     <ProjectReference Include="../../../Framework/PresentationUI/PresentationUI.csproj" />
     <ProjectReference Include="../../../Framework/PresentationFramework.Classic/PresentationFramework.Classic.csproj" />

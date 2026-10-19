@@ -83,7 +83,7 @@ namespace MS.Internal.Documents
                 while (offset < source.Length)
                 {
                     TextLine text = _formatter.FormatLine(source, offset, width, offset == 0 ? properties.FirstLineProps : properties, previous);
-                    var line = new Line(source, text, offset, new Point(x, y));
+                    var line = new Line(source, text, offset, new Point(x, y), width, properties.FlowDirection);
                     _lines.Add(line);
                     _navigationLines.Add(new NavigationLine(line));
                     if (text.Length <= 0) throw new InvalidOperationException("Document formatter did not consume source symbols.");
@@ -123,8 +123,8 @@ namespace MS.Internal.Documents
             double distance = double.PositiveInfinity;
             foreach (Line line in _lines)
             {
-                var bounds = new Rect(line.Origin.X + line.Text.Start, line.Origin.Y,
-                    line.Text.WidthIncludingTrailingWhitespace, line.Text.Height);
+                var bounds = line.ToPageRectangle(new Rect(line.Text.Start, 0,
+                    line.Text.WidthIncludingTrailingWhitespace, line.Text.Height));
                 double dy = point.Y < bounds.Top ? bounds.Top - point.Y : Math.Max(0, point.Y - bounds.Bottom);
                 if (bounds.Contains(point)) return Hit(line, point.X);
                 if (dy < distance) { distance = dy; nearest = line; }
@@ -134,7 +134,7 @@ namespace MS.Internal.Documents
 
         private static TextPointer Hit(Line line, double x)
         {
-            CharacterHit hit = line.Text.GetCharacterHitFromDistance(x - line.Origin.X);
+            CharacterHit hit = line.Text.GetCharacterHitFromDistance(line.FromPageX(x));
             int offset = Math.Clamp(hit.FirstCharacterIndex + hit.TrailingLength, 0, line.Source.Length - 1);
             return new TextPointer(line.Source.Start, offset,
                 hit.TrailingLength == 0 ? LogicalDirection.Forward : LogicalDirection.Backward);
@@ -149,7 +149,7 @@ namespace MS.Internal.Documents
             if (line == null) return Rect.Empty;
             int offset = Offset(line, position);
             double x = line.Text.GetDistanceFromCharacterHit(new CharacterHit(offset, 0));
-            return new Rect(line.Origin.X + x, line.Origin.Y, 0, line.Text.Height);
+            return new Rect(line.ToPageX(x), line.Origin.Y, 0, line.Text.Height);
         }
 
         internal List<Rect> GetRectangles(ITextPointer start, ITextPointer end)
@@ -162,9 +162,7 @@ namespace MS.Internal.Documents
                 if (last <= first) continue;
                 foreach (TextBounds bounds in line.Text.GetTextBounds(first, last - first))
                 {
-                    Rect rect = bounds.Rectangle;
-                    rect.Offset(line.Origin.X, line.Origin.Y);
-                    result.Add(rect);
+                    result.Add(line.ToPageRectangle(bounds.Rectangle));
                 }
             }
             foreach (Child child in _children)
@@ -275,8 +273,14 @@ namespace MS.Internal.Documents
             internal readonly TextLine Text;
             internal readonly int Offset;
             internal readonly Point Origin;
-            internal Line(ParagraphSource source, TextLine text, int offset, Point origin)
-            { Source = source; Text = text; Offset = offset; Origin = origin; }
+            private readonly double _width;
+            private readonly bool _rightToLeft;
+            internal Line(ParagraphSource source, TextLine text, int offset, Point origin, double width, FlowDirection direction)
+            { Source = source; Text = text; Offset = offset; Origin = origin; _width = width; _rightToLeft = direction == FlowDirection.RightToLeft; }
+            internal double ToPageX(double distance) => Origin.X + (_rightToLeft ? _width - distance : distance);
+            internal double FromPageX(double x) => _rightToLeft ? _width - (x - Origin.X) : x - Origin.X;
+            internal Rect ToPageRectangle(Rect rectangle) => new Rect(
+                ToPageX(_rightToLeft ? rectangle.Right : rectangle.Left), Origin.Y + rectangle.Top, rectangle.Width, rectangle.Height);
         }
 
         private sealed class ParagraphSource : TextSource

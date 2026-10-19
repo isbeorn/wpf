@@ -30,6 +30,12 @@ internal static class Program
             try { checks.Add(new { name, status = "pass", detail = action() }); }
             catch (Exception exception) { failed = true; checks.Add(new { name, status = "fail", detail = exception.ToString() }); }
         }
+        if (args.SequenceEqual(new[] { "--flow-document-direction" }))
+        {
+            Check("genuine-flow-document-direction-unicode", FlowDocumentCases.DirectionUnicode);
+            Console.WriteLine(JsonSerializer.Serialize(new { checks }, new JsonSerializerOptions { WriteIndented = true }));
+            return failed ? 1 : 0;
+        }
         if (args.SequenceEqual(new[] { "--flow-document-navigation" }))
         {
             Check("genuine-flow-document-child-navigation", FlowDocumentCases.ChildNavigation);
