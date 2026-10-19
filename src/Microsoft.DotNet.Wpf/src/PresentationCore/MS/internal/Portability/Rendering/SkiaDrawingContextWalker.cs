@@ -419,6 +419,8 @@ namespace MS.Internal.Portability.Rendering
 
         private static SKPaint CreateBrush(Brush brush)
         {
+            if (brush is ImageBrush { ImageSource: null })
+                return new SKPaint { IsAntialias = true, Color = SKColors.Transparent };
             if (!(brush is SolidColorBrush solid)) throw Unsupported($"brush type {brush.GetType().FullName}");
             Color color = solid.Color;
             return new SKPaint { IsAntialias = true, Color = new SKColor(color.R, color.G, color.B, Alpha(color.A / 255d * solid.Opacity)) };

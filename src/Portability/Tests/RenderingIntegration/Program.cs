@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using SkiaSharp;
 
@@ -26,6 +27,60 @@ if (args.Contains("--visibility-only"))
     Console.WriteLine(JsonSerializer.Serialize(new { probe = "retained-visibility", checks }, new JsonSerializerOptions { WriteIndented = true }));
     return failed ? 1 : 0;
 }
+Run("empty-image-brush-rounded-fill-and-pen-leave-sibling-pixels", () =>
+{
+    var empty = new ImageBrush();
+    var root = new DrawingVisual();
+    using (DrawingContext drawing = root.RenderOpen())
+    {
+        drawing.DrawRectangle(Brushes.Blue, null, new Rect(0, 0, 64, 40));
+        drawing.DrawRoundedRectangle(empty, new Pen(empty, 4), new Rect(4, 4, 36, 28), 5, 5);
+        drawing.DrawRectangle(Brushes.Green, null, new Rect(48, 4, 12, 12));
+    }
+    using var target = new Target(root, 64, 40);
+    Drain();
+    using SKBitmap pixels = target.Snapshot();
+    for (int y = 0; y < pixels.Height; y++)
+        for (int x = 0; x < pixels.Width; x++)
+            Require(pixels.GetPixel(x, y) == (x >= 48 && x < 60 && y >= 4 && y < 16 ? SKColors.Green : SKColors.Blue),
+                $"Empty ImageBrush changed background or sibling pixel ({x},{y}).");
+});
+Run("image-brush-source-reject-clear-and-retained-recovery", () =>
+{
+    BitmapSource image = BitmapSource.Create(1, 1, 96, 96, PixelFormats.Bgra32, null,
+        new byte[] { 0, 0, 255, 255 }, 4);
+    var brush = new ImageBrush(image);
+    var root = new DrawingVisual();
+    using (DrawingContext drawing = root.RenderOpen())
+    {
+        drawing.DrawRoundedRectangle(brush, null, new Rect(2, 2, 20, 20), 3, 3);
+        drawing.DrawRectangle(Brushes.Green, null, new Rect(28, 4, 8, 8));
+    }
+    using var target = new Target(root, 40, 28);
+    int frames = 0;
+    target.FrameRendered += () => frames++;
+    NotSupportedException rejection = Expect<NotSupportedException>(target.Render);
+    Require(rejection.Message.Contains(typeof(ImageBrush).FullName!), "Nonempty ImageBrush rejection lost its named diagnostic.");
+    Require(frames == 0, "Unsupported ImageBrush completed a frame.");
+    brush.ImageSource = null;
+    Drain();
+    Require(frames > 0, "Clearing ImageSource did not invalidate the retained brush after failure.");
+    using SKBitmap cleared = target.Snapshot();
+    for (int y = 0; y < cleared.Height; y++)
+        for (int x = 0; x < cleared.Width; x++)
+            Require(cleared.GetPixel(x, y) == (x >= 28 && x < 36 && y >= 4 && y < 12 ? SKColors.Green : new SKColor(0, 0, 0, 0)),
+                $"Cleared ImageBrush left stale paint or lost sibling ({x},{y}).");
+    int completed = frames;
+    brush.ImageSource = image;
+    rejection = Expect<NotSupportedException>(target.Render);
+    Require(rejection.Message.Contains(typeof(ImageBrush).FullName!) && frames == completed,
+        "Restoring ImageSource did not preserve unsupported-frame semantics.");
+    brush.ImageSource = null;
+    Drain();
+    Require(frames > completed, "Second clear did not produce a retained recovery frame.");
+    using SKBitmap restored = target.Snapshot();
+    Require(restored.GetPixelSpan().SequenceEqual(cleared.GetPixelSpan()), "Repeated source clear did not restore the complete raster.");
+});
 Run("retained-dashes-mutate-clear-restore-sibling-and-recover", () => DashedPenRetentionChecks.Run(Drain));
 Run("retained-command-bounds-survive-render-and-mutation", () =>
 {
