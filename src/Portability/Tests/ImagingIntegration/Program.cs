@@ -31,6 +31,18 @@ Check("actual-scientific-source-precision-and-ownership", () =>
     }
 });
 PortablePngCases.Run(Check);
+RenderTargetBitmapCases.Run(Check);
+Check("render-target-invalidates-real-retained-consumer", () =>
+{
+    var image = new RenderTargetBitmap(2, 1, 96, 96, PixelFormats.Pbgra32);
+    var retained = new DrawingVisual(); using (var drawing = retained.RenderOpen()) drawing.DrawImage(image, new Rect(0, 0, 2, 1));
+    using var target = new Target(retained, 2, 1); Drain();
+    using (var initial = target.Snapshot()) Require(initial.GetPixel(0, 0).Alpha == 0, "Initial RTB consumer is not transparent.");
+    var red = new DrawingVisual(); using (var drawing = red.RenderOpen()) drawing.DrawRectangle(Brushes.Red, null, new Rect(0, 0, 2, 1));
+    image.Render(red); Drain(); using (var rendered = target.Snapshot()) Require(rendered.GetPixel(0, 0) == SKColors.Red, "Render did not invalidate the retained image consumer.");
+    image.Clear(); Drain(); using (var cleared = target.Snapshot()) Require(cleared.GetPixel(0, 0).Alpha == 0, "Clear did not invalidate the retained image consumer.");
+    image.Render(red); Drain(); using (var restored = target.Snapshot()) Require(restored.GetPixel(0, 0) == SKColors.Red, "Render after Clear did not restore the retained consumer.");
+});
 Check("pointer-source-copies-before-caller-release", () =>
 {
     IntPtr memory = Marshal.AllocHGlobal(8);
