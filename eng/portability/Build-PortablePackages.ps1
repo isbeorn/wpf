@@ -130,6 +130,8 @@ try {
         if (!$seen.ContainsKey("$required.dll")) { throw "Required runtime assembly missing: $required" }
     }
     foreach ($entry in $noticeRoots.GetEnumerator()) { Export-PortablePackageNotices $entry.Value (Join-Path $runtime ('ThirdPartyNotices/packages/' + $entry.Key)) }
+    $graphicsNotices = Join-Path $packaging 'ThirdPartyNotices/Graphics'
+    Copy-Item -LiteralPath $graphicsNotices -Destination (Join-Path $runtime 'ThirdPartyNotices/Graphics') -Recurse
     Copy-PortableFile (Join-Path $repo 'LICENSE.TXT') (Join-Path $runtime 'LICENSE.txt')
     Copy-PortableFile (Join-Path $repo 'LICENSE.TXT') (Join-Path $sdk 'LICENSE.txt')
     $unicodeNotices = Join-Path $published 'ThirdPartyNotices/TextUnicode'

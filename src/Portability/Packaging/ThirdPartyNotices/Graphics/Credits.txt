@@ -1,0 +1,25 @@
+Graphics and text dependency credits
+
+These credits supplement the unchanged LICENSE.txt and THIRD-PARTY-NOTICES.txt
+files supplied with SkiaSharp 3.119.4 and HarfBuzzSharp 8.3.1.5. Retain those
+original package notices alongside this directory.
+
+SkiaSharp, SkiaSharp.HarfBuzz and HarfBuzzSharp are MIT-licensed .NET bindings.
+Skia is licensed under BSD-3-Clause. HarfBuzz 8.3.1 uses the Old MIT license;
+its exact upstream copyright and permission text is in HarfBuzz-COPYING.txt.
+
+This product includes Wuffs 0.3.3, Copyright 2017 The Wuffs Authors,
+licensed under the Apache License, Version 2.0. See Wuffs-APACHE-2.0.txt.
+Its Skia integration is Copyright 2018 Google Inc. and uses the BSD-style
+terms reproduced in Skia-Wuffs-BSD.txt.
+
+This software is based in part on the work of the FreeType Team
+(https://freetype.org/).
+
+This software is based in part on the work of the Independent JPEG Group.
+
+This product includes DNG technology under license by Adobe Systems
+Incorporated.
+
+SourcePin.json records the exact upstream revisions and license-file hashes.
+These acknowledgments do not change any upstream license or imply endorsement.
