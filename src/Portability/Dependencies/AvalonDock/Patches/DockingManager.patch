@@ -1,0 +1,96 @@
+--- a/DockingManager.cs
++++ b/DockingManager.cs
+@@ -1685,10 +1685,21 @@
+ 		/// <param name="anchor"><see cref="LayoutAnchorControl"/> to pop out of the side panel.</param>
+ 		internal void ShowAutoHideWindow(LayoutAnchorControl anchor)
+ 		{
++#if PORTABLE_AVALONDOCK
++			throw new PlatformNotSupportedException("AvalonDock portable auto-hide presentation is not implemented.");
++#else
+ 			_autoHideWindowManager.ShowAutoHideWindow(anchor);
+-		}
+-
+-		internal void HideAutoHideWindow(LayoutAnchorControl anchor) => _autoHideWindowManager.HideAutoWindow(anchor);
++#endif
++		}
++
++		internal void HideAutoHideWindow(LayoutAnchorControl anchor)
++		{
++#if PORTABLE_AVALONDOCK
++			_autoHideWindowManager?.HideAutoWindow(anchor);
++#else
++			_autoHideWindowManager.HideAutoWindow(anchor);
++#endif
++		}
+ 
+ 		internal FrameworkElement GetAutoHideAreaElement() => _autohideArea;
+ 
+@@ -1711,6 +1722,10 @@
+ 				return;
+ 			}
+ 
++#if PORTABLE_AVALONDOCK
++			if (startDrag)
++				throw new PlatformNotSupportedException("AvalonDock portable pointer docking is not implemented.");
++#endif
+ 			LayoutFloatingWindowControl fwc = null;
+ 
+ 			// For last document re-use floating window
+@@ -1766,6 +1781,9 @@
+ 				}
+ 			}
+ 
++#if PORTABLE_AVALONDOCK
++			throw new PlatformNotSupportedException("AvalonDock portable pointer docking is not implemented.");
++#else
+ 			var fwc = CreateFloatingWindowForLayoutAnchorableWithoutParent(paneModel, false);
+ 			if (fwc == null) return;
+ 
+@@ -1778,6 +1796,7 @@
+ 			{
+ 				ContentFloated?.Invoke(this, new ContentFloatedEventArgs(firstContent));
+ 			}
++#endif
+ 		}
+ 
+ 		internal IEnumerable<LayoutFloatingWindowControl> GetFloatingWindowsByZOrder()
+@@ -2087,7 +2106,9 @@
+ 				SizeChanged += OnSizeChanged;
+ 			}
+ 
++#if !PORTABLE_AVALONDOCK
+ 			SetupAutoHideWindow();
++#endif
+ 
+ 			foreach (var fwc in _fwHiddenList)
+ 			{
+@@ -2107,9 +2128,11 @@
+ 			foreach (var fw in Layout.FloatingWindows.Where(fw => !_fwList.Any(fwc => fwc.Model == fw)))
+ 				CreateUIElementForModel(fw);
+ 
++#if !PORTABLE_AVALONDOCK
+ 			// create the overlaywindow if it's possible
+ 			if (IsVisible)
+ 				CreateOverlayWindow();
++#endif
+ 			FocusElementManager.SetupFocusManagement(this);
+ 		}
+ 
+@@ -2181,6 +2204,9 @@
+ 
+ 		private void CreateOverlayWindow(LayoutFloatingWindowControl draggingWindow = null)
+ 		{
++#if PORTABLE_AVALONDOCK
++			throw new PlatformNotSupportedException("AvalonDock portable drag-overlay presentation is not implemented.");
++#else
+ 			if (_overlayWindow == null)
+ 			{
+ 				_overlayWindow = new OverlayWindow(this);
+@@ -2199,6 +2225,7 @@
+ 			_overlayWindow.Top = rectWindow.Top;
+ 			_overlayWindow.Width = rectWindow.Width;
+ 			_overlayWindow.Height = rectWindow.Height;
++#endif
+ 		}
+ 
+ 		private void DestroyOverlayWindow()

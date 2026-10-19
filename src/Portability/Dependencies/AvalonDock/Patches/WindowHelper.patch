@@ -1,0 +1,25 @@
+--- a/WindowHelper.cs
++++ b/WindowHelper.cs
+@@ -30,8 +30,12 @@
+ 			}
+ 			else
+ 			{
++#if PORTABLE_AVALONDOCK
++				window.Owner = null;
++#else
+ 				if (GetParentWindowHandle(element, out IntPtr parentHwnd))
+ 					Win32Helper.SetOwner(new WindowInteropHelper(window).Handle, parentHwnd);
++#endif
+ 			}
+ 		}
+ 
+@@ -64,7 +68,9 @@
+ 			}
+ 			else
+ 			{
++#if !PORTABLE_AVALONDOCK
+ 				Win32Helper.SetOwner(new WindowInteropHelper(window).Handle, IntPtr.Zero);
++#endif
+ 			}
+ 		}
+ 	}

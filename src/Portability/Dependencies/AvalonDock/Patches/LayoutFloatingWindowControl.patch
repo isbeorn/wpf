@@ -1,0 +1,131 @@
+--- a/Controls/LayoutFloatingWindowControl.cs
++++ b/Controls/LayoutFloatingWindowControl.cs
+@@ -43,8 +43,10 @@
+ 		private bool _isInternalChange; // false
+ 		private readonly ILayoutElement _model;
+ 		private bool _attachDrag = false;
++#if !PORTABLE_AVALONDOCK
+ 		private HwndSource _hwndSrc;
+ 		private HwndSourceHook _hwndSrcHook;
++#endif
+ 		private DragService _dragService = null;
+ 		private bool _internalCloseFlag = false;
+ 		private bool _isClosing = false;
+@@ -68,6 +70,10 @@
+ 			Unloaded += OnUnloaded;
+ 			Closing += OnClosing;
+ 			SizeChanged += OnSizeChanged;
++#if PORTABLE_AVALONDOCK
++			LocationChanged += OnPortableLocationChanged;
++			Activated += OnPortableActivated;
++#endif
+ 			_model = model;
+ 		}
+ 
+@@ -346,6 +352,9 @@
+ 
+ 		internal void AttachDrag(bool onActivated = true)
+ 		{
++#if PORTABLE_AVALONDOCK
++			throw new PlatformNotSupportedException("AvalonDock portable pointer docking is not implemented.");
++#else
+ 			if (onActivated)
+ 			{
+ 				_attachDrag = true;
+@@ -357,6 +366,7 @@
+ 				var lParam = new IntPtr(((int)Left & 0xFFFF) | ((int)Top << 16));
+ 				Win32Helper.SendMessage(windowHandle, Win32Helper.WM_NCLBUTTONDOWN, new IntPtr(Win32Helper.HT_CAPTION), lParam);
+ 			}
++#endif
+ 		}
+ 
+ 		protected virtual IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
+@@ -517,15 +527,21 @@
+ 		protected override void OnClosed(EventArgs e)
+ 		{
+ 			SizeChanged -= OnSizeChanged;
++#if PORTABLE_AVALONDOCK
++			LocationChanged -= OnPortableLocationChanged;
++			Activated -= OnPortableActivated;
++#endif
+ 			if (Content != null)
+ 			{
+ 				(Content as FloatingWindowContentHost)?.Dispose();
++#if !PORTABLE_AVALONDOCK
+ 				if (_hwndSrc != null)
+ 				{
+ 					_hwndSrc.RemoveHook(_hwndSrcHook);
+ 					_hwndSrc.Dispose();
+ 					_hwndSrc = null;
+ 				}
++#endif
+ 			}
+ 
+ 			base.OnClosed(e);
+@@ -574,7 +590,30 @@
+ 		{
+ 			if (!(sender is LayoutFloatingWindowControl lfwc)) return null;
+ 			if (lfwc.IsLoaded && lfwc.IsContentImmutable) return lfwc.Content;
++#if PORTABLE_AVALONDOCK
++			var presenter = new Border
++			{
++				Child = new AdornerDecorator { Child = new ContentPresenter { Content = content as UIElement } },
++				Focusable = true
++			};
++			AutomationProperties.SetName(presenter, "FloatingWindowHost");
++			presenter.SetBinding(Border.BackgroundProperty, new Binding(nameof(Background)) { Source = lfwc });
++			return presenter;
++#else
+ 			return new FloatingWindowContentHost((LayoutFloatingWindowControl)sender) { Content = content as UIElement };
++#endif
++		}
++
++		internal Visual ContentRootVisual
++		{
++			get
++			{
++#if PORTABLE_AVALONDOCK
++				return Content as Visual;
++#else
++				return (Content as FloatingWindowContentHost)?.RootVisual;
++#endif
++			}
+ 		}
+ 
+ 		private void OnLoaded(object sender, RoutedEventArgs e)
+@@ -584,9 +623,13 @@
+ 			this.UpdateOwnership();
+ 			ApplyResizeBorderThickness();
+ 
++#if PORTABLE_AVALONDOCK
++			UpdateWindowsSizeBasedOnMinSize();
++#else
+ 			_hwndSrc = PresentationSource.FromDependencyObject(this) as HwndSource;
+ 			_hwndSrcHook = FilterMessage;
+ 			_hwndSrc.AddHook(_hwndSrcHook);
++#endif
+ 			// Restore maximize state
+ 			var maximized = Model.Descendents().OfType<ILayoutElementForFloatingWindow>().Any(l => l.IsMaximized);
+ 			UpdateMaximizedState(maximized);
+@@ -657,10 +700,21 @@
+ 		private void OnUnloaded(object sender, RoutedEventArgs e)
+ 		{
+ 			Unloaded -= OnUnloaded;
++#if !PORTABLE_AVALONDOCK
+ 			if (_hwndSrc == null) return;
+ 			_hwndSrc.RemoveHook(_hwndSrcHook);
++#endif
+ 			InternalClose();
+ 		}
++
++#if PORTABLE_AVALONDOCK
++		private void OnPortableLocationChanged(object sender, EventArgs e) => UpdatePositionAndSizeOfPanes();
++
++		private void OnPortableActivated(object sender, EventArgs e)
++		{
++			if (IsLoaded) UpdateWindowsSizeBasedOnMinSize();
++		}
++#endif
+ 
+ 		private void OnClosing(object sender, CancelEventArgs e)
+ 		{

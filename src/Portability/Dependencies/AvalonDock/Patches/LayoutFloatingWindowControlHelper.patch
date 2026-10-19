@@ -1,0 +1,11 @@
+--- a/Controls/LayoutFloatingWindowControlHelper.cs
++++ b/Controls/LayoutFloatingWindowControlHelper.cs
+@@ -132,7 +132,7 @@
+ 			where T : FrameworkElement, ILayoutControl
+ 		{
+ 			var mousePosition = fwc.PointToScreenDPI(Mouse.GetPosition(fwc));
+-			var rootVisual = ((LayoutFloatingWindowControl.FloatingWindowContentHost)fwc.Content).RootVisual;
++			var rootVisual = fwc.ContentRootVisual;
+ 
+ 			foreach (var areaHost in rootVisual.FindVisualChildren<T>())
+ 			{

@@ -1,0 +1,1293 @@
+{
+  "repository": "https://github.com/Dirkster99/AvalonDock",
+  "revision": "028a5f328eb86a7abfb2195bbaae37683c818d1e",
+  "tree": "2bbc95d60265272c75c40672ab1bfb7569fbf16c",
+  "archiveSha256": "80CC61213BFEFA9C28E2D859F41CF548CECF31B5F799CAFFFA6A2DC1A3389BA9",
+  "archiveUrl": "https://codeload.github.com/Dirkster99/AvalonDock/zip/028a5f328eb86a7abfb2195bbaae37683c818d1e",
+  "assemblyName": "AvalonDock",
+  "assemblyVersion": "4.74.1.0",
+  "publicKeyToken": "3e4669d2f30244f4",
+  "publicKey": "0024000004800000940000000602000000240000525341310004000001000100D59D8147EB2015CA98A92DA860FD766D101271D8C2F545894870FD6183255737D79347BBF5250291AE75651E11501B7452EE003B80B936614CDDA51DB8EB6F8FDE913E67D45395B480A992BE17BF04744A7FE803EA131B925DCF84A73D22264352ECA7C3FCF9387F3EEE1D60AC7974F04866E6C72928DC0609ABE341F92CBFB5",
+  "originalBinarySha256": "E238E124A3A832EFEBCAD2FBCD1DECD1C6228F223A6462E80FBD16DD7981649D",
+  "license": "Ms-PL",
+  "files": [
+    {
+      "path": "LICENSE",
+      "gitBlob": "694a526849371fe843cd38366ab7bb8588b5a8fe",
+      "sha256": "F58456EDA8DC19C1496E3D841E478914CE5BC39D25CDB08AFCDB52949DB31C78",
+      "bytes": 2637
+    },
+    {
+      "path": "source/Components/AvalonDock/AnchorableClosedEventArgs.cs",
+      "gitBlob": "b9ea273db9b50bd8559c8f9a33139fa7c822e4b8",
+      "sha256": "5937B3B80DEB925B92BED13600D46D4CA40CCF55FF788D7C4451FFD2F759E637",
+      "bytes": 1081
+    },
+    {
+      "path": "source/Components/AvalonDock/AnchorableClosingEventArgs.cs",
+      "gitBlob": "41c49a3cf9647a8eae8a3f84ef851c3f642c5d7c",
+      "sha256": "D13DA606491BDC407A9A0A6323587E92ACBEA53C634F430525DC1963109A4D04",
+      "bytes": 1098
+    },
+    {
+      "path": "source/Components/AvalonDock/AnchorableHiddenEventArgs.cs",
+      "gitBlob": "3ae65cd37ed1694d9d49abffb033c55a0a3c1a41",
+      "sha256": "B21C1C1D012629FA87278FF350E1ADAB1717345AA0CF835F74179A459AA826E9",
+      "bytes": 1018
+    },
+    {
+      "path": "source/Components/AvalonDock/AnchorableHidingEventArgs.cs",
+      "gitBlob": "81fbcfd6f99b5637ae6e0d644109f50f140c707e",
+      "sha256": "FE23A9340A1749500229A74E9F18990B1BD36DAD06F8F626B2BF93F0DD9500E8",
+      "bytes": 1234
+    },
+    {
+      "path": "source/Components/AvalonDock/AvalonDock.csproj",
+      "gitBlob": "c5b06d9c0e5c0e55e70e1e6b2c53482fd4d891b3",
+      "sha256": "89D2AE8D3C26CB7040C410A36D9FE08DA58F383B2C3D7E9603CE81E38F23162E",
+      "bytes": 1415
+    },
+    {
+      "path": "source/Components/AvalonDock/Commands/IExecuteWithObject.cs",
+      "gitBlob": "2036ffe1f5e0f14f5dc639d9c4975a9d6ec811dd",
+      "sha256": "8BAF5F0048BEEA5C5E5736322678CFBF70B86D842A2EAB9D821CC60CC16279C9",
+      "bytes": 659
+    },
+    {
+      "path": "source/Components/AvalonDock/Commands/IExecuteWithObjectAndResult.cs",
+      "gitBlob": "75780f68e894d44874d89950294e413e0dcfa32e",
+      "sha256": "08B28F6AB9CB1B06F322C752190AB561FDC2350F38B1EC0568FEC2E50DE337DF",
+      "bytes": 455
+    },
+    {
+      "path": "source/Components/AvalonDock/Commands/NamespaceDoc.cs",
+      "gitBlob": "39cd7c7ff5630d00590dd66b2b9399856e15f297",
+      "sha256": "F73DABF4ED8476119BEB32749A9A9E7CC6D3DAA85442B6AA604D66D130977172",
+      "bytes": 230
+    },
+    {
+      "path": "source/Components/AvalonDock/Commands/RelayCommand.cs",
+      "gitBlob": "aa10673db22ed9e20e512d44e7b8d368c7d0a195",
+      "sha256": "58F3774527ED17F25A0436BBC44FDB8C1894D5BB44C5CCD5823361ECEF087C49",
+      "bytes": 5353
+    },
+    {
+      "path": "source/Components/AvalonDock/Commands/WeakAction.cs",
+      "gitBlob": "9508c98203ba23fd4184a26e78a9b4620ed61859",
+      "sha256": "2285B76DC19599A228E574BE867F819CB3D513A56CACA3875B6E8D49E7EB83A2",
+      "bytes": 5572
+    },
+    {
+      "path": "source/Components/AvalonDock/Commands/WeakActionGeneric.cs",
+      "gitBlob": "b9c2998515333e61372512f4589870db261856a3",
+      "sha256": "CCAD211E1F5B478471C1C3A7A39E745584B1203D66981C378EA55FAAE64D0772",
+      "bytes": 3782
+    },
+    {
+      "path": "source/Components/AvalonDock/Commands/WeakFunc.cs",
+      "gitBlob": "e783ec7b0c5720eb4343828ccf24d39b2120999e",
+      "sha256": "AA21EA71021C86E58B25E9AE99E5C92B8A020548C76C270A3D8D6A2FFA878CF2",
+      "bytes": 5075
+    },
+    {
+      "path": "source/Components/AvalonDock/Commands/WeakFuncGeneric.cs",
+      "gitBlob": "323d854951250060b08bea09b31fe3821ecdf387",
+      "sha256": "7E65BFCB6F10D2E136681CA44008730F68D918295BF0E50F21F616C86C708D71",
+      "bytes": 4454
+    },
+    {
+      "path": "source/Components/AvalonDock/ContentDockedEventArgs.cs",
+      "gitBlob": "60d8431a76a2f099c66df6d8787a28c56fa29877",
+      "sha256": "8E7D8B70CE8865D5AD142B378F1892F383E82E399B23444F6D87C55F1DAE804B",
+      "bytes": 1113
+    },
+    {
+      "path": "source/Components/AvalonDock/ContentFloatingEventArgs.cs",
+      "gitBlob": "eb717b9f667b6dd2e422708738aa8d2abdc73c27",
+      "sha256": "CE8A62F5C7D1F047F9F578E4A6E81356C090AF9681F54C38876226F95C2383DE",
+      "bytes": 1098
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/AnchorablePaneDropTarget.cs",
+      "gitBlob": "0dc126088a195742284991fb56e2c1739e685d0d",
+      "sha256": "47F8BC474BA5EE0F8049C9D23C144E165EE63BC2388B8BF34C7ED091733A37F2",
+      "bytes": 13984
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/AnchorablePaneTabPanel.cs",
+      "gitBlob": "9f38c621ab83d11ed4876f25d8a256648207b941",
+      "sha256": "9FB6F8BC09C7F704D185A50E1F65F97B509000A7B76DE1CE418910ACC9D0C190",
+      "bytes": 3042
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/AnchorablePaneTitle.cs",
+      "gitBlob": "aa3f3da0ed10a4031a8f11a90465ee00d2fb0b4e",
+      "sha256": "043628A486793EE1AFB137F32BE77EF4AE53699382B9A8F9FE828B99B6593877",
+      "bytes": 5873
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/AutoHideWindowManager.cs",
+      "gitBlob": "1381e4c60c002c55431a22a6eff94eaefe226753",
+      "sha256": "9DF83533390835F97C136590592D958DE270FB4B8008B39BB99D7BB4F26B00C4",
+      "bytes": 2964
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/ContextMenuEx.cs",
+      "gitBlob": "514a1ea3a600131588886f85ca81cfb2147f6aba",
+      "sha256": "744DD838F781C6A2FF00B6FC68C85AF3E9E63DF6BAD72FD75B4EB15DD842B139",
+      "bytes": 1007
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/DockingManagerDropTarget.cs",
+      "gitBlob": "6aaead75b47f4ebe1927857e19209dac0e8ed49c",
+      "sha256": "1524D9F4608E1B484C5C026D1250EA36F178E341DCBA51434CF64F55A566299C",
+      "bytes": 10445
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/DocumentPaneDropAsAnchorableTarget.cs",
+      "gitBlob": "5a817b42b4a652e8de30b5d5e4de168be1275460",
+      "sha256": "55571916F142EC23EC4F835F27A01CC4F3D0C500C16EEEDBBE086F73366309BA",
+      "bytes": 10860
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/DocumentPaneDropTarget.cs",
+      "gitBlob": "2edd38f0c085494c2595469478301caa3b16e5f1",
+      "sha256": "E044818F21AF1F143F07B357C5E282EB45F0A6E900D0D6FAE57AC36C57E807FC",
+      "bytes": 19203
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/DocumentPaneGroupDropTarget.cs",
+      "gitBlob": "889b22816c101a5570dfa9c62fc70d73750e8912",
+      "sha256": "3F82E3AB45FF2BEFC1A07FAE54CF8D4601FB489C35576F1C86832BF1200B5250",
+      "bytes": 4034
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/DocumentPaneTabPanel.cs",
+      "gitBlob": "530c34ee5cf1c7a8e465424d55d871e4127a2b98",
+      "sha256": "DAF49A397997A18E9D7ED2B7710046176DB8C0D7F5A9AEB91E99F78387B0F454",
+      "bytes": 3353
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/DragService.cs",
+      "gitBlob": "fa49a07d2a9d4c754660e45fcf4079a7a4b38d6a",
+      "sha256": "CD8B30A32E1526EBBD843D0D04AE6D8D259E2EC5608899700B4D52892E99D7C2",
+      "bytes": 9966
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/DropArea.cs",
+      "gitBlob": "ac116976ec4bdebc6c35808f4425364a9f801a85",
+      "sha256": "C6D9CD1F27517455D9F7B5BFDE521A46A7D12539040FEFA61E72A989CD2736D9",
+      "bytes": 3104
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/DropDownButton.cs",
+      "gitBlob": "3bcff9af986a7bcbce3e0e6f90525eb8e9698e40",
+      "sha256": "56386D0F17531F410F2C7244929FD8C9BFB6B023821DC4D0FC80B0E4E2912731",
+      "bytes": 4024
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/DropDownControlArea.cs",
+      "gitBlob": "464bd6b9022c54cbe9296798e604b0c351527a2c",
+      "sha256": "0D3B3B2DAACB896E3CAFC5B8BE70CB8B3D0FF8A5555B293283775E964F0E4D29",
+      "bytes": 4647
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/DropTarget.cs",
+      "gitBlob": "082ad28d59e1d854bbc6b15311300b59d9d8fa3c",
+      "sha256": "B30117FDDBE4C9A150EFBF6F17F0C356D4DF5A8F301F662E204B522186D4FA63",
+      "bytes": 3769
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/DropTargetBase.cs",
+      "gitBlob": "328a7bf5eca52487d9e6d16634cb30f0178ddb39",
+      "sha256": "9250C5FE10855AA4B2E46216C8DAFF2A9226147FEBAF502A286E1DC94B458461",
+      "bytes": 1537
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/DropTargetType.cs",
+      "gitBlob": "5ffeb3b7703c2d74f2aa4725c412cc6911050332",
+      "sha256": "49312CFE58AE399CC6B238B8F997CADD32DFE20403E2FB102AB67789A9F907BD",
+      "bytes": 3099
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Extensions.cs",
+      "gitBlob": "18e1e151846f4862d12dfbbc850f0ed734fc8402",
+      "sha256": "980B667E26627FA73337F05D890E3F2CAA22094309D7FD1AD50E283D2CAB9C65",
+      "bytes": 4471
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/FocusElementManager.cs",
+      "gitBlob": "8917c9c70f876695db0a7d460698370e94f2668f",
+      "sha256": "D9143521F7616128970364EB56F54F950EC5B85C0235C7B13B0EA3CA6507A965",
+      "bytes": 9456
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/FullWeakDictionary.cs",
+      "gitBlob": "8a5c60812444535dd9123dafe661d9e1ee11f1a6",
+      "sha256": "33CB1B3D3794C47C5FD3A9ACAF2CA567600183D952DE5BB1F1A3433E42498150",
+      "bytes": 3319
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/IDropTarget.cs",
+      "gitBlob": "18453578eb1d69aa141409272f83bf84eb4de06a",
+      "sha256": "E1B7C243231E8AFE1BBF2D6F539073F2C6962ACC449877A5BCCE2ECD66682B40",
+      "bytes": 2783
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/IOverlayWindow.cs",
+      "gitBlob": "5be2f7f337e6245434cc21cb4421ae3a9ce1cf30",
+      "sha256": "69BB534F67F75AB76FE46F13AD1C6BB57C217582213B253C499825E334929CF2",
+      "bytes": 7225
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/IOverlayWindowHost.cs",
+      "gitBlob": "7a746c014c9363a57c1be00994775c8968df3504",
+      "sha256": "D23C63ECEA5A7AFE8C979F5CC93B8545108C24C5FA78895B9382C5AB97B643B1",
+      "bytes": 2695
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutAnchorControl.cs",
+      "gitBlob": "f41aacd79c4623eb951b9a51d9aad0b0e9672a58",
+      "sha256": "8C3E8A3EAE6CEDB7CA60675FE67F241B36B8B2841E7F960C893D6908DDEDB51F",
+      "bytes": 6777
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutAnchorGroupControl.cs",
+      "gitBlob": "7b4e3f71a782651f1040940d162189abb4b9b60a",
+      "sha256": "CA8E066C1AF5378E0BC2D9DF9D810DDFED113A9684450A0819ABF20ED3886D38",
+      "bytes": 3110
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutAnchorSideControl.cs",
+      "gitBlob": "498d4acf8e68dce70d00b5a644bcd987001a28ad",
+      "sha256": "68BB6A0F05C7BF90DC6358ED9369B9C058F5AEA0ECD7B22ABE74DA5980CBE0AB",
+      "bytes": 7996
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutAnchorableControl.cs",
+      "gitBlob": "15203d40ee570e61a27c90352e0d82bde002302a",
+      "sha256": "C1F578C943F3CFD1334898ED6041D68696EE72768AECA9151F9B766228E28095",
+      "bytes": 4730
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutAnchorableFloatingWindowControl.cs",
+      "gitBlob": "bf776e498ab30010abdad09b337958e557ce5f25",
+      "sha256": "3B21757A9BDD8FF4EF4F97B7F4E81A7AACD9B61BA9D688BDFC465072A1C559F1",
+      "bytes": 14691
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutAnchorableItem.cs",
+      "gitBlob": "4910e0e6a0ecff7c0e11ec31922075b8418d8ca3",
+      "sha256": "87AAFDDF0D38D54DA89BCE37C53FDCA69B94FAFEBC58C55D902BC6201AE29229",
+      "bytes": 11951
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutAnchorablePaneControl.cs",
+      "gitBlob": "c145afb24bd4cfebfe0b53ea691bb5d53a2473f1",
+      "sha256": "A1121E0C8A7857F9E2DFF52E25B30AA47596EB172B5670A21083B278389CF84C",
+      "bytes": 4498
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutAnchorablePaneGroupControl.cs",
+      "gitBlob": "18935c6497efe490a6560e405f67155187281334",
+      "sha256": "821A57F901E52A4A61E7C32A4A231D53B528470129FE30B6C3F0B47296E364D4",
+      "bytes": 1878
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutAnchorableTabItem.cs",
+      "gitBlob": "f2f2142f629a9bc92c39c7cc236a40f9fb71782e",
+      "sha256": "14F20EFF7562F4CAA334B10752F9E07B14AE6DA4F6DFC3E41987F0FBEF2353EA",
+      "bytes": 6072
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutAutoHideWindowControl.cs",
+      "gitBlob": "d298094700ab86a7f58876129e26dcf5860a3f74",
+      "sha256": "F530DB509E9FCF818524F5787AC1B38C75C45501B683F10D7B1C4C9D2657473A",
+      "bytes": 19585
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutDocumentControl.cs",
+      "gitBlob": "42c157420d1839a7585d4055e17fb1c70f364737",
+      "sha256": "20A8F63F40BC4F0A4CE7A06197040A5401F3EA445E68AB64363A4497A6FB228D",
+      "bytes": 4456
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutDocumentFloatingWindowControl.cs",
+      "gitBlob": "9072da871ad0792193ba4bd93a07cd735b4ecd83",
+      "sha256": "654BAE662416936903AA26F81CF6F9C661B910DC0661B746DDA1AB3D1F427D1F",
+      "bytes": 14522
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutDocumentItem.cs",
+      "gitBlob": "695bdaaf5b398fe24234a4c3ee377bda6a4ca519",
+      "sha256": "42EE27A99A453377C3D23BA2A9010FBD9388E71720C458D382B3E071FB974D2A",
+      "bytes": 3252
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutDocumentPaneControl.cs",
+      "gitBlob": "9e289b716712c87c0ffa95cbce93f43034a6076d",
+      "sha256": "60AF3E707919F7E062306E590E2DC30A9760B04D9080C0015C76E72F742C75C6",
+      "bytes": 5183
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutDocumentPaneGroupControl.cs",
+      "gitBlob": "0b3394c0b18827dc9f14f3872586ba12648206c7",
+      "sha256": "1559A823A6E30D197C0057AC46F85AEF47429FCA529317F2A028161CB62E786B",
+      "bytes": 1732
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutDocumentTabItem.cs",
+      "gitBlob": "5fffc9b4271a0529af3b81bed7afbd30fdc4b37c",
+      "sha256": "E99720788E4E0D085FD587F2962CEDEC96140129E30D751E73A7ED4A81C2FD15",
+      "bytes": 8266
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutFloatingWindowControl.cs",
+      "gitBlob": "482e3b6d7a8b52fcfea1acb0d08b8aded4ce08a9",
+      "sha256": "3A7D642EBEA34DAA5D9C3AF69D02C64285A7B951A76AF348E15D7D7544E91F2F",
+      "bytes": 32543
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutFloatingWindowControlHelper.cs",
+      "gitBlob": "c92aad36d4d017f6b4b29a8db605c261c9d7e096",
+      "sha256": "0887B992B5A3B4DB29B750335012A5918482597C13B43E2571ED40951A49D074",
+      "bytes": 4774
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutGridControl.cs",
+      "gitBlob": "e8b252972c6f79e36dbf93edaad3d48aa52db433",
+      "sha256": "39575F728F634AE70BC4BD750497BF27FEB4C5F722F93481009D5BB2A9AE6A53",
+      "bytes": 25669
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutGridResizerControl.cs",
+      "gitBlob": "405d4b0abb8eeec02fd3a463bb314443e7541bd8",
+      "sha256": "4E285F449827981B68D840FCDC5A6BDF637540988FEE83E0202946EDA9A25B9D",
+      "bytes": 3216
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutItem.cs",
+      "gitBlob": "94e3e1c0219a1db38973899629dd4facc08ed655",
+      "sha256": "F2D84FF1B354D6DF9AD2902608D131F78E3EBDEE90188F381B534504A6E2ABE2",
+      "bytes": 37434
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/LayoutPanelControl.cs",
+      "gitBlob": "7250b7c8b7d605e7d494c2fafcad21a5eab5220b",
+      "sha256": "B4A377630F7DD5DEF987EBB3AA073DB5D0681B33F49679C493308C2E8D42AA01",
+      "bytes": 4836
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/MenuItemEx.cs",
+      "gitBlob": "43fdb93ff2426e359b804b47830cc6f2f3cd7ddb",
+      "sha256": "4358A1C2A3016BA38CA7CB070F64CA61DEA7F1D4E114F5CA04DA9F1D5B0B1B93",
+      "bytes": 3925
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/NamespaceDoc.cs",
+      "gitBlob": "c14d0973fb71ddc869baa496b94b51b080a7ccd8",
+      "sha256": "C4C49F858BBA39F8BD18B3203C669A83E191F3EF51B1B0D9A43B6927A789E206",
+      "bytes": 219
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/NavigatorWindow.cs",
+      "gitBlob": "2cc506b90a19064d3914094825b3b452b86f93ab",
+      "sha256": "272C49F960CDD61715C8F215909F166F10A07F2124537198099BE7B243EA4EC3",
+      "bytes": 19007
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/OverlayWindow.cs",
+      "gitBlob": "d5a467f99583c97ee0260ec99c66fa6fa271b8cb",
+      "sha256": "0D982346CABE453026CF2ABE15361525AC15B17FE50558DC7D207473B155393E",
+      "bytes": 37881
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/ReentrantFlag.cs",
+      "gitBlob": "0629525a063d2a06c41fd334142e96e77e21575d",
+      "sha256": "AD714B015CFC4BB7ADEC3EA437B924A1B077FB0F1F841A8FC7668B6871C34915",
+      "bytes": 955
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/NamespaceDoc.cs",
+      "gitBlob": "2d301945d0bb0268e24516cd0e2d833b1277eb17",
+      "sha256": "D8AC2D5994423BFECA06740DDF5CE84350B7FB547A9EFEB53A20131876C21960",
+      "bytes": 228
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/Standard/ComGuids.cs",
+      "gitBlob": "3e974f6aa36e8d80dcb686f15f1db0d4d31ff2ba",
+      "sha256": "F6F3CB88DE56CC6280D243F2AECE8F08BE89950BE4EE41822BB58708EA4B6CC6",
+      "bytes": 4906
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/Standard/Debug.cs",
+      "gitBlob": "1a71e2944032a7e71b874f06598ab49fd8b10aeb",
+      "sha256": "C900A48A251A264E2D6D3C734280D5FC284EF873EFF8D2FD109309EFAFF63AF2",
+      "bytes": 11612
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/Standard/DoubleUtil.cs",
+      "gitBlob": "ad11649046b386f51a5f71391f0455cc051df0fb",
+      "sha256": "548973B3A42CECAFFAF667D9EF28FCAD7EAF24CC598E7E38DBC81A38112AB73D",
+      "bytes": 5979
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/Standard/DpiHelper.cs",
+      "gitBlob": "e059bb713372cf55d3491dac63d5acf42d6a73d1",
+      "sha256": "F224010068D065D060C53B9D37553EA37235BC037E910AC00CBE73C09B272370",
+      "bytes": 3532
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/Standard/ErrorCodes.cs",
+      "gitBlob": "8c9aa917395735aa2e71eda7c6d0ce67460786fb",
+      "sha256": "6B7A5EF33FD232F19D12F055AE52D4849297F4E669C227D76BE8734A6CE92E69",
+      "bytes": 20157
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/Standard/MessageWindow.cs",
+      "gitBlob": "8a31f5d757a462e92a015017d4b7e88fb1abf42b",
+      "sha256": "7C66261218495D8B7F9D2E46AE99215BF231870DAE4DBD7DA21D45273BE32314",
+      "bytes": 4759
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/Standard/NamespaceDoc.cs",
+      "gitBlob": "1c66f24615e58ea4fdc8063e49a19352f01bf279",
+      "sha256": "93770CE840AC7833599FAAA0617B5053176D14E35B33B40CEB6ECB7962B4635C",
+      "bytes": 253
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/Standard/NativeMethods.cs",
+      "gitBlob": "f6571e11977ef6bc6c68cb011281ddc0bb2b045a",
+      "sha256": "42CEFE23339DC55EA655097D4ADCAF20ED2D38AFBB189B849ABA9602001E0921",
+      "bytes": 100653
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/Standard/ShellProvider.cs",
+      "gitBlob": "289f0a04a4116956bcfa49adbb6489b9c2689476",
+      "sha256": "D26224347AC49DCC4653C985B31ECE9F7D4615F1F9E094B69FD9BAD6E72596C7",
+      "bytes": 34044
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/Standard/StreamHelper.cs",
+      "gitBlob": "338260080c6a43fe0767ffe0ef7dd4c08be34afc",
+      "sha256": "139FCBFB47D435B6251C194AE105F469832DE0C9BB3D12F28BA03B6CA2E80A9C",
+      "bytes": 11891
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/Standard/Utilities.cs",
+      "gitBlob": "d36dcc91e2b8b7654c6adf00c54f2b127df803d9",
+      "sha256": "05D06FF420345876FC3E82345983FB10B3311BBD9BA532516294F22DE005C87D",
+      "bytes": 27040
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/Standard/Verify.cs",
+      "gitBlob": "cca824f36ee1309c997858e118518efc2534199d",
+      "sha256": "5CCE49AF81DE6BF613CD9140A92B1CB0B77635C1306C6675B58277136FF02E21",
+      "bytes": 11904
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/SystemCommands.cs",
+      "gitBlob": "e9a863842977b29bf5a0b906a6d35527827caad4",
+      "sha256": "04F0C864A58E82CD793CA37281FD272DF71E038FE5911FFD4970A5C24D64D6B1",
+      "bytes": 3353
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/SystemParameters2.cs",
+      "gitBlob": "4260aa7cfb825e853652895dac86168a404cf1d3",
+      "sha256": "2A7EBDB93BA5CF597D8D2B326F68B725E4FCFB525342397A9EF23A88E110939A",
+      "bytes": 16991
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/WindowChrome.cs",
+      "gitBlob": "ffc78af14b0c22f1eac493d428834081eba97a7a",
+      "sha256": "9D255E8F4D24E2772435D7C13DF894A9C502AA04B4136EB01F907F7C726E3F95",
+      "bytes": 8961
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/Shell/WindowChromeWorker.cs",
+      "gitBlob": "87e84b9ef5d1be7688d07a48fb285855f447873a",
+      "sha256": "2F01812DA7564997ACEE252379A288A4330FAE8AA083A3B28C030ABB33AFD616",
+      "bytes": 41052
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/TabControlEx.cs",
+      "gitBlob": "b4ed4b34b874d9aaa47ee61e49314aa3874fe423",
+      "sha256": "8DB2D067A554D3E96A1B493C85C385DC5DC5637C881B1C7969E9D57F78AEA060",
+      "bytes": 7176
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/TransformExtentions.cs",
+      "gitBlob": "0c7a92684fe73b3542a9cee8bac27764cd681b30",
+      "sha256": "437670124C52BED7D73F73A0FA0C84FB0BA3C3A75146E7934B2FF11ABB34E4CF",
+      "bytes": 4284
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/WeakDictionary.cs",
+      "gitBlob": "50afbaa819452e77adb7e42f529cf93f6a22dd8b",
+      "sha256": "A08861C56F0173157616AE6B4100F19F51246DBEBB2CFC19B09A2DCC658CAA7D",
+      "bytes": 2971
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/WindowActivateEventArgs.cs",
+      "gitBlob": "37d6615dfbd34b16fcf0c73968b4fafd356f6468",
+      "sha256": "CF1F2F5A4977B1062C489812B83C14B3830B1EE0BBBB45582A71A5A9B66DB573",
+      "bytes": 624
+    },
+    {
+      "path": "source/Components/AvalonDock/Controls/WindowHookHandler.cs",
+      "gitBlob": "ddf650d886d02bcc959a52702a4e81c4cb6159ca",
+      "sha256": "F265A26B81CC9441BF57593F179BB7E5F57D2F6170F173B24244FDB983E24C9E",
+      "bytes": 1985
+    },
+    {
+      "path": "source/Components/AvalonDock/Converters/ActivateCommandLayoutItemFromLayoutModelConverter.cs",
+      "gitBlob": "eac067664f5045ead46d926dbda203db160170cb",
+      "sha256": "A9FAD8AF058E8EF41CC1DE3395119DDD61F34D1FE1ED821B38D10055A15C2465",
+      "bytes": 2778
+    },
+    {
+      "path": "source/Components/AvalonDock/Converters/AnchorSideToAngleConverter.cs",
+      "gitBlob": "4039a36c2738080438b1521af3eaa8d1ca349ef6",
+      "sha256": "AFB8438E64C9C59A049B9DB60D055F79C84157D0DE1E1C68A14AFF6AC819CF86",
+      "bytes": 2429
+    },
+    {
+      "path": "source/Components/AvalonDock/Converters/AnchorSideToOrientationConverter.cs",
+      "gitBlob": "df0bc6c40fc18d20cb11a76456d7aad5f5397a2f",
+      "sha256": "22B23D8EABC7A19A584FC000FE05D7C7064959F04A75BB4293181CDE42FD125F",
+      "bytes": 2609
+    },
+    {
+      "path": "source/Components/AvalonDock/Converters/AnchorableContextMenuHideVisibilityConverter.cs",
+      "gitBlob": "413412213e8af0cb595d48a70bad417bb93f2ccd",
+      "sha256": "0CDA186FB62A47D9BE6EB40E0CA8EE2D38B282859C21BBAAD08E1095CC055C03",
+      "bytes": 2756
+    },
+    {
+      "path": "source/Components/AvalonDock/Converters/AutoHideCommandLayoutItemFromLayoutModelConverter.cs",
+      "gitBlob": "211b28cfdebf81364f60f294b13d298413f1285a",
+      "sha256": "FBD2061DE3405ADC66E7B47C44E7FA84FD64C6FB51A97C223FA53001FE766241",
+      "bytes": 2857
+    },
+    {
+      "path": "source/Components/AvalonDock/Converters/BoolToVisibilityConverter.cs",
+      "gitBlob": "db8a8c2f24533f586257947799042d0b4fd6ca93",
+      "sha256": "C8E469370FDAC378EB8B9362B860ECCD3CF8D53FE105CD72BC753F2E77F0F757",
+      "bytes": 3003
+    },
+    {
+      "path": "source/Components/AvalonDock/Converters/ConverterCreater.cs",
+      "gitBlob": "9f6c7200d29f57b6ac37af8fb1109aabeea66a08",
+      "sha256": "96B9287CE8AA6361A3E83BACC34308DAFC9E280630307C2554F252BB0BCF0483",
+      "bytes": 1057
+    },
+    {
+      "path": "source/Components/AvalonDock/Converters/HideCommandLayoutItemFromLayoutModelConverter.cs",
+      "gitBlob": "cf9c4a2a320d4ea43356bf1d0dbddc0f07cf7724",
+      "sha256": "2A7053B1BF1338920D51F19FD1D7A1672F2149F4D3C36ABB471F753D64BA60C3",
+      "bytes": 2794
+    },
+    {
+      "path": "source/Components/AvalonDock/Converters/InverseBoolToVisibilityConverter.cs",
+      "gitBlob": "1d4f01c39aad92d9d8c237f49391513843b4542d",
+      "sha256": "DAB84C904D0E1001E0273259D554BE58DC5FDCA7D53085EFAFF6E1180C2F2788",
+      "bytes": 2919
+    },
+    {
+      "path": "source/Components/AvalonDock/Converters/LayoutItemFromLayoutModelConverter.cs",
+      "gitBlob": "cd58a81d880ab3143584e3fa75a141d6af61048c",
+      "sha256": "29872D04A71009E2E52E6663D9C0397C0C11CB8EC10437C85C743C16B76792EB",
+      "bytes": 2583
+    },
+    {
+      "path": "source/Components/AvalonDock/Converters/NamespaceDoc.cs",
+      "gitBlob": "21fa5a2a0d0f5eb6b6029b7080709678659847c4",
+      "sha256": "9C500C26F202A33BE9FB7B7CAEDB4BBB7F77685735FDF94577B010CC92B20094",
+      "bytes": 217
+    },
+    {
+      "path": "source/Components/AvalonDock/Converters/NullToDoNothingConverter.cs",
+      "gitBlob": "a01efa4a3a460730cbb98673002d9dcf14ddb121",
+      "sha256": "175DD8E99D050DBB1D27BB88F677CE011AFF5DAAB1037DCD73735EE5AC267A3B",
+      "bytes": 2003
+    },
+    {
+      "path": "source/Components/AvalonDock/Converters/OverlayWindowToVisibilityConverter.cs",
+      "gitBlob": "6e92c397fd819b872266ca338ca27c8e3a607d5e",
+      "sha256": "9A624DA3D59F50417AE8049B94B9E6ADD409F5EE3EF601D6871809E1A78E72B4",
+      "bytes": 2580
+    },
+    {
+      "path": "source/Components/AvalonDock/Converters/UriSourceToBitmapImageConverter.cs",
+      "gitBlob": "16d8e7d69a5d88cd153ae51d237ec1c91e55db9e",
+      "sha256": "A2618C2ABB3AA777125EA07A80FD7C8430C4F66F7865D866E461A99006F91533",
+      "bytes": 2378
+    },
+    {
+      "path": "source/Components/AvalonDock/DockingManager.cs",
+      "gitBlob": "4f624c3bf5c0de17984157c57c2366a9f97d2024",
+      "sha256": "E8892148AEC04225B11FBDCC7B5FB19B6F23E801E62EE7D3C4441C19FB4A7237",
+      "bytes": 126849
+    },
+    {
+      "path": "source/Components/AvalonDock/DocumentClosedEventArgs.cs",
+      "gitBlob": "ec998ebc640bf357dc7b590417da777e9a31b112",
+      "sha256": "53782E3C560BDA7FD3A35885AACC6158C852F1006EF985523F5107BD7534F518",
+      "bytes": 1061
+    },
+    {
+      "path": "source/Components/AvalonDock/DocumentClosingEventArgs.cs",
+      "gitBlob": "50da65d0c95e12f25e7226072a4bb491917207ab",
+      "sha256": "9E56F4CDEC5837E7B9C6CEE05A82F761C75CA6E1D7E57B8B46C3C6189C8B93C9",
+      "bytes": 1080
+    },
+    {
+      "path": "source/Components/AvalonDock/Extensions.cs",
+      "gitBlob": "b36ea4b318e517843ea398147c661567522ccc66",
+      "sha256": "8A2FE42BC976B5A41BDD515FEDDE34F26D53B8FD6BCCEDD1F28779851D86F0D0",
+      "bytes": 4375
+    },
+    {
+      "path": "source/Components/AvalonDock/LICENSE",
+      "gitBlob": "694a526849371fe843cd38366ab7bb8588b5a8fe",
+      "sha256": "F58456EDA8DC19C1496E3D841E478914CE5BC39D25CDB08AFCDB52949DB31C78",
+      "bytes": 2637
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/AnchorSide.cs",
+      "gitBlob": "63826763e835aca5712c6573459a53fd180954cf",
+      "sha256": "7B19C80925460D760D1A062C80D4D87784D4888EFD6146B1BF5296B2D5BB029A",
+      "bytes": 917
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/AnchorableShowStrategy.cs",
+      "gitBlob": "6412a4ec98b64afa548488561bdab78f2c2c688b",
+      "sha256": "88891D979D854422B18766C03E4B846FB0B69C27C62302C3B7BFA6B6A60C6A00",
+      "bytes": 1142
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ChildrenTreeChangedEventArgs.cs",
+      "gitBlob": "8acb8b64aadba2b6e2debc1985e32f5dbb759e3f",
+      "sha256": "417C285BD756DE4816DAB2AA7A0F08D68970FE1A03749DEB30AFDC9955D1DA01",
+      "bytes": 1319
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/Extensions.cs",
+      "gitBlob": "dcc42df1a8e4ec0a5eea4537c7c3a83efb8028e4",
+      "sha256": "4BB775250437230C13E89D0D560D49047B6BFEEAE03EF2ADCB2CF4F95096842A",
+      "bytes": 5195
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/IAdjustableSizeLayout.cs",
+      "gitBlob": "3bfc8468918a2b762a76ece93333181855b6d1d0",
+      "sha256": "A8E2CC0CD76C003A3FD9768A611AEB1049FF9ED2C993E3AC1FD72B78902B96E5",
+      "bytes": 524
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutAnchorablePane.cs",
+      "gitBlob": "40c1d9b363c6d4b72df4b58c0a983b0f89ce0b0d",
+      "sha256": "8B65F46D03EB1CA4EF3D28B1C4F4BA0A741C916526FDAEE5C2255EBD149BD57E",
+      "bytes": 701
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutContainer.cs",
+      "gitBlob": "2e0009f6815e94b6aeff57369cdfadd58eba5e50",
+      "sha256": "445664E3E6970DE143FC1533ADC6DD462077D49571A5CF4CF8537DFCD5A62210",
+      "bytes": 1246
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutContentSelector.cs",
+      "gitBlob": "be1d8d8df7ec5c7360fbfe6843035cda79fd2596",
+      "sha256": "45B7D2AA2E6BDB36D2FF632CCAA22FAAFEF927C963090EF8D7CA2CD56947CB30",
+      "bytes": 941
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutControl.cs",
+      "gitBlob": "95db6a4ff633123876bebed9f0fc754dc8b44f4c",
+      "sha256": "B9E0FB86002823BA013B40FE6A01D80B14DA50B58D4FBE19F8466D1CB0BFDAB3",
+      "bytes": 663
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutDocumentPane.cs",
+      "gitBlob": "f8f1ac0c50966ead453fa99d079d7223f0b63e02",
+      "sha256": "12EF921A6AFB47970C1F90C29DC0642D047C46BD4C49D4B1AA323D38757FC7FF",
+      "bytes": 693
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutElement.cs",
+      "gitBlob": "03e0f6c4b61a117c39c009d182d4c920a48f077b",
+      "sha256": "E73EC85910D6043D8D123DB381E26FAB07E25BD3A4504AB49727787AC7641075",
+      "bytes": 1007
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutElementForFloatingWindowExtension.cs",
+      "gitBlob": "1eaf567f7ab381862e71eb5c766e9172572fbf49",
+      "sha256": "A97E26FDF0CBD0D7C832432F74FC3DDDBA094C18E6234EBAE34F794145CD0FC7",
+      "bytes": 5102
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutElementWithVisibility.cs",
+      "gitBlob": "e88164279c8ca5642d2dc771817c679deca70e35",
+      "sha256": "4837A9020C1EEBC66507C5AFE264CE1C679F6E8D4059A5BA406A918A99A28B1F",
+      "bytes": 702
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutGroup.cs",
+      "gitBlob": "435e1cd27d6448fba093f0328c587da9d61a20fa",
+      "sha256": "51FBA2EE4461D1D00DE014593907739EFB2DB92D8820FD91D7B1D5FB1084B81E",
+      "bytes": 1894
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutOrientableGroup.cs",
+      "gitBlob": "43d684eede986624db54ddac50952b980da0bf62",
+      "sha256": "AAEBDC4CCEAC99977676E22E815D5540FFE3673BA1BE622F704A61586E77F522",
+      "bytes": 807
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutPane.cs",
+      "gitBlob": "4ff6daa598e8ce5619792723be10f83a3b5e7bf8",
+      "sha256": "1EAD4FF5FA4A04477789904AD10829C8D8A21808A5934C0571A6591797990969",
+      "bytes": 1128
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutPaneSerializable.cs",
+      "gitBlob": "e8fcc66c46f197bbf8c3dd036561eb3d78f4ebb2",
+      "sha256": "B599030324C8295BB9349E825AB9CAC386E75DD79EE1EC65C3E465ABC00FBD3C",
+      "bytes": 644
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutPanelElement.cs",
+      "gitBlob": "82cff966755e83303fca80351590fce2a050f012",
+      "sha256": "B0045C0D2D5D7548907AFBD81B31E3155D099143E5CB41F753560D61D4FEA392",
+      "bytes": 699
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutPositionableElement.cs",
+      "gitBlob": "29f8ddc607c943e7f639f535e81359a1bd975b0b",
+      "sha256": "EFAAEFC65E40838BE8733852F9A177A48B0C345EA1B6ED44F3A894F3B4999ED9",
+      "bytes": 3615
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutPreviousContainer.cs",
+      "gitBlob": "afab0935bd9e8f6f0abaa1e8391a091fb2d259cf",
+      "sha256": "131D0CC81D3E35BE6242241CB731A1388FA98AB7245B4C66211E8E33C61C6DFB",
+      "bytes": 541
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutRoot.cs",
+      "gitBlob": "975bc61e497dd18042aeb36c90d2500ab0c1cb84",
+      "sha256": "FDD12D20DC8ECA9E60BFC437B1187768F31D4A429B88348EA1E4E37F5AB540C0",
+      "bytes": 2596
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/ILayoutUpdateStrategy.cs",
+      "gitBlob": "9a98589d8b088da4d9167216663784712bc07789",
+      "sha256": "8F7A799561F6166B0191302B81CA17575D77CEF3995A914C25A76DD685318557",
+      "bytes": 3037
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutAnchorGroup.cs",
+      "gitBlob": "99534b1583626ef2030b5ef35141477bc327a233",
+      "sha256": "3ED09BFF444CFFA1854D071B9275F1CB9F9C41F2E6432B4A23F5EDB6EA99E78F",
+      "bytes": 2214
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutAnchorSide.cs",
+      "gitBlob": "dc520cc3eb2fb8e80e397fa3df02ca68de92a9e4",
+      "sha256": "25865FA2178945D98654DD807C3B4F3CEC6CAD2C03B749B78631C1A5FE7343A8",
+      "bytes": 1631
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutAnchorable.cs",
+      "gitBlob": "6871af0ff8b370c07455dbb9358e03148d3361d6",
+      "sha256": "A35879ACFE86E43F65B9007B7699D17EDFD58AC3A555BFCFFA21C960294526AE",
+      "bytes": 22115
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutAnchorableFloatingWindow.cs",
+      "gitBlob": "30b5755619cd0e265a2ed63d54f853648cb53803",
+      "sha256": "A40DCBEA20CC3295557748923F8299097D2E3EF0284875F70BEA3311FF1D3315",
+      "bytes": 5098
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutAnchorablePane.cs",
+      "gitBlob": "13699dd8773bac4b1ec4bff09d7246dc189a9c06",
+      "sha256": "5F4685F4BE9BFC4F07746EA65C1D0F4739D01CB0D61E0DF6C2B3BE7361FDCB17",
+      "bytes": 7877
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutAnchorablePaneGroup.cs",
+      "gitBlob": "324edbe3612fb80895f3ae960688b9acc3fce177",
+      "sha256": "48F49D1A29A7B72BE7143524FB48CA9485F3365DFD94A968F3F0E3DDA7E7E5AD",
+      "bytes": 3651
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutContent.cs",
+      "gitBlob": "0e86a35a7440c71bd6325df3907cd76af6987b62",
+      "sha256": "9F56DDB320AD499B4847A6CDED5F877890C0B54BFAF3E0792D2D51CDBD4E8C58",
+      "bytes": 22724
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutDocument.cs",
+      "gitBlob": "bcb2e9da99f756acf3ae9f72b04bd91989bc9a6b",
+      "sha256": "4F66BBD3BBD10FD6BC2591B08238E1F2DAA5CDC138D04B04DFA9EA8F0A4E641E",
+      "bytes": 3791
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutDocumentFloatingWindow.cs",
+      "gitBlob": "f2dc0b8bc99453287f75ba49ff1b1f0bdbed745a",
+      "sha256": "36EB80FF8C3B48580C5EDF00678A31FBAB46D074A06E690AC4E09DEEDDCC2B28",
+      "bytes": 4648
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutDocumentPane.cs",
+      "gitBlob": "f8c291dff97bc0b85060c2b307c4f554f0a74c61",
+      "sha256": "02EFCFD0F631E3FC98B0CD0EB2B09EDED564F24AE1ED846770728B6D9344F713",
+      "bytes": 7899
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutDocumentPaneGroup.cs",
+      "gitBlob": "992bc68a813bfdbfd51e44baff8cdc87c02e8c22",
+      "sha256": "1A0BE67E6173C4685E06F664856C5450A2C2B0576EA844CC6EA314A3A0338E15",
+      "bytes": 2458
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutElement.cs",
+      "gitBlob": "67afc7562d6fa0735f51ab13090eea73fd49c1b0",
+      "sha256": "59DC9171970EC482F82F0B17C2C79223E530D2753CB28C41AA9B5B10DA832F43",
+      "bytes": 4581
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutElementEventArgs.cs",
+      "gitBlob": "fa20a09e4b245a14188e99ea99656d12388dcb00",
+      "sha256": "F72363592C0A0BAA2D4138B1124805A193379E03CD37B689B9A0946A4574119E",
+      "bytes": 995
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutFloatingWindow.cs",
+      "gitBlob": "8f4c7d403dad68fcb5ba5c2e41d3884f36ee5702",
+      "sha256": "95CFEE3862E695682794B85C483AE9388AB95ED18ED9252B6971EACD45FF0B93",
+      "bytes": 2008
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutGroup.cs",
+      "gitBlob": "849fa010a95d0d2d217bffe3fbf9085748c1c4c3",
+      "sha256": "2EE61C22A5BE399B9A427494D1EE1336C0F34BE84998FDFD3C0F9BF9AB54BF40",
+      "bytes": 6990
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutGroupBase.cs",
+      "gitBlob": "b5de4d4d3ce2f967d4a732b9f3406734b5b4f853",
+      "sha256": "CF71B6BBC6CCDE1FA8B2919E60935E11D8A3A93F872ABB5414177C31EC71A608",
+      "bytes": 2560
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutPanel.cs",
+      "gitBlob": "d33951eee83a8b75c6d6712571f6d682d8074294",
+      "sha256": "B1A116B3C776B935B28A3DC80106FA5807522597F34A87FB30C3F0ACB6765EFD",
+      "bytes": 3598
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutPositionableGroup.cs",
+      "gitBlob": "2edfbfe32d6b10f06107fcd858e6dda1cec9f7de",
+      "sha256": "8D55C8983BF31E0EDA28B50E10B6585A177E44F0C3D7DB0CC3FE01E50704627B",
+      "bytes": 12120
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/LayoutRoot.cs",
+      "gitBlob": "bf0de4d215a94f97a71f1d4ebc09e97184cc8e34",
+      "sha256": "7E0A644D6D9A718EE83FBFFCF213DA14C70E15C7CE3AC9157A49622CF3BFDDCD",
+      "bytes": 31067
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/NamespaceDoc.cs",
+      "gitBlob": "2c8eb3b876d82d8d6008f2ae0a406f433894a39b",
+      "sha256": "CCCE6A371FE9AF16D84E78CFDB3A2A353A9C4D3D8BA98093A9FF7BC03CCEDAA0",
+      "bytes": 217
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/Serialization/LayoutSerializationCallbackEventArgs.cs",
+      "gitBlob": "ebdd3f979b6d83ce997c6b97699b70379e5544e9",
+      "sha256": "6740673C70E329F424034CC5C7F1B33C08E80D851EEA2F58402D9FDF4559F2FF",
+      "bytes": 1946
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/Serialization/LayoutSerializer.cs",
+      "gitBlob": "f92b13116571950fb49abb2acb60cac5bb8c443f",
+      "sha256": "2C741C1DF40390F09C1BA289070050F409A681119E6D07DC8A9397402A2EE9A3",
+      "bytes": 5376
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/Serialization/NamespaceDoc.cs",
+      "gitBlob": "0c1edecbec18ed379d9dd0b7a27e6164cef4ce47",
+      "sha256": "D4EB3DADBF0C25B4FA506DCA5AD7AC8F8E7E8DEC3DE29383E57C31FF6BF4F291",
+      "bytes": 222
+    },
+    {
+      "path": "source/Components/AvalonDock/Layout/Serialization/XmlLayoutSerializer.cs",
+      "gitBlob": "c75ce40aebacd469e90cb71dbfd94f2b83b4a3c4",
+      "sha256": "DC679CC0CD8B3C813B1C35B6F282B1377D64CDBC15FF99E3BA019B802F25B0F6",
+      "bytes": 3524
+    },
+    {
+      "path": "source/Components/AvalonDock/LayoutFloatingWindowControlClosedEventArgs.cs",
+      "gitBlob": "16c68199dfc9bfc486dc5f97862803a5a3c59a3c",
+      "sha256": "2AF5F07D086CF83AEE2E5FCAE766F393EB63BFD1C1D62DD3166B2092E8BB054A",
+      "bytes": 402
+    },
+    {
+      "path": "source/Components/AvalonDock/LayoutFloatingWindowControlCreatedEventArgs.cs",
+      "gitBlob": "2f7ce38716e5d5ee5dc4b9df0bd279623fc2734c",
+      "sha256": "4533D34D077A4183D00882DF32C89D106D96DFB9FE0B065BE148B18C8CAFCF52",
+      "bytes": 404
+    },
+    {
+      "path": "source/Components/AvalonDock/MathHelper.cs",
+      "gitBlob": "04bb3e814eae2636c2ba6ea7a5f6ebea52702251",
+      "sha256": "2F15196C69E247A05419F9ED3994E93BD11F9396DE306845A01B311D51019FE7",
+      "bytes": 1631
+    },
+    {
+      "path": "source/Components/AvalonDock/NamespaceDoc.cs",
+      "gitBlob": "9d22cbc36d81acd4bb2ff1757e88a72de108421b",
+      "sha256": "E8DC640A6EFB08B55E45D0716C1EC8DB58BB4246855435560F4DC7C824A8D854",
+      "bytes": 309
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/AssemblyInfo.cs",
+      "gitBlob": "78a48e62f74863102414a33fdb97e06c6c0c2376",
+      "sha256": "8F33EA2801464CE0733EA5FE545C04B7CFC64B393841815A34AC1D7C4636737D",
+      "bytes": 2896
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.Designer.cs",
+      "gitBlob": "d8090db27d980f5b31100801f8d5109d56385abb",
+      "sha256": "3B0B2D50BD7829F8761099C39DB1989ECBD33C6608E52F3DFB90A1956B8A006C",
+      "bytes": 9873
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.ca-ES.resx",
+      "gitBlob": "3b9c93a98b2e2e232d8c75dce1dcc827258b623e",
+      "sha256": "E41E28DB0F252CCCD74975A33A38646FE48110A6E14FD6E520F827433BF9FA79",
+      "bytes": 8195
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.cs-CZ.resx",
+      "gitBlob": "ce50fc879133b452e1703d54a9b746b6e5b81659",
+      "sha256": "F4B879D539BE0DC9670A66D52C96AD688D8371C2B19EB8C245711764EF8F1784",
+      "bytes": 8201
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.de.resx",
+      "gitBlob": "5d6e4b33b98d8bdb71c109ac4c6d21690d8f55dc",
+      "sha256": "8872E8889C1CB3A310C728F0891A596A5DC8EA6647BAEE2226206D64A4FD9241",
+      "bytes": 8247
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.es.resx",
+      "gitBlob": "989c58d3fef55cec7c5c8905c460a74a141436dd",
+      "sha256": "40E3EDA094592B777558D987C2C5204DFE2542062B21229536B9D59278EE1466",
+      "bytes": 8208
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.fr.resx",
+      "gitBlob": "d12dec3a8ba35fc08e09ce1e8f5384a26cc633b2",
+      "sha256": "327D4F8B0EB3E6A5609DE368D7CA86324139606E6F37DEB7939A5D9981A4A5C2",
+      "bytes": 8195
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.hu.resx",
+      "gitBlob": "2b63d461e01aa42531479c96833550e9f64f0c86",
+      "sha256": "9C48E788A09F363517CC4AC8192AFFD386FC40FB4490561A53BE0B4426A07FE1",
+      "bytes": 8180
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.it.resx",
+      "gitBlob": "f99875eed494c38fd953be0091b07a451e0886b9",
+      "sha256": "1CE1FC9ABFEF70DA35E27E1A7D0155EC7B4D4C1B0E4758BD305C5CC0C0B5CCB6",
+      "bytes": 8151
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.ja.resx",
+      "gitBlob": "6ffd9a626a4f212830ad78c2c6c807e2c75d6926",
+      "sha256": "3A0638A1EEE52551F2E20E5111960B13E5108BECBC815FABA4444C8F1D4BEF7C",
+      "bytes": 8374
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.ko.resx",
+      "gitBlob": "7b2ebe42869f6be5978de800d0b108187abc9f07",
+      "sha256": "789FB399553BCA343E366B45FE59C7F9FDF43C37E0E01FC0F89F6BDBCA485451",
+      "bytes": 8100
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.nl-BE.resx",
+      "gitBlob": "ae147fd1c7fb8367c4e12b7142714b60558c1175",
+      "sha256": "C0563EC71E514E971212494D7D38F5ABA0E9E45297378A3538C28BCAD8327BE7",
+      "bytes": 8120
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.pl.resx",
+      "gitBlob": "e12a6fa368d940c046f80a734891f4f5f85c45fe",
+      "sha256": "A5E734A358C98F264DE162951EF20940795150D4DD3C0F7F4E10D799F7F9E3B7",
+      "bytes": 8151
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.pt.resx",
+      "gitBlob": "f057ca0c53aab1cd0f737c62608dc569c483f5bb",
+      "sha256": "9ABA0A505F7758FF99F647E8D3CE0C7536C7C803CE8DF2F2586926D7ECBCBF07",
+      "bytes": 8083
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.resx",
+      "gitBlob": "3e62dfa6301df4a05424135fe454c311de5c8677",
+      "sha256": "7C63E91AB17982C49697BC247DDF181D8CFB82BD6FA12FAAD90D8FF30050446A",
+      "bytes": 8040
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.ro.resx",
+      "gitBlob": "7638febc772610e978c68d7fc84f5de9897012a3",
+      "sha256": "67C65EC0415B884BA6C6D11FF912CD5AE90E314AEFAB27C7CF0B1D53BE48D87C",
+      "bytes": 8169
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.ru.resx",
+      "gitBlob": "cf172768c6105d316fe47d97a4e602a47f7bd4eb",
+      "sha256": "9290EF3EFDC402EBBCC3854AC6DB3C4B6C7EEB84C778869F3B45DDA5A54BE481",
+      "bytes": 8563
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.sv.resx",
+      "gitBlob": "4283404cd859f2d84089cfc009b00171df51bca2",
+      "sha256": "580BD62C1CBC8C680A48C75EB4F69777EE3B1A6DE7E983BB63CBF497EC38C0FA",
+      "bytes": 8095
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.zh-Hans.resx",
+      "gitBlob": "be5f92c7a429d3e21a468c0ea97ebed190bf294c",
+      "sha256": "2B3D3631F4CF35A7E43CCB69A69C6239CCF08781BE79341D3C5B257E50669B14",
+      "bytes": 8050
+    },
+    {
+      "path": "source/Components/AvalonDock/Properties/Resources.zh-Hant.resx",
+      "gitBlob": "0c9464aae4504152b8df978e6e5a75e79d8eedbf",
+      "sha256": "C3E87E7AF69B978F2718D1ECA22BDCCE623B40B5AD7C616C360B0D9CB3425C0A",
+      "bytes": 8077
+    },
+    {
+      "path": "source/Components/AvalonDock/ReferenceEqualityComparer.cs",
+      "gitBlob": "8ba3ac2d6bdada97895f2273e9927dc163497baf",
+      "sha256": "F2DFD45BB59B81D0F9939AAB5C094D721D09E05D3D32E08C02E2752C6398A0B1",
+      "bytes": 820
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/DictionaryTheme.cs",
+      "gitBlob": "cd17cabfbb13ae1698174b0ff836195855fda894",
+      "sha256": "CD575AD6BCC9AD3D102AD0C34FAAC752BADBD5765B05DA012E2BA5E522BC0974",
+      "bytes": 1832
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/DockBottom.PNG",
+      "gitBlob": "cdc7c06ebdad41ed7d5fa2ca2fc1cd41f15f7764",
+      "sha256": "0ED52793ABEBE77E25A40035302661B3C294F51ABE7517E829BF4068324DFC25",
+      "bytes": 701
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/DockLeft.PNG",
+      "gitBlob": "88a086b0139643de927eb3014e87a069724d279d",
+      "sha256": "B7EB939448FE0DCDD268771FE3D0777912A9CD57E03FCB68FA7C61240AB8DD28",
+      "bytes": 697
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/DockPane.PNG",
+      "gitBlob": "0377b966e23a237fcbdf71d4e246b0cf5a0ac833",
+      "sha256": "BF3AC5E5C7D5848599B2445D8AF64F31499B3834FDE8BB23B035AF1CB93BC946",
+      "bytes": 2790
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/DockPaneEmpty.png",
+      "gitBlob": "c3be3218b8df3a64264eb9de0a4e362318c80b1e",
+      "sha256": "344328626716347CCAE119F82674A0835AEFF42E4F83497A74F8BE56E379C009",
+      "bytes": 1581
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/DockRight.PNG",
+      "gitBlob": "067b3f0632630ddf405cb988242bc0c8bc8532c7",
+      "sha256": "1CAE8FF480049104D85BDF43406090418DEE3DCCD86F960F43E9B782DF0C2F2C",
+      "bytes": 691
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/DockTop.PNG",
+      "gitBlob": "b14b818c7dc6d1b699dc7f0dcfa384efacf76a6a",
+      "sha256": "4D9BD61E34732BFBD9BB710265C26041C1E635B86116B6DDEDEA0AA564BB3C08",
+      "bytes": 719
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/HTabGroup.png",
+      "gitBlob": "4c50d26d30e92554e22a917221b2dfb25b337b02",
+      "sha256": "4A071BB48B525A1F5F54CC48A011A3382CA0418C67D427EF02CCA547A7F95044",
+      "bytes": 358
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/InnerDockDocPaneBottom.png",
+      "gitBlob": "a682de728812f1a4d85531df3c99c1fc79f087ac",
+      "sha256": "F9F55EABC0CAFD9096308367E6239221F813F4ECB8FA623E0D382840D5C8280C",
+      "bytes": 1115
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/InnerDockDocPaneLeft.png",
+      "gitBlob": "705a490098e4bb60e924a3e2669ff68352f7f157",
+      "sha256": "F213E4EE6C418D2B4DED0EAD9F652710F89595654F1C3D0885C39758A4722CF1",
+      "bytes": 1137
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/InnerDockDocPaneRight.png",
+      "gitBlob": "c08f50f13b80d36f60eab599ea266349e535d4a7",
+      "sha256": "E7AA33CAC6C78D20D3374B75F22379260AFD35BD51B46C3623B74D85CF2EA20F",
+      "bytes": 1130
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/InnerDockDocPaneTop.png",
+      "gitBlob": "14197efd79c19bd839b1b6de09910020c33c444a",
+      "sha256": "BCFE9C96A2AADB2DF975BCB5B44F078765DF3B84C9E6E3B0F60FEA83EBF91129",
+      "bytes": 1126
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/InnerDockPaneBottom.png",
+      "gitBlob": "01be445a939b15008e21e5b82cd49d2428127b39",
+      "sha256": "81170F0E70A305766281E1E743FCE52893244C999810994E8452619AAE0CC2CC",
+      "bytes": 1148
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/InnerDockPaneInside.png",
+      "gitBlob": "a0b30b0e246a15e8517a5026177b81f5f3d407f8",
+      "sha256": "9F256A18F89C9D0913CD7B776CEC924152D65E5E1AAE30F602480E422931EE1E",
+      "bytes": 1170
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/InnerDockPaneLeft.png",
+      "gitBlob": "21dfb7b0ed018599c79ec6e297fff1a386c809e6",
+      "sha256": "FA005D7FED4421E806FCEB423AF497502EB45814E2CEE9D60FBD6869532D0D57",
+      "bytes": 1173
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/InnerDockPaneRight.png",
+      "gitBlob": "52438d8e23f88e4a548ee8b05a6760f614252491",
+      "sha256": "4850BECD4A08F5C7ECA1679E8FB67F0F8E9D9B14C2104065FE8FF0C40227AABC",
+      "bytes": 1158
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/InnerDockPaneTop.png",
+      "gitBlob": "852a56b836f3f678c7574734d6ebe9230ffdcaa0",
+      "sha256": "A31CCB9AEFE525911BE3331F4DCBE00A0205779F37FA26710C1D098BA0F12B0B",
+      "bytes": 1163
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/Locked.png",
+      "gitBlob": "b8f6ced2df26aa988dd3087712d62e9168c4351d",
+      "sha256": "CA66E61F18B9699F42694455DCE4F35024BC8838B21282B1034E07CFEE0B5A88",
+      "bytes": 357
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/PinAutoHide.png",
+      "gitBlob": "7a968a25eaa72a54e18ec873a57e0c93c4a7a6bd",
+      "sha256": "01BF6505A4DA6AF34EB7D74BCE1A7378E82367A474FAC9D12D947F1C36A48E79",
+      "bytes": 99
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/PinClose.png",
+      "gitBlob": "1bd384e1142c268302f39d65197f6c9e0ef40256",
+      "sha256": "92AEFDD561121D972BD9E3F204054F42221055564DC8309A2B37A86F19F04792",
+      "bytes": 108
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/PinDocMenu.png",
+      "gitBlob": "35b3fef68e18e9cbad978fa2da452116f76a9d83",
+      "sha256": "8A0FE2FABC5D60900D8F2BA7C75976B7C1933CBB3DD91F2E9C696526ED125043",
+      "bytes": 99
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/PinMaximize.png",
+      "gitBlob": "19139428e05f25c9d7b3c5d3421c5501ce070eb1",
+      "sha256": "EFEB37085A5EA564FECC118348DB29C0DD13C22E29FA9CD17783865F7BB59B93",
+      "bytes": 195
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/PinMenu.png",
+      "gitBlob": "ebad71bee8796c6ccfa67ec43943075c4a1e0c93",
+      "sha256": "DCCA1A6B8AE80C2B8664A40D399D564611F4E69D1EB3FB1A3DDF92CF1E4684EC",
+      "bytes": 99
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/PinRestore.png",
+      "gitBlob": "c95bb9364dfd07392aa0f344f83caadc4862f872",
+      "sha256": "48372483D7E1DD3DA975EA9628EE83A4F5B715F8D08A7BD2EABCB444AB421159",
+      "bytes": 212
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Generic/Images/VTabGroup.png",
+      "gitBlob": "c3f279f7d7ac7b6ef8381388fb79afd790dd8d65",
+      "sha256": "E47B15EC355F6D3ED2D2F8292469F45DB2114B739CD690997C0494C657690422",
+      "bytes": 403
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/GenericTheme.cs",
+      "gitBlob": "5dbd1a95eef4ef5a0065fdf1026cbb94faf65acc",
+      "sha256": "CC39803CC238E36140B5A001DCD1812C9006153433CD3FBA934F03241B87CFC1",
+      "bytes": 619
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/NamespaceDoc.cs",
+      "gitBlob": "7f4eaffbfbcb14ba94bf875e007f217b4a14af91",
+      "sha256": "A0461BBCA1360BD65B8B413B96A5930093A554EEAEBDE972F031CEAD90EB92ED",
+      "bytes": 228
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/Theme.cs",
+      "gitBlob": "dd4319a528ed819b253612d4181f6f8d48ccd490",
+      "sha256": "A41E344B380B68C580A53E0A5517FD0FB786B4FC4AF3CF4ACDD59B1E412792D2",
+      "bytes": 935
+    },
+    {
+      "path": "source/Components/AvalonDock/Themes/generic.xaml",
+      "gitBlob": "f868a6007926c2c26f9344e55d96a858ca2a693d",
+      "sha256": "4FF8D29D0600DEA7A2E4E8F6D0781E766FF8EE5B30BFB62781BB707E583A8E86",
+      "bytes": 62878
+    },
+    {
+      "path": "source/Components/AvalonDock/Win32Helper.cs",
+      "gitBlob": "97e54524d4f09858394bca5f1f564b1041f21734",
+      "sha256": "3EC05826EF1B5B3F949B8B22C9B1F0A8EB51FD5E85DC21AAD6532424CB0DEC0C",
+      "bytes": 17321
+    },
+    {
+      "path": "source/Components/AvalonDock/WindowHelper.cs",
+      "gitBlob": "f3ea60567e02788840454e287a4f6e72e16c26de",
+      "sha256": "CAF75D8074E49911CDFFDB273CA48705236CE0E4524991E57723C212D55BB940",
+      "bytes": 1831
+    },
+    {
+      "path": "source/Components/AvalonDock/XmlSerializersCache.cs",
+      "gitBlob": "9b382f3de01ffe20a1d3b0810ae3c0a819247132",
+      "sha256": "81C092CB698BBC2622310630912608697416E466C06B3AF366D5A24ED8CAD17E",
+      "bytes": 919
+    },
+    {
+      "path": "source/Components/AvalonDock/sn.snk",
+      "gitBlob": "1bdc912035a401047e9e87f71411bdcd5e72c42e",
+      "sha256": "106ACF7C11AC88D4C7D5DD124385DBD94E8DF4DCF1F599B4BB2278E9A145E561",
+      "bytes": 596
+    },
+    {
+      "path": "source/Directory.Build.props",
+      "gitBlob": "b1209217384fd3fe8c284d1c96686106517072b5",
+      "sha256": "F0F1FADD59FFD4B5C0D49934FCD082C8B8E03D59C8E7320930C62D367AA88168",
+      "bytes": 2356
+    },
+    {
+      "path": "source/.editorconfig",
+      "gitBlob": "e48f7c5033faa673c5d8a6df91c92282d488116e",
+      "sha256": "2341D9BE697757449A39C6F56040E1351DB149B7602CC03A66B8898BF1F0256E",
+      "bytes": 273325
+    }
+  ]
+}

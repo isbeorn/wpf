@@ -1,0 +1,50 @@
+<Project>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <PortableAvalonDock Condition="'$(PortableAvalonDock)' == ''">true</PortableAvalonDock>
+    <DefineConstants Condition="'$(PortableAvalonDock)' == 'true'">$(DefineConstants);PORTABLE_AVALONDOCK</DefineConstants>
+    <AssemblyName>AvalonDock</AssemblyName>
+    <RootNamespace>AvalonDock</RootNamespace>
+    <Version>4.74.1</Version>
+    <AssemblyVersion>4.74.1.0</AssemblyVersion>
+    <FileVersion>4.74.1.0</FileVersion>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign>true</PublicSign>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Original/source/Components/AvalonDock/sn.snk</AssemblyOriginatorKeyFile>
+    <AvalonDockSourceDirectory>$(MSBuildThisFileDirectory)Original/source/Components/AvalonDock/</AvalonDockSourceDirectory>
+    <_AvalonDockReferences>PresentationFramework;PresentationCore;WindowsBase;System.Xaml;UIAutomationTypes;UIAutomationProvider</_AvalonDockReferences>
+    <NoWarn>$(NoWarn);CS0618</NoWarn>
+  </PropertyGroup>
+  <Import Project="PortablePatches.props" Condition="'$(PortableAvalonDock)' == 'true'" />
+  <ItemGroup>
+    <Compile Include="$(AvalonDockSourceDirectory)**/*.cs" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+    <Page Include="$(AvalonDockSourceDirectory)Themes/generic.xaml" Link="Themes/generic.xaml" />
+    <Resource Include="$(AvalonDockSourceDirectory)**/*.PNG" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+    <EmbeddedResource Include="$(AvalonDockSourceDirectory)Properties/*.resx" Link="Properties/%(Filename)%(Extension)" />
+    <None Include="LICENSE;upstream.json" CopyToOutputDirectory="PreserveNewest" TargetPath="ThirdPartyNotices/AvalonDock/%(Filename)%(Extension)" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(AvalonDockFrameworkReferenceDirectory)' != ''">
+    <Reference Include="$(_AvalonDockReferences)">
+      <HintPath>$(AvalonDockFrameworkReferenceDirectory)/%(Identity).dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(AvalonDockFrameworkReferenceDirectory)' == ''">
+    <ProjectReference Include="../../Framework/PresentationFramework/PresentationFramework.csproj" />
+    <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" />
+    <ProjectReference Include="../../Framework/WindowsBase/WindowsBase.csproj" />
+    <ProjectReference Include="../../Framework/System.Xaml/System.Xaml.csproj" />
+    <ProjectReference Include="../../Framework/UIAutomationTypes/UIAutomationTypes.csproj" />
+    <ProjectReference Include="../../Framework/UIAutomationProvider/UIAutomationProvider.csproj" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+  <Import Project="../../Markup/PortableMarkup.targets" Condition="'$(AvalonDockMarkupTaskAssembly)' == ''" />
+  <PropertyGroup Condition="'$(AvalonDockMarkupTaskAssembly)' != ''">
+    <_PresentationBuildTasksAssembly>$(AvalonDockMarkupTaskAssembly)</_PresentationBuildTasksAssembly>
+  </PropertyGroup>
+  <Import Project="../../../Microsoft.DotNet.Wpf/src/PresentationBuildTasks/Microsoft.WinFX.targets" Condition="'$(AvalonDockMarkupTaskAssembly)' != ''" />
+  <ItemGroup Condition="'$(PortableAvalonDock)' == 'true'"><Compile Remove="@(AvalonDockPatch->'$(AvalonDockSourceDirectory)%(Identity)')"/><Compile Include="@(AvalonDockPatch->'$(BaseIntermediateOutputPath)portable/%(Identity)')"/></ItemGroup>
+  <Import Project="VerifyUpstream.targets" />
+  <Import Project="PortableSources.targets" />
+</Project>

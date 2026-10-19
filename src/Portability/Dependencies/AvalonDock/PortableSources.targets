@@ -1,0 +1,62 @@
+<Project>
+  <UsingTask TaskName="ApplyPinnedAvalonDockPatch" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <SourceFile ParameterType="System.String" Required="true" />
+      <ExpectedSourceHash ParameterType="System.String" Required="true" />
+      <PatchFile ParameterType="System.String" Required="true" />
+      <ExpectedOutputHash ParameterType="System.String" Required="true" />
+      <OutputFile ParameterType="System.String" Required="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Linq" />
+      <Using Namespace="System.Security.Cryptography" />
+      <Using Namespace="System.Text" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        Func<byte[], string> hashBytes = bytes => {
+            using (var hash = SHA256.Create())
+                return BitConverter.ToString(hash.ComputeHash(bytes)).Replace("-", "");
+        };
+        if (hashBytes(File.ReadAllBytes(SourceFile)) != ExpectedSourceHash)
+            throw new InvalidDataException("The pinned AvalonDock source hash does not match: " + SourceFile);
+        var text = File.ReadAllText(SourceFile).Replace("\r\n", "\n");
+        if (!text.EndsWith("\n", StringComparison.Ordinal)) text += "\n";
+        var lines = File.ReadAllText(PatchFile).Replace("\r\n", "\n").Split('\n');
+        int hunks = 0;
+        for (int index = 0; index < lines.Length; index++)
+        {
+            if (!lines[index].StartsWith("@@ ", StringComparison.Ordinal)) continue;
+            hunks++;
+            var before = new StringBuilder();
+            var after = new StringBuilder();
+            while (++index < lines.Length && !lines[index].StartsWith("@@ ", StringComparison.Ordinal))
+            {
+                var line = lines[index];
+                if (index == lines.Length - 1 && line.Length == 0) break;
+                if (line.Length == 0 || (line[0] != ' ' && line[0] != '-' && line[0] != '+'))
+                    throw new InvalidDataException("Unsupported AvalonDock patch line: " + PatchFile);
+                if (line[0] != '+') before.Append(line.Substring(1)).Append('\n');
+                if (line[0] != '-') after.Append(line.Substring(1)).Append('\n');
+            }
+            index--;
+            var oldText = before.ToString();
+            int match = text.IndexOf(oldText, StringComparison.Ordinal);
+            if (oldText.Length == 0 || match < 0 || match != text.LastIndexOf(oldText, StringComparison.Ordinal))
+                throw new InvalidDataException("The AvalonDock patch hunk has no unique exact match: " + PatchFile);
+            text = text.Substring(0, match) + after + text.Substring(match + oldText.Length);
+        }
+        if (hunks == 0) throw new InvalidDataException("No AvalonDock patch hunk: " + PatchFile);
+        var modified = new UTF8Encoding(false).GetBytes(text);
+        if (hashBytes(modified) != ExpectedOutputHash)
+            throw new InvalidDataException("The AvalonDock derived source hash does not match: " + PatchFile);
+        Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
+        if (!File.Exists(OutputFile) || !File.ReadAllBytes(OutputFile).SequenceEqual(modified))
+            File.WriteAllBytes(OutputFile, modified);
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="PreparePortableAvalonDockSources" BeforeTargets="MarkupCompilePass1;CoreCompile" DependsOnTargets="VerifyPinnedAvalonDockInputs" Condition="'$(PortableAvalonDock)' == 'true'">
+    <ApplyPinnedAvalonDockPatch SourceFile="$(AvalonDockSourceDirectory)%(AvalonDockPatch.Identity)" ExpectedSourceHash="%(AvalonDockPatch.SourceHash)" PatchFile="$(MSBuildThisFileDirectory)Patches/%(AvalonDockPatch.Patch)" ExpectedOutputHash="%(AvalonDockPatch.OutputHash)" OutputFile="$(BaseIntermediateOutputPath)portable/%(AvalonDockPatch.Identity)" />
+  </Target>
+</Project>
