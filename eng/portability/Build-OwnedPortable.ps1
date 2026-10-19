@@ -8,6 +8,7 @@ param(
     [Parameter(Mandatory)][ValidateSet('windows', 'linux')][string]$Os,
     [Parameter(Mandatory)][string]$Label,
     [string]$Project = 'src/Portability/Packaging/Stage/Stage.csproj',
+    [string]$StageLabel,
     [switch]$Suites,
     [string]$RepositoryRoot = [IO.Path]::GetFullPath("$PSScriptRoot/../.."),
     [string]$Workspace,
@@ -24,6 +25,7 @@ if (!$Workspace) { $Workspace = "$RepositoryRoot/artifacts/portability/current" 
 $Workspace = [IO.Path]::GetFullPath($Workspace).Replace('\', '/')
 $PackageCache = [IO.Path]::GetFullPath($PackageCache).Replace('\', '/')
 if ($Label -notmatch '^[A-Za-z0-9][A-Za-z0-9._-]*$') { throw 'Use a simple report label.' }
+if ($StageLabel -and $StageLabel -notmatch '^[A-Za-z0-9][A-Za-z0-9._-]*$') { throw 'Use a simple Stage label.' }
 $volumePaths = @($Workspace, [IO.Path]::GetFullPath($PackageCache), [IO.Path]::GetTempPath())
 $volumeRoots = @($volumePaths | ForEach-Object { [IO.Path]::GetPathRoot($_) } | Sort-Object -Unique)
 $minimumFreeBytes = [long]($MinimumFreeSpaceGB * 1GB)
@@ -81,6 +83,7 @@ $values = [ordered]@{
     _PresentationBuildTasksAssembly = "$Workspace/build/bin/$osName/PresentationBuildTasks/Release/net10.0/PresentationBuildTasks.dll"
 }
 $arguments = @('build', $projectPath, '-c', 'Release', '-m:1', '-nr:false', '-p:RestoreLockedMode=true', '-p:NuGetAudit=false')
+if ($StageLabel) { $arguments += "-p:OwnedPortableStageLabel=$StageLabel" }
 $log = "$Workspace/reports/$Label.log"
 Push-Location "$RepositoryRoot/src/Portability"
 try {

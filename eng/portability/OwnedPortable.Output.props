@@ -2,6 +2,7 @@
   <PropertyGroup>
     <CurrentOutputProject>$([System.Text.RegularExpressions.Regex]::Replace('$(MSBuildProjectName)', '_[^_]+_wpftmp$', ''))</CurrentOutputProject>
     <CurrentOutputProject Condition="'$(CurrentOutputProject)' == 'Runner'">$([System.IO.Directory]::GetParent('$(MSBuildProjectDirectory)').Name)_Runner</CurrentOutputProject>
+    <CurrentOutputProject Condition="'$(MSBuildProjectName)' == 'Stage' and '$(OwnedPortableStageLabel)' != ''">Stage-$(OwnedPortableStageLabel)</CurrentOutputProject>
     <DefaultItemExcludes>$(DefaultItemExcludes);**/bin/**;**/obj/**</DefaultItemExcludes>
     <BaseOutputPath>$(OwnedPortableBuildRoot)/bin/$(OS)/$(CurrentOutputProject)/</BaseOutputPath>
     <BaseIntermediateOutputPath>$(OwnedPortableBuildRoot)/obj/$(OS)/$(CurrentOutputProject)/</BaseIntermediateOutputPath>
