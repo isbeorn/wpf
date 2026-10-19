@@ -259,3 +259,34 @@ deficit of at most one byte (2,481 of 3,517 ink pixels on stock 10.0.12). The
 fixture permits only R=alpha or alpha-1 for pure red, requires exact zero blue
 and green and exact black, and compares restoration rasters byte for byte
 within each backend. It does not compare glyph rasterization across backends.
+
+## System font enumeration
+
+The Controls fixture includes the shared `--system-fonts` case; the same flag
+selects it in StockOracle. It exercises the public `Fonts.SystemFontFamilies`
+and `Fonts.SystemTypefaces` collections, actual family variants, local family
+URI identity and a genuine ItemsControl construction. Its XAML reproduces
+NINA's `x:Static` source binding and CollectionViewSource sorting by `Source`.
+This does not qualify the full GeneralView or require a native screen for a
+ComboBox.
+
+The declared test hosts must provide these physical representative faces:
+
+- Windows: Arial regular, bold, italic and bold italic, with normal stretch,
+  weights 400/700 and the exact Italic style.
+- Linux: FreeSans.ttf, FreeSansBold.ttf, FreeSansOblique.ttf and
+  FreeSansBoldOblique.ttf, with normal stretch, weights 400/600 and the exact
+  Oblique style. The installed files named Bold have OS/2 weight 600, which is
+  WPF SemiBold. Their OS/2 metadata and direct Skia readings establish these
+  expectations independently of the enumeration under test.
+
+These are fixture prerequisites, not font dependencies for applications using
+the portable framework. The variant checks do not skip absent faces. The
+Linux host's DejaVu Sans installation has only regular and bold faces, so it
+cannot establish four-variant or Oblique coverage.
+
+Portable system enumeration uses the existing process-cached physical font
+catalog from its existing directories. It includes .ttf and .otf files;
+collection files (.ttc), composite families and named variable-font instances
+are outside this catalog. No font installation refresh or additional
+`Fonts.GetFontFamilies` URI support is introduced.

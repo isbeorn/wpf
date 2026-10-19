@@ -14,7 +14,8 @@ var thread = new Thread(() =>
 {
     try
     {
-        if (args.Contains("--wrapped-textblock")) result = WrappedTextBlockCases.Verify(RasterWrappedTextBlock);
+        if (args.Contains("--system-fonts")) result = SystemFontEnumerationCases.Verify(portable: false);
+        else if (args.Contains("--wrapped-textblock")) result = WrappedTextBlockCases.Verify(RasterWrappedTextBlock);
         else if (args.Contains("--modifier-continuation")) result = ModifierContinuationCases.Capture();
         else if (args.Contains("--capture-hidden")) result = HiddenRunCases.Capture();
         else if (args.Contains("--verify-alignment"))

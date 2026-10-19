@@ -234,13 +234,22 @@ namespace MS.Internal.TextFormatting.Portable
     {
         private static readonly ConcurrentDictionary<string, GlyphTypeface> FallbackFaces = new ConcurrentDictionary<string, GlyphTypeface>(StringComparer.Ordinal);
         private static readonly ConcurrentDictionary<string, FontFile[]> FallbackCatalogs = new ConcurrentDictionary<string, FontFile[]>(StringComparer.Ordinal);
-        private sealed record FontFile(string Path, string Family, int Weight, int Width, bool Italic);
+        private sealed record FontFile(string Path, string Family, int Weight, int Width, SKFontStyleSlant Slant)
+        {
+            internal bool Italic => Slant != SKFontStyleSlant.Upright;
+        }
         private static readonly Lazy<FontFile[]> SystemFonts = new Lazy<FontFile[]>(() => ReadFonts(FontDirectories()).ToArray());
         private readonly FontFile[] _files;
         private readonly FontStyle _style;
         private readonly FontWeight _weight;
         private readonly FontStretch _stretch;
         private readonly GlyphTypeface _metrics;
+
+        internal static ICollection<FontFamily> GetSystemFontFamilies() =>
+            Array.AsReadOnly(SystemFonts.Value.Select(file => file.Family)
+                .Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(name => name, StringComparer.OrdinalIgnoreCase)
+                .Select(name => new FontFamily(Util.ConvertFontFamilyReferenceToFriendlyName(
+                    Util.ConvertFamilyNameAndLocationToFontFamilyReference(name, null)))).ToArray());
 
         internal static GlyphTypeface ResolveGrapheme(TextRunProperties properties, string grapheme)
         {
@@ -313,7 +322,7 @@ namespace MS.Internal.TextFormatting.Portable
             FontFile file = _files.OrderBy(candidate =>
                 Math.Abs(candidate.Weight - weight.ToOpenTypeWeight()) +
                 Math.Abs(candidate.Width - stretch.ToOpenTypeStretch()) * 100 +
-                (candidate.Italic == (style != FontStyles.Normal) ? 0 : 1000)).First();
+                (GetStyle(candidate.Slant) == style ? 0 : candidate.Italic == (style != FontStyles.Normal) ? 1 : 1000)).First();
             return new GlyphTypeface(new Uri(file.Path, UriKind.Absolute));
         }
 
@@ -336,8 +345,22 @@ namespace MS.Internal.TextFormatting.Portable
             scaleInEm = 1;
             return false;
         }
-        public ICollection<Typeface> GetTypefaces(FontFamilyIdentifier identifier) =>
-            new[] { new Typeface(new FontFamily(_files[0].Family), _style, _weight, _stretch) };
+        public ICollection<Typeface> GetTypefaces(FontFamilyIdentifier identifier)
+        {
+            var family = new FontFamily(identifier);
+            return Array.AsReadOnly(_files.Select(file => (file.Slant, file.Weight, file.Width)).Distinct()
+                .OrderBy(face => face.Weight).ThenBy(face => face.Width).ThenBy(face => face.Slant)
+                .Select(face => new Typeface(family, GetStyle(face.Slant),
+                    FontWeight.FromOpenTypeWeight(face.Weight), FontStretch.FromOpenTypeStretch(face.Width))).ToArray());
+        }
+
+        internal static FontStyle GetStyle(SKFontStyleSlant slant) => slant switch
+        {
+            SKFontStyleSlant.Upright => FontStyles.Normal,
+            SKFontStyleSlant.Italic => FontStyles.Italic,
+            SKFontStyleSlant.Oblique => FontStyles.Oblique,
+            _ => throw new NotSupportedException("The physical font has an unsupported slant.")
+        };
 
         private static double Round(double value, double pixelsPerDip, TextFormattingMode mode) =>
             mode == TextFormattingMode.Display ? Math.Round(value * pixelsPerDip) / pixelsPerDip : value;
@@ -369,7 +392,7 @@ namespace MS.Internal.TextFormatting.Portable
                     using (SKTypeface face = SKTypeface.FromFile(file))
                     {
                         if (face != null)
-                            yield return new FontFile(Path.GetFullPath(file), face.FamilyName, face.FontWeight, face.FontWidth, face.IsItalic);
+                            yield return new FontFile(Path.GetFullPath(file), face.FamilyName, face.FontWeight, face.FontWidth, face.FontSlant);
                     }
                 }
             }

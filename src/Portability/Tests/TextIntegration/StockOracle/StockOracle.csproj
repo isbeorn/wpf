@@ -10,6 +10,7 @@
     <Compile Include="../ModifierContinuationCases.cs" Link="ModifierContinuationCases.cs" />
     <Compile Include="../Controls/WordSelectionCases.cs" Link="WordSelectionCases.cs" />
     <Compile Include="../Controls/WrappedTextBlockCases.cs" Link="WrappedTextBlockCases.cs" />
+    <Compile Include="../Controls/SystemFontEnumerationCases.cs" Link="SystemFontEnumerationCases.cs" />
     <Content Include="../../Fixtures/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 </Project>

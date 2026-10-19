@@ -592,7 +592,7 @@ namespace System.Windows.Media
             {
                 CheckInitialized(); // This can only be called on fully initialized GlyphTypeface
 #if PORTABLE_WPF
-                return PortableFontFace.Typeface.IsItalic ? FontStyles.Italic : FontStyles.Normal;
+                return MS.Internal.TextFormatting.Portable.PortableFontFamily.GetStyle(PortableFontFace.Typeface.FontSlant);
 #else
                 return new FontStyle((int)_font.Style);
 #endif

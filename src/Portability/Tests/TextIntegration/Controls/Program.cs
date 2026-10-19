@@ -15,6 +15,12 @@ var thread = new Thread(() =>
     try
     {
         CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+        if (args.Contains("--system-fonts"))
+        {
+            results.Add(SystemFontEnumerationCases.Verify(portable: true));
+            return;
+        }
+        results.Add(SystemFontEnumerationCases.Verify(portable: true));
         results.AddRange(WrappedTextBlockCases.Verify(RasterWrappedTextBlock));
         results.Add(VerifyAlignedTextBlock());
         foreach (object result in WordSelectionCases.Verify()) results.Add(result);
