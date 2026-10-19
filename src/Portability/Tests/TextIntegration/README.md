@@ -242,3 +242,20 @@ pagination, list markers, tables or arbitrary paragraph properties.
 Automatic LineHeight accepts both zero and the standard NaN sentinel used by original AvalonEdit default metrics. Stock-calibrated tests preserve widths, baseline and height across both modes and flows; finite custom heights and infinities remain unsupported.
 
 Decoration location calibration uses the pinned DejaVu font at size 24 in Ideal mode, with measured stock Y/thickness values within 0.01 DIP. This is a bounded metric comparison, not cross-backend pixel or Display guideline equality. Decoration pen caps use the actual line geometry bounds for ink overhangs.
+
+TextRunCache owns the current portable paragraph snapshot and clears it through
+its existing Change/Invalidate contract. Recreated TextSource wrappers refresh
+from the original paragraph start, with complete bidi and initial modifier
+context. Only a snapshot bound to the current wrapper/start/direction and identical
+initial modifier scope is reused;
+invalid current source/grapheme positions remain diagnosed. Same-source callers
+without a cache retain the continuation fast path and must restart formatting
+after unannounced source mutations. Focused source-fetch counts ensure a refreshed
+cache is reused across old measured continuations instead of rereading every line.
+The real wrapped TextBlock regression checks all glyph brushes/characters and CPU
+line bands through render-only Black/Red/Black, width, text and font restoration.
+The shared stock TextBlock control measures a signed red-channel premultiplication
+deficit of at most one byte (2,481 of 3,517 ink pixels on stock 10.0.12). The
+fixture permits only R=alpha or alpha-1 for pure red, requires exact zero blue
+and green and exact black, and compares restoration rasters byte for byte
+within each backend. It does not compare glyph rasterization across backends.

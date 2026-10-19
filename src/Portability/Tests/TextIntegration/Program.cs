@@ -49,6 +49,7 @@ try
     Regression("document-source-runs", () => DocumentRunCases.Verify(formatter, Require));
     Regression("document-source-boundaries", () => DocumentRunCases.VerifyBoundaries(formatter, Require));
     Regression("modifier-soft-continuation", () => ModifierContinuationCases.Verify(Require));
+    Regression("cache-backed-source-continuation", () => ContinuationCacheCases.Verify(formatter, Require));
     Regression("empty-and-end-caret-bounds-regression", () =>
     {
         foreach (string text in new[] { "", "abc", "abc\r\n" })

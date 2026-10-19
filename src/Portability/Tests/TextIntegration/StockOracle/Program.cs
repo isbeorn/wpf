@@ -14,7 +14,8 @@ var thread = new Thread(() =>
 {
     try
     {
-        if (args.Contains("--modifier-continuation")) result = ModifierContinuationCases.Capture();
+        if (args.Contains("--wrapped-textblock")) result = WrappedTextBlockCases.Verify(RasterWrappedTextBlock);
+        else if (args.Contains("--modifier-continuation")) result = ModifierContinuationCases.Capture();
         else if (args.Contains("--capture-hidden")) result = HiddenRunCases.Capture();
         else if (args.Contains("--verify-alignment"))
         {
@@ -52,3 +53,12 @@ thread.Start();
 thread.Join();
 if (failure != null) throw failure;
 Console.WriteLine(JsonSerializer.Serialize(result, new JsonSerializerOptions { WriteIndented = true }));
+
+static byte[] RasterWrappedTextBlock(TextBlock block, int width, int height)
+{
+    var bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
+    bitmap.Render(block);
+    var pixels = new byte[width * height * 4];
+    bitmap.CopyPixels(pixels, width * 4, 0);
+    return pixels;
+}

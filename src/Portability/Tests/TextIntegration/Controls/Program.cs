@@ -15,6 +15,7 @@ var thread = new Thread(() =>
     try
     {
         CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+        results.AddRange(WrappedTextBlockCases.Verify(RasterWrappedTextBlock));
         results.Add(VerifyAlignedTextBlock());
         foreach (object result in WordSelectionCases.Verify()) results.Add(result);
         var block = new TextBlock { Text = "Default 123", FontSize = 24,
@@ -66,6 +67,14 @@ thread.Join();
 Console.WriteLine(JsonSerializer.Serialize(new { fixture = "actual-text-controls-and-word-selection", results, failure = failure?.ToString() }, new JsonSerializerOptions { WriteIndented = true }));
 return failure == null ? 0 : 1;
 
+static byte[] RasterWrappedTextBlock(TextBlock block, int width, int height)
+{
+    Type targetType = typeof(Visual).Assembly.GetType("MS.Internal.Portability.Rendering.PortableRenderTarget", true)!;
+    using var target = (IDisposable)Activator.CreateInstance(targetType, BindingFlags.Instance | BindingFlags.NonPublic, null, [block, width, height], null)!;
+    targetType.GetMethod("Render", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)!.Invoke(target, null);
+    using var bitmap = (SKBitmap)targetType.GetMethod("Snapshot", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(target, null)!;
+    return bitmap.Bytes;
+}
 static object VerifyAlignedTextBlock()
 {
     const int width = 1100, height = 100;

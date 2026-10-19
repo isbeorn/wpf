@@ -23,6 +23,7 @@ namespace MS.Internal.TextFormatting.Portable
         internal int NewlineLength { get; }
         internal int SourceLength { get; }
         internal TextModifierScope ContinuationScope { get; }
+        internal TextModifierScope InitialScope { get; }
         internal IList<TextSpan<TextRun>> Terminators { get; }
         internal int BaseLevel { get; }
         internal int[] GraphemeStarts { get; }
@@ -33,7 +34,7 @@ namespace MS.Internal.TextFormatting.Portable
         private readonly HarfBuzzSharp.Script[] _scripts;
 
         internal PortableParagraph(TextSource source, int first, string text, IList<PortableTextFormatter.Run> runs,
-            int newline, IList<TextSpan<TextRun>> terminators, int sourceLength, FlowDirection direction, TextModifierScope continuationScope = null)
+            int newline, IList<TextSpan<TextRun>> terminators, int sourceLength, FlowDirection direction, TextModifierScope continuationScope = null, TextModifierScope initialScope = null)
         {
             Source = source;
             First = first;
@@ -42,6 +43,7 @@ namespace MS.Internal.TextFormatting.Portable
             NewlineLength = newline;
             SourceLength = sourceLength;
             ContinuationScope = continuationScope;
+            InitialScope = initialScope;
             Terminators = terminators;
             BaseLevel = direction == FlowDirection.RightToLeft ? 1 : 0;
             var data = new BidiData { ParagraphEmbeddingLevel = (sbyte)BaseLevel };

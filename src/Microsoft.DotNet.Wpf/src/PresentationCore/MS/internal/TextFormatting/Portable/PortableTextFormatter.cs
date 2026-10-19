@@ -30,20 +30,30 @@ namespace MS.Internal.TextFormatting.Portable
         {
             Validate(source, first, width, properties, previous);
             PortableParagraph input;
+            int start;
             var continuation = previous?.PortableContinuation;
             if (continuation != null)
             {
                 input = continuation.Paragraph;
-                if (!ReferenceEquals(source, input.Source) || first != continuation.Next ||
-                    input.BaseLevel != (properties.FlowDirection == FlowDirection.RightToLeft ? 1 : 0))
-                    throw new ArgumentException("The portable line break belongs to a different source, source position or paragraph direction.", nameof(previous));
+                if (first != continuation.Next || input.BaseLevel != (properties.FlowDirection == FlowDirection.RightToLeft ? 1 : 0))
+                    throw new ArgumentException("The portable line break belongs to a different source position or paragraph direction.", nameof(previous));
+                if (cache?.PortableParagraph is PortableParagraph cached && ReferenceEquals(source, cached.Source) &&
+                    cached.First == input.First && cached.BaseLevel == input.BaseLevel && ReferenceEquals(cached.InitialScope, input.InitialScope))
+                    input = cached;
+                else if (cache != null || !ReferenceEquals(source, input.Source))
+                    input = ReadParagraph(source, input.First, properties.FlowDirection, input.InitialScope);
+                int sourceOffset = first - input.First;
+                start = input.TextOffset(sourceOffset);
+                if (sourceOffset < 0 || sourceOffset > input.SourceLength || input.SourceOffset(start) != sourceOffset ||
+                    Array.BinarySearch(input.GraphemeStarts, start) < 0)
+                    throw new ArgumentException("The portable continuation position is not a current source grapheme boundary.", nameof(previous));
             }
             else
             {
-                var read = Read(source, first, previous?.TextModifierScope);
-                input = new PortableParagraph(source, first, read.Text, read.Runs, read.NewlineLength, read.Terminators, read.SourceLength, properties.FlowDirection, read.ContinuationScope);
+                input = ReadParagraph(source, first, properties.FlowDirection, previous?.TextModifierScope);
+                start = 0;
             }
-            int start = input.TextOffset(first - input.First);
+            if (cache != null) cache.PortableParagraph = input;
             int length = input.Text.Length - start;
             bool truncated = false;
             if (properties.TextWrapping != TextWrapping.NoWrap && width > 0 && length > 0)
@@ -123,8 +133,7 @@ namespace MS.Internal.TextFormatting.Portable
             TextParagraphProperties properties, TextRunCache cache)
         {
             Validate(source, first, double.MaxValue, properties, null);
-            var read = Read(source, first);
-            var input = new PortableParagraph(source, first, read.Text, read.Runs, read.NewlineLength, read.Terminators, read.SourceLength, properties.FlowDirection, read.ContinuationScope);
+            var input = ReadParagraph(source, first, properties.FlowDirection);
             double maximum = Measure(input, 0, input.Text.Length, source.PixelsPerDip);
             double minimum = 0;
             int start = 0;
@@ -160,6 +169,13 @@ namespace MS.Internal.TextFormatting.Portable
                 (properties.Tabs != null && properties.Tabs.Count != 0) || (properties.TextDecorations != null && properties.TextDecorations.Count != 0) ||
                 properties.AlwaysCollapsible)
                 throw new NotSupportedException("Portable text supports horizontal Left, Center and Right greedy paragraphs without markers, tabs, decorations or custom line heights.");
+        }
+
+        private static PortableParagraph ReadParagraph(TextSource source, int first, FlowDirection direction, TextModifierScope initialScope = null)
+        {
+            var read = Read(source, first, initialScope);
+            return new PortableParagraph(source, first, read.Text, read.Runs, read.NewlineLength, read.Terminators,
+                read.SourceLength, direction, read.ContinuationScope, initialScope);
         }
 
         private static Input Read(TextSource source, int first, TextModifierScope modifiers = null)
