@@ -377,29 +377,28 @@ The design review should confirm these recommendations before implementation:
 
 Current implementation evidence and phase gate status are recorded in the [feasibility results](portability/feasibility-results.md). The gates described here are acceptance requirements, not claims that those phases have passed.
 
-The latest committed source milestones are the controlled private IBus transport
-(`db3162527`), bounded Geometry.Combine (`15c7c697c`), invisible-subtree traversal
-(`b81c905aa`) and bounded dashed painting (`81ad28a6d`). Their frozen combined
-graphs establish only the behavior recorded in the results ledger. Phases 0 and
-1 pass within their bounded scopes; Phases 2 through 5 remain open. These source
-milestones do not qualify a new package, full NINA, a real IME engine or a live
-desktop, and painting support does not imply dashed geometry-query support.
+Current implementation snapshot: `c5c0fe874` integrates Grid bounds and Popup cleanup,
+with 3,764 checks in the genuine combined Debug graph and a passing ordinary
+Windows PresentationFramework compile. Commit `fb38f5f45` adds transparent empty
+ImageBrush sources; the coherent ordinary Release family passes Rendering 49
+and native Window 23. Commit `2114907fc` adds the pinned source-adapted AvalonDock
+component, whose nine programmatic Release checks pass. Pointer docking,
+auto-hide and overlay qualification remain open.
 
-Subsequent commits add bounded nonuniform rounded fills (`cc728889b`) and portable
-ShowInTaskbar hints/requests (`f6b152ca1`). Exact source-equivalence proofs reuse
-the reviewed owner corpora; a fresh combined native/Classic stage and original
-NINA replay were pending at that checkpoint. Taskbar hints are not desktop shell presentation,
-and rounded fill support does not certify curved strokes or dash phase. Bounds
-REV2 was not integrated or certified by that owner-only checkpoint.
-
-The subsequent Bounds commit (`d18213a4a`) has a verified combined graph and
-root-released whole runtime stages for diagnostics. The Grid bounds extension
-(`b6569d9a4`) is a separately reviewed component commit; its new native stage and
-actual AvalonDock replay remain pending. The original ImageControlVM now passes
-26 offscreen Linux checks on the whole released Bounds runtime family; native
-image interaction and package qualification remain open. Popup revision 2 is
-frozen but not integrated or qualified while an owned-popup cleanup neighbor is
-reviewed. Phases 2 through 5 remain open.
+Commit `d4073e3e3` repairs held-input capture through the selected XI2 master
+grab/release path. Linux native checks pass 42/42 and the same final sources
+compile on Linux and Windows. Commit `27cb88615` repairs mixed-path bounds and
+the original NINA revision 5 clears both crosshair pairs and preceding native
+controls/warmups, but both 48-check format runs fail workload deadlines. Earlier
+failures remain preserved. Revision 5 used a Debug consumer against the Release
+framework. The identical Release consumer in revision 6 materially improves
+timing but still fails complete cadence for both formats. The full shell is
+unlaunched; the selected original
+33-dictionary view-test closure is not the full 34-source App startup closure.
+Phases 0 and 1 remain bounded passes; Phases 2 through 5 remain open. No full
+shell or package qualification follows from these component results.
+Fixture-only native capture batching is the next unqualified measurement
+experiment, with parity required for the same 66 points, 48 assertions and 1 Hz.
 
 Current scope decision: the user has deferred native focused-editor/IME
 composition integration. Keep the investigation draft local and unqualified;

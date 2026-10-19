@@ -1,16 +1,16 @@
 # WPF cross platform feasibility results
 
-Checkpoint date: 18 October 2026. Branch: `codex/nina-cross-platform`.
+Checkpoint date: 19 October 2026. Branch: `codex/nina-cross-platform`.
 
 The experiments establish a viable open-source Linux x64 path for this fork. Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded text implementation and native controls run through the selected X11 adapter. The app-local SDK compiles genuine BAML on Linux and runs unchanged Microsoft-produced fixtures. An unchanged NINA view now passes package-only construction/layout and native presentation checks. The refreshed 24 MP workload sustains the requested short 1 Hz callback cadence after the conversion repair. Full NINA compatibility, complete display qualification and long-running stability remain open.
 
 The Phase 0 reference/runtime gate and Phase 1 feasibility gate pass within the scopes recorded below. Phases 2 through 5 have not passed. The accepted [plan](../cross-platform-plan.md) remains the behavior contract. Physical desktop, full application and sustained-workload qualification remain later gates. Component checks, source compilation and managed test peers do not substitute for native WPF control behavior.
 
 The evidence supports high confidence in technical feasibility. Confidence in the
-full agreed NINA coverage remains moderate: actual GuiderGraph now constructs in
-an unshown native-initialized source diagnostic, but mapped plot input, broader
-imaging, strict live picker workflows, IME and screen-reader workflows remain
-unqualified.
+full agreed NINA coverage remains moderate: original image and guider views run
+in the bounded docking host and the original image controls pass native input
+checks, but sustained imaging, broader plot input, strict live picker workflows
+and screen-reader workflows remain unqualified. Native IME is user-deferred.
 
 ## Baseline and environment
 
@@ -343,10 +343,10 @@ Raw negative cases remain alongside the passing results. Local changes and commi
 | Phase 1 event loop/window/input | Native dispatcher, WPF controls/dialogs, window-manager and packaged native checks pass | Combine validation, command and dialog interactions in Phase 2; physical desktop services remain later qualification |
 | Phase 1 retained rendering | Drawing-content seam, native cover/uncover, image mutation and packaged presentation pass | Bound Image control, animation, large frames and sustained workloads remain later gates |
 | Phase 1 replacement text | Bounded paragraphs, fallback, Unicode 17 bidi, caret/selection and complete Unicode commits pass | Native IME preedit/engines and broader document behavior remain open |
-| Phase 2 integrated view | Functional Windows/Linux comparison, public Application.Run and refreshed 24 MP short 1 Hz callback cadence pass; phase gate open | Complete display qualification, presentation latency, measured budgets and sustained-memory bounds remain open |
-| Phase 3 NINA controls/resources | Selected unchanged editor/base OxyPlot workflows, unshown native-initialized GuiderGraph and offscreen Linux ImageControlVM 26 pass; gate open | Mapped original plot/image input, broader imaging, plugins, docking and sequencer coverage remain open |
+| Phase 2 integrated view | Functional Windows/Linux comparison, public Application.Run and short callback cadence pass; original NINA sustained workload still fails complete deadlines | Complete display qualification, presentation latency, measured budgets and sustained-memory bounds remain open |
+| Phase 3 NINA controls/resources | Selected editor/base OxyPlot workflows, programmatic AvalonDock 9 and original image controls/crosshair pass within their scopes; gate open | Sustained imaging, broader plot input, pointer docking, plugins and sequencer coverage remain open |
 | Phase 4 application shell | Gate open | Simulated equipment session, complete shell lifecycle and overnight stability remain open |
-| Phase 5 packaged desktop | f7 package, live GNOME text clipboard and bounded Window/Button AT-SPI source protocols pass; gate open | Strict live picker selection/cancellation, real IME, screen-reader workflows and other platform/session gates remain open |
+| Phase 5 packaged desktop | f7 package, live GNOME text clipboard and bounded Window/Button AT-SPI source protocols pass; gate open | Strict live picker selection/cancellation, screen-reader workflows and other platform/session gates remain open; native IME is user-deferred |
 
 Scientific Gray16/Rgb48 source storage and readback pass the bounded imaging slice. Gray16 conversion differs by at most one output level at the small measured native WIC boundary samples; this does not establish scaled-image display parity. The large-frame workflow has larger observed display differences while scientific source samples remain exact. Image codecs, conversion graphs and large-frame memory/performance remain open. IME, accessibility, physical desktop focus/DPI transitions, native Wayland, ARM64 and macOS remain unqualified. CPU rendering and short disposal loops do not establish overnight memory or responsiveness bounds.
 
@@ -859,12 +859,11 @@ unqualified native widening remain explicit limits.
 | [Grid correctness review](../../artifacts/portability/webby-grid-bounds-review/review-summary.json) | `42F9C0B7ED5607A8C55675E5C6C085ACE22D3DE92AE4B7BA0CB863C77715C95F` |
 | [Grid test-value review](../../artifacts/portability/donald-grid-bounds-review/review-summary.json) | `516F8810CE58DA385B6DC560B93AC230BF688D6E789A60F56E98EF88840FE5C6` |
 
-The released Bounds stage excludes Grid and Popup revision 2. Grid's fresh native
-stage and actual AvalonDock replay remain pending. Popup revision 2 is frozen
-but remains unintegrated and unqualified while a possible throwing owned-popup
-cleanup neighbor is reviewed. The stock profile 29-check reference and Linux
-SystemEvents failure retain their separate scopes. No earlier NINA failure is
-reclassified, and Phases 2 through 5 remain open.
+At that capture-time checkpoint, the released Bounds stage excluded Grid and
+Popup revision 2. Grid's native stage and actual AvalonDock replay were pending,
+and Popup cleanup was under review. The stock profile 29-check reference and
+Linux SystemEvents failure retain their separate scopes. Current component and
+capture results follow below; these historical records are not reclassified.
 
 ## Original ImageControlVM offscreen Linux result
 
@@ -898,6 +897,110 @@ It uses no Show or native input and does not qualify fit/1:1/pan, acquisition,
 PrepareImage/star processing, 1 Hz throughput, the shell or a package. Earlier
 checkpoint descriptions of a running replay are historical capture-time status;
 the completed result above is current. Phases 2 through 5 remain open.
+
+## Empty ImageBrush and programmatic docking update
+
+Commit `fb38f5f45` makes only an ImageBrush with null ImageSource paint transparent;
+nonempty ImageBrush remains named unsupported. The
+[focused source evidence](../../artifacts/portability/empty-image-brush/payload-manifest.json)
+preserves exactly two new failures against the unchanged c5 runtime, with all
+previous 47 checks passing, then 49/49 green on each OS. The
+[coherent ordinary Release family](../../artifacts/portability/empty-image-brush-release-main-1/revision1/root-consumer-release.json)
+passes Rendering 49 and native Window 23 with the whole standard 143-file stage.
+
+The preceding NINA native-imaging revision 3 runs map the initial Window, but both
+Gray16 and Rgb48 stop with eight passes, one failure and 39 unreached checks at
+the first Fit click. The [Gray16 observation diagnostic](../../artifacts/portability/nina-native-imaging-preparation/revision-3/click-diagnostic-1/findings.md)
+confirms the correct Button receives all scoped events, yet IsPressed remains
+false, capture is null and Click count stays zero. All other completion conjuncts
+are true. Subsequent disposable adapter instrumentation reaches CaptureMouse for
+the actual held inside press and records core XGrabPointer=AlreadyGrabbed. The
+core-grab/XI2-input pairing identified the repair boundary. Those failed runs
+remain unchanged; the original 48-check native imaging workflow has not passed.
+The earlier offscreen 26-check result retains its separate scope.
+
+Commit `d4073e3e3` repairs the existing adapter's selected XI2 master grab/release
+path without a public API change. Its
+[compact handoff](../../artifacts/portability/native-held-capture/handoff.json)
+retains the old-product held-inside Button red with 22 passes and one failure.
+Final Linux native checks pass 42/42: ordinary 24, Popup 11, placement 3 with 12
+internal observations and taskbar 4. The final two sources compile in four
+affected projects with each Linux and Windows compiler, with zero errors and
+recorded existing warnings. Correctness and test-value reviews are clear,
+including an outside-pointer oracle based on actual bounds because IsMouseOver
+stays true under capture. The
+[root integration](../../artifacts/portability/native-held-capture/root-integration.json)
+and [consumer release](../../artifacts/portability/native-held-capture/root-consumer-release.json)
+bind the ordinary 143-file stage, 137 unchanged members and six expected native
+DLL/PDB changes. That release preceded the subsequent original NINA replay
+described below; it did not itself qualify full imaging or complete a phase.
+
+Commit `2114907fc` adds the pinned source-adapted AvalonDock component and its
+nine-check original-NINA-view fixture. The
+[achieved-resize Release run](../../artifacts/portability/avalondock-implementation/achieved-resize-release-1/freeze.json)
+passes 9/9 with native grow/shrink, six settled container stages and 12 view
+round-trips, restoring both original views' content/DataContext identities
+through docked XML. The earlier Debug assertion red remains preserved. Native
+pointer docking, auto-hide and overlays remain open; the revised stock wrapper
+is compiled only. This is programmatic source-adapted component evidence, not
+untouched AvalonDock binary, full shell or package qualification. Phases 2
+through 5 remain open.
+
+Commit `27cb88615` repairs mixed-path bounds through one private helper that
+unions raw line endpoints with Skia tight curve extrema. The original crosshair
+previously reported Bounds 0.65 instead of the unit extent and now stretches to
+the actual Path's 3,999-unit span. Ten stock-backed tests preserve the old-family
+causal red: 625 total, 617 passes and eight new failures. Final Geometry 625 and
+Rendering 49 pass on both OSes, with stock 580 and Linux native 42 passing. All
+20 Release builds have zero errors; 14 PDB/runtime records and four ordinary
+isolation records are clear. The
+[consumer release](../../artifacts/portability/crosshair-bounds-combined-main-1/revision1/root-consumer-release.json)
+binds the [build freeze](../../artifacts/portability/crosshair-bounds-combined-main-1/revision1/build-freeze.json)
+and whole ordinary families.
+
+The unchanged ten-input, 48-check original NINA revision 5 replay clears both
+crosshair pairs and all preceding native controls and warmups, but the workload
+does not pass. Both first failures are retained without retries:
+
+| Format | Pass / fail / unreached | First missed frame | Native seen / next deadline (ms) | Full transaction (ms) |
+| --- | --- | --- | --- | --- |
+| Gray16 | 38 / 1 / 9 | 8 | 8651.746 / 9000 | 9052.991 |
+| Rgb48 | 30 / 1 / 17 | 0 | 1075.813 / 1000 | 1733.335 |
+
+Rgb48's first-frame synthetic preparation takes 444.074 ms. Native observation,
+verification and input transactions are measured boundaries, not isolated
+framework latency; no extra performance budgets or bottleneck attribution are
+introduced. Revision 5's consumer is Debug (Debuggable 0x107,
+DisableOptimizations) against the Release framework. Revision 6 recompiles only
+the identical original ten-input/48-check/F03 consumer in Release against the
+same 143-file family, with no source, cadence, sample or input change. Explicit
+Configuration=Release and Optimize=true are backed by consumer PE Debuggable
+0x2 metadata. Both once-per-format Release runs still fail complete cadence:
+
+| Format | Pass / fail / unreached | First missed frame | Native seen / next deadline (ms) | Exact verification (ms) | Full transaction (ms) |
+| --- | --- | --- | --- | --- | --- |
+| Gray16 | 39 / 1 / 8 | 9 | 9827.897 / 10000 | 63.695 | 10213.742 |
+| Rgb48 | 30 / 1 / 17 | 0 | 794.084 / 1000 | 158.067 | 1207.368 |
+
+Release Rgb48 synthetic preparation takes 194.480 ms. Release materially improves
+the recorded timing; Debug configuration does not fully explain the remaining
+complete-cadence failures.
+All preceding native controls, crosshair pairs and two warmups pass. Compact
+[revision 6 results](C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision6/original-replay-results.json),
+[consumer PE metadata](C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision6/consumer-pe-metadata.json)
+and [cleanup](C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision6/replay-cleanup.json)
+retain zero native failures, empty stderr and absent owned replay/display
+processes. Revision 5's first failures remain historical. No isolated framework
+latency attribution or extra budget follows. Fixture-only native capture batching
+is the next unqualified experiment, requiring parity for the same
+66 points, all 48 assertions and 1 Hz. The earlier
+short callback-cadence result has a different scope. Compact
+[replay results](C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision5/original-replay-results.json)
+and [cleanup](C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision5/replay-cleanup.json)
+record the failures and exited owned replay/display processes. Full shell is
+unlaunched. All 33-dictionary results here use the selected original guider/view
+test closure, not the full 34-source App startup closure. Phases 2 through 5
+remain open.
 
 The user has deferred native focused-editor/IME composition integration.
 The investigation draft remains local and unqualified, with no new base/hook

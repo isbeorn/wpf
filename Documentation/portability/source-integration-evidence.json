@@ -14345,6 +14345,152 @@
       ],
       "sourceCommit": "d18213a4a1747087ba068dddd9bc54af4940bf65",
       "outcome": "pass"
+    },
+    {
+      "label": "empty-imagebrush-transparent-source-and-native-fit-click-red",
+      "capturedAtUtc": "2026-10-19T00:39:14.6323901Z",
+      "headCommit": "2114907fc60a931da7bd34db397f41d46ca05d19",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "fb38f5f45 null ImageSource ImageBrush paints transparent; nonempty source retains named unsupported behavior. Focused unchanged-c5 causal red has exactly2 new failures and47 earlier passes per OS; source green49/49 per OS. Coherent ordinary143-file Release family passes Rendering49/native23. Actual NINA revision3 initial Window maps but Gray16/Rgb48 each stop8pass/1fail/39unreached at firstFitClick. Gray16 observation confirms correct target/all scoped events, but IsPressed=false/capture=null/Click=0 while all other completion conjuncts are true. Subsequent root-recorded disposable adapter instrumentation reaches CaptureMouse and records core XGrabPointer=AlreadyGrabbed on the actual held inside press; core-grab/XI2-input pairing repair remains unverified, with no48-check workflow pass. Historical offscreen26 result remains separate. No package/full shell or phase completion; native IME remains user-deferred.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/empty-image-brush/payload-manifest.json",
+          "sha256": "844731109862a1a0705dff3159149fb2e9d5406aa503e6e43c96e66cd718df45",
+          "bytes": 19449
+        },
+        {
+          "path": "artifacts/portability/empty-image-brush-release-main-1/revision1/root-consumer-release.json",
+          "sha256": "998dfff2a5da323809635c672dc87312a13bfd389745d48b0a39c3ca1a9395a1",
+          "bytes": 1527
+        },
+        {
+          "path": "artifacts/portability/nina-native-imaging-preparation/revision-3/click-diagnostic-1/result.json",
+          "sha256": "804282c9f602071d5e9971c3e486f612d8875b04a4add824f757a3d7468fc587",
+          "bytes": 18222,
+          "results": [
+            {
+              "status": "pass",
+              "count": 8
+            },
+            {
+              "status": "fail",
+              "count": 1
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/nina-native-imaging-preparation/revision-3/click-diagnostic-1/findings.md",
+          "sha256": "2d295519e98cb199a64da653d5c4140f78d758a9ad5aab31b83b6b339e9ac85a",
+          "bytes": 2231
+        }
+      ],
+      "sourceCommit": "fb38f5f455aa86130a47f32364362be36d24d70a",
+      "outcome": "partial"
+    },
+    {
+      "label": "pinned-source-adapted-avalondock-programmatic-release9",
+      "capturedAtUtc": "2026-10-19T00:39:14.6323901Z",
+      "headCommit": "2114907fc60a931da7bd34db397f41d46ca05d19",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit2114907fc standalone pinned source-adapted AvalonDock component and genuine original-NINA-anchorables fixture. achieved-resize-release-1 passes9/9 Release checks, six settled container stages/12 view round-trips, actual native grow/shrink and docked XML restoration of both original content/DataContext identities. Earlier Debug assertion red remains preserved. Native pointer docking/auto-hide/overlays remain open; revised stock wrapper compiled only. Programmatic private Xvfb with measured DPI1/zero WM extents, not native WM appearance, floating XML, untouched binary, full shell or package qualification. Phases2-5 remain open; native IME user-approved deferred capability.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/avalondock-implementation/achieved-resize-release-1/freeze.json",
+          "sha256": "001703abd5c8d11c766f40b830801ab3f3dc8e2396a02c30a4a30da5234a7187",
+          "bytes": 11507
+        },
+        {
+          "path": "artifacts/portability/avalondock-implementation/achieved-resize-release-1/parsed-results.json",
+          "sha256": "0fcaba41344101a1c0505a542f4e02a37681422ccab7133066d1cc741f2f0e57",
+          "bytes": 13814,
+          "results": [
+            {
+              "status": "pass",
+              "count": 9
+            }
+          ]
+        }
+      ],
+      "sourceCommit": "2114907fc60a931da7bd34db397f41d46ca05d19",
+      "outcome": "pass"
+    },
+    {
+      "label": "selected-xi2-held-capture-native42-source-release",
+      "capturedAtUtc": "2026-10-19T00:54:11.2791188Z",
+      "headCommit": "d4073e3e3e692365d643acccdb0876c01c1231a9",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit d4073e3e3e692365d643acccdb0876c01c1231a9 aligns existing adapter capture/release with the selected XI2 master without public API change. Strengthened held-inside Button old-product red22pass/1fail is retained. Final Linux native42/42 covers ordinary24, Popup11, placement3 with12 internal observations and taskbar4. Same final two source payloads compile in four affected projects with Linux and Windows compilers, zero errors and existing warnings recorded. Della/Foghorn source reviews clear, including corrected outside-pointer oracle using actual bounds rather than capture-preserved IsMouseOver. Root releases ordinary143 stage with137 unchanged members and six expected native DLL/PDB changes, exact two integrated source payloads. Supersedes earlier candidate pending-repair status without rewriting failed NINA revision3 evidence. Original NINA revision4 both unchanged48-check formats pending; no imaging/full shell/package/phase completion. User-approved native IME deferral remains a known limitation, not a pending permission decision.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/native-held-capture/handoff.json",
+          "sha256": "2b68b09acc553aa92237e8a5daa0c9f96f584d9f428c4a20d9ddd5648eec40fe",
+          "bytes": 5038,
+          "results": [
+            {
+              "status": "pass",
+              "count": 42
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/native-held-capture/root-integration.json",
+          "sha256": "351b7aceb87c6660ab58eeeff56eb7e9efc4da063a9bb09f496246e2aad52e02",
+          "bytes": 1847
+        },
+        {
+          "path": "artifacts/portability/native-held-capture/root-consumer-release.json",
+          "sha256": "0f28277d2d73751351df2bab1bfc30132fa926ddadcbf5ec99b7cd82e1d0850f",
+          "bytes": 1725
+        }
+      ],
+      "sourceCommit": "d4073e3e3e692365d643acccdb0876c01c1231a9",
+      "outcome": "pass"
+    },
+    {
+      "label": "mixed-path-bounds-repair-and-original-nina-native-workload-reds",
+      "capturedAtUtc": "2026-10-19T01:33:35.9895768Z",
+      "headCommit": "27cb8861574eb0c72cc4d20969190f38841b139d",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit27cb8861574eb0c72cc4d20969190f38841b139d private GetBounds unions raw line endpoints and Skia tight curve extrema: original crosshair Bounds.65 becomes unit1/actual Path stretch3999. Ten stock-backed tests retain causal old625 with617pass/8newfail; stock580 and final bothOS Geometry625/Rendering49 plus Linux native42 pass. Twenty Release builds0errors,14PDB/runtime and4ordinary isolation records clear. Original unchanged10-input/48-check NINA revision5 clears both crosshair pairs and preceding controls/warmups, but Gray16 is38pass/1fail/9unreached (firstmiss frame8, native8651.746ms before9000 deadline, transaction9052.991ms) and Rgb48 is30pass/1fail/17unreached (frame0 preparation444.074ms, native1075.813ms against1000 deadline, transaction1733.335ms). No retries or isolated framework latency/bottleneck attribution/extra budgets. Revision5 consumer is Debug (Debuggable0x107 DisableOptimizations) against Release framework. Identical original10-input/48-check/F03 revision6 consumer explicitly Release/Optimize=true/PE0x2 on same143 family changes no source/cadence/sample/input. ReleaseGray16 is39pass/1fail/8unreached: frame9 native9827.897ms before10000deadline, exactverify63.695ms, fulltransaction10213.742ms. ReleaseRgb48 is30pass/1fail/17unreached: frame0 syntheticprepare194.480ms, native794.084ms before1000, exactverify158.067ms, transaction1207.368ms. Release materially improves timing; Debug configuration does not fully explain remaining failures and both complete-cadence gates still fail. All preceding native controls/crosshair pairs/two warmups pass; nativeFailures0/empty stderr and all owned replay/display processes absent. Revision5 first reds remain historical. Fixture-only capture batching is pending parity proof for identical66points/all48assertions/1Hz and remains unqualified. Earlier failures remain unchanged. Full shell unlaunched;33 dictionaries are selected original guider/view-test closure, not full34-source App startup closure. Workload and Phases2-5 remain open; native IME is user-approved deferred capability, not a pending decision.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/crosshair-bounds-combined-main-1/revision1/root-consumer-release.json",
+          "sha256": "58eea8e401c479c68fa60b46ff6a409fe62376cee01054bac232e59d93ded9c6",
+          "bytes": 1883
+        },
+        {
+          "path": "artifacts/portability/crosshair-bounds-combined-main-1/revision1/build-freeze.json",
+          "sha256": "7d8517bf1315918c61812caf57ca82ed0a3b1aaee1dc420145a2b1bc35816873",
+          "bytes": 190822
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision5/original-replay-results.json",
+          "sha256": "b15a386b295d78afec541e3c599d65f11b8842c144bc9ead5d0b3924d60b6787",
+          "bytes": 6102
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision5/replay-cleanup.json",
+          "sha256": "2f078c4bdd7e98deb08525d689aed69910651116b170c1575c3912e246441056",
+          "bytes": 380
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision6/original-replay-results.json",
+          "sha256": "b652de3a7d0aac4babf8e3d1e35a573be8cff7b7e91cf91e9d4696be39592882",
+          "bytes": 3747
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision6/consumer-pe-metadata.json",
+          "sha256": "6d58ef0e0f771b0d58b949ccc3e19a6d352b1f424de7c010a385f5cccaca6685",
+          "bytes": 280
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision6/replay-cleanup.json",
+          "sha256": "10c8abe74bb9c07fe8b14892d80ce09324544b0e14d61055e1e88b6f504097f6",
+          "bytes": 380
+        }
+      ],
+      "sourceCommit": "27cb8861574eb0c72cc4d20969190f38841b139d",
+      "outcome": "partial"
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",
