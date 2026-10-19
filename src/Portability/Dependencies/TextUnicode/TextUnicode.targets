@@ -1,70 +1,10 @@
 <Project>
   <Import Project="Sources.props" />
   <ItemGroup>
-    <Content Include="$(MSBuildThisFileDirectory)Licenses/*.txt;$(MSBuildThisFileDirectory)Original/licence.md;$(MSBuildThisFileDirectory)Original/NOTICE.md;$(MSBuildThisFileDirectory)LocalCorrections.md;$(MSBuildThisFileDirectory)manifest.json">
+    <Content Include="$(MSBuildThisFileDirectory)Licenses/*.txt;$(MSBuildThisFileDirectory)Original/licence.md;$(MSBuildThisFileDirectory)Original/NOTICE.md;$(MSBuildThisFileDirectory)LocalCorrections.md;$(MSBuildThisFileDirectory)manifest.json;$(MSBuildThisFileDirectory)maintained-sources.json;$(MSBuildThisFileDirectory)README.md">
       <Link>ThirdPartyNotices/TextUnicode/%(Filename)%(Extension)</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
-  <UsingTask TaskName="PrepareWpfTextUnicode" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
-    <ParameterGroup>
-      <Sources ParameterType="Microsoft.Build.Framework.ITaskItem[]" Required="true" />
-      <Destination ParameterType="System.String" Required="true" />
-      <Generated ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
-    </ParameterGroup>
-    <Task>
-      <Using Namespace="System" />
-      <Using Namespace="System.IO" />
-      <Using Namespace="System.Linq" />
-      <Using Namespace="System.Collections.Generic" />
-      <Using Namespace="System.Security.Cryptography" />
-      <Using Namespace="System.Text.RegularExpressions" />
-      <Code Type="Fragment" Language="cs"><![CDATA[
-        var generated = new List<Microsoft.Build.Framework.ITaskItem>();
-        Directory.CreateDirectory(Destination);
-        foreach (var source in Sources)
-        {
-            byte[] bytes = File.ReadAllBytes(source.ItemSpec);
-            string hash;
-            using (var sha = SHA256.Create()) hash = BitConverter.ToString(sha.ComputeHash(bytes)).Replace("-", "");
-            if (hash != source.GetMetadata("sha256")) throw new InvalidOperationException("Pinned Unicode source changed: " + source.ItemSpec);
-            if (!source.ItemSpec.EndsWith(".cs", StringComparison.Ordinal)) continue;
-            string content = File.ReadAllText(source.ItemSpec);
-            var namespaces = new Regex(@"Avalonia\.(?:Media\.TextFormatting(?:\.Unicode)?|Utilities)");
-            var publicTypes = new Regex(@"^    public (?=(?:(?:readonly|ref|partial|sealed|static) )*(?:class|struct|record|enum))", RegexOptions.Multiline);
-            if (namespaces.Matches(content).Count != int.Parse(source.GetMetadata("namespaces")) ||
-                publicTypes.Matches(content).Count != int.Parse(source.GetMetadata("publicTypes")))
-                throw new InvalidOperationException("Unicode adaptation shape changed: " + source.ItemSpec);
-            content = namespaces.Replace(content, match => match.Value.Replace("Avalonia.Media.TextFormatting", "MS.Internal.Portability.Text").Replace("Avalonia.Utilities", "MS.Internal.Portability.Text.Utilities"));
-            content = publicTypes.Replace(content, "    internal ");
-            if (Path.GetFileName(source.ItemSpec) == "BiDiAlgorithm.cs")
-            {
-                const string originalAssignment = "_runOriginalClasses[i] = direction;";
-                if (Regex.Matches(content, Regex.Escape(originalAssignment)).Count != 2)
-                    throw new InvalidOperationException("The bounded Unicode N0 correction no longer matches exactly two assignments.");
-                content = content.Replace(originalAssignment, "_runResolvedClasses[i] = direction;");
-                content = "// Local correction: UAX #9 N0 assigns bracket-following NSM direction to resolved classes, preserving original input. See LocalCorrections.md.\n" + content;
-            }
-            int builderCount = int.Parse(source.GetMetadata("qualifiedBuilders"));
-            if (builderCount != 0)
-            {
-                var builders = new Regex(@"\bArrayBuilder<");
-                if (builders.Matches(content).Count != builderCount) throw new InvalidOperationException("Unicode utility references changed.");
-                content = builders.Replace(content, "MS.Internal.Portability.Text.Utilities.ArrayBuilder<");
-            }
-            content = "// Generated adaptation: WPF namespaces, internal top-level types and qualified utility references. Original notices follow.\n#nullable enable annotations\n" + content;
-            string path = Path.Combine(Destination, Path.GetFileName(source.ItemSpec));
-            if (!File.Exists(path) || File.ReadAllText(path) != content) File.WriteAllText(path, content);
-            generated.Add(new Microsoft.Build.Utilities.TaskItem(path));
-        }
-        Generated = generated.ToArray();
-      ]]></Code>
-    </Task>
-  </UsingTask>
-  <Target Name="PreparePortableTextUnicode" BeforeTargets="CoreCompile">
-    <PrepareWpfTextUnicode Sources="@(TextUnicodeSource)" Destination="$(IntermediateOutputPath)TextUnicode">
-      <Output TaskParameter="Generated" ItemName="Compile" />
-    </PrepareWpfTextUnicode>
-  </Target>
 </Project>

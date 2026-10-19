@@ -7,7 +7,7 @@
     <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" />
     <Content Include="StockGuidelineReference.json" CopyToOutputDirectory="PreserveNewest" Condition="Exists('StockGuidelineReference.json')" />
     <Content Include="StockBitmapSamplingReference.json" CopyToOutputDirectory="PreserveNewest" />
-    <Content Include="../../Dependencies/TextUnicode/Original/tests/Avalonia.Skia.UnitTests/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../Fixtures/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
 </Project>

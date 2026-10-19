@@ -27,7 +27,7 @@ foreach($version in @('10.0.13','10.0.12')) {
     Copy-Item -Path (Join-Path $repo 'src/Portability/Packaging/Consumer/*') -Destination $consumer -Recurse
     Copy-PortableFrozenOracle $repo $consumer
     Copy-Item (Join-Path $repo 'src/Portability/Tests/NativeWindowIntegration/X11Fixture.cs') (Join-Path $consumer 'App/X11Fixture.cs')
-    Copy-Item (Join-Path $repo 'src/Portability/Dependencies/TextUnicode/Original/tests/Avalonia.Skia.UnitTests/Fonts/DejaVuSans.ttf') (Join-Path $consumer 'DejaVuSans.ttf')
+    Copy-Item (Join-Path $repo 'src/Portability/Tests/Fixtures/Fonts/DejaVuSans.ttf') (Join-Path $consumer 'DejaVuSans.ttf')
     '<Project />' | Set-Content (Join-Path $consumer 'Directory.Build.props')
     '<Project />' | Set-Content (Join-Path $consumer 'Directory.Build.targets')
     '{"sdk":{"version":"10.0.401","rollForward":"disable"}}' | Set-Content (Join-Path $consumer 'global.json')

@@ -1,0 +1,246 @@
+{
+  "description": "Project-maintained derivatives frozen byte-for-byte from the TextUnicode adaptation at WPF commit 66984503da99872af955a4fb35a49121a665177d. Retained Generated adaptation headers describe their origin, not a current build step.",
+  "baselineCommit": "66984503da99872af955a4fb35a49121a665177d",
+  "upstreamCommit": "2d79ba55fae1b1e71c69f93a668080c9029e6a31",
+  "unicodeVersion": "17.0.0",
+  "files": [
+    {
+      "path": "Sources/FormattingBufferHelper.cs",
+      "sha256": "5A5B81862F3FBF0A770BA5B5AA5584B839AE116BE367CEEE2EED8383DE71708A",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/FormattingBufferHelper.cs",
+      "originalSha256": "5D3E8846039F704FABAB71AED23332695F39918490A5EA808ABF40E33989E1DC",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/BiDi.trie.cs",
+      "sha256": "2FA43652F203EE2ADE4BED47D633A523973FCC12DA231DE895B6E50F0B16CD8F",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/BiDi.trie.cs",
+      "originalSha256": "9A1517E3AF500EB0AD9E99D1E608A5EFC5C0E14B419156E3E46EA8BEC4E3A208",
+      "license": "MIT AND Unicode-3.0"
+    },
+    {
+      "path": "Sources/BiDiAlgorithm.cs",
+      "sha256": "94279EBFD9A1F1FB5C458333BBC3411747B5662B381AFB92DBAEC37CB1FE6D5B",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/BiDiAlgorithm.cs",
+      "originalSha256": "245D9E90D33FF619F0507993BA41CA2670EC278EE40152E4A04C6F311929AA5B",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "Sources/BiDiClass.cs",
+      "sha256": "C8C24AD53DF3BC58A68879E64ECF5E2597DAEBD30E7493B142BB96A0BFE561A0",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/BiDiClass.cs",
+      "originalSha256": "69B83111E3FF6E14251CC84FE78B29E9FC63A205FD3BE682A195E1C9404D2C86",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/BiDiData.cs",
+      "sha256": "2101845B79E781166B0AFA440A39B353F26073AA95F186D1DA168B78A5941752",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/BiDiData.cs",
+      "originalSha256": "107D35BFB44DF71210B1870FE4F183BE8B308C4586B6FF1082BCE0100C67DE84",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "Sources/BiDiPairedBracketType.cs",
+      "sha256": "EB427C9893D73DEA4CFA61CE68781A422AA59007B1DB7ABDFBAA79965319C949",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/BiDiPairedBracketType.cs",
+      "originalSha256": "3F6421DD82C9E01DB65844731021CC14D4762FCF47E15883D77E331A8A96E3CC",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/Codepoint.cs",
+      "sha256": "36421D767402CDDFB9C11FD1207E63DE57DEB4123D40F2441BF57986EF705E9B",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/Codepoint.cs",
+      "originalSha256": "DA9426ACD6B8FD39AF61DD92790D49D64E4EBEF23561B11A67E1816089739BDD",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/CodepointEnumerator.cs",
+      "sha256": "897828CB2CA22F8FCF268812FDD56FFD809E5BC24FA31A8B1FE70EE99A5CA7E4",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/CodepointEnumerator.cs",
+      "originalSha256": "77F92BD274857560DA0FCC26A9C64FA5D79AEAF4062ED4866D824FB1B82B059F",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/EastAsianWidth.trie.cs",
+      "sha256": "4B7B39ED18EDF3FD5EE497C4C863FDC5FD02CB708B887C7E6922C70C3FE2E875",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/EastAsianWidth.trie.cs",
+      "originalSha256": "09944F3075E0F5AFEFCC65585F97960B0AECF91A1CC1191C335C7F7EFA095796",
+      "license": "MIT AND Unicode-3.0"
+    },
+    {
+      "path": "Sources/EastAsianWidthClass.cs",
+      "sha256": "ADCEAD40ECF5E35180D13F334680C433F033923A38C37AA62F194EBED39EEA45",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/EastAsianWidthClass.cs",
+      "originalSha256": "FB07F3F688663531B40AD43B2E55AA8CE89AC44A674F0EA58F2F126B9733F2F0",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/GeneralCategory.cs",
+      "sha256": "6BD320DC8E9B4888B63E15DDA94519F1B6312C97F78E354608ABE7DC6316DC48",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/GeneralCategory.cs",
+      "originalSha256": "9F3B889F329C2A1D48F516F3A91D6C2001E22FEC902D78742137F38C61F03B35",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/Grapheme.cs",
+      "sha256": "B73B8087DAE04DE6E77CCCE20E87DC8BDCD2A527CD2CAE07B4BA46632B3FAAF6",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/Grapheme.cs",
+      "originalSha256": "9F9D76DEA13D922AB5D9E162CF72826F7759185B9BCBCBEEFA77820F19BAF9CB",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/GraphemeBreak.trie.cs",
+      "sha256": "119605059F95060DD5A2D4DEA0618F12A7DC8D177B1DE504F7D517C0EFB2594C",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/GraphemeBreak.trie.cs",
+      "originalSha256": "A1046D5FB657A77E8119FBC5C70F0A2B72DD1E7BA48817358FEEEA2343DF7AA6",
+      "license": "MIT AND Unicode-3.0"
+    },
+    {
+      "path": "Sources/GraphemeBreakClass.cs",
+      "sha256": "749DE1F00D7D3215F36FE6D510DEDD7D7DBD4A687E7ABB7D04CCD2B39B95E30D",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/GraphemeBreakClass.cs",
+      "originalSha256": "A7E551592895455436400318625EBE73C27904012BF880E63DB9C9E8F946EFFC",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/GraphemeEnumerator.cs",
+      "sha256": "CC272FEC70D3199E669E085B423635604974441E7D5B11861F716EC809A072C2",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/GraphemeEnumerator.cs",
+      "originalSha256": "700D94A2C6EBDB5D1721B7BC48218AC7407123CF781B32DC86565B1A32FF6CBC",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/IndicConjunctBreakClass.cs",
+      "sha256": "DD708CE744B32527C4952FD4AD9EA04981722AF788186B9EE59E6681464D2E89",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/IndicConjunctBreakClass.cs",
+      "originalSha256": "17DFAFF801174A9BC4A1A75D0672D7C2C09CA54F4F51F6561AF30F86F9B7AB6E",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/LineBreak.cs",
+      "sha256": "50A8744A900E50EFF81F4620F478B6A41B1C08C14565148190E32D884F0E209F",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/LineBreak.cs",
+      "originalSha256": "C13EA111694330EE5AB36C348C24EA10A379125A185BBB96894F2E5E07EF5A82",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "Sources/LineBreakClass.cs",
+      "sha256": "45C37CAA6CF24ED7E8FECF69DE90F6D1408776B51A6E942C1D218ED27B982759",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/LineBreakClass.cs",
+      "originalSha256": "E2DAC104BE99EBFD4A0ED424471CDFCFA2907B96CCDB61536F0CB08BB024E610",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/LineBreakEnumerator.cs",
+      "sha256": "9F8C5527F58C01CA808322DF78776CCE2A359FA82B57EF244B7732B5DAF60E49",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/LineBreakEnumerator.cs",
+      "originalSha256": "FD109832E88AB3D1C8A3609EE82F9354BC41D4C77CA2497025A26B848AE40A5A",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/Script.cs",
+      "sha256": "ACB37C50CF212C53E5F1C9668D0F8D088986318752031327C980CFA22923B210",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/Script.cs",
+      "originalSha256": "991D220F5BADFBE479A058912F1A97068C0721AB2D2D2C91D59939DD3F442710",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/ScriptExtensions.data.cs",
+      "sha256": "148A9532CD11610C817B4E042811C76E416DB0DCD3FF0419554C0462DDD47CBE",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/ScriptExtensions.data.cs",
+      "originalSha256": "AEF4AD588FD211A3768AD61606FE92FD532B3E962A9C3BD3BEDE10831FE292EC",
+      "license": "MIT AND Unicode-3.0"
+    },
+    {
+      "path": "Sources/UnicodeData.cs",
+      "sha256": "7405C9346D812BA2D812F27950665BCDA39E2B4B869179D33B718FECA3FA58F6",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/UnicodeData.cs",
+      "originalSha256": "1209034D9AA8BC4383A6C97FD31214B508935C7B78154516CD51850A4E625C87",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/UnicodeData.Lookups.cs",
+      "sha256": "C312E5AB3C99D5D07D1A7E8F3A03E71533196AC1EF23925B43245D598A04A5D4",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/UnicodeData.Lookups.cs",
+      "originalSha256": "65B631C06C27447A64365F32C6AB1FC5B3ED54D24880D12A080CED2C2FFC4CF3",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/UnicodeData.trie.cs",
+      "sha256": "0111F13127758221C528F09273F10A2E05EFE33E63E2DA27208E0B76F187F556",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/UnicodeData.trie.cs",
+      "originalSha256": "9D36EC22B8F374F1C94614A331E2882FDF680957604D5149DE317CB7B062DCC8",
+      "license": "MIT AND Unicode-3.0"
+    },
+    {
+      "path": "Sources/UnicodeDataSource.cs",
+      "sha256": "CBF66BAC78CE577AB64D1BE543FAD4EEE7E23540EE918FDF41B031472B3FF8E0",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/UnicodeDataSource.cs",
+      "originalSha256": "C57E75BE29B1C9230E3CF89CEA2C2082346A2149BC64A02BEE3CA7D91594B785",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/UnicodeTrie.cs",
+      "sha256": "0B3AFD5C5AEFCBB19791768367079CBC3147B9B1B384BCEC58BAE86BEC56EE8C",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/UnicodeTrie.cs",
+      "originalSha256": "D797AE30AD72E4FEFDB70A5711CFC9F1AE43DE743A62CB5CC4CE55D64BC8D8D7",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "Sources/UnicodeTrieBuilder.Constants.cs",
+      "sha256": "5DDDF19160075D70D0B488C5B1E3ABC206C2ACE0AB0EC6B0B25E5FC68207DEF2",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/UnicodeTrieBuilder.Constants.cs",
+      "originalSha256": "12257D773FC4C2BEDE5532CB39C798465958C085C4A1759F13304165ACAE1397",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "Sources/Utf16Utils.cs",
+      "sha256": "97358B6FD2D229CC1647760ADD916BC627CC7C80BAD88BE8B947FF664BFBE1D5",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/Utf16Utils.cs",
+      "originalSha256": "86E4254140697819C36427B8C4A3A396E62080AE1FC2F50BD14F888FDC23D640",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/WordBreakClass.cs",
+      "sha256": "B9F1375759BE4BBEEA671EA5BA255256254BF3DD33D4D9618B170DF20CC68BF3",
+      "originalPath": "src/Avalonia.Base/Media/TextFormatting/Unicode/WordBreakClass.cs",
+      "originalSha256": "46D04D6880A491DDA0D76FA8DEEECC4485A2F507CBCF719C5AA2D2A4EBF9B7F7",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/ArrayBuilder.cs",
+      "sha256": "DF1C1669D5B6491FD32AA6CA86A78464AFFD06C37773518B5E03F2F36A7444A5",
+      "originalPath": "src/Avalonia.Base/Utilities/ArrayBuilder.cs",
+      "originalSha256": "CA62598A778093AB80E8B234D8F78ECDF748745EE5B10009DB3B59FB987D61BD",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "Sources/ArraySlice.cs",
+      "sha256": "E3FCD13F9DF59B69AF80DB362589CEC6796C73EF6E7909DFA690D3AE0C9A4CBC",
+      "originalPath": "src/Avalonia.Base/Utilities/ArraySlice.cs",
+      "originalSha256": "EB0945B1F2F8AC8158298E08CC310302D8526D28F83734F689ED8CDC4B83BA53",
+      "license": "Apache-2.0"
+    },
+    {
+      "path": "Sources/BidiDictionary.cs",
+      "sha256": "52F15CE18D05E9C968ED8636AA099B58D972E25DD0C6D5BE4B50C306C6C51B62",
+      "originalPath": "src/Avalonia.Base/Utilities/BidiDictionary.cs",
+      "originalSha256": "B59E6AAE578C5694F9AB00630DA6C82DE718616F37B1F4D07A27CEE44D8D3400",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/ImmutableReadOnlyListStructEnumerator.cs",
+      "sha256": "D137E427F6EBC2B6ACC1C5766D295CC01272904E5B9A3D0421B3E1569E4F87F5",
+      "originalPath": "src/Avalonia.Base/Utilities/ImmutableReadOnlyListStructEnumerator.cs",
+      "originalSha256": "9052E8E8CB1DBA3F1BE4815E40F2B290E8D07E51D4F79D916D3EED06026FCC34",
+      "license": "MIT"
+    },
+    {
+      "path": "Sources/MappedArraySlice.cs",
+      "sha256": "F614E287318957D89CB19BC5E2D32D8E58B378C1C6B5E27A46BBCFE453032E21",
+      "originalPath": "src/Avalonia.Base/Utilities/MappedArraySlice.cs",
+      "originalSha256": "AEE93C31D4C299A59512CDF17769CD738337085CA3F91693F1750CA06B1233CF",
+      "license": "Apache-2.0"
+    }
+  ]
+}

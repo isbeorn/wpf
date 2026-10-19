@@ -37,7 +37,7 @@ foreach ($origin in @('Microsoft', 'Port')) {
     Copy-Item -Path (Join-Path $repo 'src/Portability/Packaging/Consumer/*') -Destination $consumer -Recurse
     Copy-PortableFrozenOracle $repo $consumer
     Copy-Item -LiteralPath (Join-Path $repo 'src/Portability/Tests/NativeWindowIntegration/X11Fixture.cs') -Destination (Join-Path $consumer 'App/X11Fixture.cs')
-    Copy-Item -LiteralPath (Join-Path $repo 'src/Portability/Dependencies/TextUnicode/Original/tests/Avalonia.Skia.UnitTests/Fonts/DejaVuSans.ttf') -Destination (Join-Path $consumer 'DejaVuSans.ttf')
+    Copy-Item -LiteralPath (Join-Path $repo 'src/Portability/Tests/Fixtures/Fonts/DejaVuSans.ttf') -Destination (Join-Path $consumer 'DejaVuSans.ttf')
     Copy-Item -LiteralPath (Join-Path $repo 'src/Portability/Dependencies/TextUnicode/Licenses/DejaVu.txt') -Destination (Join-Path $consumer 'DejaVu.txt')
     $copied = foreach ($name in $sourceFiles) {
         $original = Join-Path $source $name

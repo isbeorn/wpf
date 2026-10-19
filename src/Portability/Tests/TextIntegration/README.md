@@ -103,15 +103,15 @@ edge. Multiple and reversed selection ranges retain direction-specific bounds.
 Empty/end caret bounds preserve actual TextBoxLine's fallback contract.
 
 The new cases use byte-verified, unmodified DejaVu Sans and Inter from the pinned
-dependency, with full licenses under ../../Dependencies/TextUnicode/Licenses.
+fixture directory ../Fixtures/Fonts, which also retains the full font licenses.
 A known missing Inter grapheme must select the expected DejaVu file as a whole.
 Retained RTL drawing is checked after formatter/line disposal and collection,
 including Ideal/Display, asymmetric DPI and repeated native shaping lifetimes.
 
 The 48 identified official rows in BidiCharacterCases.txt exercise actual WPF
 paragraph levels. Verify-UnicodeBidi.ps1 independently checks all 91,707 official
-Unicode 17 rows and input preservation, comparing the original and exactly two
-guarded N0 corrections. This full-corpus probe qualifies levels, not rendering
+Unicode 17 rows and input preservation for the directly maintained sources,
+with the original and exactly two guarded N0 corrections as historical controls. This full-corpus probe qualifies levels, not rendering
 or visual order. Original source bytes and per-file licenses remain preserved.
 
 StockOracle runs the same fonts against actual Windows WPF. Eight explicit

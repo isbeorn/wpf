@@ -13,40 +13,51 @@ if (-not (Test-Path -LiteralPath $UnicodeInput)) {
 }
 $dependency = Join-Path $RepositoryRoot 'src/Portability/Dependencies/TextUnicode'
 $manifest = Get-Content -LiteralPath (Join-Path $dependency 'manifest.json') -Raw | ConvertFrom-Json
+$maintainedManifest = Get-Content -LiteralPath (Join-Path $dependency 'maintained-sources.json') -Raw | ConvertFrom-Json
 $expectedInputHash = 'A3E6E905AB5AFBE318A96DF5401D0372A04CD73EF139AB5E3CF0AE241C255488'
 $inputHash = (Get-FileHash -LiteralPath $UnicodeInput -Algorithm SHA256).Hash
 if ($inputHash -ne $expectedInputHash) { throw 'Unicode 17 conformance input hash mismatch.' }
 $parts = [Collections.Generic.List[string]]::new()
 $sourceHashes = [Collections.Generic.List[object]]::new()
-foreach ($variant in @('PatRaw', 'PatFixed')) {
+foreach ($variant in @('PatRaw', 'PatFixed', 'PatMaintained')) {
     foreach ($record in ($manifest.files | Where-Object path -Like '*.cs')) {
-        $path = Join-Path (Join-Path $dependency 'Original') $record.path
-        $hash = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash
-        if ($hash -ne $record.sha256) { throw "Pinned original changed: $path" }
-        if ($variant -eq 'PatRaw') { $sourceHashes.Add([ordered]@{ path = $record.path; sha256 = $hash }) }
-        $source = [IO.File]::ReadAllText($path)
-        $namespaces = [regex]'Avalonia\.(?:Media\.TextFormatting(?:\.Unicode)?|Utilities)'
-        $publicTypes = [regex]'(?m)^    public (?=(?:(?:readonly|ref|partial|sealed|static) )*(?:class|struct|record|enum))'
-        if ($namespaces.Matches($source).Count -ne $record.namespaces -or $publicTypes.Matches($source).Count -ne $record.publicTypes) {
-            throw "Adaptation shape changed: $path"
+        if ($variant -eq 'PatMaintained') {
+            $maintained = @($maintainedManifest.files | Where-Object originalPath -EQ $record.path)
+            if ($maintained.Count -ne 1) { throw "Expected one maintained derivative: $($record.path)" }
+            $path = Join-Path $dependency $maintained[0].path
+            $hash = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash
+            if ($hash -ne $maintained[0].sha256) { throw "Maintained source hash changed: $path" }
+            $source = [IO.File]::ReadAllText($path)
+            $sourceHashes.Add([ordered]@{ path = $maintained[0].path; sha256 = $hash })
+        } else {
+            $path = Join-Path (Join-Path $dependency 'Original') $record.path
+            $hash = (Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash
+            if ($hash -ne $record.sha256) { throw "Pinned original changed: $path" }
+            if ($variant -eq 'PatRaw') { $sourceHashes.Add([ordered]@{ path = $record.path; sha256 = $hash }) }
+            $source = [IO.File]::ReadAllText($path)
+            $namespaces = [regex]'Avalonia\.(?:Media\.TextFormatting(?:\.Unicode)?|Utilities)'
+            $publicTypes = [regex]'(?m)^    public (?=(?:(?:readonly|ref|partial|sealed|static) )*(?:class|struct|record|enum))'
+            if ($namespaces.Matches($source).Count -ne $record.namespaces -or $publicTypes.Matches($source).Count -ne $record.publicTypes) {
+                throw "Adaptation shape changed: $path"
+            }
+            $source = $namespaces.Replace($source, {
+                param($match)
+                $match.Value.Replace('Avalonia.Media.TextFormatting', 'MS.Internal.Portability.Text').Replace('Avalonia.Utilities', 'MS.Internal.Portability.Text.Utilities')
+            })
+            $source = $publicTypes.Replace($source, '    internal ')
+            if ($record.qualifiedBuilders -ne 0) {
+                if ([regex]::Matches($source, '\bArrayBuilder<').Count -ne $record.qualifiedBuilders) { throw "Utility adaptation changed: $path" }
+                $source = [regex]::Replace($source, '\bArrayBuilder<', 'MS.Internal.Portability.Text.Utilities.ArrayBuilder<')
+            }
+            $source = "#nullable enable annotations`n" + $source
+            if ([IO.Path]::GetFileName($path) -eq 'BiDiAlgorithm.cs') {
+                $assignment = '_runOriginalClasses[i] = direction;'
+                if ([regex]::Matches($source, [regex]::Escape($assignment)).Count -ne 2) { throw 'Expected exactly two original assignments.' }
+                if ($variant -eq 'PatFixed') { $source = $source.Replace($assignment, '_runResolvedClasses[i] = direction;') }
+            }
         }
-        $source = $namespaces.Replace($source, {
-            param($match)
-            $match.Value.Replace('Avalonia.Media.TextFormatting', 'MS.Internal.Portability.Text').Replace('Avalonia.Utilities', 'MS.Internal.Portability.Text.Utilities')
-        })
-        $source = $publicTypes.Replace($source, '    internal ')
-        if ($record.qualifiedBuilders -ne 0) {
-            if ([regex]::Matches($source, '\bArrayBuilder<').Count -ne $record.qualifiedBuilders) { throw "Utility adaptation changed: $path" }
-            $source = [regex]::Replace($source, '\bArrayBuilder<', 'MS.Internal.Portability.Text.Utilities.ArrayBuilder<')
-        }
-        $source = "#nullable enable annotations`n" + $source
         if ([regex]::IsMatch($source, '(?m)^namespace [\w.]+;')) {
             $source = [regex]::Replace($source, '(?m)^(namespace [\w.]+);', '$1 {') + "`n}"
-        }
-        if ([IO.Path]::GetFileName($path) -eq 'BiDiAlgorithm.cs') {
-            $assignment = '_runOriginalClasses[i] = direction;'
-            if ([regex]::Matches($source, [regex]::Escape($assignment)).Count -ne 2) { throw 'Expected exactly two original assignments.' }
-            if ($variant -eq 'PatFixed') { $source = $source.Replace($assignment, '_runResolvedClasses[i] = direction;') }
         }
         $parts.Add("namespace $variant {`n$source`n}")
     }
@@ -97,8 +108,9 @@ public static class BracketProbe {
 Add-Type -TypeDefinition ($parts -join "`n") -CompilerOptions '/unsafe' -WarningAction Stop
 $original = [PatRaw.BracketProbe]::Run($UnicodeInput)
 $corrected = [PatFixed.BracketProbe]::Run($UnicodeInput)
+$maintained = [PatMaintained.BracketProbe]::Run($UnicodeInput)
 $result = [ordered]@{
-    description = 'Independent original-versus-two-assignment N0 comparison. Sources compile in memory; production files are not modified.'
+    description = 'Independent original-versus-two-assignment N0 comparison plus directly maintained sources. Sources compile in memory; production files are not modified.'
     scope = 'All official Unicode 17 BidiCharacterTest cases: resolved paragraph level and every non-x character level. Also verifies input-class preservation. Does not check visual ordering, rendering, line breaking or public WPF integration.'
     sourceCommit = $manifest.commit
     archiveSha256 = $manifest.archiveSha256
@@ -107,13 +119,15 @@ $result = [ordered]@{
     sourceHashes = @($sourceHashes)
     original = $original
     corrected = $corrected
+    maintained = $maintained
     recordedAtUtc = [DateTime]::UtcNow.ToString('o')
     powerShellVersion = $PSVersionTable.PSVersion.ToString()
     command = 'pwsh -NoProfile -File src/Portability/Tests/TextIntegration/Verify-UnicodeBidi.ps1'
 }
 $result | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $outputDirectory 'results.json') -Encoding utf8
-[pscustomobject]$result | Select-Object scope, original, corrected | ConvertTo-Json -Depth 6
+[pscustomobject]$result | Select-Object scope, original, corrected, maintained | ConvertTo-Json -Depth 6
 if ($original.Cases -ne 91707 -or $original.FailureCount -ne 9 -or $original.MutatedInputClasses -ne 23 -or
-    $corrected.Cases -ne 91707 -or $corrected.FailureCount -ne 0 -or $corrected.MutatedInputClasses -ne 0) {
+    $corrected.Cases -ne 91707 -or $corrected.FailureCount -ne 0 -or $corrected.MutatedInputClasses -ne 0 -or
+    $maintained.Cases -ne 91707 -or $maintained.FailureCount -ne 0 -or $maintained.MutatedInputClasses -ne 0) {
     throw 'Independent probe did not reproduce the expected original/corrected comparison.'
 }

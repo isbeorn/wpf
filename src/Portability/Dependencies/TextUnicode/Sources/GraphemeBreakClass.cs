@@ -1,0 +1,27 @@
+// Generated adaptation: WPF namespaces, internal top-level types and qualified utility references. Original notices follow.
+#nullable enable annotations
+namespace MS.Internal.Portability.Text.Unicode
+{
+    internal enum GraphemeBreakClass
+    {
+        Other, //XX
+        Control, //CN
+        CR, //CR
+        EBase, //EB
+        EBaseGAZ, //EBG
+        EModifier, //EM
+        Extend, //EX
+        GlueAfterZwj, //GAZ
+        L, //L
+        LF, //LF
+        LV, //LV
+        LVT, //LVT
+        Prepend, //PP
+        RegionalIndicator, //RI
+        SpacingMark, //SM
+        T, //T
+        V, //V
+        ZWJ, //ZWJ
+        ExtendedPictographic
+    }
+}

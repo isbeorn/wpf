@@ -2,7 +2,7 @@
 
 The original source remains unchanged. Its `BiDiAlgorithm.cs` SHA-256 is
 `245D9E90D33FF619F0507993BA41CA2670EC278EE40152E4A04C6F311929AA5B`.
-The derivative build changes exactly two assignments in
+The maintained derivative preserves exactly two corrected assignments in
 `SetPairedBracketDirection`, the loops processing original NSMs after an open
 or close bracket. Both assignments change from
 `_runOriginalClasses[i] = direction;` to
@@ -19,6 +19,8 @@ level failures and 23 original input mutations before the correction. With
 these two assignments corrected it found zero level/paragraph-level failures
 and zero input mutations. The bounded fixture includes the failing case.
 
-The build verifies the original hash and requires exactly two matching
-assignments in this specific file. It adds a prominent correction notice to
-the generated derivative. The SixLabors Apache-2.0 notice and terms remain.
+The historical adaptation verified the original hash and required exactly two
+matching assignments. The maintained source keeps its correction notice and
+the SixLabors Apache-2.0 notice and terms. Verify-UnicodeBidi.ps1 compares the
+unchanged original, historical two-assignment correction and maintained source
+against all 91,707 official rows, including original input preservation.

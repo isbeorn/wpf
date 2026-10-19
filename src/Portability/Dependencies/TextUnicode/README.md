@@ -1,43 +1,43 @@
-# Bounded Unicode dependency
+# Maintained Unicode sources
 
-Original files are byte-for-byte extracts from Avalonia 12.1.4 commit
-`2d79ba55fae1b1e71c69f93a668080c9029e6a31`. The source archive SHA-256 is
+`Sources/*.cs` are project-maintained derivatives compiled directly by
+`Sources.props`. There is no source fetch, upstream project import, build-time
+namespace/accessibility rewrite or generated intermediate source step. Future
+algorithm and data fixes belong in these maintained files with corresponding
+behavior verification and provenance updates.
+
+These 34 files were frozen byte-for-byte from the existing adapted compiler
+inputs at WPF commit `66984503da99872af955a4fb35a49121a665177d`.
+Their retained "Generated adaptation" headers describe that historical origin,
+not the current build. `maintained-sources.json` records each frozen derivative
+hash, its upstream path/hash and its license. This is attributed derivative
+maintenance, not independently authored Unicode code.
+
+The ancestry is Avalonia 12.1.4 commit
+`2d79ba55fae1b1e71c69f93a668080c9029e6a31`, archive SHA-256
 `9E9EE6EE270BFDC02FBC34296DA51EE6242325156D2B67CBED92D2CCBC2E2029`.
-`Prepare-Sources.ps1` extracts only the enumerated files from that verified
-archive. `manifest.json` records each original's hash, license and adaptation
-counts. The Unicode data version is 17.0.0, as recorded in upstream
-`UnicodeDataSource.cs`.
-`Original/**` disables Git text conversion so Windows checkout line endings
-cannot invalidate the recorded upstream byte hashes.
+`Original/**` retains byte-for-byte source snapshots and notices. `manifest.json`
+retains the upstream hashes, licenses and historical adaptation counts.
+`Original/Prepare-Sources.ps1.txt` records the retired extraction procedure as
+historical text only. It is not a current maintenance or build command.
+Git text conversion is disabled for original and frozen source bytes.
 
-The 34 C# files contain Unicode bidi, grapheme and legal line-break algorithms,
-generated lookup data and their bounded utility closure. They contain no
-Avalonia controls, font manager, service locator or text formatter. The WPF
-adapter constructs the existing WPF `TextLine` and `GlyphRun` types.
+The maintained algorithms cover Unicode 17 bidi, graphemes and legal line
+breaks, lookup data and their bounded utility closure. They contain no Avalonia
+controls, runtime, font manager, service locator or text formatter. The original
+namespace and top-level accessibility adaptation and utility qualifications are
+already present. Public members of internal types are preserved. The two N0
+bracket/NSM corrections remain in `Sources/BiDiAlgorithm.cs`; see
+`LocalCorrections.md`. The full-corpus conformance probe checks maintained
+sources and preserves the original-versus-corrected negative control.
 
-The build verifies original hashes and exact adaptation counts before writing
-generated sources under its isolated intermediate output. Only namespaces and
-top-level public type accessibility are adapted. Utility type references are
-qualified to avoid WPF's existing `System.Collections.Generic.ArrayBuilder`.
-Public members of internal
-types are preserved. Generated files carry an adaptation notice. Unchanged
-generated files are not rewritten. A changed original fails the build.
-The two guarded bracket/NSM corrections are documented in
-`LocalCorrections.md`; the original source files remain unchanged.
-Licenses, attribution, the source manifest and local correction notice are
-copied to `ThirdPartyNotices/TextUnicode` for runtime output and publishing.
+Licensing remains per file. SixLabors bidi algorithms, array utilities and
+RichTextKit trie/line-break code retain Apache-2.0 notices. Other Avalonia code
+uses MIT. Generated Unicode data additionally uses Unicode License V3.
+Original `licence.md` and `NOTICE.md` and the full terms under `Licenses` remain.
+The build copies notices, provenance manifests, this description and the local
+correction record to `ThirdPartyNotices/TextUnicode` for output and publishing.
 
-Licensing is per file. SixLabors bidi algorithms, array utilities and
-RichTextKit trie/line-break code retain their Apache-2.0 notices. Other
-Avalonia code uses its MIT license. Generated Unicode data additionally uses
-Unicode License V3. Original `licence.md` and `NOTICE.md` are preserved, with
-full Apache and Unicode terms under `Licenses`. These are not all MIT files.
-
-Two unmodified test fonts come from the same verified archive. DejaVu Sans
-has SHA-256 `35226AC1E50D1B60AF2FF7DA5878D8EDE0C83BC00FE84713F265CB6DED8F5F9F`.
-Inter Regular has SHA-256
-`41AB0F707A2BFAB8133CCDFCDAB52282F5F79E5751F43A264805451C7BB95FB8`.
-DejaVu's embedded complete Bitstream Vera/Arev license and public domain
-statement are preserved in `Licenses/DejaVu.txt`. Inter's original copyright
-is preserved there alongside its OFL 1.1 license. The font files are fixtures,
-not fonts downloaded or installed at runtime.
+The two unchanged test fonts now live under `../../Tests/Fixtures/Fonts` with
+their licenses and original path/hash provenance. Historical copies remain
+under `Original` for provenance; active fixtures do not consume those copies.

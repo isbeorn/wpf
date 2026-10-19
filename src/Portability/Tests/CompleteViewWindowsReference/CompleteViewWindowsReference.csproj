@@ -11,7 +11,7 @@
     <EnableDefaultPageItems>false</EnableDefaultPageItems>
     <SharedWorkflow>$(RepoRoot)src/Portability/Packaging/Consumer/App/CompleteViewWorkflow.cs</SharedWorkflow>
     <SharedResources>$(RepoRoot)src/Portability/Packaging/Consumer/App/WorkflowResources.xaml</SharedResources>
-    <DejaVuFontPath Condition="'$(DejaVuFontPath)' == ''">$(RepoRoot)src/Portability/Dependencies/TextUnicode/Original/tests/Avalonia.Skia.UnitTests/Fonts/DejaVuSans.ttf</DejaVuFontPath>
+    <DejaVuFontPath Condition="'$(DejaVuFontPath)' == ''">$(RepoRoot)src/Portability/Tests/Fixtures/Fonts/DejaVuSans.ttf</DejaVuFontPath>
   </PropertyGroup>
   <ItemGroup>
     <Using Include="System.IO" />
