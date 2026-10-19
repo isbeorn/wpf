@@ -1451,7 +1451,9 @@ namespace System.Windows.Media.Imaging
             sourceBitmap.CompleteDelayedCreation();
             if (sourceBitmap.PortableBuffer != null)
             {
-                PortableBitmapBuffer buffer = sourceBitmap.PortableBuffer.Clone(this is WriteableBitmap);
+                // Source-backed frames and their clones remain views of the original storage.
+                PortableBitmapBuffer buffer = sourceBitmap is BitmapFrameEncode ? sourceBitmap.PortableBuffer :
+                    sourceBitmap.PortableBuffer.Clone(this is WriteableBitmap);
                 if (_bitmapInit.IsInInit)
                     InstallPortableBuffer(buffer, sourceBitmap.DpiX, sourceBitmap.DpiY);
                 else

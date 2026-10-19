@@ -23,7 +23,9 @@ invalidates the retained scene and schedules a dispatcher render. Dirty areas
 currently cause a complete front-buffer copy, which the public dirty-rectangle
 contract permits. Clean lock cycles do not emit changes.
 
-Clones own independent samples. Freezing a locked bitmap is rejected. Freezing
+Bitmap clones own independent samples, except source-backed BitmapFrame views
+and all four frame clone forms, which retain the original source storage.
+Freezing a locked bitmap is rejected. Freezing
 an unlocked mutable bitmap makes a private snapshot for subsequent reads and
 display, allowing frozen cross-thread reads. This implementation does not
 provide native operating-system page protection for a previously borrowed raw
@@ -80,10 +82,51 @@ the calibrated Windows codec. No resolution-specific ordering is implemented.
 
 Decoder/frame metadata, color-context objects, codec information and metadata
 writing fail explicitly. Palettes, other codecs, native WIC handles,
-`BitmapFrame.Create(source)`, conversion graphs, cropping, transforms,
+conversion graphs, cropping, transforms,
 image brushes and animated image rectangles remain separate
 gates. Unsupported source graphs may contain native methods in the compiled
 closure; this slice does not qualify them.
+`BitmapFrame.Create(source)` preserves the actual source format, dimensions and
+DPI in a genuine source-backed frame. The source is strongly retained. Freezing
+the frame leaves the source mutable, and the frozen frame can read the installed
+buffer on another thread after an explicit owner-to-worker handoff. Source
+writes/restores and RTB Render/Clear remain visible through every frame clone.
+No source Changed event forwarding or atomic concurrent-write snapshot is
+promised. Separately frozen source rules remain unchanged.
+
+The PNG encoder supports exactly one source-backed frame containing Bgra32,
+Pbgra32 or Bgr32 samples and Default/Off interlace. The actual NINA plugin cache
+and thumbnail paths both create these frames. Direct decoder-frame Save rejects
+before writing because decoder metadata/color contexts are unsupported. Explicit
+frame thumbnails, metadata and color contexts reject at creation. Encoder
+palettes, global metadata, thumbnails, previews, other codecs and other pixel
+formats remain unsupported. Gray16/Rgb48 frame views and raw clones preserve
+all samples, but PNG Save does not quantize them to a display format.
+
+PNG encoding stages owned bytes before output, tags default sRGB and writes a
+CRC-protected pHYs chunk with truncated pixels per meter. At 96 DPI the stored
+value is 3779 and decoded DPI is about 95.9866. Fractional and non-square DPI
+are covered. Nonfinite DPI and positive values outside representable nonzero
+pixels per meter reject; nonpositive finite DPI uses 96. Bgra32 straight samples,
+hidden RGB under zero alpha, Bgr32 opaque samples and alpha values are exact.
+Skia Pbgra32 unpremultiplication differs from calibrated WIC by at most one RGB
+level (1/255); that measured backend difference is accepted without WIC rounding
+emulation.
+
+Save writes at the caller's current stream position, preserves an existing tail,
+leaves the stream open and never flushes it. Successful Save is one-shot. Null,
+disposed, nonseekable or read-only streams reject before writes and allow retry.
+Read-only rejection is an explicit deviation from stock WIC's observed false
+success without output. An attempted output write consumes the encoder even if
+it fails after partial bytes; no rollback is implied. Unsupported options/formats
+also reject before output and allow correction/retry.
+
+Stock source-view, stream, alpha and DPI observations with source/runtime/PDB
+pins are retained under `artifacts/portability/nina-png-frame-encoding/stock-calibration-1`.
+The original red reports retain both the WIC source-handle failure and blanket
+PNG Save guard. Direct decoded-frame Save is intentionally still unsupported;
+the positive public Create(source)-to-Save pipeline now crosses both old guards.
+
 Interpolation/scaling parity and color-managed/HDR display are not established.
 
 Storage is GC-owned. Mutable images retain a pinned raw buffer plus committed

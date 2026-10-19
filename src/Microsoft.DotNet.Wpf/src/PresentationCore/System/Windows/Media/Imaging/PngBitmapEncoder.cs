@@ -39,7 +39,7 @@ namespace System.Windows.Media.Imaging
     /// <summary>
     /// Built-in Encoder for Png files.
     /// </summary>
-    public sealed class PngBitmapEncoder : BitmapEncoder
+    public sealed partial class PngBitmapEncoder : BitmapEncoder
     {
         #region Constructors
 

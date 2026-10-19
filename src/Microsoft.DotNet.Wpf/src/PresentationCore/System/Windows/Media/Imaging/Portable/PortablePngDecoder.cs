@@ -95,7 +95,7 @@ namespace System.Windows.Media.Imaging
             return (width, height, dpiX, dpiY, alpha);
         }
 
-        private static uint ComputeCrc(ReadOnlySpan<byte> bytes)
+        internal static uint ComputeCrc(ReadOnlySpan<byte> bytes)
         {
             uint crc = uint.MaxValue;
             foreach (byte value in bytes)

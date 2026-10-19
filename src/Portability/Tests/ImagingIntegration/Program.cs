@@ -32,6 +32,7 @@ Check("actual-scientific-source-precision-and-ownership", () =>
 });
 PortablePngCases.Run(Check);
 PortableDecoderCases.Run(Check);
+PortablePngEncodeCases.Run(Check);
 RenderTargetBitmapCases.Run(Check);
 Check("render-target-invalidates-real-retained-consumer", () =>
 {
@@ -206,7 +207,7 @@ Check("named-unsupported-codecs-and-formats", () =>
     Expect<FileFormatException>(() => BitmapFrame.Create(new MemoryStream([1, 2, 3])));
     Expect<FileFormatException>(() => new PngBitmapDecoder(new MemoryStream([1, 2, 3]), BitmapCreateOptions.None, BitmapCacheOption.OnLoad));
     ExpectPortableUnsupported(() => { var bitmap = new BitmapImage(); bitmap.BeginInit(); bitmap.StreamSource = new MemoryStream([1, 2, 3]); bitmap.EndInit(); });
-    ExpectPortableUnsupported(() => new PngBitmapEncoder().Save(new MemoryStream()));
+    Expect<NotSupportedException>(() => new PngBitmapEncoder().Save(new MemoryStream()));
 });
 string[] nativeAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(assembly => assembly.GetName().Name is "DirectWriteForwarder" or "System.Windows.Input.Manipulations").Select(assembly => assembly.FullName!).ToArray();
 string[] nativeMappings = OperatingSystem.IsLinux() ? File.ReadAllLines("/proc/self/maps").Where(IsWindowsNative).ToArray() :
