@@ -101,9 +101,32 @@ internal static class ChromeCases
                     {
                         try
                         {
+                            object? WindowField(string name) => typeof(Window).GetField(name, OwnedNativeAccess.Members)!.GetValue(window);
+                            var peer = OwnedNativeAccess.Peer(PresentationSource.FromVisual(window)!);
+                            var peerDesktop = (Point)OwnedNativeAccess.Get(peer, "_desktopPosition");
+                            var peerClient = (Point)OwnedNativeAccess.Get(peer, "_clientScreenOrigin");
+                            var requestedDesktop = (Point)WindowField("_portableRequestedDesktopPosition")!;
+                            var cached = new
+                            {
+                                peerDesktopX = peerDesktop.X, peerDesktopY = peerDesktop.Y,
+                                peerClientX = peerClient.X, peerClientY = peerClient.Y,
+                                peerMetricsState = OwnedNativeAccess.Get(peer, "_metricsState").ToString(),
+                                peerRequestedState = OwnedNativeAccess.Get(peer, "_requestedState").ToString(),
+                                peerMetricsRefreshQueued = (bool)OwnedNativeAccess.Get(peer, "_metricsRefreshQueued"),
+                                peerStateChangedPending = (bool)OwnedNativeAccess.Get(peer, "_stateChangedPending"),
+                                peerStateRequestPending = (bool)OwnedNativeAccess.Get(peer, "_stateRequestPending"),
+                                windowPendingBounds = WindowField("_portablePendingBounds")!.ToString(),
+                                windowBoundsAwaitingAck = WindowField("_portableBoundsAwaitingAck")!.ToString(),
+                                requestedDesktopX = requestedDesktop.X, requestedDesktopY = requestedDesktop.Y,
+                                actualLeft = (double)WindowField("_actualLeft")!, actualTop = (double)WindowField("_actualTop")!,
+                                windowLastMetricsState = WindowField("_portableLastMetricsState")!.ToString(),
+                                windowUpdatingMetrics = (bool)WindowField("_portableUpdatingMetrics")!,
+                                windowApplyingBounds = (bool)WindowField("_portableApplyingBounds")!,
+                                windowStateRequest = WindowField("_portableStateRequest")?.ToString()
+                            };
                             var client = native.ClientOrigin(xid); var frame = native.FrameExtents(xid) ?? default;
                             var size = native.Size(xid); var dpi = VisualTreeHelper.GetDpi(window);
-                            trace?.Invoke(new { stage = "resize-mode-failure-only", custom, mode = mode.ToString(), pendingTransition,
+                            trace?.Invoke(new { stage = "resize-mode-failure-only", custom, mode = mode.ToString(), pendingTransition, cached,
                                 expectedClientX = restoreOrigin.X, expectedClientY = restoreOrigin.Y,
                                 clientX = client.X, clientY = client.Y, clientWidth = size.Width, clientHeight = size.Height,
                                 frameLeft = frame.Left, frameTop = frame.Top, frameRight = frame.Right, frameBottom = frame.Bottom,
