@@ -329,7 +329,18 @@ $assembly = "$output/bin/Release/net10.0/NINA.dll"
 Assert-Hash (Join-Path $fixture 'PortableEntry.cs') $pin.portableEntrySha256
 $identity = [Reflection.AssemblyName]::GetAssemblyName($assembly).FullName
 if ($identity -cne $pin.assemblyIdentity) { throw 'The original NINA assembly identity changed.' }
-if (Test-Path "$output/bin/Release/net10.0/Microsoft.Win32.SystemEvents.dll") { throw 'The compile-only SystemEvents contract was copied to runtime output.' }
+$systemEventsRuntimeSupplied = $false
+$systemEventsRuntimeSha256 = $null
+$systemEventsOutput = "$output/bin/Release/net10.0/Microsoft.Win32.SystemEvents.dll"
+if (Test-Path -LiteralPath $systemEventsOutput) {
+    $systemEventsRuntime = @($family[0].files | Where-Object path -CEQ 'Microsoft.Win32.SystemEvents.dll')
+    if ($systemEventsRuntime.Count -ne 1) { throw 'Undeclared SystemEvents runtime asset was copied to application output.' }
+    $deliveredSystemEventsHash = (Get-FileHash -LiteralPath $systemEventsOutput).Hash
+    if ($deliveredSystemEventsHash -ceq $pin.systemEventsContractSha256) { throw 'The compile-only SystemEvents contract was copied to runtime output.' }
+    Assert-Hash $systemEventsOutput $systemEventsRuntime[0].sha256.ToUpperInvariant()
+    $systemEventsRuntimeSha256 = $deliveredSystemEventsHash
+    $systemEventsRuntimeSupplied = $true
+}
 $runtimeConfig = Get-Content "$output/bin/Release/net10.0/NINA.runtimeconfig.json" -Raw | ConvertFrom-Json
 if ($runtimeConfig.runtimeOptions.framework.name -cne 'Microsoft.NETCore.App' -or $runtimeConfig.runtimeOptions.framework.version -cne '10.0.12') { throw 'Unexpected application runtime framework.' }
 $originalKeys = @(Read-ResourceKeys "$closureDirectory/managed/NINA.dll" | Sort-Object)
@@ -345,7 +356,7 @@ $result = [ordered]@{
     originalManagedClosure = $OriginalManagedClosure; originalManagedClosureSha256 = (Get-FileHash $OriginalManagedClosure).Hash
     frameworkRuntimeManifest = [IO.Path]::GetFullPath($FrameworkRuntimeManifest); frameworkRuntimeManifestSha256 = (Get-FileHash $FrameworkRuntimeManifest).Hash; frameworkRuntimeFileCount = $ExpectedFrameworkRuntimeFileCount; frameworkRuntimeConfiguration = 'Release'; frameworkRuntimeDirectory = $FrameworkRuntimeDirectory
     markupCompiler = [IO.Path]::GetFullPath($MarkupCompiler); markupCompilerSha256 = (Get-FileHash $MarkupCompiler).Hash
-    avalonDockSha256 = $pin.avalonDockSha256; systemEventsCompileContractSha256 = $pin.systemEventsContractSha256; systemEventsRuntimeSupplied = $false
+    avalonDockSha256 = $pin.avalonDockSha256; systemEventsCompileContractSha256 = $pin.systemEventsContractSha256; systemEventsRuntimeSupplied = $systemEventsRuntimeSupplied; systemEventsRuntimeSha256 = $systemEventsRuntimeSha256
     nativeDeploymentOmissions = @($substitutions | Where-Object kind -eq 'absent-native-deployment-item').Count
 }
 if ($SimulatorQualification) {
