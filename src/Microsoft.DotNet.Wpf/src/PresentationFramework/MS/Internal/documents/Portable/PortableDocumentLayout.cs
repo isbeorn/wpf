@@ -12,11 +12,12 @@ using MS.Internal.Text;
 
 namespace MS.Internal.Documents
 {
-    internal sealed class PortableDocumentLayout : IDisposable
+    internal sealed partial class PortableDocumentLayout : IDisposable
     {
         private readonly FlowDocument _document;
         private readonly TextFormatter _formatter;
         private readonly List<Line> _lines = new List<Line>();
+        private readonly List<NavigationLine> _navigationLines = new List<NavigationLine>();
         internal ContainerVisual Visual { get; } = new ContainerVisual();
         internal Size Size { get; private set; }
         internal ReadOnlyCollection<TextSegment> Segments { get; }
@@ -28,7 +29,7 @@ namespace MS.Internal.Documents
             Segments = new List<TextSegment> { new TextSegment(document.ContentStart, document.ContentEnd, true) }.AsReadOnly();
         }
 
-        internal static PortableDocumentLayout Format(FlowDocument document, double width, Thickness margin)
+        internal static PortableDocumentLayout Format(FlowDocument document, double width, Thickness margin, PortableDocumentLayout previous)
         {
             var layout = new PortableDocumentLayout(document);
             try
@@ -37,17 +38,19 @@ namespace MS.Internal.Documents
                 double previousBottom = 0;
                 foreach (Block block in document.Blocks)
                 {
-                    if (block is not Paragraph paragraph)
-                        throw new PlatformNotSupportedException("Portable FlowDocument currently requires Paragraph blocks.");
-                    var spacing = paragraph.Margin;
-                    double defaultSpacing = paragraph.FontSize;
-                    double top = double.IsNaN(spacing.Top) ? defaultSpacing : spacing.Top;
-                    double bottom = double.IsNaN(spacing.Bottom) ? defaultSpacing : spacing.Bottom;
-                    double left = double.IsNaN(spacing.Left) ? 0 : spacing.Left;
-                    double right = double.IsNaN(spacing.Right) ? 0 : spacing.Right;
+                    var spacing = PtsHost.MbpInfo.FromElement(block, document.PixelsPerDip).Margin;
+                    double top = spacing.Top;
+                    double bottom = spacing.Bottom;
+                    double left = spacing.Left;
+                    double right = spacing.Right;
                     y += Math.Max(previousBottom, top);
-                    y = layout.FormatParagraph(paragraph, margin.Left + left, y,
-                        Math.Max(1, width - margin.Left - margin.Right - left - right));
+                    double available = Math.Max(1, width - margin.Left - margin.Right - left - right);
+                    if (block is Paragraph paragraph)
+                        y = layout.FormatParagraph(paragraph, margin.Left + left, y, available);
+                    else if (block is BlockUIContainer container)
+                        y = layout.FormatChild(container, margin.Left + left, y, available, previous);
+                    else
+                        throw new PlatformNotSupportedException("Portable FlowDocument block type is not supported: " + block.GetType().Name);
                     previousBottom = bottom;
                 }
                 y += previousBottom + margin.Bottom;
@@ -59,7 +62,12 @@ namespace MS.Internal.Documents
                 layout.Visual.Children.Add(drawing);
                 return layout;
             }
-            catch { layout.Dispose(); throw; }
+            catch (Exception failure)
+            {
+                try { layout.RestorePreviousChildLayout(failure); }
+                finally { layout.Dispose(); }
+                throw;
+            }
         }
 
         private double FormatParagraph(Paragraph paragraph, double x, double y, double width)
@@ -75,7 +83,9 @@ namespace MS.Internal.Documents
                 while (offset < source.Length)
                 {
                     TextLine text = _formatter.FormatLine(source, offset, width, offset == 0 ? properties.FirstLineProps : properties, previous);
-                    _lines.Add(new Line(source, text, offset, new Point(x, y)));
+                    var line = new Line(source, text, offset, new Point(x, y));
+                    _lines.Add(line);
+                    _navigationLines.Add(new NavigationLine(line));
                     if (text.Length <= 0) throw new InvalidOperationException("Document formatter did not consume source symbols.");
                     previous?.Dispose();
                     previous = text.GetTextLineBreak();
@@ -107,6 +117,8 @@ namespace MS.Internal.Documents
 
         internal TextPointer HitTest(Point point, bool snap)
         {
+            foreach (Child child in _children)
+                if (child.Bounds.Contains(point)) return child.Container.ContentStart.GetPositionAtOffset(point.X < child.Bounds.Left + child.Bounds.Width / 2 ? 0 : 1);
             Line nearest = null;
             double distance = double.PositiveInfinity;
             foreach (Line line in _lines)
@@ -130,6 +142,9 @@ namespace MS.Internal.Documents
 
         internal Rect GetCaretRectangle(ITextPointer position)
         {
+            foreach (Child child in _children)
+                if (position.CompareTo(child.Container.ContentStart) >= 0 && position.CompareTo(child.Container.ContentEnd) <= 0)
+                    return new Rect(position.CompareTo(child.Container.ContentStart) == 0 ? child.Bounds.Left : child.Bounds.Right, child.Bounds.Top, 0, child.Bounds.Height);
             Line line = FindLine(position);
             if (line == null) return Rect.Empty;
             int offset = Offset(line, position);
@@ -152,6 +167,9 @@ namespace MS.Internal.Documents
                     result.Add(rect);
                 }
             }
+            foreach (Child child in _children)
+                if (start.CompareTo(child.Container.ContentEnd) < 0 && end.CompareTo(child.Container.ContentStart) > 0)
+                    result.Add(child.Bounds);
             return result;
         }
 
@@ -164,6 +182,7 @@ namespace MS.Internal.Documents
 
         internal bool IsCaretBoundary(ITextPointer position)
         {
+            if (FindChild(position) != null) return false;
             Line line = FindLine(position);
             if (line == null) return false;
             var hit = new CharacterHit(Offset(line, position), 0);
@@ -174,6 +193,7 @@ namespace MS.Internal.Documents
 
         internal ITextPointer MoveCaret(ITextPointer position, LogicalDirection direction, bool backspace = false)
         {
+            if (FindChild(position) != null) return position;
             Line line = FindLine(position);
             if (line == null) return position;
             var hit = new CharacterHit(Offset(line, position), 0);
@@ -186,6 +206,8 @@ namespace MS.Internal.Documents
 
         internal TextSegment GetLineRange(ITextPointer position)
         {
+            Child child = FindChild(position);
+            if (child != null) return new TextSegment(child.Container.ContentStart, child.Container.ContentEnd, true);
             Line line = FindLine(position);
             if (line == null) return new TextSegment(position, position, true);
             return new TextSegment(line.Source.Start.GetPositionAtOffset(line.Offset),
@@ -194,15 +216,25 @@ namespace MS.Internal.Documents
 
         internal ITextPointer MoveLine(ITextPointer position, double x, int count, out double newX, out int moved)
         {
-            Line line = FindLine(position);
             newX = x;
             moved = 0;
-            if (line == null) return position;
-            int index = _lines.IndexOf(line);
-            int target = (int)Math.Clamp((long)index + count, 0, _lines.Count - 1);
+            if (_navigationLines.Count == 0) return position;
+            Child child = FindChild(position);
+            Line line = child == null ? FindLine(position) : null;
+            int index = _navigationLines.FindIndex(entry => child != null ? entry.Child == child : entry.Text == line);
+            if (index < 0) return position;
+            int target = (int)Math.Clamp((long)index + count, 0, _navigationLines.Count - 1);
             moved = target - index;
-            Line targetLine = _lines[target];
-            return double.IsNaN(x) ? new TextPointer(targetLine.Source.Start, targetLine.Offset, LogicalDirection.Forward) : Hit(targetLine, x);
+            NavigationLine targetLine = _navigationLines[target];
+            if (targetLine.Child != null)
+            {
+                Child targetChild = targetLine.Child;
+                return double.IsNaN(x) || x <= targetChild.Bounds.Left + targetChild.Bounds.Width / 2
+                    ? new TextPointer(targetChild.Container.ContentStart, LogicalDirection.Forward)
+                    : new TextPointer(targetChild.Container.ContentEnd, LogicalDirection.Backward);
+            }
+            Line targetText = targetLine.Text;
+            return double.IsNaN(x) ? new TextPointer(targetText.Source.Start, targetText.Offset, LogicalDirection.Forward) : Hit(targetText, x);
         }
 
         internal ReadOnlyCollection<GlyphRun> GetGlyphRuns(ITextPointer start, ITextPointer end)
@@ -222,9 +254,19 @@ namespace MS.Internal.Documents
         public void Dispose()
         {
             Visual.Children.Clear();
+            DisposeChildren();
             foreach (Line line in _lines) line.Text.Dispose();
             _lines.Clear();
+            _navigationLines.Clear();
             _formatter.Dispose();
+        }
+
+        private sealed class NavigationLine
+        {
+            internal readonly Line Text;
+            internal readonly Child Child;
+            internal NavigationLine(Line text) { Text = text; }
+            internal NavigationLine(Child child) { Child = child; }
         }
 
         private sealed class Line

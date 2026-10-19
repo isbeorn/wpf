@@ -4,7 +4,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-internal static class FlowDocumentCases
+internal static partial class FlowDocumentCases
 {
     internal static string Paragraph()
     {
@@ -85,6 +85,91 @@ internal static class FlowDocumentCases
         return "Original FlowDocumentScrollViewer template, Paragraph/Run ink, pointer rectangles, forward/reverse selection, hit round-trips, width restore, text mutation, A/B/A replacement and detach passed.";
     }
 
+    internal static string EmbeddedChild()
+    {
+        _ = Application.Current ?? new Application();
+        var editor = new TextBox { Text = "REAL CHILD", IsReadOnly = true, Height = 55, Background = Brushes.Lime, Foreground = Brushes.Black };
+        var block = new BlockUIContainer(editor) { Margin = new Thickness(0) };
+        var tail = new Run("AFTER CHILD");
+        var document = new FlowDocument { TextAlignment = TextAlignment.Left, FontSize = 20, PagePadding = new Thickness(8) };
+        document.Blocks.Add(new Paragraph(new Run("BEFORE CHILD")) { Margin = new Thickness(0) });
+        document.Blocks.Add(block);
+        document.Blocks.Add(new Paragraph(tail) { Margin = new Thickness(0) });
+        var viewer = new FlowDocumentScrollViewer { Document = document, IsToolBarVisible = false };
+        viewer.BeginInit(); viewer.EndInit();
+        Layout(viewer, 380);
+        Require(editor.ActualWidth > 0 && editor.ActualHeight == 55 && VisualTreeHelper.GetParent(editor) != null, "Actual embedded child was not arranged/parented.");
+        Require(ReferenceEquals(editor.Parent, block), "Embedded child's logical identity changed.");
+        editor.Select(0, 4);
+        Require(editor.SelectedText == "REAL", "Actual child selection did not run.");
+        byte[] original = Raster(viewer);
+        Require(ColorPixels(original, Colors.Lime) > 300, "The real child subtree has no distinctive background pixels.");
+        editor.Background = Brushes.Magenta;
+        editor.Text = "CHANGED CHILD";
+        Layout(viewer, 380);
+        byte[] changedChild = Raster(viewer);
+        Require(ColorPixels(changedChild, Colors.Magenta) > 300 && !changedChild.SequenceEqual(original), "Child background/content mutation retained stale pixels.");
+        editor.Background = Brushes.Lime;
+        editor.Text = "REAL CHILD";
+        editor.Select(0, 4);
+        Layout(viewer, 380);
+        Require(Raster(viewer).SequenceEqual(original) && editor.SelectedText == "REAL", "Child content/background restore differs.");
+        Rect before = tail.ContentStart.GetCharacterRect(LogicalDirection.Forward);
+        block.ClearValue(Block.MarginProperty);
+        Layout(viewer, 380);
+        Require(tail.ContentStart.GetCharacterRect(LogicalDirection.Forward) == before && Raster(viewer).SequenceEqual(original), "Default embedded block margin differs from explicit zero.");
+        block.Margin = new Thickness(double.NaN);
+        Layout(viewer, 380);
+        Require(tail.ContentStart.GetCharacterRect(LogicalDirection.Forward) == before && Raster(viewer).SequenceEqual(original), "Automatic embedded block margin differs from explicit zero.");
+        block.Margin = new Thickness(0);
+        Layout(viewer, 380);
+        Require(tail.ContentStart.GetCharacterRect(LogicalDirection.Forward) == before, "Explicit embedded block margin restore differs.");
+        editor.Height = 90;
+        Layout(viewer, 380);
+        Require(editor.ActualHeight == 90 && tail.ContentStart.GetCharacterRect(LogicalDirection.Forward).Y > before.Y + 30, "Child desired-size mutation did not move following text.");
+        editor.Height = 55;
+        Layout(viewer, 380);
+        Require(tail.ContentStart.GetCharacterRect(LogicalDirection.Forward) == before && Raster(viewer).SequenceEqual(original), "Child size restore differs.");
+        viewer.Document = null;
+        Layout(viewer, 380);
+        Require(VisualTreeHelper.GetParent(editor) == null, "Detached document retained its embedded visual.");
+        viewer.Document = document;
+        Layout(viewer, 380);
+        Require(VisualTreeHelper.GetParent(editor) != null && ReferenceEquals(editor.Parent, block) && editor.Text == "REAL CHILD", "Reattachment lost actual embedded model/visual.");
+        viewer.Document = null;
+        Layout(viewer, 380);
+        return "Actual embedded TextBox identity, layout, selection, size mutation/restore and detach/reattach passed.";
+    }
+    internal static string FailedChildLayout()
+    {
+        _ = Application.Current ?? new Application();
+        var retained = new Border { Width = 80, Height = 30, Background = Brushes.Blue };
+        var document = new FlowDocument(new BlockUIContainer(retained)) { TextAlignment = TextAlignment.Left };
+        var viewer = new FlowDocumentScrollViewer { Document = document, IsToolBarVisible = false };
+        viewer.BeginInit(); viewer.EndInit(); Layout(viewer, 380);
+        var oldParent = VisualTreeHelper.GetParent(retained);
+        var rejected = new ThrowingChild();
+        var rejectedBlock = new BlockUIContainer(rejected);
+        document.Blocks.Add(rejectedBlock);
+        bool caught = false;
+        try { Layout(viewer, 380); }
+        catch (InvalidOperationException error) when (error.Message == "expected child arrange failure") { caught = true; }
+        Require(caught, "Actual embedded child Arrange did not fail.");
+        Require(ReferenceEquals(oldParent, VisualTreeHelper.GetParent(retained)), "Failed layout detached the committed child.");
+        Require(VisualTreeHelper.GetParent(rejected) == null, "Failed layout retained its newly acquired child island.");
+        document.Blocks.Remove(rejectedBlock);
+        Layout(viewer, 380);
+        Require(retained.ActualHeight == 30 && document.ContentStart.HasValidLayout, "Document did not recover after failed child removal.");
+        viewer.Document = null; Layout(viewer, 380);
+        Require(VisualTreeHelper.GetParent(retained) == null, "Recovered child remained attached after detach.");
+        return "Failed real child Arrange preserves committed child ownership, releases new acquisition and recovers after removal.";
+    }
+
+    private sealed class ThrowingChild : FrameworkElement
+    {
+        protected override Size MeasureOverride(Size availableSize) => new Size(50, 30);
+        protected override Size ArrangeOverride(Size finalSize) => throw new InvalidOperationException("expected child arrange failure");
+    }
     private static IInputElement? HitFirstRun(FlowDocumentScrollViewer viewer, Run run)
     {
         var scope = (FrameworkElement)((ScrollViewer)viewer.Template!.FindName("PART_ContentHost", viewer)).Content;
@@ -115,6 +200,13 @@ internal static class FlowDocumentCases
         var bitmap = new RenderTargetBitmap(380, 220, 96, 96, PixelFormats.Pbgra32);
         bitmap.Render(viewer);
         byte[] result = new byte[380 * 220 * 4]; bitmap.CopyPixels(result, 380 * 4, 0); return result;
+    }
+    private static int ColorPixels(byte[] pixels, Color color)
+    {
+        int count = 0;
+        for (int index = 0; index < pixels.Length; index += 4)
+            if (pixels[index + 3] == 255 && pixels[index] == color.B && pixels[index + 1] == color.G && pixels[index + 2] == color.R) count++;
+        return count;
     }
     private static int BlackPixels(byte[] pixels)
     {

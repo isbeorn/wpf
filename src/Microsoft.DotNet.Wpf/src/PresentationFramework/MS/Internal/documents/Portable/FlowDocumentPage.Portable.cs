@@ -30,7 +30,7 @@ namespace MS.Internal.PtsHost
                 PortableDocumentLayout next = null;
                 try
                 {
-                    next = PortableDocumentLayout.Format(_structuralCache.FormattingOwner, pageSize.Width, margin);
+                    next = PortableDocumentLayout.Format(_structuralCache.FormattingOwner, pageSize.Width, margin, _portableLayout);
                     _structuralCache.DetectInvalidOperation();
                     _pageMargin = margin;
                     _pendingLayout = next;
@@ -40,7 +40,12 @@ namespace MS.Internal.PtsHost
                         Math.Max(0, next.Size.Width - margin.Left - margin.Right),
                         Math.Max(0, next.Size.Height - margin.Top - margin.Bottom)));
                 }
-                catch { next?.Dispose(); throw; }
+                catch (Exception failure)
+                {
+                    try { next?.RestorePreviousChildLayout(failure); }
+                    finally { next?.Dispose(); }
+                    throw;
+                }
             }
         }
 
@@ -53,6 +58,14 @@ namespace MS.Internal.PtsHost
                 {
                     _structuralCache.DetectInvalidOperation();
                     var old = _portableLayout;
+                    try { _pendingLayout.ArrangeChildren(old); }
+                    catch
+                    {
+                        _pendingLayout.Dispose();
+                        _pendingLayout = null;
+                        throw;
+                    }
+                    _structuralCache.DetectInvalidOperation();
                     _portableLayout = _pendingLayout;
                     _pendingLayout = null;
                     _textView?.Invalidate();
