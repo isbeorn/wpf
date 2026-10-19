@@ -27,6 +27,7 @@ $utf8 = [Text.UTF8Encoding]::new($false)
 $simulationFixture = Join-Path $fixture 'SimulatorQualification'
 $simulationEdits = @()
 $pluginAssembly = $null
+$pluginIntakeSource = "$simulationFixture/SimulatorPluginIntake.cs"
 
 function Write-Utf8([string] $Path, [string] $Text) {
     [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($Path)) | Out-Null
@@ -120,7 +121,18 @@ foreach ($file in $closure.files) {
     $group = if ($file.outputPath.Contains('/')) { 'satellites' } else { 'managed' }
     Assert-Hash (Join-Path "$closureDirectory/$group" $file.outputPath) $file.sha256
 }
-Assert-Hash $AvalonDockPath $pin.avalonDockSha256
+$currentComponents = $null
+$componentBaseline = 'historical-source-built-components'
+$avalonDockHash = $pin.avalonDockSha256
+if ($originalBaseline -cne 'historical-original160') {
+    Assert-Hash "$fixture/CurrentComponents.json" $pin.currentComponentsManifestSha256
+    $currentComponents = Get-Content "$fixture/CurrentComponents.json" -Raw | ConvertFrom-Json
+    if ($currentComponents.originalBaseline -cne $originalBaseline -or $currentComponents.frameworkManifestSha256 -cne $ExpectedFrameworkRuntimeManifestSha256.ToUpperInvariant()) { throw 'Current source-built components require their exact stock baseline and framework family.' }
+    $componentBaseline = $currentComponents.name
+    $avalonDockHash = $currentComponents.avalonDockSha256
+    if ([Reflection.AssemblyName]::GetAssemblyName($AvalonDockPath).FullName -cne $currentComponents.avalonDockIdentity) { throw 'Current source-built AvalonDock identity differs.' }
+}
+Assert-Hash $AvalonDockPath $avalonDockHash
 Assert-Hash $SystemEventsContractPath $pin.systemEventsContractSha256
 Assert-Hash $MvvmGeneratorPath $pin.mvvmGeneratorSha256
 Assert-Hash (Join-Path $fixture 'App.xaml.cs.patch') $pin.consolePatchSha256
@@ -144,6 +156,22 @@ if ($SimulatorQualification) {
         [IO.File]::Copy((Join-Path $NinaSourceDirectory $file.path), $destination)
     }
     $officialPluginPin = Get-Content "$simulationFixture/official-plugin-files.json" -Raw | ConvertFrom-Json
+    if ($null -ne $currentComponents) {
+        $historicalPluginPin = $officialPluginPin
+        $officialPluginPin = $currentComponents.officialTemplateFixture
+        if ((($officialPluginPin.files.path | Sort-Object) -join '|') -cne (($historicalPluginPin.files.path | Sort-Object) -join '|')) { throw 'Current fixture filenames differ from the approved four-file closure.' }
+        $runtimeIntakeText = [IO.File]::ReadAllText($pluginIntakeSource)
+        foreach ($historicalFile in $historicalPluginPin.files) {
+            $replacement = @($officialPluginPin.files | Where-Object path -CEQ $historicalFile.path)
+            if ($replacement.Count -ne 1 -or $replacement[0].sha256 -cnotmatch '^[A-F0-9]{64}$') { throw 'Invalid current fixture hash binding.' }
+            if ($replacement[0].sha256 -cne $historicalFile.sha256) {
+                if ($runtimeIntakeText.IndexOf($historicalFile.sha256, [StringComparison]::Ordinal) -lt 0 -or $runtimeIntakeText.IndexOf($historicalFile.sha256, [StringComparison]::Ordinal) -ne $runtimeIntakeText.LastIndexOf($historicalFile.sha256, [StringComparison]::Ordinal)) { throw 'Expected exactly one historical runtime fixture hash.' }
+                $runtimeIntakeText = $runtimeIntakeText.Replace($historicalFile.sha256, $replacement[0].sha256)
+            }
+        }
+        $pluginIntakeSource = "$output/generated/SimulatorPluginIntake.cs"
+        Write-Utf8 $pluginIntakeSource $runtimeIntakeText
+    }
     foreach ($file in $officialPluginPin.files) {
         Assert-Hash (Join-Path $OfficialPluginDirectory $file.path) $file.sha256
         $destination = Join-Path "$output/qualification-inputs/QualificationPlugins" $file.path
@@ -269,7 +297,7 @@ if ($SimulatorQualification) {
     }
     foreach ($entry in $pluginSettings.GetEnumerator()) { $element = Add-Element $pluginProject $pluginProperties $entry.Key @{}; $element.InnerText = $entry.Value }
     $pluginReferences = Add-Element $pluginProject $pluginRoot ItemGroup @{}
-    $null = Add-Element $pluginProject $pluginReferences Compile @{ Include = "$simulationFixture/SimulatorPluginIntake.cs"; Link = 'Portability/SimulatorPluginIntake.cs' }
+    $null = Add-Element $pluginProject $pluginReferences Compile @{ Include = $pluginIntakeSource; Link = 'Portability/SimulatorPluginIntake.cs' }
     foreach ($file in $closure.files | Where-Object { !$_.outputPath.Contains('/') -and $_.outputPath -notin @('NINA.dll', 'NINA.Plugin.dll', 'AvalonDock.dll') }) {
         $null = Add-Element $pluginProject $pluginReferences Reference @{ Include = [IO.Path]::GetFileNameWithoutExtension($file.outputPath); HintPath = "$closureDirectory/managed/$($file.outputPath)"; Private = 'true' }
     }
@@ -364,7 +392,7 @@ $result = [ordered]@{
     originalManagedClosure = $OriginalManagedClosure; originalManagedClosureSha256 = (Get-FileHash $OriginalManagedClosure).Hash; originalBaseline = $originalBaseline; editorConfigSha256 = $pin.editorConfigSha256
     frameworkRuntimeManifest = [IO.Path]::GetFullPath($FrameworkRuntimeManifest); frameworkRuntimeManifestSha256 = (Get-FileHash $FrameworkRuntimeManifest).Hash; frameworkRuntimeFileCount = $ExpectedFrameworkRuntimeFileCount; frameworkRuntimeConfiguration = 'Release'; frameworkRuntimeDirectory = $FrameworkRuntimeDirectory
     markupCompiler = [IO.Path]::GetFullPath($MarkupCompiler); markupCompilerSha256 = (Get-FileHash $MarkupCompiler).Hash
-    avalonDockSha256 = $pin.avalonDockSha256; systemEventsCompileContractSha256 = $pin.systemEventsContractSha256; systemEventsRuntimeSupplied = $systemEventsRuntimeSupplied; systemEventsRuntimeSha256 = $systemEventsRuntimeSha256
+    avalonDockSha256 = $avalonDockHash; componentBaseline = $componentBaseline; systemEventsCompileContractSha256 = $pin.systemEventsContractSha256; systemEventsRuntimeSupplied = $systemEventsRuntimeSupplied; systemEventsRuntimeSha256 = $systemEventsRuntimeSha256
     nativeDeploymentOmissions = @($substitutions | Where-Object kind -eq 'absent-native-deployment-item').Count
 }
 if ($SimulatorQualification) {
@@ -377,6 +405,7 @@ if ($SimulatorQualification) {
         pluginPdb = "$output/plugin-bin/Release/net10.0/NINA.Plugin.pdb"; pluginPdbSha256 = (Get-FileHash "$output/plugin-bin/Release/net10.0/NINA.Plugin.pdb").Hash
         unchangedOriginalPEs = 157; derivedOriginalPEs = @('NINA.dll', 'NINA.Plugin.dll', 'AvalonDock.dll')
         officialTemplateFixture = $officialPluginPin; stagedFixture = "$output/qualification-inputs/QualificationPlugins"
+        runtimePluginIntakeSource = $pluginIntakeSource; runtimePluginIntakeSourceSha256 = (Get-FileHash $pluginIntakeSource).Hash
         fullShellQualified = $false; nativeAstronomySupplied = $false; windowsValidStartupIsolationQualified = $false
     }
 }
