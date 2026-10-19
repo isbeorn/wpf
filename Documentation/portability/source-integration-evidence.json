@@ -15183,6 +15183,90 @@
           "bytes": 701
         }
       ]
+    },
+    {
+      "label": "source-backed-bitmap-frames-and-bounded-local-png-encoding",
+      "capturedAtUtc": "2026-10-19T20:14:42.2759557Z",
+      "headCommit": "9f7638c85aefc9f783705e89388783aa931fbe49",
+      "sourceCommit": "9f7638c85aefc9f783705e89388783aa931fbe49",
+      "outcome": "pass-scoped-feature-cross-os-execution",
+      "scope": "Nine-file local feature commit: six production files and three existing-fixture files. Genuine BitmapFrame.Create(source) views and all four clone forms retain live source pixels; other bitmap clones remain independent and raw Gray16/Rgb48 low bytes remain exact. Bounded PNG Save accepts one source-backed Bgra32/Pbgra32/Bgr32 frame with Default/Off interlace.",
+      "verification": "Windows-built scoped closure from baseline 2509ce2b plus the frozen payload executes on Windows and Linux: Imaging 37/37 and Rendering 52/52 each, all four process exits zero and eleven source/PDB matches. This is not a fresh full combined-main family, original 21-check replay or App qualification. Six production files remain byte-identical to revision 1 independently cleared by Della; Goldie test P2 closes in revision 2 with no production edit.",
+      "livePixels": "Revision 2 attaches the frame/encoder before WriteableBitmap mutation and uses fresh encoders to observe red/blue/red through Save/decode. An RTB frame/encoder is attached before Render and observes Render/Clear/Render. Frame Freeze does not freeze its source; frozen reads use installed storage. No Changed-event forwarding or concurrent atomic snapshot guarantee is introduced.",
+      "pngContract": "Straight/premultiplied/opaque alpha and truncated pHYs density follow the bounded accepted contract. Bgra32/Bgr32/alpha are exact; the measured Skia Pbgra32 difference is at most one RGB level against stock WIC, without WIC rounding emulation. Save writes complete staged bytes at the caller position without truncate/Flush/Dispose; validation failure permits correction, while successful Save or attempted I/O failure consumes the encoder. Partial I/O output is not rolled back.",
+      "limitations": "No direct decoded-frame Save, explicit metadata/color-context/palette/thumbnail/preview support, other codecs or scientific/high-bit saving. Historical causal reds remain preserved; the positive Create(source)-to-Save pipeline crosses the old frame/PNG guards without reclassifying direct-decoder rejection. Latest actual original App retry remains the bc9 failure at WindowChrome before a main window maps. Private custom-frame candidate still has failures under diagnosis. No successful full-shell launch, combined-main qualification, final package, desktop/Orca or Phases 2-5 completion; native IME explicitly user-deferred.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/nina-png-frame-encoding/revision-2/Handoff.md",
+          "sha256": "7d36d64a937aa9c107842c4665e6a327328f87407b15fa94ba44bbde97387bf0",
+          "bytes": 4724
+        },
+        {
+          "path": "artifacts/portability/nina-png-frame-encoding/revision-2/source-manifest.json",
+          "sha256": "954531e59413f1479a3702001228184733e7af42e1a16d5e2f555ee7f9d7b4b7",
+          "bytes": 3066
+        },
+        {
+          "path": "artifacts/portability/nina-png-frame-encoding/revision-2/freeze.json",
+          "sha256": "59d30343ef9fa20c6a6e1a97da8065d2046b5e699c5cb6965c97a6673904ac44",
+          "bytes": 8946
+        },
+        {
+          "path": "artifacts/portability/nina-png-frame-encoding/revision-2/root-intake.json",
+          "sha256": "0e267339abbe168c3395aa2eff802e9dfde3c099363bf2a7db2d545cc4689dca",
+          "bytes": 6602
+        },
+        {
+          "path": "artifacts/portability/nina-png-frame-encoding/revision-2/root-commit.json",
+          "sha256": "9661971efc63dcc2800bcc8754c38a4f5221093c720a1c15f692fe1605e5d300",
+          "bytes": 2247
+        },
+        {
+          "path": "artifacts/portability/nina-png-frame-encoding/revision-2/source-pdb-proof.json",
+          "sha256": "3996e49401d6e87aeb68a175492dda939f97e8ee69d727005e292875290f310d",
+          "bytes": 3760
+        },
+        {
+          "path": "artifacts/portability/nina-png-frame-encoding/revision-2/producer-manifest.json",
+          "sha256": "bf3318986a44b1d6f78653e7b09cfb51fa792fbf6d9bd794b6aac8ade8003bc7",
+          "bytes": 20879
+        },
+        {
+          "path": "artifacts/portability/nina-png-frame-encoding/revision-2/revision1-continuity.json",
+          "sha256": "eb40c49b7f6a175df39f7a78f80f47a2ed708358a1ce66ce2889d743f0c98b25",
+          "bytes": 9213
+        },
+        {
+          "path": "artifacts/portability/nina-png-frame-encoding/revision-2/revision2-imaging-windows.json",
+          "sha256": "3063aefc531e2d06fc326ec8bb11a319ef9857f5c7430a729f3601e4de718448",
+          "bytes": 7190
+        },
+        {
+          "path": "artifacts/portability/nina-png-frame-encoding/revision-2/revision2-imaging-linux.json",
+          "sha256": "dd26cebcd54b2a396e31a21dd6c2e164b0374ec8124f8f522ec190b78c302a84",
+          "bytes": 6981
+        },
+        {
+          "path": "artifacts/portability/nina-png-frame-encoding/revision-2/revision2-rendering-windows.json",
+          "sha256": "faadd71221cb8a85c588ffc984ab10b34a698cb9188475d4dc303dddcdb691c8",
+          "bytes": 8056
+        },
+        {
+          "path": "artifacts/portability/nina-png-frame-encoding/revision-2/revision2-rendering-linux.json",
+          "sha256": "113d159a424c912b19fc73df90c58ac8b49befddeff9e91e2f64bedc6e2e8fe7",
+          "bytes": 7766
+        },
+        {
+          "path": "artifacts/portability/nina-png-frame-encoding/revision-2/revision2-windows-exits.json",
+          "sha256": "3c317407bfebea46f91c057b9c2c165767047a3fdbabda44ca19bb79ca218631",
+          "bytes": 49
+        },
+        {
+          "path": "artifacts/portability/nina-png-frame-encoding/revision-2/revision2-linux-exits.json",
+          "sha256": "8289c007b13f03c90faac0996d26550bd58797807e77ac41f52d0b547225b8ab",
+          "bytes": 49
+        }
+      ]
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",

@@ -18,7 +18,14 @@ The [real NINA retry](../../artifacts/portability/nina-simulator-qualification-c
 passes icon decoding but stops at WindowChrome's HWND access before a main window
 maps. No full NINA window has opened in the VM. Later reviewed source commits add
 RTL document mapping, wrapped-text cache refresh and icon preflight; their combined
-family verification is pending. The ledger now preserves 84 checkpoints. Final
+family verification is pending. Separately, [commit 9f7638c85's scoped PNG proof](../../artifacts/portability/nina-png-frame-encoding/revision-2/Handoff.md)
+passes Imaging 37/37 and Rendering 52/52 on both OSes using a Windows-built scoped
+closure, not a fresh combined family or original 21/App replay. Source-backed
+frames and clones retain live pixels and raw scientific samples; PNG saving is
+limited to one Bgra32/Pbgra32/Bgr32 source-backed frame and Default/Off interlace,
+without direct decoded-frame, metadata or scientific-save qualification. This
+does not repair the current WindowChrome startup failure. The ledger now
+preserves 85 checkpoints. Final
 packages, complete workflows, desktop accessibility and overnight qualification
 remain open. Native IME is user-deferred; basic XKB/compose input is required.
 
