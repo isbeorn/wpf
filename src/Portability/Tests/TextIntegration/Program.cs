@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using SkiaSharp;
 
 if (args.Contains("--capture-hidden")) { Console.WriteLine(JsonSerializer.Serialize(HiddenRunCases.Capture(), new JsonSerializerOptions { WriteIndented = true })); return 0; }
+if (args.Contains("--capture-modifier-continuation")) { Console.WriteLine(JsonSerializer.Serialize(ModifierContinuationCases.Capture(), new JsonSerializerOptions { WriteIndented = true })); return 0; }
 var checks = new List<object>();
 if (args.Contains("--capture-alignment"))
 {
@@ -45,6 +46,9 @@ try
     Regression("hidden-source-runs", () => HiddenRunCases.Verify(formatter, Require));
     Regression("hidden-source-suffix", () => HiddenRunCases.VerifySourceSuffix(formatter, Require));
     Regression("automatic-line-height", () => HiddenRunCases.VerifyAutomaticHeight(Require));
+    Regression("document-source-runs", () => DocumentRunCases.Verify(formatter, Require));
+    Regression("document-source-boundaries", () => DocumentRunCases.VerifyBoundaries(formatter, Require));
+    Regression("modifier-soft-continuation", () => ModifierContinuationCases.Verify(Require));
     Regression("empty-and-end-caret-bounds-regression", () =>
     {
         foreach (string text in new[] { "", "abc", "abc\r\n" })

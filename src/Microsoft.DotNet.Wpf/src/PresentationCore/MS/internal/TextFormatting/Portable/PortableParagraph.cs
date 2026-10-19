@@ -15,24 +15,25 @@ namespace MS.Internal.TextFormatting.Portable
 {
     internal sealed class PortableParagraph
     {
-        internal sealed record Segment(int Start, int Length, TextRun Source, GlyphTypeface Typeface, HarfBuzzSharp.Script Script, int Level);
+        internal sealed record Segment(int Start, int Length, TextRun Source, TextRunProperties Properties, GlyphTypeface Typeface, HarfBuzzSharp.Script Script, int Level);
         internal TextSource Source { get; }
         internal int First { get; }
         internal string Text { get; }
         internal IList<PortableTextFormatter.Run> Runs { get; }
         internal int NewlineLength { get; }
         internal int SourceLength { get; }
+        internal TextModifierScope ContinuationScope { get; }
         internal IList<TextSpan<TextRun>> Terminators { get; }
         internal int BaseLevel { get; }
         internal int[] GraphemeStarts { get; }
         internal (int Measure, int Wrap)[] Breaks { get; }
         internal int[] Levels { get; }
         private readonly BidiClass[] _classes;
-        private readonly HashSet<int> _hiddenGraphemeBoundaries;
+        private readonly HashSet<int> _runGraphemeBoundaries;
         private readonly HarfBuzzSharp.Script[] _scripts;
 
         internal PortableParagraph(TextSource source, int first, string text, IList<PortableTextFormatter.Run> runs,
-            int newline, IList<TextSpan<TextRun>> terminators, int sourceLength, FlowDirection direction)
+            int newline, IList<TextSpan<TextRun>> terminators, int sourceLength, FlowDirection direction, TextModifierScope continuationScope = null)
         {
             Source = source;
             First = first;
@@ -40,6 +41,7 @@ namespace MS.Internal.TextFormatting.Portable
             Runs = runs;
             NewlineLength = newline;
             SourceLength = sourceLength;
+            ContinuationScope = continuationScope;
             Terminators = terminators;
             BaseLevel = direction == FlowDirection.RightToLeft ? 1 : 0;
             var data = new BidiData { ParagraphEmbeddingLevel = (sbyte)BaseLevel };
@@ -66,9 +68,10 @@ namespace MS.Internal.TextFormatting.Portable
             var graphemeEnumerator = new GraphemeEnumerator(text);
             while (graphemeEnumerator.MoveNext(out Grapheme grapheme)) graphemes.Add(grapheme.Offset);
             graphemes.Add(text.Length);
-            _hiddenGraphemeBoundaries = runs.Where(run => run.Length == 0 && !graphemes.Contains(run.Start))
-                .Select(run => run.Start).ToHashSet();
-            GraphemeStarts = graphemes.Concat(_hiddenGraphemeBoundaries).Distinct().OrderBy(value => value).ToArray();
+            _runGraphemeBoundaries = runs.Where(run => run.Length == 0 || run.Value is TextEmbeddedObject)
+                .SelectMany(run => run.Value is TextEmbeddedObject ? new[] { run.Start, run.Start + run.Length } : new[] { run.Start })
+                .Where(position => !graphemes.Contains(position)).ToHashSet();
+            GraphemeStarts = graphemes.Concat(_runGraphemeBoundaries).Distinct().OrderBy(value => value).ToArray();
             _scripts = new HarfBuzzSharp.Script[text.Length];
             HarfBuzzSharp.Script previousScript = HarfBuzzSharp.Script.Common;
             for (int index = 0; index + 1 < GraphemeStarts.Length; index++)
@@ -94,7 +97,7 @@ namespace MS.Internal.TextFormatting.Portable
             var visibleRuns = runs.Where(run => run.Length != 0).ToArray();
             for (int index = 1; index < visibleRuns.Length; index++)
                 if (Array.BinarySearch(GraphemeStarts, visibleRuns[index].Start) < 0 &&
-                    !CompatibleProperties(visibleRuns[index - 1].Value.Properties, visibleRuns[index].Value.Properties))
+                    !CompatibleProperties(visibleRuns[index - 1].EffectiveProperties, visibleRuns[index].EffectiveProperties))
                     throw new NotSupportedException("A portable text run cannot split a grapheme cluster across formatting properties.");
             var breaks = new List<(int Measure, int Wrap)>();
             var breakEnumerator = new LineBreakEnumerator(text);
@@ -120,15 +123,16 @@ namespace MS.Internal.TextFormatting.Portable
                 int next = GraphemeStarts[index + 1];
                 while (position >= Runs[sourceIndex].Start + Runs[sourceIndex].Length) sourceIndex++;
                 var source = Runs[sourceIndex].Value;
+                var properties = Runs[sourceIndex].EffectiveProperties;
                 HarfBuzzSharp.Script script = _scripts[position];
                 int level = position >= trailing ? BaseLevel : Levels[position];
-                GlyphTypeface face = PortableFontFamily.ResolveGrapheme(source.Properties, Text.Substring(position, next - position));
+                GlyphTypeface face = source is TextEmbeddedObject ? null : PortableFontFamily.ResolveGrapheme(properties, Text.Substring(position, next - position));
                 Segment last = segments.Count == 0 ? null : segments[segments.Count - 1];
-                if (last != null && !_hiddenGraphemeBoundaries.Contains(position) && last.Level == level && last.Script == script && CompatibleProperties(last.Source.Properties, source.Properties) &&
+                if (last != null && !(source is TextEmbeddedObject) && !(last.Source is TextEmbeddedObject) && !_runGraphemeBoundaries.Contains(position) && last.Level == level && last.Script == script && CompatibleProperties(last.Properties, properties) &&
                     ReferenceEquals(last.Typeface, face))
                     segments[segments.Count - 1] = last with { Length = next - last.Start };
                 else
-                    segments.Add(new Segment(position, next - position, source, face, script, level));
+                    segments.Add(new Segment(position, next - position, source, properties, face, script, level));
             }
             return segments;
         }

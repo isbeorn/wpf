@@ -40,8 +40,8 @@ namespace MS.Internal.TextFormatting.Portable
             }
             else
             {
-                var read = Read(source, first);
-                input = new PortableParagraph(source, first, read.Text, read.Runs, read.NewlineLength, read.Terminators, read.SourceLength, properties.FlowDirection);
+                var read = Read(source, first, previous?.TextModifierScope);
+                input = new PortableParagraph(source, first, read.Text, read.Runs, read.NewlineLength, read.Terminators, read.SourceLength, properties.FlowDirection, read.ContinuationScope);
             }
             int start = input.TextOffset(first - input.First);
             int length = input.Text.Length - start;
@@ -58,7 +58,7 @@ namespace MS.Internal.TextFormatting.Portable
                 int firstBreak = low;
                 int fitting = firstBreak - 1, failing = input.Breaks.Length;
                 int candidate = firstBreak, step = 1;
-                bool Fits(int index) => Measure(input, start, Math.Max(start, input.Breaks[index].Measure) - start, source.PixelsPerDip) <= width;
+                bool Fits(int index) => Measure(input, start, Math.Max(start, input.Breaks[index].Measure) - start, source.PixelsPerDip, width) <= width;
                 while (true)
                 {
                     if (!Fits(candidate)) { failing = candidate; break; }
@@ -124,7 +124,7 @@ namespace MS.Internal.TextFormatting.Portable
         {
             Validate(source, first, double.MaxValue, properties, null);
             var read = Read(source, first);
-            var input = new PortableParagraph(source, first, read.Text, read.Runs, read.NewlineLength, read.Terminators, read.SourceLength, properties.FlowDirection);
+            var input = new PortableParagraph(source, first, read.Text, read.Runs, read.NewlineLength, read.Terminators, read.SourceLength, properties.FlowDirection, read.ContinuationScope);
             double maximum = Measure(input, 0, input.Text.Length, source.PixelsPerDip);
             double minimum = 0;
             int start = 0;
@@ -136,11 +136,11 @@ namespace MS.Internal.TextFormatting.Portable
             return new MinMaxParagraphWidth(minimum, maximum);
         }
 
-        private double Measure(PortableParagraph input, int first, int length, double pixelsPerDip)
+        private double Measure(PortableParagraph input, int first, int length, double pixelsPerDip, double available = double.PositiveInfinity)
         {
             double width = 0;
             foreach (var segment in input.Segments(first, length))
-                width += PortableTextLine.Shape(input.Text, segment, pixelsPerDip, _mode, first, length).Width;
+                width += PortableTextLine.Shape(input.Text, segment, pixelsPerDip, _mode, first, length, Math.Max(0, available - width)).Width;
             return width;
         }
 
@@ -154,7 +154,7 @@ namespace MS.Internal.TextFormatting.Portable
                 throw new ArgumentOutOfRangeException(nameof(width));
             if (properties.TextAlignment != TextAlignment.Left && !double.IsFinite(width))
                 throw new ArgumentOutOfRangeException(nameof(width));
-            if ((previous != null && (previous.BreakRecord != IntPtr.Zero || previous.TextModifierScope != null)) ||
+            if ((previous != null && previous.BreakRecord != IntPtr.Zero) ||
                 (properties.TextAlignment != TextAlignment.Left && properties.TextAlignment != TextAlignment.Center && properties.TextAlignment != TextAlignment.Right) ||
                 (properties.LineHeight != 0 && !double.IsNaN(properties.LineHeight)) || properties.Indent != 0 || properties.ParagraphIndent != 0 || properties.TextMarkerProperties != null ||
                 (properties.Tabs != null && properties.Tabs.Count != 0) || (properties.TextDecorations != null && properties.TextDecorations.Count != 0) ||
@@ -162,7 +162,7 @@ namespace MS.Internal.TextFormatting.Portable
                 throw new NotSupportedException("Portable text supports horizontal Left, Center and Right greedy paragraphs without markers, tabs, decorations or custom line heights.");
         }
 
-        private static Input Read(TextSource source, int first)
+        private static Input Read(TextSource source, int first, TextModifierScope modifiers = null)
         {
             var text = new StringBuilder();
             var runs = new List<Run>();
@@ -176,18 +176,40 @@ namespace MS.Internal.TextFormatting.Portable
                 {
                     if (run.Length > 32767 - consumed)
                         throw new NotSupportedException("Portable text lines currently have a 32767 UTF-16 code-unit limit.");
-                    return new Input(text.ToString(), runs, run.Length, consumed, new[] { new TextSpan<TextRun>(run.Length, run) });
+                    return new Input(text.ToString(), runs, run.Length, consumed, new[] { new TextSpan<TextRun>(run.Length, run) }, run is TextEndOfParagraph ? null : modifiers);
                 }
-                if (run is TextHidden)
+                if (run is TextHidden || run is TextModifier || run is TextEndOfSegment)
                 {
+                    if (run is TextModifier modifier)
+                    {
+                        if (modifier.HasDirectionalEmbedding)
+                            throw new NotSupportedException("Portable text modifier directional embedding is not implemented.");
+                        modifiers = new TextModifierScope(modifiers, modifier, checked(first + consumed));
+                    }
+                    else if (run is TextEndOfSegment && modifiers != null)
+                        modifiers = modifiers.ParentScope;
                     if (run.Length > 32767 - consumed)
                         throw new NotSupportedException("Portable text lines currently have a 32767 source-symbol limit.");
                     runs.Add(new Run(text.Length, 0, run, consumed, run.Length));
                     consumed += run.Length;
                     continue;
                 }
+                if (run is TextEmbeddedObject embedded)
+                {
+                    if (embedded.Length != 1 || !embedded.HasFixedSize || embedded.BreakBefore != LineBreakCondition.BreakDesired || embedded.BreakAfter != LineBreakCondition.BreakDesired)
+                        throw new NotSupportedException("Portable embedded text objects require one source symbol, fixed size and BreakDesired before and after the object.");
+                    if (run.Length > 32767 - consumed)
+                        throw new NotSupportedException("Portable text lines currently have a 32767 source-symbol limit.");
+                    TextRunProperties objectProperties = modifiers == null ? run.Properties : modifiers.ModifyProperties(run.Properties);
+                    runs.Add(new Run(text.Length, 1, run, consumed, run.Length, objectProperties));
+                    text.Append('\ufffc');
+                    consumed += run.Length;
+                    continue;
+                }
                 if (!(run is TextCharacters))
-                    throw new NotSupportedException("Portable text currently accepts TextCharacters, TextHidden and text line/paragraph terminators.");
+                    throw new NotSupportedException("Portable text currently accepts text characters, hidden/modifier runs, fixed-size embedded objects and text line/paragraph terminators.");
+                TextRunProperties effective = modifiers == null ? run.Properties : modifiers.ModifyProperties(run.Properties);
+                if (effective == null) throw new ArgumentException("A text modifier must return text run properties.", nameof(source));
                 CharacterBufferReference buffer = run.CharacterBufferReference;
                 int start = text.Length;
                 for (int index = 0; index < run.Length; index++)
@@ -212,8 +234,8 @@ namespace MS.Internal.TextFormatting.Portable
                             }
                         }
                         if (index != 0)
-                            runs.Add(new Run(start, index, run, consumed, index));
-                        return new Input(text.ToString(), runs, newline, consumed + index, terminators);
+                            runs.Add(new Run(start, index, run, consumed, index, effective));
+                        return new Input(text.ToString(), runs, newline, consumed + index, terminators, modifiers);
                     }
                     if (character == '\t')
                         throw new NotSupportedException("Portable paragraph tab stops are not implemented.");
@@ -223,14 +245,17 @@ namespace MS.Internal.TextFormatting.Portable
                     if (consumed + index + 1 >= 32768)
                         throw new NotSupportedException("Portable text lines currently have a 32767 UTF-16 code-unit limit.");
                 }
-                runs.Add(new Run(start, run.Length, run, consumed, run.Length));
+                runs.Add(new Run(start, run.Length, run, consumed, run.Length, effective));
                 consumed += run.Length;
             }
             throw new NotSupportedException("Portable paragraph is too long.");
         }
 
-        internal sealed record Run(int Start, int Length, TextRun Value, int SourceStart, int SourceLength);
-        private sealed record Input(string Text, List<Run> Runs, int NewlineLength, int SourceLength, IList<TextSpan<TextRun>> Terminators = null);
+        internal sealed record Run(int Start, int Length, TextRun Value, int SourceStart, int SourceLength, TextRunProperties Properties = null)
+        {
+            internal TextRunProperties EffectiveProperties => Properties ?? Value.Properties;
+        }
+        private sealed record Input(string Text, List<Run> Runs, int NewlineLength, int SourceLength, IList<TextSpan<TextRun>> Terminators = null, TextModifierScope ContinuationScope = null);
     }
 }
 #endif

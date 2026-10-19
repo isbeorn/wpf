@@ -14,7 +14,8 @@ var thread = new Thread(() =>
 {
     try
     {
-        if (args.Contains("--capture-hidden")) result = HiddenRunCases.Capture();
+        if (args.Contains("--modifier-continuation")) result = ModifierContinuationCases.Capture();
+        else if (args.Contains("--capture-hidden")) result = HiddenRunCases.Capture();
         else if (args.Contains("--verify-alignment"))
         {
             TextOracleCases.VerifyAlignment(idealOnly: true);

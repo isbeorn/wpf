@@ -192,6 +192,44 @@ Run("rounded-rectangle-independent-radius-clamping", () =>
     Pixel(pixels, 58, 10, SKColors.Green);
     Pixel(pixels, 82, 10, SKColors.Magenta);
 });
+Run("derived-container-retains-children-state-and-invalidation", () =>
+{
+    var root = new ContainerVisual();
+    var container = new ContentContainer { Transform = new TranslateTransform(4, 5), Clip = new RectangleGeometry(new Rect(0, 0, 8, 8)) };
+    var brush = new SolidColorBrush(Colors.Red);
+    var child = new DrawingVisual();
+    using (var context = child.RenderOpen()) context.DrawRectangle(brush, null, new Rect(0, 0, 20, 20));
+    container.Children.Add(child);
+    root.Children.Add(container);
+    root.Children.Add(Rectangle(Colors.Blue, new Rect(22, 2, 6, 6)));
+    using var target = new Target(root, 32, 24);
+    target.Render();
+    using (var pixels = target.Snapshot()) { Pixel(pixels, 6, 7, SKColors.Red); Pixel(pixels, 14, 7, SKColors.Transparent); Pixel(pixels, 24, 4, SKColors.Blue); }
+    brush.Color = Colors.Green;
+    Drain();
+    using (var pixels = target.Snapshot()) Pixel(pixels, 6, 7, SKColors.Green);
+    container.Children.Remove(child);
+    Drain();
+    using (var pixels = target.Snapshot()) { Pixel(pixels, 6, 7, SKColors.Transparent); Pixel(pixels, 24, 4, SKColors.Blue); }
+    container.Children.Add(child);
+    Drain();
+    using (var pixels = target.Snapshot()) Pixel(pixels, 6, 7, SKColors.Green);
+    container.Effect = new System.Windows.Media.Effects.BlurEffect();
+    var exception = Expect<NotSupportedException>(target.Render);
+    Require(exception.Message.Contains("effects", StringComparison.OrdinalIgnoreCase), "Derived container effects were silently dropped.");
+    container.Effect = null;
+    target.Render();
+    using (var pixels = target.Snapshot()) Pixel(pixels, 6, 7, SKColors.Green);
+});
+Run("content-bearing-visual-neighbors-remain-explicit", () =>
+{
+    foreach (Visual visual in new Visual[] { new HostVisual(), new System.Windows.Media.Media3D.Viewport3DVisual() })
+    {
+        using var target = new Target(visual, 12, 12);
+        var exception = Expect<NotSupportedException>(target.Render);
+        Require(exception.Message.Contains(visual.GetType().FullName!, StringComparison.Ordinal), "A content-bearing visual lost its named unsupported diagnostic.");
+    }
+});
 Run("first-root-dpi-registration-and-child-inheritance", () =>
 {
     var root = new ContainerVisual();
@@ -759,3 +797,5 @@ internal sealed class RenderElement : UIElement
     }
 }
 internal sealed class FrameCallbackException : Exception;
+
+internal sealed class ContentContainer : ContainerVisual;

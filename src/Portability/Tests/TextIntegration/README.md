@@ -138,7 +138,7 @@ integration check after resize and DPI transitions.
 
 ## Supported contract and open gates
 
-This is a horizontal LTR/RTL physical-font contract. It supports left alignment,
+This is a horizontal LTR/RTL physical-font contract. It supports Left, Center and Right alignment,
 Unicode legal greedy wrapping and explicit source runs. Script/direction/font
 segments are internal implementation details. Real font files are retained by their `GlyphTypeface`; per-operation
 fonts and shaping buffers are disposed independently.
@@ -149,7 +149,7 @@ alignment, changed formatting inside a grapheme, justification, custom line heig
 indentation, markers, paragraph decorations and effects,
 required digit substitution, collapsing, optimal paragraph caches and native Line Services contexts. Font
 style simulations, font collections/face indexes and non-file sources remain
-unsupported. The current paragraph limit is 32767 UTF-16 units. Only Unicode cmap
+unsupported. The current paragraph limit is 32767 source symbols, including visible UTF-16 units and structural run positions. Only Unicode cmap
 formats 4 and 12 are supported by `CharacterToGlyphMap`.
 The legacy `TypefaceMap.GetShapeableText` DirectWrite itemizer and native
 typography feature cache remain unavailable. Portable typography construction
@@ -169,7 +169,7 @@ directory. It downloads no fonts. Older regression cases still use installed
 Arial/Segoe UI Symbol on Windows and DejaVu Sans on Linux; new reference cases
 use identical pinned fonts. Full DirectWrite metric/raster parity is not claimed.
 OpenType feature controls, language-dependent fallback, advanced paragraph
-breaking, text decorations, IME, accessibility,
+breaking, paragraph-level decorations, IME, accessibility,
 per-monitor DPI behavior and native window integration remain separate gates.
 
 ## Run from this checkout
@@ -210,3 +210,35 @@ source consumption and expected line counts and reports timings without a
 machine-dependent threshold. The formatter brackets legal break candidates
 exponentially then searches the bracket, avoiding full-suffix shaping on every
 narrow line and a scan of increasingly long prefixes on a wide line.
+
+## Document source runs
+
+Hidden runs consume original source symbols without entering the visible Unicode
+buffer or producing glyphs. Source spans retain the original caller runs. Length,
+continuations, caret/hit results and range bounds use the original source indices.
+TrailingWhitespaceLength counts the measured source suffix, including hidden
+positions after trailing whitespace and all symbols in a hidden-only line.
+Compatible shaping may span hidden edges: IndexedGlyphRun.TextSourceLength is
+permitted to differ from GlyphRun.Characters.Count. The fixture explicitly checks
+merged "ab" over a + Hidden(2) + b as source0/length4 while visible TextRunBounds
+retain source0/length1 and source3/length1 with original run identities. This is
+not a claim of identical Windows glyph-run partition or internal ligature ties.
+
+Non-directional TextModifier scopes apply ModifyProperties in the existing WPF
+inner-to-outer order and end at TextEndOfSegment or paragraph end. Effective run
+properties remain separate from original source identities. Decorations use real
+font metrics, units, brushes and retained geometry. Directional modifier embedding
+and text effects remain explicitly unsupported. Soft TextEndOfLine and character separators preserve the active scope through a native-free TextLineBreak; a genuine TextEndOfParagraph resets it. Shared stock and portable checks cover nested scopes, ordinary wraps, source-span identities and cloned/disposed continuations.
+
+The observed InlineObjectRun profile is one-symbol fixed-size TextEmbeddedObject with
+BreakDesired before and after. The formatter uses its actual Format,
+ComputeBoundingBox and Draw callbacks, preserves its source identity and atomic
+caret/range positions and emits no object glyph. Variable-size or multi-symbol objects and other
+break conditions fail explicitly. Raw stock controls for those unqualified
+conditions are preserved in the task artifacts, rather than emulated using
+Unicode object-break defaults. Block/child layout and UIElementIsland ownership
+belong to PresentationFramework. This fixture does not qualify FlowDocument
+pagination, list markers, tables or arbitrary paragraph properties.
+Automatic LineHeight accepts both zero and the standard NaN sentinel used by original AvalonEdit default metrics. Stock-calibrated tests preserve widths, baseline and height across both modes and flows; finite custom heights and infinities remain unsupported.
+
+Decoration location calibration uses the pinned DejaVu font at size 24 in Ideal mode, with measured stock Y/thickness values within 0.01 DIP. This is a bounded metric comparison, not cross-backend pixel or Display guideline equality. Decoration pen caps use the actual line geometry bounds for ink overhangs.

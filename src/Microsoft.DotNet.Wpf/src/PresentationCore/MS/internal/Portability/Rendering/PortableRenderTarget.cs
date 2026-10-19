@@ -190,7 +190,7 @@ namespace MS.Internal.Portability.Rendering
                     drawingVisual.WalkContent(walker);
                 else if (visual is UIElement element)
                     element.WalkContent(walker);
-                else if (visual.GetType() != typeof(ContainerVisual))
+                else if (!(visual is ContainerVisual) || visual is HostVisual)
                     throw new NotSupportedException($"Portable rendering does not support visual content of type {visual.GetType().FullName}.");
 
                 int children = visual.InternalVisualChildrenCount;

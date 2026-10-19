@@ -19,8 +19,8 @@ namespace MS.Internal.TextFormatting.Portable
 {
     internal sealed class PortableTextLine : TextLine
     {
-        internal sealed record Shaped(GlyphTypeface Typeface, ushort[] Glyphs, double[] Advances, Point[] Offsets, ushort[] Map, bool[] Stops, double Width);
-        private sealed record LineRun(int Start, int Length, TextRun Source, GlyphRun Glyphs, double Offset, double Width);
+        internal sealed record Shaped(GlyphTypeface Typeface, ushort[] Glyphs, double[] Advances, Point[] Offsets, ushort[] Map, bool[] Stops, double Width, TextEmbeddedObjectMetrics ObjectMetrics = null);
+        private sealed record LineRun(int Start, int Length, TextRun Source, TextRunProperties Properties, GlyphRun Glyphs, int Level, double Offset, double Width, TextEmbeddedObjectMetrics ObjectMetrics = null);
         private readonly PortableParagraph _paragraph;
         private readonly double _drawingOffset;
         private readonly double _alignmentOffset;
@@ -56,15 +56,17 @@ namespace MS.Internal.TextFormatting.Portable
             _dependent = paragraph.First + paragraph.SourceLength + paragraph.NewlineLength - _first - _length - newline;
             _truncated = truncated;
             var shapedRuns = new List<(PortableParagraph.Segment Source, Shaped Shape)>();
+            double shapingWidth = 0;
             foreach (var run in paragraph.Segments(start, length))
             {
-                var shape = Shape(paragraph.Text, run, pixelsPerDip, mode, start, length);
+                var shape = Shape(paragraph.Text, run, pixelsPerDip, mode, start, length, Math.Max(0, paragraphWidth - shapingWidth));
+                shapingWidth += shape.Width;
                 shapedRuns.Add((run, shape));
-                double size = run.Source.Properties.FontRenderingEmSize;
-                _baseline = Math.Max(_baseline, shape.Typeface.Baseline * size);
-                _height = Math.Max(_height, (shape.Typeface.Height + shape.Typeface.PortableFontFace.Metrics.Leading) * size);
+                double size = run.Properties.FontRenderingEmSize;
+                _baseline = Math.Max(_baseline, shape.ObjectMetrics?.Baseline ?? shape.Typeface.Baseline * size);
+                _height = Math.Max(_height, shape.ObjectMetrics?.Height ?? (shape.Typeface.Height + shape.Typeface.PortableFontFace.Metrics.Leading) * size);
             }
-            if (shapedRuns.Count == 0)
+            if (shapedRuns.Count == 0 || (_height == 0 && _baseline == 0))
             {
                 TextRunProperties defaultProperties = properties.DefaultTextRunProperties;
                 if (!defaultProperties.Typeface.TryGetGlyphTypeface(out GlyphTypeface typeface))
@@ -73,7 +75,8 @@ namespace MS.Internal.TextFormatting.Portable
                 _height = typeface.Height * defaultProperties.FontRenderingEmSize;
             }
             double descent = shapedRuns.Count == 0 ? _height - _baseline : shapedRuns.Max(run =>
-                (run.Shape.Typeface.Height - run.Shape.Typeface.Baseline) * run.Source.Source.Properties.FontRenderingEmSize);
+                run.Shape.ObjectMetrics != null ? run.Shape.ObjectMetrics.Height - run.Shape.ObjectMetrics.Baseline :
+                (run.Shape.Typeface.Height - run.Shape.Typeface.Baseline) * run.Source.Properties.FontRenderingEmSize);
             _height = Math.Max(_height, _baseline + descent);
             var spans = new List<TextSpan<TextRun>>();
             foreach (var run in paragraph.Runs)
@@ -89,22 +92,44 @@ namespace MS.Internal.TextFormatting.Portable
             foreach (var item in shapedRuns)
             {
                 var shape = item.Shape;
-                TextRunProperties runProperties = item.Source.Source.Properties;
+                TextRunProperties runProperties = item.Source.Properties;
                 bool rtl = (item.Source.Level & 1) != 0;
                 double origin = _width + (rtl ? shape.Width : 0);
+                if (item.Source.Source is TextEmbeddedObject textObject)
+                {
+                    _runs.Add(new LineRun(item.Source.Start - start, item.Source.Length, item.Source.Source, runProperties, null,
+                        item.Source.Level, _width, shape.Width, shape.ObjectMetrics));
+                    Rect objectBounds = textObject.ComputeBoundingBox(paragraph.BaseLevel == 1, false);
+                    if (!objectBounds.IsEmpty)
+                    {
+                        if (!double.IsFinite(objectBounds.X) || !double.IsFinite(objectBounds.Y) || !double.IsFinite(objectBounds.Width) || !double.IsFinite(objectBounds.Height))
+                            throw new ArgumentException("Embedded text object ink bounds must be finite.");
+                        objectBounds.Offset(_width, _baseline);
+                        ink.Union(objectBounds);
+                    }
+                    if (runProperties.TextDecorations != null)
+                        foreach (TextDecoration decoration in runProperties.TextDecorations)
+                            ink.Union(DecorationInkBounds(_runs[_runs.Count - 1], decoration, _baseline));
+                    _width += shape.Width;
+                    continue;
+                }
                 var glyphs = GlyphRun.TryCreate(shape.Typeface, item.Source.Level, false, runProperties.FontRenderingEmSize,
                     (float)pixelsPerDip, shape.Glyphs, new Point(_drawingOffset + origin, _baseline), shape.Advances, shape.Offsets,
                     paragraph.Text.Substring(item.Source.Start, item.Source.Length).ToCharArray(), null, shape.Map, shape.Stops,
                     XmlLanguage.GetLanguage(runProperties.CultureInfo.IetfLanguageTag), mode);
                 if (glyphs == null)
                     throw new InvalidOperationException("Portable shaped output is not a valid WPF GlyphRun.");
-                _runs.Add(new LineRun(item.Source.Start - start, item.Source.Length, item.Source.Source, glyphs, _width, shape.Width));
+                _runs.Add(new LineRun(item.Source.Start - start, item.Source.Length, item.Source.Source, runProperties, glyphs, item.Source.Level, _width, shape.Width));
                 Rect bounds = glyphs.ComputeInkBoundingBox();
                 if (!bounds.IsEmpty)
                 {
                     bounds.Offset(origin, _baseline);
                     ink.Union(bounds);
                 }
+                LineRun added = _runs[_runs.Count - 1];
+                if (added.Properties.TextDecorations != null)
+                    foreach (TextDecoration decoration in added.Properties.TextDecorations)
+                        ink.Union(DecorationInkBounds(added, decoration, _baseline));
                 _width += shape.Width;
             }
             if (newline != 0)
@@ -130,12 +155,11 @@ namespace MS.Internal.TextFormatting.Portable
             _overflow = paragraphWidth > 0 && _widthWithoutTrailing > paragraphWidth;
         }
 
-        internal static Shaped Shape(string paragraph, PortableParagraph.Segment segment, double pixelsPerDip, TextFormattingMode mode, int lineStart, int lineLength)
+        internal static Shaped Shape(string paragraph, PortableParagraph.Segment segment, double pixelsPerDip, TextFormattingMode mode, int lineStart, int lineLength, double remainingWidth = double.PositiveInfinity)
         {
-            TextRunProperties properties = segment.Source.Properties;
-            if ((properties.TextDecorations != null && properties.TextDecorations.Count != 0) ||
-                (properties.TextEffects != null && properties.TextEffects.Count != 0))
-                throw new NotSupportedException("Portable run decorations and effects are not implemented.");
+            TextRunProperties properties = segment.Properties;
+            if (properties.TextEffects != null && properties.TextEffects.Count != 0)
+                throw new NotSupportedException("Portable run text effects are not implemented.");
             if (properties.TypographyProperties != null && !IsDefaultTypography(properties.TypographyProperties))
                 throw new NotSupportedException("Portable custom OpenType typography features are not implemented.");
             if (properties.BaselineAlignment != BaselineAlignment.Baseline)
@@ -144,6 +168,14 @@ namespace MS.Internal.TextFormatting.Portable
             digits.SetTextRunProperties(properties);
             if (digits.RequiresNumberSubstitution)
                 throw new NotSupportedException("Portable contextual, native-national and traditional digit substitution are not implemented.");
+            if (segment.Source is TextEmbeddedObject item)
+            {
+                TextEmbeddedObjectMetrics metrics = item.Format(remainingWidth);
+                if (metrics == null || !double.IsFinite(metrics.Width) || !double.IsFinite(metrics.Height) || !double.IsFinite(metrics.Baseline) ||
+                    metrics.Width < 0 || metrics.Height < 0)
+                    throw new ArgumentException("Embedded text object metrics must have finite nonnegative dimensions and a finite baseline.");
+                return new Shaped(null, null, null, null, null, null, metrics.Width, metrics);
+            }
             GlyphTypeface typeface = segment.Typeface;
             string text = paragraph.Substring(segment.Start, segment.Length);
             bool rtl = (segment.Level & 1) != 0;
@@ -236,12 +268,71 @@ namespace MS.Internal.TextFormatting.Portable
             {
                 foreach (LineRun run in _runs)
                 {
-                    if (run.Source.Properties.BackgroundBrush != null)
-                        context.DrawRectangle(run.Source.Properties.BackgroundBrush, null, new Rect(_drawingOffset + run.Offset, 0, run.Width, _height));
-                    context.DrawGlyphRun(run.Source.Properties.ForegroundBrush, run.Glyphs);
+                    if (run.Properties.BackgroundBrush != null)
+                        context.DrawRectangle(run.Properties.BackgroundBrush, null, new Rect(_drawingOffset + run.Offset, 0, run.Width, _height));
+                    if (run.Source is TextEmbeddedObject item)
+                        item.Draw(context, new Point(_drawingOffset + run.Offset, _baseline), _paragraph.BaseLevel == 1, false);
+                    else
+                        context.DrawGlyphRun(run.Properties.ForegroundBrush, run.Glyphs);
+                    if (run.Properties.TextDecorations != null)
+                        foreach (TextDecoration decoration in run.Properties.TextDecorations)
+                        {
+                            Rect rectangle = DecorationBounds(run, decoration, _baseline, _drawingOffset);
+                            if (decoration.Pen == null)
+                                context.DrawRectangle(run.Properties.ForegroundBrush, null, rectangle);
+                            else
+                            {
+                                Pen pen = decoration.Pen.CloneCurrentValue();
+                                pen.Thickness = rectangle.Height;
+                                double y = rectangle.Y + rectangle.Height / 2;
+                                context.DrawLine(pen, new Point(rectangle.Left, y), new Point(rectangle.Right, y));
+                            }
+                        }
                 }
             }
             finally { context.Pop(); }
+        }
+        private static Rect DecorationInkBounds(LineRun run, TextDecoration decoration, double baseline)
+        {
+            Rect bounds = DecorationBounds(run, decoration, baseline, 0);
+            if (decoration.Pen == null) return bounds;
+            Pen pen = decoration.Pen.CloneCurrentValue();
+            pen.Thickness = bounds.Height;
+            double y = bounds.Y + bounds.Height / 2;
+            return new LineGeometry(new Point(bounds.Left, y), new Point(bounds.Right, y)).GetRenderBounds(pen);
+        }
+        private static Rect DecorationBounds(LineRun run, TextDecoration decoration, double baseline, double drawingOffset)
+        {
+            GlyphTypeface face = run.Glyphs?.GlyphTypeface;
+            if (face == null && !run.Properties.Typeface.TryGetGlyphTypeface(out face))
+                throw new NotSupportedException("A physical font is required for embedded-object text decorations.");
+            double size = run.Properties.FontRenderingEmSize;
+            double position = decoration.Location switch
+            {
+                TextDecorationLocation.Underline => -face.UnderlinePosition * size,
+                TextDecorationLocation.Strikethrough => -face.StrikethroughPosition * size,
+                TextDecorationLocation.OverLine => (-face.Baseline + face.StrikethroughThickness) * size,
+                TextDecorationLocation.Baseline => 0,
+                _ => throw new NotSupportedException("Portable text decoration location is not supported.")
+            };
+            double recommended = (decoration.Location == TextDecorationLocation.Underline ? face.UnderlineThickness : face.StrikethroughThickness) * size;
+            double unit = decoration.PenThicknessUnit switch
+            {
+                TextDecorationUnit.FontRecommended => recommended,
+                TextDecorationUnit.FontRenderingEmSize => size,
+                TextDecorationUnit.Pixel => 1,
+                _ => throw new NotSupportedException("Portable text decoration thickness unit is not supported.")
+            };
+            double thickness = Math.Abs((decoration.Pen?.Thickness ?? 1) * unit);
+            double offset = decoration.PenOffsetUnit switch
+            {
+                TextDecorationUnit.FontRecommended => position,
+                TextDecorationUnit.FontRenderingEmSize => size,
+                TextDecorationUnit.Pixel => 1,
+                _ => throw new NotSupportedException("Portable text decoration offset unit is not supported.")
+            };
+            double y = baseline + position + decoration.PenOffset * offset;
+            return new Rect(drawingOffset + run.Offset, y - thickness / 2, run.Width, thickness);
         }
         public override TextLine Collapse(params TextCollapsingProperties[] properties)
         {
@@ -252,12 +343,13 @@ namespace MS.Internal.TextFormatting.Portable
         }
         public override IList<TextCollapsedRange> GetTextCollapsedRanges() { Verify(); return null; }
         public override TextLineBreak GetTextLineBreak() { Verify(); return _newline == 0 ?
-            new TextLineBreak(new PortableParagraphContinuation(_paragraph, _first + _length)) : null; }
+            new TextLineBreak(new PortableParagraphContinuation(_paragraph, _first + _length)) :
+            _paragraph.ContinuationScope == null ? null : new TextLineBreak(_paragraph.ContinuationScope, IntPtr.Zero); }
         public override IList<TextSpan<TextRun>> GetTextRunSpans() { Verify(); return _spans; }
         public override IEnumerable<IndexedGlyphRun> GetIndexedGlyphRuns()
         {
             Verify();
-            return _runs.OrderBy(run => run.Start).Select(run => new IndexedGlyphRun(SourcePosition(run.Start), SourcePosition(run.Start + run.Length, end: true) - SourcePosition(run.Start), run.Glyphs)).ToArray();
+            return _runs.Where(run => run.Glyphs != null).OrderBy(run => run.Start).Select(run => new IndexedGlyphRun(SourcePosition(run.Start), SourcePosition(run.Start + run.Length, end: true) - SourcePosition(run.Start), run.Glyphs)).ToArray();
         }
 
         public override CharacterHit GetCharacterHitFromDistance(double distance)
@@ -272,7 +364,12 @@ namespace MS.Internal.TextFormatting.Portable
             LineRun run = _runs.Last();
             foreach (LineRun candidate in _runs)
                 if (distance < candidate.Offset + candidate.Width) { run = candidate; break; }
-            double local = (run.Glyphs.BidiLevel & 1) == 0 ? distance - run.Offset : run.Offset + run.Width - distance;
+            double local = (run.Level & 1) == 0 ? distance - run.Offset : run.Offset + run.Width - distance;
+            if (run.Glyphs == null)
+            {
+                int sourceFirst = SourcePosition(run.Start);
+                return new CharacterHit(sourceFirst, local <= run.Width / 2 ? 0 : SourcePosition(run.Start + run.Length, end: true) - sourceFirst);
+            }
             CharacterHit hit = run.Glyphs.GetCaretCharacterHitFromDistance(local, out _);
             int first = SourcePosition(run.Start + hit.FirstCharacterIndex);
             return new CharacterHit(first, hit.TrailingLength == 0 ? 0 :
@@ -301,14 +398,15 @@ namespace MS.Internal.TextFormatting.Portable
         }
         private static double RunDistance(LineRun run, int index, int trailing = 0)
         {
-            double local = run.Glyphs.GetDistanceFromCaretCharacterHit(new CharacterHit(index - run.Start, trailing));
-            return (run.Glyphs.BidiLevel & 1) == 0 ? run.Offset + local : run.Offset + run.Width - local;
+            double local = run.Glyphs == null ? (index - run.Start + trailing > 0 ? run.Width : 0) :
+                run.Glyphs.GetDistanceFromCaretCharacterHit(new CharacterHit(index - run.Start, trailing));
+            return (run.Level & 1) == 0 ? run.Offset + local : run.Offset + run.Width - local;
         }
         private static double SelectionDistance(LineRun run, int index)
         {
             int local = index - run.Start;
             // A grapheme's selection advance belongs to its first source code unit.
-            while (local < run.Length && !run.Glyphs.CaretStops[local]) local++;
+            while (run.Glyphs != null && local < run.Length && !run.Glyphs.CaretStops[local]) local++;
             return RunDistance(run, run.Start + local);
         }
         private void ValidateHit(CharacterHit hit)
@@ -316,8 +414,9 @@ namespace MS.Internal.TextFormatting.Portable
             if (hit.FirstCharacterIndex < _first || hit.TrailingLength < 0 || (long)hit.FirstCharacterIndex + hit.TrailingLength > (long)_first + Length)
                 throw new ArgumentOutOfRangeException(nameof(hit));
         }
-        private int[] Stops() => _runs.SelectMany(run => run.Glyphs.CaretStops.Select((stop, index) => (stop, index))
-            .Where(item => item.stop).Select(item => run.Start + item.index)).Distinct().OrderBy(value => value).ToArray();
+        private int[] Stops() => _runs.SelectMany(run => run.Glyphs == null ? new[] { run.Start, run.Start + run.Length } :
+            run.Glyphs.CaretStops.Select((stop, index) => (stop, index)).Where(item => item.stop).Select(item => run.Start + item.index))
+            .Distinct().OrderBy(value => value).ToArray();
         public override CharacterHit GetNextCaretCharacterHit(CharacterHit hit)
         {
             Verify(); ValidateHit(hit);
@@ -377,10 +476,12 @@ namespace MS.Internal.TextFormatting.Portable
                         int sourceEnd = Math.Min(end, source.Start + source.Length - paragraphOffset);
                         double sourceLeft = ParagraphDistance(SelectionDistance(run, sourceStart));
                         double sourceRight = ParagraphDistance(SelectionDistance(run, sourceEnd));
-                        sourceBounds.Add(new TextRunBounds(new Rect(Math.Min(sourceLeft, sourceRight), 0, Math.Abs(sourceRight - sourceLeft), _height),
+                        double runTop = run.ObjectMetrics == null ? 0 : _baseline - run.ObjectMetrics.Baseline;
+                        double runHeight = run.ObjectMetrics?.Height ?? _height;
+                        sourceBounds.Add(new TextRunBounds(new Rect(Math.Min(sourceLeft, sourceRight), runTop, Math.Abs(sourceRight - sourceLeft), runHeight),
                             SourcePosition(sourceStart), SourcePosition(sourceEnd, end: true), source.Value));
                     }
-                    bounds.Add(new TextBounds(rectangle, (run.Glyphs.BidiLevel & 1) == 0 ? FlowDirection.LeftToRight : FlowDirection.RightToLeft,
+                    bounds.Add(new TextBounds(rectangle, (run.Level & 1) == 0 ? FlowDirection.LeftToRight : FlowDirection.RightToLeft,
                         sourceBounds));
                 }
             }
