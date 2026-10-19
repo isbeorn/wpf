@@ -58,6 +58,10 @@ namespace MS.Internal.Documents
         /// </summary>
         internal override ITextPointer GetTextPositionFromPoint(Point point, bool snapToText)
         {
+#if PORTABLE_WPF
+            if (!IsValid) throw new InvalidOperationException(SR.TextViewInvalidLayout);
+            return _owner.PortableLayout.HitTest(point, snapToText);
+#else
             // Verify that layout information is valid. Cannot continue if not valid.
             if (!IsValid)
             {
@@ -71,6 +75,7 @@ namespace MS.Internal.Documents
 
             // Search columns
             return GetTextPositionFromPoint(Columns, FloatingElements, point, snapToText);
+        #endif
         }
 
         /// <summary>
@@ -81,6 +86,13 @@ namespace MS.Internal.Documents
         /// </remarks>
         internal override Rect GetRawRectangleFromTextPosition(ITextPointer position, out Transform transform)
         {
+#if PORTABLE_WPF
+            if (!IsValid) throw new InvalidOperationException(SR.TextViewInvalidLayout);
+            ValidationHelper.VerifyPosition(_textContainer, position, nameof(position));
+            if (!ContainsCore(position)) throw new ArgumentOutOfRangeException(nameof(position));
+            transform = Transform.Identity;
+            return _owner.PortableLayout.GetCaretRectangle(position);
+#else
             // Verify that layout information is valid. Cannot continue if not valid.
             if (!IsValid)
             {
@@ -99,6 +111,7 @@ namespace MS.Internal.Documents
             TransformFromContent(ref rect, out transform);
 
             return rect;
+        #endif
         }
 
         /// <summary>
@@ -106,6 +119,12 @@ namespace MS.Internal.Documents
         /// </summary>
         internal override Geometry GetTightBoundingGeometryFromTextPositions(ITextPointer startPosition, ITextPointer endPosition)
         {
+#if PORTABLE_WPF
+            if (!IsValid) throw new InvalidOperationException(SR.TextViewInvalidLayout);
+            ValidationHelper.VerifyPosition(_textContainer, startPosition, nameof(startPosition));
+            ValidationHelper.VerifyPosition(_textContainer, endPosition, nameof(endPosition));
+            return _owner.PortableLayout.GetSelectionGeometry(startPosition, endPosition);
+#else
             Geometry geometry = null;
 
             // Verify that layout information is valid. Cannot continue if not valid.
@@ -190,6 +209,7 @@ namespace MS.Internal.Documents
             }
 
             return (geometry);
+        #endif
         }
 
         // ------------------------------------------------------------------
@@ -221,6 +241,12 @@ namespace MS.Internal.Documents
         /// </summary>
         internal override ITextPointer GetPositionAtNextLine(ITextPointer position, double suggestedX, int count, out double newSuggestedX, out int linesMoved)
         {
+#if PORTABLE_WPF
+            if (!IsValid) throw new InvalidOperationException(SR.TextViewInvalidLayout);
+            ValidationHelper.VerifyPosition(_textContainer, position, nameof(position));
+            if (!ContainsCore(position)) throw new ArgumentOutOfRangeException(nameof(position));
+            return _owner.PortableLayout.MoveLine(position, suggestedX, count, out newSuggestedX, out linesMoved);
+#else
             ITextPointer positionOut;
             bool positionFound;
 
@@ -268,6 +294,7 @@ namespace MS.Internal.Documents
             }
 
             return positionOut;
+        #endif
         }
 
         /// <summary>
@@ -275,6 +302,12 @@ namespace MS.Internal.Documents
         /// </summary>
         internal override bool IsAtCaretUnitBoundary(ITextPointer position)
         {
+#if PORTABLE_WPF
+            if (!IsValid) throw new InvalidOperationException(SR.TextViewInvalidLayout);
+            ValidationHelper.VerifyPosition(_textContainer, position, nameof(position));
+            if (!ContainsCore(position)) throw new ArgumentOutOfRangeException(nameof(position));
+            return _owner.PortableLayout.IsCaretBoundary(position);
+#else
             // Verify that layout information is valid. Cannot continue if not valid.
             if (!IsValid)
             {
@@ -287,6 +320,7 @@ namespace MS.Internal.Documents
             }
 
             return IsAtCaretUnitBoundary(Columns, FloatingElements, position);
+        #endif
         }
 
         /// <summary>
@@ -294,6 +328,13 @@ namespace MS.Internal.Documents
         /// </summary>
         internal override ITextPointer GetNextCaretUnitPosition(ITextPointer position, LogicalDirection direction)
         {
+#if PORTABLE_WPF
+            if (!IsValid) throw new InvalidOperationException(SR.TextViewInvalidLayout);
+            ValidationHelper.VerifyPosition(_textContainer, position, nameof(position));
+            if (!ContainsCore(position)) throw new ArgumentOutOfRangeException(nameof(position));
+            ValidationHelper.VerifyDirection(direction, nameof(direction));
+            return _owner.PortableLayout.MoveCaret(position, direction);
+#else
             // Verify that layout information is valid. Cannot continue if not valid.
             if (!IsValid)
             {
@@ -307,6 +348,7 @@ namespace MS.Internal.Documents
             }
 
             return GetNextCaretUnitPosition(Columns, FloatingElements, position, direction);
+        #endif
         }
 
         /// <summary>
@@ -314,6 +356,12 @@ namespace MS.Internal.Documents
         /// </summary>
         internal override ITextPointer GetBackspaceCaretUnitPosition(ITextPointer position)
         {
+#if PORTABLE_WPF
+            if (!IsValid) throw new InvalidOperationException(SR.TextViewInvalidLayout);
+            ValidationHelper.VerifyPosition(_textContainer, position, nameof(position));
+            if (!ContainsCore(position)) throw new ArgumentOutOfRangeException(nameof(position));
+            return _owner.PortableLayout.MoveCaret(position, LogicalDirection.Backward, true);
+#else
             // Verify that layout information is valid. Cannot continue if not valid.
             if (!IsValid)
             {
@@ -326,6 +374,7 @@ namespace MS.Internal.Documents
             }
 
             return GetBackspaceCaretUnitPosition(Columns, FloatingElements, position);
+        #endif
         }
 
         /// <summary>
@@ -333,6 +382,12 @@ namespace MS.Internal.Documents
         /// </summary>
         internal override TextSegment GetLineRange(ITextPointer position)
         {
+#if PORTABLE_WPF
+            if (!IsValid) throw new InvalidOperationException(SR.TextViewInvalidLayout);
+            ValidationHelper.VerifyPosition(_textContainer, position, nameof(position));
+            if (!ContainsCore(position)) throw new ArgumentOutOfRangeException(nameof(position));
+            return _owner.PortableLayout.GetLineRange(position);
+#else
             // Verify that layout information is valid. Cannot continue if not valid.
             if (!IsValid)
             {
@@ -345,6 +400,7 @@ namespace MS.Internal.Documents
             }
 
             return GetLineRangeFromPosition(Columns, FloatingElements, position);
+        #endif
         }
 
         /// <summary>
@@ -352,6 +408,13 @@ namespace MS.Internal.Documents
         /// </summary>
         internal override ReadOnlyCollection<GlyphRun> GetGlyphRuns(ITextPointer start, ITextPointer end)
         {
+#if PORTABLE_WPF
+            if (!IsValid) throw new InvalidOperationException(SR.TextViewInvalidLayout);
+            ValidationHelper.VerifyPosition(_textContainer, start, nameof(start));
+            ValidationHelper.VerifyPosition(_textContainer, end, nameof(end));
+            ValidationHelper.VerifyPositionPair(start, end);
+            return _owner.PortableLayout.GetGlyphRuns(start, end);
+#else
             List<GlyphRun> glyphRuns = new List<GlyphRun>();
 
             // Verify that layout information is valid. Cannot continue if not valid.
@@ -374,6 +437,7 @@ namespace MS.Internal.Documents
             GetGlyphRuns(glyphRuns, start, end, Columns, FloatingElements);
 
             return new ReadOnlyCollection<GlyphRun>(glyphRuns);
+        #endif
         }
 
         /// <summary>
@@ -420,6 +484,10 @@ namespace MS.Internal.Documents
         /// </returns>
         internal CellInfo GetCellInfoFromPoint(Point point, Table tableFilter)
         {
+#if PORTABLE_WPF
+            if (!IsValid) throw new InvalidOperationException(SR.TextViewInvalidLayout);
+            throw new PlatformNotSupportedException("Portable FlowDocument table navigation is not yet supported.");
+#else
             // Verify that layout information is valid. Cannot continue if not valid.
             if (!IsValid)
             {
@@ -427,6 +495,7 @@ namespace MS.Internal.Documents
             }
 
             return GetCellInfoFromPoint(Columns, FloatingElements, point, tableFilter);
+        #endif
         }
 
         /// <summary>
@@ -443,7 +512,9 @@ namespace MS.Internal.Documents
         internal void Invalidate()
         {
             _columns = null;
+#if !PORTABLE_WPF
             _segments = null;
+#endif
             _floatingElements = null;
         }
 
@@ -596,12 +667,16 @@ namespace MS.Internal.Documents
         {
             get
             {
+#if PORTABLE_WPF
+                return _owner.PortableLayout.Segments;
+#else
                 if (_segments == null)
                 {
                     _segments = GetTextSegments();
                     Invariant.Assert(_segments != null, "TextSegment collection is empty.");
                 }
                 return _segments;
+#endif
             }
         }
 
@@ -3519,7 +3594,9 @@ namespace MS.Internal.Documents
         /// <summary>
         /// Cached collection of TextSegments.
         /// </summary>
+#if !PORTABLE_WPF
         private ReadOnlyCollection<TextSegment> _segments;
+#endif
 
         /// <summary>
         /// True if the view has some text content (not just figures/floaters)

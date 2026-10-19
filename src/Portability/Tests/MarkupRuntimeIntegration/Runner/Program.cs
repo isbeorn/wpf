@@ -30,6 +30,12 @@ internal static class Program
             try { checks.Add(new { name, status = "pass", detail = action() }); }
             catch (Exception exception) { failed = true; checks.Add(new { name, status = "fail", detail = exception.ToString() }); }
         }
+        if (args.SequenceEqual(new[] { "--flow-document" }))
+        {
+            Check("genuine-flow-document-paragraph", FlowDocumentCases.Paragraph);
+            Console.WriteLine(JsonSerializer.Serialize(new { checks }, new JsonSerializerOptions { WriteIndented = true }));
+            return failed ? 1 : 0;
+        }
         if (args.Length != 0)
         {
             Check("isolated-managed-type-trigger", () => ProbeTypeTrigger(args.Single()));

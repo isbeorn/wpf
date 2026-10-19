@@ -2,6 +2,8 @@
   <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
   <ItemGroup>
     <Compile Include="../RuntimeAssemblyEvidence.cs" />
+    <ProjectReference Include="../../../Framework/PresentationUI/PresentationUI.csproj" />
+    <ProjectReference Include="../../../Framework/PresentationFramework.Classic/PresentationFramework.Classic.csproj" />
     <ProjectReference Include="../Fixture/Fixture.csproj" />
     <ProjectReference Include="../NamespaceContributor/NamespaceContributor.csproj" />
     <ProjectReference Include="../../../Framework/PresentationFramework-SystemCore/PresentationFramework-SystemCore.csproj" />

@@ -145,6 +145,16 @@ namespace MS.Internal.Documents
         /// <summary>
         /// DocumentPage representing formatted content.
         /// </summary>
+#if PORTABLE_WPF
+        internal void ReleasePortableLayout()
+        {
+            _documentPage.ReleasePortableLayout();
+            _isContentFormatValid = false;
+            _arrangedAfterFormat = false;
+            _lastFormatSuccessful = false;
+            _document.StructuralCache.InvalidateFormatCache(true);
+        }
+#endif
         internal FlowDocumentPage DocumentPage
         {
             get
@@ -328,6 +338,9 @@ namespace MS.Internal.Documents
         /// </summary>
         void IFlowDocumentFormatter.Suspend()
         {
+#if PORTABLE_WPF
+            ReleasePortableLayout();
+#endif
             if (Suspended != null)
             {
                 Suspended(this, EventArgs.Empty);

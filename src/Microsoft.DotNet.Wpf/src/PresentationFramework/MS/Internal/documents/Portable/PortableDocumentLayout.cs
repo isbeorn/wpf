@@ -1,0 +1,283 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Globalization;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Media;
+using System.Windows.Media.TextFormatting;
+using MS.Internal.Text;
+
+namespace MS.Internal.Documents
+{
+    internal sealed class PortableDocumentLayout : IDisposable
+    {
+        private readonly FlowDocument _document;
+        private readonly TextFormatter _formatter;
+        private readonly List<Line> _lines = new List<Line>();
+        internal ContainerVisual Visual { get; } = new ContainerVisual();
+        internal Size Size { get; private set; }
+        internal ReadOnlyCollection<TextSegment> Segments { get; }
+
+        private PortableDocumentLayout(FlowDocument document)
+        {
+            _document = document;
+            _formatter = TextFormatter.Create(TextOptions.GetTextFormattingMode(document));
+            Segments = new List<TextSegment> { new TextSegment(document.ContentStart, document.ContentEnd, true) }.AsReadOnly();
+        }
+
+        internal static PortableDocumentLayout Format(FlowDocument document, double width, Thickness margin)
+        {
+            var layout = new PortableDocumentLayout(document);
+            try
+            {
+                double y = margin.Top;
+                double previousBottom = 0;
+                foreach (Block block in document.Blocks)
+                {
+                    if (block is not Paragraph paragraph)
+                        throw new PlatformNotSupportedException("Portable FlowDocument currently requires Paragraph blocks.");
+                    var spacing = paragraph.Margin;
+                    double defaultSpacing = paragraph.FontSize;
+                    double top = double.IsNaN(spacing.Top) ? defaultSpacing : spacing.Top;
+                    double bottom = double.IsNaN(spacing.Bottom) ? defaultSpacing : spacing.Bottom;
+                    double left = double.IsNaN(spacing.Left) ? 0 : spacing.Left;
+                    double right = double.IsNaN(spacing.Right) ? 0 : spacing.Right;
+                    y += Math.Max(previousBottom, top);
+                    y = layout.FormatParagraph(paragraph, margin.Left + left, y,
+                        Math.Max(1, width - margin.Left - margin.Right - left - right));
+                    previousBottom = bottom;
+                }
+                y += previousBottom + margin.Bottom;
+                layout.Size = new Size(width, y);
+                var drawing = new DrawingVisual();
+                using (DrawingContext dc = drawing.RenderOpen())
+                    foreach (Line line in layout._lines)
+                        line.Text.Draw(dc, line.Origin, InvertAxes.None);
+                layout.Visual.Children.Add(drawing);
+                return layout;
+            }
+            catch { layout.Dispose(); throw; }
+        }
+
+        private double FormatParagraph(Paragraph paragraph, double x, double y, double width)
+        {
+            var source = new ParagraphSource(paragraph, _document.PixelsPerDip);
+            if (!double.IsNaN(paragraph.LineHeight) || paragraph.Padding != new Thickness() || paragraph.BorderThickness != new Thickness())
+                throw new PlatformNotSupportedException("Portable paragraph custom line height, padding and borders are not yet supported.");
+            var properties = new LineProperties(paragraph, _document, source.DefaultProperties, null);
+            int offset = 0;
+            TextLineBreak previous = null;
+            try
+            {
+                while (offset < source.Length)
+                {
+                    TextLine text = _formatter.FormatLine(source, offset, width, offset == 0 ? properties.FirstLineProps : properties, previous);
+                    _lines.Add(new Line(source, text, offset, new Point(x, y)));
+                    if (text.Length <= 0) throw new InvalidOperationException("Document formatter did not consume source symbols.");
+                    previous?.Dispose();
+                    previous = text.GetTextLineBreak();
+                    offset += text.Length;
+                    y += text.Height;
+                }
+            }
+            finally { previous?.Dispose(); }
+            return y;
+        }
+
+        private Line FindLine(ITextPointer position)
+        {
+            Line previous = null;
+            foreach (Line line in _lines)
+            {
+                int offset = line.Source.Start.GetOffsetToPosition((TextPointer)position);
+                if (offset < line.Offset || (offset == line.Offset && position.LogicalDirection == LogicalDirection.Backward))
+                    return previous ?? line;
+                if (offset < line.Offset + line.Text.Length ||
+                    (offset == line.Offset + line.Text.Length && position.LogicalDirection == LogicalDirection.Backward)) return line;
+                previous = line;
+            }
+            return previous;
+        }
+
+        private static int Offset(Line line, ITextPointer position) => Math.Clamp(
+            line.Source.Start.GetOffsetToPosition((TextPointer)position), line.Offset, line.Offset + line.Text.Length);
+
+        internal TextPointer HitTest(Point point, bool snap)
+        {
+            Line nearest = null;
+            double distance = double.PositiveInfinity;
+            foreach (Line line in _lines)
+            {
+                var bounds = new Rect(line.Origin.X + line.Text.Start, line.Origin.Y,
+                    line.Text.WidthIncludingTrailingWhitespace, line.Text.Height);
+                double dy = point.Y < bounds.Top ? bounds.Top - point.Y : Math.Max(0, point.Y - bounds.Bottom);
+                if (bounds.Contains(point)) return Hit(line, point.X);
+                if (dy < distance) { distance = dy; nearest = line; }
+            }
+            return snap && nearest != null ? Hit(nearest, point.X) : null;
+        }
+
+        private static TextPointer Hit(Line line, double x)
+        {
+            CharacterHit hit = line.Text.GetCharacterHitFromDistance(x - line.Origin.X);
+            int offset = Math.Clamp(hit.FirstCharacterIndex + hit.TrailingLength, 0, line.Source.Length - 1);
+            return new TextPointer(line.Source.Start, offset,
+                hit.TrailingLength == 0 ? LogicalDirection.Forward : LogicalDirection.Backward);
+        }
+
+        internal Rect GetCaretRectangle(ITextPointer position)
+        {
+            Line line = FindLine(position);
+            if (line == null) return Rect.Empty;
+            int offset = Offset(line, position);
+            double x = line.Text.GetDistanceFromCharacterHit(new CharacterHit(offset, 0));
+            return new Rect(line.Origin.X + x, line.Origin.Y, 0, line.Text.Height);
+        }
+
+        internal List<Rect> GetRectangles(ITextPointer start, ITextPointer end)
+        {
+            var result = new List<Rect>();
+            if (start.CompareTo(end) > 0) (start, end) = (end, start);
+            foreach (Line line in _lines)
+            {
+                int first = Offset(line, start), last = Offset(line, end);
+                if (last <= first) continue;
+                foreach (TextBounds bounds in line.Text.GetTextBounds(first, last - first))
+                {
+                    Rect rect = bounds.Rectangle;
+                    rect.Offset(line.Origin.X, line.Origin.Y);
+                    result.Add(rect);
+                }
+            }
+            return result;
+        }
+
+        internal Geometry GetSelectionGeometry(ITextPointer start, ITextPointer end)
+        {
+            var geometry = new GeometryGroup();
+            foreach (Rect rect in GetRectangles(start, end)) geometry.Children.Add(new RectangleGeometry(rect));
+            return geometry.Children.Count == 0 ? null : geometry;
+        }
+
+        internal bool IsCaretBoundary(ITextPointer position)
+        {
+            Line line = FindLine(position);
+            if (line == null) return false;
+            var hit = new CharacterHit(Offset(line, position), 0);
+            var next = line.Text.GetNextCaretCharacterHit(hit);
+            if (next == hit) next = new CharacterHit(line.Offset + line.Text.Length - 1, 1);
+            return line.Text.GetPreviousCaretCharacterHit(next) == hit;
+        }
+
+        internal ITextPointer MoveCaret(ITextPointer position, LogicalDirection direction, bool backspace = false)
+        {
+            Line line = FindLine(position);
+            if (line == null) return position;
+            var hit = new CharacterHit(Offset(line, position), 0);
+            var next = direction == LogicalDirection.Forward ? line.Text.GetNextCaretCharacterHit(hit) :
+                backspace ? line.Text.GetBackspaceCaretCharacterHit(hit) : line.Text.GetPreviousCaretCharacterHit(hit);
+            int offset = Math.Clamp(next.FirstCharacterIndex + next.TrailingLength, 0, line.Source.Length - 1);
+            var result = new TextPointer(line.Source.Start, offset, direction);
+            return result.CompareTo((TextPointer)position) == 0 ? new TextPointer(((TextPointer)position).GetNextInsertionPosition(direction) ?? result) : result;
+        }
+
+        internal TextSegment GetLineRange(ITextPointer position)
+        {
+            Line line = FindLine(position);
+            if (line == null) return new TextSegment(position, position, true);
+            return new TextSegment(line.Source.Start.GetPositionAtOffset(line.Offset),
+                line.Source.Start.GetPositionAtOffset(Math.Min(line.Source.Length - 1, line.Offset + line.Text.Length)), true);
+        }
+
+        internal ITextPointer MoveLine(ITextPointer position, double x, int count, out double newX, out int moved)
+        {
+            Line line = FindLine(position);
+            newX = x;
+            moved = 0;
+            if (line == null) return position;
+            int index = _lines.IndexOf(line);
+            int target = (int)Math.Clamp((long)index + count, 0, _lines.Count - 1);
+            moved = target - index;
+            Line targetLine = _lines[target];
+            return double.IsNaN(x) ? new TextPointer(targetLine.Source.Start, targetLine.Offset, LogicalDirection.Forward) : Hit(targetLine, x);
+        }
+
+        internal ReadOnlyCollection<GlyphRun> GetGlyphRuns(ITextPointer start, ITextPointer end)
+        {
+            var result = new List<GlyphRun>();
+            foreach (Line line in _lines)
+            {
+                int first = Offset(line, start), last = Offset(line, end);
+                if (last <= first) continue;
+                foreach (IndexedGlyphRun run in line.Text.GetIndexedGlyphRuns())
+                    if (run.TextSourceCharacterIndex < last && run.TextSourceCharacterIndex + run.TextSourceLength > first)
+                        result.Add(run.GlyphRun);
+            }
+            return result.AsReadOnly();
+        }
+
+        public void Dispose()
+        {
+            Visual.Children.Clear();
+            foreach (Line line in _lines) line.Text.Dispose();
+            _lines.Clear();
+            _formatter.Dispose();
+        }
+
+        private sealed class Line
+        {
+            internal readonly ParagraphSource Source;
+            internal readonly TextLine Text;
+            internal readonly int Offset;
+            internal readonly Point Origin;
+            internal Line(ParagraphSource source, TextLine text, int offset, Point origin)
+            { Source = source; Text = text; Offset = offset; Origin = origin; }
+        }
+
+        private sealed class ParagraphSource : TextSource
+        {
+            internal readonly TextPointer Start;
+            internal readonly int Length;
+            internal readonly TextProperties DefaultProperties;
+            private readonly double _pixelsPerDip;
+            internal ParagraphSource(Paragraph paragraph, double pixelsPerDip)
+            {
+                Start = paragraph.ContentStart;
+                Length = Start.GetOffsetToPosition(paragraph.ContentEnd) + 1;
+                _pixelsPerDip = PixelsPerDip = pixelsPerDip;
+                DefaultProperties = new TextProperties(paragraph, StaticTextPointer.Null, false, true, pixelsPerDip);
+            }
+            public override TextRun GetTextRun(int index)
+            {
+                if (index >= Length - 1) return new TextEndOfParagraph(1, DefaultProperties);
+                TextPointer pointer = Start.GetPositionAtOffset(index);
+                switch (pointer.GetPointerContext(LogicalDirection.Forward))
+                {
+                    case TextPointerContext.Text:
+                        string text = pointer.GetTextInRun(LogicalDirection.Forward);
+                        return new TextCharacters(text, new TextProperties(pointer.Parent, ((ITextPointer)pointer).CreateStaticPointer(), false, true, _pixelsPerDip));
+                    case TextPointerContext.ElementStart:
+                        if (pointer.GetAdjacentElement(LogicalDirection.Forward) is not Run)
+                            throw new PlatformNotSupportedException("Portable FlowDocument currently requires Run inlines.");
+                        return new TextHidden(1);
+                    case TextPointerContext.ElementEnd:
+                        return new TextHidden(1);
+                    default:
+                        throw new PlatformNotSupportedException("Portable FlowDocument embedded content is not yet supported.");
+                }
+            }
+            public override TextSpan<CultureSpecificCharacterBufferRange> GetPrecedingText(int index)
+            {
+                TextPointer pointer = Start.GetPositionAtOffset(Math.Min(index, Length - 1));
+                string text = pointer.GetTextInRun(LogicalDirection.Backward);
+                return new TextSpan<CultureSpecificCharacterBufferRange>(text.Length,
+                    new CultureSpecificCharacterBufferRange(DefaultProperties.CultureInfo, new CharacterBufferRange(text, 0, text.Length)));
+            }
+            public override int GetTextEffectCharacterIndexFromTextSourceCharacterIndex(int index) => Start.Offset + index;
+        }
+
+    }
+}
