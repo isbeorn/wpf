@@ -196,28 +196,39 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
     }
 
     public void SetTitle(string title) { Verify(); _window.SetTitle(title); }
-    public void SetIcon(WpfImageSource? icon)
+    public void ValidateIcon(WpfImageSource? icon)
     {
         Verify();
-        if (icon is null) { _window.SetIcon(null); return; }
+        if (icon is not null) ValidateIconFrames(icon, out _);
+    }
+    private WpfBitmapSource[] ValidateIconFrames(WpfImageSource icon, out int length)
+    {
         WpfBitmapSource[] frames = icon is WpfBitmapFrame frame && frame.Decoder is WpfIconBitmapDecoder decoder
             ? decoder.Frames.Cast<WpfBitmapSource>().ToArray()
             : icon is WpfBitmapSource single ? [single]
             : throw new PlatformNotSupportedException("Native window icons require a bitmap-backed ImageSource.");
         if (frames.Length == 0) throw new ArgumentException("A window icon must contain at least one bitmap.", nameof(icon));
         int capacity = _window.IconCapacity;
-        long length = 0;
+        long totalLength = 0;
         foreach (var bitmap in frames)
         {
             bitmap.VerifyAccess();
             if (bitmap.PixelWidth <= 0 || bitmap.PixelHeight <= 0)
                 throw new ArgumentException("Window icon dimensions must be positive.", nameof(icon));
-            length = checked(length + 2 + (long)bitmap.PixelWidth * bitmap.PixelHeight);
-            if (length > capacity) throw new ArgumentException("The complete window icon exceeds the X server's negotiated request capacity.", nameof(icon));
+            totalLength = checked(totalLength + 2 + (long)bitmap.PixelWidth * bitmap.PixelHeight);
+            if (totalLength > capacity) throw new ArgumentException("The complete window icon exceeds the X server's negotiated request capacity.", nameof(icon));
             if (bitmap.PortableBuffer is null)
                 throw new PlatformNotSupportedException("The window icon has no supported portable bitmap storage.");
         }
-        var values = new nuint[checked((int)length)];
+        length = checked((int)totalLength);
+        return frames;
+    }
+    public void SetIcon(WpfImageSource? icon)
+    {
+        Verify();
+        if (icon is null) { _window.SetIcon(null); return; }
+        WpfBitmapSource[] frames = ValidateIconFrames(icon, out int length);
+        var values = new nuint[length];
         int position = 0;
         foreach (var bitmap in frames)
         {

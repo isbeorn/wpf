@@ -21,6 +21,8 @@ namespace MS.Internal.Portability.Windowing
         event Action<bool> ActivationChanged;
         event Action<WindowState> StateChanged;
         void SetTitle(string title);
+        void ValidateIcon(ImageSource icon) =>
+            throw new PlatformNotSupportedException("The registered window peer does not support bitmap icons.");
         void SetIcon(ImageSource icon) =>
             throw new PlatformNotSupportedException("The registered window peer does not support bitmap icons.");
         void SetShowInTaskbar(bool show);

@@ -95,10 +95,13 @@ internal static class IconCases
             window.Show(); var xid = native.FindWindow(window.Title); wait(() => native.IsMapped(xid));
             var previous = native.WindowIcon(xid)!;
             Expect<PlatformNotSupportedException>(() => window.Icon = new DrawingImage());
+            Require(ReferenceEquals(window.Icon, valid), "Rejecting an unsupported icon changed the public Icon value.");
             Require(native.WindowIcon(xid)?.SequenceEqual(previous) == true, "Unsupported icon conversion changed the previous native property.");
             foreach (var dimensions in new[] { (0, 1), (1, 0) })
             {
-                Expect<ArgumentException>(() => window.Icon = new InvalidSizeBitmap(dimensions.Item1, dimensions.Item2));
+                Require(Expect<ArgumentException>(() => window.Icon = new InvalidSizeBitmap(dimensions.Item1, dimensions.Item2)).ParamName == "icon",
+                    "Invalid icon dimensions failed outside icon validation.");
+                Require(ReferenceEquals(window.Icon, valid), "Rejecting invalid dimensions changed the public Icon value.");
                 Require(native.WindowIcon(xid)?.SequenceEqual(previous) == true, "Invalid icon dimensions changed the previous native property.");
             }
             window.Icon = null; drain(); Require(native.WindowIcon(xid) == null, "Icon failure prevented a subsequent public clear.");
@@ -122,7 +125,9 @@ internal static class IconCases
             Require(previous != null && previous.Length == capacity && previous[0] == width && previous[1] == 1 && previous.AsSpan(2).IndexOfAnyExcept(0u) == -1,
                 "The largest negotiated complete icon request did not publish every value.");
             var tooLarge = BitmapSource.Create(width + 1, 1, 96, 96, PixelFormats.Bgra32, null, new byte[checked((width + 1) * 4)], checked((width + 1) * 4));
-            Expect<ArgumentException>(() => window.Icon = tooLarge);
+            Require(Expect<ArgumentException>(() => window.Icon = tooLarge).ParamName == "icon",
+                "Exceeding negotiated icon capacity failed outside icon validation.");
+            Require(ReferenceEquals(window.Icon, maximum), "Rejecting an oversized icon changed the public Icon value.");
             Require(native.WindowIcon(xid)?.SequenceEqual(previous!) == true, "One icon value above negotiated capacity changed the previous native property.");
             window.Icon = null; drain(); Require(native.WindowIcon(xid) == null, "Clearing the maximum-size icon retained native data.");
         }
@@ -163,10 +168,10 @@ internal static class IconCases
         protected override Freezable CreateInstanceCore() => new InvalidSizeBitmap(width, height);
     }
 
-    private static void Expect<T>(Action action) where T : Exception
+    private static T Expect<T>(Action action) where T : Exception
     {
         try { action(); }
-        catch (T) { return; }
+        catch (T exception) { return exception; }
         throw new InvalidOperationException("The public icon operation did not reject invalid input with " + typeof(T).Name + ".");
     }
 

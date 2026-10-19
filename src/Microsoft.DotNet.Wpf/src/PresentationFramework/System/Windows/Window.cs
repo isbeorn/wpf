@@ -866,7 +866,11 @@ namespace System.Windows
                         typeof(Window),
                         new FrameworkPropertyMetadata(
                                 new PropertyChangedCallback(_OnIconChanged),
+#if PORTABLE_WPF
+                                new CoerceValueCallback(CoerceIcon)));
+#else
                                 new CoerceValueCallback(VerifyAccessCoercion)));
+#endif
 
         /// <summary>
         ///     Sets the Icon of the Window
@@ -5169,6 +5173,16 @@ namespace System.Windows
 
             return false;
         }
+
+#if PORTABLE_WPF
+        private static object CoerceIcon(DependencyObject d, object value)
+        {
+            value = VerifyAccessCoercion(d, value);
+            // Reject native limitations before the local Freezable value is committed.
+            ((Window)d)._portablePeer?.ValidateIcon(value as ImageSource);
+            return value;
+        }
+#endif
 
         private static void _OnIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
