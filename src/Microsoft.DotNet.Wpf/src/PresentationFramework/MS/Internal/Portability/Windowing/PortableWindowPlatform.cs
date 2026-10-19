@@ -21,6 +21,10 @@ namespace MS.Internal.Portability.Windowing
         event Action<WindowState> StateChanged;
         void SetTitle(string title);
         void SetShowInTaskbar(bool show);
+        void SetWindowStyle(WindowStyle style) =>
+            throw new PlatformNotSupportedException("The registered window peer does not support decoration changes.");
+        void SetTopmost(bool topmost) =>
+            throw new PlatformNotSupportedException("The registered window peer does not support topmost changes.");
         void SetClientSize(Size size);
         void SetDesktopPosition(Point position);
         void SetClientSizeConstraints(Size minimum, Size maximum);
@@ -53,6 +57,9 @@ namespace MS.Internal.Portability.Windowing
     {
         internal string Title { get; init; }
         internal bool ShowInTaskbar { get; init; } = true;
+        internal WindowStyle WindowStyle { get; init; } = WindowStyle.SingleBorderWindow;
+        internal bool AllowsTransparency { get; init; }
+        internal bool Topmost { get; init; }
         internal Size? ClientSize { get; init; }
         internal Point? DesktopPosition { get; init; }
         internal IPortableWindowPeer Owner { get; init; }

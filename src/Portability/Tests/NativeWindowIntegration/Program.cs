@@ -76,7 +76,12 @@ try
         {
             try
             {
-                if (args.Contains("--popup-placement-only", StringComparer.Ordinal))
+                if (args.Contains("--window-presentation-only", StringComparer.Ordinal))
+                {
+                    WindowPresentationCases.Exercise(native, Run, Wait, Drain);
+                    completed = true;
+                }
+                else if (args.Contains("--popup-placement-only", StringComparer.Ordinal))
                 {
                     Run("genuine-Classic-native-popup-placement-DPI", () => PopupCases.PlacementByNativeClick(native, Drain, fontPath!));
                     completed = true;

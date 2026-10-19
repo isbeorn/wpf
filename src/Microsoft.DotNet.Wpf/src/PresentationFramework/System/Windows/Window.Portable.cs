@@ -72,7 +72,8 @@ namespace System.Windows
             VerifyNotClosing();
             if (_portablePeer != null) return;
             if (ResizeMode == ResizeMode.CanResizeWithGrip) throw PortableUnsupported(nameof(ResizeMode) + ".CanResizeWithGrip");
-            if (AllowsTransparency) throw PortableUnsupported(nameof(AllowsTransparency));
+            if (WindowStyle is not WindowStyle.None and not WindowStyle.SingleBorderWindow) throw PortableUnsupported(nameof(WindowStyle));
+            VerifyConsistencyWithAllowsTransparency();
             if (TaskbarItemInfo != null) throw PortableUnsupported(nameof(TaskbarItemInfo));
             if (WindowStartupLocation != WindowStartupLocation.Manual) throw PortableUnsupported(nameof(WindowStartupLocation));
 
@@ -84,6 +85,9 @@ namespace System.Windows
                 {
                     Title = Title,
                     ShowInTaskbar = ShowInTaskbar,
+                    WindowStyle = WindowStyle,
+                    AllowsTransparency = AllowsTransparency,
+                    Topmost = Topmost,
                     Owner = _ownerWindow?._portablePeer,
                     IsEnabled = IsEnabled,
                     WindowState = WindowState

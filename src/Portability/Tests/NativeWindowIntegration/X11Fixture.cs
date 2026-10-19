@@ -278,6 +278,16 @@ internal sealed class X11Fixture : IDisposable
             atoms.Contains(XInternAtom(_display, "_NET_WM_STATE_MAXIMIZED_VERT", false)) ? "Maximized" : "Normal";
     }
     internal bool SkipsTaskbar(IntPtr window) => Property(window, "_NET_WM_STATE", 4).Contains(XInternAtom(_display, "_NET_WM_STATE_SKIP_TASKBAR", false));
+    internal bool IsTopmost(IntPtr window) => Property(window, "_NET_WM_STATE", 4).Contains(XInternAtom(_display, "_NET_WM_STATE_ABOVE", false));
+    internal long Decorations(IntPtr window) => Property(window, "_MOTIF_WM_HINTS", checked((int)XInternAtom(_display, "_MOTIF_WM_HINTS", false))).ElementAt(2).ToInt64();
+    internal (int Left, int Right, int Top, int Bottom)? FrameExtents(IntPtr window)
+    {
+        var values = Property(window, "_NET_FRAME_EXTENTS", 6);
+        if (values.Count == 0) return null;
+        if (values.Count != 4 || values.Any(value => value.ToInt64() < 0)) throw new InvalidDataException("Malformed native frame extents.");
+        return (checked((int)values[0]), checked((int)values[1]), checked((int)values[2]), checked((int)values[3]));
+    }
+    internal IReadOnlyList<IntPtr> ClientStacking => Property(_root, "_NET_CLIENT_LIST_STACKING", 33);
     internal IntPtr TransientOwner(IntPtr window) => Property(window, "WM_TRANSIENT_FOR", 33).SingleOrDefault();
     internal IntPtr FocusedWindow { get { XGetInputFocus(_display, out var window, out _); return window; } }
     internal void ObserveTaskbarRequests()

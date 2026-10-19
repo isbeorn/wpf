@@ -810,9 +810,6 @@ namespace System.Windows
 
         private static void OnAllowsTransparencyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-#if PORTABLE_WPF
-            if ((bool)e.NewValue) throw PortableUnsupported(nameof(AllowsTransparency));
-#endif
         }
 
         private static object CoerceAllowsTransparency(DependencyObject d, object value)
@@ -5430,7 +5427,8 @@ namespace System.Windows
         private void OnWindowStyleChanged(WindowStyle windowStyle)
         {
 #if PORTABLE_WPF
-            throw PortableUnsupported("WindowStyle");
+            if (windowStyle is not WindowStyle.None and not WindowStyle.SingleBorderWindow) throw PortableUnsupported("WindowStyle");
+            _portablePeer?.SetWindowStyle(windowStyle);
 #else
             // Adding check for IsCompositionTargetInvalid
             if (!IsSourceWindowNull && !IsCompositionTargetInvalid)
@@ -5454,7 +5452,7 @@ namespace System.Windows
         private void OnTopmostChanged(bool topmost)
         {
 #if PORTABLE_WPF
-            throw PortableUnsupported("Topmost");
+            _portablePeer?.SetTopmost(topmost);
 #else
 
             // this call ends up throwing an exception if accessing

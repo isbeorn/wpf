@@ -20,6 +20,7 @@ using WpfRect = WpfFork::System.Windows.Rect;
 using WpfDpi = WpfFork::System.Windows.DpiScale;
 using WpfSource = WpfFork::System.Windows.PresentationSource;
 using WpfState = WpfFork::System.Windows.WindowState;
+using WpfStyle = WpfFork::System.Windows.WindowStyle;
 using WpfKey = WpfFork::System.Windows.Input.Key;
 using WpfCursor = WpfFork::System.Windows.Input.Cursor;
 using KeyStates = WpfFork::System.Windows.Input.KeyStates;
@@ -74,7 +75,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
 {
     private readonly NativeWindowPeer? _popupOwner;
     private NativeWindowPeer? _keyboardRecipient;
-    private readonly bool _popupTransparent;
+    private readonly bool _transparent;
     internal bool PopupComposited { get; }
     internal WpfSource Source => _source;
     public event Action? OwnerDeactivated;
@@ -105,7 +106,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
         Dictionary<IWindowImpl, NativeWindowPeer> windows, PortableWindowOptions options, NativeWindowPeer? popupOwner = null, bool transparent = false)
     {
         _popupOwner = popupOwner;
-        _popupTransparent = transparent;
+        _transparent = transparent || options.AllowsTransparency;
         _window = window;
         _source = source;
         _windows = windows;
@@ -113,7 +114,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
         _native = new ExternalWindowBridge(window, _automation);
         try
         {
-            if (transparent) PopupComposited = _native.ConfigurePopupTransparency();
+            if (_transparent) PopupComposited = _native.ConfigurePopupTransparency();
             _framebuffer = window.Surfaces.OfType<IFramebufferPlatformSurface>().FirstOrDefault()?.CreateFramebufferRenderTarget()
                 ?? throw new PlatformNotSupportedException("The native X11 peer has no CPU framebuffer surface.");
             window.Closing = _ => { if (!_closing && !_closed) CloseRequested?.Invoke(); return true; };
@@ -131,7 +132,12 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
             window.Input = OnInput;
             _native.FocusChanged += OnFocus;
             _native.CaptureLost += OnCaptureLost;
-            if (_popupOwner == null) SetTitle(options.Title);
+            if (_popupOwner == null)
+            {
+                SetTitle(options.Title);
+                SetWindowStyle(options.WindowStyle);
+                SetTopmost(options.Topmost);
+            }
             if (options.DesktopPosition is { } position) SetDesktopPosition(position);
             SetOwner(options.Owner);
             SetShowInTaskbar(options.ShowInTaskbar);
@@ -219,7 +225,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
             premultipliedBgra.Length < checked(stride * (pixelHeight - 1) + rowBytes))
             throw new ArgumentException("The premultiplied BGRA frame dimensions or stride are invalid.");
         var scene = new IRenderTarget.RenderTargetSceneInfo(new PixelSize(pixelWidth, pixelHeight),
-            DpiScale.DpiScaleX, new Size(ClientSize.Width, ClientSize.Height), _popupTransparent ? CompositionTransparencyLevel.Transparent : CompositionTransparencyLevel.None);
+            DpiScale.DpiScaleX, new Size(ClientSize.Width, ClientSize.Height), _transparent ? CompositionTransparencyLevel.Transparent : CompositionTransparencyLevel.None);
         using (var target = _framebuffer.Lock(scene, out _))
         {
             int targetRowBytes = checked(target.Size.Width * 4);
@@ -241,6 +247,18 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
 
     public void SetTitle(string title) { Verify(); _window.SetTitle(title); }
     public void SetShowInTaskbar(bool show) { Verify(); _window.ShowTaskbarIcon(show); }
+    public void SetWindowStyle(WpfStyle style)
+    {
+        Verify();
+        _window.SetWindowDecorations(style switch
+        {
+            WpfStyle.None => WindowDecorations.None,
+            WpfStyle.SingleBorderWindow => WindowDecorations.Full,
+            _ => throw new PlatformNotSupportedException("The native Window style is unsupported.")
+        });
+        QueueMetricsRefresh();
+    }
+    public void SetTopmost(bool topmost) { Verify(); _window.SetTopmost(topmost); }
     public void SetDesktopPosition(WpfPoint position)
     {
         Verify();
