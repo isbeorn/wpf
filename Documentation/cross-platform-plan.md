@@ -408,6 +408,15 @@ The user accepts the observed Rgb48 676.362 ms native first frame and
 cache is canceled and unimplemented. Continue toward full Phase 5 through its
 other actual gates; this timing acceptance does not qualify unexecuted cases.
 
+Revision 8 completes Rgb48's 48 functional checks and 16 frames with timing
+reported only; prior Gray16 48/48 and historical Rgb48 reds remain separate.
+The pinned original-source helper is committed, but invalid-CLI App-boundary
+execution is not a full shell launch. Rich-text and sequencer Linux guards and
+stock-only framing evidence leave Phases 2 through 5 open. The approved private
+PF-to-host bridge uses conditional IVT to pinned signed AvalonDock; it is not
+implemented and the user rejected public host APIs. Final package, native
+X11/XWayland/Orca and overnight qualification remain open.
+
 Current scope decision: the user has deferred native focused-editor/IME
 composition integration. Keep the investigation draft local and unqualified;
 do not implement the proposed base/hook revision. Committed transport and

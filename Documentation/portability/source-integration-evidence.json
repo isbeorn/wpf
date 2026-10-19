@@ -14565,6 +14565,98 @@
       ],
       "sourceCommit": "27cb8861574eb0c72cc4d20969190f38841b139d",
       "outcome": "partial"
+    },
+    {
+      "label": "revision8-functional-imaging-original-source-and-workflow-boundaries",
+      "capturedAtUtc": "2026-10-19T15:06:33.9203524Z",
+      "headCommit": "0b49e8134744ecaf8254544fc9913490559f9bf8",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Rgb48 revision 8 completes 48/48 functional checks and 16 frames with timing reported only, no failure flags or production/cache changes. Prior Gray16 48/48, historical Rgb48 reds and the user acceptance of revision 7 timing remain unchanged. Actual observed intervals do not establish sustained 1 Hz. The committed original-source helper and bounded App/rich-text/sequencer/framing probes below are separate source, stock and portable evidence, not a full shell or final package.",
+      "workflowResults": {
+        "originalSource": "Helper commit 0b49e8134 has six reviewed payload files and 680 pinned upstream sources. Only App.xaml.cs source receives paired Windows console guards; generated project records native deployment omissions and compile-only SystemEvents metadata. Parameterized smoke: 0 errors/320 retained obsolete warnings, 104 BAML/115 resource keys; no application execution.",
+        "appBoundary": "Paired console candidate, both origins: 34 original App resources and one public Run/exit cycle with expected exit 1. Generated splash omitted; 159 original PEs plus one source assembly. Does not qualify raw generated Main, valid startup, MainWindow/hardware composition or full shell.",
+        "richText": "Stock preparation 4 passes 21/21. Linux passes 8/fails 1/leaves 12 unreached at original PluginImage local pack-PNG BitmapImage codec/URI guard; no replacement or codec repair.",
+        "sequencer": "Stock host contract runtime 17/17, original report-format failure retained. Later report-repair runtime 17 passes but foreground guard REJECTED, so not an overall qualified run. Linux passes 4/fails 1/leaves 12 unreached at PortableTextFormatter paragraph guard before raster.",
+        "framing": "Stock preparation 8 passes 18/18 with actual native astronomy/catalog operations and genuine survey annotator. Only fixture-owned toolbar selector repaired; no Linux framing qualification."
+      },
+      "approvedDesign": "Private PresentationFramework-to-host bridge through conditional IVT to pinned signed AvalonDock is approved but not implemented. User rejected public host APIs. Separate Window/Splash work is not qualified by these coherent runtime families.",
+      "limitations": "Local only. Native IME is user-deferred; optimization and frozen conversion cache remain canceled/unimplemented. Phases 0-1 retain bounded passes; Phases 2-5 remain open. Full shell, overnight, final package and native X11/XWayland/Orca qualification remain open.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/nina-native-imaging-functional-continuation/revision8/handoff.json",
+          "sha256": "bc6887d33bca8906e8dc8bea85613512d0e5dab51d07bc63feba61b459437774",
+          "bytes": 2352
+        },
+        {
+          "path": "artifacts/portability/nina-native-imaging-functional-continuation/revision8/functional-replay-results.json",
+          "sha256": "6de393fe5afcec2644b39d1d4e8bcabac87de0876c50bd2cc64846c476151b0e",
+          "bytes": 2757
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision8/native-runs/Rgb48-20261019T143627-pL8IiCzW/runtime-linux.json",
+          "sha256": "87f8a6bbde2b5f17215efc9796c8ea57eed07342047b2d6c0039e90e04dc0817",
+          "bytes": 530324,
+          "results": [
+            {
+              "status": "pass",
+              "count": 48
+            }
+          ]
+        },
+        {
+          "path": "artifacts/portability/nina-original-source-build/committable/candidate-freeze.json",
+          "sha256": "196eb77e61227dc1254c35c59d42c94d9de8b4ed172d06c834511c04b4230015",
+          "bytes": 2313
+        },
+        {
+          "path": "artifacts/portability/nina-original-source-build/committable/smoke-result.json",
+          "sha256": "2f2df055aa149995d357f1a04ce11c1a47647dd0e3185c8c548ac5f8c387cade",
+          "bytes": 7476
+        },
+        {
+          "path": "artifacts/portability/nina-original-app-startup-trace/console-candidate-execution-1/runtime-handoff.json",
+          "sha256": "d4689660307a226053942a569da41d82156f5d826568d56c9433de762b5a5277",
+          "bytes": 25161
+        },
+        {
+          "path": "artifacts/portability/nina-richtext-plugin-workflow-design/stock-handoff.json",
+          "sha256": "60d150589ed2cdd0fa10b3497a5bea14f117e62b11e3e5ef4f1950a3220262db",
+          "bytes": 9594
+        },
+        {
+          "path": "artifacts/portability/nina-richtext-plugin-workflow-design/LINUX-HANDOFF.md",
+          "sha256": "63322dbaf2b95322948df714f1328cd43dcb4a6ac08d8456c6ac2dbb13acca30",
+          "bytes": 4378
+        },
+        {
+          "path": "artifacts/portability/nina-sequencer-workflow-host-contract/result-summary.json",
+          "sha256": "ec78a7f89d941f7f7044961b7fbfa0f3bbdab115d25c83c1c85221e18faeaa23",
+          "bytes": 1089
+        },
+        {
+          "path": "artifacts/portability/nina-sequencer-workflow-report-repair/result-summary.json",
+          "sha256": "20f112279fa05aa41aedd5123bb27018500859fb47ff16df2221ff5f215bbd25",
+          "bytes": 709
+        },
+        {
+          "path": "artifacts/portability/nina-sequencer-workflow-linux-1/execution-handoff.json",
+          "sha256": "b12d31d3605763e3b0bd03f88e073810dff38d81b15fb7dbbd5822f51a42ebf3",
+          "bytes": 3483
+        },
+        {
+          "path": "artifacts/portability/nina-sequencer-workflow-linux-1/linux-result.json",
+          "sha256": "bbe1057df12362ab24247c5ccf26ea0a0c68cbd04b2ac0bebce4289ff76d1cfc",
+          "bytes": 1594
+        },
+        {
+          "path": "artifacts/portability/nina-framing-workflow-design/preparation-8/runtime-handoff.json",
+          "sha256": "e353613f54073e2dc75c2c5ea663406c2bcb510607883ce71c247998d399b446",
+          "bytes": 2636
+        }
+      ],
+      "sourceCommit": "0b49e8134744ecaf8254544fc9913490559f9bf8",
+      "runtimeSourceCommit": "27cb8861574eb0c72cc4d20969190f38841b139d",
+      "outcome": "partial"
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",

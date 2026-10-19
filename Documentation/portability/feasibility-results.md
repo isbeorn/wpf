@@ -1028,6 +1028,39 @@ gates; unexecuted Rgb48 cases, complete imaging and the full shell remain open.
 No extra general performance budget is introduced. Native IME remains explicitly
 deferred by the user and Phases 2 through 5 remain open.
 
+## Revision 8 functional continuation and source-workflow boundaries
+
+The [Rgb48 functional continuation](../../artifacts/portability/nina-native-imaging-functional-continuation/revision8/handoff.json)
+passes 48/48 and all 16 frames with no failure flags, under the user's approved
+reported-only timing policy. It adds no production change or cache optimization.
+Prior Gray16 48/48 and revision 7's Rgb48 red/accepted timing remain unchanged.
+This closes the previously unreached functional checks, not sustained 1 Hz or
+Phase 5 qualification.
+
+Commit `0b49e8134` adds the [original-source build helper](../../artifacts/portability/nina-original-source-build/committable/candidate-freeze.json):
+six reviewed files and 680 pinned upstream sources. It derives only paired
+Windows console guards in App.xaml.cs, records native deployment omissions and
+keeps SystemEvents metadata compile-only. The parameterized smoke builds with
+zero errors and 320 retained obsolete warnings, preserving 104 BAML entries and
+115 resource keys. The [paired invalid-CLI console candidate](../../artifacts/portability/nina-original-app-startup-trace/console-candidate-execution-1/runtime-handoff.json)
+reaches all 34 original App resources and one Run/exit cycle with expected exit 1
+on both origins. Generated splash is omitted for this probe. This is a source-
+adapted App boundary with 159 original PEs plus one source assembly, not raw
+generated Main, valid startup, MainWindow/hardware composition or full shell.
+
+| Workflow | Achieved evidence and remaining boundary |
+| --- | --- |
+| Rich text/plugins | [Stock preparation 4](../../artifacts/portability/nina-richtext-plugin-workflow-design/stock-handoff.json) passes 21/21. The [Linux run](../../artifacts/portability/nina-richtext-plugin-workflow-design/LINUX-HANDOFF.md) passes eight, fails one and leaves 12 unreached at original PluginImage's local pack-PNG BitmapImage guard. No codec or replacement-control success is implied. |
+| Sequencer | The [stock host contract](../../artifacts/portability/nina-sequencer-workflow-host-contract/result-summary.json) records runtime 17/17; its original report-format failure is retained. The [later report repair](../../artifacts/portability/nina-sequencer-workflow-report-repair/result-summary.json) has 17 runtime passes but a REJECTED foreground guard, not an overall qualified run. [Linux](../../artifacts/portability/nina-sequencer-workflow-linux-1/linux-result.json) passes four, fails one and leaves 12 unreached at PortableTextFormatter's paragraph guard before raster. |
+| Framing | [Stock preparation 8](../../artifacts/portability/nina-framing-workflow-design/preparation-8/runtime-handoff.json) passes 18/18 with actual native astronomy/catalog operations and the genuine survey annotator. Only the fixture-owned toolbar selector was repaired. No Linux framing result is qualified. |
+
+The approved private PresentationFramework-to-host bridge is conditional IVT
+to pinned signed AvalonDock, following the user's rejection of public host APIs.
+It remains unimplemented. Separate Window/Splash work is not qualified by any
+coherent family recorded here. Full shell, overnight, final package and native
+X11/XWayland/Orca workflows remain open. These local results do not complete
+Phases 2 through 5; native IME remains user-deferred and optimization is canceled.
+
 The user has deferred native focused-editor/IME composition integration.
 The investigation draft remains local and unqualified, with no new base/hook
 implementation. Committed transport and ordinary complete Unicode text retain
