@@ -991,9 +991,8 @@ All preceding native controls, crosshair pairs and two warmups pass. Compact
 and [cleanup](C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision6/replay-cleanup.json)
 retain zero native failures, empty stderr and absent owned replay/display
 processes. Revision 5's first failures remain historical. No isolated framework
-latency attribution or extra budget follows. Fixture-only native capture batching
-is the next unqualified experiment, requiring parity for the same
-66 points, all 48 assertions and 1 Hz. The earlier
+latency attribution or extra budget follows. Those revision 6 observations
+preceded the fixture-only batched capture below. The earlier
 short callback-cadence result has a different scope. Compact
 [replay results](C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision5/original-replay-results.json)
 and [cleanup](C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision5/replay-cleanup.json)
@@ -1001,6 +1000,33 @@ record the failures and exited owned replay/display processes. Full shell is
 unlaunched. All 33-dictionary results here use the selected original guider/view
 test closure, not the full 34-source App startup closure. Phases 2 through 5
 remain open.
+
+Revision 7 changes two of ten fixture copies only: batched X11 ReadPixels and
+pre-workload stable parity with the legacy sampler. The other eight inputs,
+F03 runner, all 48 assertions/timings, full scientific sources and native input
+remain unchanged. It uses the same 143-file `27cb` family/root release, original
+160 PE closure and explicit Release consumer with four PDB/source matches.
+All three parity states match exactly at the same 66 window/root points outside
+the timed workload.
+
+The [revision 7 results](C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision7/original-replay-results.json)
+record Gray16 48/48 with all 16 updates, worst complete transaction 889.942 ms
+after due and minimum native deadline margin 478.343 ms. Rgb48 remains
+30 passes, one failure and 17 unreached: its first frame is seen natively at
+676.362 ms before the 1000 ms deadline, but completes at 1061.499 ms, 61.499 ms
+late. Preparation is 184.248 ms, setter 137.460 ms, exact verification 142.844 ms
+and input/remainder 242.293 ms. These boundaries do not isolate framework
+latency and budgets remain unset. Both runs have empty stderr, zero native
+failures and exited owned PIDs/displays. Revisions 4/5/6 reds remain historical.
+The user explicitly accepts the observed 1061.499 ms complete transaction and
+676.362 ms native first frame as the native Rgb48 timing outcome and requests
+no further optimization. This is an authoritative scope decision, not a changed
+test result: 30 passes, one failure and 17 unreached remain recorded, and no
+overall Rgb48 pass is claimed. The frozen conversion cache is canceled and
+unimplemented. Work continues toward full Phase 5 through the other actual
+gates; unexecuted Rgb48 cases, complete imaging and the full shell remain open.
+No extra general performance budget is introduced. Native IME remains explicitly
+deferred by the user and Phases 2 through 5 remain open.
 
 The user has deferred native focused-editor/IME composition integration.
 The investigation draft remains local and unqualified, with no new base/hook

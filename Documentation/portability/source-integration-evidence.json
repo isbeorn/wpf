@@ -14491,6 +14491,80 @@
       ],
       "sourceCommit": "27cb8861574eb0c72cc4d20969190f38841b139d",
       "outcome": "partial"
+    },
+    {
+      "label": "original-native-image-revision7-batched-capture-and-user-accepted-rgb48-timing",
+      "capturedAtUtc": "2026-10-19T14:13:49.6795349Z",
+      "headCommit": "916b5bf6c938ee1a515180e3a0062bd20607566c",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Original native fixture revision7 uses the same root-released whole143/27cb runtime family and original160 PE closure, explicit Release consumer and four matching PDB/source records. Two of ten fixture copies change only batched X11 ReadPixels and pre-workload stable legacy parity; eight inputs, F03 runner, all48 assertions/timings, full scientific source ownership, input and1Hz remain unchanged. Three parity states match all66 window/root points exactly outside the timed workload. Gray16 passes48/48 with all16 updates, worst complete transaction889.942ms after due and minimum native deadline margin478.343ms. Rgb48 remains30pass/1fail/17unreached: first native676.362ms before1000 deadline, full1061.499ms/61.499ms late, preparation184.248ms/setter137.460ms/verification142.844ms/input-remainder242.293ms. NativeFailures0/empty stderr; retained PIDs92896/92968 and displays exited/absent. Revisions4/5/6 reds remain historical. No isolated framework latency or extra budget claim; no overall Rgb48 pass or execution of its remaining17 cases. Phase2-5 remain open; full shell unlaunched and native IME user-deferred.",
+      "humanDecision": {
+        "authority": "user",
+        "acceptedObservation": "Revision7 native Rgb48 first frame676.362ms and complete transaction1061.499ms",
+        "optimizationPolicy": "No further optimization; frozen conversion cache canceled and unimplemented",
+        "rawResultUnchanged": "30 pass,1 fail,17 unreached; not an overall Rgb48 pass",
+        "continuation": "Continue toward full Phase5 through other actual gates; timing acceptance does not qualify unexecuted cases"
+      },
+      "artifacts": [
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision7/original-replay-results.json",
+          "sha256": "a3f4e1e928848129ca89deb1cdcb046bd0c9a2e81754c5483ccfe7467bf61e36",
+          "bytes": 3249
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision7/source-transport-delta.json",
+          "sha256": "e4daa9de30279787d564dd89f4133f6f9e3ebed2db20843104a191cf23a7a68a",
+          "bytes": 2591
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision7/pdb-source-correspondence.json",
+          "sha256": "a95708f8a2c32f4352db2d8b6938c2fe9a7abbcace243b957c84538197438e73",
+          "bytes": 796
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision7/consumer-pe-metadata.json",
+          "sha256": "a655bbf82dcea486eec81396967fec49c7ca581833df1e758edfc74a3507c147",
+          "bytes": 280
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision7/replay-cleanup.json",
+          "sha256": "1a50560944df6eb2799012f4a519ada78ca6b9e060ef23f1aeb72b1f99f8c98b",
+          "bytes": 380
+        },
+        {
+          "path": "C:/Users/isbeo/AppData/Local/Temp/wpf-nina-native-imaging-revision7/consumption-pin.json",
+          "sha256": "b7d4ee4daac095ec71fe3b551c10fee8a20c0b6e9d56d5333b50f511e24e878f",
+          "bytes": 56997
+        },
+        {
+          "path": "C:\\Users\\isbeo\\AppData\\Local\\Temp\\wpf-nina-native-imaging-revision7\\native-runs\\Gray16-20261019T014854-FOzpJDU3\\runtime-linux.json",
+          "sha256": "7dd237a945fbbf156fd9d4cbdbb2024b11a9949c50cb5023f3075d5f83a83928",
+          "bytes": 530021,
+          "results": [
+            {
+              "status": "pass",
+              "count": 48
+            }
+          ]
+        },
+        {
+          "path": "C:\\Users\\isbeo\\AppData\\Local\\Temp\\wpf-nina-native-imaging-revision7\\native-runs\\Rgb48-20261019T015018-9H9xNb5R\\runtime-linux.json",
+          "sha256": "8de9b1e4ee8f83fdf86dade2889c1e22e3b133d86a6b25cb105c4a100b01517e",
+          "bytes": 263153,
+          "results": [
+            {
+              "status": "pass",
+              "count": 30
+            },
+            {
+              "status": "fail",
+              "count": 1
+            }
+          ]
+        }
+      ],
+      "sourceCommit": "27cb8861574eb0c72cc4d20969190f38841b139d",
+      "outcome": "partial"
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",

@@ -397,8 +397,16 @@ unlaunched; the selected original
 33-dictionary view-test closure is not the full 34-source App startup closure.
 Phases 0 and 1 remain bounded passes; Phases 2 through 5 remain open. No full
 shell or package qualification follows from these component results.
-Fixture-only native capture batching is the next unqualified measurement
-experiment, with parity required for the same 66 points, 48 assertions and 1 Hz.
+Revision 7's fixture-only batched native capture preserves exact three-state
+parity for all 66 points outside the timed workload. Gray16 passes 48/48 with
+all 16 updates; Rgb48 still fails its complete first-frame transaction deadline.
+The whole runtime, 48 assertions, source ownership, input and 1 Hz remain
+unchanged. This is scoped progress, not a complete imaging or phase pass.
+The user accepts the observed Rgb48 676.362 ms native first frame and
+1061.499 ms complete transaction and directs no further optimization. The raw
+30-pass/one-failure/17-unreached result remains unchanged. The frozen conversion
+cache is canceled and unimplemented. Continue toward full Phase 5 through its
+other actual gates; this timing acceptance does not qualify unexecuted cases.
 
 Current scope decision: the user has deferred native focused-editor/IME
 composition integration. Keep the investigation draft local and unqualified;
