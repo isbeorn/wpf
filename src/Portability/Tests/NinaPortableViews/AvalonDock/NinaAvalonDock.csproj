@@ -4,6 +4,7 @@
     <StartupObject>DockingProgram</StartupObject>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <AllowUnsafeBlocks Condition="'$(NinaStockWindowsReference)' != 'true'">true</AllowUnsafeBlocks>
     <NinaFixtureDirectory Condition="'$(NinaFixtureDirectory)' == ''">$(NinaPortableArtifacts)/fixture</NinaFixtureDirectory>
     <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
     <RollForward>Disable</RollForward>
@@ -11,7 +12,7 @@
     <DefineConstants Condition="'$(NinaStockWindowsReference)' == 'true'">$(DefineConstants);NINA_STOCK_REFERENCE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DockingProgram.cs;GraphSimulation.cs" />
+    <Compile Include="DockingProgram.cs;GraphSimulation.cs;ShowReadinessCases.cs;ThemeWindowCases.cs" />
     <None Include="$(NinaFixtureDirectory)/Closure.json" Link="Closure.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="ResourceSources.json" CopyToOutputDirectory="PreserveNewest" />
     <FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" Condition="'$(NinaStockWindowsReference)' == 'true'" />

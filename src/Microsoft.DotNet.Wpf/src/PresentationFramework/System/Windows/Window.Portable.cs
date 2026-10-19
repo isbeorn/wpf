@@ -46,9 +46,12 @@ namespace System.Windows
             Math.Max(0, _portablePeer.OuterSize.Width - _portablePeer.ClientSize.Width),
             Math.Max(0, _portablePeer.OuterSize.Height - _portablePeer.ClientSize.Height));
 
+        private static readonly Lazy<Style> s_portableDefaultStyle = new Lazy<Style>(CreatePortableWindowStyle);
+        internal static Style PortableDefaultStyle => s_portableDefaultStyle.Value;
+
         private static Style CreatePortableWindowStyle()
         {
-            // StyleHelper.GetThemeStyle uses Style metadata when no theme assembly supplies a style.
+            // Used only when the exact Window theme key has no style.
             var border = new FrameworkElementFactory(typeof(Border));
             border.SetValue(Border.BackgroundProperty, new TemplateBindingExtension(BackgroundProperty));
             border.SetValue(Border.BorderBrushProperty, new TemplateBindingExtension(BorderBrushProperty));
@@ -105,6 +108,9 @@ namespace System.Windows
                 PortableUpdateBounds();
                 SetIWindowService();
                 source.RootVisual = this;
+                if (_disposed || _portablePeer == null) return;
+                PortableLayoutRoot(_portablePeer.ClientSize);
+                if (_disposed || _portablePeer == null) return;
                 LayoutUpdated += PortableOnLayoutUpdated;
                 OnSourceInitialized(EventArgs.Empty);
             }
@@ -120,13 +126,23 @@ namespace System.Windows
             }
         }
 
+        private Size PortableReadLayoutSize()
+        {
+            Size size = _portablePeer.OuterSize;
+            PortableBoundsChanges intent = !_portableHasBeenShown ? _portableInitialSizeBounds :
+                _portablePeer.WindowState == WindowState.Normal && _portableStateRequest == null ? _portablePendingBounds : PortableBoundsChanges.None;
+            if ((intent & PortableBoundsChanges.Width) != 0) size.Width = _portableRestoreBounds.Width;
+            if ((intent & PortableBoundsChanges.Height) != 0) size.Height = _portableRestoreBounds.Height;
+            return size;
+        }
+
         private void PortableLayoutRoot(Size clientSize)
         {
             if (_disposed || _portablePeer == null || _portableSource == null || _portableLayingOut) return;
             _portableLayingOut = true;
             try
             {
-                Size outer = _portablePeer.OuterSize;
+                Size outer = PortableReadLayoutSize();
                 Size constraint = new Size(
                     SizeToContent == SizeToContent.Width || SizeToContent == SizeToContent.WidthAndHeight ? double.PositiveInfinity : outer.Width,
                     SizeToContent == SizeToContent.Height || SizeToContent == SizeToContent.WidthAndHeight ? double.PositiveInfinity : outer.Height);
@@ -159,7 +175,7 @@ namespace System.Windows
                     if (!_portableHasBeenShown || (_portablePeer.WindowState == WindowState.Normal && _portableStateRequest == null))
                         PortableApplyBounds();
                     if (_disposed || _portablePeer == null) return;
-                    outer = _portablePeer.OuterSize;
+                    outer = PortableReadLayoutSize();
                 }
                 Arrange(new Rect(outer));
             }
@@ -465,6 +481,11 @@ namespace System.Windows
                 if (Application.IsShuttingDown) return null;
                 PortableCreateSource();
                 if (_disposed || _portablePeer == null) return null;
+                if (_portableHasBeenShown)
+                {
+                    PortableLayoutRoot(_portablePeer.ClientSize);
+                    if (_disposed || _portablePeer == null) return null;
+                }
                 if (Visibility != Visibility.Visible)
                 {
                     PortableEndDialog();

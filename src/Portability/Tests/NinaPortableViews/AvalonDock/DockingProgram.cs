@@ -11,7 +11,7 @@ using System.Windows.Threading;
 using AvalonDock;
 using AvalonDock.Layout;
 
-internal static class DockingProgram
+internal static partial class DockingProgram
 {
     private static readonly List<object> Checks = [];
     private static readonly List<object> Observations = [];
@@ -22,6 +22,18 @@ internal static class DockingProgram
     [STAThread]
     private static int Main(string[] args)
     {
+        bool themeOnly = Environment.GetEnvironmentVariable("NINA_WINDOW_THEME_ONLY") == "1";
+        if (themeOnly || Environment.GetEnvironmentVariable("NINA_SHOW_READINESS_ONLY") == "1")
+        {
+#if NINA_STOCK_REFERENCE
+            VerifyDesktop(args);
+#else
+            Require(OperatingSystem.IsLinux() && args.SequenceEqual(new[] { "--private-xvfb" }), "Dedicated private Xvfb is required.");
+            using var settings = new X11Fixture("little");
+            Wpf.Portable.NativeHost.NativeWindowHost.InitializeForCurrentThread();
+#endif
+            return themeOnly ? ObserveWindowTheme() : ObserveShowReadiness();
+        }
 #if !NINA_STOCK_REFERENCE
         X11Fixture? native = null;
 #endif

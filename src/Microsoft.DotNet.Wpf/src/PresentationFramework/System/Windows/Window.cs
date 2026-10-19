@@ -66,9 +66,6 @@ namespace System.Windows
             KeyboardNavigation.ControlTabNavigationProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata(KeyboardNavigationMode.Cycle));
             FocusManager.IsFocusScopeProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata(BooleanBoxes.TrueBox));
 
-#if PORTABLE_WPF
-            StyleProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata(CreatePortableWindowStyle()));
-#endif
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata(typeof(Window)));
             _dType = DependencyObjectType.FromSystemTypeInternal(typeof(Window));
 
