@@ -15,6 +15,10 @@ internal sealed class GioBusConnection : IDisposable
     private nuint _closedHandler;
     internal event Action<Exception>? Closed;
     internal string UniqueName { get; }
+    internal bool IsClosed
+    {
+        get { _owner.VerifyOwner(); return _disposed || _connection == 0 || GioNative.g_dbus_connection_is_closed(_connection) != 0; }
+    }
     private static readonly GioNative.Ready ReadyCallback = OnReady;
     private static readonly GioNative.Signal SignalCallback = OnSignal;
     private static readonly GioNative.Method MethodCallback = OnMethod;
