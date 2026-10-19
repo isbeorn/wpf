@@ -116,8 +116,18 @@ observed desktop preferences, following the user's simplicity preference.
 
 Verification must cover real caption dragging, all resize directions, client
 opt-out inheritance, genuine caption commands, maximize/restore, DPI, mode changes
-and attach/replace/remove/close cleanup. General NoResize/CanMinimize/CanResize
-native function hints share existing window policy; CanResizeWithGrip and the
+and attach/replace/remove/close cleanup. On 19 October the user chose to preserve
+programmatic maximize and document desktop shortcut differences. [Openbox requires
+native resize permission for maximize](https://sources.debian.org/src/openbox/3.6.1-12/openbox/client.c/),
+so the host retains native operation permissions and requests mode-specific
+decoration hints for ordinary windows. These hints are advisory: a window manager
+may retain its native buttons.
+The owned custom caption and borders still honor NoResize/CanMinimize/CanResize.
+Window-manager actions, including keyboard shortcuts and menus, can resize or
+maximize restrictive-mode windows. This is an accepted Linux difference, not
+strict native ResizeMode enforcement. State requests originate from explicit
+application requests and show transitions; metrics notifications observe state
+without indefinitely resending an unfulfilled request. CanResizeWithGrip and the
 synchronous public DragMove contract remain separate until implemented and tested.
 Original NINA workflows, complete Markdown, final packages, desktop/Orca and
 overnight qualification remain open. There is still no successful full-shell
