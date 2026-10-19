@@ -1,0 +1,8 @@
+<Project>
+  <Import Project="../Directory.Build.props" />
+  <PropertyGroup>
+    <BaseOutputPath>$(PortableFrameworkArtifactsDir)bin/$(OS)/PresentationUI/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(PortableFrameworkArtifactsDir)obj/$(OS)/PresentationUI/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+</Project>
