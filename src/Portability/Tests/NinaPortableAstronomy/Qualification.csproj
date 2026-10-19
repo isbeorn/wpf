@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework Condition="'$(AstronomyProfile)' == 'stock'">net10.0-windows</TargetFramework>
+    <TargetFramework Condition="'$(AstronomyProfile)' != 'stock'">net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
+    <RollForward>Disable</RollForward>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Reference Include="$(OriginalManagedDirectory)/*.dll" Condition="'$(AstronomyProfile)' == 'stock'" Private="true" />
+    <Reference Include="$(OriginalManagedDirectory)/*.dll" Exclude="$(OriginalManagedDirectory)/NINA.Core.dll;$(OriginalManagedDirectory)/NINA.Astrometry.dll" Condition="'$(AstronomyProfile)' != 'stock'" Private="true" />
+    <Reference Include="$(NinaCorePath);$(NinaAstrometryPath);$(FrameworkRuntimeDirectory)/*.dll" Condition="'$(AstronomyProfile)' != 'stock'" Private="true" />
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" Condition="'$(AstronomyProfile)' == 'stock'" />
+    <Content Include="$(EphemerisPath)" Link="External/JPLEPH" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="$(SofaLibraryPath)" Link="External/x64/SOFA/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="$(NovasLibraryPath)" Link="External/x64/NOVAS/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Target Name="ValidateQualificationInputs" BeforeTargets="ResolveReferences">
+    <Error Condition="'$(AstronomyProfile)' != 'stock' and '$(AstronomyProfile)' != 'portable'" Text="Select the explicit stock or portable astronomy profile." />
+    <Error Condition="!Exists('$(OriginalManagedDirectory)/NINA.Astrometry.dll') or !Exists('$(EphemerisPath)') or !Exists('$(SofaLibraryPath)') or !Exists('$(NovasLibraryPath)')" Text="The pinned original closure, genuine ephemeris and native libraries must exist." />
+    <Error Condition="'$(AstronomyProfile)' == 'portable' and (!Exists('$(NinaCorePath)') or !Exists('$(NinaAstrometryPath)') or !Exists('$(FrameworkRuntimeDirectory)/PresentationFramework.dll'))" Text="The source-built Core/Astrometry pair and coherent framework runtime are required." />
+  </Target>
+</Project>

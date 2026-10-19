@@ -1,0 +1,3390 @@
+{
+  "revision": "4742afae0a09c79be772f23fcf163fb5852d2775",
+  "sourceLicense": "MPL-2.0; SOFA embedded IAU terms; NOVAS public release",
+  "originalClosureSha256": "E05B26CA49D09813AE8E81D8482219B6F56F158261A08509CA2626EB4BA4AFA5",
+  "tools": [
+    {
+      "parameter": "MarkupCompiler",
+      "sha256": "0D417F327B346CF8D85FB7340B1D0404AFF7C54890FA6B3EC52A2A6B5A773612"
+    },
+    {
+      "parameter": "WinFxTargets",
+      "sha256": "E6718E8C0EDCF68F8E751A39F4992669860CF9D7E49A8C47EBA68B436DD88C8B"
+    },
+    {
+      "parameter": "PortableReferencesTargets",
+      "sha256": "D0FD10CA0DA3711DFEF7D8D231594B398BB861D03D071A9BEAF4673A38614814"
+    },
+    {
+      "parameter": "MvvmGeneratorPath",
+      "sha256": "618515F16243464BDF2C2BBC5810E9001620A4D75D968EBC03F2FE465DD051D5"
+    },
+    {
+      "parameter": "ProtoCompilerPath",
+      "sha256": "EA33FADF8FC93D8445D3F39A98E265224F53B1B5DB4196DE0B03B5724120F767"
+    },
+    {
+      "parameter": "GrpcPluginPath",
+      "sha256": "75139D048A2D7A3B5831B0E1407A1E6D17A42F30C56936A582AE7F554C2730D6"
+    },
+    {
+      "parameter": "SystemEventsContractPath",
+      "sha256": "90F625C79FAED521A147F44AB5FC6CAD7F9FE400BC02B9ECE55842BDCAC7EADA"
+    }
+  ],
+  "files": [
+    {
+      "path": "CommonAssemblyInfo.cs",
+      "blob": "e15abab863d6ffb958e07a8e5760c76d39bc98eb",
+      "sha256": "2DAD6C61D5E695CE4A8FA2EF0CBB5552E2692EBB11123DA02E332AEA97E03F75"
+    },
+    {
+      "path": "LICENSE.txt",
+      "blob": "f4bbcd200ad42bbb2fe2faf67e87e8619fafc17a",
+      "sha256": "C76F740D1521B9BED9CA7A04AD526C310493C62621B1341D623B431736533B30"
+    },
+    {
+      "path": "NINA.Astrometry/ARCHITECTURE.md",
+      "blob": "dfb494e0a935975784585cebd2436162cf0dfbaa",
+      "sha256": "576033F5E6EC85353B0C83820E7CB5ED719B026860DF118EF57D8DC9CB4F46E0"
+    },
+    {
+      "path": "NINA.Astrometry/Angle.cs",
+      "blob": "747f5b4446fbf732b0d85130320b8b62a0237b4b",
+      "sha256": "EED2B855DFDE562BF7C12C699777A9C1750E94C5E0E36FE131FFCC6A49507FE9"
+    },
+    {
+      "path": "NINA.Astrometry/App.config",
+      "blob": "4cfe8eeb2845d608c6ea8187abd4f3a1ccf232f1",
+      "sha256": "FD0CBBED6579DEA9181F9225A53729A4B60EEA009651348F56B3B2B3015A5A8C"
+    },
+    {
+      "path": "NINA.Astrometry/AstroUtil.cs",
+      "blob": "094a72449fabca32cb5b696796858817ca281aee",
+      "sha256": "81C95817E14135442EEB5BD5BBFE6CAC4045E756199DC3516788527E89CC7574"
+    },
+    {
+      "path": "NINA.Astrometry/Body/BasicBody.cs",
+      "blob": "8f5e6864b9f7af434d8ae7172cedf5b57fc118a6",
+      "sha256": "9FF19C21133C3DF6BE78F66EB2B5AF94FD9144E0FB84BF535C7C9E9DF3FB6BF3"
+    },
+    {
+      "path": "NINA.Astrometry/Body/Earth.cs",
+      "blob": "7f586b4c2e656312a33c5568646b4b9fad37aa01",
+      "sha256": "4A53CB99327BF239F2C6C0C301165ECE7E34E97819E33673B5C67B63AA636948"
+    },
+    {
+      "path": "NINA.Astrometry/Body/Moon.cs",
+      "blob": "12ee76d55e8c2d58629491a6bf875ac9d2715a3b",
+      "sha256": "7DDEEFEF2F25050C7B4F53F14B9CDF6D392AA92B7C4816EA1434782A7D083388"
+    },
+    {
+      "path": "NINA.Astrometry/Body/Sun.cs",
+      "blob": "b06a800eb93faf0b97f965c1225293f83e601dd7",
+      "sha256": "E74E8DE7D7BFDDC4E1D5952DB9ADF8573B8BBF627F71500062559226092E8380"
+    },
+    {
+      "path": "NINA.Astrometry/Constellation.cs",
+      "blob": "10d985858e477415608fb46a780fb1626ee2cfe8",
+      "sha256": "081DBECE8AC7FB59D6E3357E4E5EABA3B00EC229FF94BF4CB4F1BCA377070AA2"
+    },
+    {
+      "path": "NINA.Astrometry/ConstellationBoundary.cs",
+      "blob": "5936e882935aeab4eeb6a5bcdea98b36f1be2502",
+      "sha256": "C089B0C8169A6897DD54482D613B6B5CC320169511F2F43562B08E0607162E40"
+    },
+    {
+      "path": "NINA.Astrometry/Converters/ArcsecToLabelConverter.cs",
+      "blob": "315ab715f01c5c8d63baf5a7159a9392f5f72446",
+      "sha256": "261C4388BD12E5DDB1DF62B98627423055C0DB4CAF8C2265F4C5FFFA5DEF4924"
+    },
+    {
+      "path": "NINA.Astrometry/Converters/DegreesToDMSConverter.cs",
+      "blob": "7fdd1a04d06d80c466944b19fe6fa31215c9db47",
+      "sha256": "FE4E0F068101F22FDC690AA5669D8AA79E65C572424B6A67737070D2C49BA4EE"
+    },
+    {
+      "path": "NINA.Astrometry/Converters/HoursToHMSConverter.cs",
+      "blob": "f403ff957455b11026b61824bb6016ea88534d2f",
+      "sha256": "2E60F631F084EFE3AA78BC3EF27F999BDDFA4BC0D71112FE352C9DD555678D45"
+    },
+    {
+      "path": "NINA.Astrometry/Converters/ImageStatisticsUnitConverter.cs",
+      "blob": "5f4984fa71bee0790bb5fe5471e9e8ef660e0c82",
+      "sha256": "F3825E492860D35E59AD5DD43022ED81252B67D905243053C3036D09D7A81766"
+    },
+    {
+      "path": "NINA.Astrometry/Converters/MoonPhaseToGeometryConverter.cs",
+      "blob": "0814b9b615e581c3098880d6b3d0fc2f6b4267c4",
+      "sha256": "306809DBD10D6B7A7813F9B55B9A3A75CB12E1DC7A694432A172E7E96D38E392"
+    },
+    {
+      "path": "NINA.Astrometry/Converters/ReverseAngleConverter.cs",
+      "blob": "3b21e978c4bc1f1ccde8ee3c1dfb9b55df1ff2f5",
+      "sha256": "5E9459E8D052FFB80566FA614BE2EAC6B405784636A640EB20D716FED2A8496D"
+    },
+    {
+      "path": "NINA.Astrometry/Coordinates.cs",
+      "blob": "2ff124923cc199fbc02b1d3060ae45ef0540256f",
+      "sha256": "7588734960A8E2AE67B9957733421BE1A6D80E5338EF46C54923F7AD5659F7A7"
+    },
+    {
+      "path": "NINA.Astrometry/DSOObjectType.cs",
+      "blob": "c81b728e087ebc921f93b00e88d516bcea9187d4",
+      "sha256": "4E662C1DB8E4860E247C0AEBE68495B344535177FF7F4901F925F06F985E0C60"
+    },
+    {
+      "path": "NINA.Astrometry/DatabaseInteraction.cs",
+      "blob": "dcf5c5c940ee5cebe8a017ed38ba5f2e221fbd5e",
+      "sha256": "2E0630C44184B71B332A2A51DDA8764E6EC380F97E9F01203B1515EA7F8F8059"
+    },
+    {
+      "path": "NINA.Astrometry/DateTimeExtensions.cs",
+      "blob": "fff400029243d4b4a08f0cf932c5d407a677a507",
+      "sha256": "E6582537345197456721E4FC3572470ED26DAD0426205AB8C5A4F6DCE5E7BDAF"
+    },
+    {
+      "path": "NINA.Astrometry/DeepSkyObject.cs",
+      "blob": "cce0894ededd056a6052921b82486249bdc3e48d",
+      "sha256": "12F175FC2DB22745C1134EEA1932F6085308946070495583535A6CBD1324B61B"
+    },
+    {
+      "path": "NINA.Astrometry/EarthRotationParameterUpdater.cs",
+      "blob": "b37cb570bf744dff297f50598ae06c796145f957",
+      "sha256": "5AA016D413BB32686E279A6C4A0C0814AA3D7F3A71A6D30B2741EE863F6204C4"
+    },
+    {
+      "path": "NINA.Astrometry/FocusTarget.cs",
+      "blob": "829323bbde504b97b060ffd530b565e96ea2e79b",
+      "sha256": "E615F7AD4D35749BF74E50FBCF35B6261098985630E6F45A7E77A8C78FC027E6"
+    },
+    {
+      "path": "NINA.Astrometry/FramingRectangle.cs",
+      "blob": "58c8e4ca3309cfb22933bf0362e0c419646bce95",
+      "sha256": "B73AA52F1FD5FA6ED836376AE859D218FFC43AD223EE3EDCDDECB8066C8E377D"
+    },
+    {
+      "path": "NINA.Astrometry/InputCoordinates.cs",
+      "blob": "591fe278b177730fad4c1e8539abdba95fb05163",
+      "sha256": "933E58C591BD98D482FADF2E56BEB2EA476CA919126EA20F55DDBB4F8330653A"
+    },
+    {
+      "path": "NINA.Astrometry/InputTarget.cs",
+      "blob": "0018d2e74e631a84b2c0e4530b502f55f719c690",
+      "sha256": "B034D807545CAB68F5DFB4B7C4089B2C4AFF9B368D340466193A655DFC9C451D"
+    },
+    {
+      "path": "NINA.Astrometry/InputTopocentricCoordinates.cs",
+      "blob": "f002a2b247273a6d9acba0f37b5eacc8f9cbdcde",
+      "sha256": "AE04F6F87163776DD6529722F76F5886120E270B1BE8DEEFF3D88E1EA837072C"
+    },
+    {
+      "path": "NINA.Astrometry/Interfaces/IDeepSkyObject.cs",
+      "blob": "1b57a6b96e2cd1df8641b8b382b469ed466fa40a",
+      "sha256": "FADF0A96EC13E70DEBE2675040389ADB9C4E21000BB495B1CD8963FB4A1817FC"
+    },
+    {
+      "path": "NINA.Astrometry/Interfaces/INighttimeCalculator.cs",
+      "blob": "03140fe0cc6aff70b25662860809a7a44fb5f354",
+      "sha256": "BCD37F1CBB0A96385FC5A6236C5A74F49837CDBE6B377CA7C3BDB08643C0C988"
+    },
+    {
+      "path": "NINA.Astrometry/Interfaces/ITwilightCalculator.cs",
+      "blob": "adfe21cc3eaef06ba461f4c9ff1ebe7f3395dc46",
+      "sha256": "5B037A0131996D0B2E0D519200F9F9B1424141E448481BC3028E3E77DED4E4A9"
+    },
+    {
+      "path": "NINA.Astrometry/Location.cs",
+      "blob": "f49ad5a26bdaa2e71de89b0f3e569a2befe71a84",
+      "sha256": "DF397C590AD1F3035532ADFCE2B05D518DE972166351051555439BFE876ACCC9"
+    },
+    {
+      "path": "NINA.Astrometry/MeridianFlip.cs",
+      "blob": "3d8ce819d2f96387ee9a783a7523fd2883eaaa33",
+      "sha256": "583057093991DA0BC6B01F33A4B4F7E6699A81EC2831D46F562BEA8E94DF2CDB"
+    },
+    {
+      "path": "NINA.Astrometry/MoonInfo.cs",
+      "blob": "30a2530124c4a8806fa761c61794b367de3edd86",
+      "sha256": "B6E71E3BE8ECFB97D549222E3D3EAA2CD0E164ACEC078D126446BEF2415EEBC4"
+    },
+    {
+      "path": "NINA.Astrometry/NINA.Astrometry.csproj",
+      "blob": "4db7f294c0e1771a4fc075da17b2cf3cebe5a97a",
+      "sha256": "43ABCCC9A11B6D1D4E4C2D41702F8DF666C940476925C8BEFD19E1584095F2E6"
+    },
+    {
+      "path": "NINA.Astrometry/NOVAS.cs",
+      "blob": "ac6e658894e8d82c407e11f4e8ab3312a3243191",
+      "sha256": "1AC9CE3B7CC479E4FFD1DD854A6A3995C046AE9BBC91AE74FAFB322597C4F13C"
+    },
+    {
+      "path": "NINA.Astrometry/NighttimeCalculator.cs",
+      "blob": "3c9abd8c1134287bd5cde110ff727901f570ed4f",
+      "sha256": "6D68707BC9C07CC2C692440F0909CFBBF81321028DD532A665DAF83ADA324CEA"
+    },
+    {
+      "path": "NINA.Astrometry/NighttimeData.cs",
+      "blob": "c6385eeef6de64817e009fc8d2568d8afe64b5c3",
+      "sha256": "64871CC2376CB0176C77CDE271A6DB9A545EB6618514711E9E025A174DF13D3F"
+    },
+    {
+      "path": "NINA.Astrometry/ObservableRotatingRectangle.cs",
+      "blob": "581bc1f63a2bacc933d2e41472b061d2ee3dbdf1",
+      "sha256": "DAD5B3752BE9ED294F4098E4D46724E942A62B36DB112E827B638E84B9E3DA6C"
+    },
+    {
+      "path": "NINA.Astrometry/ObserverInfo.cs",
+      "blob": "f6731c060dc13e39391d0297aba21e27503eb75a",
+      "sha256": "EC3FEADF26162ACAD586D57D5D9B923DDE1480E6412D4AF31FCACD4471D7E6BC"
+    },
+    {
+      "path": "NINA.Astrometry/Properties/AssemblyInfo.cs",
+      "blob": "aae7e6eb4aebcdd3776983936868b2618e5b2e2d",
+      "sha256": "6B36006935F97524C062916EBD382DA2989D12303036EA5668210498586CE5F3"
+    },
+    {
+      "path": "NINA.Astrometry/RectangularCoordinates.cs",
+      "blob": "59c173d2294909394d07af85d01b6cf94b444fca",
+      "sha256": "7561120D4AE7C157334B705091DFB92EA2A8119DAF18CE2673A679A6F11C36C3"
+    },
+    {
+      "path": "NINA.Astrometry/RiseAndSet/AstronomicalTwilightRiseAndSet.cs",
+      "blob": "9596ff7baf2adc7dbcc9125e95b9ef5080fb0db5",
+      "sha256": "3739D22AEAE0C2EB45733DAB147EF7F7A5FF035F5F97F6EE0389AFA4FC7C8722"
+    },
+    {
+      "path": "NINA.Astrometry/RiseAndSet/CivilTwilightRiseAndSet.cs",
+      "blob": "a6529c3a7270be01ecbdfdec12b02bd8282e1a1b",
+      "sha256": "64722D486F2065D9597DBCB0BEBB14F9E677C7678D914E7F04090A7C1C5F0DFD"
+    },
+    {
+      "path": "NINA.Astrometry/RiseAndSet/CustomRiseAndSet.cs",
+      "blob": "49e65fa2d301523d5d0bf57881fb79c7d487f936",
+      "sha256": "3023CBA587DA3F8FA815B35B3520D993F482E2409DE93F7E9646923FBCAF5E96"
+    },
+    {
+      "path": "NINA.Astrometry/RiseAndSet/MoonCustomRiseAndSet.cs",
+      "blob": "f1e3ab318ed86faa59ee84d14303298004da3aa1",
+      "sha256": "8A1D0B24B1C2864B2132031B1CCB72845FCE0D5309C6866E1D18BECA968B94F8"
+    },
+    {
+      "path": "NINA.Astrometry/RiseAndSet/MoonRiseAndSet.cs",
+      "blob": "e8a7c3692befdbb90369e17e30ff13d48d252a28",
+      "sha256": "21CAD802D146723B6764AE9802949E468EA2DADD8AC8045B413968277B5FB10D"
+    },
+    {
+      "path": "NINA.Astrometry/RiseAndSet/NauticalTwilightRiseAndSet.cs",
+      "blob": "a15ac7b126e65bf65ecc52c4968e8ba1894085da",
+      "sha256": "9238003A7D7E8E702D1E96CE09D4C37E4DCA4141980EED51DF43E3DD4515B135"
+    },
+    {
+      "path": "NINA.Astrometry/RiseAndSet/RiseAndSetEvent.cs",
+      "blob": "cafce0da3841bed281dd1b8a4d68cd7973fdb270",
+      "sha256": "5E207D354B51FA8BB52F7000EA8DD8934CF8E99B49B9FC0F8A37AA6B27F110EF"
+    },
+    {
+      "path": "NINA.Astrometry/RiseAndSet/SolarEventContext.cs",
+      "blob": "15a2580449e40163c3ded56bc0c61abc9b85f62f",
+      "sha256": "DAE35642D4DEBEDC1CE8D8FBD35B5B298EB2AEB25158F44FCFC1DAECFC1FAC2D"
+    },
+    {
+      "path": "NINA.Astrometry/RiseAndSet/SunCustomRiseAndSet.cs",
+      "blob": "94a465a55635c86bda3169f1555318625c139206",
+      "sha256": "E1A9B91C27DE32E51E59903FF1AA3A61773FB546336B9BE79CA2AE2B86B5EEFD"
+    },
+    {
+      "path": "NINA.Astrometry/RiseAndSet/SunRiseAndSet.cs",
+      "blob": "8a4184437e901cca5837aa4c1d754fb27de81d45",
+      "sha256": "33B321F8BE4CABF8763C88C82AA0D34143F26E8EACBCCC322F7B4D5566E3D09D"
+    },
+    {
+      "path": "NINA.Astrometry/SOFA.cs",
+      "blob": "3fe1c1eaf1578c868edcc012465e5226b2f68f8b",
+      "sha256": "A49AD5EAD8EA9ABFA4D162FA2D0128D6077302C20F91A0D74DA654872D0884D5"
+    },
+    {
+      "path": "NINA.Astrometry/SiderealShiftTrackingRate.cs",
+      "blob": "6978c7409fbf4f638583891f8b2cca38196da355",
+      "sha256": "B7459825557F20CF71F0E811B79A824F4DB0CEAD371F587E283494AFEE4152D2"
+    },
+    {
+      "path": "NINA.Astrometry/SkyObjectBase.cs",
+      "blob": "46273f36740f59a2e452730f004b6549191ee9a1",
+      "sha256": "1634A608D7F48A34AEF47215825820EC486E6481C911DC94533BCA6CE41E6474"
+    },
+    {
+      "path": "NINA.Astrometry/Star.cs",
+      "blob": "51d9899831f7e720cef9ea60a48812b2c19693ea",
+      "sha256": "D6C3B998A79485364AF83B51EA461E1EF380C0BA10D02BA171DA3FA65BD27044"
+    },
+    {
+      "path": "NINA.Astrometry/TargetCrossingCalculator.cs",
+      "blob": "d643867d8a36aac8c2e179b80c49299564271342",
+      "sha256": "9FAA4B9568DE6ECA81560A5272D0791A2C01F6753437A55E885307B8AD218ABF"
+    },
+    {
+      "path": "NINA.Astrometry/TopocentricCoordinates.cs",
+      "blob": "14c3231d8ca24a692dafb79640b09f659c4810e3",
+      "sha256": "028E83A81C8723CB7634F7DA9D6122F67F89C2501BB1EF254A4FAC6E7DB8B844"
+    },
+    {
+      "path": "NINA.Astrometry/TwilightCalculator.cs",
+      "blob": "9077ca617d9e6852d3f4e8afbd8a022b524cca99",
+      "sha256": "C1436E22AD37EDCFD036CBB374D295C22721E3649C1F05FA315DA494E0A49D63"
+    },
+    {
+      "path": "NINA.Astrometry/ViewportFoV.cs",
+      "blob": "9d492c14218c5fb40c27411ebe09c6d2ebb4cb9a",
+      "sha256": "F9C68BC43BC26391B3E4BE6CB7FD9F5797CFC0E1306FF40B7A816FEF0A5E89B1"
+    },
+    {
+      "path": "NINA.Astrometry/WorldCoordinateSystem.cs",
+      "blob": "6f631f259e34e4180c9466040d8656fc3b475bcf",
+      "sha256": "4A52B3E5AB35C16D215B2CD5CF293E3BB66DDA9491017A72BE9B47C373D97990"
+    },
+    {
+      "path": "NINA.Core/ARCHITECTURE.md",
+      "blob": "146b93f4591502f3b9f251ce9772190371c2dc5e",
+      "sha256": "7E2612BBF10416AB6E803B286031DCEFB8576BEE0EDCC7BFF9B77B23055AACB3"
+    },
+    {
+      "path": "NINA.Core/App.config",
+      "blob": "123eb29a65559eba02e4676467d538a770fa367b",
+      "sha256": "553658CFDA0DDD0EA5A1AA0947A21F11DDA93457D4035374B6B301E9A76C6EE7"
+    },
+    {
+      "path": "NINA.Core/Database/NINADbContext.cs",
+      "blob": "01b5cc4c2c7636741aec042f669a72a09cab9b4d",
+      "sha256": "0CBB5E7587ADCB3CF31533DF1857923BFA32E56706FFDB84AD35A3F3F5FA0F2F"
+    },
+    {
+      "path": "NINA.Core/Database/Schema/BrightStars.cs",
+      "blob": "939b8e7c543dbe02f971bdeda155e92598f8dc1e",
+      "sha256": "3E50856B18A6AA7E27BAEE042EDC42DC64F1B550ECAAAF9187E769796729B349"
+    },
+    {
+      "path": "NINA.Core/Database/Schema/CatalogueNr.cs",
+      "blob": "1d24ef0baf45f172c602313e260d48ce6dc2328f",
+      "sha256": "95948BACEFF8D58EE47EA81FC3894A1BD3A4A5FBB7723EC1279CCCD6E81E45B6"
+    },
+    {
+      "path": "NINA.Core/Database/Schema/Constellation.cs",
+      "blob": "69382cf2bc4bd3a9251c733942a2fd97d321aefc",
+      "sha256": "4692D352CFF5A705047C55A9AF5E7DB5D81CADBD3FA6D6A66549D9786E58EAA0"
+    },
+    {
+      "path": "NINA.Core/Database/Schema/ConstellationBoundaries.cs",
+      "blob": "e75b4f0c251792ba4271b9762d636c77d09e67ca",
+      "sha256": "CEA1A8534D6DC7DC0A31AB96B9C06EBF679F288D9E51A1E204BE086C37F28E8C"
+    },
+    {
+      "path": "NINA.Core/Database/Schema/ConstellationStar.cs",
+      "blob": "a1671af160f6a47ec1ee499fc9b1a0e9d9697bdf",
+      "sha256": "8D29B1375FF52D251FE49A07D610D591769311350F4FA2DDF497DEE5F8CBF640"
+    },
+    {
+      "path": "NINA.Core/Database/Schema/DsoDetail.cs",
+      "blob": "b57cf2a772fcb405569dbb1042dca69157994c6d",
+      "sha256": "F883902078C5EBC1B9BC5F76B4015C5D9DB3C0D182FEDB2A52417CD6EDA7AFB2"
+    },
+    {
+      "path": "NINA.Core/Database/Schema/EarthRotationParameters.cs",
+      "blob": "4eda29804b9ae752340c98454a072dd7a3ecf90a",
+      "sha256": "A3429D2B502B19CD7C18BAD2E79BCB95EE7E88FA75CCB59DF84D36C188502D06"
+    },
+    {
+      "path": "NINA.Core/Database/Schema/HipsSkyMaps.cs",
+      "blob": "66f355a4b3a6e4895fcc2059b58241a92448a219",
+      "sha256": "0ADB2A8CA757383715CB00A0970E3ED1C1C361A9DF84B154615F4789B86565EE"
+    },
+    {
+      "path": "NINA.Core/Database/Schema/VisualDescription.cs",
+      "blob": "7e05f0344d1b2fb0edec628d9de649f387737975",
+      "sha256": "2E858D6844411F26FAD4D853AEA772736DB0E60D7E37A56E702BBA860B5AF79A"
+    },
+    {
+      "path": "NINA.Core/Enum/AFCurveFittingEnum.cs",
+      "blob": "e2a369be89ba68c772e5dab16550cfd7eccc5c1c",
+      "sha256": "A3FD4E7029647E386DEB903958D6A3F1E612EB0F3C4973372D3E921D3934C616"
+    },
+    {
+      "path": "NINA.Core/Enum/AFMethodEnum.cs",
+      "blob": "bafd48957002f97e5fa8c2278c724c322b8b5e1d",
+      "sha256": "4CA5DF7E2EEB346A2A9459EF53613F498198344A145E24989B5EA18A8195AB09"
+    },
+    {
+      "path": "NINA.Core/Enum/AlignmentMode.cs",
+      "blob": "ad09afed043307b0653996065ee84609a0628d06",
+      "sha256": "D01408424034B9D231010FDE8E1EBDB7D5DC8F5C068F54E37672C20871980C5F"
+    },
+    {
+      "path": "NINA.Core/Enum/AltitudeSite.cs",
+      "blob": "5e173abbbf4162254fbe56c32db4945f952486a2",
+      "sha256": "3F98C409D546E52023E3E274A89E35D07D06BA99A4C85F11B9491EC7240E16E9"
+    },
+    {
+      "path": "NINA.Core/Enum/ApplicationTab.cs",
+      "blob": "24773a8873971c3616e79f1f0c071e4f58c33d46",
+      "sha256": "9165D7DDD2E95A29D66C5ACE0FDEEB5304EF7CE458B9EC51B3BBE35EFDE6AC3B"
+    },
+    {
+      "path": "NINA.Core/Enum/AutoUpdateSourceEnum.cs",
+      "blob": "b64d6e9f54b2326fb849c3e459aaf6822fcf9f04",
+      "sha256": "C5D512A54EA014AC8DA852182770ED9FA69AC749515B0D9992CBAD03954F9F38"
+    },
+    {
+      "path": "NINA.Core/Enum/BacklashCompensationModel.cs",
+      "blob": "4745025df07a03fa1599e5c05e618f86b37cbc7a",
+      "sha256": "0F2036A3D1B9D5E214C01D15D10A90999508FE2829618928AB47ED82AD684283"
+    },
+    {
+      "path": "NINA.Core/Enum/BayerPatternEnum.cs",
+      "blob": "b50254e41346a0d72d05f7fa28697785fe317d97",
+      "sha256": "629807FE7EE4DECD96287FB49C35AB4199BAC43D688E00AB290BF089F4F2A9AB"
+    },
+    {
+      "path": "NINA.Core/Enum/BlindSolverEnum.cs",
+      "blob": "5b507e0e2a4bf22fa76267e3d3e8b438ba142316",
+      "sha256": "052B0BB205D3BC074216F17C98D588661730406DC670C68056B3E23032C82FCC"
+    },
+    {
+      "path": "NINA.Core/Enum/CameraBulbModeEnum.cs",
+      "blob": "4cdcb90e2b37e956e634ecc5cbe980d145904b7a",
+      "sha256": "C77084110F0C4D75917110556292B3DF3BD5E60C0011A8899670962B7B7933CF"
+    },
+    {
+      "path": "NINA.Core/Enum/CameraStates.cs",
+      "blob": "d725a9a6e5011e600586382eed908d408ef7da1d",
+      "sha256": "A757CE43371DF99DA5B27D41AD733DE088EA3BECD3508A12BC9888EFF412569D"
+    },
+    {
+      "path": "NINA.Core/Enum/CameraType.cs",
+      "blob": "d15bdeccd2ea747a09b759e568b6c795d06142dc",
+      "sha256": "86B1EBE4DC62D5B765C9EAF5D4972D6232D177A7129FF36495D3F5E334F20232"
+    },
+    {
+      "path": "NINA.Core/Enum/ComparisonOperatorEnum.cs",
+      "blob": "50130034fbea8934c61371e0a20ece729310891e",
+      "sha256": "BEFE9E67743AF6D443B7ABD08D605195857F4B5C675A95069CEFD8FCFB4B9D0C"
+    },
+    {
+      "path": "NINA.Core/Enum/ContrastDetectionMethodEnum.cs",
+      "blob": "caa253ff29971b35320b448a9a611677c476c17f",
+      "sha256": "2A739E9BC2E72D04CC8F6C06B870E18B5A892C0F267D3868B8AE215BA767C781"
+    },
+    {
+      "path": "NINA.Core/Enum/Dc3PinPointCatalogEnum.cs",
+      "blob": "3e43ea5c1aa46d0a59445efa4d829728bd6ba20b",
+      "sha256": "94799AD9A72E02CB8829D096DE25ED12C2EFD789B0E570532468618BD495726F"
+    },
+    {
+      "path": "NINA.Core/Enum/DeviceTypeEnum.cs",
+      "blob": "d8e60f8b53a9851ef101fd90d96d0e9e284c18df",
+      "sha256": "9787B95E2B4128DC06C1B59D78FB228DAF5EB6A1D3DFB08DF2B1DBBD8823F1FF"
+    },
+    {
+      "path": "NINA.Core/Enum/DropTargetEnum.cs",
+      "blob": "bf3aa79b423bc6d8a524b970d779068352f6676f",
+      "sha256": "1DA736416F6DCE5A48774988728FD56D06AFD9F930C63FAD5868BEA6F4D20528"
+    },
+    {
+      "path": "NINA.Core/Enum/FITSFeaturesEnum.cs",
+      "blob": "9cfe1bb3454a559c66d6be3844ca41fe23a1a04d",
+      "sha256": "47E749F2CA796CDF2CCC1EF3AE783DB4A609C4206D2535B3E2562C73A4CA927D"
+    },
+    {
+      "path": "NINA.Core/Enum/FileTypeEnum.cs",
+      "blob": "f96b32ce58cc2b13dd66aad613c8a4ca53f5f2c8",
+      "sha256": "3B73AB9C71CF58EFE7441B68E96D86B7684F3CE76115AA16225CC0BBB14483D9"
+    },
+    {
+      "path": "NINA.Core/Enum/FlatWizardMode.cs",
+      "blob": "a53055509185cc9f5418db11b089b0819bdb339c",
+      "sha256": "7AD5636D780657D3AE384567BC851A6D191C6196AE0F0A957696E8046D746246"
+    },
+    {
+      "path": "NINA.Core/Enum/GnssSourceEnum.cs",
+      "blob": "489e060bf661ac61e4ac756294f5324be1097a5e",
+      "sha256": "53367C253F9E08E2F8E46D258D44C50762B84BCAE48D336BC1053652B016AD20"
+    },
+    {
+      "path": "NINA.Core/Enum/GuideDirections.cs",
+      "blob": "90b664659c4bdf5e050ac730e7cf22ecd1fd83c5",
+      "sha256": "7CFEDEC80C996033D2A1F2231B53A22DB2D31708C01E3C0CE3D319D7B2AF0B1D"
+    },
+    {
+      "path": "NINA.Core/Enum/GuiderScaleEnum.cs",
+      "blob": "87ac4cde01e0e7d3db582428f56e9c7794837049",
+      "sha256": "8E9EEAB6F819514D8D4BF044FF94BE14C4DAC368DC4E027FAF45E302BA4A448C"
+    },
+    {
+      "path": "NINA.Core/Enum/Hemisphere.cs",
+      "blob": "bf8feba3d1f93549d1308981c149a8f57e7c1125",
+      "sha256": "3EA5BE7DABF15C1E55D87913E7E084845912817D19687D1AD2FA3FA4A56161BE"
+    },
+    {
+      "path": "NINA.Core/Enum/ImageHistoryEnum.cs",
+      "blob": "fcb5e740e9b4c30622ccc200e70fd4b6283dfdfd",
+      "sha256": "B79FBEEF34B70898A2BAF2D60E41FBA5F81B346D8B507E7810C29DE86D2496BE"
+    },
+    {
+      "path": "NINA.Core/Enum/LogLevelEnum.cs",
+      "blob": "87a7d548f9af6d8744774cbd28b512d93eacd806",
+      "sha256": "FBDB88A6C549C67CF070428D835341018AA2FF0C611C2928C8AF6513B251D72E"
+    },
+    {
+      "path": "NINA.Core/Enum/MountTypeEnum.cs",
+      "blob": "dac61b3e14c4da6341c0bab6cb4abced25f5b700",
+      "sha256": "7A5CD94CE502A86D26EE141B9EB602B5ED7476E211397806B328D5A97A35E05A"
+    },
+    {
+      "path": "NINA.Core/Enum/NoiseReductionEnum.cs",
+      "blob": "aea28af2274b27b51efe25fde7b516f8bd3b8cbc",
+      "sha256": "6E01AD73763A4EB05A54AB64275D672DF371597C5EC6F59D672E2C93656CFA50"
+    },
+    {
+      "path": "NINA.Core/Enum/OvershootDirection.cs",
+      "blob": "fd89059cbd855b91254f679b3f8fbef1709aef14",
+      "sha256": "0083938729D242B615A45A1115784A2C453F8BACFA1534857BDC9BE77D29D1DD"
+    },
+    {
+      "path": "NINA.Core/Enum/PierSide.cs",
+      "blob": "13c339be74aaac497e18dbae3df4ec085f471e94",
+      "sha256": "6A3F738C2A2E730EE54C9D2E0CE1D99582FC58B178E2821B557BF59498390355"
+    },
+    {
+      "path": "NINA.Core/Enum/PlanetariumEnum.cs",
+      "blob": "d0b7cec7ea5f6a20a8b3cd28a344bae7cbfba16f",
+      "sha256": "D55B19D28FAF135D1B8AE1C4D5EFE523A103E1033CFD877E3A2EFB3C31165099"
+    },
+    {
+      "path": "NINA.Core/Enum/PlateSolverEnum.cs",
+      "blob": "199be70dce795892bf3b88880b880cce3170511a",
+      "sha256": "FA8DA67DB4C0E530D69710B02D811F84584AEF987031A7F58B20056F9BC5BF15"
+    },
+    {
+      "path": "NINA.Core/Enum/RawConverterEnum.cs",
+      "blob": "d279e378ef721f7eecab55d5f653a0ac456b6586",
+      "sha256": "5F8F1306C213E995693D2D9370E86248B2982F81B3442DCFCF813D58CA87CF4E"
+    },
+    {
+      "path": "NINA.Core/Enum/RotatorRangeTypeEnum.cs",
+      "blob": "6dd3542917e41ba5886e246f0cf727a9f719d620",
+      "sha256": "2F61B84B5A6715A2EAC4831CA7C4160236E49650A60D2EC11F22150E73980827"
+    },
+    {
+      "path": "NINA.Core/Enum/SendCommandTypeEnum.cs",
+      "blob": "1a17f8cacc1d6759589fe2ca6dc096801f51de3d",
+      "sha256": "CA27974CB0F05101B3070B13CD9E6F5479E4990CD372704D4B11C9CD7586F133"
+    },
+    {
+      "path": "NINA.Core/Enum/SensorType.cs",
+      "blob": "c586a3b0c07fcd45e318a6f8aa8c30270320825b",
+      "sha256": "437E0C9C107872D1F8DA9DBBDF57DCEB84594A9F9AEE6171D9798209A7B29318"
+    },
+    {
+      "path": "NINA.Core/Enum/SequenceEntityStatus.cs",
+      "blob": "eeaf1ca2b78062e5bf71c5c91043566a8059b665",
+      "sha256": "E8D0910E70C899C9D64D75DBB2C80583024968C284DC1EFE916515CF34AFF636"
+    },
+    {
+      "path": "NINA.Core/Enum/SequenceMode.cs",
+      "blob": "28f3c50baf01af6bb2a8ddf1aee2f045a6eebcc7",
+      "sha256": "E1773278E6A59CFF84D946E6187A9E70BF422966F8F1804CDBB031ACC6FBE63A"
+    },
+    {
+      "path": "NINA.Core/Enum/SkyAtlasVMEnum.cs",
+      "blob": "37492af355180249388423d57a758d2f9f826b78",
+      "sha256": "A75C3D415AA154F43DC30A78E0B68C54728237711A4F4FFAF02D4186E465D449"
+    },
+    {
+      "path": "NINA.Core/Enum/SkyMapProjectionMode.cs",
+      "blob": "e749b9b33fcd05df8ecef856fdbfedfb42ae75ff",
+      "sha256": "614E5405BF81D4F86595BE2CA834D97E0A5A9EC319B4B71C5FD488B9B230772D"
+    },
+    {
+      "path": "NINA.Core/Enum/SkySurveySource.cs",
+      "blob": "47e12a4edfcbdbabffed82f28710ebda7eafa30f",
+      "sha256": "05E3F304EA25A5673B16FA8147879D049B45F2ED8F1F804CF858F894FDE8F8E5"
+    },
+    {
+      "path": "NINA.Core/Enum/StarMeasurementUnit.cs",
+      "blob": "1385808bdebd403e3a5fce58b389c48e94ae99fa",
+      "sha256": "B0CEB5046473594DFEF710250D29F2A2702BD5BDCBB23FE65BF2DDC68A597FA2"
+    },
+    {
+      "path": "NINA.Core/Enum/StarSensitivityEnum.cs",
+      "blob": "34f14c4b192fcb6a2a530d92dd6a8c1838e34f24",
+      "sha256": "A766D22F62957EF5CC26493DDA548A6219CAEC7FA5D3F55281478EA977212366"
+    },
+    {
+      "path": "NINA.Core/Enum/TIFFFeaturesEnum.cs",
+      "blob": "e1d9ca51566923e41d0f990cff5ad5ec1f1175c4",
+      "sha256": "E2F45885F2C72E7D72958C77B47DBE0E46730F58C2B001056B8EF3AFFEFB911F"
+    },
+    {
+      "path": "NINA.Core/Enum/TelescopeAxes.cs",
+      "blob": "cd06751759d20d4897206b2d392a4854cea99ce9",
+      "sha256": "7A9049661F8AFFCC0DE1F996D3D467530FF966E1C55972FF8CE96A1354209DE4"
+    },
+    {
+      "path": "NINA.Core/Enum/TelescopeLocationSyncDirection.cs",
+      "blob": "f3538973c7062f5cbb5b540d3169a32a6fc1c640",
+      "sha256": "4E430732CE28C9753A209EEDAE574ABFA9DD48F66397ECC58DF41AA2149C509F"
+    },
+    {
+      "path": "NINA.Core/Enum/XISFFeaturesEnum.cs",
+      "blob": "964d913d5815aadbb9c4554caf1a869a05d6af56",
+      "sha256": "C9D1B0E10A9CA12CC02F5132394B5B35C604A77724A490904A08869C2C472276"
+    },
+    {
+      "path": "NINA.Core/Interfaces/IAutoCompleteItem.cs",
+      "blob": "6b50ddd5a2e71ef0bcf7304eebf44f1d70a7b0d1",
+      "sha256": "1108A31E5356B290CC75F1D463EF2DF52249AF15D21F7C47317CD0FC97658BE7"
+    },
+    {
+      "path": "NINA.Core/Interfaces/IGuideEvent.cs",
+      "blob": "eca7ae4c2d62f4d1617103117adb37ca1bb93aa0",
+      "sha256": "D80F7D2746A7BFD4AD28FED059B2A27CF1CA6F07EC9414E5A23DA75F19C08819"
+    },
+    {
+      "path": "NINA.Core/Interfaces/IGuideStep.cs",
+      "blob": "dde57289f59f98a96db44b03f302c7c2d1a686a2",
+      "sha256": "3DB0D984D9F687D4963012622B28C5157868ECEC58E8BE05AD96CF15935CD16D"
+    },
+    {
+      "path": "NINA.Core/Interfaces/IMediator.cs",
+      "blob": "e5540900f91a2667a96727b0bec4496e73425844",
+      "sha256": "4888C4CFEFDFC23ADDF32D42534533F70519F831CB4AF9489BC8AB0DADADD151"
+    },
+    {
+      "path": "NINA.Core/Interfaces/IMyMessageBoxVM.cs",
+      "blob": "8d3e69887b54a6903ccc46b080cba75e7962cf9f",
+      "sha256": "5F7FD269A0DAA12C3451D5F3F699D7BB6D9FF1E516680E34D07938B39085A895"
+    },
+    {
+      "path": "NINA.Core/Interfaces/IPluggableBehavior.cs",
+      "blob": "050be5d5b4dfd0eb18fe689442f568c666799879",
+      "sha256": "EA3CF9F3644B9225FCCB02CAF18E178779AC0775C530EAA2F6182190FC26AB2C"
+    },
+    {
+      "path": "NINA.Core/Interfaces/IPluggableBehaviorSelector.cs",
+      "blob": "77d95b8350513b6c22ec45fc03ad76f033eabc96",
+      "sha256": "BD4FE66EDE00BD079F314681B9BE2960D984AE3356683AD12E48F7A44EFD020E"
+    },
+    {
+      "path": "NINA.Core/Interfaces/Utility/IMicroCache.cs",
+      "blob": "5e9d801a2a2e0f522a99324506499234e9f0ad9c",
+      "sha256": "1ECC582DA7E6DD032C39D659EBD72E5F020933C54369A3D94E4977055A62570D"
+    },
+    {
+      "path": "NINA.Core/Locale/ILoc.cs",
+      "blob": "e1464ad76e223803fc326ae393bd5b1b002406d9",
+      "sha256": "68786280A95801979A65EA0CD5BB4C90F8BCAD1D31CB091F9176BF646243048A"
+    },
+    {
+      "path": "NINA.Core/Locale/Loc.cs",
+      "blob": "51b955acea2392e3eb7a113500f89e85b445077c",
+      "sha256": "AD9E6339C8AE48A6903671F3DBE2DB2F2717EA535D4D0CDCE4AA774C7C89D61E"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.ar-SA.resx",
+      "blob": "c1e37d6ee94682e7025149ef8b4e6573bc8a3fe5",
+      "sha256": "085C197B98E9E106A60428DE5421CFF6801C381CA85D603C96E226C61B310F77"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.bg-BG.resx",
+      "blob": "cd5fc0e417893909b04de1b9471df69476424940",
+      "sha256": "19926A82F0E198EBD8EAFF2FA16D0D834A94992598DBFB5DAF4AABD776D1FBA7"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.ca-ES.resx",
+      "blob": "49f0eff8c65725dc1398bf3f945257b54c237dcc",
+      "sha256": "1BE3129B07CAD0F580C69F19EF5F9B9048E4E6CA63AA19A48F70240D961A3910"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.cs-CZ.resx",
+      "blob": "690545ea8c3f3914605218c43fa15dbf34acc972",
+      "sha256": "EC6213AF946CB969410ACCED5FF71C0C4DF7A649DCE946120844124C452F7FC0"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.da-DK.resx",
+      "blob": "4c739c5e7ab165eccb7397977d829b1f9b1a78ed",
+      "sha256": "94330EF1E3AFCAF2BEA84913DB3F7518AACF1FE66790AECD0C11B18DEAE5FBCC"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.de-DE.resx",
+      "blob": "03e92fe8106e7aba4e0b9244cc50ecad1b46d465",
+      "sha256": "379C26A61A30924D717604273BA461EA8B11EBE8F4F187DC048363B60B8D0FDA"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.el-GR.resx",
+      "blob": "bf81aa3f24204dba64bd8e08d6d375bcd4bc664a",
+      "sha256": "B737C6429B5BFFAB867D41AC0145B67A26E9C9EF777111852EB2BCA73ADFE603"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.en-GB.resx",
+      "blob": "d3c7f43f1fa6ef3a4ab870d3586396aa3289beef",
+      "sha256": "3E95E156F4A976822241A22F4032230B098CB43E0EC16305A93C585EE4ECBA82"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.en-US.resx",
+      "blob": "d685606f5f560f82989eeeebd44dcd147c1faaca",
+      "sha256": "B370D73E3821D5BA3EE83AAB97D02B0E34D54CC2D806D2F95E879361A3A79DAB"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.es-ES.resx",
+      "blob": "47a66a1c7641c255df2f8e398767d9e61ae49610",
+      "sha256": "600B6B4BBE4E520556C053CC81A31D1E433AEC59C7AFABD6B09A3689BB835EE1"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.eu-ES.resx",
+      "blob": "2b9de1c86af3153d098fd95fd109e1f3cba00c3f",
+      "sha256": "6D65C23303FAD5752C591E2E754566FB7A36BE737C44FC96624BCE4E304476E5"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.fi-FI.resx",
+      "blob": "4e716d5a2e8b9b012b2fb9f2c13813bb2c206854",
+      "sha256": "2A4F2679C8C121C0394AE01A2055E649AF46174F79B04BF1E0E43E79C24E0EEE"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.fr-FR.resx",
+      "blob": "b3113ab86386c9ba4d454c3d298e73e0b967e5a1",
+      "sha256": "1B47E91BC64F2FADCFF24517E5AAF6F766B79B816FD517AEAC170CB2DBDF1373"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.gl-ES.resx",
+      "blob": "da04a129219a6f46126ccfc189e5c1c8bfd8acde",
+      "sha256": "21BE50D20ACCA3990DC51074B9BFC349EA32E9494DD0DAB4E3694D6840E58BA9"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.he-IL.resx",
+      "blob": "a29a9bd33bf057f08552e539887d9c71fe9f5fc2",
+      "sha256": "E5A0985C74C5AAEBFC9F5293C65D1F7E52264E6BC6EF1E6291CB81B0C18DE0C8"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.hi-IN.resx",
+      "blob": "028c5ff7befeb48b25b18313003d0459e215c41f",
+      "sha256": "401A2445BDBB76623F96CFBCEC95A07319F1261119F1E0EFEE6243D2788605D7"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.hr-HR.resx",
+      "blob": "c9933218b3510a2b2650105360da606953a13632",
+      "sha256": "AEED7E3B23B93F842F203F7EC2A5435FBC3E56EBC23982D9F55D5B8B5BFAE740"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.hu-HU.resx",
+      "blob": "10a61351ff684a0da9e2840dd719eeec4bce42e3",
+      "sha256": "19359FB0829AE6B7A95DD1C988017F9BAE2D06401D37B3655D345955112298EB"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.id-ID.resx",
+      "blob": "523e61f1531a4ce316e2331375f26e3238979221",
+      "sha256": "8BA19C5C2E656F356FD71A3DA91BC7D88C486C0623BE681BAB3858CA50445A7C"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.it-IT.resx",
+      "blob": "b4a908b9e7f7316a66c5beb4370cf4fafe967c71",
+      "sha256": "1E1E67D5E72FF527BE41D700E70C1850EFF67BD9CA4222C86894C17FD6B67E82"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.ja-JP.resx",
+      "blob": "f1e83d0ac8eb73037439ab41261211a97650ef18",
+      "sha256": "E0F588D737E6388A76CF31491F8F4FF9F9FE70A6BB1CCFE9942EFF09A49D67CA"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.ko-KR.resx",
+      "blob": "abfaa9f349aaa069b70db9e12b0568f962a8d918",
+      "sha256": "EE809652ADE457C79B6CA1EDAF0BF1911813B3B1C318983AB1DE6016D25D3F38"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.nb-NO.resx",
+      "blob": "97c7d4a9cf650a5168122c77b3ca604d372448b5",
+      "sha256": "A176C2E03E4EF6AE1F93F4731C3CF6173C0FF9B238976B259618B66D512391F0"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.nl-NL.resx",
+      "blob": "7cc68e2d49abac30f3edcfb8ed3c0c26f72ec542",
+      "sha256": "12964A3ECBFB9B53C8C1B4002116A8EF62E9D8769015ADD81946D54DA42BCAEE"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.pl-PL.resx",
+      "blob": "4145c34cd69931c4ef160e785c9ce933cd504591",
+      "sha256": "FB148AEAE9937D75F3B6EF5549D7030976E12B964AAEBE3538AF10310067E6AF"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.pt-BR.resx",
+      "blob": "4fa5bf3cca5a3d71bf227c4afd2cc2d40cf3ba6a",
+      "sha256": "F5D1300EEF9030B00F7C2C3A885CB09240803A1279C3CCA1D232138E3ECC2818"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.pt-PT.resx",
+      "blob": "ccc2a8b0fa6ec85f94519fcaa804554899f43192",
+      "sha256": "02FB9F726E25519F4CB88AA2131960CF92ADD0CC09598A0618957A937364D0AD"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.resx",
+      "blob": "7f9ce382af75f0eb07080e746f20b7ebe2727df0",
+      "sha256": "3098E0875EC48ECEBAFD1BF1A7CE6176C070C316AB2D44203928105CBC17CF6D"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.ro-RO.resx",
+      "blob": "1ee038beddff4650907835f369f87d5a7f8b385e",
+      "sha256": "074E31D7887BAF9EA347CF710849898803FC8DE923CC99DF8F48B4551242CA8E"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.ru-RU.resx",
+      "blob": "ebf56f8f66ca1694366c9512140242478bd3f1d4",
+      "sha256": "83DF0EBF5A05FD8BFD5A9FF8EF2AC357758A408FC903A4CC0D3BDB0FBD68C43D"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.sk-SK.resx",
+      "blob": "70670fee9200df751020881eee195d18e1d6b3a5",
+      "sha256": "128DD364BF7F2EBF368318AECF9AD3B6364CD0F95EB19BA40A32E0066CFD4AD9"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.sv-SE.resx",
+      "blob": "7536cb1a95ffab7f9a68e31c3ffdd533573ea05c",
+      "sha256": "7F671E490CAD39819E94FA21BCCCD2C98864DA349FA4311C711096209AC4F861"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.tr-TR.resx",
+      "blob": "c02d9b50bba1f6ec10399c6f00e7c92a0ab15e57",
+      "sha256": "579E54D5716CF0A3E415279605E074CBEB269B320E98118C45659EEDC4201B18"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.uk-UA.resx",
+      "blob": "b7035180dd0985855786beaf01fb7ab24e2c3abc",
+      "sha256": "ABD7E7738230E990ECE5A60C8A8F11DF7D5065352FF87BE01296FF99266A2E9B"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.vi-VN.resx",
+      "blob": "f29134523789c29a557437a93e52b22040a5e800",
+      "sha256": "1A8CE2495341C66851172D5EBD2624D67BE0EC24AE1B95B29FE21343674B4782"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.zh-CN.resx",
+      "blob": "149a67fa069f3dd4724c0824fc25378e7ddbdadf",
+      "sha256": "89143473F10638526FB6973E9AA2076825D24D823894A9114613C23B1F2EAAF5"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.zh-HK.resx",
+      "blob": "8d3f6a7b0fed6a15ccf4c630c3baa4a4900f04ea",
+      "sha256": "DC49F2541BCD2BBC7CDBAE42050AC3C11D337FB381EE9B13A8566AF784D33CE3"
+    },
+    {
+      "path": "NINA.Core/Locale/Locale.zh-TW.resx",
+      "blob": "c59dfe4e090fa9e9e39290fbf1c293d72bfabc69",
+      "sha256": "3138A5267EEFA1874CA6AA0E0E6F491F283F3789E6B67DA522F4E24AF015873C"
+    },
+    {
+      "path": "NINA.Core/Model/ApplicationStatus.cs",
+      "blob": "8394c9571e46b66575038e3fe62b4dc9256f5890",
+      "sha256": "28A22261087EF9DB20E408268E7E0B6A6627B737A64F7FA96DD7ED3EEA4C0ECE"
+    },
+    {
+      "path": "NINA.Core/Model/AutoFocusPoint.cs",
+      "blob": "4a57996d655c86cc697e43c326ffee1b7dbf3f3f",
+      "sha256": "02530DCAC41FD2C50D7080996EDF06D0EF8997F36F638E77B3868C839F2E78BD"
+    },
+    {
+      "path": "NINA.Core/Model/CameraDataToManaged.cs",
+      "blob": "dc5738b62fd7d8c6e468204710717ec62dcfd657",
+      "sha256": "1184FB144BD9C7E5FD7910C331F1A51F973570761EF7B952DB21264166A3E4C3"
+    },
+    {
+      "path": "NINA.Core/Model/CustomHorizon.cs",
+      "blob": "34833055d3b9ac8d4e4215bac1f22f40f003350f",
+      "sha256": "39749B2DADF2AFABB1F085558ADE2644AAAB49BF68CF6008105CEA68EBCA01E6"
+    },
+    {
+      "path": "NINA.Core/Model/Equipment/BinningMode.cs",
+      "blob": "c0327daac50685aac0ee3090be6d7494104d9b04",
+      "sha256": "160BB12E72A4D33644FC33EC72C2CFC56E71F4A0EDAF832CB579403AA3BAC86B"
+    },
+    {
+      "path": "NINA.Core/Model/Equipment/FilterInfo.cs",
+      "blob": "94073005bc3d97a53d22a13c3f547de2953fae7e",
+      "sha256": "4F9BBC00BC2308C4C9127F6D04510CC11720B32B81A4D376B754B78AA6A839D0"
+    },
+    {
+      "path": "NINA.Core/Model/Equipment/FlatWizardFilterSettings.cs",
+      "blob": "692182d238e93bf9a77e937170518c28d8d7a163",
+      "sha256": "B9B97960943DE1096CC127F7B7033FB9D4277B93140FEDE1957EAC1C52297804"
+    },
+    {
+      "path": "NINA.Core/Model/GuideInfo.cs",
+      "blob": "cfb1b5f7376ff3ccfe07d3f9260aedfad2117226",
+      "sha256": "B442D1C513434DD3B9E9B245AB51DF37545CDE70DFBC94C1A50C29CD8EA63BD0"
+    },
+    {
+      "path": "NINA.Core/Model/HasChangedSetAttribute.cs",
+      "blob": "20a27b24854f57fcffc46d6d8aaa4e67177e939b",
+      "sha256": "6AE0DF37F22C1AFAEF40053C44F490D601C1D942B6BA2EBF98331D80E3DE2610"
+    },
+    {
+      "path": "NINA.Core/Model/IImageGeometryProvider.cs",
+      "blob": "172ae080c78703bb8dae9b56cadab977c940a358",
+      "sha256": "9A7A9C101029883274AEF15C30CA6B426FF0AD6F845B1BD996A918A922D42DC5"
+    },
+    {
+      "path": "NINA.Core/Model/ImagePattern.cs",
+      "blob": "79c1c5e971c76bf8d9206b82b69a0cdf8c079a3b",
+      "sha256": "BC5160D564AEBF9FCC152820B4869E4C09801B8A4C97BE1DA00B568BE64757CE"
+    },
+    {
+      "path": "NINA.Core/Model/NullFilter.cs",
+      "blob": "0f79fa784855cf67c710fb53ad94c8d14ceafeab",
+      "sha256": "C213DC45BDD50DE002DEE4E639E1A646D0F643D3C8F0ADAF1AB6E5BAABB39D7B"
+    },
+    {
+      "path": "NINA.Core/Model/PagedList.cs",
+      "blob": "8a150bf559bba7a6d008d4141e1077e0c0c87915",
+      "sha256": "A674AE7D7BDEA3B08A8C42FDA9EF0AAB86DA2AC2AE1FCBC04C6BF4E049F3CA9E"
+    },
+    {
+      "path": "NINA.Core/Model/RMS.cs",
+      "blob": "6eefd948b232d3655766627eee222f9f783d57ea",
+      "sha256": "1449198A4D26C9A349952473C88A4EA003B43FBD12335ECDF3482E0344EBC21C"
+    },
+    {
+      "path": "NINA.Core/Model/SequenceEntityFailedException.cs",
+      "blob": "d85699793f83897967a423d945ebc07a83f81dfa",
+      "sha256": "F53A47F2739F409F8A56E79F2832978E321013EB35DBEE66DD573B21BB569CDB"
+    },
+    {
+      "path": "NINA.Core/Model/SequenceEntityFailedValidationException.cs",
+      "blob": "6bb02566772dd7078e3890738f4fd61b5193bc16",
+      "sha256": "839554F06773E4885D6037ECC2B136F31A467BC36A5D3D7237ECF8B7952068B6"
+    },
+    {
+      "path": "NINA.Core/Model/SequenceItemSkippedException.cs",
+      "blob": "2dfb33ede74eb128b88db0b981f1166f2516504f",
+      "sha256": "C7567EBCBED564602646D9DE040BC23BCC313F93A8F2A41F7005F75CB3E89A43"
+    },
+    {
+      "path": "NINA.Core/Model/TooltipDescriptionAttribute.cs",
+      "blob": "f3b1fdc60b366baeda473771f1d52ebfe47c6e29",
+      "sha256": "91C49BD74CF939DE54F32D1E3BB4CB8639F4A54B08EAF0EA0571EABD6BC77B32"
+    },
+    {
+      "path": "NINA.Core/MyMessageBox/MyMessageBox.cs",
+      "blob": "e40445e68a38e66efe4b9c493872d68bcb45dee5",
+      "sha256": "38C95B53AEA996D2BDE80B2382D2D9C8B9BD12D5EE858D3D612908C7E4400648"
+    },
+    {
+      "path": "NINA.Core/MyMessageBox/MyMessageBoxVM.cs",
+      "blob": "0eba03bc327933a47fc91bb12776d1c84e22b035",
+      "sha256": "0FC48F9F894E1B86F02AF36AA4F99DD47E3746A2457AA21540374C09E992A328"
+    },
+    {
+      "path": "NINA.Core/MyMessageBox/MyMessageBoxView.xaml",
+      "blob": "f48fa0df71d6ede6287cc1e617019bccdaaf84be",
+      "sha256": "A8168755F79F74719282251F33BB7F9A8E27D308E267A402237B12B4092A6B4F"
+    },
+    {
+      "path": "NINA.Core/MyMessageBox/MyMessageBoxView.xaml.cs",
+      "blob": "4071e17a2a4dbfe48faf3592955e023bec42f031",
+      "sha256": "3EE7B11111C0437832098B31CD8FEDA64D6DB716BA98498B2B644F856323714B"
+    },
+    {
+      "path": "NINA.Core/NINA.Core.csproj",
+      "blob": "8527577020adc849af59e5bd108ee1e38756e678",
+      "sha256": "ECBA5CBA9A9265A4B4C893D58DAFC5E18884A04F88B0CAA2FE532D447443E1BE"
+    },
+    {
+      "path": "NINA.Core/Properties/AssemblyInfo.cs",
+      "blob": "ea2615f5db6af69d90a5cc9685bc60dac3f6ee4c",
+      "sha256": "BDAC16EBC0E261F48A8DDEDD08E7A1B039D8DB09E9435A7D4B11ED828090C919"
+    },
+    {
+      "path": "NINA.Core/Properties/Resources.Designer.cs",
+      "blob": "ec96f9ab7525eca89a79220d45c78ea8ae0e663a",
+      "sha256": "19F689BF82DC07F5FA2F4AD11EAF6CFD8F40BD0AE213BCCE6D3769942D79F291"
+    },
+    {
+      "path": "NINA.Core/Properties/Resources.resx",
+      "blob": "af7dbebbacef595e3089c01c05671016c21a8304",
+      "sha256": "4E124F5A7694FFE813C60601B1B73C53E47536B1F1C0E798D4D55BFC2CA3774F"
+    },
+    {
+      "path": "NINA.Core/Properties/Settings.Designer.cs",
+      "blob": "717bcf5fa087bfca9977699751095ab4dafbc2cd",
+      "sha256": "60973D795A39BC9292B176D0DC9829EAA3698491EC5CDC6A2D92596A78642375"
+    },
+    {
+      "path": "NINA.Core/Properties/Settings.settings",
+      "blob": "033d7a5e9e2266753180f4e3a9299f575046701e",
+      "sha256": "067D162EF6BED3D0FA981CB44560DBED3F954BD4CD410BC78D29658748AAA27C"
+    },
+    {
+      "path": "NINA.Core/Protos/API/ASCOM/Camera/CameraService.proto",
+      "blob": "6caa168c1f5a399418b83b7d80260c2e8c0660fe",
+      "sha256": "5F559A5FE5572D2ED1591DF91DEC07A52DF402F75F1323F276EC69561AA7DC95"
+    },
+    {
+      "path": "NINA.Core/Resources/Logo_Nina.png",
+      "blob": "ba0beae482724cf3ea1b4c503c95145bd3f0766b",
+      "sha256": "A86D3302723E9B81AC8391D325759C2AD22D3DB14B5C98E5719A448AF18C569A"
+    },
+    {
+      "path": "NINA.Core/Utility/ApplicationResourceDictionary.cs",
+      "blob": "896fac323a659d82a820cf8798c3f5a26d575ce0",
+      "sha256": "683F4556B24ADB5516441D23331FE013532BDFE12BDC9D79F40D66AEAA2E8B4A"
+    },
+    {
+      "path": "NINA.Core/Utility/AsyncCommand.cs",
+      "blob": "970dec245fadc0029dcdabe9410f6f99a39fe106",
+      "sha256": "65CA484E81F575ED44DD3134514297EADC86B6B5C1BEEDC412E3187F50F4EE62"
+    },
+    {
+      "path": "NINA.Core/Utility/AsyncObservableCollection.cs",
+      "blob": "e193b4e8cdb786c680bfc837b29437d288a577ad",
+      "sha256": "FDEBE19D8EDB7FB275917C2FD8E9C6AE2A3CCBF967D2926CE7FB1817CD0FF052"
+    },
+    {
+      "path": "NINA.Core/Utility/AttributeHelper.cs",
+      "blob": "c98fd477e572d5a2ee10c4b664e99adfd329ed11",
+      "sha256": "3F04FC03605EDAA642B276C17436EC722E1FE6C17E07BF3E106AB55353EC1417"
+    },
+    {
+      "path": "NINA.Core/Utility/BaseINPC.cs",
+      "blob": "41f2cf58cbc8cbc991fed2bc934c7d23475d3ac3",
+      "sha256": "FA91753385EB20F4E917041B45787C638936C4E52A0B076B25B3E8291CD4B9BB"
+    },
+    {
+      "path": "NINA.Core/Utility/BindingProxy.cs",
+      "blob": "3be33815e7b28b037c9cdafa5d0a0adbad417c3d",
+      "sha256": "B3926E90447A684FA8F0769CA2E962E87174545F4ED12EC4543C0333D1BE3E7A"
+    },
+    {
+      "path": "NINA.Core/Utility/Blittable.cs",
+      "blob": "b52f51744ccf15e865f66c6e88d85dd001c963ad",
+      "sha256": "22E2D0E41E587C7A387A4DBFE96D03E0023022B7503995BE73D4049C376F1716"
+    },
+    {
+      "path": "NINA.Core/Utility/ButtonHelper.cs",
+      "blob": "29bb7a67b3c1a63532cc46d481fec99223f76ec4",
+      "sha256": "9B1D4B0F9B5F70DD434F2D5B4AB3275C15F33903B93A839803F93BB34D109155"
+    },
+    {
+      "path": "NINA.Core/Utility/ColorSchema/ColorSchema.cs",
+      "blob": "fc85de1621611baa2d1eb5baac39886c651a4a5d",
+      "sha256": "0C27EFA14382FBF2362389CE52FDB7DA767657C66D126FC1A14D81A49246CD2F"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/AFFittingToColorConverter.cs",
+      "blob": "64289a86c5bb1dd9b9bf49b4db0a672f89baff09",
+      "sha256": "666B89B57E1D4432186955A9AE62668D1705CED292BCFE1C4C57AEA0F6E3919F"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/AFFittingToVisibilityConverter.cs",
+      "blob": "94b56fa3adcb5c92af782055dc19c210cf185a7d",
+      "sha256": "6EE7D64781FD0652D5C2F8B917FFFE705B3B64B8B29F609F8268F7FA11D8C069"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/AddToNumberConverter.cs",
+      "blob": "48f4c469d61c2e067e2acaad45793778f92049ce",
+      "sha256": "75229969414D396A4365D0A33784C0BA7B5028960DDAA2B896DA82AC34FE49CD"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/AllNullOrEmptyStringToVisibilityCollapsedMultiConverter.cs",
+      "blob": "602c3e4e6579a45d3771cb299e1e96fa9f5ab7fc",
+      "sha256": "4D578A6B33C7381EDCED3D13728B2FACFFDB84D5DDB2280572E48B19674F808B"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/AutoFocusContrastDetectionToCollapsedVisibilityConverter.cs",
+      "blob": "8bd1348d8a9bc5a127aea5a150dfb282ddd2687c",
+      "sha256": "7977B924084674853B0769D33285A94E298B946664754C0DF704A00B0457910E"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/AutoFocusHFRToCollapsedVisibilityConverter.cs",
+      "blob": "7499d83f0876a10c33b559a92639f6783a000339",
+      "sha256": "09828FD8F72AE916FB3073592F5EAF455A05EFF721CC398109A443E530B14236"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/BoolToLabelConverter.cs",
+      "blob": "2289ebd6bc8e1d121bb6965767f8af42fe5a6298",
+      "sha256": "000506E13A54F1B3ED8C6310E6C77764E44EE51A73DFF864F51A8CC4A9A7FF7D"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/BoolToVisibilityConverter.cs",
+      "blob": "614f7ef38c9eb536f09b523491ca73bfb15d2a56",
+      "sha256": "825AE4A57AEC5C99E73BD50B0ED371A1A5D74FD64E8769F3058781A2DC5F1E86"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/BooleanAndConverter.cs",
+      "blob": "c8fb83a2dc1b807413a70c1e12b351df0ffcfa90",
+      "sha256": "079FA0D70870F8DC54F5262AB90405BDCD0C5AB382F5152E7B48E3A8D36ABFC5"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/BooleanOrConverter.cs",
+      "blob": "2227033cb3c230dfd7982ae4016964cabeee0dc6",
+      "sha256": "A010BB01D75DB106AFA16C7D8B1A2232630D6129E7619282626B1EDC417789C9"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/BooleanOrToVisibilityCollapsedMultiConverter.cs",
+      "blob": "375e77569e5e1e905844b6b62ecb2540c96d8831",
+      "sha256": "2922914AFE0E32BF144113332A552325AA861DE7D5CEEFE42789478A8C30F2D6"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/BooleanToVisibilityCollapsedConverter.cs",
+      "blob": "2f94a3ca158ae2a803de83feaf676823f80bff0d",
+      "sha256": "7DA1134DC59FCAE6F41C17EE5E7648B260DDC87BCB8D3C6DF7C056D7036F56AD"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/BooleanToVisibilityCollapsedMultiConverter.cs",
+      "blob": "41dd3e3fd79de882ff58f75ef0daa2d13545d0c5",
+      "sha256": "2BE2E1428F7F985D96B4AD2BE0ACC8198C408CF78165076BAA585E7CFBCEF315"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/BooleanToVisibilityHiddenConverter.cs",
+      "blob": "39c148aa492106be3811e44bfd2dc080d2f73be5",
+      "sha256": "0A0931241825220BC0D0C6741B6A78924BCB81D1FF3B6DA9C9B67D0A00D0D0A8"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/BooleanToVisibilityHiddenMultiConverter.cs",
+      "blob": "7e3fa30c92cd747815c980a38c84e28234610600",
+      "sha256": "03652495CFA32F06A1693EB1E8C29A7A6A7CC47BDF7A354CD8FE52D30F56338A"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/CameraDefaultValueConverter.cs",
+      "blob": "49d5fde4f5c16ba8b61a155c57a4aa3e5ee95ce2",
+      "sha256": "8254C42273DF0857DA92BAB05598EA2D321EF826D46A7C6799F965EBA9871970"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/CameraStateToVisibilityConverter.cs",
+      "blob": "d023741adaadf6ebca8353064b54a0f1531a474b",
+      "sha256": "E760F69B7A917A69F663344A017538280C3406B41414F4CE344440303080C1A7"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/ClampDoubleConverter.cs",
+      "blob": "067366c4a05e6acfa1805aeb712de1a3336da519",
+      "sha256": "F30E81A7638859C92C07F2B8D2F903B7A3E57FEE783B725793508514EB50E275"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/CollectionContainsItemsToBooleanConverter.cs",
+      "blob": "26cc70989d4c313f3191b3dcc93524e276801e17",
+      "sha256": "0865420BBF97959BB59B2C0A3B1AED3A4C2C7F76279041CD78D73A65AEBD00E7"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/CollectionContainsItemsToVisibilityConverter.cs",
+      "blob": "0001d9210e517d5f8c1cd3b70b21c8e05906989a",
+      "sha256": "2AFE76ED64984744928B9F6C502DDC5BF7E05D928506AB023109D3C6C2DE2153"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/CollectionContainsMoreThanOneItemToVisibilityConverter.cs",
+      "blob": "8a66a303840d443427d2ccf42f774f1a13f41dac",
+      "sha256": "34DF0839C192C5ED446DAFF0267A0820319B59826B2901094F3CC73A20E0E585"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/ConditionalNullToObjectMultiConverter.cs",
+      "blob": "abd6235430a55ab282703cc51cebba594ab50300",
+      "sha256": "237299AE5D166CDA41E25CFCA1425AEAE0256873A805D54808494CA1050A098E"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/DataTypeToStringConverter.cs",
+      "blob": "3b73fc2acf6126495d8cfc41f54fee8feb6e354b",
+      "sha256": "155382E1AD64BC23BAEB18B8573563996D980AA8BBCF0EBC41AD1F3CB53FF914"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/DatabindingDebugConverter.cs",
+      "blob": "774b849f987cd7e4d4f323a231851dd3d066a0d0",
+      "sha256": "89AE87FD28EDE8B5CACC6BB4D91926B5948E656624C8C80A9251D2E56F4B5E0F"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/DateTimeZeroToVisibilityCollapsedConverter.cs",
+      "blob": "a816ea9da520d3ab67fcdc8f22598135cae5bafd",
+      "sha256": "0BC09013F4159D28B4F97F0BDA47A96D8A9246524A385BE06D9CCB82833CAE67"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/DecDegreeConverter.cs",
+      "blob": "95e5c7fb90eaf57f315e8645357151f3522f086f",
+      "sha256": "0E3F25B113896708612CD25EB98C928E88C6202372FD4A9C81E752D0A50FEA61"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/DefaultBinningModesConverter.cs",
+      "blob": "823456dbd9c8bbe97bc799a0fd5a2e2c1ea46b9a",
+      "sha256": "3238BC6173E5AAC824FD6F37898B06589170DEAFC579CA057A56F6BB4412B9DD"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/DoubleToBooleanConverter.cs",
+      "blob": "20fa267e65dfbb5633815f86c3fe83b7de71ccf9",
+      "sha256": "711520704281B260B259A799A9C337593B2BD237C6BC090763A6C876702B27F0"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/DoubleToHalfValueConverter.cs",
+      "blob": "7007de7fb82e59d9c2487a0907a6b1c7678de2dd",
+      "sha256": "C7F4275B50B3B4EEDDBBAD822AA8C65A11282A10054E0EE37465CD1A0189A07E"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/DrawingToMediaBrushConverter.cs",
+      "blob": "c370bf0557aebe7554614347eaabb051f6dcebb3",
+      "sha256": "2C99EF64308D80624EB93EF2814D7067242ABD98885C0DAC18B1A47DDF0C5756"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/EnumTooltipConverter.cs",
+      "blob": "cc6d85a9ff6a6a198e0cd4a5e49fc9a3886bbfc8",
+      "sha256": "44EF7108CF5CB13702040689CBA0864C02D3A1384C2BFCC652F59FE2672FA919"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/FilenameConverter.cs",
+      "blob": "a14977a22f879668ec5c7fcd222437c55b6792b5",
+      "sha256": "0D0E23D206DCC5EC91F78DB263C9C22A6988F430A7013C467365755BB5952919"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/FilterWheelFilterConverter.cs",
+      "blob": "e5955da80cc9463dd2b4128868047caeed68f4a5",
+      "sha256": "C00366B814042C19132D8A012A07D4C8EB9C9844AB3765012CEDFEFA33AEC738"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/IntListToTextBlockListConverter.cs",
+      "blob": "66f5340eb9682ab3bc52e1aaf3fcf205086e617d",
+      "sha256": "02B4F86E47052BEE46118FF063A0EA7F3A371C18C730105EB1222042F345A390"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/IntNegativeOneToDoubleDashConverter.cs",
+      "blob": "574ec59a29d9821f8d8122a9201e858cebc6ef28",
+      "sha256": "F6D37992D7FB711CD432CE4ABD8E65B0F5F262E7880CF9AA1E0680DF3007B2A8"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/InverseBoolToVisibilityConverter.cs",
+      "blob": "2100a385f4e397a8091d50f737c20f0dbdbf8b24",
+      "sha256": "50594E46FCB72BB59AAE19E46B92C3C4CF9856186BC20955E7A50FD2B2379CD8"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/InverseBooleanConverter.cs",
+      "blob": "cdef6438c51fde9130a587067e1f8d605d305612",
+      "sha256": "31F466AC5743B4210280DF51E5493915CD4FD55E8E8B259521B585FA4822C4B5"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/InverseBooleanOrToVisibilityCollapsedMultiConverter.cs",
+      "blob": "3e6db4cc60ace0e3c76239c88082f79789e9f1f9",
+      "sha256": "A750E8D7176264F870E3A96212915C93E69149FFE3BC1863076EBB02F014755E"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/InverseBooleanToVisibilityCollapsedConverter.cs",
+      "blob": "64bf96b88597e148c42245540988024a714d2c3d",
+      "sha256": "F8785D973EEC0FF3327C933543BD784B7C1DED1B21EC5A5A48DEE6EA857C0E62"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/InverseCollectionContainsItemsToVisibilityConverter.cs",
+      "blob": "154392bd7632816db5376ac3f4a684950c3300a7",
+      "sha256": "237BF5128FE3F3CC5E4329A5AEEB934190C3C7DD333FD257F5AC106A17D46DE1"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/InverseMultiBooleanANDConverter.cs",
+      "blob": "2cb6879355caa46be730368f3af5ab0944586759",
+      "sha256": "086CBB53CE0430A99F6F37EB6F886F4199536E0F6F5A6759FBA3448BAF3CAF07"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/InverseMultiBooleanORConverter.cs",
+      "blob": "d269a723712e91e09f1b6af186980cef08c5a75c",
+      "sha256": "8736AE22B553AAACA01438BF7A3AA64B49575902721CD7D8D82BE3FC7F91D2E4"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/InverseNullToBooleanConverter.cs",
+      "blob": "20b91d3447ff8bf508ea196d553ca8ebccf5e632",
+      "sha256": "09EF0CB16C57CDCD511A51F3367C4A8655E6BDC6C0DA6576538C17FBF1408E16"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/InverseNullToVisibilityCollapsedConverter.cs",
+      "blob": "a5eb0df73d439d21547517500ed4788fbf4da2db",
+      "sha256": "D7922EF6EB98178140BD278BF4A8F792B2EB3FA927360640FA163C09F01FB59F"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/InverseNullToVisibilityConverter.cs",
+      "blob": "7ffec8a2db690f933974109e64a7d17c575f2981",
+      "sha256": "58CCF80A5EDFFD6B925531DA8CEE62556B7131C3908986ACB565C21BF77C5E97"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/MeridianCrossingAnnotationConverter.cs",
+      "blob": "fe63ffe4d73bf30617e4bc149ecebc889d0d0939",
+      "sha256": "4F5A262D31246D8F26BA52AD2480A518ADE5858D8B569E950F42D720108208F5"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/MeridianTextAlignmentConverter.cs",
+      "blob": "6c08a562370a09c7287d28d859c0e7f88f17b5aa",
+      "sha256": "3723C6908D2D1DB2F431B4003044E89B6A0A431B579D44BD7E18B8BA9EB5A878"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/MeridianTextPositionHelper.cs",
+      "blob": "3bc7b32df30112d638c70ef9bb554ce7cfd2ff28",
+      "sha256": "722CC411CABABFAD12172A3188F1651DDAB2DD40A5CF70FE203038369072358B"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/MeridianXPositionConverter.cs",
+      "blob": "b6369f17afd6544fc3f1dfff6e56daccab019fa3",
+      "sha256": "35E12D889367BDB00793E1D8C876C83136BE7445657D8509BE8EF0B56992576F"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/MinusOneToBaseValueConverter.cs",
+      "blob": "60ab6873e58ec45c07ee6c8cfc3f2f0773878190",
+      "sha256": "E744CF778070F4335150698D00BBDEEEAF98A750F9373A514CFC179C6C7D6C05"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/MinusOneToEmptyStringConverter.cs",
+      "blob": "ca8e5899f3a1927a548319c45d9b14dd2558f416",
+      "sha256": "331851085AC91022D988041C500043727DB25CB4BA967454A444995F667C8281"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/MultiMarginConverter.cs",
+      "blob": "d880e15155a8ffd1865bf2cba8fdfa67049ef250",
+      "sha256": "CDEA66BB426BBE15C1395AB2BECAE24B932AC115BC8BA16EAB63562A91BD846D"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/MultiToListConverter.cs",
+      "blob": "fc161358f3041b5d1b8f3ba1f3ff6f66cea21a7d",
+      "sha256": "65DC03F76DA10B5BC2C6442FD945B337BBBB5B58B933369A72EE23C9BCA1D918"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/NaNToDoubleDashConverter.cs",
+      "blob": "f64f424f936c2573c29aecb9a3f435fefb48e709",
+      "sha256": "D4F76E15B765CBA894BFF0DF33BBB925AB31B81C07F554449D7CA753409E7C8F"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/NaNToEmptyTextConverter.cs",
+      "blob": "88cff61a6039aab772e415321e30ec5766513e80",
+      "sha256": "4DB62F33ABC434A4E59D9467FABB2920C89286519ACC6A9F2AB6377CDAFEF829"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/NaNToVisibilityCollapsedConverter.cs",
+      "blob": "6287a051b5c06a2b8bd7df497ced9d797b3106d8",
+      "sha256": "F41D8543FB5B29B6442E10E7C5ED804B69E9BB05FF553AF69756682B62BF103C"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/NaNToVisibilityConverter.cs",
+      "blob": "ad5581a188a1d367190e640df3acd0aa9592ef82",
+      "sha256": "4C31061C5B714386F4F51E19D30930202ED80D9B3D0B03DAABBC7E35ADC79ED9"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/NullImageConverter.cs",
+      "blob": "3386d514900abdd0d8919b7cbceeddde67800988",
+      "sha256": "4B5D1554956F493CBBDEAD7BC3E0492E4D907418A566CFBE4C2648B66FFBF955"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/NullOrEmptyStringToVisibilityCollapsedConverter.cs",
+      "blob": "936e38d30b0fb3a0d06208c65e125bbef5247c91",
+      "sha256": "C80A7C5594EDF7BB07A15D80A7F8B7858C80E62BD7A27F081806D22FA0DE32AA"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/NullToVisibilityCollapsedConverter.cs",
+      "blob": "33981b7249fd7cf52b3e3f54a1fca11fff6e4032",
+      "sha256": "E4736E499845EE05894B44C9237AC631AE9CA2F88874731DF575E5588D1B57D5"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/NullToVisibilityConverter.cs",
+      "blob": "d5482bc65e902ca2f4044318982acdd08f360ec9",
+      "sha256": "5C4978559BCA5E5C6B2E9246891C39599107C3450C8315E26BE2E75865167791"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/OneValueGreaterThanAnotherToVisiblityConverter.cs",
+      "blob": "61cbd20eccec604e16801e2fdc83da456968f528",
+      "sha256": "5E323D1E99126D2784CB835032A10D4ED05E0FFD56D0EFB675702D230C680616"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/OptimalExposureCalculatorAnswerConverter.cs",
+      "blob": "9255240f2185f8f263fa02db86ff8a6dc26e7c81",
+      "sha256": "7E0560E20065754D1D5FE7CA80AF94722A42B48A882352410FF8C6A2306084C5"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/OxyPlotDateTimeConverter.cs",
+      "blob": "c55d9a3e8f9977b285987b3742cb7a927c7ad321",
+      "sha256": "B7DE21D5A3C69EE07408CE07E06468C265C008E20C89B8DC7BDC8C8DACA915A0"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/PercentageConverter.cs",
+      "blob": "ad61aa40f90a8316848a091ecf5e5aa8dbbb34af",
+      "sha256": "7A55555D998913BF77A36799CC21C128F83F336A512788F238A3CC8653287217"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/SetAlphaToColorConverter.cs",
+      "blob": "2b6710b0d1db55b7c3609a9b64ca5b69601fe231",
+      "sha256": "88789AE4E74B32105BFBACBA982D42BBA8CAB4527A074E8E7FD8DDD6434A2A58"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/SideOfPierConverter.cs",
+      "blob": "2e308f6833a160133f96386f0cf642649b0294ad",
+      "sha256": "980D6D6A672CADC6A0CEA6AB46E8215F7BD46D1A009DF1976E8C8E1D3E054B25"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/StringCollectionToStringConverter.cs",
+      "blob": "6386d3823a5b6ef4d9ee02879c9809144d88e82c",
+      "sha256": "673F234D58EBB0967491595184C05F3A9E6943D56912F0AA0569BA2844029D7D"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/SubstractConverter.cs",
+      "blob": "fa224ead49e082dc201ff3313291bccfa4ced5f6",
+      "sha256": "79629AC553EB602B5218F4D1629A5F1FB579A86C6C4DA6ED5BD63CA759414930"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/SubtractHalfConverter.cs",
+      "blob": "dfaf369b9a2628a7d3c8bbbe4ac350722bc8f3ac",
+      "sha256": "63DDAC0FE473391E944E0E0197BD5EA88F4F5342A8C202300CDB2258C6BBD9C1"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/TimeSpanToStringConverter.cs",
+      "blob": "5de66506cde30d05ecde1dcc5e2851fb0cbfb57a",
+      "sha256": "9BDE04A2774EB6563BC363908C368D681B25E7A5E9CB93DBF8DEE03887B17E5D"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/TimeSpanZeroToVisibilityConverter.cs",
+      "blob": "b8bd7b5a24852bcde3fb0982cc4ec6cbebdd7443",
+      "sha256": "E2C7872A0CE02A76787200FC868C2DEFFDF2C07048B5800B5F5EF78AE7AB5ACD"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/UnitConverter.cs",
+      "blob": "4e6beff8936c33affd6409b2b572415c7cdbff92",
+      "sha256": "D0595C931AB49D434AF5988FF83DC0CFFCF4D38285F76DA989D05DBC025F2D11"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/ValueToLocaleConverter.cs",
+      "blob": "12fd4290577ee5e483bc1ea45dfd98913e62f16a",
+      "sha256": "E21FB0742F7739BCD25028445D3FD5E155087B7716C822DA4B0AF3568F9F8E32"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/WidthAndValueToWidthConverter.cs",
+      "blob": "d3569e172c69a0edefef30687fa4dc729cb51958",
+      "sha256": "A7DEBA3E12E928EA7AC8423CCF6414A22E7005F93AFD5D53633ECA0C06BFAAA3"
+    },
+    {
+      "path": "NINA.Core/Utility/Converters/ZeroToVisibilityConverter.cs",
+      "blob": "ba15cf98ee1e2a4ce0f9c7d5f168cf03ebd56e74",
+      "sha256": "B6788DD4F67F70B0C520863EB11685EB9B8172A500F1CD19BF82325EF67E2D75"
+    },
+    {
+      "path": "NINA.Core/Utility/CoreUtil.cs",
+      "blob": "5216ab978175f30fdd49c249e29c5ad79472881b",
+      "sha256": "E6C399BA490E43D3094A76D38C1AB3FD416C709CD9E23BB1855202788192C4D3"
+    },
+    {
+      "path": "NINA.Core/Utility/CustomDateTime.cs",
+      "blob": "1157c98738554a7b6ee627b7f8e201b0b8c7dc28",
+      "sha256": "6EE9E2FD3AE4A556BC398120EC60EA78296D69E1573D3E4FC6B669286E4C86AC"
+    },
+    {
+      "path": "NINA.Core/Utility/DataPipes.cs",
+      "blob": "3abf3aa798a6db3dbf30af2df691251f0be12fa7",
+      "sha256": "C1F12FB82FFA22432A68D28D1415BBAF440B34C104011ABD2048591BB4ACF886"
+    },
+    {
+      "path": "NINA.Core/Utility/DeferredContent.cs",
+      "blob": "8bb92ec9fca41a5b551836034e43b24a2247efa3",
+      "sha256": "B3B3E19C3DB95DF6BD8D50973A12D1DD0BA10FB2E79A430486BC5CA7F09ACAEC"
+    },
+    {
+      "path": "NINA.Core/Utility/DeviceUpdateTimer.cs",
+      "blob": "ac1059bdcc1933630723eb12cec43e60dd815f57",
+      "sha256": "A4AB715398A6C1329B9A609624A3D58E6D8C879C2D00B3162D7E6FD021F663DC"
+    },
+    {
+      "path": "NINA.Core/Utility/DialogCloser.cs",
+      "blob": "af1d6c9579405dcd249cdefe4bd9a56a5adc59bf",
+      "sha256": "78E9FF203366FD8E245857E4A1E99370198C5DA7812EA997AD6156A20E59A3AE"
+    },
+    {
+      "path": "NINA.Core/Utility/DllLoader.cs",
+      "blob": "9c7938cede3bccf1d996703ee0168867c7d2d8b4",
+      "sha256": "C367C65B1E1A8291BC9143622ADB4DAAD8602209DA8FC22D26FBE29D017C3C55"
+    },
+    {
+      "path": "NINA.Core/Utility/DnsHelper.cs",
+      "blob": "45c0d951c63c467e06cd39e4df83f0afb3bdcc25",
+      "sha256": "A36A1D85930930A3EC418228DA15A1F78CE919BBEEA676313F0153820776A4B6"
+    },
+    {
+      "path": "NINA.Core/Utility/DocumentationIndex.cs",
+      "blob": "2d0ae81474d13fac732fe51e7f3fd9d7ed45fd3e",
+      "sha256": "BFCE926A53C156D650D8A2C21B5EB8A3BA9213C8B65DEF828BF00CE4012F4844"
+    },
+    {
+      "path": "NINA.Core/Utility/EnumBindingSourceExtension.cs",
+      "blob": "370fbdcbb0627e410cffff7e8c4f2ef859c272a3",
+      "sha256": "E5CF4DA879A81E2463EA5E4D37D7CFC5075D93731B76EE1FBC6E67C8D164FF0D"
+    },
+    {
+      "path": "NINA.Core/Utility/Extensions/DelegateExtension.cs",
+      "blob": "df8d8a7e89949fb2743674101f216de288f0eb12",
+      "sha256": "397FA19E9D22FEFDABA078AC6C0CB74DFC4BBFA76CF57603106DB41DF65A7E3F"
+    },
+    {
+      "path": "NINA.Core/Utility/Extensions/IOrderedQueryableExtension.cs",
+      "blob": "d3500d2312f5f43473f637c7e26c06bfe0ebdc0d",
+      "sha256": "4D80880086A67D2583209865CDE6176D655C9FD3A988A5017976B3217E887541"
+    },
+    {
+      "path": "NINA.Core/Utility/Extensions/ProcessExtension.cs",
+      "blob": "82375d4ee35063ab7e33055beafedb12172266f2",
+      "sha256": "2B5A2DAFE80338AED18D398BF098172C6AA7BC3C493D454DB70CD7ACD4571FED"
+    },
+    {
+      "path": "NINA.Core/Utility/Extensions/WPFExtensions.cs",
+      "blob": "0abda6612d98dae26d1bdf95aa44b03c22f9ee86",
+      "sha256": "64F9E052E59381BD42CF72BB60CDDE04689AC1845D92282EA62C4B1B06F54041"
+    },
+    {
+      "path": "NINA.Core/Utility/ExternalCommand/ExternalCommandExecutor.cs",
+      "blob": "2a0455ad873cde3b4212a4ec90289661c4dae5ce",
+      "sha256": "BDE91089873D45BA4F3E2F6C9B0A25D19A5089068F12616837E743F4DDAD3CEA"
+    },
+    {
+      "path": "NINA.Core/Utility/Http/HttpDownloadFileRequest.cs",
+      "blob": "77c7dd830f26d84cf42485ce8b349d03b84d11a4",
+      "sha256": "A5562898AB253A55047C96E380504706C988726A48273D5C41F7087E75AFDF7C"
+    },
+    {
+      "path": "NINA.Core/Utility/Http/HttpDownloadImageRequest.cs",
+      "blob": "8b54f221a6f914840b401a5935c4b4fba532f4f8",
+      "sha256": "F0453BC16C4B690A336B2DC8F92EE67A276FA99ECB5EF40A0BB987E1032C144E"
+    },
+    {
+      "path": "NINA.Core/Utility/Http/HttpGetRequest.cs",
+      "blob": "b5488d317b56fab042888451a5823909eee307c4",
+      "sha256": "8D73305596CF50731F663E1A5BEA85D265F2D72758D7AB3C19C6C847C2C397E0"
+    },
+    {
+      "path": "NINA.Core/Utility/Http/HttpPostRequest.cs",
+      "blob": "f74b94825b1dfe58891a1f2b6906dbccb0daf13b",
+      "sha256": "590EE93C194AC6AFD53E447B0EA264A75A0CA12310B021F60E916BA65B1C688A"
+    },
+    {
+      "path": "NINA.Core/Utility/Http/HttpRequest.cs",
+      "blob": "38b8a25aed93fd539ef694f2dab9d5676e3269fd",
+      "sha256": "2970CE7A33167AED87C7810C911C1A983A2F3C63A409DEDA769FB7A95960065A"
+    },
+    {
+      "path": "NINA.Core/Utility/Http/HttpUploadFile.cs",
+      "blob": "98c99d5ab05f95d17440ee4932028ceae9edf94f",
+      "sha256": "B7D35E482E38BCF13EC5ACA4C2F596B439344F0ADF4A3A51A6965044B0DA94E0"
+    },
+    {
+      "path": "NINA.Core/Utility/IApplicationResourceDictionary.cs",
+      "blob": "c45c4fcb4e57980934b2648471623d614aa94234",
+      "sha256": "F4B58722B7D425429F5AE9587333DD8D31A1FD3A45270BFD4D7E26C7994890D6"
+    },
+    {
+      "path": "NINA.Core/Utility/InvokeProcess.cs",
+      "blob": "3640a028911d690e625ef7ed218e8796ce981c61",
+      "sha256": "A23AB3667D9A736D763309797C2844036CA34A434F68FEC5C8D1DFDE44335822"
+    },
+    {
+      "path": "NINA.Core/Utility/Logger.cs",
+      "blob": "5b471a528e1a6d58fac1b5f8dfd872ca5e041636",
+      "sha256": "4ED561956447971592BB24B51205366D2D93067C2505920B9CB47143B61515B8"
+    },
+    {
+      "path": "NINA.Core/Utility/MathHelper.cs",
+      "blob": "f7bf2712c79b93532588bcfee75c24aa0d18ef8c",
+      "sha256": "4638F68DC5A36DF5EDE274AD0A085198203CD5E439C36783FF18D280DC0408B0"
+    },
+    {
+      "path": "NINA.Core/Utility/Measurement.cs",
+      "blob": "275ec0673d286e37c66e2fab0eefae574a33abf9",
+      "sha256": "D416E92DEA987C6FA7344C9C5975DEB60E45531FF6FD6E68312A018529C149B2"
+    },
+    {
+      "path": "NINA.Core/Utility/MicroCache.cs",
+      "blob": "a42abc091ebc7a3414c86ad64ae5c8b88f288ccb",
+      "sha256": "545DBE471412DA28D7763B08EA0DBF9509EB104B7F8A379CF1BD58F492EE4C16"
+    },
+    {
+      "path": "NINA.Core/Utility/MyStopWatch.cs",
+      "blob": "643db6e8c9f84490ce02501aab64a99eefc71cf8",
+      "sha256": "F7A4E885A994761FE56D8D7A08DAFDFC9E1D360D33005412720484A772E0840F"
+    },
+    {
+      "path": "NINA.Core/Utility/Notification/CustomNotification.cs",
+      "blob": "525edcffed236a6f926e44bc99667bc4424df735",
+      "sha256": "ADFC0B5C379C727E645E07DAB7A484021E0E930AD537640F8011E18B3EFC3C3B"
+    },
+    {
+      "path": "NINA.Core/Utility/Notification/INotificationWorkAreaProvider.cs",
+      "blob": "ba8a5412a8afb8221dda9ea04c66e43e2547a523",
+      "sha256": "93C57880A1D32FB5AD26D9969127BDB628B73EE81EF1385E5B301BAD21B2B85C"
+    },
+    {
+      "path": "NINA.Core/Utility/Notification/MainWindowWorkAreaProvider.cs",
+      "blob": "bad4ee7c71b1f8d8ab2693a1a9e1f566d52ddf39",
+      "sha256": "924C6EF964CEAFDE95A597AD813AB00B64BB52EE849EAA8654BF77EC2D3BA38D"
+    },
+    {
+      "path": "NINA.Core/Utility/Notification/Notification.cs",
+      "blob": "6cf135f547352445775a085c8afcdb8faf439c2a",
+      "sha256": "640181F959FC0D778B8E8252772CCFEF577DB6E25F7908B448C9CB0FBCF6FE1D"
+    },
+    {
+      "path": "NINA.Core/Utility/Notification/NotificationCorner.cs",
+      "blob": "af9fa45d858d84ab2980315a2208da4834be184a",
+      "sha256": "9CCA123431269C4E6298C350B542910A833AF2F4D3A2C83E4473D0BD9FC476B5"
+    },
+    {
+      "path": "NINA.Core/Utility/Notification/NotificationHostWindow.xaml",
+      "blob": "7eaa3e5f6875bfbaf5f896f59acb959b83b28c5a",
+      "sha256": "6994C9BEE10B6ED9362AF41FBD2760C867E18450113A16AA953FF3BFD710A83E"
+    },
+    {
+      "path": "NINA.Core/Utility/Notification/NotificationHostWindow.xaml.cs",
+      "blob": "f75ca569b5c27625bc9fc6fc08de3a499a1250c6",
+      "sha256": "702FCBAFB62C5479BA56FF4525A502BD7C119F000168E6B7FB80349A3B51ED3F"
+    },
+    {
+      "path": "NINA.Core/Utility/Notification/NotificationManager.cs",
+      "blob": "db47bd65255782acc486eab742b183ca21aaf83e",
+      "sha256": "B6D565A9DE7F0F8F319C067E09DF4C1B86B8FC8925ABD780BB9BD29337122330"
+    },
+    {
+      "path": "NINA.Core/Utility/Notification/NotificationWorkArea.cs",
+      "blob": "fdd7a936eb52b7099e3a2e9ea29dff99b0fa8dc8",
+      "sha256": "8708E54BB4D04F92AF98A820B735E85BE6EAB62D698587E9C04A3ACEBF0C297E"
+    },
+    {
+      "path": "NINA.Core/Utility/Notification/PrimaryScreenWorkAreaProvider.cs",
+      "blob": "74bc2e6a6dea0647113d0575cac344f8140732ec",
+      "sha256": "9D47394646A59AC9AF3087FF1BA8160FA3A4805712F48049FC0A46CD93C3D24F"
+    },
+    {
+      "path": "NINA.Core/Utility/Notification/SameScreenAsApplicationWorkAreaProvider.cs",
+      "blob": "51164fcca48bb5ebd23e29ac2bc400cfa705f613",
+      "sha256": "E02E3073E0838CF0CED47A755053A37361097F843A457303091A30961C048CEE"
+    },
+    {
+      "path": "NINA.Core/Utility/NotifyTaskCompletion.cs",
+      "blob": "50099ebe8031f8e2aff1db0c2820bb53f97a2411",
+      "sha256": "5C823BAB7164F3C794DA8C9BD56149728DCD65A2D7C7DFCC188FD72050716A42"
+    },
+    {
+      "path": "NINA.Core/Utility/ObservableDictionary.cs",
+      "blob": "1188b1613e2394f47a3f19b75e91474707ed956d",
+      "sha256": "55F4D41B32726145C403DD56E1C56C623CDEB7799E6B622553AA9AC3BC695831"
+    },
+    {
+      "path": "NINA.Core/Utility/ObservableLimitedSizeStack.cs",
+      "blob": "6441fe62abe1617e15317a873e3bd2d468e949c5",
+      "sha256": "EF1C3E64118F901E12EABBE58282BE283CCDB6741BC6B7D00B378FE26B48D3D2"
+    },
+    {
+      "path": "NINA.Core/Utility/ObservableRectangle.cs",
+      "blob": "3988d008489b6b64f1952996ad90da7d18a868b2",
+      "sha256": "214CA41C0FF79D983C92C67E121663534CADA2937C007EFC1E034ED4BA989E48"
+    },
+    {
+      "path": "NINA.Core/Utility/ObserveAllCollection.cs",
+      "blob": "fecbb5b7277f05184c2ad15fa195c2958a713881",
+      "sha256": "385E6ED9ABAD4BAD23271F2A9C4C242EDB236B5A5CAC30FA7CAF2077900F45DD"
+    },
+    {
+      "path": "NINA.Core/Utility/PrepareImageParameters.cs",
+      "blob": "f85527eef1a6e49b27abbca0386f4fe2c72d609a",
+      "sha256": "24A2759B3C546D24394FEF3A3C53914EE2A67F78EB24E45202F2DE7AE3947724"
+    },
+    {
+      "path": "NINA.Core/Utility/ProjectVersion.cs",
+      "blob": "937c4076901a47e868bf4f9c96fd79ec54710a6e",
+      "sha256": "F67A94914B9F1FBA6E79D191E952A9D0E90D199404A6DA2A9993EE32EEE2DC29"
+    },
+    {
+      "path": "NINA.Core/Utility/RelayCommand.cs",
+      "blob": "6c257df3b8d7bc5287771489347082a4e4639e97",
+      "sha256": "22F712EEB8039F4FFBD4CB502046C851B49086F99861C97210C697014333C453"
+    },
+    {
+      "path": "NINA.Core/Utility/Retry.cs",
+      "blob": "85629c3205a954e2bda3ff5705c5c2672c0eb897",
+      "sha256": "F532DFCAF66ACB2862506448CD9FF155672C6F4B3AB2EF736B7756ACBA953A38"
+    },
+    {
+      "path": "NINA.Core/Utility/SerialCommunication/Exceptions.cs",
+      "blob": "3fa3e8676190358c8ed52d4aab581a2071c66f89",
+      "sha256": "274C7FCC45BF3660FF90B87EC28834EFC14DA32A953B55C69E3F5495918D2553"
+    },
+    {
+      "path": "NINA.Core/Utility/SerialCommunication/ISerialCommand.cs",
+      "blob": "d4013d272d52ed2ec47e2b9aba3b92b6bafe1977",
+      "sha256": "7B0476E0CE28DC73707DD993B2F798C823BAD8095658EAF7C296CE6B75C04915"
+    },
+    {
+      "path": "NINA.Core/Utility/SerialCommunication/ISerialPort.cs",
+      "blob": "c9f87b4ab225f80c5db6760bdfe1c0eb8fcd55a0",
+      "sha256": "4671CDDE710C667A5E2239F3F552ADC42355719B796E82DD805D5E3A77A0C5C8"
+    },
+    {
+      "path": "NINA.Core/Utility/SerialCommunication/ISerialPortProvider.cs",
+      "blob": "831d842358444aff855afe9312683bcbf2a87876",
+      "sha256": "114D3F97F339D7D529FB20DCF135B8CFA30EF3C9F282FB8760C16BD0E0BABDB1"
+    },
+    {
+      "path": "NINA.Core/Utility/SerialCommunication/ISerialSdk.cs",
+      "blob": "036e0c23d4362f13798e1705013c54b63179112a",
+      "sha256": "01638FB65D3E431C21DF31A17145264BC2BA7F4184A66C4BDE30DB8AB0716D97"
+    },
+    {
+      "path": "NINA.Core/Utility/SerialCommunication/Response.cs",
+      "blob": "33afe73ea67201cd078e85886d3af44ac9583f76",
+      "sha256": "F46AD2A782B6818A83B73E61C7948D96F8EF119AB057D1AF7C3ADDEAF9471406"
+    },
+    {
+      "path": "NINA.Core/Utility/SerialCommunication/ResponseCache.cs",
+      "blob": "56e02de18042e5db81b2faa94ea8d4a9e729755f",
+      "sha256": "DD1EE775F05D4E799617F03BBBD397060E03F4FE3E9FDFFE48924C0F7584242E"
+    },
+    {
+      "path": "NINA.Core/Utility/SerialCommunication/SerialPortProvider.cs",
+      "blob": "3ff3672063f9d55658dbdb969b341fad83278547",
+      "sha256": "9985EB3E381821226DCBC5E145BD97935907E9989157D9FCDC9DD2A6C5812127"
+    },
+    {
+      "path": "NINA.Core/Utility/SerialCommunication/SerialPortWrapper.cs",
+      "blob": "11a374ee37c416a3f101cf8e7dd6c9c0298e9ba8",
+      "sha256": "553DA82B0BA3FDEC9B4E37583890FCFBA8FD1096961A9BB9B616E08E3F61B7D2"
+    },
+    {
+      "path": "NINA.Core/Utility/SerialCommunication/SerialSdk.cs",
+      "blob": "194b672ef436ab7d22c46b19d703c0029c742998",
+      "sha256": "B5B94392BCBC8BA26D96EB5AB60DF352A97673159016B2EBB69A6C76847C5DF4"
+    },
+    {
+      "path": "NINA.Core/Utility/SerialPortInteraction.cs",
+      "blob": "b2a48751a00c28334cad48826193adcd61d8ad60",
+      "sha256": "6F7B19F3E191B3850DB95EC3256FE9815CA3E6228002BF8A02E4CE859D977850"
+    },
+    {
+      "path": "NINA.Core/Utility/SerialRelayInteraction.cs",
+      "blob": "10614d21cc410fd7783bf953f10cf3b1e95e958e",
+      "sha256": "397FDDCA4DB2FD53E3D9E59F92AF08281BD3EC8B201CA638C5E7DBBC0F7C94C6"
+    },
+    {
+      "path": "NINA.Core/Utility/StarMeasurementUnitConverter.cs",
+      "blob": "683e91ce35e61e35fe486dff0f3894b790ad59c3",
+      "sha256": "63A5D6757BA4E98E462A4B892141F8E0302CF8DF86427D0B0581819E2F32113C"
+    },
+    {
+      "path": "NINA.Core/Utility/TabControlEx.cs",
+      "blob": "de12320b151e821e5b7a0f76f9af662a57a27d96",
+      "sha256": "63D8BAEF8FAD019A2AE7354C33B91E9DD163B5AD802D084F75A352AF34C4E304"
+    },
+    {
+      "path": "NINA.Core/Utility/TcpRaw/BasicQuery.cs",
+      "blob": "f4c263a54b71c31815186ba0d2ad23a2303bd52c",
+      "sha256": "CBB8E1FB6731FF9C6C0287C1F949C1EB5497B860AF1E782C70E81C5D8EB25C21"
+    },
+    {
+      "path": "NINA.Core/Utility/TextEncoding.cs",
+      "blob": "8cd647286fd9565e2867d27f37c142dd2ed2171a",
+      "sha256": "C85EB6F2129C2EDC0F02E8B671180D4AE9DBEB17050B6EA4D44D140A58B83E10"
+    },
+    {
+      "path": "NINA.Core/Utility/Ticker.cs",
+      "blob": "c5b360b45d3318359c91a426e7b7c43634a3e0b5",
+      "sha256": "3DB3F9C82BCBB4E0B02EF782C0D56A0319408AD21947DF8CE85D38494F68E620"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules.cs",
+      "blob": "c67862d3efdf55a4705ec7f1475c494189471bf2",
+      "sha256": "056F1C426667A0A5401091068FB67D23BEE4494B529B5566F88D2CE193EFAAF2"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/DegreesRule.cs",
+      "blob": "b5300071fd793e1a9e61499704645225c91aff1e",
+      "sha256": "68E02ACB4E5205B86DDD2305870DED0AC46821CA52B876B53CF449A12A2511DB"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/DirectoryExistsRule.cs",
+      "blob": "8ce3c9cae51dd249170890f1c7d4585c126aede0",
+      "sha256": "725377CDD9B42922791452D59674381D738BE0939642A6E02A3D126E1EF1F573"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/DoubleRangeRule.cs",
+      "blob": "0a1cd7152de46c673f5ff7e45eff4db30899d65b",
+      "sha256": "434A76BD4FDFD06B50C2E9410BBF294A34553E2AD04B4803DFCDE75917E3B002"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/FileExistsRule.cs",
+      "blob": "1c2f5432f902b88059445bacf9f04ea30dee85a9",
+      "sha256": "850EDED532D7BA85DDD88392E372357BBABA69F5E57B20C17D4F0739B71565F9"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/FloatRangeRule.cs",
+      "blob": "65fb92a1b99c5b5c6726b521bf48c33953db1fd4",
+      "sha256": "A774F986EFB2EA140F6DEDD6E24A701B866E42B719CCB5E9D8C82B67E8BDA21B"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/FullCircleDegreesRule.cs",
+      "blob": "d6f4601836ea2166e386a34c45f677eb8babe5d4",
+      "sha256": "ADCD866D3C1CD741CB4838197BFF538DACD09C09CC0BFED0958F6786EB8BEAED"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/GreaterThanZeroRule.cs",
+      "blob": "16fe2a77f112dec472c4bbc46c712e6ba7d1278c",
+      "sha256": "FF5F18CBD924F536B3D38A63682E2C929DA4EE493B3FB0B560B4B2754D006E9F"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/GreaterZeroRule.cs",
+      "blob": "1701118fc85465995ad429759b8067ba5c616a35",
+      "sha256": "C4A1943669C8C7758C27AE8A83D61BEF61B21B1CDED30D98B3FD366EB39C4EB5"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/HoursRule.cs",
+      "blob": "7373b53d19764c383385cfd0ac3238e876e9dff3",
+      "sha256": "802B9AE4991C29A091E0C1635A248751A1F7EDBD0052F56D4E61679D714B06C5"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/IntRangeRule.cs",
+      "blob": "801e659a7ce20dcc44effb66d3b1af6072846fba",
+      "sha256": "40C2F3FAB382E7C2854BF7B01C24B7D92C01A82EF7051C514D5330E48B36F4FA"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/IsValidIPAddressRule.cs",
+      "blob": "1726c7ad2e2d0c27a955ee15388c763a55d43059",
+      "sha256": "F87B9B465521ECA0667FE39AB3408159B5F6CB1E6ABEEF04DF06384D4DD409AE"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/IsValidIpPortRule.cs",
+      "blob": "ce9e66ed9d4a28b830fbb2a7a60e2167f6b19e9e",
+      "sha256": "7FD403B7FDE9B82A741963E6A67C510DEAC1E39382C2691E1425AD2E1C7138A4"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/LatitudeRule.cs",
+      "blob": "e27377ac96642951c13f2e64cbf922a8cd950d12",
+      "sha256": "29C743F4E4B2CCE26D688E7B5733B0201D50B80C9C106BC86FC9B546AEA56DD9"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/LongitudeRule.cs",
+      "blob": "17989cabe122a8bbef06740669dce4ca0ec8b0bc",
+      "sha256": "622065CF6FD3C6B97F511D10E684B13514D9808B9BF23A44A98F5248D96D89BF"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/MinutesRule.cs",
+      "blob": "eb2b9f2ac072d2edb3526ec2d897fe4cfb371d35",
+      "sha256": "E0EE7B14FFADC7C9E6F639AC4C79D98536E6E17AFAAB4FFD2A02347739788E5E"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/SecondsRule.cs",
+      "blob": "f539ddd51c8dc402ffd5cfd8e51054cda66ce948",
+      "sha256": "CD2C3353899554A7FA0DBE7B0F98C3BE6FE13FA38AEE0DCD59577ABCC788582A"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/ShortRangeRule.cs",
+      "blob": "c4e79e8b360074d6857acbb48f93c9baa72b690d",
+      "sha256": "ABA3D049288DDD7EB50ED7B03821FDF8E85D00ADD9E033F03C610DD216282265"
+    },
+    {
+      "path": "NINA.Core/Utility/ValidationRules/StrictGreaterZeroRule.cs",
+      "blob": "3b72702ee9f3dd050a8e306c817b4fcd9993ae29",
+      "sha256": "C94CB2AB783206A4886B745055C3263970A2C3B57B6C01555360763720A1BE41"
+    },
+    {
+      "path": "NINA.Core/Utility/WindowService/CustomWindow.cs",
+      "blob": "82b39fb9eb0d053889f41342b39bf09fd526b089",
+      "sha256": "5778CCA1292EF08078B0B41870B0E2D2F2F07789FCAD0E81B484786CE2E3AE11"
+    },
+    {
+      "path": "NINA.Core/Utility/WindowService/WindowService.cs",
+      "blob": "9b08f1294d8b1d07e823ef827d737e05a22fb64f",
+      "sha256": "7339CCD4800BD16E6A4236203B38C8607C1B1EBC1402F79A208A5775DAE738F8"
+    },
+    {
+      "path": "NINA.Core/Utility/WindowService/WindowServiceFactory.cs",
+      "blob": "cefa8717b42f1140d2eb561dffe8ac2f2c7c5dc1",
+      "sha256": "26E9745C49DFC0667173DA50B4BDCED0D9489911EB925EF783750805CCE121B2"
+    },
+    {
+      "path": "NOVAS31/NOVAS Cio/NOVAS Cio.cpp",
+      "blob": "867333676b0cfdd737f1ecda46d6f522e5f8bc16",
+      "sha256": "7E0DEB1FA0404572BFC5654FB4C0F7C1BE775E4B6D09B07DFE3B9417563DA6FF"
+    },
+    {
+      "path": "NOVAS31/NOVAS Cio/NOVAS Cio.vcxproj",
+      "blob": "df105855505a45be6052d89d9c912a74f912274e",
+      "sha256": "C47C562902CE759AB1E50C7C0FC961E2110B3A520103E0256792B527C738EA88"
+    },
+    {
+      "path": "NOVAS31/NOVAS Cio/NOVAS Cio.vcxproj.filters",
+      "blob": "a864431b1bcb26d4f77fd545ce874a3e5eb54960",
+      "sha256": "4F13D059DBDA2A46393C16C35E84E048135DD59BAF024A33AEACC8C26D431494"
+    },
+    {
+      "path": "NOVAS31/NOVAS Cio/dllmain.cpp",
+      "blob": "1637303289629f1b0f4e14b8d2b76eeb49cea00c",
+      "sha256": "743F5D026AEFB2EF2A92016774A9C56D5B6A5EC9BCC3201D851A8172DC558965"
+    },
+    {
+      "path": "NOVAS31/NOVAS Cio/stdafx.cpp",
+      "blob": "a326c0ca6e043dda1c6833708567eac5ef2e7d0a",
+      "sha256": "4524C6787A547E0A670242E454D1E82F58EED2ABD63BC4D623BC9ED67F710A6C"
+    },
+    {
+      "path": "NOVAS31/NOVAS Cio/stdafx.h",
+      "blob": "b937b12ccd5f6eb754d00d55cb4ce2c13fdb9955",
+      "sha256": "CB173185CE9A02E291F1EE892B79401A79219795E0A645544D72F04EBB999274"
+    },
+    {
+      "path": "NOVAS31/NOVAS Cio/targetver.h",
+      "blob": "567cd346efccbe2d1f43a4056bdcb58a2b93e1a8",
+      "sha256": "4B74218A89940F250CC5D933CDADF62AD64E8ABD832069E0093F42A02BB9944F"
+    },
+    {
+      "path": "NOVAS31/NOVAS Eph/NOVAS Eph.cpp",
+      "blob": "b426d78066afa8e1e2790392ab1ab79b343a894e",
+      "sha256": "099319218C31DB0DC65474BA8D98C3C03A1641029B71A92CE74EF0FA9C8251F6"
+    },
+    {
+      "path": "NOVAS31/NOVAS Eph/NOVAS Eph.vcxproj",
+      "blob": "05199d5a17eeafc6e78ab12f6e4639786da31868",
+      "sha256": "35D5C066F6031BEBA34BA0E93C80AD6ED5847E7AA507531D92C31FCC1CE70C9C"
+    },
+    {
+      "path": "NOVAS31/NOVAS Eph/NOVAS Eph.vcxproj.filters",
+      "blob": "16bbc80ba31771e81240ce1338d411cc52602535",
+      "sha256": "DF8D769B8F6A5508FF35683024F8441F5523940DD1D221A4CB21ED6FFEDEB71B"
+    },
+    {
+      "path": "NOVAS31/NOVAS Eph/dllmain.cpp",
+      "blob": "1637303289629f1b0f4e14b8d2b76eeb49cea00c",
+      "sha256": "743F5D026AEFB2EF2A92016774A9C56D5B6A5EC9BCC3201D851A8172DC558965"
+    },
+    {
+      "path": "NOVAS31/NOVAS Eph/stdafx.cpp",
+      "blob": "00272c919d35f0fcba1d4ff22884710578956bbf",
+      "sha256": "49D84FC9379A57F595ECF513688EBA5D7FB33992434EAFF480EA902A364C56FB"
+    },
+    {
+      "path": "NOVAS31/NOVAS Eph/stdafx.h",
+      "blob": "b937b12ccd5f6eb754d00d55cb4ce2c13fdb9955",
+      "sha256": "CB173185CE9A02E291F1EE892B79401A79219795E0A645544D72F04EBB999274"
+    },
+    {
+      "path": "NOVAS31/NOVAS Eph/targetver.h",
+      "blob": "567cd346efccbe2d1f43a4056bdcb58a2b93e1a8",
+      "sha256": "4B74218A89940F250CC5D933CDADF62AD64E8ABD832069E0093F42A02BB9944F"
+    },
+    {
+      "path": "NOVAS31/NOVAS31.sln",
+      "blob": "e1de1aac167df4d4b8314c44f72acd6b4f309dc4",
+      "sha256": "AF7A782139A8D851F61DA625DE3CBAF92180D50C029B749BA7B736EC89189E4B"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/CIO_RA.TXT",
+      "blob": "7e9e749f96056ead9ddd61b14baf398e8ac23878",
+      "sha256": "FE911C5769801B93109B571A2ECC439F770DCDC137DD06FF9A2724FED762ADDE"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/NOVAS31.vcxproj",
+      "blob": "fdb89982977e78acf59c17f518d8c710b9e52cef",
+      "sha256": "97AD47F9AD16B2A02110DED0B2ED7C59D90F90CD5BC4A11627178E5707BBEDA9"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/NOVAS31.vcxproj.filters",
+      "blob": "89dac56c564de52d001f85cec3c0e2e160c778ef",
+      "sha256": "68836F28E3FBE5A0F6D800CE301F349CDEB0B553CBBBD9458822C7468F4FDC6D"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/README.txt",
+      "blob": "01289cf5ee0652197be2efa56f7e7f4999509112",
+      "sha256": "270B4997BBF702C065C106374C36279B01B325F994AE7B8CCF6FF578EBCE5BA2"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/checkout-mp-usno.txt",
+      "blob": "af7cc12fb56530fa8ceab79cae0e6eabe2f11e3d",
+      "sha256": "4D4851D5C1491606BE145A21C208FF791B4155E5A7A097C4493910334827A17A"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/checkout-mp.c",
+      "blob": "ba853f6434ebf81bfe69e11e42ffb0f994230b4f",
+      "sha256": "2596C7ED74341D0348BF0329FA13D82A895165358BDF3AE873E4A4C3E936C576"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/checkout-stars-full-usno.txt",
+      "blob": "eb3233d354fba703989e7437c958c588123587d5",
+      "sha256": "7AC91AB25A5117BD44126739CA99C7C7137DF96024D5DC69BA01DF9064BE9DF0"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/checkout-stars-full.c",
+      "blob": "f56507137d1ffa7bb80319d25b67e37f32dcb77a",
+      "sha256": "B5E31D173523A045B1BE28F369BA6842D1B866F6B0E8C489B1E5B8A6E768ABB2"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/checkout-stars-usno.txt",
+      "blob": "2278706cd79260aef8ea20cafccb8b5aceb55071",
+      "sha256": "BB3B4CB2249921E8BFC32FBC636BF150638EA5C8D570E8BCF0DB74F6D03450B6"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/checkout-stars.c",
+      "blob": "c9a49fedc39bb42b6e463dd10d16a1a73bc44a70",
+      "sha256": "41B289CAAD0A41D46017EBD7064BA4757CDDF6DB8E615B7D3F1C8FC58132E651"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/cio_file.c",
+      "blob": "afcb822fbb759cf6c934cad2b4543980a017ff6d",
+      "sha256": "9E830752C8CBEBC79D7739AF0F9BCAE9F3DFA5B7FBCE1C03D032E300A8D721A9"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/eph_manager.c",
+      "blob": "24c56ae66e3c4adf956911f8163d989bd6858ec7",
+      "sha256": "13F3CDACC11548747CD91029A86019742A3B891F096BA362A4CF9615D9A70885"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/eph_manager.h",
+      "blob": "6b26356e2fcb6ec6c2a5c52944260d8890b18df9",
+      "sha256": "7D7DF7045D91F83D104EC62BBD721CCA78E402DA57E35B6958194558985DAA74"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/example-usno.txt",
+      "blob": "682aded3e090f1b88aa85d17dbef655f5df784ec",
+      "sha256": "20AF1D39CE2E1648D706FED262A20CB170C67E28474946F7EA3658647EC2AA30"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/example.c",
+      "blob": "5a7ffce6d3ca8c540aa96e2023ad72358a13d867",
+      "sha256": "A7142462E0011FF6EC1654ED45A7F1EFB158E35D564F7C7943266D51B1AF24AF"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/jplint.f",
+      "blob": "f1b63c3ce724a7c0b096b3f95b76b942d1d793e3",
+      "sha256": "B4274670B57350B47292702EBBACD859824BF429CCE7696F52F88AA0D7C6FF9B"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/novas.c",
+      "blob": "4a3ae70df6eb46d90254200d3b88f44e5ff6a6fd",
+      "sha256": "F778FA4330DA74B1BEBF934CD3374E571EE9B83C3585997C4F8DAECEC3BC2612"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/novas.h",
+      "blob": "73e2ee2d447bd8679b6fd00e0ca3ea6afad09eec",
+      "sha256": "B165E9CD810ED6984B0C36E056EF7583077B35BB0C7D2B791015976E3B3729DF"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/novascon.c",
+      "blob": "2580a5c5fee3b0f816008a7170aaf5053a7eba6a",
+      "sha256": "27C8F8A02FBDADAED9B1EE95853C8F89BF42C7A49CE5C34BD831C14E514FB1FB"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/novascon.h",
+      "blob": "11a52c561ae72fe79d9d55e21414853966cf3e71",
+      "sha256": "36B4143A85EC92E6BDB675AB7071EB4CD4D3307929709E1A3D0D976FA39616DC"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/nutation.c",
+      "blob": "bbbe132152af85bc24fa7e69f14fd6d5e137a5ce",
+      "sha256": "49D193C9E0D6DFB14650ED0B2603E3954EF02AB51F83D66869A769E892E471BB"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/nutation.h",
+      "blob": "f1bcfaded535018a67903f6762deb6003dd2ce2d",
+      "sha256": "F8BC6C38E37E539E46C5CF30B4EAAE725E4EA704525ABF56AAF8DA89630CBB1D"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/readeph0.c",
+      "blob": "5188e0d411d12f739104e537cbca14da7ecd8cf2",
+      "sha256": "06F00281568659EF14F98635D7367D9ED707B8C715EE757475616C315A2E06BE"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/solarsystem.h",
+      "blob": "88e7e6d626c6431fd5983d8e20f45c918c484873",
+      "sha256": "2E630DAD6CFE09F48BF983EF3C10A57B08C3127D4CCECC389EDEFE0B989DE982"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/solsys1.c",
+      "blob": "cada210b958368a33d54482c0a96ebc8054696f0",
+      "sha256": "413CBDEDA75F3EDF726C6BDAD293591BE8FFF0C5FD9E72AF6BEF1E1221000FBE"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/solsys2.c",
+      "blob": "44eef491560dd4e3157a0c13783fcf2a23536545",
+      "sha256": "9853DCCEC18B7D8856C535B75234DBAD6DA6AB35E8F3A9752F9229CB7C91317C"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/solsys3.c",
+      "blob": "ef689d24464efe46073615d9fb90f7348faded07",
+      "sha256": "7E2E8FD468765FF2AB98F0ADA0CD0E976B46E3F5AD6B2AC8C2D416E3FD168E0D"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/stdafx.h",
+      "blob": "b937b12ccd5f6eb754d00d55cb4ce2c13fdb9955",
+      "sha256": "CB173185CE9A02E291F1EE892B79401A79219795E0A645544D72F04EBB999274"
+    },
+    {
+      "path": "NOVAS31/NOVAS31/targetver.h",
+      "blob": "567cd346efccbe2d1f43a4056bdcb58a2b93e1a8",
+      "sha256": "4B74218A89940F250CC5D933CDADF62AD64E8ABD832069E0093F42A02BB9944F"
+    },
+    {
+      "path": "SOFA/SOFA.sln",
+      "blob": "19b9bc105d0c98c9bf8dee93c1716c4897bdd409",
+      "sha256": "A5271651FEF6DD47FFF4F1CB15F8D670322D8B00CE72C51574C870055815B09F"
+    },
+    {
+      "path": "SOFA/SOFA/00READ.ME",
+      "blob": "c99cdca5c591ef7e144d43e6a42e20759d2b1bd9",
+      "sha256": "553A3C1A246C4E8B49AB5FB0EBAF3DFA0FDB99673AA479C911DF511C6AFA7AE7"
+    },
+    {
+      "path": "SOFA/SOFA/SOFA.vcxproj",
+      "blob": "a996140ab5becd233c84b65b85c9d1842ab5b240",
+      "sha256": "20FD92FB4D06F43BF9AD2B525434E3D93FF31BF8AA8CBAFDF0C4ECA0BC553BCF"
+    },
+    {
+      "path": "SOFA/SOFA/SOFA.vcxproj.filters",
+      "blob": "9c13518286f231ab43e38e42992486dfbddfd197",
+      "sha256": "533C023C2A7B1008EA09DED7216D5D15D6E9CDEC9F23CDA850C85D537BD135EC"
+    },
+    {
+      "path": "SOFA/SOFA/src/a2af.c",
+      "blob": "947d96c25ea2df6c18197039a60399314d22a5fa",
+      "sha256": "ADB9C10116C2B9984BAE0B5D1F9097E4B9F6C67D7D479DDD2F4239062DC9FBF3"
+    },
+    {
+      "path": "SOFA/SOFA/src/a2tf.c",
+      "blob": "7547e12699664dbe8f2504f5a6665a95ee66409b",
+      "sha256": "60A2A96A8437564AEA6C25ED3C64EF4906011CB6FCDBD845F4DAB309BBFD96CD"
+    },
+    {
+      "path": "SOFA/SOFA/src/ab.c",
+      "blob": "f215d33def18dba2cfe41d29122c63d7041afbe5",
+      "sha256": "70334D644BEFAB276418B4CAA03087B9EF0BA74B3C80F34335CFD7262D87D610"
+    },
+    {
+      "path": "SOFA/SOFA/src/ae2hd.c",
+      "blob": "4134712436b81fb644c24f1130b4f6fe7b51f48e",
+      "sha256": "49C1E70CCF40B2B5D590973A0C69A1D97C9F076DAEF5EDB53CF43495BF531B50"
+    },
+    {
+      "path": "SOFA/SOFA/src/af2a.c",
+      "blob": "6b6c91859ca30036beefa08bec47e0874285c7c5",
+      "sha256": "C82FAB9344937BEBB6718A4DE33F3B863999E8E1471C128224B9E27AC2F541E3"
+    },
+    {
+      "path": "SOFA/SOFA/src/anp.c",
+      "blob": "13a80e09789151fa41691c6ed67f0c60a27a2b67",
+      "sha256": "0EC9FF335115987B4CD4309BC5D18D77B055F3CEC551F12A392759F65CEC1786"
+    },
+    {
+      "path": "SOFA/SOFA/src/anpm.c",
+      "blob": "96dc85e88bd0266909f5f681a2c54860d03e8f94",
+      "sha256": "9277C8CE4505DA438EF75AD5328274695746BC9C039FA5E4FCE8C3CE1C5EF6D7"
+    },
+    {
+      "path": "SOFA/SOFA/src/apcg.c",
+      "blob": "daefa96e933d04d226d027391b3136c2bd772690",
+      "sha256": "10FC5E4BDB831055561F24156AE3AEDF6CEB39FFCE7606DDB502DF3D7465C59F"
+    },
+    {
+      "path": "SOFA/SOFA/src/apcg13.c",
+      "blob": "0910e4383db054b0a207a5222acb444dfc744034",
+      "sha256": "1ED799F5E87295ABCFEADEC883AC9C521E0633AFDBFA90C23BD0A8DFD227E667"
+    },
+    {
+      "path": "SOFA/SOFA/src/apci.c",
+      "blob": "122ff7e27ae5495aeaff687fb7b551e21fea93cd",
+      "sha256": "D45659679537A18266AB05ED1D98E3B3DD2B0774FC48464284413E06F68681AE"
+    },
+    {
+      "path": "SOFA/SOFA/src/apci13.c",
+      "blob": "e32e370fda28f06822dbdf867f0ef65dc3279d8d",
+      "sha256": "29A070583E70C64261B7D3DD2B9C85DFEF4DB8E23D2862AC74A3D91DCA6EAD80"
+    },
+    {
+      "path": "SOFA/SOFA/src/apco.c",
+      "blob": "00f0bae76e0ed2ce744fd9b9ed4a1fb77e8ec424",
+      "sha256": "7A69A0254F91420C5C83D331852ACE8E277D4A76CEFBEB3D1B8198E2A1D278D4"
+    },
+    {
+      "path": "SOFA/SOFA/src/apco13.c",
+      "blob": "6874919b857212c7f3295f3839c48a1371eda72a",
+      "sha256": "F3709FDC1FD31030BF5699887B62200E857EB827BAEB51DBFF6D95832D4CB72D"
+    },
+    {
+      "path": "SOFA/SOFA/src/apcs.c",
+      "blob": "e80dcc752f4e1f6aded1f45a48f2532ede3368a0",
+      "sha256": "4D72E7E8203C5808AD9083854B73AEA714236D54D0DA30401C1F8C8544A5CACE"
+    },
+    {
+      "path": "SOFA/SOFA/src/apcs13.c",
+      "blob": "9b4d51b9b4bb64123b197482c190401574205be7",
+      "sha256": "B9470DCCE9A21794FC7763BFFF3ACD5888CC49E53419E172BFBE57CD72D7CA17"
+    },
+    {
+      "path": "SOFA/SOFA/src/aper.c",
+      "blob": "05e31aa8ecbcaaeca54fa2be7be33ba3027863f3",
+      "sha256": "D90C4EDD035F903A47DEF9A8DBCBEC4DDFEAD21E65E34E5B9EFFA3E3FE4A2BA3"
+    },
+    {
+      "path": "SOFA/SOFA/src/aper13.c",
+      "blob": "5be66948d8c73c80aa4c483875725aee2632bbf2",
+      "sha256": "78ECF09B6090A7D846C22D8A3C3DA1D910A889852ED279D8ECB78516A25776D0"
+    },
+    {
+      "path": "SOFA/SOFA/src/apio.c",
+      "blob": "8107d9c939aec9eff2f0d22202b322fa9e408a6f",
+      "sha256": "58448957E0EE1A75CA971D2D7B61AAADF779AF5930638BACF91484E00B558C24"
+    },
+    {
+      "path": "SOFA/SOFA/src/apio13.c",
+      "blob": "79a0a0a37806b2d7648f538e63c60c80c2ebb89f",
+      "sha256": "66B63F8CDF81F49C7BC13DC9376A413E722B373DC740D7F9135AFC48E7675937"
+    },
+    {
+      "path": "SOFA/SOFA/src/atcc13.c",
+      "blob": "c125441af7e5e89896e87cd9034cad6b4a5c08c5",
+      "sha256": "53A852DE124DE540E0BE64560BF9BE4285186DC68B12B7D2103A128FC68558D9"
+    },
+    {
+      "path": "SOFA/SOFA/src/atccq.c",
+      "blob": "3d0341d47e025fd07a0146b9b70b2c9869ee6437",
+      "sha256": "3522466E312537ED245876B26AD65C482BD423D51D9485F69EC499137388E898"
+    },
+    {
+      "path": "SOFA/SOFA/src/atci13.c",
+      "blob": "860e1dd465932cca0528bfdeaf9a5af910dc01cc",
+      "sha256": "22AC374DC04F0905131D8CFC85D8C54DA2E545982445ED1389E9B70E4A385681"
+    },
+    {
+      "path": "SOFA/SOFA/src/atciq.c",
+      "blob": "fc12b8a9a5252a4a3e89848e5cff45f827afa3c7",
+      "sha256": "F048407D0BFD4668218D6E840FD65998365F9810258389428470852C3969525E"
+    },
+    {
+      "path": "SOFA/SOFA/src/atciqn.c",
+      "blob": "b59a842e96bd0797fe5e3b71f7ab16d977535ad9",
+      "sha256": "302E1AF431EBF55D76D56EE113BA11837B49FE753CF3B34441502266E25AEE84"
+    },
+    {
+      "path": "SOFA/SOFA/src/atciqz.c",
+      "blob": "6d044fcb2675d0953349b6bcb53f5d980c4afa29",
+      "sha256": "40F86A2B24751A8CDCB2C1307459CF58320FDCA23DE519A59E73571C21EEB499"
+    },
+    {
+      "path": "SOFA/SOFA/src/atco13.c",
+      "blob": "02d9afe1955a72bcef54320826dd17e77d9254f2",
+      "sha256": "A08836ECAF1C2093560D6A49E1B932CB8912C2FA7B37A986F382F32112D6C2E7"
+    },
+    {
+      "path": "SOFA/SOFA/src/atic13.c",
+      "blob": "6f745353235d390cceab2b5f5f18ddb5e07c2467",
+      "sha256": "5605446C744F66A910F7DEB6729CD8043A74C3E420F1C3CB64BE03D0E2F81A0D"
+    },
+    {
+      "path": "SOFA/SOFA/src/aticq.c",
+      "blob": "1fac8a256d0cd9882ef736dc26e817ea538b9df2",
+      "sha256": "ECADAA2D38F0E8018A9DEE9DB546465AF2F43F54677D916F629B22F2A9807499"
+    },
+    {
+      "path": "SOFA/SOFA/src/aticqn.c",
+      "blob": "18e59befe490ad726c6fd2a5c07fcb53f8ee8c9b",
+      "sha256": "46347C0356727E6996CB0C809EB41FE65A065E9EDBBB87CFCACA9497AAE5501E"
+    },
+    {
+      "path": "SOFA/SOFA/src/atio13.c",
+      "blob": "c052c6f61edb8fefcd828672ce9a515ab2ab7a32",
+      "sha256": "BAB5ACF0A84BDFBC5430ADE2C5CEECC55369A93CD35EC8F37F4D148CF2F1AA74"
+    },
+    {
+      "path": "SOFA/SOFA/src/atioq.c",
+      "blob": "505a96bca697b3ed5b1fd27fb6248f4bca6faef2",
+      "sha256": "A3D62856CA4DF0A8AFF7591E4EA73F6C19CC73C783416F9F720F6EB30DCEAE62"
+    },
+    {
+      "path": "SOFA/SOFA/src/atoc13.c",
+      "blob": "ee11b8a93ec68a2958146a9e03d139bc2033c303",
+      "sha256": "FC46D160DE0D70B234C501FCB4677F3A1CF2168DF125BAF5DBF112964C2C4B9B"
+    },
+    {
+      "path": "SOFA/SOFA/src/atoi13.c",
+      "blob": "12e7e835709f1f30f3544d374f8be6ee548049f9",
+      "sha256": "358AD43A258734812E8A2C5375DEA1CF763B00489037103DBEEB2D322BDF0817"
+    },
+    {
+      "path": "SOFA/SOFA/src/atoiq.c",
+      "blob": "e853bca8529273a78aecd9f9298e26f755d552a6",
+      "sha256": "3998E8E38D4678758F97612B71E048E4EA1302D104377AE52C9D53210A683BD4"
+    },
+    {
+      "path": "SOFA/SOFA/src/bi00.c",
+      "blob": "fa9f67a1d9287b00f5ba6599b3ae87935abdaccb",
+      "sha256": "1F154A22A0BFB1E9FE0B8330D4F8D4FA294377020E32F67676DF9322F85A34D4"
+    },
+    {
+      "path": "SOFA/SOFA/src/bp00.c",
+      "blob": "5c7b7962fdda6aa0d7070acd8c71fa596dcbd2b7",
+      "sha256": "EAC2D015F9476E61BE637B31B079EB7F5D1F31E3A43F347F3E5DFEAE2B251E41"
+    },
+    {
+      "path": "SOFA/SOFA/src/bp06.c",
+      "blob": "9e53d95b41755677bf1df1be7d08af8bf0f600a3",
+      "sha256": "A6684FE3B4541E5004C01E2096B80FA01E2FD4AF9341523DB2F9BD57954ACEC5"
+    },
+    {
+      "path": "SOFA/SOFA/src/bpn2xy.c",
+      "blob": "81b196ca6141a60a1945e46422f2cd05b6b563f8",
+      "sha256": "6BB2B73A3D14E700BC72BD248D83B941B37072FC45AB7D0A14A2B04C4A9F67ED"
+    },
+    {
+      "path": "SOFA/SOFA/src/c2i00a.c",
+      "blob": "3ed8de8b2dfc1c3472e824bbc6bfa6e862ae2b64",
+      "sha256": "9449E58F512E3100B3C11DD831BFA7C2A5A22AAA34037028A999302B1F566983"
+    },
+    {
+      "path": "SOFA/SOFA/src/c2i00b.c",
+      "blob": "2489cc8f18f3331d3978bad0f1e6087561b646e3",
+      "sha256": "060EC5AC165417EC066F3C7F88876F1AC23C73A1F5B9EBF9C993AA6BCCAA1CE7"
+    },
+    {
+      "path": "SOFA/SOFA/src/c2i06a.c",
+      "blob": "07d3647b6134dea73926969a587fa689d3140b1f",
+      "sha256": "6CDEEC43FF0BA56B531813C3B051BCD97B96CA733EDDF944B592EA561E4B4DD9"
+    },
+    {
+      "path": "SOFA/SOFA/src/c2ibpn.c",
+      "blob": "ee99cbfa3a9981ab57ad90976b5edc458dbcc8b1",
+      "sha256": "AEC8359AC146C5617886A2FCC6D497C92379BCA79450E44432CC812835603797"
+    },
+    {
+      "path": "SOFA/SOFA/src/c2ixy.c",
+      "blob": "833d8c772fd5b0047ff155288a8ba3702aa54e1e",
+      "sha256": "FD55AD2933B9D0D185A4938A60275E64FED19EF09B0485A58FA1558C73E0E812"
+    },
+    {
+      "path": "SOFA/SOFA/src/c2ixys.c",
+      "blob": "fdded53e90c7d021bf4f1e2977f24c440eb8cac6",
+      "sha256": "89A3291115B3C6C0E29D043DD7E04B390E8328F677B04BC9EC212D79CAB51CFE"
+    },
+    {
+      "path": "SOFA/SOFA/src/c2s.c",
+      "blob": "6bdccf1aa9c3ec889287fd278e2f5d0db26d3d99",
+      "sha256": "4D78460748B42FA8DD99D51E0C81A89505A038D7CB9B3C647A5FFC84F4B27C34"
+    },
+    {
+      "path": "SOFA/SOFA/src/c2t00a.c",
+      "blob": "6efe4e6e79584ea0718cd00726043688fdca1189",
+      "sha256": "BA41024F81888154499C0994BEBE9C2DB557BD997B7DBBBC8E1A1D31B7A6C590"
+    },
+    {
+      "path": "SOFA/SOFA/src/c2t00b.c",
+      "blob": "52339764470745cc0cd1974d0ba813ff4dad034f",
+      "sha256": "434D8E9B46EA195B4AD23FAE713DB9D01DBA0D97FE3E744657D852620E3C8E24"
+    },
+    {
+      "path": "SOFA/SOFA/src/c2t06a.c",
+      "blob": "31b98ead8a02be9f78ba3155057f7246d35fcff0",
+      "sha256": "8FD6B4213A83E3E25C8066275E11D02E8668A61529C495843C8FCC8568C3DC2C"
+    },
+    {
+      "path": "SOFA/SOFA/src/c2tcio.c",
+      "blob": "542d82149701168ae9542260bd402233e6b682e2",
+      "sha256": "EB6D24C7194CADC2882A68C4ECD4CF7E720C1340BA4575D2ADC98B753A617753"
+    },
+    {
+      "path": "SOFA/SOFA/src/c2teqx.c",
+      "blob": "35c6c51679a174dbe04e724562dcf6a7a812ba4b",
+      "sha256": "EA33C9A0A2D5797E85521269B6C36DEC74E24CAF903D7FBAAAA90BEA774F85E8"
+    },
+    {
+      "path": "SOFA/SOFA/src/c2tpe.c",
+      "blob": "bcc1e1ba21399d4345a09ac29e95ab20669272b7",
+      "sha256": "FF1C05D8B3BC1300B405BDBB40ADFAEC3098380388FC3499F21B7DDF6640F48F"
+    },
+    {
+      "path": "SOFA/SOFA/src/c2txy.c",
+      "blob": "51c2a09f9316ad04ff107fba78c1d599d8270540",
+      "sha256": "B06E532AEB2B97804BB6941382320E8EACC65D55A9BB4AC6E2B68966FC20781A"
+    },
+    {
+      "path": "SOFA/SOFA/src/cal2jd.c",
+      "blob": "a0411807fe3bdb7c27b26c19160ec3a233dd20a4",
+      "sha256": "996773197E46C7DD7D7559A05281542B14694D781828FC8FA019829E059730B5"
+    },
+    {
+      "path": "SOFA/SOFA/src/cp.c",
+      "blob": "7a525dd5d733abab0be91a1cfdb6e73fffef836f",
+      "sha256": "E6866A42A15FE600FF6AEF24B5471FAEF8EBD20568692A3A75A514E916B753FD"
+    },
+    {
+      "path": "SOFA/SOFA/src/cpv.c",
+      "blob": "9d5ee712ea6ce209a60d09193721de36ff6491b3",
+      "sha256": "72AFE368CFD930BBEC108134B51E1C7F4E377808C47D1F8AF414EB87DB289722"
+    },
+    {
+      "path": "SOFA/SOFA/src/cr.c",
+      "blob": "87c4ee1b4f0096930a4e5de393aea02bd8d5b1df",
+      "sha256": "E48244447EEE7637FFD495FAFCBB0390EB0E52C020DD05D4575D18C45A2E74C9"
+    },
+    {
+      "path": "SOFA/SOFA/src/d2dtf.c",
+      "blob": "1bc6dcd9fae97eb8177b4112109dffc4ff6636e4",
+      "sha256": "D305D684D1077365E816217A531CD1719C083A6CA3E9AAAE591A9C54DF924795"
+    },
+    {
+      "path": "SOFA/SOFA/src/d2tf.c",
+      "blob": "673f2228ced47562736c1d397aea429d81ecc5dd",
+      "sha256": "8FFB56C7FF1DA1297CCC626FED398C44725517DFB9F9D4F5FB0F8E7CA2CEF848"
+    },
+    {
+      "path": "SOFA/SOFA/src/dat.c",
+      "blob": "6934410a6e940f086abbf9f7da67eb5fb2b84b5d",
+      "sha256": "C269B897CBA4F204AF65FB874EC7769FCF38B284735D9A6B76C03C51A462FAB8"
+    },
+    {
+      "path": "SOFA/SOFA/src/dtdb.c",
+      "blob": "07ce7ff80004777a5aba1f53af18c50c84c45dea",
+      "sha256": "8E950CC47128676A051294874C0B81C78FFD4213E54314FD8D6FBB1E3DA4DA58"
+    },
+    {
+      "path": "SOFA/SOFA/src/dtf2d.c",
+      "blob": "d662d65831b3951b4842b322186246b2f1fcdb03",
+      "sha256": "C6AC29B8C2934BE0F18AB72A691C3CFDE76DA1EE5C4F5344D25CBF2F5D12028B"
+    },
+    {
+      "path": "SOFA/SOFA/src/eceq06.c",
+      "blob": "c0505ea709453a03785ca5b8e41b1b90fd0ff3d2",
+      "sha256": "6AC25BDE7E55986646AD3BBBF4DDC60855954EC624C0E78DD46019EF3697CEFD"
+    },
+    {
+      "path": "SOFA/SOFA/src/ecm06.c",
+      "blob": "e17754ef2613c9fa1235c2638821ffcf5ceba7f3",
+      "sha256": "3247CB252624FC1B01A0606FB8DA4C46A2294C760DA97DF78211E865FCDDEFB2"
+    },
+    {
+      "path": "SOFA/SOFA/src/ee00.c",
+      "blob": "22b285ad6cccaabc035657a1ed8cae60f2c5292f",
+      "sha256": "B94DE32BA75F9953835D0C7BCA72FFB8AEDA42E7E81766A5905C64D4F699579E"
+    },
+    {
+      "path": "SOFA/SOFA/src/ee00a.c",
+      "blob": "bce1c470f4b8972acf12da20ab0e88cd1dcde845",
+      "sha256": "580DBC8AC0FD5B66833F34ED6E064C4EF612A2267E8AA0C7EEA2834588EC359A"
+    },
+    {
+      "path": "SOFA/SOFA/src/ee00b.c",
+      "blob": "49e61e7ea89de9d3cddebefe7cff1ffa4939f49e",
+      "sha256": "1AE203D55BD7A30210BF9D9040D8FEA88BAFF10F36A6CED586CD91C006BEE9F5"
+    },
+    {
+      "path": "SOFA/SOFA/src/ee06a.c",
+      "blob": "c78b77a18ffe4bd976e13767d98f7b0480cbf81d",
+      "sha256": "0BC917B1A37B7B2FF31DDFE998CB77F86565805688BB38DD926588C4D3A00C06"
+    },
+    {
+      "path": "SOFA/SOFA/src/eect00.c",
+      "blob": "dbf7edf9347bac3a2780819c6eae503db60d9e74",
+      "sha256": "53300DC514CA246CEEB621A5629EE3A5C9C40F9D5576BA9EABA65B2C27AD9B2C"
+    },
+    {
+      "path": "SOFA/SOFA/src/eform.c",
+      "blob": "376c961cabc1118425bea00d530860c856dd9341",
+      "sha256": "0F9E4581FE8B6D5953E46227F87C68FD48A453431E17A0E6506A9AAC5F29A900"
+    },
+    {
+      "path": "SOFA/SOFA/src/eo06a.c",
+      "blob": "771be27c4de266ac1825e25344c49c1f306d3094",
+      "sha256": "013FB98115144C90EEE92B46AFF987C9CDFB7622E19AF1C9AAE2915BC2FEABB7"
+    },
+    {
+      "path": "SOFA/SOFA/src/eors.c",
+      "blob": "d6aae5c8668c1d7d7549fec6fa8da765d53241ae",
+      "sha256": "018F19A4FA5F77708A05EDC33A54993687E17528184EBBAB401A35297F896F2A"
+    },
+    {
+      "path": "SOFA/SOFA/src/epb.c",
+      "blob": "4256fa4eb29f6e0afa9c157ca68b14cc9b22b82a",
+      "sha256": "067DE7336E0A47A4E497B2F12F3B38F4BB3C5520779C76B6F73C320252BC1562"
+    },
+    {
+      "path": "SOFA/SOFA/src/epb2jd.c",
+      "blob": "c9caf1d28c0bcb5b098168e3b13b9b41c9dbb317",
+      "sha256": "39CDA21CB8383BC5A034F84DFC5ECD5001194194E08A3C39D9113B544C9ECE3A"
+    },
+    {
+      "path": "SOFA/SOFA/src/epj.c",
+      "blob": "d42befbc56153acb8b50e2ac16cbd661a15206de",
+      "sha256": "D701D0613047CC852313E2D3DEE9FD92761FA8A9102C37E2B65D8F575E2BF78B"
+    },
+    {
+      "path": "SOFA/SOFA/src/epj2jd.c",
+      "blob": "3b373e18295446d0946c9397331b8be05a908895",
+      "sha256": "B36CF5835EC97D273B6D89E6116E304191CFA9F33AB5212D004BC3E81C4FF0EF"
+    },
+    {
+      "path": "SOFA/SOFA/src/epv00.c",
+      "blob": "8640dce8870f3f87178a1e49d365eac8e0a32a2b",
+      "sha256": "939D57FB2556DCD065370E090DF962A7D459A89D972E7FE1B9B250306FE73C8A"
+    },
+    {
+      "path": "SOFA/SOFA/src/eqec06.c",
+      "blob": "7b433885d236fbeb1e587a66f402dc937044c9dd",
+      "sha256": "1E68AC29CDDEDC34432FB96DF451D12724B3F15C28A36750E903BB2BFA7331A8"
+    },
+    {
+      "path": "SOFA/SOFA/src/eqeq94.c",
+      "blob": "a86f8cb8fcf9a4ab6889d06e10356362f539fb7e",
+      "sha256": "D660D50DAEFCD1D02148881513B4CFA6FF43712F2C59661934F0654456E43BAE"
+    },
+    {
+      "path": "SOFA/SOFA/src/era00.c",
+      "blob": "71fcd09560baba0d3a1fcd9beca002288b1b5148",
+      "sha256": "11513AFBEBEE3C52EBA971C2A9754B9AE1CC9EF76027866055DDDB2D5328ACBD"
+    },
+    {
+      "path": "SOFA/SOFA/src/fad03.c",
+      "blob": "34eedbf58a6ab6988a38bc7ac44ffe94be6b453a",
+      "sha256": "4D3BF7B5115736B23AC930E4A5CEDA4C40B80D46E5680C56B54EF9E6BEF928C3"
+    },
+    {
+      "path": "SOFA/SOFA/src/fae03.c",
+      "blob": "0f705a3086943b5fdd9019cbe293c863a7e82a11",
+      "sha256": "49E6A55C38EB5B86A6C7E2733152BB12CC68EF8C7C5C89463CE4B00349A13F5B"
+    },
+    {
+      "path": "SOFA/SOFA/src/faf03.c",
+      "blob": "81f50c82a9686b3a7dbe67afa4e3699adec82ef8",
+      "sha256": "4E1FA0472E86CCC11280A34B0ECD5810D70CF3E95D01F722FEA283587035838A"
+    },
+    {
+      "path": "SOFA/SOFA/src/faju03.c",
+      "blob": "5beccd8a5fcc182d85ae407d67a4c33a4059fcba",
+      "sha256": "1C943C15DDF5652A9910C95CCF9C58F978D9A967E3E95B3B06361AA785D643D7"
+    },
+    {
+      "path": "SOFA/SOFA/src/fal03.c",
+      "blob": "dec36b9211e1936b93637812d075b725c42048c7",
+      "sha256": "483071C82F8DC08BFE0BC7B4A1AC092B89D32B85A140942FD7423EF9C7B9EBE2"
+    },
+    {
+      "path": "SOFA/SOFA/src/falp03.c",
+      "blob": "7c8fae4254a869230ceec31e8f8b12c420ea7244",
+      "sha256": "830BE377EB8DB85BF77FCB155F3640429239A0B9F5CC45321CC6AA2532EB5E8D"
+    },
+    {
+      "path": "SOFA/SOFA/src/fama03.c",
+      "blob": "f23872726719a58b1398da143670dfca407e185e",
+      "sha256": "C7D7DED91ADA2EF3BD8EA2ACCB9E989C4A9348C8E319147A4FBFE8AD59249250"
+    },
+    {
+      "path": "SOFA/SOFA/src/fame03.c",
+      "blob": "6b54f702f0b9d6edd146458ce8cc91bab7502513",
+      "sha256": "31E78E1F525E0DEBC06F7BF8809F87AD4BCFC372323E4733C255328BC9B216A5"
+    },
+    {
+      "path": "SOFA/SOFA/src/fane03.c",
+      "blob": "bfa61f319e2beecbfc4300e2b1416ece701b21c4",
+      "sha256": "70174AD34E58295946BE41068B56A71A678D7BCC06CAB0F241194FAC8AF03EE4"
+    },
+    {
+      "path": "SOFA/SOFA/src/faom03.c",
+      "blob": "21d90759a27053d4a82db07052bcf7f3ba36b9af",
+      "sha256": "725425C9982BAC6C981245310A27830814A41520EE1527E0631B033371A1324B"
+    },
+    {
+      "path": "SOFA/SOFA/src/fapa03.c",
+      "blob": "1fd3e702e26d95570964f64150c1447ba02deeb4",
+      "sha256": "433B66DC4E10ADB07E8A98A1D7237E5F954FE07CCE79BB13D0D4743F53F98408"
+    },
+    {
+      "path": "SOFA/SOFA/src/fasa03.c",
+      "blob": "a5a02debc204aa4a62f46b044ceb2737e52cd8e5",
+      "sha256": "43805AF02F1C34280A90F23134FDD6B8E9D810B1EAAEE53598FA13B0A233C6ED"
+    },
+    {
+      "path": "SOFA/SOFA/src/faur03.c",
+      "blob": "95735b7f2f379a49c851b50545fad4381ae3997f",
+      "sha256": "DD43047B6963C4CE301D7058959019B9873E68490F5C5330AA3B21BC346381CE"
+    },
+    {
+      "path": "SOFA/SOFA/src/fave03.c",
+      "blob": "18931dcc7af7d1bc87cbd862a3ad7638788b9850",
+      "sha256": "D983910AE9A9B62D9A7B79C63BB8D8AA90C8F77A71B56719D55D9639146DD92B"
+    },
+    {
+      "path": "SOFA/SOFA/src/fk425.c",
+      "blob": "dc60b99c2f7c28963254572164ca0f4195c32db4",
+      "sha256": "811F12C0C5CE3F2BA144CBC07161E823E64B52D365D8F1D3AE1A7ABEDD8E2E35"
+    },
+    {
+      "path": "SOFA/SOFA/src/fk45z.c",
+      "blob": "0dae492610a7604740b9e0ed44554052537a3835",
+      "sha256": "29CEEA475F7A8B0A484B525A697977DE1C8ADFB90ED1AF1204C32862C3360DC5"
+    },
+    {
+      "path": "SOFA/SOFA/src/fk524.c",
+      "blob": "5d4bba5c94dfbcc6662fe1bd11ca85539f2c455f",
+      "sha256": "59F43651683B939FAED05498B1645322928B3FF5889665FE927D8D8CD2A78707"
+    },
+    {
+      "path": "SOFA/SOFA/src/fk52h.c",
+      "blob": "3c7ace0d8b06d20216419282832051571be04a56",
+      "sha256": "DBFC7BB3F5BA1AF19C8852B76D76F1D4FE81E019040962DBE75CD0AE8CD62354"
+    },
+    {
+      "path": "SOFA/SOFA/src/fk54z.c",
+      "blob": "a300883709b625063f7b62749247f9e25ace52c0",
+      "sha256": "183B1F4E90EF90546F608121A9DE307FE5F65D5B181C91DCAF26F415418005A5"
+    },
+    {
+      "path": "SOFA/SOFA/src/fk5hip.c",
+      "blob": "dd9b28f01a64292bf284e74e0107a7f2a2cdcfea",
+      "sha256": "174D13F78C724E142E6A795107A925200916030EE9A7568073DC271AEFA049C9"
+    },
+    {
+      "path": "SOFA/SOFA/src/fk5hz.c",
+      "blob": "d2da3e229d4f324c053350e60030cb99d1999f60",
+      "sha256": "F122D4B4FE7A5163B09AEA1BB4289F387CD12A1CACE04CE23BF7159D0F7DA888"
+    },
+    {
+      "path": "SOFA/SOFA/src/fw2m.c",
+      "blob": "f5232dbcbb8089bd610e49690a7548dc5aeacd51",
+      "sha256": "AC77B1935836D2478DDBEE59404B2EEFF9F35F2869311FF4646B731B1074097C"
+    },
+    {
+      "path": "SOFA/SOFA/src/fw2xy.c",
+      "blob": "aa7d392e83687dbea8ee9a2bd51c15db133ea3be",
+      "sha256": "1F261C349CA18CDEBF8B93188E0229396F0C0C08F83E97949B6DAF0855D43A31"
+    },
+    {
+      "path": "SOFA/SOFA/src/g2icrs.c",
+      "blob": "7020cf5d9437b5ca4af819d01832cdbed0fec584",
+      "sha256": "05AB3D0FAEF756D3252DE511DB3E527ED8BEA421A3CCB2E68FC60CA1DDE045DC"
+    },
+    {
+      "path": "SOFA/SOFA/src/gc2gd.c",
+      "blob": "95be9ef0372ccc81cbfde317d7aac9b527984b34",
+      "sha256": "A1EF1D80902FAABB5104196DDD62E06A18917D1052521C1E5E02B904208C7CAB"
+    },
+    {
+      "path": "SOFA/SOFA/src/gc2gde.c",
+      "blob": "587c74997a4641f77f96b76f72ff9b8127e86995",
+      "sha256": "9D121C4E8BA0EA30380D558FCAFF0A225161D37C3F40A22F05B907F156E4BFE2"
+    },
+    {
+      "path": "SOFA/SOFA/src/gd2gc.c",
+      "blob": "69d08cc42a06dcf9f361fd35502c31b5d128e70b",
+      "sha256": "3B3F60BD6DF6B4625EC53DC0CA7E7E099AF78F24D3CF1CBD4513E5F895428E42"
+    },
+    {
+      "path": "SOFA/SOFA/src/gd2gce.c",
+      "blob": "7173fbf9f682cde4bae655e13be45fbbd8243eba",
+      "sha256": "2508D2E4E8D64AA29B528E079882B9190D147D2794FF9E8AA63BB36E2CDB90E1"
+    },
+    {
+      "path": "SOFA/SOFA/src/gmst00.c",
+      "blob": "fc3db22ea979231b529305cb0df15b527c6491c6",
+      "sha256": "2FF46B144E23D6A5D5037ABF0B2CAD4FA49565F1501ADAE00F5A95EE0C768212"
+    },
+    {
+      "path": "SOFA/SOFA/src/gmst06.c",
+      "blob": "79277a2ad8d4e1b8e6241b30149744ae39d65f8c",
+      "sha256": "55BA418696AFDB68315503F20EB88F16CE755DF166A0018FE105894DFFB48903"
+    },
+    {
+      "path": "SOFA/SOFA/src/gmst82.c",
+      "blob": "b18fde9c1aae552f2d8e1aea8923c78a6822c7ba",
+      "sha256": "E88003C650A33C5FD3C197179BD081DB69D3F23CF488DFAD0B1767729C16F5BD"
+    },
+    {
+      "path": "SOFA/SOFA/src/gst00a.c",
+      "blob": "29839264e6380e1104898aacbb53b6f04e1987cf",
+      "sha256": "95116A744EE295CB181522D9EEACAB21AA437E1733D94E1EC9D5B06949DCAAD2"
+    },
+    {
+      "path": "SOFA/SOFA/src/gst00b.c",
+      "blob": "a9af8ef4cf7f96c4332e77d568832aa70ac6ac40",
+      "sha256": "1EFE2BF907AD68FEB05881E46A88F1BDE0B6183BFBF73F14D74F0D1FCE49D1D6"
+    },
+    {
+      "path": "SOFA/SOFA/src/gst06.c",
+      "blob": "130b637d82d8e2aabe1891d3e90255e000bb895f",
+      "sha256": "EC94FD85D529EAE74CBBB3A9C47843C5ADEF279BC57DBB82798740A4430CC47B"
+    },
+    {
+      "path": "SOFA/SOFA/src/gst06a.c",
+      "blob": "ae41df38282631c7a32b4ade4e7b91266997a06b",
+      "sha256": "3C21053329291E36F86414261C5973117E434DE7F561E19BF8B1A7CC092C00D2"
+    },
+    {
+      "path": "SOFA/SOFA/src/gst94.c",
+      "blob": "0fd22566765ea3da3b6028cfa5b2a56d04a92e7d",
+      "sha256": "58BAE94D43B1D27EEC05DD8916082236A5A210994163B02C3FB816DF04C7468B"
+    },
+    {
+      "path": "SOFA/SOFA/src/h2fk5.c",
+      "blob": "1b97133b0b1939a83ef6bf2aa41d0b142e1cb569",
+      "sha256": "D0CE1675E9E6C5076364CBF9BA85D3C8ED16965CB368421B805EEE5A12A909DA"
+    },
+    {
+      "path": "SOFA/SOFA/src/hd2ae.c",
+      "blob": "60443e12160448806f07e0922e82c94ed42d8fce",
+      "sha256": "80639B625532E9D8D6C12F12D6EB6335D10125A5B633AAC30EFD6237766290A9"
+    },
+    {
+      "path": "SOFA/SOFA/src/hd2pa.c",
+      "blob": "7f512b6a7a1dc207eba339071092dabd996a5425",
+      "sha256": "67AA6BFBEEBD434BD0B440763F367B9BC11F69BA82C018F1326D753AF448D9C6"
+    },
+    {
+      "path": "SOFA/SOFA/src/hfk5z.c",
+      "blob": "dd429465a43a1f51f3a59839f07a54bb5ee24088",
+      "sha256": "4BC1117A3311C8A0EB3C78AFC504B2880511192C1EE56B9AC927DAE4CDBA1C27"
+    },
+    {
+      "path": "SOFA/SOFA/src/icrs2g.c",
+      "blob": "4618af47dc61afc93c1611c23825a8b354e07988",
+      "sha256": "C612B67FD66A690BB9E12C2B43BC840CD7AD6A4CB05B913C530CA9A0CB1332EF"
+    },
+    {
+      "path": "SOFA/SOFA/src/ir.c",
+      "blob": "37c1a12cf93bea78984a506c891c9d5bb6011be1",
+      "sha256": "5D1145C57EE20FFB744BFDB5BB8C516D6E5004504EB14B9450847ADF295B867C"
+    },
+    {
+      "path": "SOFA/SOFA/src/jd2cal.c",
+      "blob": "036c3cd894ebf1819e4e3623dc6395e6917bbc94",
+      "sha256": "1C117CD6FC2106A94E85B8CCACA2A84DAD264752841300CB05C63EB5B0C0616C"
+    },
+    {
+      "path": "SOFA/SOFA/src/jdcalf.c",
+      "blob": "2e64bfe672b2248db655fc786ca97c9b4432d10d",
+      "sha256": "A257054555B66EAFBA5FB0F1116EA7C48C6A616832E9BBE3B82D59FD60D2DDCA"
+    },
+    {
+      "path": "SOFA/SOFA/src/ld.c",
+      "blob": "9a578d88e53bb3b10516f588fdb23bf9585954e0",
+      "sha256": "8D4C081851C780E359BA2A281E246B2A6BEA0A68622A67F017BFD623BA49A5DD"
+    },
+    {
+      "path": "SOFA/SOFA/src/ldn.c",
+      "blob": "f60cffa5327e63297a6d06b3729568b63418306a",
+      "sha256": "FF8D8C72D00A04D7D73C7B6C7B1D55422A65BCAC12FC58FC7ABADB70FF52162C"
+    },
+    {
+      "path": "SOFA/SOFA/src/ldsun.c",
+      "blob": "b2461b897a6e3571187cdab12c1f8f53d5e92bfb",
+      "sha256": "99D4BEA0F3059E8632D2D315E4D538718A756DD7D379D4E27C76420A85316D70"
+    },
+    {
+      "path": "SOFA/SOFA/src/lteceq.c",
+      "blob": "a9c809f1476ba8f962972b6f0530b12f7c486015",
+      "sha256": "340D96EB6B03AEF6BAAB2B49628E93A5CCDBFD6402643A3173DDBA41BBCC958A"
+    },
+    {
+      "path": "SOFA/SOFA/src/ltecm.c",
+      "blob": "fb706d193f1964bc1b192fd783a55e1578dcbbd9",
+      "sha256": "5E89D4F36ACA108A77512C471942D5523914A7253E1F39A835C07690C29D70C3"
+    },
+    {
+      "path": "SOFA/SOFA/src/lteqec.c",
+      "blob": "aca53d4db06c54b06af6c3c2b0d1c27647420a40",
+      "sha256": "0880CE8724F4D33A2CAD886DC619D902681A85DE6880021663DE19F701F565CD"
+    },
+    {
+      "path": "SOFA/SOFA/src/ltp.c",
+      "blob": "686ee4c8ff37b86bb5afd3311682cc76de639d50",
+      "sha256": "5E9022F9217F91E4D2B0767A4E1FE5D386E09BEF1FC8D0B5BDF1BB2AFE2F05FE"
+    },
+    {
+      "path": "SOFA/SOFA/src/ltpb.c",
+      "blob": "22482f511ecc406670973564a84d3d37c6c4478a",
+      "sha256": "A540274B3AB0C609605205313969AC1C9F15747BD7341704222230DA925D4170"
+    },
+    {
+      "path": "SOFA/SOFA/src/ltpecl.c",
+      "blob": "dda80638539bed1c62c1004d01313a8e767215f1",
+      "sha256": "2243FA49FE9B7B4B6C22BE7AF1A669888E8777DFF72F62903F4A5922CDC26481"
+    },
+    {
+      "path": "SOFA/SOFA/src/ltpequ.c",
+      "blob": "65f39eed5ca9e6458384ab9033cc6e87bb75196d",
+      "sha256": "70E31CF77461F3EE0762FBE5F141E374BADF3336A93EC99966E9EC3C4E089FD3"
+    },
+    {
+      "path": "SOFA/SOFA/src/makefile",
+      "blob": "5a20ecb6c20243b9df2bead27c81efd349743216",
+      "sha256": "71C2CA8A555BABA11F82399F14BA336C7E0ACF8F4B4E5822D6AC84D161277B33"
+    },
+    {
+      "path": "SOFA/SOFA/src/moon98.c",
+      "blob": "556c8827d80b57eeb63266493d9d51b316345acd",
+      "sha256": "A28C822BC68D3115BC0649469DF4E0EA12DDDBF8426F3C5DF9DECB467D29DCFE"
+    },
+    {
+      "path": "SOFA/SOFA/src/num00a.c",
+      "blob": "2852f7a2b83b8421ebfa8282c8140c578d326609",
+      "sha256": "AFCB2E92BF4F85C92D71329230C25FD91F72617800C1C0630371AD614015A673"
+    },
+    {
+      "path": "SOFA/SOFA/src/num00b.c",
+      "blob": "908e45d1d5b5b8fe649de912a6b14bcced88bd12",
+      "sha256": "A0D7B26BE2E68AE40D35539442F00DF92D7414734AD48F2128DA60C6B717B0F8"
+    },
+    {
+      "path": "SOFA/SOFA/src/num06a.c",
+      "blob": "1706a4938ac1012f04cd7b7696bc3157d42a7a02",
+      "sha256": "CEEAF33AE284247F53DD1DA7F34CEB900B74D8EA247A614BB1F7F6796201F998"
+    },
+    {
+      "path": "SOFA/SOFA/src/numat.c",
+      "blob": "08fd7b86a592f9eac43757946823336e44dab3d6",
+      "sha256": "9BCA312B3EBA7B4A40DF35120CFBEE0E47B8CE375CE98727F5B48B6F64E03152"
+    },
+    {
+      "path": "SOFA/SOFA/src/nut00a.c",
+      "blob": "dbc69af5d8b58107ced1858bf39629d1afd3eaaa",
+      "sha256": "385D4A36685F1798DCE3CD34E04E7B92270597FBA02DB3223A74D7DF085B2FF3"
+    },
+    {
+      "path": "SOFA/SOFA/src/nut00b.c",
+      "blob": "5a0a8e303c9598a36aa753fa4db6b1477f51ac93",
+      "sha256": "D48FA9F8E50725B70398C9F29194285D2BD451E10C13CDAFE57DD25816911D9C"
+    },
+    {
+      "path": "SOFA/SOFA/src/nut06a.c",
+      "blob": "948f9752eda9c6739b6c4d1fe23191b6876d0266",
+      "sha256": "8AE0BA52CD25C7050A73A0146869BDABF5D94AE674A29A98F30883FAC51BEE25"
+    },
+    {
+      "path": "SOFA/SOFA/src/nut80.c",
+      "blob": "d839d2fc641cce2d4d1c431c1c0761073f8cab72",
+      "sha256": "E85EB97A1C19B3071CCB1F6B6F8B1F9DA7AD47E665472A8C290875BCF358863E"
+    },
+    {
+      "path": "SOFA/SOFA/src/nutm80.c",
+      "blob": "2a2e92b70324b9a9cf89f89d883243806d665441",
+      "sha256": "D86BB97CA8396056C3794330D2EBBB5E3A888CA203A0C37B1AC08723D0724033"
+    },
+    {
+      "path": "SOFA/SOFA/src/obl06.c",
+      "blob": "5cf2ea1e6101006f9ea228333ec010523e0c14d9",
+      "sha256": "D2785ACFEC5EE8E15FB19319BFEA057951D62DE4869D8420496C9A0C182DFE45"
+    },
+    {
+      "path": "SOFA/SOFA/src/obl80.c",
+      "blob": "35890fad23d238b2a01d5a62eb68cff026e57a30",
+      "sha256": "5FE3BD6906D4A2553ED8D03F844CF9971F73335A95B79C0A6CE72B701A5CBA3D"
+    },
+    {
+      "path": "SOFA/SOFA/src/p06e.c",
+      "blob": "b24929a9484fc2d42e860c9c9aa8ae205fd4838f",
+      "sha256": "65063DD27E521ED5546B2ED8C0337E54CC784A20BA7EDB69EBF359EA37CCA088"
+    },
+    {
+      "path": "SOFA/SOFA/src/p2pv.c",
+      "blob": "6054fedf3dc52dd3a505055db946b74fcd541ee0",
+      "sha256": "F7ACCA07174D095BB71CF8D7EEF93CE99047336C24D936887BBF79F2CA99B15E"
+    },
+    {
+      "path": "SOFA/SOFA/src/p2s.c",
+      "blob": "8a5055df3559b626ea3bb4098d961481e638a42c",
+      "sha256": "614C326F8F7231BFD3E375748D0FA7B1BC14D89F491951AE79AE356D0083CCA4"
+    },
+    {
+      "path": "SOFA/SOFA/src/pap.c",
+      "blob": "4e56c18527ffa884940bf921d29ca97d955809d3",
+      "sha256": "710CAB3D4CBBA6BAA3D64E351EF0FDBB5402B45E3EE2003EE78C872CB4EDC04C"
+    },
+    {
+      "path": "SOFA/SOFA/src/pas.c",
+      "blob": "6bfb0447fb4e87232ec1f93aee2607db8373f861",
+      "sha256": "5F2D489FC7C0519CD868BA918E6FF0309B719F734D227A6E8C16896512E5D755"
+    },
+    {
+      "path": "SOFA/SOFA/src/pb06.c",
+      "blob": "e466310b848603a200b638c56f8ee02365e0d82b",
+      "sha256": "BB09CD967949FE4590431E759A3F1A4BB499490EB74B5FB91CD909F09C879845"
+    },
+    {
+      "path": "SOFA/SOFA/src/pdp.c",
+      "blob": "79c08a06243ae936703a9914fecca7329940c8a9",
+      "sha256": "CE83DD862BEF83F4D4D50DBA7F4DE832C1A83DDCFB29864FB5BEF9AD82991369"
+    },
+    {
+      "path": "SOFA/SOFA/src/pfw06.c",
+      "blob": "cfc5c5ef269582b49802de8d53e5fe586669c5a9",
+      "sha256": "50B6A633AF56E65F96CFE871A30ABB8DCE27E2B0927AE98D9AFCA8C4E49C8EE2"
+    },
+    {
+      "path": "SOFA/SOFA/src/plan94.c",
+      "blob": "ca7e059ec60069f3750cc9ef60e9dc1f6487dce0",
+      "sha256": "5BE41206A7926FABEFC6AF467F7B3403E6466327536AB510CD7399A5FA924366"
+    },
+    {
+      "path": "SOFA/SOFA/src/pm.c",
+      "blob": "141b4c028d64cee5c771d923d6ad43d990c93041",
+      "sha256": "D7A190BAB7B6DA1C7AF62A240854558A28B7727750C4F7B0B04F0F90D712E9BB"
+    },
+    {
+      "path": "SOFA/SOFA/src/pmat00.c",
+      "blob": "197f9c8646bb65b8bb007c05b1253a606272432d",
+      "sha256": "81541132051E1D0209FAD1AB828AD5EAFCFC508496B18DA22269B48E5F656283"
+    },
+    {
+      "path": "SOFA/SOFA/src/pmat06.c",
+      "blob": "d8a09382fcf9f5145a862998fce36d60bcd526c4",
+      "sha256": "DA8D5DC6405EF4FBB623F81C09346842576F2C618BBD52942D089127BD63190D"
+    },
+    {
+      "path": "SOFA/SOFA/src/pmat76.c",
+      "blob": "dab53dba984a1088c1a3f868f2458dcd4107c34f",
+      "sha256": "E1F99B15A66C14C11A56EA433A6F9C41350C5ED757A607B58281CD7EF810BF79"
+    },
+    {
+      "path": "SOFA/SOFA/src/pmp.c",
+      "blob": "280d02d583b79c85a8deef7f55d423efc6b016ff",
+      "sha256": "1F97C1002F0FF9FCEC72275EB931B16FF4C6B70E76AA0EA665C8CBBF73277A9C"
+    },
+    {
+      "path": "SOFA/SOFA/src/pmpx.c",
+      "blob": "1cecb235f4cc3a716041a2b94efec64f932a3908",
+      "sha256": "DACC5A13CF105DD4A214102D615F15E0C9ED69F8EC04FF20C34396A21E7AD53B"
+    },
+    {
+      "path": "SOFA/SOFA/src/pmsafe.c",
+      "blob": "46eeb850ab720a5283b727e35a25704008b92ad9",
+      "sha256": "DF5AD18FA620E3A6E3B8BD14113C106D98D315CA45BF6A25CEBD1E9DE887D053"
+    },
+    {
+      "path": "SOFA/SOFA/src/pn.c",
+      "blob": "9e0361406762189575a2e1f8ca77e69f6be1cd8d",
+      "sha256": "A42B4B961EB854B48B25B1FA43B7561EFC38232BDB6C732FEF69DC0EEB4026DA"
+    },
+    {
+      "path": "SOFA/SOFA/src/pn00.c",
+      "blob": "088458c671bc9d70e78db8124f873748c7769cba",
+      "sha256": "7B93FF2DDB0CF929CE9366112765007E5F370D989B0014815CDA6EE3C065472D"
+    },
+    {
+      "path": "SOFA/SOFA/src/pn00a.c",
+      "blob": "71957b68cb3e6ef23fe4a9e4d15a5a7968adda53",
+      "sha256": "7FB21EF11F113F5A135DCBC77D36E3AF9C68F319628E7619D8F4E0A1A2D6DF9F"
+    },
+    {
+      "path": "SOFA/SOFA/src/pn00b.c",
+      "blob": "cd7dd0957ff703d107b68b6961305f84cf39be5b",
+      "sha256": "E4A8A17841ED8C97A91D3E70B5D5CBF307ECF1D1DD4B5D5EF44983655AE6F0E6"
+    },
+    {
+      "path": "SOFA/SOFA/src/pn06.c",
+      "blob": "6145e9755fe62b14a845bee3ad02e419d1b11155",
+      "sha256": "AC4EFB99C4E4BBD24CB422EE01E5A40C20949889F04FC27A8142CF6B4A36EBA8"
+    },
+    {
+      "path": "SOFA/SOFA/src/pn06a.c",
+      "blob": "4433dbe93322f562b901345f9fc6f6a03284a198",
+      "sha256": "8DE4EF6A2E30135BD39651B9D0ED751ABE9BD8DA5359F73458A64E3D82B4A144"
+    },
+    {
+      "path": "SOFA/SOFA/src/pnm00a.c",
+      "blob": "12688b09ff4ad742b3f96010f67387b2f713abe4",
+      "sha256": "263D36D36A926EAD6092E026067F3C54E9C13E53C697BBE08E1026A7C4F8D68B"
+    },
+    {
+      "path": "SOFA/SOFA/src/pnm00b.c",
+      "blob": "cc11b50b2222c62ae94042ef6070f1ae1b3a50b8",
+      "sha256": "FB649CD2D985CD88DB11E848FFF1D5D3E49EC272A57AF68ECC666F3035B53160"
+    },
+    {
+      "path": "SOFA/SOFA/src/pnm06a.c",
+      "blob": "a909931b688e3fda8a310f26bd70097c0efa6329",
+      "sha256": "8AD34FD8FC72C9C39B2C708B1501181505AEC5151AB0863F2D2510E8BAF46384"
+    },
+    {
+      "path": "SOFA/SOFA/src/pnm80.c",
+      "blob": "3a2bb04d810ceefc31c0a493d95bf5a112963f86",
+      "sha256": "2D2BAB5B73083219298F92ECFFDE2874D442482816094DCAA02F0DC9E7A22F4F"
+    },
+    {
+      "path": "SOFA/SOFA/src/pom00.c",
+      "blob": "10a0f9e8ffb73f4979e08f85fc364cdc74eb723b",
+      "sha256": "3A23A48E24F5B54CC7CB4261DCE295CA91BD9D43B5C79EF6F434E4E162702950"
+    },
+    {
+      "path": "SOFA/SOFA/src/ppp.c",
+      "blob": "454765c6af3fb5c309e880fcc469f4f1c1106317",
+      "sha256": "5EB332B69C72D0EBDC688A89D29F000C5994FD33C5FDD8E39B68715B28713689"
+    },
+    {
+      "path": "SOFA/SOFA/src/ppsp.c",
+      "blob": "4f5fd6195a95160865cfee3a55f26dc968d11da8",
+      "sha256": "FAB1C34CB2861166581838A824D382A0C00FF919C5F243CFF714575BDBCC347D"
+    },
+    {
+      "path": "SOFA/SOFA/src/pr00.c",
+      "blob": "ad5dacb09c794233fbd4f74f7be2cfa9da68598d",
+      "sha256": "7F71EE7D625DDBB5ECB96D2AF3B4F249C31B6BFA75BDAEF618FD19573E328143"
+    },
+    {
+      "path": "SOFA/SOFA/src/prec76.c",
+      "blob": "5bd2cccff0560f93ca82026a033877b74dde4684",
+      "sha256": "5CC0B1434D884C9C58C795B730775DFB04045189C2FD314766038D39528673C8"
+    },
+    {
+      "path": "SOFA/SOFA/src/pv2p.c",
+      "blob": "52c67689a8cd8f84a759e88a738ba468d66b44f1",
+      "sha256": "C1FFBDA8165A7CA08B3DECE2AE638CDCFB2C6C493E3C7CEDF6C3F300F0F49057"
+    },
+    {
+      "path": "SOFA/SOFA/src/pv2s.c",
+      "blob": "3072bb2d2e7994e2bdc4fd0de4979f4593fd2236",
+      "sha256": "82740AA0411402DF7C00844D219511E589CC835D25934B0C8A00A0FECE56F329"
+    },
+    {
+      "path": "SOFA/SOFA/src/pvdpv.c",
+      "blob": "d4fa759948ac88a488cfa60e9a5fb38dc6b67864",
+      "sha256": "C25D73D45C1D19C430A6F11F5E8CBD172C304B2B7EF1E4BFC667491AD90A3678"
+    },
+    {
+      "path": "SOFA/SOFA/src/pvm.c",
+      "blob": "a024814363d9f0f14cbccfb97d9bde72a7839a6b",
+      "sha256": "3212BF6B3B82EE1CCB1AA592F821E14043D258C13F7F78FC2339DCE1938C5D3F"
+    },
+    {
+      "path": "SOFA/SOFA/src/pvmpv.c",
+      "blob": "eb69fae7621b4fd2aa2afd149895e547514cd21c",
+      "sha256": "0D0B737ACA87C13CEB6A49074DFBD1563AF5B3AF512341D0BBFF91BDA1F7848F"
+    },
+    {
+      "path": "SOFA/SOFA/src/pvppv.c",
+      "blob": "3802a179e7c411036faef15c9f33052b9d6bae84",
+      "sha256": "41E33F9EA7A127EAAAFE651B85D95E98BC48D3051F7B68AF5FEDC207E80CDA19"
+    },
+    {
+      "path": "SOFA/SOFA/src/pvstar.c",
+      "blob": "4fd78abb3ae69d48ce96958d0608dd5d66e0babf",
+      "sha256": "B9F1EA071670347ACD5158296EB02B13A91E88AB858082ACEB8855CC88CADCCE"
+    },
+    {
+      "path": "SOFA/SOFA/src/pvtob.c",
+      "blob": "6462a15403005c4220890de449eeaa1f05fe9862",
+      "sha256": "83E4F78285E6FD2DE15AF94CB87FB609CEB1C78C169D7F3A8463B8455FCD1655"
+    },
+    {
+      "path": "SOFA/SOFA/src/pvu.c",
+      "blob": "7ff8b7cf4abf1b034646f185b905362cbdbef4f0",
+      "sha256": "B0EE2A4BD33CE82A69D854A7BFC646F8AD6B675944D692A1757187B3AD7BE47F"
+    },
+    {
+      "path": "SOFA/SOFA/src/pvup.c",
+      "blob": "d99d062ae0dc3111f4f841535e41479c4e6cd071",
+      "sha256": "F38E1C0E7D6E76DFA739CD60A616486F43B757F3B79D1B51C4C88637AAE2F978"
+    },
+    {
+      "path": "SOFA/SOFA/src/pvxpv.c",
+      "blob": "b45187c4a12565d590ca3db1108f0a302dc59806",
+      "sha256": "CB437DF6D2F0AB05439B9F7C01D8F9DC7CB71E7B141348A868521A6501AD14FD"
+    },
+    {
+      "path": "SOFA/SOFA/src/pxp.c",
+      "blob": "c7641634062009f0e50e5b8f48e7734fc4f157c0",
+      "sha256": "50C0DDFF6AF8F415AEAD8BD2DBC6206C5DBD4BA1FFC9E191BFC9211B08E466C7"
+    },
+    {
+      "path": "SOFA/SOFA/src/refco.c",
+      "blob": "3eff043e91bd23d7c607b479976830281bcdbed6",
+      "sha256": "32F069E081EA31A70BE3B3435125E0DF93F48EFBAE3831F45234DEBC8D4875E0"
+    },
+    {
+      "path": "SOFA/SOFA/src/rm2v.c",
+      "blob": "53996bd4cb80b6c819abf525418ca540e97a5ef9",
+      "sha256": "6C28FD27B76A998DA47006E0B5E5EBC1281D23871C4070C9F4A2413FB604505F"
+    },
+    {
+      "path": "SOFA/SOFA/src/rv2m.c",
+      "blob": "1aadd86ee0bda473faeb734f9e4a40b1e1a2bc25",
+      "sha256": "B0F9EA415F8B54816B371A59FFAAB75FA148516D3F72CB6805BD9312250D8F8D"
+    },
+    {
+      "path": "SOFA/SOFA/src/rx.c",
+      "blob": "0e07b0447be8dc32f8a6d36716a36c52502ab2c0",
+      "sha256": "9E3F19BBE258D059E55A9F2936CE06E93B7F1917AD8A114654DF54CCFF36306C"
+    },
+    {
+      "path": "SOFA/SOFA/src/rxp.c",
+      "blob": "b5e93dc1e0fae48b96eb3dc4f11440c88093afce",
+      "sha256": "04D4A0378A87D62DC3F1A8A276F9D93A64F9A08B8589223007A3591DC345F065"
+    },
+    {
+      "path": "SOFA/SOFA/src/rxpv.c",
+      "blob": "c3a9fb92601c198e368e47ef55b94152f7a5bbcc",
+      "sha256": "1932682819DDEF56A2468FE153F05136D87614BC6C374FA41857BBBE15A26E79"
+    },
+    {
+      "path": "SOFA/SOFA/src/rxr.c",
+      "blob": "4e0aded084281a99c93bb5e7a34c6a20ef1c862c",
+      "sha256": "55C482437558D813B67B54EBF1C61FE42E64FF01ACD982E4D53E9EBD7ABDBED0"
+    },
+    {
+      "path": "SOFA/SOFA/src/ry.c",
+      "blob": "921535a66ca76c554a1448457a04478eec33cf63",
+      "sha256": "3D81FF33ED5BF9CBFA1F39DA3CCF68AA1EFAAA512A43F82B5F9918B05BC03A08"
+    },
+    {
+      "path": "SOFA/SOFA/src/rz.c",
+      "blob": "baee877ed012dbc273ae60a8e97ec04244aba4f9",
+      "sha256": "C53E9696707CB3E4C84FA1FA19D21FB79B8688E9F095D563C1A01F680DA2DB5A"
+    },
+    {
+      "path": "SOFA/SOFA/src/s00.c",
+      "blob": "a026d3b5d9e20f2bfdca7e9f71a0a9b3d89db535",
+      "sha256": "1FC27AAB6EDEDF0DE518FDFC515B80C0EB8486FE0A7078D09AE5FDB69CB859AA"
+    },
+    {
+      "path": "SOFA/SOFA/src/s00a.c",
+      "blob": "c48a85eca719d58d7098dc191e4964f8208f90d3",
+      "sha256": "931395C0EE2F425DF8FD32FD6F9309F79728348BB5DF01AE93EABE2FC8574FA5"
+    },
+    {
+      "path": "SOFA/SOFA/src/s00b.c",
+      "blob": "665b698c5bcbe4789d29562edfc1f2fd43ea41e8",
+      "sha256": "3DF86EB0CD1D209D11550731DDBB55B9B32433649BE69CC24F8016E74B5F2953"
+    },
+    {
+      "path": "SOFA/SOFA/src/s06.c",
+      "blob": "79c7e8c81e4806e0dd2c11a56a3886850c57fa51",
+      "sha256": "82CF4592498006E1526F133E5DA8F502CBEC60273FA678EB1CEDF62338681D0C"
+    },
+    {
+      "path": "SOFA/SOFA/src/s06a.c",
+      "blob": "0f9f48778f14fb0a9dfd0e97541a386135f2eabf",
+      "sha256": "CA39F1B1ABA5BE013CD6EDDEAD7078A92501039C5519793E5118A5A8742C0232"
+    },
+    {
+      "path": "SOFA/SOFA/src/s2c.c",
+      "blob": "6ff105a0e6fa922a86a1003ff7d5665d92e4aad8",
+      "sha256": "4AD718E06ABA03AF24F1B72B2C8482302F2DBF82EEE43B2DECF4432197C841A9"
+    },
+    {
+      "path": "SOFA/SOFA/src/s2p.c",
+      "blob": "c7fe9081623b22e74a80fb0152d72ca766bd841c",
+      "sha256": "505766C8B472F189B6EEE3CDDA35A303E586092DC5641675CEF301471DD3BCFD"
+    },
+    {
+      "path": "SOFA/SOFA/src/s2pv.c",
+      "blob": "448541d751e0b79a55e01d214f880e3954d9eaea",
+      "sha256": "4D5CB2E7F045FD45B9F509EBE7DFE8532761711CD105AE2E66747E4D884A45AC"
+    },
+    {
+      "path": "SOFA/SOFA/src/s2xpv.c",
+      "blob": "308ab869d31458b92a3f00a8d6bda5f60945d4bc",
+      "sha256": "434D122CF4859F210452A5FF9A220988034934CCBF3824105C3375CC5E43F74C"
+    },
+    {
+      "path": "SOFA/SOFA/src/sepp.c",
+      "blob": "44fee7b6fefc2dcf7af6f3e3d32f80b54307b716",
+      "sha256": "FC485BB192163659855106479408720F6F09B33DA0E094724F2764547DAE110C"
+    },
+    {
+      "path": "SOFA/SOFA/src/seps.c",
+      "blob": "cc1e916a2fcad8cc16b7f4ef08adc39eb7288c7e",
+      "sha256": "26235EF11102ABAA982157BAC22BF80C105998A6E107D83AE7C50178BA0ACE04"
+    },
+    {
+      "path": "SOFA/SOFA/src/sofa.h",
+      "blob": "17517f99716e9f0acd7a8c1f9fc540760393ad29",
+      "sha256": "15F687D1B0330AD4B7337527AF5DB7DAA52B1643A11F99E5C60D2046DA09E984"
+    },
+    {
+      "path": "SOFA/SOFA/src/sofam.h",
+      "blob": "9279f72772c51bace69380e217fc5f85ea546764",
+      "sha256": "21D8617D5EDDAF8E9ED4FA3FC92BFF54ACEBD633E93AD257C01311687CE69F71"
+    },
+    {
+      "path": "SOFA/SOFA/src/sp00.c",
+      "blob": "c73a3ac8779ef77acb2787aa5329357e1d8d48ff",
+      "sha256": "5F966238503B31CFF2B474EA0974C088E891DCC7E15A0B354A5E66331B11F6D7"
+    },
+    {
+      "path": "SOFA/SOFA/src/starpm.c",
+      "blob": "2e3b6a6c1699161d46d6b7d3e89fd44c3c271580",
+      "sha256": "5876D8D0DC27A38DD461743E5FF735B8A5471C22527E7B072A8D9F22B7A1D28E"
+    },
+    {
+      "path": "SOFA/SOFA/src/starpv.c",
+      "blob": "f0412340e1fb1c9e54efe6773024721bee45f0b5",
+      "sha256": "CF846EC4292B96700D5F10E4A3EA5344B16824E51704210986F0D98EBD6BC0B2"
+    },
+    {
+      "path": "SOFA/SOFA/src/sxp.c",
+      "blob": "1e397bc19f8d86e76297104e9d947ccae9b0b015",
+      "sha256": "6EB2B7EE4B9886C7652C7BEBF1BB94A3DB7268BC55C804AF1FBCC7D822BAD3A7"
+    },
+    {
+      "path": "SOFA/SOFA/src/sxpv.c",
+      "blob": "3172e54fafc344c0df7e43354b05021afa22fc48",
+      "sha256": "549BAA4912D4F1BD926EEF4FDD484F3B30EFC0DEFB3DF6A76CF123A8EDF727B6"
+    },
+    {
+      "path": "SOFA/SOFA/src/t_sofa_c.c",
+      "blob": "098813eade9b98e5d78f6252c504e0fb52d42583",
+      "sha256": "87EC88EAC0BE306A7060F984AF2F1506ADE2148332EA9EC70922EB3BF39B382D"
+    },
+    {
+      "path": "SOFA/SOFA/src/taitt.c",
+      "blob": "170d1993209ad33b81ef772005b50203add05fa4",
+      "sha256": "BDDF4FF4F702D28569D455C840D077AF21EDBDF7069018BD5F303B626EA0845B"
+    },
+    {
+      "path": "SOFA/SOFA/src/taiut1.c",
+      "blob": "ea639b06419c91a98891a882be28dcb66ae2b369",
+      "sha256": "7E0C8925F61AB34319CDCE359E5026BDE45C1BD6F71C7E6566A89888311C983F"
+    },
+    {
+      "path": "SOFA/SOFA/src/taiutc.c",
+      "blob": "457006871821c9a4de90d6bec93c5891250f4a6f",
+      "sha256": "87B6F7455AA801F11A50FAAEB43313CC0E5478D14A7A58A2A48C9EFA2DEA785A"
+    },
+    {
+      "path": "SOFA/SOFA/src/tcbtdb.c",
+      "blob": "939e3f1259f3541df3418d4e33438819a267bc7e",
+      "sha256": "21AE245F25D98FD52CA035A5782E01D0560062D5B4E9F10FF17BA259DCEF0E68"
+    },
+    {
+      "path": "SOFA/SOFA/src/tcgtt.c",
+      "blob": "728e6e83e9e6227566ec3169b17ea4deb7ee2e08",
+      "sha256": "6E8BFB9EBF6CECD75778130BB208A521E642415F8C6CA6C55530C701A3E6E83E"
+    },
+    {
+      "path": "SOFA/SOFA/src/tdbtcb.c",
+      "blob": "c32b5e3ccf93d2d3ddfdec772dcaadef77aa4521",
+      "sha256": "50A6143B9691B2C78D921077D50335F5EE4D372463C9B0093399A1D07F1357AA"
+    },
+    {
+      "path": "SOFA/SOFA/src/tdbtt.c",
+      "blob": "3b8fae501a3ce63365fa90050c17b82922a81b67",
+      "sha256": "32F89A73D290B77B4D79520D680A9B32FD4F0BA8FE7AC91D3E5B615638F31570"
+    },
+    {
+      "path": "SOFA/SOFA/src/tf2a.c",
+      "blob": "1606755bc5eb86f5c8f9d0f4ee773b8e8901b6fc",
+      "sha256": "746993AF92A6618D9A6BDDE1057B793444A45B7AAAA8B347C54B8B188E477078"
+    },
+    {
+      "path": "SOFA/SOFA/src/tf2d.c",
+      "blob": "42dbbb55eb5f0e47679bbc12d1616ad9a0841253",
+      "sha256": "A25146C0F5EDB7E2EE013CDBDC47E3FBE022039C430EF3BB0A2E32272235FFEA"
+    },
+    {
+      "path": "SOFA/SOFA/src/tpors.c",
+      "blob": "8b0ae129cb06ca287413508dc82f19a2de04bc74",
+      "sha256": "DC060033657FE7A31151F71187B26F216ECD88D2EBAF885C0C523AB8FA985937"
+    },
+    {
+      "path": "SOFA/SOFA/src/tporv.c",
+      "blob": "a9e2086ad49ad39a646fdce3fd205efcae05abc5",
+      "sha256": "44A557893412C1629C532148916FE525BB16E8DDC6CB0C883B4196B6D3FC3B31"
+    },
+    {
+      "path": "SOFA/SOFA/src/tpsts.c",
+      "blob": "8d71f70329b33556c32d27a6a62ee1249f6ca1aa",
+      "sha256": "541AE863FDA829C1711607886E21EE376CD3D7F76E2E4EABCEF3CB24D0DA6E02"
+    },
+    {
+      "path": "SOFA/SOFA/src/tpstv.c",
+      "blob": "0d138454308022a0b360ab1cde2dc6fe5437baaa",
+      "sha256": "B533FD3ECC123C16398E200871CBD40F216B49379B1A7C419D2D76538E9B4454"
+    },
+    {
+      "path": "SOFA/SOFA/src/tpxes.c",
+      "blob": "955451a8092e1337a0618f60f1bf17674fc92b46",
+      "sha256": "F952E1B0DB4C6B8ABED3D73BBDB8A15D78A6AD3DFD2A22E5D8A2B99EBF1C053E"
+    },
+    {
+      "path": "SOFA/SOFA/src/tpxev.c",
+      "blob": "814c9e59c8e87efff63c70a8e7cc033c97af29e7",
+      "sha256": "123F88B44CDB422EFBFE3669BFD26429C184DDA8F7198E89DBAB666AB010C4D8"
+    },
+    {
+      "path": "SOFA/SOFA/src/tr.c",
+      "blob": "2f94553d561185a8453dc1326412e71043cfbace",
+      "sha256": "A80DC6C865E8FD4812F4EB662278E1D0CFA73182C83B4ADBA267A62F2CB167BD"
+    },
+    {
+      "path": "SOFA/SOFA/src/trxp.c",
+      "blob": "df5d8fb6e9e4b56af747cd45d78551934ae90577",
+      "sha256": "E98CF4BC24E2D1E9461A5F82C529548C6B73F7C148C42825B3D6843FD4D83D49"
+    },
+    {
+      "path": "SOFA/SOFA/src/trxpv.c",
+      "blob": "bffbb73b9f6dc3ac8952582ae1a02e5277e9f648",
+      "sha256": "FB8C23EF8F4FFDBCF495D109F471270631857E042B47E20EBE1361331DEA155E"
+    },
+    {
+      "path": "SOFA/SOFA/src/tttai.c",
+      "blob": "905e384f40a039c749e455fae1cfe0bce7b9ffa0",
+      "sha256": "0DB2458656C82921B9437A1DAA1344D9244040E424BB48C9FC4C7140AB194880"
+    },
+    {
+      "path": "SOFA/SOFA/src/tttcg.c",
+      "blob": "a1d7098b981190edf031abb3c88e31ce6b8bbdec",
+      "sha256": "14ED168CC27FBA28CF99E1B7B83F88BD875B877439EC168DA9E41C87A8B95B49"
+    },
+    {
+      "path": "SOFA/SOFA/src/tttdb.c",
+      "blob": "d61d795dc0ccbb0e0dad4dc4fca15122a8a6e1c7",
+      "sha256": "F8B91D77F866D7631F92A5BECD8882ABFFE0425A195FFAD0AA1B8670A85B0981"
+    },
+    {
+      "path": "SOFA/SOFA/src/ttut1.c",
+      "blob": "0803ef53e15132e0e033245ab7d692a1c2ef9084",
+      "sha256": "F0F99ACB8F9E318FE36F81AA3DD0D286A9F06FF4E3A1A2595BB9BD5975DCF1A2"
+    },
+    {
+      "path": "SOFA/SOFA/src/ut1tai.c",
+      "blob": "a41d88fbc5731c988b85f37923ea996052648dfb",
+      "sha256": "01F58E9E5FBE1A8AF96BA7F8F7F642AD8A36647F6DDC901E88EC9D9A77DB686D"
+    },
+    {
+      "path": "SOFA/SOFA/src/ut1tt.c",
+      "blob": "c04b5d0c9129bc15826883e1eb28808c7b5e70c3",
+      "sha256": "4EA207109406E859FEFB8CBD9352476BD33BAFB49D43557F605D6FA65568D2A2"
+    },
+    {
+      "path": "SOFA/SOFA/src/ut1utc.c",
+      "blob": "a18e1e2fa8c3ff2ce88af9c858575e74033d4a6f",
+      "sha256": "7DFBE99F6B71B77BCCC575F8D80549BFCDC86119AD4880940CA238370F45A71D"
+    },
+    {
+      "path": "SOFA/SOFA/src/utctai.c",
+      "blob": "a62e9d472d316f99c7be9847e0b5030bc841fba1",
+      "sha256": "DC98532A2A6FA8361EFEC3593E9AAA0055DE80D00F093B49000A97D79176DD31"
+    },
+    {
+      "path": "SOFA/SOFA/src/utcut1.c",
+      "blob": "886c542da6b6b17c3cd2cf7b9d2ab70a89fb87d0",
+      "sha256": "C88A1970A517F7A3B8E28A495F374DA819A855F72EDD14D16F1E5519D4A463B6"
+    },
+    {
+      "path": "SOFA/SOFA/src/xy06.c",
+      "blob": "6629a8d0530aa767c9934831f617cc9ffae69acb",
+      "sha256": "4F64DE2D15B359DF9C86F16CF9F9AB96111AB1E26A67EB037C0A3B1498402975"
+    },
+    {
+      "path": "SOFA/SOFA/src/xys00a.c",
+      "blob": "c9220391f66abccc39eaab981782c3f2a8d35114",
+      "sha256": "2B5DFB361F69267F6B001A402FCDA74BA061CFE7526D9CAE99E9AF638CC94F6F"
+    },
+    {
+      "path": "SOFA/SOFA/src/xys00b.c",
+      "blob": "74c6228f29057e32ef7812de2146b70ef6e4172a",
+      "sha256": "256F7EC08EB8CCE1970B240B98BE7ABE9A9675644402BFA45923CC0DDD897136"
+    },
+    {
+      "path": "SOFA/SOFA/src/xys06a.c",
+      "blob": "becae30edf49304fc09338fb2847279678b77f19",
+      "sha256": "6C8C7F5BBA279974CFC72E844615ECE2192F3C582655A58C3B11DB85EFDDB9F1"
+    },
+    {
+      "path": "SOFA/SOFA/src/zp.c",
+      "blob": "443b204a79e77d5b9692e278376e245b0bfe029d",
+      "sha256": "601E8389A7E68DD219DE97B88DA968669F001F3FDD1A55E914972448D26AD06B"
+    },
+    {
+      "path": "SOFA/SOFA/src/zpv.c",
+      "blob": "bab4dbf6afd4bf9ae144e729398d8be760be3d15",
+      "sha256": "FEE5D7C1A8F611F35EB43CDA9F70E10B01C16C35E3FB4BE7706D18E06D80CB56"
+    },
+    {
+      "path": "SOFA/SOFA/src/zr.c",
+      "blob": "66b2f678521244ad7b13a87be2ac13e4785932d7",
+      "sha256": "A25051728F331662BF78171E95C8F0038BF452AE25EF0A4FFBCA1D319B25034C"
+    }
+  ],
+  "protobufEmptySha256": "ECEF3D54CC9E079673B9816C67BAC770F7F3BF6DADA2D4596BA69D71DAA971E6",
+  "adaptationProfile": "linux-x64-native-abi-and-owned-database-path-v2",
+  "expectedAdaptedFiles": 6
+}
