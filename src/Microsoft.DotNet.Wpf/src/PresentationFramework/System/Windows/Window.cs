@@ -1531,7 +1531,11 @@ namespace System.Windows
                         new FrameworkPropertyMetadata(ResizeMode.CanResize,
                                 FrameworkPropertyMetadataOptions.AffectsMeasure,
                                 new PropertyChangedCallback(_OnResizeModeChanged),
+#if PORTABLE_WPF
+                                new CoerceValueCallback(CoerceResizeMode)),
+#else
                                 new CoerceValueCallback(VerifyAccessCoercion)),
+#endif
                         new ValidateValueCallback(_ValidateResizeModeCallback));
 
         /// <summary>
@@ -5440,7 +5444,7 @@ namespace System.Windows
         {
 #if PORTABLE_WPF
             if (windowStyle is not WindowStyle.None and not WindowStyle.SingleBorderWindow) throw PortableUnsupported("WindowStyle");
-            _portablePeer?.SetWindowStyle(windowStyle);
+            PortableUpdateChrome();
 #else
             // Adding check for IsCompositionTargetInvalid
             if (!IsSourceWindowNull && !IsCompositionTargetInvalid)
@@ -6437,6 +6441,15 @@ namespace System.Windows
             return IsValidResizeMode((ResizeMode)value);
         }
 
+#if PORTABLE_WPF
+        private static object CoerceResizeMode(DependencyObject d, object value)
+        {
+            ((Window)d).VerifyApiSupported();
+            if ((ResizeMode)value == ResizeMode.CanResizeWithGrip) throw PortableUnsupported("ResizeMode.CanResizeWithGrip");
+            return value;
+        }
+#endif
+
         private static void _OnResizeModeChanged (DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Window w = d as Window;
@@ -6448,7 +6461,8 @@ namespace System.Windows
         private void OnResizeModeChanged()
         {
 #if PORTABLE_WPF
-            throw PortableUnsupported("ResizeMode");
+            if (ResizeMode == ResizeMode.CanResizeWithGrip) throw PortableUnsupported("ResizeMode.CanResizeWithGrip");
+            _portablePeer?.SetResizeMode(ResizeMode);
 #else
             // this call ends up throwing an exception if accessing
             // ResizeMode is not allowed

@@ -5,6 +5,7 @@ namespace Wpf.Portable.NativeHost.Linux;
 // Xlib/XKB and libxkbcommon public C ABI on Linux LP64.
 internal static class X11InputNative
 {
+    [DllImport("libX11.so.6")] internal static extern int XUngrabPointer(nint display, nuint time);
     [DllImport("libX11.so.6")] internal static extern int XQueryKeymap(nint display, [Out] byte[] keys);
     [DllImport("libX11.so.6")] internal static extern int XkbLookupKeySym(nint display, byte keycode, uint state, out uint consumed, out nuint symbol);
     [DllImport("libX11.so.6")] internal static extern nuint XkbKeycodeToKeysym(nint display, byte keycode, int group, int level);

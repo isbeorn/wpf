@@ -13,6 +13,8 @@ using WpfDpi = WpfFork::System.Windows.DpiScale;
 using WpfSource = WpfFork::System.Windows.PresentationSource;
 using WpfState = WpfFork::System.Windows.WindowState;
 using WpfStyle = WpfFork::System.Windows.WindowStyle;
+using WpfResizeMode = WpfFork::System.Windows.ResizeMode;
+using WpfResizeGripDirection = WpfFork::System.Windows.Shell.ResizeGripDirection;
 using WpfKey = WpfFork::System.Windows.Input.Key;
 using WpfCursor = WpfFork::System.Windows.Input.Cursor;
 using WpfImageSource = WpfFork::System.Windows.Media.ImageSource;
@@ -101,6 +103,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
     private bool _disposed, _closing, _closed, _isActive, _mouseActive, _keyboardActive, _captured;
     private bool _constructing = true;
     private WpfState _metricsState, _requestedState;
+    private WpfResizeMode _resizeMode = WpfResizeMode.CanResize;
     private bool _metricsRefreshQueued, _stateChangedPending, _stateRequestPending;
     private WpfSize _clientSize, _outerSize;
     private WpfPoint _desktopPosition, _clientScreenOrigin;
@@ -132,6 +135,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
             {
                 SetTitle(options.Title);
                 SetWindowStyle(options.WindowStyle);
+                SetResizeMode(options.ResizeMode);
                 SetTopmost(options.Topmost);
             }
             if (options.DesktopPosition is { } position) SetDesktopPosition(position);
@@ -269,6 +273,35 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
         });
         QueueMetricsRefresh();
     }
+    public void SetResizeMode(WpfResizeMode mode)
+    {
+        Verify();
+        if (mode is not WpfResizeMode.NoResize and not WpfResizeMode.CanMinimize and not WpfResizeMode.CanResize)
+            throw new PlatformNotSupportedException("The owned X11 Window does not support this ResizeMode.");
+        _input.CancelMoveResize();
+        _window.SetResizeControls(mode == WpfResizeMode.CanResize, mode != WpfResizeMode.NoResize, mode == WpfResizeMode.CanResize);
+        _resizeMode = mode;
+    }
+    public bool BeginMoveResize(WpfResizeGripDirection direction, WpfPoint physicalScreenPosition)
+    {
+        Verify();
+        if (!Enum.IsDefined(direction)) throw new ArgumentOutOfRangeException(nameof(direction));
+        if (!double.IsFinite(physicalScreenPosition.X) || !double.IsFinite(physicalScreenPosition.Y))
+            throw new ArgumentOutOfRangeException(nameof(physicalScreenPosition));
+        if (_popupOwner != null || !CanNotify || !IsVisible || !IsEnabled) return false;
+        if (direction != WpfResizeGripDirection.None && (_resizeMode != WpfResizeMode.CanResize || WindowState != WpfState.Normal)) return false;
+        if (!_window.SupportsMoveResize) throw new PlatformNotSupportedException("The window manager does not advertise interactive move/resize support.");
+        if (_input.ReadPointerState().GetButtonState(MouseButton.Left) != MouseButtonState.Pressed) return false;
+        int nativeDirection = direction switch
+        {
+            WpfResizeGripDirection.TopLeft => 0, WpfResizeGripDirection.Top => 1, WpfResizeGripDirection.TopRight => 2,
+            WpfResizeGripDirection.Right => 3, WpfResizeGripDirection.BottomRight => 4, WpfResizeGripDirection.Bottom => 5,
+            WpfResizeGripDirection.BottomLeft => 6, WpfResizeGripDirection.Left => 7, _ => 8
+        };
+        _input.BeginMoveResize(nativeDirection, checked((int)Math.Round(physicalScreenPosition.X)), checked((int)Math.Round(physicalScreenPosition.Y)));
+        return true;
+    }
+    public void CancelMoveResize() { Verify(); if (!_closed) _input.CancelMoveResize(); }
     public void SetTopmost(bool topmost) { Verify(); _window.SetTopmost(topmost); }
     public void SetDesktopPosition(WpfPoint position)
     {
@@ -303,6 +336,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
             if (keyboardOwner != this && keyboardOwner.CanNotify && keyboardOwner._keyboardRecipient == this)
                 keyboardOwner._input.ResetComposition();
         }
+        if (!enabled) _input.CancelMoveResize();
         if (!enabled && _captured) ReleaseMouseCapture();
         _window.SetEnabled(enabled);
         IsEnabled = enabled;
@@ -341,6 +375,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
     public void Hide()
     {
         Verify();
+        _input.CancelMoveResize();
         if (IsVisible) _input.ResetComposition();
         if (!_stateRequestPending) _requestedState = ToWpf(_window.ReadMetrics().State);
         _stateRequestPending |= _requestedState != WpfState.Normal;
@@ -459,6 +494,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
     {
         Verify();
         if (_closed || _closing) return;
+        _input.CancelMoveResize();
         _closing = true;
         var popupFailure = CloseOwnedPopups();
         try
@@ -502,6 +538,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
         _input.CaptureLost -= OnCaptureLost;
         if (_automation is not null) Clean(_automation.Dispose);
         _automation = null;
+        Clean(_input.CancelMoveResize);
         Clean(_input.Dispose);
         _windows.Remove(_window);
         _disposed = true;
@@ -576,7 +613,6 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
                 }
                 if (!CanNotify) return;
                 MetricsChanged?.Invoke();
-                if (CanNotify && IsVisible && _stateRequestPending) ApplyWindowState();
             }
         }));
     }

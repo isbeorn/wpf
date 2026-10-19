@@ -209,6 +209,10 @@ namespace Microsoft.Windows.Shell
 
         private static object _CoerceGlassFrameThickness(Thickness thickness)
         {
+#if PORTABLE_WPF
+            if (thickness != default(Thickness))
+                throw new PlatformNotSupportedException("The portable WindowChrome profile does not support native glass frames.");
+#endif
             // If it's explicitly set, but set to a thickness with at least one negative side then 
             // coerce the value to the stock GlassFrameCompleteThickness.
             if (!Utility.IsThicknessNonNegative(thickness))
@@ -258,7 +262,12 @@ namespace Microsoft.Windows.Shell
             typeof(WindowChrome),
             new PropertyMetadata(
                 NonClientFrameEdges.None,
-                (d, e) => ((WindowChrome)d)._OnPropertyChangedThatRequiresRepaint()),
+                (d, e) => ((WindowChrome)d)._OnPropertyChangedThatRequiresRepaint()
+#if PORTABLE_WPF
+                , (d, value) => (NonClientFrameEdges)value == NonClientFrameEdges.None ? value :
+                    throw new PlatformNotSupportedException("The portable WindowChrome profile does not support native nonclient frame edges.")
+#endif
+                ),
             _NonClientFrameEdgesAreValid);
 
         private static readonly NonClientFrameEdges NonClientFrameEdges_All = NonClientFrameEdges.Left | NonClientFrameEdges.Top | NonClientFrameEdges.Right | NonClientFrameEdges.Bottom;
@@ -313,7 +322,9 @@ namespace Microsoft.Windows.Shell
             new _SystemParameterBoundProperty { DependencyProperty = CornerRadiusProperty, SystemParameterPropertyName = "WindowCornerRadius" },
             new _SystemParameterBoundProperty { DependencyProperty = CaptionHeightProperty, SystemParameterPropertyName = "WindowCaptionHeight" },
             new _SystemParameterBoundProperty { DependencyProperty = ResizeBorderThicknessProperty, SystemParameterPropertyName = "WindowResizeBorderThickness" },
+#if !PORTABLE_WPF
             new _SystemParameterBoundProperty { DependencyProperty = GlassFrameThicknessProperty, SystemParameterPropertyName = "WindowNonClientFrameThickness" },
+#endif
         };
 
         public WindowChrome()

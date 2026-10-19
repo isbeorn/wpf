@@ -129,6 +129,15 @@ strict native ResizeMode enforcement. State requests originate from explicit
 application requests and show transitions; metrics notifications observe state
 without indefinitely resending an unfulfilled request. CanResizeWithGrip and the
 synchronous public DragMove contract remain separate until implemented and tested.
+Scoped checks now pass caption movement, all eight resize directions, capture
+handoff and state-denial recovery. Four window-manager executions pass 15/15 and
+the 96-DPI custom-chrome suite passes 21/21. The focused denial and capture suites
+also pass at both 96 and 192 DPI. An [intermittent ordinary-window restore-position
+failure at 192 DPI](../../artifacts/portability/window-chrome-final-intake/qualification-gap.json)
+remains open: native and public state return to Normal with correct size, but the
+observed native origin differs from its saved origin. No speculative position
+cache or retry has been added. This is an explicit qualification gap while an
+isolated actual NINA startup trial proceeds from one coherent framework family.
 Original NINA workflows, complete Markdown, final packages, desktop/Orca and
 overnight qualification remain open. There is still no successful full-shell
 launch and Phases 2 through 5 have not passed.

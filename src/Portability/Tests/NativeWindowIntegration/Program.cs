@@ -36,6 +36,7 @@ bool settingsOnly = args.Contains("--settings-only", StringComparer.Ordinal);
 bool wmOnly = args.Contains("--wm-only", StringComparer.Ordinal);
 bool automationOnly = args.Contains("--automation-only", StringComparer.Ordinal);
 object[] managedAutomationTrace = [];
+int chromeRequestedDpi = 96;
 bool traceHostMetrics = args.Contains("--trace-host-metrics", StringComparer.Ordinal);
 var windowManagerTrace = new ConcurrentQueue<object>();
 var guidelineCapture = new ConcurrentQueue<object>();
@@ -55,6 +56,7 @@ try
         Require(settingsPayload is { Length: 2044 } && Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(settingsPayload)) == "B8D5495AD53FA16EC0E96CBB5C9D8502E4DE59DFDB2BED357307FE9C6C412F57",
             "The captured GNOME payload is not the verified unchanged 2044-byte observation.");
     using var native = new X11Fixture(settings, settingsPayload);
+    if (args.FirstOrDefault(value => value.StartsWith("--chrome-dpi=", StringComparison.Ordinal)) is { } chromeDpi) { chromeRequestedDpi = int.Parse(chromeDpi[13..], CultureInfo.InvariantCulture); native.SetDpi(chromeRequestedDpi); }
     settingsOrigin = native.SettingsOrigin;
     bool negative = settings is not ("little" or "big" or "captured-gnome" or "missing-distance-little" or "missing-distance-big" or "published-little" or "published-big" or "published-min" or "published-max" or "name-valid-little" or "name-valid-big");
     try { NativeWindowHost.InitializeForCurrentThread(); }
@@ -76,7 +78,25 @@ try
         {
             try
             {
-                if (args.Contains("--window-presentation-only", StringComparer.Ordinal))
+                if (args.Contains("--chrome-state-denial-only", StringComparer.Ordinal))
+                {
+                    ChromeCases.StateDenial(native, Run, Wait, Drain, windowManagerTrace.Enqueue);
+                    completed = true;
+                }
+                else if (args.Contains("--chrome-capture-only", StringComparer.Ordinal))
+                {
+                    ChromeCases.Exercise(native, (name, action) =>
+                    {
+                        if (name.StartsWith("native-WindowChrome-capture-handoff-reentrancy-", StringComparison.Ordinal)) Run(name, action);
+                    }, Wait, Drain, chromeRequestedDpi, windowManagerTrace.Enqueue);
+                    completed = true;
+                }
+                else if (args.Contains("--chrome-only", StringComparer.Ordinal))
+                {
+                    ChromeCases.Exercise(native, Run, Wait, Drain, chromeRequestedDpi, windowManagerTrace.Enqueue);
+                    completed = true;
+                }
+                else if (args.Contains("--window-presentation-only", StringComparer.Ordinal))
                 {
                     WindowPresentationCases.Exercise(native, Run, Wait, Drain);
                     completed = true;
@@ -835,18 +855,54 @@ void ExerciseWindowManager(X11Fixture native)
         }
         finally { window.Close(); }
     });
-    Run("native-wm-rapid-state-intent-and-close-before-deferred-metrics", () =>
+    foreach (bool explicitlyPositioned in new[] { false, true })
+    Run("native-wm-rapid-state-intent-and-close-before-deferred-metrics" + (explicitlyPositioned ? "-explicit-position" : ""), () =>
     {
-        var window = new Window { Title = "Genuine WPF rapid state fixture", Width = 320, Height = 200, Background = Brushes.Red };
+        var window = new Window { Title = "Genuine WPF rapid state fixture " + explicitlyPositioned, Width = 320, Height = 200, Background = Brushes.Red };
         try
         {
             window.Show(); var xid = native.FindWindow(window.Title);
             Wait(() => native.IsMapped(xid) && native.Pixel(xid, 5, 5) == 0x00ff0000);
-            var original = native.Size(xid);
+            if (explicitlyPositioned)
+            {
+                var dpi = VisualTreeHelper.GetDpi(window);
+                int requestedX = (int)Math.Round(200 * dpi.DpiScaleX), requestedY = (int)Math.Round(160 * dpi.DpiScaleY);
+                window.Left = 200; window.Top = 160;
+                Wait(() =>
+                {
+                    var client = native.ClientOrigin(xid); var frame = native.FrameExtents(xid) ?? default;
+                    return client.X - frame.Left == requestedX && client.Y - frame.Top == requestedY;
+                });
+            }
+            var original = native.Size(xid); var originalOrigin = native.ClientOrigin(xid);
             window.WindowState = WindowState.Maximized;
             window.WindowState = WindowState.Normal;
             Drain();
             Wait(() => native.State(xid) == "Normal" && window.WindowState == WindowState.Normal && native.Size(xid) == original);
+            window.WindowState = WindowState.Maximized;
+            Wait(() => native.State(xid) == "Maximized" && window.WindowState == WindowState.Maximized);
+            bool Restored()
+            {
+                if (native.State(xid) != "Normal" || window.WindowState != WindowState.Normal ||
+                    !native.IsMapped(xid) || native.Size(xid) != original) return false;
+                var origin = native.ClientOrigin(xid);
+                if (explicitlyPositioned) return origin == originalOrigin;
+                var frame = native.FrameExtents(xid) ?? default; var dpi = VisualTreeHelper.GetDpi(window);
+                double left = (origin.X - frame.Left) / dpi.DpiScaleX, top = (origin.Y - frame.Top) / dpi.DpiScaleY;
+                return window.Left == left && window.Top == top && window.RestoreBounds.X == left && window.RestoreBounds.Y == top;
+            }
+            window.Hide(); window.Show(); window.WindowState = WindowState.Normal;
+            Drain();
+            Wait(Restored);
+            var restoredOrigin = native.ClientOrigin(xid);
+            Drain();
+            Require(Restored() && native.ClientOrigin(xid) == restoredOrigin,
+                "The queued Show maximize request superseded newer Normal intent or moved the restored window after settlement.");
+            windowManagerTrace.Enqueue(new { kind = "qualified-remap-Normal-supersession", explicitlyPositioned,
+                originalX = originalOrigin.X, originalY = originalOrigin.Y, restoredX = restoredOrigin.X, restoredY = restoredOrigin.Y,
+                publicLeft = window.Left, publicTop = window.Top, restoreBounds = window.RestoreBounds.ToString(CultureInfo.InvariantCulture),
+                publicState = window.WindowState.ToString(), observedNativeState = native.State(xid), mapped = native.IsMapped(xid),
+                clientWidth = native.Size(xid).Width, clientHeight = native.Size(xid).Height });
             bool closeQueued = false;
             window.StateChanged += (_, _) =>
             {

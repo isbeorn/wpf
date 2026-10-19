@@ -244,6 +244,8 @@ internal sealed class X11Input : IDisposable
         finally { if (buttons.Mask != 0) X11Native.XFree(buttons.Mask); }
     }
 
+    internal void BeginMoveResize(int direction, int x, int y) { Verify(); _pointer.BeginMoveResize(this, direction, x, y); }
+    internal void CancelMoveResize() { _window.Connection.VerifyOwner(); if (!_disposed) _pointer.CancelMoveResize(this); }
     internal bool CaptureMouse() { Verify(); return _window.IsVisible && _pointer.Capture(this); }
     internal void ReleaseMouseCapture() { _window.Connection.VerifyOwner(); if (!_disposed) _pointer.Release(this); }
     internal bool SetCursor(Cursor cursor) { Verify(); return _cursor.SetCursor(cursor); }
@@ -333,6 +335,8 @@ internal sealed class X11Input : IDisposable
         private readonly Dictionary<nuint, (X11Input Input, int Device)> _windows = new();
         private X11Input? _captureOwner;
         private nuint _captureSerial;
+        private X11Input? _moveResizeOwner;
+        private nuint _moveResizeSerial;
 
         private PointerRouter(X11Connection connection)
         {
@@ -423,8 +427,38 @@ internal sealed class X11Input : IDisposable
             _connection.Flush();
         }
 
+        internal void BeginMoveResize(X11Input input, int direction, int x, int y)
+        {
+            if (_moveResizeOwner != null) CancelMoveResize(_moveResizeOwner);
+            ReleaseForWindowManager(input);
+            _moveResizeSerial = X11Native.XNextRequest(_connection.Display);
+            input._window.BeginMoveResize(direction, x, y);
+            _moveResizeOwner = input;
+        }
+
+        internal void CancelMoveResize(X11Input input)
+        {
+            if (_moveResizeOwner != input) return;
+            _moveResizeOwner = null;
+            if (input._window.Handle != 0) input._window.CancelMoveResize();
+        }
+
+        internal void ReleaseForWindowManager(X11Input input)
+        {
+            if (_captureOwner != null && _captureOwner != input)
+                throw new InvalidOperationException("Another native window owns pointer capture.");
+            _captureSerial = X11Native.XNextRequest(_connection.Display);
+            _captureOwner = null;
+            Xi2Native.XIUngrabDevice(_connection.Display, Device(input), 0);
+            X11InputNative.XUngrabPointer(_connection.Display, 0);
+            _connection.Flush();
+        }
+
         internal bool Crossing(X11Input input, nuint serial, int mode, int device)
         {
+            if (mode == 2 && _moveResizeOwner != null && Device(_moveResizeOwner) == device &&
+                unchecked((nint)(serial - _moveResizeSerial)) >= 0)
+                _moveResizeOwner = null;
             if (mode is not (1 or 2)) return true;
             // Xlib serials are unsigned long. Signed subtraction orders them across native rollover.
             if (unchecked((nint)(serial - _captureSerial)) < 0 ||
@@ -439,6 +473,7 @@ internal sealed class X11Input : IDisposable
 
         internal void Unmapped(X11Input input)
         {
+            CancelMoveResize(input);
             if (_captureOwner != input) return;
             _captureOwner = null;
             input.CaptureLost?.Invoke();
@@ -464,6 +499,7 @@ internal sealed class X11Input : IDisposable
             var pointer = Marshal.PtrToStructure<XIDeviceEvent>(cookie.Data);
             if (!_windows.TryGetValue(pointer.Event, out var recipient) || recipient.Input._disposed || !recipient.Input._window.IsVisible || recipient.Device != pointer.DeviceId) return;
             bool down = cookie.EventType == Xi2Native.ButtonPress;
+            if (cookie.EventType == Xi2Native.ButtonRelease && pointer.Detail == 1) CancelMoveResize(recipient.Input);
             int wheel = 0;
             RawMouseActions actions = RawMouseActions.AbsoluteMove;
             if (cookie.EventType != Xi2Native.Motion)
@@ -502,6 +538,7 @@ internal sealed class X11Input : IDisposable
 
         internal void Detach(X11Input input)
         {
+            CancelMoveResize(input);
             Release(input);
             _windows.Remove(input._handle);
             if (_windows.Count != 0) return;

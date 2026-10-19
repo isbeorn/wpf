@@ -5,6 +5,7 @@
 using System;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Shell;
 
 namespace MS.Internal.Portability.Windowing
 {
@@ -28,6 +29,13 @@ namespace MS.Internal.Portability.Windowing
         void SetShowInTaskbar(bool show);
         void SetWindowStyle(WindowStyle style) =>
             throw new PlatformNotSupportedException("The registered window peer does not support decoration changes.");
+        void SetResizeMode(ResizeMode mode) =>
+            throw new PlatformNotSupportedException("The registered window peer does not support resize mode changes.");
+        // None starts caption movement; the remaining directions start edge/corner resizing.
+        bool BeginMoveResize(ResizeGripDirection direction, Point physicalScreenPosition) =>
+            throw new PlatformNotSupportedException("The registered window peer does not support interactive move/resize.");
+        void CancelMoveResize() =>
+            throw new PlatformNotSupportedException("The registered window peer does not support interactive move/resize.");
         void SetTopmost(bool topmost) =>
             throw new PlatformNotSupportedException("The registered window peer does not support topmost changes.");
         void SetClientSize(Size size);
@@ -63,6 +71,7 @@ namespace MS.Internal.Portability.Windowing
         internal string Title { get; init; }
         internal bool ShowInTaskbar { get; init; } = true;
         internal WindowStyle WindowStyle { get; init; } = WindowStyle.SingleBorderWindow;
+        internal ResizeMode ResizeMode { get; init; } = ResizeMode.CanResize;
         internal bool AllowsTransparency { get; init; }
         internal bool Topmost { get; init; }
         internal Size? ClientSize { get; init; }

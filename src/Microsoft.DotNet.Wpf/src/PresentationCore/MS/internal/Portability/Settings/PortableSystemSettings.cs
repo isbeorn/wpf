@@ -127,6 +127,10 @@ namespace MS.Internal.Portability.Settings
         internal double MinimumHorizontalDragDistanceDip { get; }
         internal double MinimumVerticalDragDistanceDip { get; }
         internal PortableScrollBarMetrics ScrollBarMetrics { get; }
+        // Declared custom-frame geometry in DIPs, independent of WM decoration measurements.
+        internal double WindowCaptionHeightDip => 23;
+        internal double WindowResizeBorderThicknessDip => 8;
+        internal double WindowCornerRadiusDip => 0;
         internal string ThemeName => "Classic";
         internal string ThemedResourceName => "themes/classic";
         internal PortablePointerSettings PointerSettings => _pointerSettings ?? throw new PlatformNotSupportedException(

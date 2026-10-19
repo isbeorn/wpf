@@ -11,6 +11,8 @@ internal sealed class X11Window : IDisposable
     private readonly X11Screens _screens;
     private bool _disposed, _mapped, _shown, _enabled = true, _activateOnMap = true;
     private X11WindowState _initialState;
+    private X11WindowDecorations _decorations = X11WindowDecorations.Full;
+    private nuint _resizeControls = 4 | 32 | 64;
     public X11Connection Connection { get; }
     public nuint Handle { get; private set; }
     public nint Visual { get; }
@@ -118,7 +120,22 @@ internal sealed class X11Window : IDisposable
 
     public void Present(ReadOnlySpan<byte> pixels, int width, int height, int stride)
     { Verify(); _framebuffer.Present(pixels, width, height, stride); }
-    public void Move(int x, int y) { Verify(); XMoveWindow(Connection.Display, Handle, x, y); Connection.Flush(); }
+    private SizeHints ReadNormalHints()
+    {
+        if (XGetWMNormalHints(Connection.Display, Handle, out var hints, out _) == 0)
+            throw new InvalidOperationException("The owned X11 window has no readable WM_NORMAL_HINTS.");
+        return hints;
+    }
+    public void Move(int x, int y)
+    {
+        Verify();
+        var hints = ReadNormalHints();
+        hints.Flags |= 1 << 2;
+        hints.X = x; hints.Y = y;
+        XSetWMNormalHints(Connection.Display, Handle, ref hints);
+        XMoveWindow(Connection.Display, Handle, x, y);
+        Connection.Flush();
+    }
     public void Resize(int width, int height)
     { Verify(); ValidateSize(width, height); XResizeWindow(Connection.Display, Handle, (uint)width, (uint)height); Connection.Flush(); }
     public void Show(bool activate = true)
@@ -133,6 +150,12 @@ internal sealed class X11Window : IDisposable
         if (!remainIconic)
         {
             XMapWindow(Connection.Display, Handle);
+            // A queued withdrawal can erase pre-map state properties before this remap.
+            if (!_popup && _initialState == X11WindowState.Maximized)
+                SendRoot("_NET_WM_STATE", 1, (nint)Connection.GetAtom("_NET_WM_STATE_MAXIMIZED_HORZ"),
+                    (nint)Connection.GetAtom("_NET_WM_STATE_MAXIMIZED_VERT"), 1);
+            else if (!_popup && _initialState == X11WindowState.FullScreen)
+                SendRoot("_NET_WM_STATE", 1, (nint)Connection.GetAtom("_NET_WM_STATE_FULLSCREEN"), 0, 1);
             if (_initialState == X11WindowState.Minimized && !_popup) XIconifyWindow(Connection.Display, Handle, XDefaultScreen(Connection.Display));
             else if (_activateOnMap) SendRoot("_NET_ACTIVE_WINDOW", 1, 0);
         }
@@ -157,7 +180,9 @@ internal sealed class X11Window : IDisposable
             minWidth > 65535 || minHeight > 65535 || maxWidth > 65535 || maxHeight > 65535 ||
             (maxWidth != 0 && Math.Max(1, minWidth) > maxWidth) || (maxHeight != 0 && Math.Max(1, minHeight) > maxHeight))
             throw new ArgumentOutOfRangeException(nameof(minWidth), "X11 size constraints are inconsistent or outside native bounds.");
-        var hints = new SizeHints { Flags = (nint)((1 << 4) | (1 << 9)),
+        var previous = ReadNormalHints();
+        var hints = new SizeHints { Flags = (nint)((1 << 4) | (1 << 9)) | (previous.Flags & ((1 << 0) | (1 << 2))),
+            X = previous.X, Y = previous.Y,
             MinWidth = Math.Max(1, minWidth), MinHeight = Math.Max(1, minHeight), WinGravity = 1 };
         if (maxWidth != 0 || maxHeight != 0)
         {
@@ -226,9 +251,46 @@ internal sealed class X11Window : IDisposable
     {
         Verify();
         if (!Enum.IsDefined(decorations)) throw new ArgumentOutOfRangeException(nameof(decorations));
-        nuint value = decorations switch { X11WindowDecorations.None => 0, X11WindowDecorations.Border => 2, _ => 1 };
+        _decorations = decorations;
+        UpdateMotifHints();
+    }
+    public void SetResizeControls(bool resize, bool minimize, bool maximize)
+    {
+        Verify();
+        _resizeControls = (resize ? 4u : 0) | (minimize ? 32u : 0) | (maximize ? 64u : 0);
+        UpdateMotifHints();
+    }
+    private void UpdateMotifHints()
+    {
+        nuint decorations = _decorations switch
+        {
+            X11WindowDecorations.None => 0,
+            X11WindowDecorations.Border => 2,
+            _ => 2 | 8 | 16 | _resizeControls
+        };
         XChangeLongProperty(Connection.Display, Handle, Connection.GetAtom("_MOTIF_WM_HINTS"), Connection.GetAtom("_MOTIF_WM_HINTS"),
-            32, 0, [2, 0, value, 0, 0], 5);
+            // Openbox couples maximize permission to resize. Keep programmatic states available;
+            // ResizeMode controls decorations and owned Chrome gestures, not desktop actions.
+            32, 0, [3, 62, decorations, 0, 0], 5);
+        Connection.Flush();
+    }
+    public bool SupportsMoveResize
+    {
+        get { Verify(); return ReadLongProperty(Connection, Connection.RootWindow, "_NET_SUPPORTED", 4, 4096).Contains(Connection.GetAtom("_NET_WM_MOVERESIZE")); }
+    }
+    public void BeginMoveResize(int direction, int physicalScreenX, int physicalScreenY)
+    {
+        Verify();
+        if (direction is < 0 or > 8) throw new ArgumentOutOfRangeException(nameof(direction));
+        if (_popup || !IsVisible || !_enabled) throw new InvalidOperationException("Interactive WM operations require a visible enabled normal window.");
+        if (!SupportsMoveResize) throw new PlatformNotSupportedException("The window manager does not advertise interactive move/resize support.");
+        SendRoot("_NET_WM_MOVERESIZE", physicalScreenX, physicalScreenY, direction, 1, 1);
+        Connection.Flush();
+    }
+    public void CancelMoveResize()
+    {
+        Verify();
+        SendRoot("_NET_WM_MOVERESIZE", 0, 0, 11, 1, 1);
         Connection.Flush();
     }
     public void SetTopmost(bool value) { Verify(); ChangeStateAtom("_NET_WM_STATE_ABOVE", value); Connection.Flush(); }
@@ -314,10 +376,10 @@ internal sealed class X11Window : IDisposable
             InitialState = _initialState == X11WindowState.Minimized ? 3 : 1 };
         XSetWMHints(Connection.Display, Handle, ref hints);
     }
-    private void SendRoot(string name, nint a, nint b, nint c = 0, nint d = 0)
+    private void SendRoot(string name, nint a, nint b, nint c = 0, nint d = 0, nint e = 0)
     {
         var message = new ClientMessage { Type = 33, Display = Connection.Display, Window = Handle,
-            MessageType = Connection.GetAtom(name), Format = 32, Data0 = a, Data1 = b, Data2 = c, Data3 = d };
+            MessageType = Connection.GetAtom(name), Format = 32, Data0 = a, Data1 = b, Data2 = c, Data3 = d, Data4 = e };
         if (XSendEvent(Connection.Display, Connection.RootWindow, 0, (nint)((1L << 19) | (1L << 20)), ref message) == 0)
             throw new InvalidOperationException("Cannot send X11 window manager request " + name + ".");
     }

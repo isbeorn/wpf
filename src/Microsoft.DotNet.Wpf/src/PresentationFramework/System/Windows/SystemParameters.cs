@@ -3434,6 +3434,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.WindowCaptionHeightDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.WindowCaptionHeight])
@@ -3444,6 +3447,7 @@ namespace System.Windows
                 }
 
                 return _windowCaptionHeight;
+#endif
             }
         }
 
@@ -5667,6 +5671,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return new CornerRadius(PortableSystemSettingsProvider.Current.WindowCornerRadiusDip);
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.WindowCornerRadius])
@@ -5715,6 +5722,7 @@ namespace System.Windows
                 }
 
                 return _windowCornerRadius;
+#endif
             }
         }
 
@@ -5775,6 +5783,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return new Thickness(PortableSystemSettingsProvider.Current.WindowResizeBorderThicknessDip);
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.WindowResizeBorderThickness])
@@ -5790,6 +5801,7 @@ namespace System.Windows
                 }
 
                 return _windowResizeBorderThickness;
+#endif
             }
         }
 
@@ -5800,6 +5812,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return new Thickness(PortableSystemSettingsProvider.Current.WindowResizeBorderThicknessDip,
+                    PortableSystemSettingsProvider.Current.WindowResizeBorderThicknessDip + PortableSystemSettingsProvider.Current.WindowCaptionHeightDip,
+                    PortableSystemSettingsProvider.Current.WindowResizeBorderThicknessDip, PortableSystemSettingsProvider.Current.WindowResizeBorderThicknessDip);
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.WindowNonClientFrameThickness])
@@ -5816,6 +5833,7 @@ namespace System.Windows
                 }
 
                 return _windowNonClientFrameThickness;
+#endif
             }
         }
 

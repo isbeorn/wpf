@@ -400,6 +400,18 @@ internal sealed class X11Fixture : IDisposable
     }
     internal bool SkipsTaskbar(IntPtr window) => Property(window, "_NET_WM_STATE", 4).Contains(XInternAtom(_display, "_NET_WM_STATE_SKIP_TASKBAR", false));
     internal bool IsTopmost(IntPtr window) => Property(window, "_NET_WM_STATE", 4).Contains(XInternAtom(_display, "_NET_WM_STATE_ABOVE", false));
+    internal void RestrictWindowFunctions(IntPtr window)
+    {
+        var property = XInternAtom(_display, "_MOTIF_WM_HINTS", false);
+        var values = Property(window, "_MOTIF_WM_HINTS", checked((int)property));
+        if (values.Count != 5) throw new InvalidDataException("The native Motif hint is incomplete.");
+        values[0] = checked((IntPtr)(values[0].ToInt64() | 1)); values[1] = (IntPtr)36;
+        var bytes = new byte[values.Count * IntPtr.Size];
+        for (int i = 0; i < values.Count; i++) BitConverter.GetBytes(values[i].ToInt64()).CopyTo(bytes, i * IntPtr.Size);
+        XChangeProperty(_display, window, property, property, 32, 0, bytes, values.Count);
+        XSync(_display, false);
+    }
+    internal long MotifFunctions(IntPtr window) => Property(window, "_MOTIF_WM_HINTS", checked((int)XInternAtom(_display, "_MOTIF_WM_HINTS", false))).ElementAt(1).ToInt64();
     internal long Decorations(IntPtr window) => Property(window, "_MOTIF_WM_HINTS", checked((int)XInternAtom(_display, "_MOTIF_WM_HINTS", false))).ElementAt(2).ToInt64();
     internal (int Left, int Right, int Top, int Bottom)? FrameExtents(IntPtr window)
     {

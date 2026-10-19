@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Windows.Interop;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Shell;
 using System.Windows.Threading;
 using MS.Internal.Portability.Windowing;
 
@@ -68,6 +69,25 @@ namespace System.Windows
             return style;
         }
 
+        private WindowStyle PortableChromeWindowStyle => WindowChrome.GetWindowChrome(this) == null ? WindowStyle : WindowStyle.None;
+
+        internal void PortableUpdateChrome()
+        {
+            if (!_disposed) _portablePeer?.SetWindowStyle(PortableChromeWindowStyle);
+        }
+
+        internal bool PortableBeginChromeMoveResize(ResizeGripDirection direction, Point physicalScreenPosition)
+        {
+            VerifyContextAndObjectState();
+            if (_portablePeer == null || !_portablePeer.IsVisible || !_portablePeer.IsEnabled) return false;
+            return _portablePeer.BeginMoveResize(direction, physicalScreenPosition);
+        }
+
+        internal void PortableCancelChromeOperation()
+        {
+            if (!_disposed) _portablePeer?.CancelMoveResize();
+        }
+
         private void PortableCreateSource()
         {
             VerifyContextAndObjectState();
@@ -88,7 +108,8 @@ namespace System.Windows
                 {
                     Title = Title,
                     ShowInTaskbar = ShowInTaskbar,
-                    WindowStyle = WindowStyle,
+                    WindowStyle = PortableChromeWindowStyle,
+                    ResizeMode = ResizeMode,
                     AllowsTransparency = AllowsTransparency,
                     Topmost = Topmost,
                     Owner = _ownerWindow?._portablePeer,

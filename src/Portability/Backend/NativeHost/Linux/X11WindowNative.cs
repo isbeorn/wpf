@@ -98,6 +98,7 @@ internal static partial class X11WindowNative
     [DllImport(Xlib)] internal static extern int XSetWMProtocols(nint display, nuint window, nuint[] protocols, int count);
     [DllImport(Xlib)] internal static extern int XSetWMHints(nint display, nuint window, ref WmHints hints);
     [DllImport(Xlib)] internal static extern int XSetWMNormalHints(nint display, nuint window, ref SizeHints hints);
+    [DllImport(Xlib)] internal static extern int XGetWMNormalHints(nint display, nuint window, out SizeHints hints, out nint supplied);
     [DllImport(Xlib)] internal static extern int XSetTransientForHint(nint display, nuint window, nuint owner);
     [DllImport(Xlib)] internal static extern int XStoreName(nint display, nuint window, byte[] title);
     [DllImport(Xlib)] internal static extern int XGetWindowAttributes(nint display, nuint window, out WindowAttributes attributes);
