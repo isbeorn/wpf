@@ -74,6 +74,44 @@ through 5 remain open and the full NINA shell remains unlaunched. The user's
 accepted Rgb48 timing stands; no new CPU/latency budget or canceled conversion
 cache work is introduced.
 
+## Approved managed FlowDocument layout: 19 October 2026
+
+The user approved an owned managed bottomless layout engine for NINA's Markdown.
+Keep FlowDocumentScrollViewer, FlowDocument, TextContainer, TextPointer,
+TextEditor, selection, undo and automation consumers genuine. Preserve ordinary
+Windows-native layout. Add no dependency, public API or replacement control tree.
+The checkout's PresentationNative redist project only copies packaged binaries;
+nonempty portable documents currently fail when acquiring the unavailable PTS
+engine. PresentationUI source/resource qualification does not resolve that gap.
+
+Own the portable layout inside the existing formatter, page and text-view
+responsibilities. One page-owned committed snapshot supplies formatted lines,
+block and child geometry and mappings to original TextPointers. Painting, hit
+testing, caret navigation, selection and automation use that same geometry.
+Start with full relayout, preserve reentrancy guards and invalidate without a PTS
+Section. Publish successful layout transactionally, dispose superseded lines and
+detach old children. Do not emulate opaque PTS handles or flatten away document
+symbol positions.
+
+The accepted sequence begins with a real nonempty Paragraph/Run and consistent
+visible ink, hit testing and selection. It then covers the selected 35 paragraphs
+and two genuine read-only AvalonEdit children, original NINA list/link callbacks
+and the declared Section/table/local-image/Separator/decorated-span fixture.
+Extend the existing portable formatter for required hidden, modifier and embedded
+object runs while preserving source positions. Intrinsic list markers retain
+their semantic shapes and numbering without redistributing Wingdings.
+
+Preserve the existing 21 Markdown checks and add visible text, geometry,
+bidirectional selection, scroll sentinels and A/B/A replacement checks. Source
+text and nontransparent background pixels alone do not prove painting. Reuse
+existing fixtures, stock semantic oracles and Unicode 17 regressions. Verify
+child measure/arrange, focus, horizontal scrolling and detachment, invalidation
+after content/width/property changes and clean shutdown after failures.
+Pagination, printing, optimal breaking, general rich-text editing, arbitrary
+table spans, columns and floaters remain separate qualification targets. Native
+AT-SPI and Orca still require their own native evidence. This decision approves
+implementation and its test strategy; it is not a document-layout pass.
+
 ## Historical initial decision: 18 October 2026
 
 The native-host choice below is superseded by the approved owned backend above.
