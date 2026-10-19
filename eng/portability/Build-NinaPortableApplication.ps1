@@ -93,6 +93,7 @@ Assert-Hash $AvalonDockPath $pin.avalonDockSha256
 Assert-Hash $SystemEventsContractPath $pin.systemEventsContractSha256
 Assert-Hash $MvvmGeneratorPath $pin.mvvmGeneratorSha256
 Assert-Hash (Join-Path $fixture 'App.xaml.cs.patch') $pin.consolePatchSha256
+Assert-Hash (Join-Path $fixture 'PortableEntry.cs') $pin.portableEntrySha256
 
 foreach ($file in $pin.files) {
     $destination = Join-Path "$output/source" $file.path
@@ -143,7 +144,7 @@ foreach ($node in @($root.SelectNodes('ItemGroup/Content|ItemGroup/ContentWithTa
 }
 $properties = Add-Element $project $root PropertyGroup @{}
 $settings = [ordered]@{
-    AssemblyName = 'NINA'; RootNamespace = 'NINA'; TargetFramework = 'net10.0'; UseWPF = 'false'; ImportWindowsDesktopTargets = 'false'
+    AssemblyName = 'NINA'; RootNamespace = 'NINA'; StartupObject = 'NINA.PortableEntry'; TargetFramework = 'net10.0'; UseWPF = 'false'; ImportWindowsDesktopTargets = 'false'
     EnableWindowsTargeting = 'false'; SelfContained = 'false'; RuntimeIdentifier = ''; UseAppHost = 'false'; GenerateManifests = 'false'
     RuntimeFrameworkVersion = '10.0.12'; RollForward = 'Disable'; AllowUnsafeBlocks = 'true'; GeneratePackageOnBuild = 'false'; EnableNETAnalyzers = 'false'
     BaseOutputPath = "$output/bin/"; BaseIntermediateOutputPath = "$output/obj/"; MSBuildProjectExtensionsPath = "$output/obj/"
@@ -151,6 +152,7 @@ $settings = [ordered]@{
 }
 foreach ($entry in $settings.GetEnumerator()) { $element = Add-Element $project $properties $entry.Key @{}; $element.InnerText = $entry.Value }
 $references = Add-Element $project $root ItemGroup @{}
+$null = Add-Element $project $references Compile @{ Include = "$fixture/PortableEntry.cs"; Link = 'Portability/PortableEntry.cs' }
 foreach ($file in $closure.files | Where-Object { !$_.outputPath.Contains('/') -and $_.outputPath -notin @('NINA.dll', 'AvalonDock.dll') }) {
     $null = Add-Element $project $references Reference @{ Include = [IO.Path]::GetFileNameWithoutExtension($file.outputPath); HintPath = "$closureDirectory/managed/$($file.outputPath)"; Private = 'true' }
 }
@@ -188,7 +190,7 @@ try {
     $items = & $DotnetPath msbuild $projectPath -nologo '-getItem:Compile,Page,ApplicationDefinition,Resource,Content,SplashScreen' @common
     if ($LASTEXITCODE -ne 0) { throw 'Project item evaluation failed.' }
     $evaluated = ($items -join "`n") | ConvertFrom-Json
-    $expected = @{ Compile = 195; Page = 103; ApplicationDefinition = 1; Resource = 10; Content = 17; SplashScreen = 1 }
+    $expected = @{ Compile = 196; Page = 103; ApplicationDefinition = 1; Resource = 10; Content = 17; SplashScreen = 1 }
     foreach ($name in $expected.Keys) { if (@($evaluated.Items.$name).Count -ne $expected[$name]) { throw "Original application item count differs: $name" } }
     Write-Utf8 "$output/evaluated-item-counts.json" ($expected | ConvertTo-Json)
     & $DotnetPath build $projectPath --configuration Release --nologo -m:1 -nr:false --configfile "$output/NuGet.Config" -p:UseSharedCompilation=false -p:NuGetAudit=false @common *> "$output/build.log"
@@ -205,6 +207,7 @@ foreach ($file in $pin.files) {
     Assert-Hash (Join-Path "$output/source" $file.path) $expected
 }
 $assembly = "$output/bin/Release/net10.0/NINA.dll"
+Assert-Hash (Join-Path $fixture 'PortableEntry.cs') $pin.portableEntrySha256
 $identity = [Reflection.AssemblyName]::GetAssemblyName($assembly).FullName
 if ($identity -cne $pin.assemblyIdentity) { throw 'The original NINA assembly identity changed.' }
 if (Test-Path "$output/bin/Release/net10.0/Microsoft.Win32.SystemEvents.dll") { throw 'The compile-only SystemEvents contract was copied to runtime output.' }
@@ -215,6 +218,7 @@ $keys = @(Read-ResourceKeys $assembly | Sort-Object)
 if ($keys.Count -ne 115 -or @($keys | Where-Object { $_ -like '*.baml' }).Count -ne 104 -or [string]::Join('|', $keys) -cne [string]::Join('|', $originalKeys)) { throw 'The original NINA embedded resource-key closure changed.' }
 $result = [ordered]@{
     status = 'source-build-pass'; sourceRevision = $pin.revision; sourceFilesVerified = 680; adaptedSource = 'NINA/App.xaml.cs'; adaptedSourceSha256 = $pin.consoleOutputSha256
+    startupObject = 'NINA.PortableEntry'; portableEntrySha256 = $pin.portableEntrySha256; compileItems = 196
     applicationExecution = $false; assembly = $assembly; assemblySha256 = (Get-FileHash $assembly).Hash; assemblyIdentity = $identity
     pdb = "$output/bin/Release/net10.0/NINA.pdb"; pdbSha256 = (Get-FileHash "$output/bin/Release/net10.0/NINA.pdb").Hash
     resourceKeys = $keys; bamlCount = 104; appMergedDictionaries = 34; sdk = $sdk; runtimeFrameworkVersion = '10.0.12'
