@@ -50,3 +50,51 @@ A separate small contributor assembly proves that every available namespace cand
 The production change is limited to `PORTABLE_WPF` namespace-candidate loading. It skips a FileNotFoundException only when it has no inner failure and its parsed name/public-key token match the requested mapped assembly. Wrapped dependency errors, malformed exception identities, explicit assembly/type resolution and all other load errors retain their existing behavior. All available mapped assemblies are still loaded. The ordinary Windows source branch is unchanged.
 
 The initial regression fails both the absent-candidate lookup and the genuine compiled validation template before the repair. The original NINA six-check replay remains separate and immutable: its Linux layout failure establishes the original Microsoft BAML boundary, while its Windows portable layout probe exceeds the qualified Linux native asset profile. These focused source-runtime checks do not qualify a new runtime package, NINA source rebuild, native input or complete NINA startup.
+
+## Managed document inline profile
+
+Run and Span subclasses, including Bold, Italic and Hyperlink, retain the actual
+TextContainer edge symbols in the managed bottomless paragraph source. Genuine
+TextProperties supply inherited fonts, language and brushes. Decoration scopes
+use the existing TextSpanModifier and matching TextEndOfSegment, preserving an
+outer decoration brush when a child Run has a different foreground. LineBreak
+consumes its two real symbols. Empty Run/Span elements use the original stock
+ComplexLine zero-width-space metric technique for their two edge symbols.
+Preceding text includes consumed nontext symbols and the actual preceding Run's
+culture rather than the paragraph default.
+
+The `--flow-document-inline` cases exercise genuine nested style/hyperlink hits,
+forward/reverse selection, wrap restoration, visible decoration/foreground
+mutation and restoration, empty metrics, LineBreak, source run contracts and
+failure/recovery after a reused real block child. The stock oracle runs the same
+positive fixture methods using WindowsDesktop 10.0.12 and genuine ComplexLine
+source inspection. The test explicitly clears Hyperlink's own default
+TextDecorations, matching the observed original NINA callback, so distinct outer
+decoration and child text colors remain separately visible.
+
+Geometry follows the existing portable line-box caret profile. With mixed font
+sizes, stock can return a small Run's glyph-height rectangle shifted within the
+line while the portable view returns that line's full box. Tests require the
+stock-calibrated next-line displacement, valid edge geometry, actual ink changes
+and restoration; they do not claim per-run rectangle parity. Color checks observe
+hue contrast for thin antialiased decorations rather than requiring opaque
+reference pixels. LineBreak selection preserves unchanged TextRangeBase behavior:
+Environment.NewLine yields CRLF on Windows and LF on Linux.
+
+Directional inline embedding remains explicitly unsupported, as do
+InlineUIContainer, figures and floaters in this slice. Core formatter property
+limits remain in force. Lists, markers, sections, tables, pagination, editable
+RichTextBox and the full original link/composite recipes remain separate gates.
+
+Styled ink qualification requests named Arial on Windows and the already installed
+Liberation Sans family on Linux. It requires genuine
+present Bold/Italic GlyphTypeface faces with no simulations, then observes both
+style mutation/restoration rasters. In the pre-cleanup runs, Linux Arial fallback
+selected DejaVu Sans, whose installed catalog lacked Italic, so the face guard
+failed. Core font fallback selection is unchanged. Empty-inline metrics and source
+contracts retain the fixed DejaVuSans.ttf fixture. A stronger fixture using only
+that Regular file previously passed stock but failed the portable Bold ink
+mutation: existing Core file-font selection does not synthesize missing style
+faces. Those generated failure reports were deleted during external cleanup;
+fresh qualification is pending. This slice does not repair or qualify single-file
+synthetic-style parity.

@@ -306,21 +306,47 @@ namespace MS.Internal.Documents
                         string text = pointer.GetTextInRun(LogicalDirection.Forward);
                         return new TextCharacters(text, new TextProperties(pointer.Parent, ((ITextPointer)pointer).CreateStaticPointer(), false, true, _pixelsPerDip));
                     case TextPointerContext.ElementStart:
-                        if (pointer.GetAdjacentElement(LogicalDirection.Forward) is not Run)
-                            throw new PlatformNotSupportedException("Portable FlowDocument currently requires Run inlines.");
-                        return new TextHidden(1);
+                        Inline inline = GetInline(pointer);
+                        if (inline is LineBreak) return new TextEndOfLine(2);
+                        if (inline.IsEmpty)
+                            return new TextCharacters("\u200b\u200b", new TextProperties(inline, ((ITextPointer)pointer).CreateStaticPointer(), false, true, _pixelsPerDip));
+                        TextDecorationCollection decorations = DynamicPropertyReader.GetTextDecorations(inline);
+                        return decorations == null || decorations.Count == 0 ? new TextHidden(1) :
+                            new TextSpanModifier(1, decorations, inline.Foreground);
                     case TextPointerContext.ElementEnd:
-                        return new TextHidden(1);
+                        TextDecorationCollection endingDecorations = DynamicPropertyReader.GetTextDecorations(GetInline(pointer));
+                        return endingDecorations == null || endingDecorations.Count == 0 ? new TextHidden(1) : new TextEndOfSegment(1);
                     default:
                         throw new PlatformNotSupportedException("Portable FlowDocument embedded content is not yet supported.");
                 }
             }
+            private static Inline GetInline(TextPointer pointer)
+            {
+                object element = pointer.GetAdjacentElement(LogicalDirection.Forward);
+                if (element is not Inline inline || (inline is not Run && inline is not Span && inline is not LineBreak))
+                    throw new PlatformNotSupportedException("Portable FlowDocument inline type is not supported: " + element?.GetType().Name);
+                if (inline.Parent != null && inline.FlowDirection != (FlowDirection)inline.Parent.GetValue(FrameworkElement.FlowDirectionProperty))
+                    throw new NotSupportedException("Portable FlowDocument inline directional embedding is not supported.");
+                return inline;
+            }
             public override TextSpan<CultureSpecificCharacterBufferRange> GetPrecedingText(int index)
             {
-                TextPointer pointer = Start.GetPositionAtOffset(Math.Min(index, Length - 1));
-                string text = pointer.GetTextInRun(LogicalDirection.Backward);
-                return new TextSpan<CultureSpecificCharacterBufferRange>(text.Length,
-                    new CultureSpecificCharacterBufferRange(DefaultProperties.CultureInfo, new CharacterBufferRange(text, 0, text.Length)));
+                int nonTextLength = 0;
+                string text = string.Empty;
+                CultureInfo culture = null;
+                if (index > 0)
+                {
+                    TextPointer pointer = Start.GetPositionAtOffset(Math.Min(index, Length - 1));
+                    while (pointer.CompareTo(Start) > 0 && pointer.GetPointerContext(LogicalDirection.Backward) != TextPointerContext.Text)
+                    {
+                        pointer = pointer.GetPositionAtOffset(-1);
+                        nonTextLength++;
+                    }
+                    text = pointer.GetTextInRun(LogicalDirection.Backward);
+                    culture = DynamicPropertyReader.GetCultureInfo(pointer.Parent ?? Start.Parent);
+                }
+                return new TextSpan<CultureSpecificCharacterBufferRange>(nonTextLength + text.Length,
+                    new CultureSpecificCharacterBufferRange(culture, new CharacterBufferRange(text, 0, text.Length)));
             }
             public override int GetTextEffectCharacterIndexFromTextSourceCharacterIndex(int index) => Start.Offset + index;
         }
