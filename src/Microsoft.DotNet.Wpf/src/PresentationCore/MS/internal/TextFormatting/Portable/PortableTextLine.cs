@@ -25,6 +25,8 @@ namespace MS.Internal.TextFormatting.Portable
         private readonly double _drawingOffset;
         private readonly double _alignmentOffset;
         private readonly int _first;
+        private readonly int _textStart;
+        private readonly int _length;
         private readonly string _text;
         private readonly int _newline;
         private readonly int _dependent;
@@ -46,10 +48,12 @@ namespace MS.Internal.TextFormatting.Portable
         {
             _paragraph = paragraph;
             string text = paragraph.Text.Substring(start, length);
-            _first = paragraph.First + start;
+            _textStart = start;
+            _first = paragraph.First + (start == 0 ? 0 : paragraph.SourceOffset(start));
+            _length = paragraph.First + paragraph.SourceOffset(start + length) - _first;
             _text = text;
             _newline = newline;
-            _dependent = paragraph.Text.Length + paragraph.NewlineLength - start - length - newline;
+            _dependent = paragraph.First + paragraph.SourceLength + paragraph.NewlineLength - _first - _length - newline;
             _truncated = truncated;
             var shapedRuns = new List<(PortableParagraph.Segment Source, Shaped Shape)>();
             foreach (var run in paragraph.Segments(start, length))
@@ -72,10 +76,10 @@ namespace MS.Internal.TextFormatting.Portable
                 (run.Shape.Typeface.Height - run.Shape.Typeface.Baseline) * run.Source.Source.Properties.FontRenderingEmSize);
             _height = Math.Max(_height, _baseline + descent);
             var spans = new List<TextSpan<TextRun>>();
-            for (int index = paragraph.FindRun(start); index < paragraph.Runs.Count && paragraph.Runs[index].Start < start + length; index++)
+            foreach (var run in paragraph.Runs)
             {
-                var run = paragraph.Runs[index];
-                int count = Math.Min(run.Start + run.Length, start + length) - Math.Max(run.Start, start);
+                int count = Math.Min(paragraph.First + run.SourceStart + run.SourceLength, _first + _length) -
+                    Math.Max(paragraph.First + run.SourceStart, _first);
                 if (count > 0) spans.Add(new TextSpan<TextRun>(count, run.Value));
             }
             PortableParagraph.Reorder(shapedRuns, run => run.Source.Level);
@@ -248,12 +252,12 @@ namespace MS.Internal.TextFormatting.Portable
         }
         public override IList<TextCollapsedRange> GetTextCollapsedRanges() { Verify(); return null; }
         public override TextLineBreak GetTextLineBreak() { Verify(); return _newline == 0 ?
-            new TextLineBreak(new PortableParagraphContinuation(_paragraph, _first + _text.Length)) : null; }
+            new TextLineBreak(new PortableParagraphContinuation(_paragraph, _first + _length)) : null; }
         public override IList<TextSpan<TextRun>> GetTextRunSpans() { Verify(); return _spans; }
         public override IEnumerable<IndexedGlyphRun> GetIndexedGlyphRuns()
         {
             Verify();
-            return _runs.OrderBy(run => run.Start).Select(run => new IndexedGlyphRun(_first + run.Start, run.Length, run.Glyphs)).ToArray();
+            return _runs.OrderBy(run => run.Start).Select(run => new IndexedGlyphRun(SourcePosition(run.Start), SourcePosition(run.Start + run.Length, end: true) - SourcePosition(run.Start), run.Glyphs)).ToArray();
         }
 
         public override CharacterHit GetCharacterHitFromDistance(double distance)
@@ -270,16 +274,21 @@ namespace MS.Internal.TextFormatting.Portable
                 if (distance < candidate.Offset + candidate.Width) { run = candidate; break; }
             double local = (run.Glyphs.BidiLevel & 1) == 0 ? distance - run.Offset : run.Offset + run.Width - distance;
             CharacterHit hit = run.Glyphs.GetCaretCharacterHitFromDistance(local, out _);
-            return new CharacterHit(_first + run.Start + hit.FirstCharacterIndex, hit.TrailingLength);
+            int first = SourcePosition(run.Start + hit.FirstCharacterIndex);
+            return new CharacterHit(first, hit.TrailingLength == 0 ? 0 :
+                SourcePosition(run.Start + hit.FirstCharacterIndex + hit.TrailingLength, end: true) - first);
         }
         public override double GetDistanceFromCharacterHit(CharacterHit hit)
         {
             Verify();
             ValidateHit(hit);
-            int index = hit.FirstCharacterIndex - _first;
+            int index = _paragraph.TextOffset(hit.FirstCharacterIndex - _paragraph.First) - _textStart;
             if (index >= _text.Length) return _width + _alignmentOffset;
-            return ParagraphDistance(Distance(index, hit.TrailingLength));
+            int end = _paragraph.TextOffset(hit.FirstCharacterIndex + hit.TrailingLength - _paragraph.First) - _textStart;
+            return ParagraphDistance(Distance(index, end - index));
         }
+        private int SourcePosition(int textOffset, bool end = false) => _paragraph.First +
+            (end ? _paragraph.SourceEnd(_textStart + textOffset) : _paragraph.SourceOffset(_textStart + textOffset));
         private double ParagraphDistance(double physical) => _alignmentOffset + (_paragraph.BaseLevel == 0 ? physical : _width - physical);
         private double Distance(int index, int trailing = 0)
         {
@@ -308,16 +317,19 @@ namespace MS.Internal.TextFormatting.Portable
                 throw new ArgumentOutOfRangeException(nameof(hit));
         }
         private int[] Stops() => _runs.SelectMany(run => run.Glyphs.CaretStops.Select((stop, index) => (stop, index))
-            .Where(item => item.stop).Select(item => _first + run.Start + item.index)).Append(_first + _text.Length).Distinct().OrderBy(value => value).ToArray();
+            .Where(item => item.stop).Select(item => run.Start + item.index)).Distinct().OrderBy(value => value).ToArray();
         public override CharacterHit GetNextCaretCharacterHit(CharacterHit hit)
         {
             Verify(); ValidateHit(hit);
-            int position = hit.FirstCharacterIndex + hit.TrailingLength;
-            int previous = _first;
+            int position = _paragraph.TextOffset(hit.FirstCharacterIndex + hit.TrailingLength - _paragraph.First) - _textStart;
+            int previous = 0;
             foreach (int stop in Stops())
             {
                 if (stop > position)
-                    return new CharacterHit(previous, stop - previous);
+                {
+                    int first = SourcePosition(previous);
+                    return new CharacterHit(first, SourcePosition(stop, end: true) - first);
+                }
                 previous = stop;
             }
             return hit;
@@ -325,11 +337,11 @@ namespace MS.Internal.TextFormatting.Portable
         public override CharacterHit GetPreviousCaretCharacterHit(CharacterHit hit)
         {
             Verify(); ValidateHit(hit);
-            int position = hit.FirstCharacterIndex + hit.TrailingLength;
+            int position = _paragraph.TextOffset(hit.FirstCharacterIndex + hit.TrailingLength - _paragraph.First) - _textStart;
             int[] stops = Stops();
             for (int index = stops.Length - 1; index >= 0; index--)
                 if (stops[index] < position)
-                    return new CharacterHit(stops[index], 0);
+                    return new CharacterHit(SourcePosition(stops[index]), 0);
             return hit;
         }
         public override CharacterHit GetBackspaceCaretCharacterHit(CharacterHit hit) => GetPreviousCaretCharacterHit(hit);
@@ -348,23 +360,25 @@ namespace MS.Internal.TextFormatting.Portable
             var bounds = new List<TextBounds>();
             foreach (LineRun run in _runs)
             {
-                int start = Math.Max(first - _first, run.Start), end = Math.Min(first - _first + length, run.Start + run.Length);
+                int start = Math.Max(_paragraph.TextOffset(first - _paragraph.First) - _textStart, run.Start),
+                    end = Math.Min(_paragraph.TextOffset(first + length - _paragraph.First) - _textStart, run.Start + run.Length);
                 if (end > start)
                 {
                     double left = ParagraphDistance(SelectionDistance(run, start)), right = ParagraphDistance(SelectionDistance(run, end));
                     var rectangle = new Rect(Math.Min(left, right), 0, Math.Abs(right - left), _height);
-                    int paragraphOffset = _first - _paragraph.First;
+                    int paragraphOffset = _textStart;
                     var sourceBounds = new List<TextRunBounds>();
                     for (int index = _paragraph.FindRun(paragraphOffset + start);
                         index < _paragraph.Runs.Count && _paragraph.Runs[index].Start < paragraphOffset + end; index++)
                     {
                         var source = _paragraph.Runs[index];
+                        if (source.Length == 0) continue;
                         int sourceStart = Math.Max(start, source.Start - paragraphOffset);
                         int sourceEnd = Math.Min(end, source.Start + source.Length - paragraphOffset);
                         double sourceLeft = ParagraphDistance(SelectionDistance(run, sourceStart));
                         double sourceRight = ParagraphDistance(SelectionDistance(run, sourceEnd));
                         sourceBounds.Add(new TextRunBounds(new Rect(Math.Min(sourceLeft, sourceRight), 0, Math.Abs(sourceRight - sourceLeft), _height),
-                            _first + sourceStart, _first + sourceEnd, source.Value));
+                            SourcePosition(sourceStart), SourcePosition(sourceEnd, end: true), source.Value));
                     }
                     bounds.Add(new TextBounds(rectangle, (run.Glyphs.BidiLevel & 1) == 0 ? FlowDirection.LeftToRight : FlowDirection.RightToLeft,
                         sourceBounds));
@@ -379,8 +393,9 @@ namespace MS.Internal.TextFormatting.Portable
         public override bool HasOverflowed => _overflow;
         public override bool HasCollapsed => false;
         public override bool IsTruncated => _truncated;
-        public override int Length => _text.Length + _newline;
-        public override int TrailingWhitespaceLength => _trailing + _newline;
+        public override int Length => _length + _newline;
+        public override int TrailingWhitespaceLength => _text.Length == 0 ? _length + _newline :
+            _trailing == 0 ? _newline : _first + _length - SourcePosition(_text.Length - _trailing) + _newline;
         public override int DependentLength => _dependent;
         public override int NewlineLength => _newline;
         public override double Start => _alignmentOffset;

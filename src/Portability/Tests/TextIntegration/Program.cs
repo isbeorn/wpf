@@ -7,6 +7,7 @@ using System.Windows.Media.TextFormatting;
 using System.Windows.Threading;
 using SkiaSharp;
 
+if (args.Contains("--capture-hidden")) { Console.WriteLine(JsonSerializer.Serialize(HiddenRunCases.Capture(), new JsonSerializerOptions { WriteIndented = true })); return 0; }
 var checks = new List<object>();
 if (args.Contains("--capture-alignment"))
 {
@@ -41,6 +42,8 @@ try
         Require(true, "horizontal-paragraph-alignment", "Center and Right preserve shaping while aligning metrics, caret distances, bounds and retained drawing for both flow directions.");
     });
     BidiTests.Run(formatter, Require, Regression);
+    Regression("hidden-source-runs", () => HiddenRunCases.Verify(formatter, Require));
+    Regression("hidden-source-suffix", () => HiddenRunCases.VerifySourceSuffix(formatter, Require));
     Regression("empty-and-end-caret-bounds-regression", () =>
     {
         foreach (string text in new[] { "", "abc", "abc\r\n" })

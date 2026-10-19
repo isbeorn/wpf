@@ -14,7 +14,8 @@ var thread = new Thread(() =>
 {
     try
     {
-        if (args.Contains("--verify-alignment"))
+        if (args.Contains("--capture-hidden")) result = HiddenRunCases.Capture();
+        else if (args.Contains("--verify-alignment"))
         {
             TextOracleCases.VerifyAlignment(idealOnly: true);
             result = new { check = "horizontal-paragraph-alignment-Ideal", status = "pass" };

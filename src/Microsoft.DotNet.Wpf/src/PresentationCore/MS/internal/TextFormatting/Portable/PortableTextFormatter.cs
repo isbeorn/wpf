@@ -41,9 +41,9 @@ namespace MS.Internal.TextFormatting.Portable
             else
             {
                 var read = Read(source, first);
-                input = new PortableParagraph(source, first, read.Text, read.Runs, read.NewlineLength, read.Terminators, properties.FlowDirection);
+                input = new PortableParagraph(source, first, read.Text, read.Runs, read.NewlineLength, read.Terminators, read.SourceLength, properties.FlowDirection);
             }
-            int start = first - input.First;
+            int start = input.TextOffset(first - input.First);
             int length = input.Text.Length - start;
             bool truncated = false;
             if (properties.TextWrapping != TextWrapping.NoWrap && width > 0 && length > 0)
@@ -95,7 +95,7 @@ namespace MS.Internal.TextFormatting.Portable
                 length = wrap - start;
             }
             int newline = start + length == input.Text.Length ? input.NewlineLength : 0;
-            if ((long)first + length + newline > int.MaxValue)
+            if ((long)input.First + input.SourceOffset(start + length) + newline > int.MaxValue)
                 throw new ArgumentOutOfRangeException(nameof(first), "The formatted source range exceeds Int32 source positions.");
             return new PortableTextLine(input, start, length, newline, properties, source.PixelsPerDip, _mode, width, truncated);
         }
@@ -124,7 +124,7 @@ namespace MS.Internal.TextFormatting.Portable
         {
             Validate(source, first, double.MaxValue, properties, null);
             var read = Read(source, first);
-            var input = new PortableParagraph(source, first, read.Text, read.Runs, read.NewlineLength, read.Terminators, properties.FlowDirection);
+            var input = new PortableParagraph(source, first, read.Text, read.Runs, read.NewlineLength, read.Terminators, read.SourceLength, properties.FlowDirection);
             double maximum = Measure(input, 0, input.Text.Length, source.PixelsPerDip);
             double minimum = 0;
             int start = 0;
@@ -166,19 +166,28 @@ namespace MS.Internal.TextFormatting.Portable
         {
             var text = new StringBuilder();
             var runs = new List<Run>();
-            while (text.Length < 32768)
+            int consumed = 0;
+            while (consumed < 32768)
             {
-                TextRun run = source.GetTextRun(checked(first + text.Length));
+                TextRun run = source.GetTextRun(checked(first + consumed));
                 if (run == null || run.Length <= 0)
                     throw new ArgumentException("TextSource must return a nonempty run or paragraph terminator.", nameof(source));
                 if (run is TextEndOfLine)
                 {
-                    if (run.Length > 32767 - text.Length)
+                    if (run.Length > 32767 - consumed)
                         throw new NotSupportedException("Portable text lines currently have a 32767 UTF-16 code-unit limit.");
-                    return new Input(text.ToString(), runs, run.Length, new[] { new TextSpan<TextRun>(run.Length, run) });
+                    return new Input(text.ToString(), runs, run.Length, consumed, new[] { new TextSpan<TextRun>(run.Length, run) });
+                }
+                if (run is TextHidden)
+                {
+                    if (run.Length > 32767 - consumed)
+                        throw new NotSupportedException("Portable text lines currently have a 32767 source-symbol limit.");
+                    runs.Add(new Run(text.Length, 0, run, consumed, run.Length));
+                    consumed += run.Length;
+                    continue;
                 }
                 if (!(run is TextCharacters))
-                    throw new NotSupportedException("Portable text currently accepts TextCharacters and text line/paragraph terminators.");
+                    throw new NotSupportedException("Portable text currently accepts TextCharacters, TextHidden and text line/paragraph terminators.");
                 CharacterBufferReference buffer = run.CharacterBufferReference;
                 int start = text.Length;
                 for (int index = 0; index < run.Length; index++)
@@ -191,7 +200,7 @@ namespace MS.Internal.TextFormatting.Portable
                         var terminators = new List<TextSpan<TextRun>> { new TextSpan<TextRun>(newline, run) };
                         if (character == '\r' && index + 1 == run.Length)
                         {
-                            TextRun next = source.GetTextRun(checked(first + text.Length + 1));
+                            TextRun next = source.GetTextRun(checked(first + consumed + index + 1));
                             if (next is TextCharacters && next.Length > 0)
                             {
                                 CharacterBufferReference nextBuffer = next.CharacterBufferReference;
@@ -203,24 +212,25 @@ namespace MS.Internal.TextFormatting.Portable
                             }
                         }
                         if (index != 0)
-                            runs.Add(new Run(start, index, run));
-                        return new Input(text.ToString(), runs, newline, terminators);
+                            runs.Add(new Run(start, index, run, consumed, index));
+                        return new Input(text.ToString(), runs, newline, consumed + index, terminators);
                     }
                     if (character == '\t')
                         throw new NotSupportedException("Portable paragraph tab stops are not implemented.");
                     if (character == '\u00ad')
                         throw new NotSupportedException("Portable discretionary hyphen insertion is not implemented.");
                     text.Append(character);
-                    if (text.Length >= 32768)
+                    if (consumed + index + 1 >= 32768)
                         throw new NotSupportedException("Portable text lines currently have a 32767 UTF-16 code-unit limit.");
                 }
-                runs.Add(new Run(start, run.Length, run));
+                runs.Add(new Run(start, run.Length, run, consumed, run.Length));
+                consumed += run.Length;
             }
             throw new NotSupportedException("Portable paragraph is too long.");
         }
 
-        internal sealed record Run(int Start, int Length, TextRun Value);
-        private sealed record Input(string Text, List<Run> Runs, int NewlineLength, IList<TextSpan<TextRun>> Terminators = null);
+        internal sealed record Run(int Start, int Length, TextRun Value, int SourceStart, int SourceLength);
+        private sealed record Input(string Text, List<Run> Runs, int NewlineLength, int SourceLength, IList<TextSpan<TextRun>> Terminators = null);
     }
 }
 #endif
