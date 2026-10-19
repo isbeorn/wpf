@@ -1,4 +1,84 @@
-# Initial portable backend decision
+# Portable backend decision
+
+## Approved owned Linux backend: 19 October 2026
+
+The user approved removing the Avalonia dependency. Replace the native adapter
+inside `Wpf.Portable.NativeHost` with project-maintained Linux code, not a copied
+or renamed Avalonia backend. Preserve the original WPF dispatcher, controls,
+bindings, layout and input semantics and the existing retained Skia renderer.
+This is an approved implementation direction, not an executed replacement or
+new compatibility pass. All 77 existing ledger checkpoints retain their
+historical scopes; Avalonia-backed runs do not qualify the owned backend.
+
+Keep the focused SkiaSharp 3.119.4 and HarfBuzzSharp 8.3.1.5 bindings accepted after
+license review. Preserve the regular Linux Skia/Fontconfig native asset and add
+the required Wuffs/HarfBuzz notices before producing packages. The user also
+approved directly compiling 34 project-maintained pure Unicode derivatives with
+their original attribution, licenses and provenance. Maintain one canonical
+Unicode implementation and preserve the 91,707-case Unicode 17 bidi gate. This
+limited source reuse does not authorize importing the Avalonia platform layer.
+
+Use public GLib/GIO OS APIs for the event loop and D-Bus portals/AT-SPI, with no
+new managed transport dependency. Own a private GLib context and the required
+X11, XI2, XKB, XFixes, RandR and XRender integration. Begin native presentation
+with a conservative XPutImage framebuffer. Retain WPF's operation queue and
+nested frames rather than introducing another managed UI scheduler.
+
+The selected startup calls are parameterless
+`NativeDispatcherHost.InitializeForCurrentThread()` and
+`NativeWindowHost.InitializeForCurrentThread()`. They must register native
+services before the thread creates its WPF Dispatcher or consumes settings.
+These replace the adapter's Avalonia AppBuilder dependency without changing
+public WPF contracts. Reuse the existing internal boundaries:
+
+- [DispatcherPlatform/IDispatcherPump](../../src/Microsoft.DotNet.Wpf/src/WindowsBase/MS/Internal/Portability/DispatcherPlatform.cs) for wake, pending work and bounded dispatch.
+- [PortableWindowPlatform](../../src/Microsoft.DotNet.Wpf/src/PresentationFramework/MS/Internal/Portability/Windowing/PortableWindowPlatform.cs) for window factories, peers and Popups.
+- [PortablePresentationSource](../../src/Microsoft.DotNet.Wpf/src/PresentationCore/MS/internal/Portability/Windowing/PortablePresentationSource.cs) and its presentation host for source lifetime, input and retained pixels.
+- The existing WPF clipboard and [file-dialog contracts](../../src/Microsoft.DotNet.Wpf/src/PresentationFramework/MS/Internal/Portability/Windowing/PortableFileDialogs.cs) for desktop services.
+
+Export the original WPF AutomationPeers through an owned AT-SPI server using
+GIO. Session clipboard operation is allowed; persistence after process exit is
+not assumed. Native IME remains explicitly user-deferred. Basic XKB keyboard
+mapping and compose through the existing OS prerequisite libxkbcommon.so.0
+are required and are not covered by that deferral.
+
+## Replacement behavior checklist and gates
+
+Reuse existing fixtures and their observable WPF operations. Establish relevant
+reds, then replay both directions and failure/lifetime cases against one
+coherent owned-backend family. None of the following is passed by this decision.
+
+| Boundary | Required observable behavior |
+| --- | --- |
+| Dispatcher | Worker wake, pending-input queries, zero/bounded/infinite waits, priorities and nested frames; callback exceptions return through the managed boundary; shutdown, disposal and fresh-thread initialization leave no live callbacks or handles. |
+| Windows and Popups | Show/hide/reopen, owner activation, grow/shrink, minimize/maximize/restore, DPI transitions and source detachment; mouse/keyboard opening and selection, Enter/Escape, outside click, capture loss and edge placement. Accepted close cancels owned work; canceled Closing retains the live source. Modal owner disable/restore, requested alpha and genuine splash behavior need native evidence. |
+| Input | Real XI2 pointer events, held inside/outside capture and release, buttons, scrolling, focus and modifiers; ordinary Unicode, XKB dead keys and compose reach actual WPF controls. Preserve managed preedit cancellation/retention rules separately from deferred native composing-engine integration. |
+| Settings and presentation | Observe real screen bounds and scaling, convert physical pixels to DIPs once and preserve absent/invalid settings diagnostics. Verify XPutImage byte order, stride, alpha handling, expose/cover recovery, resize and exact retained pixels without substituting controls or templates. |
+| Clipboard and portal | Exchange text with an independent client, change/clear ownership and report unsupported operations truthfully. Real portal accept/cancel/error paths preserve owner identity, nested pumping, enablement and close cleanup; no second event loop or manufactured cancellation. |
+| Accessibility | Export the actual peer tree, roles, names, focus, text, selection, caret and screen geometry through AT-SPI. Verify updates and removal, keyboard-only core workflows and actual Orca output on the declared desktop. Protocol-only checks are not the screen-reader gate. |
+| Unicode | Compile the approved 34 derivatives with provenance and licenses, preserve the 91,707 Unicode 17 cases and rerun actual text/editing regressions. Historical algorithm passes are not a fresh owned-backend run. |
+| Distribution | Fresh restore/build/publish/run plus native assets and notices. Audit the evaluated build graph, AssemblyRefs, deps files and loaded identities for no Avalonia package, platform project or runtime assembly dependency; retained Unicode provenance is explicitly distinguished. Test the produced packages, not mixed development DLLs. |
+| Application and desktop | Replay the original NINA workflows and the simulation-only shell below. Qualify native GNOME X11 and XWayland separately, then repeated lifetimes and overnight simulation. Native Wayland, full WPF parity and performance bounds are not inferred. |
+
+The approved NINA simulation build preserves the real App, generated startup,
+MainWindow, VMs and SimulatorCamera. Load an allowlisted official fixture plugin
+through the actual Loader and exercise genuine astronomy plus profile/layout
+persistence. Use offline fixture data; do not run hardware discovery, vendor USB
+initialization or downloads. Record every application adaptation and keep its
+failures separate from framework failures. This is a pending shell workflow,
+not permission to replace the application with a synthetic host or fake VMs.
+
+Implementation is proceeding in isolated ownership lanes. Integration still
+requires a fresh coherent source/package family and the gates above. Phases 2
+through 5 remain open and the full NINA shell remains unlaunched. The user's
+accepted Rgb48 timing stands; no new CPU/latency budget or canceled conversion
+cache work is introduced.
+
+## Historical initial decision: 18 October 2026
+
+The native-host choice below is superseded by the approved owned backend above.
+Its source observations and executed evidence remain historical. The managed
+retained-rendering seam is preserved by the new direction.
 
 Decision date: 18 October 2026. This records the Phase 1 implementation direction,
 not completion of its gates or qualification of a Linux desktop profile.
@@ -15,7 +95,7 @@ experiment was completed for the rejected candidates. The decision instead uses
 source-supported structural rejection and successful bounded execution of the
 selected strategy. It makes no comparative speed or memory claim.
 
-## Native host
+### Native host
 
 The inspected Avalonia version is 12.1.4, commit
 `2d79ba55fae1b1e71c69f93a668080c9029e6a31`. Its archive hash, license, exact source
@@ -61,7 +141,7 @@ An independently owned platform host using Skia was not implemented or tested.
 Defer it because it would add native window, event-loop, input and desktop-service
 ownership. This is a scope decision, not evidence that the alternative failed.
 
-## Retained rendering
+### Retained rendering
 
 The existing
 [`RenderData.WalkContent`](../../src/Microsoft.DotNet.Wpf/src/PresentationCore/System/Windows/Media/RenderData.cs)

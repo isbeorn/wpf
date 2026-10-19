@@ -6,6 +6,16 @@ The experiments establish a viable open-source Linux x64 path for this fork. Act
 
 The Phase 0 reference/runtime gate and Phase 1 feasibility gate pass within the scopes recorded below. Phases 2 through 5 have not passed. The accepted [plan](../cross-platform-plan.md) remains the behavior contract. Physical desktop, full application and sustained-workload qualification remain later gates. Component checks, source compilation and managed test peers do not substitute for native WPF control behavior.
 
+On 19 October 2026 the user approved replacing the Avalonia adapter with an
+owned Linux X11 backend inside `Wpf.Portable.NativeHost`, retaining WPF semantics
+and the SkiaSharp 3.119.4/HarfBuzzSharp 8.3.1.5 bindings. The [backend decision](backend-decision.md)
+records public GLib/GIO integration, the approved 34 Unicode derivatives and
+the required behavior/package/desktop gates. Existing native and package results
+below remain historical Avalonia-backed evidence, not replacement qualification.
+The 77 ledger checkpoints are unchanged. Owned-backend implementation, the
+offline simulator-only real NINA shell, final packages and overnight qualification
+remain pending. Native IME is user-deferred; basic XKB/compose input is required.
+
 The evidence supports high confidence in technical feasibility. Confidence in the
 full agreed NINA coverage remains moderate: original image and guider views run
 in the bounded docking host and the original image controls pass native input
@@ -1073,4 +1083,10 @@ native engine/editor startup. No hidden base copy or architecture hook is added.
 
 The accepted bidi contract follows Unicode 17. All 91,707 Unicode bidi character level cases pass after a bounded correction to the pinned managed dependency. This algorithm result is separate from paragraph layout, fallback, glyph positioning and native editing qualification. Legacy Windows WPF bracket ordering and measured Display-mode metric differences are recorded compatibility differences, not silently relaxed test tolerances.
 
-The selected direction is the source WPF semantic core with an owned pinned Avalonia X11/GLib adapter and CPU Skia rendering. The [backend decision](backend-decision.md) records the source-supported rejection of the public-only bounded pump and lower DUCE seam, along with the absence of equivalent head-to-head candidate tests. This direction remains subject to the unpassed behavior and distribution gates above.
+The current approved direction is the original WPF semantic core with a project-
+maintained Linux X11/GLib/GIO backend and retained CPU Skia rendering. The
+[backend decision](backend-decision.md) preserves the historical Avalonia choice
+and defines the replacement gates, including no Avalonia build/runtime dependency,
+actual AT-SPI/Orca and separate native GNOME X11/XWayland evidence. No owned-backend
+pass or full shell launch is claimed. The accepted Rgb48 timing and canceled
+optimization policy remain unchanged; Phases 2 through 5 remain open.
