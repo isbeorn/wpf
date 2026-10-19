@@ -15069,6 +15069,120 @@
         "runtime": "No usable Window or successful workflow observed. Observer exit 90/launcher 91. Initial cleanup verifier failure is retained; post-audit all six exact retained PIDs, X1301 lock/path and owned listeners are absent. No clean normal lifecycle success claim.",
         "limits": "No successful full-shell launch, plugin lifecycle or package qualification. 155 original PEs and five declared source-derived companions are recorded by the startup handoff; it is not an unchanged 160-binary application claim."
       }
+    },
+    {
+      "label": "owned-bc9-family-and-original-nina-windowchrome-boundary",
+      "capturedAtUtc": "2026-10-19T19:19:12.9599685Z",
+      "headCommit": "749128b590324822d138449efa578fa1b06ce33c",
+      "sourceCommit": "bc9f04df9690da1f182404a0dcfbb9f1b0711fee",
+      "outcome": "partial-native-icon-recovery-and-full-shell-unqualified",
+      "scope": "Fresh locked Release eleven-project Windows/Linux graphs each pass 1,110 managed checks across thirteen invocations. Eighteen original private native modes pass 161 checks. The separate canonical original-AvalonDock consumer passes Show 13/theme 20 on the same complete 120-file Linux Stage. Two additional Icon rejection/recovery cases fail; this is not a fully green family or a working NINA shell.",
+      "verification": "Sixteen producer identities and 4,176 producer/93 fixture source documents are pinned against canonical bc9. PE/PDB identity, embedded generated sources, all runtime copies, forbidden AssemblyRefs/imports, dependency closure and regular Linux Skia mappings are checked. Windows wrapper initially expected nine runs; its driver-only cardinality repair reruns all thirteen successfully, preserving the orchestration failure.",
+      "stage": "Both raw Stages contain 120 files with no exclusions. Linux manifest SHA256 is 180EC10BF9938770D863D347B27407488E2998D3B2F92E94172791DADDAEDD9D. These are complete local source-build outputs, not curated redistributable packages. Older 2e3, Source4 and frozen bc9 runtime/consumer evidence remain unchanged.",
+      "nativeIcon": {
+        "passed": 6,
+        "total": 8,
+        "successful": "Original six-frame NINA ICO, valid bitmap alpha, pre-source assignment, replacement, clearing and BIG-REQUESTS publication.",
+        "failures": "Negotiated-capacity and unsupported-icon rejection recovery reproducibly fail at Freezable context removal after changed-callback rejection. Both original and immutable repeat reports are preserved.",
+        "followup": "Commit 749128b59 adds source-reviewed precommit coercion using shared private validation. No coherent native green is claimed for that later source yet."
+      },
+      "actualNinaRetry": {
+        "status": "failed-before-main-window-map",
+        "entry": "Original App.Main/OnStartup, splash, real simulator-only offline composition, original MainWindow/BAML/styles/icon and isolated profile/plugin state.",
+        "consumer": "All 120 exact bc9 Stage files plus 195 pinned application/data/plugin files, 315 total. No old framework overlap, DLL overlay, replacement App, startup hook or style workaround.",
+        "primary": "Previous ICO decoder boundary passed. Original MainWindow.xaml line 38 Style -> WindowChromeWorker._SetWindow -> WindowInteropHelper.Handle -> Window.Handle PlatformNotSupportedException.",
+        "secondary": "Original dispatcher MessageBox.Show recovery reaches user32 GetActiveWindow, distinct from the primary WindowChrome failure.",
+        "nativeMainWindowMapped": false,
+        "usableShell": false,
+        "cleanup": "Pass: all six exact retained PID identities absent, X1301 lock/path/listeners absent and launcher stderr empty. Capture failed closed before an observer-recorded XID; no visible VM launch.",
+        "childExit": 134,
+        "observerExit": 90,
+        "launcherExit": 90
+      },
+      "laterSource": {
+        "rtlDocument": "45ff16261434778fe63092a973279ea2dd4e0148: reviewed line-owned coordinate mapping with scoped stock/Windows/Linux direction and paragraph checks.",
+        "wrappedText": "074aa3bab465ae26d59dc3b66b93db2d56236349: reviewed continuation refresh for recreated wrappers/caches, preserving modifier-scope identity. Scoped Windows/Linux Text 459/Controls 220/Rendering 52 and nine stock transition checks pass.",
+        "iconPreflight": "749128b590324822d138449efa578fa1b06ce33c: two independent source reviews clear; runtime verification pending.",
+        "combinedStatus": "These three later source changes are not covered by the bc9 family proof. A fresh normal-source graph is being prepared; custom-frame candidate is not a qualified capability."
+      },
+      "limitations": "Phases 2-5 remain open. No successful full original NINA shell, complete Markdown/workflow qualification, curated package, actual GNOME/XWayland/Orca or overnight pass. Native IME remains explicitly user-deferred. Actual per-platform behavior differences follow the documented simplicity policy.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/owned-bc9-main-qualification/evidence-manifest.json",
+          "sha256": "b39e1e19c020915caaca5717273f0bfea01dcfe272b677fd142ca044000f2b72",
+          "bytes": 7013
+        },
+        {
+          "path": "artifacts/portability/owned-bc9-main-qualification/qualification-summary.json",
+          "sha256": "ff39d3b74ac8ab5cb47c8faf00baab94e42e078b695c2ed7acc1fc08e014c08a",
+          "bytes": 69723
+        },
+        {
+          "path": "artifacts/portability/owned-bc9-main-qualification/linux/family-proof.json",
+          "sha256": "89bd60e8347cc6b50daf85f719cd81e83b6f4c9f63da4ddaf3bcb8f425c09ee9",
+          "bytes": 2775025
+        },
+        {
+          "path": "artifacts/portability/owned-bc9-main-qualification/windows/family-proof.json",
+          "sha256": "5076eead17eb49a600ac6b937214f23377ece329b169513a064722deb6c5c427",
+          "bytes": 2821932
+        },
+        {
+          "path": "artifacts/portability/owned-bc9-main-qualification/linux/stage-manifests.json",
+          "sha256": "180ec10bf9938770d863d347b27407488e2998d3b2f92e94172791daddaedd9d",
+          "bytes": 23249
+        },
+        {
+          "path": "artifacts/portability/owned-bc9-main-qualification/linux/native-runs.json",
+          "sha256": "6be9a4e1f922505c3cd39a2de621becbb26de1ee82c5d1fb44d11002f0b5a039",
+          "bytes": 19710
+        },
+        {
+          "path": "artifacts/portability/owned-bc9-main-qualification/linux/native/icon-diagnostic-2.json",
+          "sha256": "72fa199ded27074bc767dfc7e5d98ff830bb35c0487e998f675a72f7f52b4c22",
+          "bytes": 10136
+        },
+        {
+          "path": "artifacts/portability/owned-window-show-theme/canonical-bc9-replay-1/freeze.json",
+          "sha256": "db40c753cecff7e1ba3f4786eb917e221a9f590f83b6d62dca32e2a0059ef650",
+          "bytes": 3710
+        },
+        {
+          "path": "artifacts/portability/nina-simulator-qualification-candidate/first-owned-shell-bc9-retry/handoff.json",
+          "sha256": "7cbf05ad9b29a37c79f14cfb2084ec4fa4f3ce96f0a229595beb41f7bcfa8f13",
+          "bytes": 3613
+        },
+        {
+          "path": "artifacts/portability/nina-simulator-qualification-candidate/first-owned-shell-bc9-retry/freeze.json",
+          "sha256": "e68476724e928cff304e756dcbda9baad1fc0b36ad5cf5b8fc140663715339be",
+          "bytes": 6552
+        },
+        {
+          "path": "artifacts/portability/managed-flow-document-tracer/direction-revision2/handoff.json",
+          "sha256": "d83145925823ce59c4f0053929d2bfc771d2aa2cf541b0996e497978b6ee4c74",
+          "bytes": 7249
+        },
+        {
+          "path": "artifacts/portability/managed-flow-document-tracer/direction-revision2/root-intake.json",
+          "sha256": "89d42efc875cab228caef91dbe6af26235b68a833e7211d32a9b9ad773488360",
+          "bytes": 814
+        },
+        {
+          "path": "artifacts/portability/flow-text-runs/wrapped-cache-revision2/final-manifest.json",
+          "sha256": "e53e791a1a8a7b523540116b79e20a6dc45d96c76e44d86867ab2281a78ae252",
+          "bytes": 10877
+        },
+        {
+          "path": "artifacts/portability/flow-text-runs/wrapped-cache-revision2/root-intake.json",
+          "sha256": "6316ccd6b1a48cdda9f9e2767b20ff326b1268f0be86a26762832aa86ce17c90",
+          "bytes": 4476
+        },
+        {
+          "path": "artifacts/portability/owned-window-icon/recovery/root-intake.json",
+          "sha256": "9536d69e9708c76e74921182ab46cb881000d1d18ba51dfbf316e42d7e153ac7",
+          "bytes": 701
+        }
+      ]
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",

@@ -10,11 +10,17 @@ On 19 October 2026 the user approved replacing the Avalonia adapter with an
 owned Linux X11 backend inside `Wpf.Portable.NativeHost`, retaining WPF semantics
 and the SkiaSharp 3.119.4/HarfBuzzSharp 8.3.1.5 bindings. The [backend decision](backend-decision.md)
 records public GLib/GIO integration, the approved 34 Unicode derivatives and
-the required behavior/package/desktop gates. Existing native and package results
-below remain historical Avalonia-backed evidence, not replacement qualification.
-The 77 ledger checkpoints are unchanged. Owned-backend implementation, the
-offline simulator-only real NINA shell, final packages and overnight qualification
-remain pending. Native IME is user-deferred; basic XKB/compose input is required.
+the required behavior/package/desktop gates. Earlier Avalonia-backed results
+retain their historical scope. The [owned bc9 checkpoint](../../artifacts/portability/owned-bc9-main-qualification/README.md)
+passes 1,110 managed checks on each OS, 161 checks across eighteen existing native
+modes and canonical Show 13/theme 20. Two icon rejection/recovery cases fail.
+The [real NINA retry](../../artifacts/portability/nina-simulator-qualification-candidate/first-owned-shell-bc9-retry/handoff.json)
+passes icon decoding but stops at WindowChrome's HWND access before a main window
+maps. No full NINA window has opened in the VM. Later reviewed source commits add
+RTL document mapping, wrapped-text cache refresh and icon preflight; their combined
+family verification is pending. The ledger now preserves 84 checkpoints. Final
+packages, complete workflows, desktop accessibility and overnight qualification
+remain open. Native IME is user-deferred; basic XKB/compose input is required.
 
 The evidence supports high confidence in technical feasibility. Confidence in the
 full agreed NINA coverage remains moderate: original image and guider views run
@@ -1120,10 +1126,10 @@ native engine/editor startup. No hidden base copy or architecture hook is added.
 
 The accepted bidi contract follows Unicode 17. All 91,707 Unicode bidi character level cases pass after a bounded correction to the pinned managed dependency. This algorithm result is separate from paragraph layout, fallback, glyph positioning and native editing qualification. Legacy Windows WPF bracket ordering and measured Display-mode metric differences are recorded compatibility differences, not silently relaxed test tolerances.
 
-The current approved direction is the original WPF semantic core with a project-
+The approved direction remains the original WPF semantic core with a project-
 maintained Linux X11/GLib/GIO backend and retained CPU Skia rendering. The
-[backend decision](backend-decision.md) preserves the historical Avalonia choice
-and defines the replacement gates, including no Avalonia build/runtime dependency,
-actual AT-SPI/Orca and separate native GNOME X11/XWayland evidence. No owned-backend
-pass or full shell launch is claimed. The accepted Rgb48 timing and canceled
-optimization policy remain unchanged; Phases 2 through 5 remain open.
+[backend decision](backend-decision.md) records the later owned-family results,
+remaining native icon failures and actual WindowChrome startup boundary. These
+do not qualify full NINA, final packages or actual GNOME/XWayland/Orca. The accepted
+Rgb48 timing and canceled optimization policy remain unchanged; Phases 2 through
+5 remain open.

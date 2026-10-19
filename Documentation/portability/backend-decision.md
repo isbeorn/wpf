@@ -73,9 +73,55 @@ enters original App.OnStartup, returns from real composition and reaches
 MainWindow.InitializeComponent. It fails at MainWindow.xaml line 37's original
 pack ICO through ImageSourceConverter/BitmapFrame/BitmapDecoder. MessageBox's
 user32 failure is secondary. No usable Window is observed; owned cleanup is
-verified afterward. There is no successful full-shell launch. The original
-21-check Markdown workflow still reaches unported RenderTargetBitmap; child/RTL/
-text-object work remains an unintegrated candidate.
+verified afterward. This preserves the first failed startup as historical
+evidence; the later checkpoint below records the subsequent source changes.
+
+### Current NINA startup and source checkpoint
+
+The [bc9 checkpoint](../../artifacts/portability/owned-bc9-main-qualification/README.md)
+uses fresh eleven-project Windows/Linux builds of `bc9f04df9`. Each OS passes
+1,110 managed checks with matching source/PDB and runtime-copy proof. Eighteen
+existing native modes pass 161 checks. The separate canonical original-AvalonDock
+consumer passes Show 13/13 and theme 20/20 against the same complete 120-file
+Linux Stage. Native icon publication preserves all six original NINA frames.
+Two added icon rejection/recovery cases fail; this checkpoint is not fully green.
+
+The [actual App.Main retry](../../artifacts/portability/nina-simulator-qualification-candidate/first-owned-shell-bc9-retry/handoff.json)
+passes the previous icon-decoder boundary, then fails while applying the original
+MainWindow style. WindowChromeWorker requests WindowInteropHelper.Handle before
+mapping, which remains unsupported. No native main window or usable preview is
+observed. Cleanup passes; the secondary MessageBox/user32 failure remains distinct.
+
+Main now contains the modifier/embedded-object formatter, genuine document child
+layout, RenderTargetBitmap, PNG/ICO factories and native bitmap icons. Commits
+`45ff16261` and `074aa3bab` add reviewed RTL document-coordinate mapping and the
+wrapped-TextBlock cache repair. Their scoped stock/Windows/Linux checks pass.
+The cache key includes the inherited initial modifier scope after a public
+interleaving regression exposed stale decoration. Commit `749128b59` moves expected
+icon validation before dependency-property mutation; its coherent native green
+remains pending. These later commits are not covered by the bc9 family proof.
+
+The accepted next frame implementation, still awaiting qualification, keeps
+original NINA styles and caption controls,
+uses genuine WPF hit testing and delegates interactive move/resize to the owned
+X11 window manager through its [standard protocol](https://specifications.freedesktop.org/wm/latest/ar01s04.html).
+It adds no public WPF API or fabricated HWND. The portable profile declares an
+8-DIP resize band, 23-DIP default caption and square native corners. Explicit
+application values, including NINA's 30-DIP caption and CornerRadius=1, remain
+observable; native corner clipping and Windows glass effects are not reproduced.
+SystemParameters.WindowNonClientFrameThickness remains declared (8,31,8,8).
+Only the portable WindowChrome default glass binding is omitted, retaining its
+zero metadata default. These are declared framework geometry choices, not
+observed desktop preferences, following the user's simplicity preference.
+
+Verification must cover real caption dragging, all resize directions, client
+opt-out inheritance, genuine caption commands, maximize/restore, DPI, mode changes
+and attach/replace/remove/close cleanup. General NoResize/CanMinimize/CanResize
+native function hints share existing window policy; CanResizeWithGrip and the
+synchronous public DragMove contract remain separate until implemented and tested.
+Original NINA workflows, complete Markdown, final packages, desktop/Orca and
+overnight qualification remain open. There is still no successful full-shell
+launch and Phases 2 through 5 have not passed.
 
 ## Replacement behavior checklist and gates
 
