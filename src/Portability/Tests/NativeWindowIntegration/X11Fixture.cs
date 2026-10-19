@@ -365,8 +365,38 @@ internal sealed class X11Fixture : IDisposable
         }
     }
 
-    internal bool IsMapped(IntPtr window) => window != IntPtr.Zero &&
-        XGetWindowAttributes(_display, window, out var attributes) != 0 && attributes.MapState == 2;
+    internal unsafe bool IsMapped(IntPtr window)
+    {
+        if (window == IntPtr.Zero) return false;
+        XSync(_display, false);
+        nuint serial = XNextRequest(_display);
+        bool absent = false;
+        IntPtr prior = IntPtr.Zero;
+        NativeErrorHandler handler = (IntPtr display, ref NativeError error) =>
+        {
+            if (display == _display && error.Serial == serial && error.ResourceId == unchecked((nuint)window.ToInt64()) &&
+                error.RequestCode == 3 && error.ErrorCode == 3)
+            {
+                absent = true;
+                return 0;
+            }
+            fixed (NativeError* pointer = &error)
+                return ((delegate* unmanaged[Cdecl]<IntPtr, NativeError*, int>)prior)(display, pointer);
+        };
+        prior = XSetErrorHandler(handler);
+        try
+        {
+            if (prior == IntPtr.Zero) throw new InvalidOperationException("Native mapping observation requires the existing X11 error handler.");
+            int observed = XGetWindowAttributes(_display, window, out var attributes);
+            XSync(_display, false);
+            return !absent && observed != 0 && attributes.MapState == 2;
+        }
+        finally
+        {
+            XSetErrorHandler(prior);
+            GC.KeepAlive(handler);
+        }
+    }
     internal (int Width, int Height) RootSize => Size(_root);
     internal bool HasSize(IntPtr window, int width, int height) =>
         XGetWindowAttributes(_display, window, out var attributes) != 0 && attributes.Width == width && attributes.Height == height;

@@ -8,6 +8,34 @@ internal static class WindowPresentationCases
 {
     internal static void Exercise(X11Fixture native, Action<string, Action> run, Action<Func<bool>> wait, Action drain)
     {
+        run("native-mapping-lifetime-show-hide-show-close", () =>
+        {
+            Require(!native.IsMapped(IntPtr.Zero), "A zero native window was mapped.");
+            var window = new Window { Title = "Genuine WPF mapping lifetime", Width = 180, Height = 120,
+                ShowActivated = false, Background = Brushes.Red };
+            int initialized = 0, closed = 0;
+            window.SourceInitialized += (_, _) => initialized++;
+            window.Closed += (_, _) => closed++;
+            try
+            {
+                window.Show(); var xid = native.FindWindow(window.Title);
+                wait(() => native.IsMapped(xid));
+                var source = PresentationSource.FromVisual(window) ?? throw new InvalidOperationException("Show did not attach a genuine native source.");
+                Require(initialized == 1 && closed == 0, "Show did not create one genuine native source.");
+                window.Hide(); wait(() => !native.IsMapped(xid));
+                Require(!window.IsVisible && native.FindWindow(window.Title) == xid &&
+                    ReferenceEquals(source, PresentationSource.FromVisual(window)), "Hide replaced or detached the native source.");
+                window.Show(); wait(() => native.IsMapped(xid));
+                Require(native.FindWindow(window.Title) == xid && initialized == 1 && closed == 0 &&
+                    ReferenceEquals(source, PresentationSource.FromVisual(window)), "Show after Hide replaced the native identity.");
+                window.Close();
+                wait(() => closed == 1 && source.IsDisposed && PresentationSource.FromVisual(window) is null && !native.IsMapped(xid));
+                Require(native.FindWindow(window.Title) == IntPtr.Zero && !native.IsMapped(IntPtr.Zero),
+                    "Close retained a discoverable or zero native window.");
+            }
+            finally { window.Close(); drain(); }
+            Require(closed == 1 && PresentationSource.FromVisual(window) is null, "The mapping Window did not close and detach once.");
+        });
         run("native-Window-style-paired-live-decorations", () =>
         {
             var window = new Window { Title = "Genuine WPF Window style", Width = 180, Height = 120,
