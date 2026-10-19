@@ -79,7 +79,8 @@ namespace MS.Internal.Portability.Settings
             bool keyboardCues, bool highContrast, PortablePointerSettings? pointerSettings = null,
             double caretWidthDip = 1.0, int caretBlinkTimeMilliseconds = 500, bool mouseVanish = false,
             double minimumHorizontalDragDistanceDip = 4.0, double minimumVerticalDragDistanceDip = 4.0,
-            PortableScrollBarMetrics? scrollBarMetrics = null, PortablePrimaryScreenMetrics? primaryScreenMetrics = null)
+            PortableScrollBarMetrics? scrollBarMetrics = null, PortablePrimaryScreenMetrics? primaryScreenMetrics = null,
+            int mouseHoverTimeMilliseconds = 400, double mouseHoverWidthDip = 4.0, double mouseHoverHeightDip = 4.0)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(profileName);
             ArgumentNullException.ThrowIfNull(colors);
@@ -91,6 +92,12 @@ namespace MS.Internal.Portability.Settings
                 throw new ArgumentOutOfRangeException(nameof(minimumHorizontalDragDistanceDip), "Horizontal drag distance must be finite and positive in DIPs.");
             if (!double.IsFinite(minimumVerticalDragDistanceDip) || minimumVerticalDragDistanceDip <= 0)
                 throw new ArgumentOutOfRangeException(nameof(minimumVerticalDragDistanceDip), "Vertical drag distance must be finite and positive in DIPs.");
+            if (mouseHoverTimeMilliseconds < 0)
+                throw new ArgumentOutOfRangeException(nameof(mouseHoverTimeMilliseconds), "Mouse hover time must be nonnegative in milliseconds.");
+            if (!double.IsFinite(mouseHoverWidthDip) || mouseHoverWidthDip <= 0)
+                throw new ArgumentOutOfRangeException(nameof(mouseHoverWidthDip), "Mouse hover width must be finite and positive in DIPs.");
+            if (!double.IsFinite(mouseHoverHeightDip) || mouseHoverHeightDip <= 0)
+                throw new ArgumentOutOfRangeException(nameof(mouseHoverHeightDip), "Mouse hover height must be finite and positive in DIPs.");
             var palette = new Dictionary<PortableSystemColor, uint>();
             foreach (var role in Enum.GetValues<PortableSystemColor>())
             {
@@ -115,6 +122,9 @@ namespace MS.Internal.Portability.Settings
             MinimumHorizontalDragDistanceDip = minimumHorizontalDragDistanceDip;
             MinimumVerticalDragDistanceDip = minimumVerticalDragDistanceDip;
             ScrollBarMetrics = scrollBarMetrics ?? PortableScrollBarMetrics.Classic;
+            MouseHoverTimeMilliseconds = mouseHoverTimeMilliseconds;
+            MouseHoverWidthDip = mouseHoverWidthDip;
+            MouseHoverHeightDip = mouseHoverHeightDip;
         }
 
         internal string ProfileName { get; }
@@ -127,6 +137,9 @@ namespace MS.Internal.Portability.Settings
         internal double MinimumHorizontalDragDistanceDip { get; }
         internal double MinimumVerticalDragDistanceDip { get; }
         internal PortableScrollBarMetrics ScrollBarMetrics { get; }
+        internal int MouseHoverTimeMilliseconds { get; }
+        internal double MouseHoverWidthDip { get; }
+        internal double MouseHoverHeightDip { get; }
         // Declared custom-frame geometry in DIPs, independent of WM decoration measurements.
         internal double WindowCaptionHeightDip => 23;
         internal double WindowResizeBorderThicknessDip => 8;
@@ -145,7 +158,8 @@ namespace MS.Internal.Portability.Settings
         internal static PortableSystemSettings CreateInitialLightProfile(bool keyboardCues = false, PortablePointerSettings? pointerSettings = null,
             double caretWidthDip = 1.0, int caretBlinkTimeMilliseconds = 500, bool mouseVanish = false,
             double minimumHorizontalDragDistanceDip = 4.0, double minimumVerticalDragDistanceDip = 4.0,
-            PortableScrollBarMetrics? scrollBarMetrics = null, PortablePrimaryScreenMetrics? primaryScreenMetrics = null) =>
+            PortableScrollBarMetrics? scrollBarMetrics = null, PortablePrimaryScreenMetrics? primaryScreenMetrics = null,
+            int mouseHoverTimeMilliseconds = 400, double mouseHoverWidthDip = 4.0, double mouseHoverHeightDip = 4.0) =>
             new PortableSystemSettings("portable-light-v1", new Dictionary<PortableSystemColor, uint>
             {
                 [PortableSystemColor.ActiveBorder] = 0xFF6B7280,
@@ -186,7 +200,8 @@ namespace MS.Internal.Portability.Settings
                 [PortableSystemColor.AccentDark2] = 0xFF123253,
                 [PortableSystemColor.AccentDark3] = 0xFF09192A
             }, keyboardCues, highContrast: false, pointerSettings, caretWidthDip, caretBlinkTimeMilliseconds, mouseVanish,
-                minimumHorizontalDragDistanceDip, minimumVerticalDragDistanceDip, scrollBarMetrics, primaryScreenMetrics);
+                minimumHorizontalDragDistanceDip, minimumVerticalDragDistanceDip, scrollBarMetrics, primaryScreenMetrics,
+                mouseHoverTimeMilliseconds, mouseHoverWidthDip, mouseHoverHeightDip);
     }
 }
 #endif

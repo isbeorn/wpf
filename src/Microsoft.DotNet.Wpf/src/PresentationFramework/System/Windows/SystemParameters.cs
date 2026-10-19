@@ -769,6 +769,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.MouseHoverTimeMilliseconds;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MouseHoverTime])
@@ -787,6 +790,7 @@ namespace System.Windows
                 }
 
                 return _mouseHoverTime;
+#endif
             }
         }
 
@@ -797,6 +801,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.MouseHoverHeightDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MouseHoverHeight])
@@ -818,6 +825,7 @@ namespace System.Windows
                 }
 
                 return _mouseHoverHeight;
+#endif
             }
         }
 
@@ -829,6 +837,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.MouseHoverWidthDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MouseHoverWidth])
@@ -850,6 +861,7 @@ namespace System.Windows
                 }
 
                 return _mouseHoverWidth;
+#endif
             }
         }
 
