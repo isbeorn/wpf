@@ -1,0 +1,41 @@
+{
+  "buildFlag": "NINA_SIMULATOR_QUALIFICATION",
+  "files": [
+    {
+      "path": "official-plugin-files.json",
+      "sha256": "EB568DC87827202B55F465C1E98C2F71550111A00F3C47A1C05CD70B8B0297C9"
+    },
+    {
+      "path": "plugin-upstream.json",
+      "sha256": "4A2540A539B1C9C2B4CF8D1F9217065EA1D1AA855722B245D483A6FD89A93A36"
+    },
+    {
+      "path": "PortableWindowPlacement.cs",
+      "sha256": "FCB643DDCD5E8C9EF891A727785394FD79CE199F3F9789E4157BCDA2AECD81AF"
+    },
+    {
+      "path": "SimulationDeviceChooser.cs",
+      "sha256": "F718BACB100E41C73EF1D1132F1665EF92D06DB69E6D66178DA088E56D7DFF9C"
+    },
+    {
+      "path": "SimulationUsbDeviceWatcher.cs",
+      "sha256": "A742272758E382031618EA71301DFD2E89A0B34AA7B75C1A1E4F6A6371DC56BC"
+    },
+    {
+      "path": "SimulatorPluginIntake.cs",
+      "sha256": "471827FB8466AAA053419638FDC80A1748688193264279C84FE787AB696FF059"
+    },
+    {
+      "path": "SimulatorQualification.cs",
+      "sha256": "5E006E990554E578F310DC7201E166D16DB830DF6A2AC9C83378D29108218ABC"
+    },
+    {
+      "path": "source-edits.json",
+      "sha256": "F6188DE1679C762FA5199FB2E4CC87FC557E08A44CC5979D9EA372C0EB8BD321"
+    },
+    {
+      "path": "source.patch",
+      "sha256": "DAA1EC044E004E5258519964F4676E0D4349AABA086248AA6A3D7E414AF0FF03"
+    }
+  ]
+}

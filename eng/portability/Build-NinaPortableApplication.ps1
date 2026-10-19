@@ -11,7 +11,9 @@ param(
     [Parameter(Mandatory)][string] $SystemEventsContractPath,
     [Parameter(Mandatory)][string] $MvvmGeneratorPath,
     [Parameter(Mandatory)][string] $OutputDirectory,
-    [string] $DotnetPath = 'dotnet'
+    [string] $DotnetPath = 'dotnet',
+    [switch] $SimulatorQualification,
+    [string] $OfficialPluginDirectory
 )
 
 $ErrorActionPreference = 'Stop'
@@ -20,6 +22,9 @@ Set-StrictMode -Version Latest
 $fixture = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../src/Portability/Tests/NinaPortableApplication'))
 $pin = Get-Content (Join-Path $fixture 'upstream.json') -Raw | ConvertFrom-Json
 $utf8 = [Text.UTF8Encoding]::new($false)
+$simulationFixture = Join-Path $fixture 'SimulatorQualification'
+$simulationEdits = @()
+$pluginAssembly = $null
 
 function Write-Utf8([string] $Path, [string] $Text) {
     [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($Path)) | Out-Null
@@ -95,6 +100,32 @@ Assert-Hash $MvvmGeneratorPath $pin.mvvmGeneratorSha256
 Assert-Hash (Join-Path $fixture 'App.xaml.cs.patch') $pin.consolePatchSha256
 Assert-Hash (Join-Path $fixture 'PortableEntry.cs') $pin.portableEntrySha256
 
+if ($SimulatorQualification) {
+    if ([string]::IsNullOrWhiteSpace($OfficialPluginDirectory)) { throw 'Simulator qualification requires the approved original official-template-derived fixture directory.' }
+    Assert-Hash "$simulationFixture/manifest.json" $pin.simulatorQualificationManifestSha256
+    $simulationPin = Get-Content "$simulationFixture/manifest.json" -Raw | ConvertFrom-Json
+    if ($simulationPin.buildFlag -cne 'NINA_SIMULATOR_QUALIFICATION') { throw 'Unexpected immutable simulation build flag.' }
+    foreach ($file in $simulationPin.files) {
+        if ($file.path -match '[/\\:]|^\.\.$') { throw 'Unexpected simulation fixture path.' }
+        Assert-Hash (Join-Path $simulationFixture $file.path) $file.sha256
+    }
+    $pluginPin = Get-Content "$simulationFixture/plugin-upstream.json" -Raw | ConvertFrom-Json
+    foreach ($file in $pluginPin.files) {
+        if ($file.path -notlike 'NINA.Plugin/*' -or $file.path -match '(^|/)\.\.(/|$)|\\|:') { throw 'Unexpected plugin source path.' }
+        Assert-Hash (Join-Path $NinaSourceDirectory $file.path) $file.sha256
+        $destination = Join-Path "$output/source" $file.path
+        [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($destination)) | Out-Null
+        [IO.File]::Copy((Join-Path $NinaSourceDirectory $file.path), $destination)
+    }
+    $officialPluginPin = Get-Content "$simulationFixture/official-plugin-files.json" -Raw | ConvertFrom-Json
+    foreach ($file in $officialPluginPin.files) {
+        Assert-Hash (Join-Path $OfficialPluginDirectory $file.path) $file.sha256
+        $destination = Join-Path "$output/qualification-inputs/QualificationPlugins" $file.path
+        [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($destination)) | Out-Null
+        [IO.File]::Copy((Join-Path $OfficialPluginDirectory $file.path), $destination)
+    }
+}
+
 foreach ($file in $pin.files) {
     $destination = Join-Path "$output/source" $file.path
     [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($destination)) | Out-Null
@@ -122,6 +153,20 @@ $after = $after.Replace("`r`n", "`n")
 if ($source.IndexOf($before, [StringComparison]::Ordinal) -lt 0 -or $source.IndexOf($before, [StringComparison]::Ordinal) -ne $source.LastIndexOf($before, [StringComparison]::Ordinal)) { throw 'The original console/parser block must match exactly once.' }
 Write-Utf8 $appPath ($source.Replace($before, $after))
 Assert-Hash $appPath $pin.consoleOutputSha256
+if ($SimulatorQualification) {
+    $simulationEdits = @(Get-Content "$simulationFixture/source-edits.json" -Raw | ConvertFrom-Json)
+    foreach ($file in $simulationEdits) {
+        $path = Join-Path "$output/source" $file.path
+        Assert-Hash $path $file.inputSha256
+        $value = [IO.File]::ReadAllText($path)
+        foreach ($edit in $file.edits) {
+            if ($value.IndexOf($edit.before, [StringComparison]::Ordinal) -lt 0 -or $value.IndexOf($edit.before, [StringComparison]::Ordinal) -ne $value.LastIndexOf($edit.before, [StringComparison]::Ordinal)) { throw "Simulation edit must match exactly once: $($file.path)" }
+            $value = $value.Replace($edit.before, $edit.after)
+        }
+        Write-Utf8 $path $value
+        Assert-Hash $path $file.outputSha256
+    }
+}
 
 [xml] $originalProject = Get-Content "$NinaSourceDirectory/NINA/NINA.csproj" -Raw
 $project = [xml]'<Project/>'
@@ -151,10 +196,20 @@ $settings = [ordered]@{
     _PresentationBuildTasksAssembly = [IO.Path]::GetFullPath($MarkupCompiler)
 }
 foreach ($entry in $settings.GetEnumerator()) { $element = Add-Element $project $properties $entry.Key @{}; $element.InnerText = $entry.Value }
+if ($SimulatorQualification) {
+    $element = Add-Element $project $properties DefineConstants @{}
+    $element.InnerText = '$(DefineConstants);NINA_SIMULATOR_QUALIFICATION'
+}
 $references = Add-Element $project $root ItemGroup @{}
+if ($SimulatorQualification) {
+    foreach ($name in @('SimulatorQualification.cs', 'SimulationDeviceChooser.cs', 'SimulationUsbDeviceWatcher.cs', 'PortableWindowPlacement.cs')) {
+        $null = Add-Element $project $references Compile @{ Include = "$simulationFixture/$name"; Link = "Portability/$name" }
+    }
+}
 $null = Add-Element $project $references Compile @{ Include = "$fixture/PortableEntry.cs"; Link = 'Portability/PortableEntry.cs' }
 foreach ($file in $closure.files | Where-Object { !$_.outputPath.Contains('/') -and $_.outputPath -notin @('NINA.dll', 'AvalonDock.dll') }) {
-    $null = Add-Element $project $references Reference @{ Include = [IO.Path]::GetFileNameWithoutExtension($file.outputPath); HintPath = "$closureDirectory/managed/$($file.outputPath)"; Private = 'true' }
+    $referencePath = if ($SimulatorQualification -and $file.outputPath -ceq 'NINA.Plugin.dll') { "$output/plugin-bin/Release/net10.0/NINA.Plugin.dll" } else { "$closureDirectory/managed/$($file.outputPath)" }
+    $null = Add-Element $project $references Reference @{ Include = [IO.Path]::GetFileNameWithoutExtension($file.outputPath); HintPath = $referencePath; Private = 'true' }
 }
 $null = Add-Element $project $references Reference @{ Include = 'AvalonDock'; HintPath = [IO.Path]::GetFullPath($AvalonDockPath); Private = 'true' }
 $null = Add-Element $project $references Reference @{ Include = "$FrameworkRuntimeDirectory/*.dll"; Private = 'true' }
@@ -171,6 +226,33 @@ Write-Utf8 "$output/global.json" '{"sdk":{"version":"10.0.401","rollForward":"di
 Write-Utf8 "$output/Directory.Build.targets" '<Project/>'
 Write-Utf8 "$output/NuGet.Config" '<configuration><packageSources><clear/></packageSources></configuration>'
 Write-Utf8 "$output/build-substitutions.json" ($substitutions | ConvertTo-Json -Depth 5)
+if ($SimulatorQualification) {
+    [xml] $originalPluginProject = Get-Content "$NinaSourceDirectory/NINA.Plugin/NINA.Plugin.csproj" -Raw
+    $pluginProject = [xml]'<Project/>'
+    $pluginRoot = $pluginProject.DocumentElement
+    $null = Add-Element $pluginProject $pluginRoot Import @{ Project = 'Sdk.props'; Sdk = 'Microsoft.NET.Sdk' }
+    foreach ($node in $originalPluginProject.DocumentElement.ChildNodes) { $null = $pluginRoot.AppendChild($pluginProject.ImportNode($node, $true)) }
+    foreach ($node in @($pluginRoot.SelectNodes('ItemGroup/ProjectReference|ItemGroup/PackageReference|Target[@Name="PostBuild"]'))) { $null = $node.ParentNode.RemoveChild($node) }
+    $pluginProperties = Add-Element $pluginProject $pluginRoot PropertyGroup @{}
+    $pluginSettings = [ordered]@{
+        AssemblyName = 'NINA.Plugin'; RootNamespace = 'NINA.Plugin'; TargetFramework = 'net10.0'; UseWPF = 'false'; ImportWindowsDesktopTargets = 'false'; EnableWindowsTargeting = 'false'
+        GeneratePackageOnBuild = 'false'; EnableNETAnalyzers = 'false'; AllowUnsafeBlocks = 'true'; DefineConstants = '$(DefineConstants);NINA_SIMULATOR_QUALIFICATION'
+        BaseOutputPath = "$output/plugin-bin/"; BaseIntermediateOutputPath = "$output/plugin-obj/"; MSBuildProjectExtensionsPath = "$output/plugin-obj/"
+    }
+    foreach ($entry in $pluginSettings.GetEnumerator()) { $element = Add-Element $pluginProject $pluginProperties $entry.Key @{}; $element.InnerText = $entry.Value }
+    $pluginReferences = Add-Element $pluginProject $pluginRoot ItemGroup @{}
+    $null = Add-Element $pluginProject $pluginReferences Compile @{ Include = "$simulationFixture/SimulatorPluginIntake.cs"; Link = 'Portability/SimulatorPluginIntake.cs' }
+    foreach ($file in $closure.files | Where-Object { !$_.outputPath.Contains('/') -and $_.outputPath -notin @('NINA.dll', 'NINA.Plugin.dll', 'AvalonDock.dll') }) {
+        $null = Add-Element $pluginProject $pluginReferences Reference @{ Include = [IO.Path]::GetFileNameWithoutExtension($file.outputPath); HintPath = "$closureDirectory/managed/$($file.outputPath)"; Private = 'true' }
+    }
+    $null = Add-Element $pluginProject $pluginReferences Reference @{ Include = 'AvalonDock'; HintPath = [IO.Path]::GetFullPath($AvalonDockPath); Private = 'true' }
+    $null = Add-Element $pluginProject $pluginReferences Reference @{ Include = "$FrameworkRuntimeDirectory/*.dll"; Private = 'true' }
+    $null = Add-Element $pluginProject $pluginReferences Reference @{ Include = 'Microsoft.Win32.SystemEvents'; HintPath = [IO.Path]::GetFullPath($SystemEventsContractPath); Private = 'false' }
+    $null = Add-Element $pluginProject $pluginRoot Import @{ Project = 'Sdk.targets'; Sdk = 'Microsoft.NET.Sdk' }
+    $null = Add-Element $pluginProject $pluginRoot Import @{ Project = [IO.Path]::GetFullPath($PortableReferencesTargets) }
+    $pluginProjectPath = "$output/source/NINA.Plugin/NINA.Plugin.Portable.csproj"
+    Write-Utf8 $pluginProjectPath $pluginProject.OuterXml
+}
 
 $environmentNames = @('DOTNET_CLI_HOME', 'NUGET_PACKAGES', 'DOTNET_GENERATE_ASPNET_CERTIFICATE', 'DOTNET_SKIP_FIRST_TIME_EXPERIENCE', 'DOTNET_CLI_TELEMETRY_OPTOUT', 'DOTNET_NOLOGO', 'MSBUILDDISABLENODEREUSE')
 $savedEnvironment = @{}
@@ -186,11 +268,17 @@ try {
     $env:MSBUILDDISABLENODEREUSE = '1'
     $sdk = (& $DotnetPath --version).Trim()
     if ($LASTEXITCODE -ne 0 -or $sdk -cne '10.0.401') { throw "Expected SDK 10.0.401; found $sdk" }
-    $common = @('-p:Configuration=Release', "-p:DirectoryBuildTargetsPath=$output/Directory.Build.targets", "-p:BaseIntermediateOutputPath=$output/obj/", "-p:MSBuildProjectExtensionsPath=$output/obj/")
+    if ($SimulatorQualification) {
+        & $DotnetPath build $pluginProjectPath --configuration Release --nologo -m:1 -nr:false --configfile "$output/NuGet.Config" -p:UseSharedCompilation=false -p:NuGetAudit=false "-p:DirectoryBuildTargetsPath=$output/Directory.Build.targets" "-p:BaseIntermediateOutputPath=$output/plugin-obj/" "-p:MSBuildProjectExtensionsPath=$output/plugin-obj/" *> "$output/plugin-build.log"
+        if ($LASTEXITCODE -ne 0) { throw "NINA.Plugin qualification build failed. See $output/plugin-build.log" }
+        $pluginAssembly = "$output/plugin-bin/Release/net10.0/NINA.Plugin.dll"
+        if ([Reflection.AssemblyName]::GetAssemblyName($pluginAssembly).FullName -cne $pluginPin.assemblyIdentity) { throw 'The original NINA.Plugin assembly identity changed.' }
+    }
+    $common = @('-p:Configuration=Release' , "-p:DirectoryBuildTargetsPath=$output/Directory.Build.targets", "-p:BaseIntermediateOutputPath=$output/obj/", "-p:MSBuildProjectExtensionsPath=$output/obj/")
     $items = & $DotnetPath msbuild $projectPath -nologo '-getItem:Compile,Page,ApplicationDefinition,Resource,Content,SplashScreen' @common
     if ($LASTEXITCODE -ne 0) { throw 'Project item evaluation failed.' }
     $evaluated = ($items -join "`n") | ConvertFrom-Json
-    $expected = @{ Compile = 196; Page = 103; ApplicationDefinition = 1; Resource = 10; Content = 17; SplashScreen = 1 }
+    $expected = @{ Compile = $(if ($SimulatorQualification) { 200 } else { 196 }); Page = 103; ApplicationDefinition = 1; Resource = 10; Content = 17; SplashScreen = 1 }
     foreach ($name in $expected.Keys) { if (@($evaluated.Items.$name).Count -ne $expected[$name]) { throw "Original application item count differs: $name" } }
     Write-Utf8 "$output/evaluated-item-counts.json" ($expected | ConvertTo-Json)
     & $DotnetPath build $projectPath --configuration Release --nologo -m:1 -nr:false --configfile "$output/NuGet.Config" -p:UseSharedCompilation=false -p:NuGetAudit=false @common *> "$output/build.log"
@@ -204,7 +292,18 @@ try {
 foreach ($file in $pin.files) {
     Assert-Hash (Join-Path $NinaSourceDirectory $file.path) $file.sha256
     $expected = if ($file.path -ceq 'NINA/App.xaml.cs') { $pin.consoleOutputSha256 } else { $file.sha256 }
+    $adaptation = @($simulationEdits | Where-Object path -ceq $file.path)
+    if ($adaptation.Count -eq 1) { $expected = $adaptation[0].outputSha256 }
     Assert-Hash (Join-Path "$output/source" $file.path) $expected
+}
+if ($SimulatorQualification) {
+    foreach ($file in $pluginPin.files) {
+        Assert-Hash (Join-Path $NinaSourceDirectory $file.path) $file.sha256
+        $adaptation = @($simulationEdits | Where-Object path -ceq $file.path)
+        $expectedHash = if ($adaptation.Count -eq 1) { $adaptation[0].outputSha256 } else { $file.sha256 }
+        Assert-Hash (Join-Path "$output/source" $file.path) $expectedHash
+    }
+    foreach ($file in $simulationPin.files) { Assert-Hash (Join-Path $simulationFixture $file.path) $file.sha256 }
 }
 $assembly = "$output/bin/Release/net10.0/NINA.dll"
 Assert-Hash (Join-Path $fixture 'PortableEntry.cs') $pin.portableEntrySha256
@@ -218,7 +317,7 @@ $keys = @(Read-ResourceKeys $assembly | Sort-Object)
 if ($keys.Count -ne 115 -or @($keys | Where-Object { $_ -like '*.baml' }).Count -ne 104 -or [string]::Join('|', $keys) -cne [string]::Join('|', $originalKeys)) { throw 'The original NINA embedded resource-key closure changed.' }
 $result = [ordered]@{
     status = 'source-build-pass'; sourceRevision = $pin.revision; sourceFilesVerified = 680; adaptedSource = 'NINA/App.xaml.cs'; adaptedSourceSha256 = $pin.consoleOutputSha256
-    startupObject = 'NINA.PortableEntry'; portableEntrySha256 = $pin.portableEntrySha256; compileItems = 196
+    startupObject = 'NINA.PortableEntry'; portableEntrySha256 = $pin.portableEntrySha256; compileItems = $(if ($SimulatorQualification) { 200 } else { 196 })
     applicationExecution = $false; assembly = $assembly; assemblySha256 = (Get-FileHash $assembly).Hash; assemblyIdentity = $identity
     pdb = "$output/bin/Release/net10.0/NINA.pdb"; pdbSha256 = (Get-FileHash "$output/bin/Release/net10.0/NINA.pdb").Hash
     resourceKeys = $keys; bamlCount = 104; appMergedDictionaries = 34; sdk = $sdk; runtimeFrameworkVersion = '10.0.12'
@@ -229,5 +328,22 @@ $result = [ordered]@{
     avalonDockSha256 = $pin.avalonDockSha256; systemEventsCompileContractSha256 = $pin.systemEventsContractSha256; systemEventsRuntimeSupplied = $false
     nativeDeploymentOmissions = @($substitutions | Where-Object kind -eq 'absent-native-deployment-item').Count
 }
-Write-Utf8 "$output/results.json" ($result | ConvertTo-Json -Depth 6)
-Write-Output "Original NINA source build passed; 104 BAML entries, one paired-console adaptation and no application execution. Evidence: $output/results.json"
+if ($SimulatorQualification) {
+    $result.status = 'simulator-qualification-source-build-pass'
+    $result.adaptedSource = @($simulationEdits | ForEach-Object path)
+    $result.adaptedSourceSha256 = @($simulationEdits | Select-Object path,outputSha256)
+    $result.simulatorQualification = [ordered]@{
+        buildFlag = 'NINA_SIMULATOR_QUALIFICATION'; runtimeModeSwitch = $false; fixtureManifestSha256 = $pin.simulatorQualificationManifestSha256
+        pluginSourceFilesVerified = $pluginPin.files.Count; pluginAssembly = $pluginAssembly; pluginAssemblySha256 = (Get-FileHash $pluginAssembly).Hash
+        pluginPdb = "$output/plugin-bin/Release/net10.0/NINA.Plugin.pdb"; pluginPdbSha256 = (Get-FileHash "$output/plugin-bin/Release/net10.0/NINA.Plugin.pdb").Hash
+        unchangedOriginalPEs = 157; derivedOriginalPEs = @('NINA.dll', 'NINA.Plugin.dll', 'AvalonDock.dll')
+        officialTemplateFixture = $officialPluginPin; stagedFixture = "$output/qualification-inputs/QualificationPlugins"
+        fullShellQualified = $false; nativeAstronomySupplied = $false; windowsValidStartupIsolationQualified = $false
+    }
+}
+Write-Utf8 "$output/results.json" ($result | ConvertTo-Json -Depth 9)
+if ($SimulatorQualification) {
+    Write-Output "NINA simulator qualification source build passed; original 104 BAML entries and source-built Plugin. No full application execution. Evidence: $output/results.json"
+} else {
+    Write-Output "Original NINA source build passed; 104 BAML entries, one paired-console adaptation and no application execution. Evidence: $output/results.json"
+}

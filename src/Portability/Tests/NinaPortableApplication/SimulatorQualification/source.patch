@@ -1,0 +1,485 @@
+--- a/NINA/Utility/IoCBindings.cs
++++ b/NINA/Utility/IoCBindings.cs
+@@ -72,6 +72,9 @@
+ using NINA.WPF.Base.ViewModel.Equipment.Telescope;
+ using NINA.WPF.Base.ViewModel.Equipment.WeatherData;
+ using System;
++#if NINA_SIMULATOR_QUALIFICATION
++using NINA.Portability;
++#endif
+ 
+ namespace NINA.Utility {
+ 
+@@ -102,7 +105,11 @@
+                 services.AddSingleton<ISymbolBroker, SymbolBroker>();
+                 services.AddSingleton<ITemplateLinkResolver, TemplateLinkResolver>();
+ 
++#if NINA_SIMULATOR_QUALIFICATION
++                services.AddTransient<IUsbDeviceWatcher, SimulationUsbDeviceWatcher>();
++#else
+                 services.AddTransient<IUsbDeviceWatcher, UsbDeviceWatcher>();
++#endif
+ 
+                 // Equipment Providers
+                 services.AddScoped<IEquipmentProviders<ICamera>, PluginEquipmentProviders<ICamera>>();
+@@ -133,6 +140,19 @@
+                 );
+                 services.AddSingleton<IPluginEquipmentProviderManager, PluginEquipmentProviderManager>();
+ 
++#if NINA_SIMULATOR_QUALIFICATION
++                services.AddSingleton<SimulationDeviceChooser<ICamera>>(f => SimulationInventory.Camera(f));
++                services.AddSingleton<SimulationDeviceChooser<IFilterWheel>>(f => SimulationInventory.FilterWheel(f));
++                services.AddSingleton<SimulationDeviceChooser<IFocuser>>(f => SimulationInventory.Focuser(f));
++                services.AddSingleton<SimulationDeviceChooser<IRotator>>(f => SimulationInventory.Rotator(f));
++                services.AddSingleton<SimulationDeviceChooser<ITelescope>>(f => SimulationInventory.Telescope(f));
++                services.AddSingleton<SimulationDeviceChooser<IGuider>>(f => SimulationInventory.Guider(f));
++                services.AddSingleton<SimulationDeviceChooser<ISwitchHub>>(f => SimulationInventory.Switch(f));
++                services.AddSingleton<SimulationDeviceChooser<IFlatDevice>>(f => SimulationInventory.FlatDevice(f));
++                services.AddSingleton<SimulationDeviceChooser<IWeatherData>>(f => SimulationInventory.WeatherData(f));
++                services.AddSingleton<SimulationDeviceChooser<IDome>>(f => SimulationInventory.Dome(f));
++                services.AddSingleton<SimulationDeviceChooser<ISafetyMonitor>>(f => SimulationInventory.SafetyMonitor(f));
++#else
+                 // Device Chooser Instances
+                 services.AddSingleton<CameraChooserVM>();
+                 services.AddSingleton<FilterWheelChooserVM>();
+@@ -146,33 +166,59 @@
+                 services.AddSingleton<DomeChooserVM>();
+                 services.AddSingleton<SafetyMonitorChooserVM>();
+ 
++#endif
++
+                 // Equipment Viewmodel creation
+                 services.AddSingleton<ICameraVM, CameraVM>(f =>
+                     new CameraVM(f.GetService<IProfileService>(),
+                                  f.GetService<ICameraMediator>(),
+                                  f.GetService<IFilterWheelMediator>(),
+                                  f.GetService<IApplicationStatusMediator>(),
+-                                 f.GetService<CameraChooserVM>()));
++                                 
++#if NINA_SIMULATOR_QUALIFICATION
++                                      f.GetService<SimulationDeviceChooser<ICamera>>()
++#else
++                                      f.GetService<CameraChooserVM>()
++#endif
++));
+ 
+                 services.AddSingleton<IFilterWheelVM, FilterWheelVM>(f =>
+                     new FilterWheelVM(f.GetService<IProfileService>(),
+                                       f.GetService<IFilterWheelMediator>(),
+                                       f.GetService<IFocuserMediator>(),
+                                       f.GetService<IGuiderMediator>(),
+-                                      f.GetService<FilterWheelChooserVM>(),
++                                      
++#if NINA_SIMULATOR_QUALIFICATION
++                                      f.GetService<SimulationDeviceChooser<IFilterWheel>>()
++#else
++                                      f.GetService<FilterWheelChooserVM>()
++#endif
++,
+                                       f.GetService<IApplicationStatusMediator>()));
+ 
+                 services.AddSingleton<IFocuserVM, FocuserVM>(f =>
+                     new FocuserVM(f.GetService<IProfileService>(),
+                                       f.GetService<IFocuserMediator>(),
+                                       f.GetService<IApplicationStatusMediator>(),
+-                                      f.GetService<FocuserChooserVM>(),
++                                      
++#if NINA_SIMULATOR_QUALIFICATION
++                                      f.GetService<SimulationDeviceChooser<IFocuser>>()
++#else
++                                      f.GetService<FocuserChooserVM>()
++#endif
++,
+                                       f.GetService<IImageGeometryProvider>()));
+ 
+                 services.AddSingleton<IRotatorVM, RotatorVM>(f =>
+                     new RotatorVM(f.GetService<IProfileService>(),
+                                       f.GetService<IRotatorMediator>(),
+-                                      f.GetService<RotatorChooserVM>(),
++                                      
++#if NINA_SIMULATOR_QUALIFICATION
++                                      f.GetService<SimulationDeviceChooser<IRotator>>()
++#else
++                                      f.GetService<RotatorChooserVM>()
++#endif
++,
+                                       f.GetService<IApplicationResourceDictionary>(),
+                                       f.GetService<IApplicationStatusMediator>()));
+ 
+@@ -181,40 +227,76 @@
+                                       f.GetService<ITelescopeMediator>(),
+                                       f.GetService<IApplicationStatusMediator>(),
+                                       f.GetService<IDomeMediator>(),
+-                                      f.GetService<TelescopeChooserVM>()));
++                                      
++#if NINA_SIMULATOR_QUALIFICATION
++                                      f.GetService<SimulationDeviceChooser<ITelescope>>()
++#else
++                                      f.GetService<TelescopeChooserVM>()
++#endif
++));
+ 
+                 services.AddSingleton<IGuiderVM, GuiderVM>(f =>
+                     new GuiderVM(f.GetService<IProfileService>(),
+                                       f.GetService<IGuiderMediator>(),
+                                       f.GetService<IApplicationStatusMediator>(),
+-                                      f.GetService<GuiderChooserVM>()));
++                                      
++#if NINA_SIMULATOR_QUALIFICATION
++                                      f.GetService<SimulationDeviceChooser<IGuider>>()
++#else
++                                      f.GetService<GuiderChooserVM>()
++#endif
++));
+ 
+                 services.AddSingleton<ISwitchVM, SwitchVM>(f =>
+                     new SwitchVM(f.GetService<IProfileService>(),
+                                       f.GetService<IApplicationStatusMediator>(),
+                                       f.GetService<ISwitchMediator>(),
+-                                      f.GetService<SwitchChooserVM>()));
++                                      
++#if NINA_SIMULATOR_QUALIFICATION
++                                      f.GetService<SimulationDeviceChooser<ISwitchHub>>()
++#else
++                                      f.GetService<SwitchChooserVM>()
++#endif
++));
+ 
+                 services.AddSingleton<IFlatDeviceVM, FlatDeviceVM>(f =>
+                     new FlatDeviceVM(f.GetService<IProfileService>(),
+                                       f.GetService<IFlatDeviceMediator>(),
+                                       f.GetService<IApplicationStatusMediator>(),
+                                       f.GetService<ICameraMediator>(),
+-                                      f.GetService<FlatDeviceChooserVM>(),
++                                      
++#if NINA_SIMULATOR_QUALIFICATION
++                                      f.GetService<SimulationDeviceChooser<IFlatDevice>>()
++#else
++                                      f.GetService<FlatDeviceChooserVM>()
++#endif
++,
+                                       f.GetService<IImageGeometryProvider>()));
+ 
+                 services.AddSingleton<IWeatherDataVM, WeatherDataVM>(f =>
+                     new WeatherDataVM(f.GetService<IProfileService>(),
+                                       f.GetService<IWeatherDataMediator>(),
+                                       f.GetService<IApplicationStatusMediator>(),
+-                                      f.GetService<WeatherDataChooserVM>()));
++                                      
++#if NINA_SIMULATOR_QUALIFICATION
++                                      f.GetService<SimulationDeviceChooser<IWeatherData>>()
++#else
++                                      f.GetService<WeatherDataChooserVM>()
++#endif
++));
+ 
+                 services.AddSingleton<IDomeVM, DomeVM>(f =>
+                     new DomeVM(f.GetService<IProfileService>(),
+                                       f.GetService<IDomeMediator>(),
+                                       f.GetService<IApplicationStatusMediator>(),
+                                       f.GetService<ITelescopeMediator>(),
+-                                      f.GetService<DomeChooserVM>(),
++                                      
++#if NINA_SIMULATOR_QUALIFICATION
++                                      f.GetService<SimulationDeviceChooser<IDome>>()
++#else
++                                      f.GetService<DomeChooserVM>()
++#endif
++,
+                                       f.GetService<IDomeFollower>(),
+                                       f.GetService<ISafetyMonitorMediator>(),
+                                       f.GetService<IApplicationResourceDictionary>(),
+@@ -224,7 +306,13 @@
+                     new SafetyMonitorVM(f.GetService<IProfileService>(),
+                                       f.GetService<ISafetyMonitorMediator>(),
+                                       f.GetService<IApplicationStatusMediator>(),
+-                                      f.GetService<SafetyMonitorChooserVM>()));
++                                      
++#if NINA_SIMULATOR_QUALIFICATION
++                                      f.GetService<SimulationDeviceChooser<ISafetyMonitor>>()
++#else
++                                      f.GetService<SafetyMonitorChooserVM>()
++#endif
++));
+ 
+                 // Equipment Mediators
+                 services.AddSingleton<ICameraMediator, CameraMediator>();
+--- a/NINA/CompositionRoot.cs
++++ b/NINA/CompositionRoot.cs
+@@ -58,7 +58,11 @@
+ 
+                 sw = Stopwatch.StartNew();
+                 try {
++#if NINA_SIMULATOR_QUALIFICATION
++                    Logger.Info("Simulator-only qualification: EDSDK initialization is excluded.");
++#else
+                     EDSDKLib.EDSDKLocal.Initialize();
++#endif
+                 } catch (Exception ex) {
+                     Logger.Error(ex);
+                 }
+--- a/NINA/ViewModel/ApplicationDeviceConnectionVM.cs
++++ b/NINA/ViewModel/ApplicationDeviceConnectionVM.cs
+@@ -273,7 +273,11 @@
+             usbDeviceWatcher.Stop();
+             AsyncContext.Run(DisconnectEquipment);
+             try {
++#if NINA_SIMULATOR_QUALIFICATION
++                Logger.Info("Simulator-only qualification: Atik SDK shutdown is excluded.");
++#else
+                 NINA.Equipment.SDK.CameraSDKs.AtikSDK.AtikCameraDll.Shutdown();
++#endif
+             } catch (Exception) { }
+         }
+ 
+--- a/NINA/App.xaml.cs
++++ b/NINA/App.xaml.cs
+@@ -126,7 +126,11 @@
+         }
+ 
+         private void StartupActions() {
++#if NINA_SIMULATOR_QUALIFICATION
++            Logger.Info("Simulator-only offline qualification: EOP network refresh is deferred; pinned local data remains in use.");
++#else
+             _ = new EarthRotationParameterUpdater().Update();
++#endif
+         }
+ 
+         protected override void OnStartup(StartupEventArgs e) {
+@@ -166,7 +170,9 @@
+             if (!_profileService.TryLoad(startWithProfileId)) {
+                 var profileExists = _profileService.Profiles.Any(x => x.Id.ToString() == startWithProfileId);
+                 if (profileExists) {
+-                    ProfileService.ActivateInstanceOfNinaReferencingProfile(startWithProfileId);
++                    if (OperatingSystem.IsWindows()) {
++                        ProfileService.ActivateInstanceOfNinaReferencingProfile(startWithProfileId);
++                    }
+                     Shutdown();
+                 } else {
+                     Logger.Error($"Profile {startWithProfileId} was not found. Available profiles: {string.Join(", ", _profileService.Profiles.Select(x => x.Id))}");
+@@ -234,7 +240,9 @@
+                 profileSelectionWindow?.Close();
+             }
+             Application.Current.ShutdownMode = ShutdownMode.OnMainWindowClose;
+-            ProfileService.ActivateInstanceWatcher(_profileService, mainWindow);
++            if (OperatingSystem.IsWindows()) {
++                ProfileService.ActivateInstanceWatcher(_profileService, mainWindow);
++            }
+ 
+             StartupActions();
+         }
+--- a/NINA/AppJumpListExtensions.cs
++++ b/NINA/AppJumpListExtensions.cs
+@@ -20,10 +20,13 @@
+ 
+         internal static void RefreshJumpList(
+             this App app,
+-            IProfileService profileService) =>
++            IProfileService profileService) {
++            if (System.OperatingSystem.IsWindows()) {
+                 SetJumpList(app,
+-                (GetJumpList(app) ?? new JumpList())
+-                .WithJumpTaskForEachAvailableProfile(profileService));
++                    (GetJumpList(app) ?? new JumpList())
++                    .WithJumpTaskForEachAvailableProfile(profileService));
++            }
++        }
+ 
+         private static JumpList WithJumpTaskForEachAvailableProfile(
+             this JumpList jumpList,
+--- a/NINA/MainWindow.xaml.cs
++++ b/NINA/MainWindow.xaml.cs
+@@ -31,7 +31,12 @@
+ 
+         public MainWindow() {
+             InitializeComponent();
+-            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
++            if (OperatingSystem.IsWindows()) {
++                SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
++            }
++#if NINA_SIMULATOR_QUALIFICATION
++            Title += " - Simulator-only offline qualification";
++#endif
+         }
+ 
+         private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e) {
+@@ -48,6 +53,12 @@
+ 
+         protected override void OnSourceInitialized(EventArgs e) {
+             base.OnSourceInitialized(e);
++            if (!OperatingSystem.IsWindows()) {
++#if NINA_SIMULATOR_QUALIFICATION
++                NINA.Portability.PortableWindowPlacement.Restore(this);
++#endif
++                return;
++            }
+             ((HwndSource)PresentationSource.FromVisual(this)).AddHook(HookProc);
+ 
+             try {
+@@ -80,11 +91,17 @@
+         // WARNING - Not fired when Application.SessionEnding is fired
+         protected override void OnClosing(CancelEventArgs e) {
+             // Persist window placement details to application settings
+-            WindowPlacement wp;
+-            var hwnd = new WindowInteropHelper(this).Handle;
+-            GetWindowPlacement(hwnd, out wp);
+-            Properties.Settings.Default.WindowPlacement = wp;
+-            CoreUtil.SaveSettings(Properties.Settings.Default);
++            if (OperatingSystem.IsWindows()) {
++                WindowPlacement wp;
++                var hwnd = new WindowInteropHelper(this).Handle;
++                GetWindowPlacement(hwnd, out wp);
++                Properties.Settings.Default.WindowPlacement = wp;
++                CoreUtil.SaveSettings(Properties.Settings.Default);
++            } else {
++#if NINA_SIMULATOR_QUALIFICATION
++                NINA.Portability.PortableWindowPlacement.Save(this);
++#endif
++            }
+ 
+             base.OnClosing(e);
+         }
+--- a/NINA/ViewModel/ApplicationVM.cs
++++ b/NINA/ViewModel/ApplicationVM.cs
+@@ -78,6 +78,10 @@
+ 
+         [RelayCommand]
+         private void CheckASCOMPlatformVersion() {
++            if (NINA.Portability.SimulatorQualification.Enabled) {
++                Logger.Info("Simulator-only qualification: ASCOM platform availability is not queried.");
++                return;
++            }
+             try {
+                 var version = ASCOMInteraction.GetPlatformVersion();
+                 Logger.Info($"ASCOM Platform {version} installed");
+@@ -260,6 +264,7 @@
+         }
+ 
+         private void SubscribeSystemEvents() {
++            if (!OperatingSystem.IsWindows()) return;
+             try {
+                 Microsoft.Win32.SystemEvents.PowerModeChanged += SystemEvents_PowerModeChanged;
+                 Microsoft.Win32.SystemEvents.SessionEnding += SystemEvents_SessionEnding;
+@@ -267,6 +272,7 @@
+         }
+ 
+         private void UnsubscribeSystemEvents() {
++            if (!OperatingSystem.IsWindows()) return;
+             try {
+                 Microsoft.Win32.SystemEvents.PowerModeChanged -= SystemEvents_PowerModeChanged;
+                 Microsoft.Win32.SystemEvents.SessionEnding -= SystemEvents_SessionEnding;
+--- a/NINA/ViewModel/VersionCheckVM.cs
++++ b/NINA/ViewModel/VersionCheckVM.cs
+@@ -67,6 +67,10 @@
+         }
+ 
+         public async Task<bool> CheckUpdate() {
++            if (NINA.Portability.SimulatorQualification.Enabled) {
++                Logger.Info("Simulator-only offline qualification: application update checks are deferred.");
++                return false;
++            }
+             return await Task.Run(async () => {
+                 if (NetworkInterface.GetIsNetworkAvailable() == false) {
+                     Logger.Info("Network is not available. Skipping version check.");
+@@ -103,6 +107,10 @@
+         }
+ 
+         private void Update(object o) {
++            if (NINA.Portability.SimulatorQualification.Enabled) {
++                Logger.Info("Simulator-only offline qualification: application installation is excluded.");
++                return;
++            }
+             var setupPath = Path.Combine(setupLocation, "NINASetupBundle.exe");
+             try {
+                 // Use native method to not spawn a process as a child process without any handles attached. Otherwise the setup will be unable to update some files and needs a reboot.
+@@ -128,6 +136,10 @@
+         }
+ 
+         private async Task<bool> Download() {
++            if (NINA.Portability.SimulatorQualification.Enabled) {
++                Logger.Info("Simulator-only offline qualification: application downloads are deferred.");
++                return false;
++            }
+             downloadCts?.Dispose();
+             downloadCts = new CancellationTokenSource();
+             try {
+--- a/NINA/ViewModel/Plugins/PluginsVM.cs
++++ b/NINA/ViewModel/Plugins/PluginsVM.cs
+@@ -479,6 +479,11 @@
+         }
+ 
+         public Task<bool> FetchPlugins() {
++            if (NINA.Portability.SimulatorQualification.Enabled) {
++                CatalogError = "Simulator-only offline qualification uses the pinned local fixture; repository downloads are deferred.";
++                Logger.Info(CatalogError);
++                return Task.FromResult(false);
++            }
+             try {
+                 var repositories = CoreUtil.DeserializeList<string>(Properties.Settings.Default.PluginRepositories);
+                 if (!repositories.Contains(Constants.MainPluginRepository)) {
+@@ -612,6 +617,11 @@
+         }
+ 
+         private async Task<bool> MutatePlugins((PluginEntryVM Entry, IPluginManifest Manifest)[] targets, PluginActivity activity) {
++            if (NINA.Portability.SimulatorQualification.Enabled) {
++                CatalogError = "Simulator-only offline qualification retains the pinned fixture; plugin mutation is excluded.";
++                Logger.Info(CatalogError);
++                return false;
++            }
+             if (targets.Length == 0 || !await mutationGate.WaitAsync(0)) {
+                 return false;
+             }
+--- a/NINA.Plugin/PluginLoader.cs
++++ b/NINA.Plugin/PluginLoader.cs
+@@ -242,9 +242,11 @@
+                     Stopwatch sw = Stopwatch.StartNew();
+ 
+                     //Check for pending plugin updates and deploy them
++#if !NINA_SIMULATOR_QUALIFICATION
+                     CleanupEmptyFolders();
+                     DeployFromStaging();
+                     DeleteFromDeletion();
++#endif
+ 
+                     Items = new List<ISequenceItem>();
+                     Conditions = new List<ISequenceCondition>();
+@@ -260,7 +262,11 @@
+ 
+                     /* Compose the core catalog */
+                     var types = GetCoreSequencerTypes();
++#if NINA_SIMULATOR_QUALIFICATION
++                    var sdkTypes = Enumerable.Empty<Type>();
++#else
+                     var sdkTypes = GetCoreEquipmentSDKTypes();
++#endif
+                     var coreCatalog = new TypeCatalog(types.Concat(sdkTypes));
+ 
+                     Compose(coreCatalog, string.Empty);
+@@ -270,6 +276,9 @@
+                     var files = new List<string>();
+ 
+ 
++#if NINA_SIMULATOR_QUALIFICATION
++                    files.AddRange(SimulatorPluginIntake.VerifyAndGetAssemblies());
++#else
+                     var baseUserExtensionsDirectory = new DirectoryInfo(Constants.BaseUserExtensionsFolder);
+                     var userExtensionsDirectory = new DirectoryInfo(Constants.UserExtensionsFolder);
+ 
+@@ -326,6 +335,8 @@
+                         }
+                     }
+ 
++#endif
++
+                     for (int i = 0; i < files.Count; i++) {
+                         var file = files[i];
+                         await LoadPlugin(file, (i + 1) / (double)files.Count);
+@@ -349,7 +360,7 @@
+                 var applicationVersion = new Version(CoreUtil.Version);
+ 
+                 var pluginFileInfo = new FileInfo(file);
+-                if (pluginFileInfo.AlternateDataStreamExists("Zone.Identifier")) {
++                if (OperatingSystem.IsWindows() && pluginFileInfo.AlternateDataStreamExists("Zone.Identifier")) {
+                     pluginFileInfo.DeleteAlternateDataStream("Zone.Identifier");
+                 }
+ 

@@ -1,0 +1,216 @@
+[
+  {
+    "path": "NINA/Utility/IoCBindings.cs",
+    "inputSha256": "58463FEE7EEDFFCF70A6EBC0969AB2B0879E03BBC6485FD1B39626F13E0DB8EF",
+    "outputSha256": "C21F7D6551D51A3DCB0105E63F440850FF893B944696F913902020F7F9365696",
+    "edits": [
+      {
+        "before": "using System;",
+        "after": "using System;\n#if NINA_SIMULATOR_QUALIFICATION\nusing NINA.Portability;\n#endif"
+      },
+      {
+        "before": "                services.AddTransient<IUsbDeviceWatcher, UsbDeviceWatcher>();",
+        "after": "#if NINA_SIMULATOR_QUALIFICATION\n                services.AddTransient<IUsbDeviceWatcher, SimulationUsbDeviceWatcher>();\n#else\n                services.AddTransient<IUsbDeviceWatcher, UsbDeviceWatcher>();\n#endif"
+      },
+      {
+        "before": "                // Device Chooser Instances\n                services.AddSingleton<CameraChooserVM>();\n                services.AddSingleton<FilterWheelChooserVM>();\n                services.AddSingleton<FocuserChooserVM>();\n                services.AddSingleton<RotatorChooserVM>();\n                services.AddSingleton<TelescopeChooserVM>();\n                services.AddSingleton<GuiderChooserVM>();\n                services.AddSingleton<SwitchChooserVM>();\n                services.AddSingleton<FlatDeviceChooserVM>();\n                services.AddSingleton<WeatherDataChooserVM>();\n                services.AddSingleton<DomeChooserVM>();\n                services.AddSingleton<SafetyMonitorChooserVM>();\n\n",
+        "after": "#if NINA_SIMULATOR_QUALIFICATION\n                services.AddSingleton<SimulationDeviceChooser<ICamera>>(f => SimulationInventory.Camera(f));\n                services.AddSingleton<SimulationDeviceChooser<IFilterWheel>>(f => SimulationInventory.FilterWheel(f));\n                services.AddSingleton<SimulationDeviceChooser<IFocuser>>(f => SimulationInventory.Focuser(f));\n                services.AddSingleton<SimulationDeviceChooser<IRotator>>(f => SimulationInventory.Rotator(f));\n                services.AddSingleton<SimulationDeviceChooser<ITelescope>>(f => SimulationInventory.Telescope(f));\n                services.AddSingleton<SimulationDeviceChooser<IGuider>>(f => SimulationInventory.Guider(f));\n                services.AddSingleton<SimulationDeviceChooser<ISwitchHub>>(f => SimulationInventory.Switch(f));\n                services.AddSingleton<SimulationDeviceChooser<IFlatDevice>>(f => SimulationInventory.FlatDevice(f));\n                services.AddSingleton<SimulationDeviceChooser<IWeatherData>>(f => SimulationInventory.WeatherData(f));\n                services.AddSingleton<SimulationDeviceChooser<IDome>>(f => SimulationInventory.Dome(f));\n                services.AddSingleton<SimulationDeviceChooser<ISafetyMonitor>>(f => SimulationInventory.SafetyMonitor(f));\n#else\n                // Device Chooser Instances\n                services.AddSingleton<CameraChooserVM>();\n                services.AddSingleton<FilterWheelChooserVM>();\n                services.AddSingleton<FocuserChooserVM>();\n                services.AddSingleton<RotatorChooserVM>();\n                services.AddSingleton<TelescopeChooserVM>();\n                services.AddSingleton<GuiderChooserVM>();\n                services.AddSingleton<SwitchChooserVM>();\n                services.AddSingleton<FlatDeviceChooserVM>();\n                services.AddSingleton<WeatherDataChooserVM>();\n                services.AddSingleton<DomeChooserVM>();\n                services.AddSingleton<SafetyMonitorChooserVM>();\n\n#endif\n\n"
+      },
+      {
+        "before": "f.GetService<CameraChooserVM>()",
+        "after": "\n#if NINA_SIMULATOR_QUALIFICATION\n                                      f.GetService<SimulationDeviceChooser<ICamera>>()\n#else\n                                      f.GetService<CameraChooserVM>()\n#endif\n"
+      },
+      {
+        "before": "f.GetService<FilterWheelChooserVM>()",
+        "after": "\n#if NINA_SIMULATOR_QUALIFICATION\n                                      f.GetService<SimulationDeviceChooser<IFilterWheel>>()\n#else\n                                      f.GetService<FilterWheelChooserVM>()\n#endif\n"
+      },
+      {
+        "before": "f.GetService<FocuserChooserVM>()",
+        "after": "\n#if NINA_SIMULATOR_QUALIFICATION\n                                      f.GetService<SimulationDeviceChooser<IFocuser>>()\n#else\n                                      f.GetService<FocuserChooserVM>()\n#endif\n"
+      },
+      {
+        "before": "f.GetService<RotatorChooserVM>()",
+        "after": "\n#if NINA_SIMULATOR_QUALIFICATION\n                                      f.GetService<SimulationDeviceChooser<IRotator>>()\n#else\n                                      f.GetService<RotatorChooserVM>()\n#endif\n"
+      },
+      {
+        "before": "f.GetService<TelescopeChooserVM>()",
+        "after": "\n#if NINA_SIMULATOR_QUALIFICATION\n                                      f.GetService<SimulationDeviceChooser<ITelescope>>()\n#else\n                                      f.GetService<TelescopeChooserVM>()\n#endif\n"
+      },
+      {
+        "before": "f.GetService<GuiderChooserVM>()",
+        "after": "\n#if NINA_SIMULATOR_QUALIFICATION\n                                      f.GetService<SimulationDeviceChooser<IGuider>>()\n#else\n                                      f.GetService<GuiderChooserVM>()\n#endif\n"
+      },
+      {
+        "before": "f.GetService<SwitchChooserVM>()",
+        "after": "\n#if NINA_SIMULATOR_QUALIFICATION\n                                      f.GetService<SimulationDeviceChooser<ISwitchHub>>()\n#else\n                                      f.GetService<SwitchChooserVM>()\n#endif\n"
+      },
+      {
+        "before": "f.GetService<FlatDeviceChooserVM>()",
+        "after": "\n#if NINA_SIMULATOR_QUALIFICATION\n                                      f.GetService<SimulationDeviceChooser<IFlatDevice>>()\n#else\n                                      f.GetService<FlatDeviceChooserVM>()\n#endif\n"
+      },
+      {
+        "before": "f.GetService<WeatherDataChooserVM>()",
+        "after": "\n#if NINA_SIMULATOR_QUALIFICATION\n                                      f.GetService<SimulationDeviceChooser<IWeatherData>>()\n#else\n                                      f.GetService<WeatherDataChooserVM>()\n#endif\n"
+      },
+      {
+        "before": "f.GetService<DomeChooserVM>()",
+        "after": "\n#if NINA_SIMULATOR_QUALIFICATION\n                                      f.GetService<SimulationDeviceChooser<IDome>>()\n#else\n                                      f.GetService<DomeChooserVM>()\n#endif\n"
+      },
+      {
+        "before": "f.GetService<SafetyMonitorChooserVM>()",
+        "after": "\n#if NINA_SIMULATOR_QUALIFICATION\n                                      f.GetService<SimulationDeviceChooser<ISafetyMonitor>>()\n#else\n                                      f.GetService<SafetyMonitorChooserVM>()\n#endif\n"
+      }
+    ]
+  },
+  {
+    "path": "NINA/CompositionRoot.cs",
+    "inputSha256": "709F1B7913569D56B41B2ECB268DD700D966706F217ADCD509358AC4D1B919F6",
+    "outputSha256": "678C4758BBFD13DC7B4C33EEAA804E06949E1324E6180FBC294779807B3854B9",
+    "edits": [
+      {
+        "before": "                    EDSDKLib.EDSDKLocal.Initialize();",
+        "after": "#if NINA_SIMULATOR_QUALIFICATION\n                    Logger.Info(\"Simulator-only qualification: EDSDK initialization is excluded.\");\n#else\n                    EDSDKLib.EDSDKLocal.Initialize();\n#endif"
+      }
+    ]
+  },
+  {
+    "path": "NINA/ViewModel/ApplicationDeviceConnectionVM.cs",
+    "inputSha256": "BBB5C5C120B4C2CC5989E40D7104747591DF04919F277DE04096D7684F5FE265",
+    "outputSha256": "170FACE32D49D86FBF57853C4752CD6CE21E9A0C90DCFDDF47A8DFBB060DD96A",
+    "edits": [
+      {
+        "before": "                NINA.Equipment.SDK.CameraSDKs.AtikSDK.AtikCameraDll.Shutdown();",
+        "after": "#if NINA_SIMULATOR_QUALIFICATION\n                Logger.Info(\"Simulator-only qualification: Atik SDK shutdown is excluded.\");\n#else\n                NINA.Equipment.SDK.CameraSDKs.AtikSDK.AtikCameraDll.Shutdown();\n#endif"
+      }
+    ]
+  },
+  {
+    "path": "NINA/App.xaml.cs",
+    "inputSha256": "D5613C6B10E36BBF6C5DF51CBEB6C1017D13888398C705902DD16458390A7B5F",
+    "outputSha256": "6D1540749F5E392E35DA84ACDC28EB6E03C1EC392434D1A0692D960CCA000C61",
+    "edits": [
+      {
+        "before": "            _ = new EarthRotationParameterUpdater().Update();",
+        "after": "#if NINA_SIMULATOR_QUALIFICATION\n            Logger.Info(\"Simulator-only offline qualification: EOP network refresh is deferred; pinned local data remains in use.\");\n#else\n            _ = new EarthRotationParameterUpdater().Update();\n#endif"
+      },
+      {
+        "before": "                    ProfileService.ActivateInstanceOfNinaReferencingProfile(startWithProfileId);",
+        "after": "                    if (OperatingSystem.IsWindows()) {\n                        ProfileService.ActivateInstanceOfNinaReferencingProfile(startWithProfileId);\n                    }"
+      },
+      {
+        "before": "            ProfileService.ActivateInstanceWatcher(_profileService, mainWindow);",
+        "after": "            if (OperatingSystem.IsWindows()) {\n                ProfileService.ActivateInstanceWatcher(_profileService, mainWindow);\n            }"
+      }
+    ]
+  },
+  {
+    "path": "NINA/AppJumpListExtensions.cs",
+    "inputSha256": "E3E6F2E1D6CCD880AE9FB726CFE0F6007D0B0632B4AA0956FC6984528A30846D",
+    "outputSha256": "5386970105DAF7793654CD0150C6F66CED05D32DCD24B4A3F590E35FBCBA6376",
+    "edits": [
+      {
+        "before": "            IProfileService profileService) =>\n                SetJumpList(app,\n                (GetJumpList(app) ?? new JumpList())\n                .WithJumpTaskForEachAvailableProfile(profileService));",
+        "after": "            IProfileService profileService) {\n            if (System.OperatingSystem.IsWindows()) {\n                SetJumpList(app,\n                    (GetJumpList(app) ?? new JumpList())\n                    .WithJumpTaskForEachAvailableProfile(profileService));\n            }\n        }"
+      }
+    ]
+  },
+  {
+    "path": "NINA/MainWindow.xaml.cs",
+    "inputSha256": "B2F0C8F91798262B599F5705A7BCB0968AF637BA4673179B67C23E5BD3056605",
+    "outputSha256": "8DD94892C73851D3AD7D1431CD33B018CC3A2E7D9F302B784D943744A0AFE7CF",
+    "edits": [
+      {
+        "before": "            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;",
+        "after": "            if (OperatingSystem.IsWindows()) {\n                SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;\n            }\n#if NINA_SIMULATOR_QUALIFICATION\n            Title += \" - Simulator-only offline qualification\";\n#endif"
+      },
+      {
+        "before": "            ((HwndSource)PresentationSource.FromVisual(this)).AddHook(HookProc);",
+        "after": "            if (!OperatingSystem.IsWindows()) {\n#if NINA_SIMULATOR_QUALIFICATION\n                NINA.Portability.PortableWindowPlacement.Restore(this);\n#endif\n                return;\n            }\n            ((HwndSource)PresentationSource.FromVisual(this)).AddHook(HookProc);"
+      },
+      {
+        "before": "            WindowPlacement wp;\n            var hwnd = new WindowInteropHelper(this).Handle;\n            GetWindowPlacement(hwnd, out wp);\n            Properties.Settings.Default.WindowPlacement = wp;\n            CoreUtil.SaveSettings(Properties.Settings.Default);",
+        "after": "            if (OperatingSystem.IsWindows()) {\n                WindowPlacement wp;\n                var hwnd = new WindowInteropHelper(this).Handle;\n                GetWindowPlacement(hwnd, out wp);\n                Properties.Settings.Default.WindowPlacement = wp;\n                CoreUtil.SaveSettings(Properties.Settings.Default);\n            } else {\n#if NINA_SIMULATOR_QUALIFICATION\n                NINA.Portability.PortableWindowPlacement.Save(this);\n#endif\n            }"
+      }
+    ]
+  },
+  {
+    "path": "NINA/ViewModel/ApplicationVM.cs",
+    "inputSha256": "ACA4D49B3650322562F756AFBDAB01F2D67182C1818229A9208254A13C0E61C5",
+    "outputSha256": "65AC18F310A6072DFA988F98921B2D64FA8121E34623099656C9E0E9D62BF54D",
+    "edits": [
+      {
+        "before": "        private void SubscribeSystemEvents() {",
+        "after": "        private void SubscribeSystemEvents() {\n            if (!OperatingSystem.IsWindows()) return;"
+      },
+      {
+        "before": "        private void UnsubscribeSystemEvents() {",
+        "after": "        private void UnsubscribeSystemEvents() {\n            if (!OperatingSystem.IsWindows()) return;"
+      },
+      {
+        "before": "        private void CheckASCOMPlatformVersion() {",
+        "after": "        private void CheckASCOMPlatformVersion() {\n            if (NINA.Portability.SimulatorQualification.Enabled) {\n                Logger.Info(\"Simulator-only qualification: ASCOM platform availability is not queried.\");\n                return;\n            }"
+      },
+      {
+        "before": "        [RelayCommand]\n        private Task CheckDiskInfo()",
+        "after": "        [RelayCommand]\n        private Task CheckDiskInfo()"
+      }
+    ]
+  },
+  {
+    "path": "NINA/ViewModel/VersionCheckVM.cs",
+    "inputSha256": "1AB7256F8BCE7FDA83D311148A3050DB1FBADB39DEC950C26FC4E2E73BF93B46",
+    "outputSha256": "1F7714A62114948CC800E9448FE529BF2C86097FDF5D4D77099016D52CB586C9",
+    "edits": [
+      {
+        "before": "        public async Task<bool> CheckUpdate() {",
+        "after": "        public async Task<bool> CheckUpdate() {\n            if (NINA.Portability.SimulatorQualification.Enabled) {\n                Logger.Info(\"Simulator-only offline qualification: application update checks are deferred.\");\n                return false;\n            }"
+      },
+      {
+        "before": "        private void Update(object o) {",
+        "after": "        private void Update(object o) {\n            if (NINA.Portability.SimulatorQualification.Enabled) {\n                Logger.Info(\"Simulator-only offline qualification: application installation is excluded.\");\n                return;\n            }"
+      },
+      {
+        "before": "        private async Task<bool> Download() {",
+        "after": "        private async Task<bool> Download() {\n            if (NINA.Portability.SimulatorQualification.Enabled) {\n                Logger.Info(\"Simulator-only offline qualification: application downloads are deferred.\");\n                return false;\n            }"
+      }
+    ]
+  },
+  {
+    "path": "NINA/ViewModel/Plugins/PluginsVM.cs",
+    "inputSha256": "25DB51340C0A4C52CA96A9ECE6DD7F14DFF67C6E52565C24E62AA7F793012467",
+    "outputSha256": "45CBA339E4E1F0A2986A00E2EE0920EE774ACF676C17ABDE69121F1D61193925",
+    "edits": [
+      {
+        "before": "        public Task<bool> FetchPlugins() {",
+        "after": "        public Task<bool> FetchPlugins() {\n            if (NINA.Portability.SimulatorQualification.Enabled) {\n                CatalogError = \"Simulator-only offline qualification uses the pinned local fixture; repository downloads are deferred.\";\n                Logger.Info(CatalogError);\n                return Task.FromResult(false);\n            }"
+      },
+      {
+        "before": "        private async Task<bool> MutatePlugins((PluginEntryVM Entry, IPluginManifest Manifest)[] targets, PluginActivity activity) {",
+        "after": "        private async Task<bool> MutatePlugins((PluginEntryVM Entry, IPluginManifest Manifest)[] targets, PluginActivity activity) {\n            if (NINA.Portability.SimulatorQualification.Enabled) {\n                CatalogError = \"Simulator-only offline qualification retains the pinned fixture; plugin mutation is excluded.\";\n                Logger.Info(CatalogError);\n                return false;\n            }"
+      }
+    ]
+  },
+  {
+    "path": "NINA.Plugin/PluginLoader.cs",
+    "inputSha256": "B2BE5928F014C8CC0D19FE96DD535199D10E9AF41B8C155BCD5E8E7C1EB469F9",
+    "outputSha256": "C43DF2596035DB811CC22F409869B533A71512CCFEB7D0EBA6B564C2140114A1",
+    "edits": [
+      {
+        "before": "                    CleanupEmptyFolders();\n                    DeployFromStaging();\n                    DeleteFromDeletion();",
+        "after": "#if !NINA_SIMULATOR_QUALIFICATION\n                    CleanupEmptyFolders();\n                    DeployFromStaging();\n                    DeleteFromDeletion();\n#endif"
+      },
+      {
+        "before": "                    var sdkTypes = GetCoreEquipmentSDKTypes();",
+        "after": "#if NINA_SIMULATOR_QUALIFICATION\n                    var sdkTypes = Enumerable.Empty<Type>();\n#else\n                    var sdkTypes = GetCoreEquipmentSDKTypes();\n#endif"
+      },
+      {
+        "before": "                    var baseUserExtensionsDirectory = new DirectoryInfo(Constants.BaseUserExtensionsFolder);\n                    var userExtensionsDirectory = new DirectoryInfo(Constants.UserExtensionsFolder);\n\n\n                    if (baseUserExtensionsDirectory.Exists) {\n                        if (!userExtensionsDirectory.Exists) {\n                            // Search for an existing directory of a previous version and copy files over if they exist\n                            var maxDirectoryVersion = baseUserExtensionsDirectory.GetDirectories()\n                                .Where(dir => {\n                                    if (Version.TryParse(dir.Name, out var v)) { if (v < new Version(Constants.ApplicationVersionWithoutRevision)) return true; }\n                                    return false;\n                                })\n                                .Max(x => new Version(x.Name));\n\n\n                            if (maxDirectoryVersion == null) {\n                                // An upgrade from 2.x to current will move all existing plugins into the first version specific folder\n\n                                var sourceFolder = new DirectoryInfo(Path.Combine(baseUserExtensionsDirectory.FullName));\n\n                                // To prevent recursion of the folder we create we copy existing plugins to a temp folder in staging and then copy those into the destination folder        \n                                var tempFolderString = Path.Combine(Constants.BaseStagingFolder, \"__TEMP__\");\n                                Logger.Info($\"Creating Directory {tempFolderString}\");\n                                var tempFolder = Directory.CreateDirectory(tempFolderString);\n                                Logger.Info($\"Copying Directory from {sourceFolder} to {tempFolder}\");\n                                CoreUtil.CopyDirectory(sourceFolder, tempFolder);\n\n                                // User Extensions do not exist for current Version - Create directory\n                                Logger.Info($\"Creating Directory {userExtensionsDirectory.FullName}\");\n                                var destinationFolder = Directory.CreateDirectory(userExtensionsDirectory.FullName);\n\n                                Logger.Info($\"Migrating plugins from {sourceFolder} to {destinationFolder}\");\n                                CoreUtil.CopyDirectory(tempFolder, destinationFolder);\n\n                                Logger.Info($\"Deleting {tempFolder}\");\n                                Directory.Delete(tempFolder.FullName, true);\n                            } else if (maxDirectoryVersion < new Version(Constants.ApplicationVersionWithoutRevision)) {\n                                // An upgrade from a versioned folder to a higher version folder\n                                var sourceFolder = new DirectoryInfo(Path.Combine(baseUserExtensionsDirectory.FullName, maxDirectoryVersion.ToString()));\n\n                                // User Extensions do not exist for current Version - Create directory\n                                Logger.Info($\"Creating Directory {userExtensionsDirectory.FullName}\");\n                                var destinationFolder = Directory.CreateDirectory(userExtensionsDirectory.FullName);\n\n                                Logger.Info($\"Migrating plugins from {sourceFolder} to {destinationFolder}\");\n                                CoreUtil.CopyDirectory(sourceFolder, destinationFolder);\n                            }\n                        }\n\n                        // Enumerate only 1 level deep, where we'd expect plugin dlls to be in the root of the plugin folder\n                        files.AddRange(userExtensionsDirectory.GetFiles(\"*.dll\").Select(fi => fi.FullName));\n                        foreach (var subDirectory in userExtensionsDirectory.GetDirectories()) {\n                            files.AddRange(subDirectory.GetFiles(\"*.dll\").Select(fi => fi.FullName));\n                        }\n                    }\n\n",
+        "after": "#if NINA_SIMULATOR_QUALIFICATION\n                    files.AddRange(SimulatorPluginIntake.VerifyAndGetAssemblies());\n#else\n                    var baseUserExtensionsDirectory = new DirectoryInfo(Constants.BaseUserExtensionsFolder);\n                    var userExtensionsDirectory = new DirectoryInfo(Constants.UserExtensionsFolder);\n\n\n                    if (baseUserExtensionsDirectory.Exists) {\n                        if (!userExtensionsDirectory.Exists) {\n                            // Search for an existing directory of a previous version and copy files over if they exist\n                            var maxDirectoryVersion = baseUserExtensionsDirectory.GetDirectories()\n                                .Where(dir => {\n                                    if (Version.TryParse(dir.Name, out var v)) { if (v < new Version(Constants.ApplicationVersionWithoutRevision)) return true; }\n                                    return false;\n                                })\n                                .Max(x => new Version(x.Name));\n\n\n                            if (maxDirectoryVersion == null) {\n                                // An upgrade from 2.x to current will move all existing plugins into the first version specific folder\n\n                                var sourceFolder = new DirectoryInfo(Path.Combine(baseUserExtensionsDirectory.FullName));\n\n                                // To prevent recursion of the folder we create we copy existing plugins to a temp folder in staging and then copy those into the destination folder        \n                                var tempFolderString = Path.Combine(Constants.BaseStagingFolder, \"__TEMP__\");\n                                Logger.Info($\"Creating Directory {tempFolderString}\");\n                                var tempFolder = Directory.CreateDirectory(tempFolderString);\n                                Logger.Info($\"Copying Directory from {sourceFolder} to {tempFolder}\");\n                                CoreUtil.CopyDirectory(sourceFolder, tempFolder);\n\n                                // User Extensions do not exist for current Version - Create directory\n                                Logger.Info($\"Creating Directory {userExtensionsDirectory.FullName}\");\n                                var destinationFolder = Directory.CreateDirectory(userExtensionsDirectory.FullName);\n\n                                Logger.Info($\"Migrating plugins from {sourceFolder} to {destinationFolder}\");\n                                CoreUtil.CopyDirectory(tempFolder, destinationFolder);\n\n                                Logger.Info($\"Deleting {tempFolder}\");\n                                Directory.Delete(tempFolder.FullName, true);\n                            } else if (maxDirectoryVersion < new Version(Constants.ApplicationVersionWithoutRevision)) {\n                                // An upgrade from a versioned folder to a higher version folder\n                                var sourceFolder = new DirectoryInfo(Path.Combine(baseUserExtensionsDirectory.FullName, maxDirectoryVersion.ToString()));\n\n                                // User Extensions do not exist for current Version - Create directory\n                                Logger.Info($\"Creating Directory {userExtensionsDirectory.FullName}\");\n                                var destinationFolder = Directory.CreateDirectory(userExtensionsDirectory.FullName);\n\n                                Logger.Info($\"Migrating plugins from {sourceFolder} to {destinationFolder}\");\n                                CoreUtil.CopyDirectory(sourceFolder, destinationFolder);\n                            }\n                        }\n\n                        // Enumerate only 1 level deep, where we'd expect plugin dlls to be in the root of the plugin folder\n                        files.AddRange(userExtensionsDirectory.GetFiles(\"*.dll\").Select(fi => fi.FullName));\n                        foreach (var subDirectory in userExtensionsDirectory.GetDirectories()) {\n                            files.AddRange(subDirectory.GetFiles(\"*.dll\").Select(fi => fi.FullName));\n                        }\n                    }\n\n#endif\n\n"
+      },
+      {
+        "before": "                if (pluginFileInfo.AlternateDataStreamExists(\"Zone.Identifier\")) {",
+        "after": "                if (OperatingSystem.IsWindows() && pluginFileInfo.AlternateDataStreamExists(\"Zone.Identifier\")) {"
+      }
+    ]
+  }
+]
