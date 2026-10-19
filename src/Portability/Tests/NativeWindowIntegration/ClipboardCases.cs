@@ -10,6 +10,7 @@ using System.Text.Json;
 using WpfFork::System.Windows;
 using WpfFork::System.Windows.Controls;
 using WpfFork::System.Windows.Data;
+using WpfFork::System.Windows.Input;
 using WpfFork::System.Windows.Media;
 using WpfFork::System.Windows.Threading;
 using Clipboard = WpfFork::System.Windows.Clipboard;
@@ -104,11 +105,13 @@ internal static class ClipboardCases
                 DataObjectCopyingEventHandler onCopy = (_, e) => { copying++; if (cancelCopy) e.CancelCommand(); };
                 DataObject.AddCopyingHandler(box, onCopy);
                 Clipboard.SetText("unchanged");
+                box.Copy();
+                Require(copying == 1 && box.Text == editorText && Clipboard.GetText() == "unchanged", "Cancelled copy changed text or clipboard.");
                 box.Cut();
-                Require(copying == 1 && box.Text == editorText && Clipboard.GetText() == "unchanged", "Cancelled cut changed text or clipboard.");
+                Require(copying == 2 && box.Text == editorText && Clipboard.GetText() == "unchanged", "Cancelled cut changed text or clipboard.");
                 cancelCopy = false;
                 box.Cut();
-                Require(copying == 2 && box.Text == string.Empty && model.Value == string.Empty && Read("CLIPBOARD", wait) == editorText, "Cut did not update binding and external clipboard.");
+                Require(copying == 3 && box.Text == string.Empty && model.Value == string.Empty && Read("CLIPBOARD", wait) == editorText, "Cut did not update binding and external clipboard.");
                 DataObject.RemoveCopyingHandler(box, onCopy);
                 using var external = Start("serve", "CLIPBOARD", pastedText);
                 Ready(external, wait);
@@ -123,6 +126,22 @@ internal static class ClipboardCases
                 wait(() => model.Value == pastedText);
                 Require(pasting == 2 && box.Text == model.Value, "External paste did not update genuine text binding.");
                 DataObject.RemovePastingHandler(box, onPaste);
+                box.IsReadOnly = true;
+                box.SelectAll();
+                Clipboard.SetText("readonly source");
+                Require(ApplicationCommands.Copy.CanExecute(null, box) && !ApplicationCommands.Cut.CanExecute(null, box) && !ApplicationCommands.Paste.CanExecute(null, box),
+                    "Read-only command availability did not preserve Copy while disabling Cut and Paste.");
+                ApplicationCommands.Cut.Execute(null, box);
+                ApplicationCommands.Paste.Execute(null, box);
+                Require(box.Text == pastedText && model.Value == pastedText && Clipboard.GetText() == "readonly source", "Read-only cut or paste changed text, binding or clipboard.");
+                ApplicationCommands.Copy.Execute(null, box);
+                Require(Read("CLIPBOARD", wait) == pastedText && box.Text == pastedText, "Read-only copy did not publish the selected text.");
+                box.IsReadOnly = false;
+                Clipboard.SetText("editable again");
+                Require(ApplicationCommands.Paste.CanExecute(null, box), "Paste remained disabled after read-only was removed.");
+                ApplicationCommands.Paste.Execute(null, box);
+                wait(() => model.Value == "editable again");
+                Require(box.Text == model.Value, "Paste remained disabled after read-only was removed.");
                 Stop(external, wait);
             }
             finally { window.Close(); }
@@ -139,6 +158,7 @@ internal static class ClipboardCases
             var conflict = new DataObject(DataFormats.UnicodeText, "first", false);
             conflict.SetData(DataFormats.Text, "second", false);
             Expect<NotSupportedException>(() => Clipboard.SetDataObject(conflict, true));
+            Expect<EncoderFallbackException>(() => Clipboard.SetText("\ud800"));
             Require(Clipboard.GetText() == "preserved", "Unsupported data replaced the selection.");
             Expect<ArgumentNullException>(() => Clipboard.SetText(null!));
             Expect<InvalidEnumArgumentException>(() => Clipboard.GetText((TextDataFormat)999));
@@ -173,17 +193,21 @@ internal static class ClipboardCases
 
     internal static void ExerciseManager(string fontPath, Action<string, Action> run, Action<Func<bool>> wait, Func<ControlTemplate> template)
     {
-        run("clipboard-manager-acknowledgement-completes-without-timeout", () =>
+        run("clipboard-session-copy-and-flush-ignore-responsive-manager", () =>
         {
             using var manager = Start("manager-ack", "CLIPBOARD_MANAGER");
             Ready(manager, wait);
             var request = manager.StandardOutput.ReadLineAsync();
             var elapsed = Stopwatch.StartNew();
-            Clipboard.SetText("acknowledged text");
-            Require(elapsed.Elapsed < TimeSpan.FromMilliseconds(900), "An immediate manager acknowledgement waited for the optional timeout.");
-            wait(() => request.IsCompleted);
-            Require(request.GetAwaiter().GetResult() == "SAVE_TARGETS" && Read("CLIPBOARD", wait) == "acknowledged text", "The native manager request or text transfer was not observed.");
+            Clipboard.SetText("session text");
+            Require(elapsed.Elapsed < TimeSpan.FromMilliseconds(900), "SetText waited for clipboard persistence.");
+            elapsed.Restart();
+            Clipboard.Flush();
+            Require(elapsed.Elapsed < TimeSpan.FromMilliseconds(900), "Flush waited for clipboard persistence.");
+            Require(Read("CLIPBOARD", wait) == "session text" && !request.IsCompleted, "Session text was unavailable or the responsive manager received a request.");
             Stop(manager, wait);
+            wait(() => request.IsCompleted);
+            Require(request.GetAwaiter().GetResult() == null, "Session copy or Flush contacted the clipboard manager.");
         });
         run("clipboard-stalled-manager-cut-replacement-and-clear", () =>
         {
@@ -201,18 +225,25 @@ internal static class ClipboardCases
                 wait(() => box.ActualWidth > 0);
                 box.SelectAll();
                 var elapsed = Stopwatch.StartNew();
-                box.Cut();
-                Require(elapsed.Elapsed < TimeSpan.FromSeconds(3), "Cut waited indefinitely for the optional clipboard manager.");
-                wait(() => request.IsCompleted);
-                Require(request.GetAwaiter().GetResult() == "SAVE_TARGETS" && box.Text == string.Empty && model.Value == string.Empty && Read("CLIPBOARD", wait) == cutText,
-                    "Manager timeout did not preserve the genuine Cut result and native text.");
+                box.Copy();
+                Require(elapsed.Elapsed < TimeSpan.FromMilliseconds(900) && box.Text == cutText && Read("CLIPBOARD", wait) == cutText,
+                    "Copy waited for the stalled manager or changed text.");
                 elapsed.Restart();
-                Clipboard.SetText("after manager timeout");
-                Require(elapsed.Elapsed < TimeSpan.FromSeconds(3) && Read("CLIPBOARD", wait) == "after manager timeout", "Later selection replacement did not complete with the manager stalled.");
+                box.Cut();
+                Require(elapsed.Elapsed < TimeSpan.FromMilliseconds(900), "Cut waited for the stalled clipboard manager.");
+                Require(box.Text == string.Empty && model.Value == string.Empty && Read("CLIPBOARD", wait) == cutText,
+                    "Session Cut did not preserve the genuine editor, binding and native text result.");
+                elapsed.Restart();
+                Clipboard.SetText("session replacement");
+                Require(elapsed.Elapsed < TimeSpan.FromMilliseconds(900) && Read("CLIPBOARD", wait) == "session replacement", "Selection replacement waited for the stalled manager.");
+                elapsed.Restart();
                 Clipboard.Flush();
+                Require(elapsed.Elapsed < TimeSpan.FromMilliseconds(900) && Read("CLIPBOARD", wait) == "session replacement", "Flush waited for the stalled manager or lost session text.");
                 Clipboard.Clear();
-                Require(Read("CLIPBOARD", wait) == string.Empty, "Clear failed after the optional manager timeout.");
+                Require(Read("CLIPBOARD", wait) == string.Empty && !request.IsCompleted, "Clear failed or session operations contacted the stalled manager.");
                 Stop(manager, wait);
+                wait(() => request.IsCompleted);
+                Require(request.GetAwaiter().GetResult() == null, "Copy, Cut, SetText, Flush or Clear contacted the clipboard manager.");
             }
             finally { window.Close(); }
         });
@@ -344,15 +375,15 @@ internal static class ClipboardCases
                 Console.Out.Flush();
                 var quit = Task.Run(() => Console.ReadLine());
                 var deadline = Stopwatch.StartNew();
-                while (!quit.IsCompleted && deadline.Elapsed < TimeSpan.FromSeconds(20))
+                while ((!quit.IsCompleted || XPending(display) != 0) && deadline.Elapsed < TimeSpan.FromSeconds(20))
                 {
                     if (XPending(display) == 0) { Thread.Sleep(2); continue; }
                     XNextEvent(display, out var ev);
                     if (ev.Type != 30) continue;
                     var request = ev.Request;
-                    if (request.Target == saveTargets)
+                    if (args[1] == "CLIPBOARD_MANAGER")
                     {
-                        Console.WriteLine("SAVE_TARGETS");
+                        Console.WriteLine(request.Target == saveTargets ? "SAVE_TARGETS" : "SELECTION_REQUEST:" + request.Target);
                         Console.Out.Flush();
                     }
                     if (args[0] == "stall") continue;

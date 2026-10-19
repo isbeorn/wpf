@@ -15,8 +15,7 @@ namespace NINA {
 
         [MethodImpl(MethodImplOptions.NoInlining)]
         private static void InitializeNativeHost() {
-            NativeWindowHost.InitializeForCurrentThread(
-                Avalonia.AppBuilder.Configure<Avalonia.Application>());
+            NativeWindowHost.InitializeForCurrentThread();
         }
     }
 }

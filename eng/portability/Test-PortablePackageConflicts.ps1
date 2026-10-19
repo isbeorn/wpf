@@ -16,8 +16,8 @@ Copy-Item -Path (Join-Path $distribution 'feed/*.nupkg') -Destination $feed
 foreach($version in @('10.0.13','10.0.12')) {
     Copy-Item -LiteralPath (Join-Path $repo "artifacts/portability/packages/system.windows.extensions/$version/system.windows.extensions.$version.nupkg") -Destination $feed
 }
-$nativePackageId='Avalonia.Angle.Windows.Natives'
-$nativePackageVersion='2.1.27548.20260419'
+$nativePackageId='SkiaSharp.NativeAssets.Win32'
+$nativePackageVersion='3.119.4'
 $nativePackageDirectory=$nativePackageId.ToLowerInvariant()
 Copy-Item -LiteralPath (Join-Path $repo "artifacts/portability/packages/$nativePackageDirectory/$nativePackageVersion/$nativePackageDirectory.$nativePackageVersion.nupkg") -Destination $feed
 $results=[Collections.Generic.List[object]]::new()

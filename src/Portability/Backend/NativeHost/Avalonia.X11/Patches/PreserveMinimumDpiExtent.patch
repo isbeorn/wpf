@@ -1,9 +1,0 @@
---- a/src/Avalonia.X11/X11Window.cs
-+++ b/src/Avalonia.X11/X11Window.cs
-@@ -1336,4 +1336,6 @@
-             var pixelSize = ToPixelSize(clientSize);
-+            if (reason == WindowResizeReason.DpiChange)
-+                pixelSize = new PixelSize(Math.Max(1, pixelSize.Width), Math.Max(1, pixelSize.Height));
-             UpdateSizeHints(pixelSize);
-             XConfigureResizeWindow(_x11.Display, _handle, pixelSize);
-             if (_useRenderWindow && !_useCompositorDrivenRenderWindowResize)

@@ -2,9 +2,8 @@ extern alias WpfFork;
 
 using System.Buffers.Binary;
 using System.Text;
-using Avalonia;
-using Avalonia.Platform;
-using Avalonia.X11;
+using Wpf.Portable.NativeHost.Linux;
+using Wpf.Portable.NativeHost.Linux.Accessibility;
 using WpfFork::MS.Internal.Portability.Settings;
 using WpfFork::MS.Internal.Portability.Windowing;
 
@@ -13,23 +12,57 @@ namespace Wpf.Portable.NativeHost;
 public static class NativeWindowHost
 {
     private const int DeclaredDoubleClickDistancePixels = 5;
+    private static readonly object s_settingsSync = new();
+    private static bool s_settingsRegistered;
     internal static NativePointerPreferences? PointerPreferences { get; private set; }
 
-    public static void InitializeForCurrentThread(AppBuilder builder)
+    public static void InitializeForCurrentThread()
     {
-        NativeDispatcherHost.InitializeForCurrentThread(builder, softwareFramebuffer: true);
-        var (data, origin) = ExternalWindowBridge.ReadPointerSettingsProperty();
-        var preferences = ResolvePointerPreferences(XSettingsPointerPreferences.Parse(data), origin);
-        var primary = ExternalWindowBridge.ReadPrimaryScreen();
+        NativeDispatcherHost.InitializeForCurrentThread();
+        var session = NativeDispatcherHost.Session;
+        try
+        {
+            var screens = new X11Screens(session.Connection);
+            session.Own(screens);
+            var (data, origin) = screens.ReadPointerSettingsProperty();
+            var preferences = ResolvePointerPreferences(XSettingsPointerPreferences.Parse(data), origin);
+            PortablePrimaryScreenMetrics? primaryMetrics = null;
+            if (screens.ReadPrimary() is { } primary)
+            {
+                double scale = primary.Dpi / 96d;
+                if (primary.Bounds.Width <= 0 || primary.Bounds.Height <= 0 || !double.IsFinite(scale) || scale <= 0)
+                    throw new PlatformNotSupportedException("The native X11 screen service reported invalid primary-screen bounds or scaling.");
+                primaryMetrics = new PortablePrimaryScreenMetrics(primary.Bounds.Width / scale, primary.Bounds.Height / scale);
+            }
 
-        PortableSystemSettingsProvider.Register(PortableSystemSettings.CreateInitialLightProfile(pointerSettings:
-            new PortablePointerSettings(preferences.Distance, preferences.Distance, preferences.Time),
-            primaryScreenMetrics: primary is null ? null : new PortablePrimaryScreenMetrics(primary.Bounds.Width / primary.Scaling, primary.Bounds.Height / primary.Scaling)));
-        PortableWindowPlatform.RegisterFactory(new NativeWindowFactory(
-            AvaloniaLocator.Current.GetRequiredService<IWindowingPlatform>()));
-        WpfFork::MS.Internal.Portability.Clipboard.PortableClipboard.Register(new NativeClipboard(
-            AvaloniaLocator.Current.GetRequiredService<Avalonia.Input.Platform.IClipboard>()));
-        PointerPreferences = preferences;
+            lock (s_settingsSync)
+            {
+                if (!s_settingsRegistered)
+                {
+                    PortableSystemSettingsProvider.Register(PortableSystemSettings.CreateInitialLightProfile(pointerSettings:
+                        new PortablePointerSettings(preferences.Distance, preferences.Distance, preferences.Time), primaryScreenMetrics: primaryMetrics));
+                    PointerPreferences = preferences;
+                    s_settingsRegistered = true;
+                }
+            }
+            var dialogs = new PortalFileDialogs(session.Connection);
+            session.Own(dialogs);
+            var automation = new AtSpiServer(session.Connection);
+            session.Own(automation);
+            var clipboard = new X11Clipboard(session.Connection);
+            session.Own(clipboard);
+            var factory = new NativeWindowFactory(session.Connection, screens, dialogs, automation);
+            session.Own(factory);
+            PortableWindowPlatform.RegisterFactory(factory);
+            WpfFork::MS.Internal.Portability.Clipboard.PortableClipboard.Register(clipboard);
+            WpfFork::MS.Internal.Portability.PortableSplashPlatform.Register(new NativeSplashFactory(session.Connection, screens));
+        }
+        catch (Exception startupFailure)
+        {
+            try { WpfFork::System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeShutdown(); }
+            catch (Exception cleanupFailure) { throw new AggregateException("Native host initialization and cleanup failed.", startupFailure, cleanupFailure); }
+            throw;
+        }
     }
 
     private static NativePointerPreferences ResolvePointerPreferences(XSettingsPointerPreferences parsed, string origin)

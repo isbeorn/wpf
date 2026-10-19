@@ -1,9 +1,0 @@
-<Project>
-  <Import Project="../Directory.Build.props" />
-  <PropertyGroup>
-    <AvaloniaSourceDir>$(RepoRoot)artifacts/portability/native-host/upstream/</AvaloniaSourceDir>
-    <BaseOutputPath>$(RepoRoot)artifacts/portability/native-host/build-tools/bin/$(OS)/</BaseOutputPath>
-    <BaseIntermediateOutputPath>$(RepoRoot)artifacts/portability/native-host/build-tools/obj/$(OS)/</BaseIntermediateOutputPath>
-    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
-  </PropertyGroup>
-</Project>

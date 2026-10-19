@@ -4,12 +4,11 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.Json;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.Themes.Fluent;
 using Wpf.Portable.NativeHost;
+using WpfFork::System.Windows;
+using WpfFork::System.Windows.Controls;
+using WpfFork::System.Windows.Input;
+using WpfFork::System.Windows.Media;
 using DependencyObject = WpfFork::System.Windows.DependencyObject;
 using DependencyProperty = WpfFork::System.Windows.DependencyProperty;
 using PropertyMetadata = WpfFork::System.Windows.PropertyMetadata;
@@ -19,6 +18,8 @@ using DispatcherPriority = WpfFork::System.Windows.Threading.DispatcherPriority;
 using DispatcherTimer = WpfFork::System.Windows.Threading.DispatcherTimer;
 using DispatcherOperationStatus = WpfFork::System.Windows.Threading.DispatcherOperationStatus;
 using DispatcherSynchronizationContext = WpfFork::System.Windows.Threading.DispatcherSynchronizationContext;
+
+if (args.FirstOrDefault() == "--late-host-profile-only") return LateHostProfile();
 
 var checks = new List<object>();
 var failed = false;
@@ -42,18 +43,23 @@ using var watchdog = new Timer(_ =>
 
 try
 {
-    NativeDispatcherHost.InitializeForCurrentThread(AppBuilder.Configure<ProbeApplication>());
+    using var fixtureServer = new X11Fixture("little");
+    NativeWindowHost.InitializeForCurrentThread();
+    var fontPath = args.Single(value => value.StartsWith("--font=", StringComparison.Ordinal))[7..];
+    Require(Path.IsPathFullyQualified(fontPath) && File.Exists(fontPath), "Pass --font=<absolute pinned DejaVuSans.ttf>.");
+    var font = new FontFamily(new Uri(fontPath), "DejaVu Sans");
     var dispatcher = Dispatcher.CurrentDispatcher;
     var owner = Environment.CurrentManagedThreadId;
     var fixture = new Fixture();
-    var input = new TextBox { PlaceholderText = "Native X11 input probe" };
+    var input = new TextBox { OverridesDefaultStyle = true, Height = 60, Template = TextTemplate(), FontFamily = font };
     var status = new TextBlock { Text = "The actual WPF dispatcher owns this native event pump." };
     window = new Window
     {
         Title = "Real WPF dispatcher native integration",
         Width = 560,
         Height = 170,
-        Content = new StackPanel { Margin = new Thickness(16), Spacing = 12, Children = { status, input } }
+        FontFamily = font,
+        Content = new StackPanel { Margin = new Thickness(16), Children = { status, input } }
     };
     var keyDown = 0;
     var keyUp = 0;
@@ -63,7 +69,7 @@ try
     var callbackOwner = true;
     Action? keyDownHook = null;
     Action? keyUpHook = null;
-    window.Opened += (_, _) => opened = true;
+    window.Loaded += (_, _) => opened = true;
     window.Closed += (_, _) =>
     {
         closed = true;
@@ -76,24 +82,24 @@ try
     };
     window.Activated += (_, _) => activated++;
     window.Deactivated += (_, _) => deactivated++;
-    window.AddHandler(InputElement.KeyDownEvent, (_, _) =>
+    window.AddHandler(Keyboard.PreviewKeyDownEvent, new KeyEventHandler((_, _) =>
     {
         keyDown++;
         callbackOwner &= dispatcher.CheckAccess() && Environment.CurrentManagedThreadId == owner;
         fixture.SetValue(Fixture.ValueProperty, (int)fixture.GetValue(Fixture.ValueProperty) + 1);
         keyDownHook?.Invoke();
-    }, RoutingStrategies.Tunnel);
-    window.AddHandler(InputElement.KeyUpEvent, (_, _) => { keyUp++; keyUpHook?.Invoke(); }, RoutingStrategies.Tunnel);
-    window.AddHandler(InputElement.TextInputEvent, (_, _) => textEvents++, RoutingStrategies.Tunnel);
+    }), true);
+    window.AddHandler(Keyboard.PreviewKeyUpEvent, new KeyEventHandler((_, _) => { keyUp++; keyUpHook?.Invoke(); }), true);
+    window.AddHandler(TextCompositionManager.TextInputEvent, new TextCompositionEventHandler((_, _) => textEvents++), true);
     window.Show();
-    var nativeHandle = window.TryGetPlatformHandle();
-    Require(nativeHandle is { Handle: not 0, HandleDescriptor: "XID" }, "The host did not create an actual X11 window.");
-    var xid = nativeHandle!.Handle;
+    var xid = OwnedNativeAccess.Handle(PresentationSource.FromVisual(window)!);
+    Require(xid != IntPtr.Zero, "The owned host did not create an actual X11 window.");
     using var nativeInput = new X11Input();
+    PumpUntil(() => input.ActualHeight == 60 && window.IsLoaded);
     window.Activate();
     nativeInput.Focus(xid);
-    input.Focus();
-    PumpUntil(() => nativeInput.CurrentFocus() == xid);
+    fixtureServer.Click(xid, 100, 60);
+    PumpUntil(() => nativeInput.CurrentFocus() == xid && input.IsKeyboardFocused);
 
     Run("actual-fork-identity-and-thread-ownership", () =>
     {
@@ -109,21 +115,21 @@ try
         Require((int)fixture.GetValue(Fixture.ValueProperty) == 7 && ReferenceEquals(fixture.Dispatcher, dispatcher), "The fixture does not use the actual WPF dispatcher.");
         Require(typeof(Dispatcher).Assembly.GetName().Name == "WindowsBase", "The dispatcher assembly identity changed.");
         Require(typeof(Dispatcher).Assembly.GetName().GetPublicKeyToken()!.SequenceEqual(typeof(NativeDispatcherHost).Assembly.GetName().GetPublicKeyToken()!), "The backend friend assembly has the wrong signing identity.");
-        var x11Assembly = typeof(Avalonia.X11.ExternalDispatcherBridge).Assembly;
-        var x11Version = x11Assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>()!.InformationalVersion;
-        Require(x11Version.Contains("portable-native-input.2d79ba55fae1b1e71c69f93a668080c9029e6a31", StringComparison.Ordinal) && Convert.ToHexString(x11Assembly.GetName().GetPublicKeyToken()!) == "C8D484A7012F9A8B", "The pinned source X11 adaptation or original signing identity was not loaded.");
-        return new { assembly = typeof(Dispatcher).Assembly.FullName, path = typeof(Dispatcher).Assembly.Location, moduleVersionId = typeof(Dispatcher).Assembly.ManifestModule.ModuleVersionId, owner, x11Assembly = x11Assembly.FullName, x11Version, x11Path = x11Assembly.Location };
+        var backend = typeof(NativeDispatcherHost).Assembly;
+        Require(!AppDomain.CurrentDomain.GetAssemblies().Any(assembly => assembly.GetName().Name!.StartsWith("Avalonia", StringComparison.Ordinal)), "An Avalonia assembly entered the owned host runtime.");
+        return new { assembly = typeof(Dispatcher).Assembly.FullName, path = typeof(Dispatcher).Assembly.Location, moduleVersionId = typeof(Dispatcher).Assembly.ManifestModule.ModuleVersionId, owner, backend = backend.FullName, backendPath = backend.Location };
+
     });
 
     Run("same-thread-send-is-inline-without-native-pumping", () =>
     {
-        var native = (Avalonia.Threading.IControlledDispatcherImpl)Avalonia.Threading.Dispatcher.UIThread.PlatformImpl;
+        var native = OwnedNativeAccess.Pump;
         var downBefore = keyDown;
         var upBefore = keyUp;
         var queuedRan = false;
         var queued = dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => queuedRan = true));
         nativeInput.PressAndRelease();
-        Require(native.HasPendingInput, "The Send case has no pending native input to detect accidental pumping.");
+        Require((bool)OwnedNativeAccess.Get(native, "HasPendingInput"), "The Send case has no pending native input to detect accidental pumping.");
         var previousContext = SynchronizationContext.Current;
         var callbackThread = 0;
         var value = dispatcher.Invoke(() =>
@@ -133,21 +139,21 @@ try
             return 42;
         }, DispatcherPriority.Send);
         Require(value == 42 && callbackThread == owner && ReferenceEquals(SynchronizationContext.Current, previousContext), "Same-thread Send did not return synchronously on its owner thread or restore its context.");
-        Require(!queuedRan && queued.Status == DispatcherOperationStatus.Pending && keyDown == downBefore && keyUp == upBefore && native.HasPendingInput, "Same-thread Send pumped WPF or native work before returning.");
+        Require(!queuedRan && queued.Status == DispatcherOperationStatus.Pending && keyDown == downBefore && keyUp == upBefore && (bool)OwnedNativeAccess.Get(native, "HasPendingInput"), "Same-thread Send pumped WPF or native work before returning.");
         PumpUntil(() => queuedRan && keyDown > downBefore && keyUp > upBefore);
         return new { value, callbackThread, queuedStatusAfterExplicitPump = queued.Status.ToString(), nativeDeliveryAfterExplicitPump = true };
     });
 
     Run("disable-processing-blocks-native-frame-and-wait-pumping", () =>
     {
-        var native = (Avalonia.Threading.IControlledDispatcherImpl)Avalonia.Threading.Dispatcher.UIThread.PlatformImpl;
+        var native = OwnedNativeAccess.Pump;
         var downBefore = keyDown;
         var upBefore = keyUp;
         var queuedRan = false;
         var blockedFrame = new DispatcherFrame();
         dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => { queuedRan = true; blockedFrame.Continue = false; }));
         nativeInput.PressAndRelease();
-        Require(native.HasPendingInput, "The disabled-processing case has no pending native input.");
+        Require((bool)OwnedNativeAccess.Get(native, "HasPendingInput"), "The disabled-processing case has no pending native input.");
         var frameRejected = false;
         var waitAnyIndex = -1;
         var waitAllResult = -1;
@@ -171,7 +177,7 @@ try
             Require(waitAllResult == 0, "Disabled WaitAll did not observe both signaled handles.");
             first.Reset(); second.Reset();
             Require(context.Wait(handles, false, 0) == WaitHandle.WaitTimeout, "Disabled WaitAny ignored reset handles.");
-            Require(!queuedRan && keyDown == downBefore && keyUp == upBefore && native.HasPendingInput, "A disabled wait dispatched queued WPF or native input callbacks.");
+            Require(!queuedRan && keyDown == downBefore && keyUp == upBefore && (bool)OwnedNativeAccess.Get(native, "HasPendingInput"), "A disabled wait dispatched queued WPF or native input callbacks.");
         }
         PumpUntil(() => queuedRan && keyDown > downBefore && keyUp > upBefore);
         return new { frameRejected, waitAnyIndex, waitAllResult, processingResumed = queuedRan, nativeDeliveryAfterReenable = true };
@@ -218,40 +224,42 @@ try
         var order = new List<string>();
         var nativeBeforeBackground = false;
         nativeInput.PressAndRelease();
-        var nativePending = ((Avalonia.Threading.IControlledDispatcherImpl)Avalonia.Threading.Dispatcher.UIThread.PlatformImpl).HasPendingInput;
+        var nativePending = OwnedNativeAccess.HasPendingInput;
         Require(nativePending, "The actual X11 queue failed to report the injected pending native input.");
         dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => { nativeBeforeBackground = keyDown > downBefore; order.Add("background"); }));
         dispatcher.BeginInvoke(DispatcherPriority.Input, new Action(() => order.Add("input")));
         dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => order.Add("normal")));
         try { PumpUntil(() => order.Count == 3 && keyDown > downBefore && keyUp > upBefore && textEvents > textBefore); }
-        catch (Exception exception) { throw new InvalidOperationException($"Native delivery diagnostics: down={keyDown - downBefore}, up={keyUp - upBefore}, text={textEvents - textBefore}, order={string.Join(',', order)}, focused={input.IsFocused}, active={window.IsActive}, nativeFocus={nativeInput.CurrentFocus()}, xid={xid}.", exception); }
+        catch (Exception exception) { throw new InvalidOperationException($"Native delivery diagnostics: down={keyDown - downBefore}, up={keyUp - upBefore}, text={textEvents - textBefore}, order={string.Join(',', order)}, focused={input.IsKeyboardFocused}, active={window.IsActive}, nativeFocus={nativeInput.CurrentFocus()}, xid={xid}.", exception); }
         Require(order.SequenceEqual(["normal", "input", "background"]) && nativeBeforeBackground, "Native input or the actual WPF priority queue was bypassed.");
         Require(callbackOwner && input.Text?.Contains('a') == true && (int)fixture.GetValue(Fixture.ValueProperty) > 7, "The native callback did not update the actual WPF dependency object on its owner thread.");
-        return new { nativePending, keyPresses = keyDown - downBefore, keyReleases = keyUp - upBefore, textEvents = textEvents - textBefore, callbackOwner, nativeBeforeBackground, order, delivery = "OS-injected XTest events through the actual X server; not physical keyboard input or WPF InputManager" };
+        return new { nativePending, keyPresses = keyDown - downBefore, keyReleases = keyUp - upBefore, textEvents = textEvents - textBefore, callbackOwner, nativeBeforeBackground, order, delivery = "OS-injected XTest events through the actual X server; real WPF InputManager; not physical keyboard input" };
     });
 
     Run("native-focus-loss-and-regain", () =>
     {
         var lostBefore = deactivated;
         var gainedBefore = activated;
-        var otherInput = new TextBox();
-        var other = new Window { Title = "Native focus destination", Width = 260, Height = 100, Content = otherInput };
+        var otherInput = new TextBox { OverridesDefaultStyle = true, Template = TextTemplate(), FontFamily = font };
+        var other = new Window { Title = "Native focus destination", Left = 600, Top = 240, Width = 260, Height = 100, WindowStartupLocation = WindowStartupLocation.Manual, Content = otherInput };
         var otherKeys = 0;
-        other.AddHandler(InputElement.KeyDownEvent, (_, _) => otherKeys++, RoutingStrategies.Tunnel);
+        other.AddHandler(Keyboard.PreviewKeyDownEvent, new KeyEventHandler((_, _) => otherKeys++), true);
         try
         {
             other.Show();
-            var otherHandle = other.TryGetPlatformHandle()!.Handle;
+            var otherHandle = OwnedNativeAccess.Handle(PresentationSource.FromVisual(other)!);
             nativeInput.Focus(otherHandle);
-            otherInput.Focus();
-            PumpFor(TimeSpan.FromMilliseconds(30));
+            PumpUntil(() => otherInput.ActualWidth > 0 && other.IsLoaded);
+            fixtureServer.Click(otherHandle, 100, 50);
+            PumpUntil(() => otherInput.IsKeyboardFocused);
             Require(nativeInput.CurrentFocus() == otherHandle, "The X server did not move input focus to the other native window.");
             var keysBefore = keyDown;
             nativeInput.PressAndRelease();
             PumpUntil(() => otherKeys > 0);
             Require(keyDown == keysBefore, "The original host received a key event targeted at the other focused native window.");
             nativeInput.Focus(xid);
-            input.Focus();
+            fixtureServer.Click(xid, 100, 60);
+            PumpUntil(() => input.IsKeyboardFocused);
             Require(nativeInput.CurrentFocus() == xid, "The X server did not return input focus to the host.");
             nativeInput.PressAndRelease();
             PumpUntil(() => keyDown > keysBefore);
@@ -261,13 +269,14 @@ try
         {
             other.Close();
             nativeInput.Focus(xid);
-            input.Focus();
+            fixtureServer.Click(xid, 100, 60);
+            PumpUntil(() => input.IsKeyboardFocused);
         }
     });
 
     Run("repeated-native-pending-probes-preserve-delivery", () =>
     {
-        var native = (Avalonia.Threading.IControlledDispatcherImpl)Avalonia.Threading.Dispatcher.UIThread.PlatformImpl;
+        var native = OwnedNativeAccess.Pump;
         var probes = 0;
         for (var i = 0; i < 3; i++)
         {
@@ -276,16 +285,61 @@ try
             var background = false;
             nativeInput.PressAndRelease();
             var deadline = Stopwatch.StartNew();
-            while (!native.HasPendingInput && deadline.ElapsedMilliseconds < 200) Thread.Sleep(1);
+            while (!(bool)OwnedNativeAccess.Get(native, "HasPendingInput") && deadline.ElapsedMilliseconds < 200) Thread.Sleep(1);
             for (var probe = 0; probe < 8; probe++)
             {
-                Require(native.HasPendingInput, "A repeated native queue probe lost pending Xlib input before dispatch.");
+                Require((bool)OwnedNativeAccess.Get(native, "HasPendingInput"), "A repeated native queue probe lost pending Xlib input before dispatch.");
                 probes++;
             }
             dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => background = true));
             PumpUntil(() => keyDown > beforeDown && keyUp > beforeUp && background);
         }
         return new { probes, rounds = 3, delivery = "XPending may move socket data into the actual Xlib event queue; native delivery must still complete." };
+    });
+
+    Run("bounded-native-and-posted-callback-fairness", () =>
+    {
+        var observations = new List<object>();
+        foreach (int budget in new[] { 1, 32 })
+        {
+            PumpFor(TimeSpan.FromMilliseconds(20));
+            int posts = 0;
+            int nativeStart = keyDown + keyUp;
+            OwnedNativeAccess.Post(() => posts++);
+            for (int turn = 0; turn < 4 && (posts == 0 || keyDown + keyUp == nativeStart); turn++)
+            {
+                for (int pair = 0; pair < 16; pair++) nativeInput.PressAndRelease();
+                DispatchTurn("native-pressure");
+            }
+            Require(posts == 1 && keyDown + keyUp > nativeStart,
+                $"Posted work starved under actual XTest backlog with dispatch budget {budget}.");
+            PumpFor(TimeSpan.FromMilliseconds(20));
+            int nativeBefore = keyDown + keyUp, postsBefore = posts;
+            bool replenish = true;
+            Action? posted = null;
+            posted = () => { posts++; if (replenish) OwnedNativeAccess.Post(posted!); };
+            OwnedNativeAccess.Post(posted);
+            nativeInput.PressAndRelease();
+            try
+            {
+                for (int turn = 0; turn < 4 && (keyDown + keyUp == nativeBefore || posts == postsBefore); turn++)
+                    DispatchTurn("posted-pressure");
+                Require(keyDown + keyUp > nativeBefore && posts > postsBefore,
+                    $"Native input starved under self-posting work with dispatch budget {budget}.");
+            }
+            finally { replenish = false; PumpFor(TimeSpan.FromMilliseconds(20)); }
+            observations.Add(new { budget, nativeTransitions = keyDown + keyUp - nativeStart, posts,
+                actualXTestBacklog = true, bothQueuesProgressed = true });
+
+            void DispatchTurn(string pressure)
+            {
+                int nativeBeforeTurn = keyDown + keyUp, postsBeforeTurn = posts;
+                int dispatched = (int)OwnedNativeAccess.Call(OwnedNativeAccess.Connection, "DispatchBatch", budget)!;
+                Require(dispatched > 0 && dispatched <= budget && keyDown + keyUp - nativeBeforeTurn + posts - postsBeforeTurn <= budget,
+                    $"The combined native/callback dispatch cap changed: {pressure}, budget={budget}, dispatched={dispatched}.");
+            }
+        }
+        return observations;
     });
 
     Run("nested-wpf-frame-from-native-key-callback", () =>
@@ -333,16 +387,19 @@ try
 
     Run("owned-native-modal-with-wpf-pump", () =>
     {
-        var child = new Window { Title = "Owned native modal", Width = 280, Height = 100 };
+        var child = new Window { Title = "Owned native modal", Width = 280, Height = 100, Owner = window, FontFamily = font };
         var childOpened = false;
         var childClosed = false;
-        child.Opened += (_, _) => childOpened = true;
+        var ownerDuringModal = false;
+        child.Loaded += (_, _) =>
+        {
+            childOpened = true;
+            ownerDuringModal = child.Owner == window && window.OwnedWindows.Count == 1;
+            dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => child.DialogResult = true));
+        };
         child.Closed += (_, _) => childClosed = true;
-        var modal = child.ShowDialog<bool>(window);
-        var ownerDuringModal = child.Owner == window;
-        dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => child.Close(true)));
-        PumpUntil(() => modal.IsCompleted);
-        Require(modal.GetAwaiter().GetResult() && childOpened && childClosed && ownerDuringModal, $"Owned modal diagnostics: result={modal.GetAwaiter().GetResult()}, opened={childOpened}, closed={childClosed}, ownerDuringModal={ownerDuringModal}.");
+        var modal = child.ShowDialog();
+        Require(modal == true && childOpened && childClosed && ownerDuringModal, $"Owned modal diagnostics: result={modal}, opened={childOpened}, closed={childClosed}, ownerDuringModal={ownerDuringModal}.");
         nativeInput.Focus(xid);
         input.Focus();
         PumpUntil(() => nativeInput.CurrentFocus() == xid);
@@ -356,14 +413,13 @@ try
         var backgroundRuns = 0;
         var nativeAtFirstBackground = -1;
         var nativeAtLastBackground = -1;
-        var rendering = true;
         var clock = Stopwatch.StartNew();
-        void Render(TimeSpan _)
-        {
-            renderFrames++;
-            status.Text = $"Native render callback {renderFrames}; WPF background runs {backgroundRuns}";
-            if (rendering) window.RequestAnimationFrame(Render);
-        }
+        var target = OwnedNativeAccess.Get(PresentationSource.FromVisual(window)!, "_rasterTarget");
+        var renderedEvent = target.GetType().GetEvent("FrameRendered", OwnedNativeAccess.Members)!;
+        Action rendered = () => renderFrames++;
+        renderedEvent.GetAddMethod(true)!.Invoke(target, [rendered]);
+        var renderTimer = new DispatcherTimer(DispatcherPriority.Render) { Interval = TimeSpan.FromMilliseconds(12) };
+        renderTimer.Tick += (_, _) => status.Text = $"Retained native frame {renderFrames}; background runs {backgroundRuns}; tick {clock.ElapsedTicks}";
         void Background()
         {
             backgroundRuns++;
@@ -373,7 +429,7 @@ try
             if (clock.ElapsedMilliseconds < 500)
                 dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(Background));
         }
-        window.RequestAnimationFrame(Render);
+        renderTimer.Start();
         dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(Background));
         var producer = Task.Run(() =>
         {
@@ -381,7 +437,7 @@ try
             for (var i = 0; i < 25; i++) { injected.PressAndRelease(); Thread.Sleep(15); }
         });
         try { PumpUntil(() => producer.IsCompleted && clock.ElapsedMilliseconds >= 550); producer.GetAwaiter().GetResult(); }
-        finally { rendering = false; }
+        finally { renderTimer.Stop(); renderedEvent.GetRemoveMethod(true)!.Invoke(target, [rendered]); }
         Require(keyDown - downBefore >= 20 && renderFrames >= 2 && backgroundRuns > 1 && nativeAtFirstBackground >= 1 && nativeAtLastBackground > nativeAtFirstBackground,
             $"Progress diagnostics: nativeKeys={keyDown - downBefore}, renders={renderFrames}, background={backgroundRuns}, first={nativeAtFirstBackground}, last={nativeAtLastBackground}.");
         return new { nativeKeyPresses = keyDown - downBefore, renderFrames, backgroundRuns, nativeAtFirstBackground, nativeAtLastBackground, elapsedMilliseconds = clock.ElapsedMilliseconds };
@@ -390,43 +446,50 @@ try
     Run("direct-managed-input-exception-propagation", () =>
     {
         var observed = false;
-        keyDownHook = () => { keyDownHook = null; throw new NativeCallbackTestException(); };
+        var expected = new NativeCallbackTestException();
+        keyDownHook = () => { keyDownHook = null; throw expected; };
         nativeInput.PressAndRelease();
         try { PumpUntil(() => false); }
-        catch (NativeCallbackTestException) { observed = true; }
+        catch (NativeCallbackTestException error) when (ReferenceEquals(error, expected)) { observed = true; }
         finally { keyDownHook = null; }
         var recovered = false;
         dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => recovered = true));
-        PumpUntil(() => recovered);
+        var beforeDown = keyDown; var beforeUp = keyUp;
+        nativeInput.PressAndRelease();
+        PumpUntil(() => recovered && keyDown > beforeDown && keyUp > beforeUp);
         Require(observed && dispatcher.CheckAccess(), "The direct managed input callback exception was swallowed or escaped the owner thread.");
-        return new { observed, recovered, delivery = "Direct managed dispatch from the source input provider into the WPF frame; this does not exercise a GLib C callback." };
+        return new { observed, exactExceptionIdentity = true, recovered, nativeInputRecovered = true, delivery = "Direct managed dispatch from the source input provider into the WPF frame; this does not exercise a GLib C callback." };
     });
 
-    Run("glib-signal-callback-exception-propagation", () =>
-        VerifyGlibException(Avalonia.Threading.DispatcherPriority.Normal, "GLIB_SIGNAL_CALLBACK", "CheckSignaled"));
+    Run("glib-signal-callback-exception-propagation", () => VerifyGlibException(false, "GLIB_SIGNAL_CALLBACK"));
+    Run("glib-background-callback-exception-propagation", () => VerifyGlibException(true, "GLIB_BACKGROUND_CALLBACK"));
 
-    Run("glib-background-callback-exception-propagation", () =>
-        VerifyGlibException(Avalonia.Threading.DispatcherPriority.Background, "GLIB_BACKGROUND_CALLBACK", "RequestBackgroundProcessing"));
-
-    object VerifyGlibException(Avalonia.Threading.DispatcherPriority priority, string marker, string nativeCallback)
+    object VerifyGlibException(bool delayed, string marker)
     {
+        var expected = new NativeCallbackTestException(marker);
         var observed = false;
         var capturedAcrossBoundary = false;
-        Avalonia.Threading.Dispatcher.UIThread.Post(() => throw new NativeCallbackTestException(marker), priority);
+        using var callback = new NativeBoundaryCallback(OwnedNativeAccess.Connection, expected, delayed);
         try { PumpUntil(() => false); }
-        catch (NativeCallbackTestException exception) when (exception.Message == marker)
+        catch (NativeCallbackTestException exception) when (ReferenceEquals(exception, expected))
         {
             observed = true;
-            capturedAcrossBoundary = exception.StackTrace?.Contains(nativeCallback, StringComparison.Ordinal) == true &&
-                exception.StackTrace.Contains("NativeCallbackExceptions.ThrowPending", StringComparison.Ordinal);
+            capturedAcrossBoundary = exception.StackTrace?.Contains("InvokeFromGlib", StringComparison.Ordinal) == true &&
+                exception.StackTrace.Contains("ThrowPendingException", StringComparison.Ordinal);
         }
-        var avaloniaRecovered = false;
+        var nativeRecovered = false;
         var wpfRecovered = false;
-        Avalonia.Threading.Dispatcher.UIThread.Post(() => avaloniaRecovered = true, Avalonia.Threading.DispatcherPriority.Normal);
+        var beforeDown = keyDown;
+        var beforeUp = keyUp;
+        OwnedNativeAccess.Post(() => nativeRecovered = true);
         dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(() => wpfRecovered = true));
-        PumpUntil(() => avaloniaRecovered && wpfRecovered);
-        Require(observed && capturedAcrossBoundary && dispatcher.CheckAccess(), "The GLib callback exception did not return safely through the native boundary to the WPF frame.");
-        return new { observed, capturedAcrossBoundary, avaloniaRecovered, wpfRecovered, callback = nativeCallback };
+        nativeInput.PressAndRelease();
+        PumpUntil(() => nativeRecovered && wpfRecovered && keyDown > beforeDown && keyUp > beforeUp);
+        Require(observed && capturedAcrossBoundary && callback.ReturnedToNative && dispatcher.CheckAccess(), "The GLib callback did not return to C before the original exception reached the WPF frame.");
+        return new { observed, exactExceptionIdentity = true, firstExceptionPreserved = true, capturedAcrossBoundary,
+            callback.ReturnedToNative, nativeRecovered, wpfRecovered, nativeInputRecovered = true,
+            callback = delayed ? "owned-context timeout source" : "owned-context idle source",
+            scope = "Actual fixture GLib C callback using production exception capture/throw boundary; upstream signal/background callbacks no longer exist." };
     }
 
     Run("native-close-and-actual-wpf-shutdown", () =>
@@ -471,8 +534,8 @@ Console.WriteLine(JsonSerializer.Serialize(new
     probe = "real-wpf-native-dispatcher-integration",
     os = RuntimeInformation.OSDescription,
     display = Environment.GetEnvironmentVariable("DISPLAY"),
-    scope = "Actual fork WindowsBase Dispatcher and DependencyObject with pinned Avalonia 12.1.4 X11/GLib native event pump; XTest OS-injected input",
-    unproven = "WPF Window, InputManager, routed input events, controls, native capture, physical keyboard qualification and full GTK integration",
+    scope = "Actual WPF WindowsBase Dispatcher, Window, TextBox and InputManager with owned X11/GLib event pump; XTest OS-injected input",
+    unproven = "Physical keyboard qualification, GNOME/XWayland desktop behavior and native IME",
     checks
 }, new JsonSerializerOptions { WriteIndented = true }));
 return failed ? 1 : 0;
@@ -506,11 +569,65 @@ static void Require(bool condition, string message)
     if (!condition) throw new InvalidOperationException(message);
 }
 
-internal sealed class ProbeApplication : Application
+static ControlTemplate TextTemplate()
 {
-    public override void Initialize() => Styles.Add(new FluentTheme());
+    var host = new FrameworkElementFactory(typeof(ScrollViewer), "PART_ContentHost");
+    return new ControlTemplate(typeof(TextBox)) { VisualTree = host };
 }
 
+static int LateHostProfile()
+{
+    object? detail = null;
+    Exception? failure = null;
+    using var watchdog = new Timer(_ => Environment.Exit(9), null, 15000, Timeout.Infinite);
+    try
+    {
+        using var native = new X11Fixture("little");
+        Require(Dispatcher.FromThread(Thread.CurrentThread) is null, "The late-host probe already has a Dispatcher.");
+        bool highContrast = SystemParameters.HighContrast;
+        var provider = typeof(Visual).Assembly.GetType("MS.Internal.Portability.Settings.PortableSystemSettingsProvider", true)!;
+        object profile = provider.GetProperty("Current", OwnedNativeAccess.Members)!.GetValue(null)!;
+        VerifyRejection();
+        Exception? workerFailure = null;
+        var worker = new Thread(() =>
+        {
+            try { VerifyRejection(); }
+            catch (Exception error) { workerFailure = error; }
+        }) { IsBackground = true };
+        worker.Start();
+        Require(worker.Join(5000), "The second rejected native host did not finish cleanup.");
+        if (workerFailure is not null) throw new InvalidOperationException("The second late native initialization did not preserve rejection and cleanup.", workerFailure);
+        Require(ReferenceEquals(profile, provider.GetProperty("Current", OwnedNativeAccess.Members)!.GetValue(null)) &&
+            SystemParameters.HighContrast == highContrast, "Rejected native initialization replaced the consumed settings snapshot.");
+        detail = new { rejections = 2, profile = OwnedNativeAccess.Get(profile, "ProfileName"), settingsUnchanged = true, nativeConnectionsDisposed = true };
+    }
+    catch (Exception error) { failure = error; }
+    Console.WriteLine(JsonSerializer.Serialize(new
+    {
+        probe = "late-first-native-host-settings-registration",
+        scope = "Fresh process, genuine public WPF system-setting consumption and actual owned native startup/cleanup",
+        checks = new[] { new { name = "late-first-host-rejects-consumed-settings-and-cleans-up", status = failure is null ? "pass" : "fail", detail = failure is null ? detail : failure.ToString() } }
+    }, new JsonSerializerOptions { WriteIndented = true }));
+    return failure is null ? 0 : 1;
+
+    static void VerifyRejection()
+    {
+        Exception? rejected = null;
+        try { NativeWindowHost.InitializeForCurrentThread(); }
+        catch (Exception error) { rejected = error; }
+        finally
+        {
+            var current = Dispatcher.FromThread(Thread.CurrentThread);
+            if (current is not null && !current.HasShutdownFinished) current.InvokeShutdown();
+        }
+        Require(rejected is InvalidOperationException && rejected.Message.Contains("already been consumed", StringComparison.Ordinal),
+            "Late first native initialization did not preserve the consumed-profile rejection: " + rejected);
+        var session = typeof(NativeDispatcherHost).GetField("s_session", OwnedNativeAccess.Members)!.GetValue(null)!;
+        Require((bool)OwnedNativeAccess.Get(OwnedNativeAccess.Get(session, "Connection"), "_disposed"),
+            "Rejected native initialization retained its X11 connection.");
+        Require(Dispatcher.FromThread(Thread.CurrentThread)!.HasShutdownFinished, "Rejected native initialization retained its WPF dispatcher.");
+    }
+}
 internal sealed class Fixture : DependencyObject
 {
     internal static readonly DependencyProperty ValueProperty = DependencyProperty.Register("Value", typeof(int), typeof(Fixture), new PropertyMetadata(0));

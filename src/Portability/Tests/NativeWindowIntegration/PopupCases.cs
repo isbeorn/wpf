@@ -3,7 +3,6 @@ extern alias WpfFork;
 using System.Reflection;
 using System.Runtime.ExceptionServices;
 using System.Runtime.InteropServices;
-using Avalonia;
 using WpfFork::System.Windows;
 using WpfFork::System.Windows.Controls;
 using WpfFork::System.Windows.Controls.Primitives;
@@ -300,9 +299,7 @@ internal static class PopupCases
             IntPtr ObserveMappedPopup(PresentationSource source, IntPtr ownerXid)
             {
                 object peer = source.GetType().GetField("_host", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(source)!;
-                object implementation = peer.GetType().GetField("_window", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(peer)!;
-                var handle = (Avalonia.Platform.IPlatformHandle)implementation.GetType().GetProperty("Handle")!.GetValue(implementation)!;
-                IntPtr popupId = handle.Handle;
+                IntPtr popupId = OwnedNativeAccess.Handle(source);
                 ObserveRaw(source, "popup");
                 Require(popupId != ownerXid && native.IsMapped(popupId), "The genuine Popup has no separately mapped native X11 window.");
                 var attributes = native.PopupAttributes(popupId);
@@ -661,12 +658,7 @@ internal static class PopupCases
             }
         }
     }
-    private static IntPtr PopupHandle(PresentationSource source)
-    {
-        object peer = source.GetType().GetField("_host", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(source)!;
-        object native = peer.GetType().GetField("_window", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(peer)!;
-        return ((Avalonia.Platform.IPlatformHandle)native.GetType().GetProperty("Handle")!.GetValue(native)!).Handle;
-    }
+    private static IntPtr PopupHandle(PresentationSource source) => OwnedNativeAccess.Handle(source);
     internal static void TransparentPopupStorage(X11Fixture native, Action drain)
     {
         foreach (bool staysOpen in new[] { true, false })
@@ -796,9 +788,10 @@ internal static class PopupCases
             Require(other.CaptureMouse(), "The nonfocused live source did not acquire capture before latest-loss verification.");
             native.Unmap(otherXid); drain();
             object peer = otherSource.GetType().GetField("_host", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(otherSource)!;
-            object bridge = peer.GetType().GetField("_native", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(peer)!;
-            object observer = bridge.GetType().GetField("s_observer", BindingFlags.Static | BindingFlags.NonPublic)!.GetValue(null)!;
-            object? captureOwner = observer.GetType().GetProperty("PointerCaptureOwner")!.GetValue(observer);
+            object input = OwnedNativeAccess.Get(peer, "_input");
+            object observer = OwnedNativeAccess.Get(input, "_pointer");
+            var captureOwnerField = observer.GetType().GetField("_captureOwner", OwnedNativeAccess.Members)!;
+            object? captureOwner = captureOwnerField.GetValue(observer);
             Observations.Add(new { kind = "latest-native-unmap-capture-loss", hasRetainedNativeCaptureOwner = captureOwner != null,
                 managedCapture = Mouse.Captured?.GetType().Name, captureFree = native.CanAcquirePointerGrab() });
             Require(Mouse.Captured == null && native.CanAcquirePointerGrab() && captureOwner == null,
@@ -812,9 +805,9 @@ internal static class PopupCases
                 Require(other.CaptureMouse(), "The remapped source could not reacquire actual capture.");
                 native.Unmap(otherXid); drain();
                 object ownerPeer = ownerSource.GetType().GetField("_host", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(ownerSource)!;
-                object ownerBridge = ownerPeer.GetType().GetField("_native", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(ownerPeer)!;
+                object ownerInput = OwnedNativeAccess.Get(ownerPeer, "_input");
                 Require(replacementCaptured && ReferenceEquals(Mouse.Captured, owner) && !native.CanAcquirePointerGrab() &&
-                    ReferenceEquals(observer.GetType().GetProperty("PointerCaptureOwner")!.GetValue(observer), ownerBridge),
+                    ReferenceEquals(captureOwnerField.GetValue(observer), ownerInput),
                     "The native-loss callback erased a newer real capture acquired by its managed handler.");
                 Observations.Add(new { kind = "latest-native-unmap-reentrant-recapture", replacementCaptured, nativeOwnerMatchesReplacement = true });
             }
@@ -824,87 +817,114 @@ internal static class PopupCases
     }
     private static void VerifyNativeCrossingOrder(PresentationSource owner, PresentationSource other)
     {
-        const BindingFlags instance = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
-        object Bridge(PresentationSource source)
-        {
-            object peer = source.GetType().GetField("_host", instance)!.GetValue(source)!;
-            return peer.GetType().GetField("_native", instance)!.GetValue(peer)!;
-        }
-        object ownerBridge = Bridge(owner), otherBridge = Bridge(other);
-        var assembly = ownerBridge.GetType().Assembly;
-        object observer = ownerBridge.GetType().GetField("s_observer", BindingFlags.Static | BindingFlags.NonPublic)!.GetValue(null)!;
-        var serialProperty = observer.GetType().GetProperty("PointerCaptureSerial")!;
-        var ownerProperty = observer.GetType().GetProperty("PointerCaptureOwner")!;
-        var dispatch = observer.GetType().GetMethod("TryHandleEvent")!;
-        nuint originalSerial = (nuint)serialProperty.GetValue(observer)!;
-        object? originalOwner = ownerProperty.GetValue(observer);
-        Require(ReferenceEquals(originalOwner, ownerBridge), "Protocol boundary control lacks actual owner native capture.");
-        int opcode = (int)observer.GetType().GetField("_inputOpcode", instance)!.GetValue(observer)!;
-        IntPtr Handle(object bridge) => (IntPtr)bridge.GetType().GetField("_handle", instance)!.GetValue(bridge)!;
-        var eventType = assembly.GetType("Avalonia.X11.XEvent")!;
-        var coreType = assembly.GetType("Avalonia.X11.XCrossingEvent")!;
-        var xiType = assembly.GetType("Avalonia.X11.XIEnterLeaveEvent")!;
-        var cookieType = eventType.GetField("GenericEventCookie", instance)!.FieldType;
-        void Set(object value, string field, object data)
-        {
-            var member = value.GetType().GetField(field, instance)!;
-            member.SetValue(value, member.FieldType.IsEnum ? Enum.Parse(member.FieldType, (string)data) : data);
-        }
-        bool Handled(bool xi, object bridge, nuint serial, bool leave, string mode)
+        const BindingFlags members = OwnedNativeAccess.Members;
+        object ownerInput = OwnedNativeAccess.Input(owner), otherInput = OwnedNativeAccess.Input(other);
+        object router = OwnedNativeAccess.Get(ownerInput, "_pointer");
+        Require(ReferenceEquals(router, OwnedNativeAccess.Get(otherInput, "_pointer")), "Owned sources do not share the connection's pointer router.");
+        var assembly = ownerInput.GetType().Assembly;
+        var serialField = router.GetType().GetField("_captureSerial", members)!;
+        var ownerField = router.GetType().GetField("_captureOwner", members)!;
+        nuint originalSerial = (nuint)serialField.GetValue(router)!;
+        object? originalOwner = ownerField.GetValue(router);
+        Require(ReferenceEquals(originalOwner, ownerInput), "Protocol boundary control lacks actual owner native capture.");
+        int opcode = (int)OwnedNativeAccess.Get(router, "_opcode");
+        var eventType = assembly.GetType("Wpf.Portable.NativeHost.Linux.XEvent")!;
+        var coreType = assembly.GetType("Wpf.Portable.NativeHost.Linux.XCrossingEvent")!;
+        var xiType = assembly.GetType("Wpf.Portable.NativeHost.Linux.XIEnterLeaveEvent")!;
+        var cookieType = eventType.GetField("GenericCookie", members)!.FieldType;
+        var lostField = ownerInput.GetType().GetField("CaptureLost", members)!;
+        var pointerField = ownerInput.GetType().GetField("PointerInput", members)!;
+        var savedLost = lostField.GetValue(ownerInput);
+        var savedOwnerPointer = pointerField.GetValue(ownerInput);
+        var savedOtherPointer = pointerField.GetValue(otherInput);
+        int lost = 0;
+        lostField.SetValue(ownerInput, (Action)(() => lost++));
+        var pointerCounter = new NativePointerCounter();
+        var countMethod = typeof(NativePointerCounter).GetMethod(nameof(NativePointerCounter.OnInput))!
+            .MakeGenericMethod(pointerField.FieldType.GenericTypeArguments.Single());
+        var countPointer = Delegate.CreateDelegate(pointerField.FieldType, pointerCounter, countMethod);
+        pointerField.SetValue(ownerInput, countPointer);
+        pointerField.SetValue(otherInput, countPointer);
+        void Set(object value, string field, object data) => value.GetType().GetField(field, members)!.SetValue(value, data);
+        void Deliver(bool xi, object input, nuint serial, bool leave, int mode)
         {
             object crossing = Activator.CreateInstance(xi ? xiType : coreType)!;
-            Set(crossing, "type", xi ? "GenericEvent" : leave ? "LeaveNotify" : "EnterNotify");
-            Set(crossing, "serial", xi ? (object)serial : unchecked((IntPtr)(nint)serial));
-            Set(crossing, xi ? "EventWindow" : "window", Handle(bridge));
-            if (xi)
+            nuint handle = (nuint)OwnedNativeAccess.Get(OwnedNativeAccess.Get(input, "_window"), "Handle");
+            Set(crossing, "Type", xi ? 35 : leave ? 8 : 7);
+            Set(crossing, "Serial", serial);
+            Set(crossing, xi ? "Event" : "Window", handle);
+            Set(crossing, "Mode", mode);
+            object nativeEvent = Activator.CreateInstance(eventType)!;
+            if (!xi)
             {
-                Set(crossing, "mode", mode == "NotifyGrab" ? 1 : mode == "NotifyUngrab" ? 2 : 0);
-                Set(crossing, "extension", opcode);
-                Set(crossing, "evtype", leave ? "XI_Leave" : "XI_Enter");
+                eventType.GetField("Crossing", members)!.SetValue(nativeEvent, crossing);
+                OwnedNativeAccess.Call(input, "OnEvent", nativeEvent);
+                return;
             }
-            else Set(crossing, "mode", mode);
-            object evt = Activator.CreateInstance(eventType)!;
-            if (!xi) { eventType.GetField("CrossingEvent", instance)!.SetValue(evt, crossing); return (bool)dispatch.Invoke(observer, [evt])!; }
+            int device = (int)OwnedNativeAccess.Call(router, "Device", input)!;
+            Set(crossing, "DeviceId", device);
+            Set(crossing, "Extension", opcode);
+            Set(crossing, "EventType", leave ? 8 : 7);
             IntPtr payload = Marshal.AllocHGlobal(Marshal.SizeOf(xiType));
-            IntPtr cookieBuffer = Marshal.AllocHGlobal(Marshal.SizeOf(cookieType));
             try
             {
                 Marshal.StructureToPtr(crossing, payload, false);
                 object cookie = Activator.CreateInstance(cookieType)!;
-                Set(cookie, "type", Convert.ToInt32(Enum.Parse(coreType.GetField("type", instance)!.FieldType, "GenericEvent"))); Set(cookie, "extension", opcode);
-                Marshal.StructureToPtr(cookie, cookieBuffer, false);
-                Marshal.WriteIntPtr(cookieBuffer, checked((int)Marshal.OffsetOf(cookieType, "data")), payload);
-                eventType.GetField("GenericEventCookie", instance)!.SetValue(evt, Marshal.PtrToStructure(cookieBuffer, cookieType));
-                bool handled = (bool)dispatch.Invoke(observer, [evt])!;
-                return handled;
+                Set(cookie, "Type", 35); Set(cookie, "Extension", opcode);
+                Set(cookie, "EventType", leave ? 8 : 7); Set(cookie, "Data", payload);
+                eventType.GetField("GenericCookie", members)!.SetValue(nativeEvent, cookie);
+                OwnedNativeAccess.Call(router, "OnExtension", nativeEvent);
             }
-            finally { Marshal.FreeHGlobal(cookieBuffer); Marshal.FreeHGlobal(payload); }
+            finally { Marshal.FreeHGlobal(payload); }
         }
         int assertions = 0;
         try
         {
             foreach (nuint guard in new[] { originalSerial, (nuint)0, nuint.MaxValue })
-            {
-                serialProperty.SetValue(observer, guard);
                 foreach (bool xi in new[] { false, true })
                     foreach (bool leave in new[] { false, true })
                     {
-                        foreach (string mode in new[] { "NotifyGrab", "NotifyUngrab" })
+                        void Retained(object input, nuint serial, int mode, bool eligible = false)
                         {
-                            Require(Handled(xi, ownerBridge, unchecked(guard - 1), leave, mode), "An obsolete grab crossing escaped the native observer.");
-                            Require(Handled(xi, otherBridge, guard, leave, mode), "A replaced owner's equal-request crossing escaped the native observer.");
-                            assertions += 2;
+                            serialField.SetValue(router, guard); ownerField.SetValue(router, ownerInput); lost = 0; pointerCounter.Count = 0;
+                            Deliver(xi, input, serial, leave, mode);
+                            Require(ReferenceEquals(ownerField.GetValue(router), ownerInput) && lost == 0 && pointerCounter.Count == (xi && eligible ? 1 : 0),
+                                $"A crossing erased current capture: XI2={xi}, leave={leave}, guard={guard}, serial={serial}, mode={mode}.");
+                            assertions++;
                         }
-                        Require(!Handled(xi, ownerBridge, guard, leave, "NotifyGrab"), "The current owner's equal-request crossing was suppressed.");
-                        Require(!Handled(xi, otherBridge, unchecked(guard + 1), leave, "NotifyGrab"), "A newer crossing was suppressed.");
-                        Require(!Handled(xi, otherBridge, unchecked(guard - 1), leave, "NotifyNormal"), "An ordinary crossing was suppressed by grab ordering.");
-                        assertions += 3;
+                        foreach (int mode in new[] { 1, 2 })
+                        {
+                            Retained(ownerInput, unchecked(guard - 1), mode);
+                            Retained(otherInput, guard, mode);
+                        }
+                        Retained(ownerInput, guard, 1, true);
+                        Retained(otherInput, unchecked(guard + 1), 1, true);
+                        Retained(otherInput, unchecked(guard - 1), 0, true);
+                        foreach (nuint serial in new[] { guard, unchecked(guard + 1) })
+                        {
+                            serialField.SetValue(router, guard); ownerField.SetValue(router, ownerInput); lost = 0; pointerCounter.Count = 0;
+                            Deliver(xi, ownerInput, serial, leave, 2);
+                            Require(ownerField.GetValue(router) is null && lost == 1 && pointerCounter.Count == (xi ? 1 : 0),
+                                "A current or newer native Ungrab did not clear the owner and notify exactly once.");
+                            assertions++;
+                        }
                     }
-            }
         }
-        finally { serialProperty.SetValue(observer, originalSerial); ownerProperty.SetValue(observer, originalOwner); }
+        finally
+        {
+            serialField.SetValue(router, originalSerial); ownerField.SetValue(router, originalOwner);
+            lostField.SetValue(ownerInput, savedLost);
+            pointerField.SetValue(ownerInput, savedOwnerPointer);
+            pointerField.SetValue(otherInput, savedOtherPointer);
+        }
         Observations.Add(new { kind = "core-and-XI2-crossing-request-boundaries", assertions, nativeSerialBits = IntPtr.Size * 8,
-            originalSerial = originalSerial.ToString(), minimumAndMaximumWrap = true, noNativeCaptureMutation = true });
+            originalSerial = originalSerial.ToString(), minimumAndMaximumWrap = true, noNativeCaptureMutation = true,
+            delivery = "Owned core/XI2 ABI handlers; real grab held; temporary observers count capture-loss callbacks without releasing that grab." });
+    }
+    private sealed class NativePointerCounter
+    {
+        internal int Count;
+        public void OnInput<T>(T report) => Count++;
     }
     private static void CapturePens(Drawing? drawing, Visual visual)
     {

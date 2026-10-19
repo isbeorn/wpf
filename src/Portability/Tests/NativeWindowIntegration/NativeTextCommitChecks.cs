@@ -1,7 +1,6 @@
 extern alias WpfFork;
 
 using System.Reflection;
-using Avalonia.Input.Raw;
 using WpfFork::System.Windows;
 using WpfFork::System.Windows.Controls;
 using WpfFork::System.Windows.Data;
@@ -29,16 +28,7 @@ internal static class NativeTextCommitChecks
             if(texts.Count != 1 || texts[0] != "a") throw new InvalidOperationException("Ordinary native BMP keyboard text was duplicated or lost.");
             box.SelectAll(); box.IsUndoEnabled=false; box.IsUndoEnabled=true; texts.Clear();
             object peer=typeof(Window).GetField("_portablePeer",BindingFlags.Instance|BindingFlags.NonPublic)!.GetValue(window)!;
-            object implementation=peer.GetType().GetField("_window",BindingFlags.Instance|BindingFlags.NonPublic)!.GetValue(peer)!;
-            var keyboard=(Avalonia.Input.IKeyboardDevice)implementation.GetType().GetField("_keyboard",BindingFlags.Instance|BindingFlags.NonPublic)!.GetValue(implementation)!;
-            var root=(Avalonia.Input.IInputRoot)implementation.GetType().GetProperty("InputRoot")!.GetValue(implementation)!;
-            void Deliver(string value)
-            {
-                var report=(RawTextInputEventArgs)Activator.CreateInstance(typeof(RawTextInputEventArgs),[keyboard,1UL,root,value])!;
-                try { peer.GetType().GetMethod("OnInput",BindingFlags.Instance|BindingFlags.NonPublic)!.Invoke(peer,[report]); }
-                catch(TargetInvocationException exception) when(exception.InnerException is not null)
-                { System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(exception.InnerException).Throw(); }
-            }
+            void Deliver(string value) => OwnedNativeAccess.Call(peer, "OnTextInput", Environment.TickCount, value);
             Deliver(commit);
             drain();
             if(box.Text != commit || model.Value != commit || texts.Count != 1 || texts[0] != commit)

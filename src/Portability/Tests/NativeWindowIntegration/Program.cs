@@ -5,7 +5,6 @@ using System.Globalization;
 using System.Reflection;
 using System.Collections.Concurrent;
 using System.Text.Json;
-using Avalonia;
 using Wpf.Portable.NativeHost;
 using WpfFork::System.Windows;
 using WpfFork::System.Windows.Controls;
@@ -16,10 +15,11 @@ using WpfFork::System.Windows.Threading;
 using Point = WpfFork::System.Windows.Point;
 using Rect = WpfFork::System.Windows.Rect;
 using Visual = WpfFork::System.Windows.Media.Visual;
-using Application = Avalonia.Application;
 
+if (args.FirstOrDefault() == "--splash-only") return SplashChecks.Run(args[1..]);
+if (args.FirstOrDefault() == "--splash-unregistered") return SplashChecks.Unregistered();
 if (args.FirstOrDefault() == "--primary-screen-only") return PrimaryScreenCases.Run(args[1..]);
-if (args.FirstOrDefault() == "--ibus-transport") return IbusTransportChecks.Run(args[1..]);
+if (args.FirstOrDefault() == "--ibus-transport") throw new PlatformNotSupportedException("Native IME transport is deferred in the owned X11 profile.");
 if (args.FirstOrDefault() == "--clipboard-peer") return ClipboardCases.Peer(args[1..]);
 if (args.FirstOrDefault() == "--file-dialog-protocol") return FileDialogCases.Run(args[1..]);
 if (args.Contains("--clipboard-managed-only", StringComparer.Ordinal)) return ClipboardCases.ManagedSmoke();
@@ -57,7 +57,7 @@ try
     using var native = new X11Fixture(settings, settingsPayload);
     settingsOrigin = native.SettingsOrigin;
     bool negative = settings is not ("little" or "big" or "captured-gnome" or "missing-distance-little" or "missing-distance-big" or "published-little" or "published-big" or "published-min" or "published-max" or "name-valid-little" or "name-valid-big");
-    try { NativeWindowHost.InitializeForCurrentThread(AppBuilder.Configure<Application>()); }
+    try { NativeWindowHost.InitializeForCurrentThread(); }
     catch (Exception exception) when (negative && exception.Message.Contains("XSETTINGS", StringComparison.Ordinal) &&
         (exception is PlatformNotSupportedException || exception is InvalidDataException || exception is InvalidOperationException))
     {
@@ -123,6 +123,13 @@ try
                     Run("resolved-settings-controlled-report-click-thresholds", () => VerifyClickThresholds(native));
                     completed = true;
                 }
+                else if (args.Contains("--owned-input-only", StringComparer.Ordinal))
+                {
+                    Require(fontPath is not null && File.Exists(fontPath), "Pass the pinned font path.");
+                    var inputFont = new FontFamily(new Uri(Path.GetFullPath(fontPath!)), "DejaVu Sans");
+                    OwnedInputCases.Exercise(native, Run, Wait, Drain, inputFont);
+                    completed = true;
+                }
                 else if (args.Contains("--text-commits-only", StringComparer.Ordinal))
                 {
                     Require(fontPath is not null && File.Exists(fontPath), "Pass the pinned font path.");
@@ -145,6 +152,16 @@ try
                 else if (args.Contains("--taskbar-only", StringComparer.Ordinal))
                 {
                     TaskbarChecks.Exercise(native, Run, Wait, Drain, item => windowManagerTrace.Enqueue(item));
+                    completed = true;
+                }
+                else if (args.Contains("--atspi-text-only", StringComparer.Ordinal) || args.Contains("--atspi-richtext-only", StringComparer.Ordinal))
+                {
+                    AtSpiChecks.ExerciseText(native, Run, Wait, Drain, fontPath!, args.Contains("--atspi-richtext-only", StringComparer.Ordinal));
+                    completed = true;
+                }
+                else if (args.Contains("--atspi-disconnect-only", StringComparer.Ordinal))
+                {
+                    AtSpiChecks.ExerciseDisconnect(Run, Wait, Drain, ButtonTemplate);
                     completed = true;
                 }
                 else if (args.Contains("--atspi-only", StringComparer.Ordinal))
@@ -766,8 +783,17 @@ void ExerciseWindowManager(X11Fixture native)
         var window = new Window { Title = "Genuine WPF WM state fixture", Width = 320, Height = 200,
             Background = Brushes.Red };
         IntPtr xid = IntPtr.Zero;
-        void Trace(string kind) => windowManagerTrace.Enqueue(new { kind, requested = window.WindowState.ToString(),
-            actualNative = xid == IntPtr.Zero ? "uncreated" : native.State(xid), window.ActualWidth, window.ActualHeight });
+        void Trace(string kind)
+        {
+            object? peer = PresentationSource.FromVisual(window) is { } source ? OwnedNativeAccess.Peer(source) : null;
+            windowManagerTrace.Enqueue(new { kind, requested = window.WindowState.ToString(),
+                actualNative = xid == IntPtr.Zero ? "uncreated" : native.State(xid),
+                mapped = xid != IntPtr.Zero && native.IsMapped(xid),
+                peerState = peer is null ? null : OwnedNativeAccess.Get(peer, "WindowState").ToString(),
+                peerRequested = peer is null ? null : OwnedNativeAccess.Get(peer, "_requestedState").ToString(),
+                peerPending = peer is null ? null : OwnedNativeAccess.Get(peer, "_stateRequestPending").ToString(),
+                window.ActualWidth, window.ActualHeight });
+        }
         window.StateChanged += (_, _) => Trace("StateChanged");
         window.SizeChanged += (_, _) => Trace("SizeChanged");
         try
@@ -792,7 +818,8 @@ void ExerciseWindowManager(X11Fixture native)
             Drain(); window.Hide(); Drain(); Trace("minimized-hidden-observed");
             Require(window.WindowState == WindowState.Minimized, "Native withdrawal changed the public minimized Window state.");
             window.Show();
-            Wait(() => native.State(xid) == "Minimized" && window.WindowState == WindowState.Minimized && !native.IsMapped(xid));
+            try { Wait(() => native.State(xid) == "Minimized" && window.WindowState == WindowState.Minimized && !native.IsMapped(xid)); }
+            finally { Trace("minimized-after-hide-show-observed"); }
             window.WindowState = WindowState.Normal;
             Wait(() => native.State(xid) == "Normal" && native.IsMapped(xid));
             window.WindowState = WindowState.Minimized;
@@ -948,6 +975,7 @@ void ExerciseWindowManager(X11Fixture native)
             {
                 window.Show(); xid = native.FindWindow(window.Title);
                 Wait(() => native.IsMapped(xid) && native.Pixel(xid, 5, 5) == 0x00ff0000);
+                var normalOrigin = native.ClientOrigin(xid);
                 window.WindowState = state;
                 Wait(() => native.State(xid) == state.ToString() && window.WindowState == state);
                 Drain(); var nonNormalClient = native.Size(xid);
@@ -956,12 +984,12 @@ void ExerciseWindowManager(X11Fixture native)
                 Require(native.Size(xid) == nonNormalClient && window.RestoreBounds.Width == requestedWidth &&
                     window.RestoreBounds.Height == requestedHeight, "A constrained pending restore request was clamped early or resized the non-Normal native viewport.");
                 TraceConstraint("constrained-before-normal-request");
-                if (traceHostMetrics && state == WindowState.Maximized && !belowMinimum)
-                    stopMetricsTrace = TraceNativeMetrics(window);
+                if (traceHostMetrics && state == WindowState.Minimized && !belowMinimum)
+                    stopMetricsTrace = TraceNativeMetrics(window, native);
                 window.WindowState = WindowState.Normal;
                 try
                 {
-                    Wait(() => native.State(xid) == "Normal" && native.IsMapped(xid) &&
+                    Wait(() => native.State(xid) == "Normal" && native.IsMapped(xid) && native.ClientOrigin(xid) == normalOrigin &&
                         window.ActualWidth == (belowMinimum ? 200 : 500) && window.ActualHeight == (belowMinimum ? 120 : 400));
                     Drain();
                     var client = native.Size(xid);
@@ -983,36 +1011,47 @@ void ExerciseWindowManager(X11Fixture native)
     });
 }
 
-Action TraceNativeMetrics(Window window)
+Action TraceNativeMetrics(Window window, X11Fixture native)
 {
     var source = PresentationSource.FromVisual(window)!;
-    object peer = source.GetType().GetField("_host", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(source)!;
-    object implementation = peer.GetType().GetField("_window", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(peer)!;
-    object bridge = peer.GetType().GetField("_native", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(peer)!;
-    object platform = bridge.GetType().GetField("_platform", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(bridge)!;
-    var display = (IntPtr)platform.GetType().GetProperty("Display")!.GetValue(platform)!;
-    var handle = (IntPtr)bridge.GetType().GetField("_handle", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(bridge)!;
-    Action callback = () =>
+    object peer = OwnedNativeAccess.Peer(source);
+    object implementation = OwnedNativeAccess.Window(source);
+    object connection = OwnedNativeAccess.Get(implementation, "Connection");
+    var display = (IntPtr)OwnedNativeAccess.Get(connection, "Display");
+    var handle = OwnedNativeAccess.Handle(source);
+    int snapshots = 0;
+    void Snapshot(string stage)
     {
-        if (source.IsDisposed) return;
-        object cached = implementation.GetType().GetProperty("ClientSize")!.GetValue(implementation)!;
-        double cachedWidth = (double)cached.GetType().GetProperty("Width")!.GetValue(cached)!;
-        double cachedHeight = (double)cached.GetType().GetProperty("Height")!.GetValue(cached)!;
-        double scaling = (double)implementation.GetType().GetProperty("RenderScaling")!.GetValue(implementation)!;
+        if (source.IsDisposed || ++snapshots > 48 || (nuint)OwnedNativeAccess.Get(implementation, "Handle") == 0) return;
+        object metrics = OwnedNativeAccess.Call(implementation, "ReadMetrics")!;
+        double scaling = (double)OwnedNativeAccess.Get(implementation, "Scale");
+        object?[] attributes = [unchecked((nuint)(nint)handle), null];
+        bool found = (bool)OwnedNativeAccess.Call(connection, "TryGetWindowAttributes", attributes)!;
+        int mapState = found ? (int)OwnedNativeAccess.Get(attributes[1]!, "MapState") : -1;
         var server = X11Fixture.SizeOnConnection(display, handle);
-        object publishedClient = peer.GetType().GetProperty("ClientSize")!.GetValue(peer)!;
-        object publishedOuter = peer.GetType().GetProperty("OuterSize")!.GetValue(peer)!;
-        object publishedState = peer.GetType().GetProperty("WindowState")!.GetValue(peer)!;
-        windowManagerTrace.Enqueue(new { kind = "host-metrics-same-connection", windowState = window.WindowState.ToString(),
-            cachedWidth, cachedHeight, scaling, serverWidth = server.Width, serverHeight = server.Height,
-            publishedClient = publishedClient.ToString(), publishedOuter = publishedOuter.ToString(), publishedState = publishedState.ToString(),
+        var independentOrigin = native.ClientOrigin(handle);
+        windowManagerTrace.Enqueue(new { kind = "host-metrics-same-connection", stage, snapshot = snapshots, timestamp = Stopwatch.GetTimestamp(),
+            windowState = window.WindowState.ToString(),
+            nativeState = OwnedNativeAccess.Get(metrics, "State").ToString(), mapState,
+            clientX = (int)OwnedNativeAccess.Get(metrics, "ClientX"), clientY = (int)OwnedNativeAccess.Get(metrics, "ClientY"),
+            independentClientX = independentOrigin.X, independentClientY = independentOrigin.Y,
+            cachedWidth = (int)OwnedNativeAccess.Get(metrics, "ClientWidth"), cachedHeight = (int)OwnedNativeAccess.Get(metrics, "ClientHeight"),
+            scaling, serverWidth = server.Width, serverHeight = server.Height,
+            nativeVisible = OwnedNativeAccess.Get(implementation, "IsVisible"),
+            publishedClient = OwnedNativeAccess.Get(peer, "ClientSize").ToString(), publishedOuter = OwnedNativeAccess.Get(peer, "OuterSize").ToString(),
+            publishedState = OwnedNativeAccess.Get(peer, "WindowState").ToString(), publishedDesktop = OwnedNativeAccess.Get(peer, "DesktopPosition").ToString(),
             pendingBounds = window.GetType().GetField("_portablePendingBounds", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(window)?.ToString(),
             awaitingBounds = window.GetType().GetField("_portableBoundsAwaitingAck", BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(window)?.ToString(),
-            window.ActualWidth, window.ActualHeight, restore = window.RestoreBounds.ToString(CultureInfo.InvariantCulture) });
-    };
+            window.Left, window.Top, window.ActualWidth, window.ActualHeight, restore = window.RestoreBounds.ToString(CultureInfo.InvariantCulture) });
+    }
+    Action published = () => Snapshot("published-metrics");
+    Action raw = () => Snapshot("native-metrics");
     var metricsEvent = peer.GetType().GetEvent("MetricsChanged")!;
-    metricsEvent.AddEventHandler(peer, callback);
-    return () => metricsEvent.RemoveEventHandler(peer, callback);
+    var nativeEvent = implementation.GetType().GetEvent("MetricsChanged")!;
+    metricsEvent.AddEventHandler(peer, published);
+    nativeEvent.AddEventHandler(implementation, raw);
+    Snapshot("before-normal-request");
+    return () => { metricsEvent.RemoveEventHandler(peer, published); nativeEvent.RemoveEventHandler(implementation, raw); };
 }
 
 void Drain()

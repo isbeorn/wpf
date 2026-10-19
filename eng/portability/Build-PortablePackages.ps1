@@ -32,6 +32,12 @@ try {
     if ((& $Dotnet --version).Trim() -ne $profile.sdk) { throw "Portable package producer requires SDK $($profile.sdk)." }
     Invoke-Build (@('restore','Packaging/Stage/Stage.csproj','-r',$profile.runtimeIdentifier,
         '-p:SelfContained=true','-p:RuntimeFrameworkVersion=10.0.12') + $isolation)
+    foreach ($assetsFile in Get-ChildItem (Join-Path $output 'graph/obj') -Filter 'project.assets.json' -Recurse) {
+        $assets = Get-Content $assetsFile.FullName -Raw | ConvertFrom-Json -AsHashtable
+        if (@($assets.libraries.Keys | Where-Object { $_ -match '^Avalonia(?:[./]|$)' }).Count -gt 0) {
+            throw "Avalonia dependency entered the delivery graph: $($assetsFile.FullName)"
+        }
+    }
     Invoke-Build (@('publish','Packaging/Stage/Stage.csproj','-c','Release','-r',$profile.runtimeIdentifier,
         '--self-contained','false','--disable-build-servers','-v:diag','-p:UseAppHost=false','-o',(Join-Path $output 'published')) + $isolation)
     Invoke-Build (@('build','Markup/PresentationBuildTasks/PresentationBuildTasks.csproj','-c','Release','--disable-build-servers',
@@ -68,12 +74,20 @@ try {
         $identity = $null
         if ($Kind -eq 'managed') {
             $identity = Get-PortableAssemblyInfo $Source
+            if ($identity.name -match '^Avalonia(?:\.|$)' -or @($identity.references | Where-Object name -match '^Avalonia(?:\.|$)').Count -gt 0) {
+                throw "Avalonia identity or assembly reference entered the runtime: $name"
+            }
             if ($name -eq 'System.Private.Windows.Core.dll' -and ($identity.machine -ne 'I386' -or $identity.corFlags -notmatch 'ILOnly' -or
                 $identity.nativeHeaderSize -ne 0 -or $identity.version -ne '10.0.0.0' -or $identity.token -ne 'b77a5c561934e089')) {
                 throw 'Windows.Core runtime must be the original-source AnyCPU IL-only ECMA helper.'
             }
         }
-        else { Assert-PortableElf $Source }
+        else {
+            Assert-PortableElf $Source
+            if ($name -eq 'libSkiaSharp.so' -and $hash -ne '66C856EAF1A47A00B23204C30C6EE407987BF5086ECC0A1A6B4FD67526B0CD02') {
+                throw 'The Linux Skia asset must be the pinned Fontconfig-enabled SkiaSharp.NativeAssets.Linux 3.119.4 implementation.'
+            }
+        }
         Copy-PortableFile $Source (Join-Path $runtime $Destination)
         $file = $manifest.CreateElement('file')
         $file.SetAttribute('path',$Destination.Replace('\','/'))
@@ -111,7 +125,6 @@ try {
                     $projectOutput=Join-Path $output "graph/bin/$projectName/Release/net10.0/$name"
                     if(!(Test-Path $projectOutput) -or (Get-FileHash $projectOutput).Hash -ne (Get-FileHash $source).Hash) { throw "Runtime source assembly differs from its actual project output: $name" }
                     $sourceOrigin = if($assemblyName -in $profile.backendAssemblies) {"source:src/Portability/Backend/NativeHost/$projectName.csproj"} else {"source:src/Portability/Framework/$projectName/$projectName.csproj"}
-                    if($assemblyName -eq 'Avalonia.X11') {$sourceOrigin='source:src/Portability/Backend/NativeHost/Avalonia.X11/Avalonia.X11.csproj'}
                     $id = ''; $version = ''
                 } elseif ($assemblyName -in $profile.genuineManagedContracts) {
                     $desktopRoot = Join-Path $env:NUGET_PACKAGES 'microsoft.windowsdesktop.app.runtime.win-x64/10.0.13'
@@ -140,8 +153,6 @@ try {
     foreach ($name in @('LICENSE.TXT','SourcePin.json','SourceManifest.props')) {
         Copy-PortableFile (Join-Path $portable "Framework/System.Private.Windows.Core/$name") (Join-Path $runtime "ThirdPartyNotices/Windows.Core/$name")
     }
-    $avaloniaLicense = Join-Path $repo 'artifacts/portability/native-host/upstream/licence.md'
-    Copy-PortableFile $avaloniaLicense (Join-Path $runtime 'ThirdPartyNotices/Avalonia.MIT.md')
     $manifest.Save((Join-Path $runtime 'RuntimeManifest.xml'))
     Copy-PortableFile (Join-Path $packaging 'RuntimePolicy.targets') (Join-Path $runtime 'buildTransitive/Wpf.Portable.Runtime.targets')
     Copy-PortableFile (Join-Path $packaging 'PortableProfile.targets') (Join-Path $runtime 'policy/PortableProfile.targets')
@@ -172,6 +183,12 @@ try {
         $relative=if($path.StartsWith($repo,[StringComparison]::OrdinalIgnoreCase)) {[IO.Path]::GetRelativePath($repo,$path).Replace('\','/')} else {$path}
         [ordered]@{path=$relative;sha256=(Get-FileHash -LiteralPath $path).Hash}
     })
+    foreach ($input in $sourceInputs) {
+        $path = $input.path.Replace('\','/')
+        if ($path -match '/NativeHost/(Avalonia\.X11|BuildTools)/' -or $path -match '/Avalonia[^/]*\.(props|targets|csproj)$') {
+            throw "Avalonia source project or build import entered the delivery graph: $path"
+        }
+    }
     $sourceInputs | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $runtime 'BuildInputs.json') -Encoding utf8NoBOM
     Copy-PortableFile (Join-Path $runtime 'BuildInputs.json') (Join-Path $sdk 'BuildInputs.json')
     @(Get-ChildItem -LiteralPath $runtime -File -Recurse | ForEach-Object {

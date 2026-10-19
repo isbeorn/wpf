@@ -3,8 +3,6 @@ extern alias WpfFork;
 using System.Collections.Concurrent;
 using System.Reflection;
 using System.Text.Json;
-using Avalonia;
-using Avalonia.Platform;
 using Tmds.DBus.Protocol;
 using Wpf.Portable.NativeHost;
 using WpfFork::System.Windows;
@@ -15,7 +13,6 @@ using WpfFork::System.Windows.Media;
 using WpfFork::System.Windows.Threading;
 using OpenFileDialog = WpfFork::Microsoft.Win32.OpenFileDialog;
 using SaveFileDialog = WpfFork::Microsoft.Win32.SaveFileDialog;
-using Application = Avalonia.Application;
 
 internal static class FileDialogCases
 {
@@ -43,7 +40,7 @@ internal static class FileDialogCases
             connection.AddMethodHandler(portal);
             connection.RequestNameAsync("org.freedesktop.portal.Desktop", RequestNameOptions.Default).GetAwaiter().GetResult();
             using var native = new X11Fixture("little");
-            NativeWindowHost.InitializeForCurrentThread(AppBuilder.Configure<Application>());
+            NativeWindowHost.InitializeForCurrentThread();
             var dispatcher = Dispatcher.CurrentDispatcher;
             portal.InvokeOnDispatcher = action => dispatcher.Invoke(action);
             _ = dispatcher.BeginInvoke(new Action(() =>
@@ -309,8 +306,7 @@ internal static class FileDialogCases
     private static bool PeerEnabled(Window owner) => (bool)Peer(owner).GetType().GetProperty("IsEnabled")!.GetValue(Peer(owner))!;
     private static string Parent(Window owner)
     {
-        object native = Peer(owner).GetType().GetField("_native", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(Peer(owner))!;
-        return "x11:" + ((IntPtr)native.GetType().GetField("_handle", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(native)!).ToInt64().ToString("X");
+        return "x11:" + OwnedNativeAccess.Handle(PresentationSource.FromVisual(owner)!).ToInt64().ToString("X");
     }
     private static string UriFor(string path) => new Uri(path).AbsoluteUri;
     private static void Require(bool value, string detail) { if (!value) throw new InvalidOperationException(detail); }

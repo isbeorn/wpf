@@ -42,7 +42,7 @@ internal static class DockingProgram
 #if NINA_STOCK_REFERENCE
             Check("private-noninput-desktop", () => VerifyDesktop(args));
 #else
-            Check("private-Xvfb-bootstrap", () => { Require(OperatingSystem.IsLinux() && args.SequenceEqual(new[] { "--private-xvfb" }), "Dedicated private Xvfb is required."); native = new X11Fixture("little"); Wpf.Portable.NativeHost.NativeWindowHost.InitializeForCurrentThread(Avalonia.AppBuilder.Configure<Avalonia.Application>()); });
+            Check("private-Xvfb-bootstrap", () => { Require(OperatingSystem.IsLinux() && args.SequenceEqual(new[] { "--private-xvfb" }), "Dedicated private Xvfb is required."); native = new X11Fixture("little"); Wpf.Portable.NativeHost.NativeWindowHost.InitializeForCurrentThread(); });
 #endif
             Check("original-NINA-and-selected-AvalonDock-closure", VerifyClosure);
             Check("selected-WPF-and-AvalonDock", () =>

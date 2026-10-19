@@ -46,7 +46,7 @@ internal static class Program
             Check("native-startup", () =>
             {
                 native = new X11Fixture("little");
-                NativeWindowHost.InitializeForCurrentThread(Avalonia.AppBuilder.Configure<Avalonia.Application>());
+                NativeWindowHost.InitializeForCurrentThread();
             });
         }
         if (completeView)
@@ -177,7 +177,7 @@ internal static class Program
         native?.Dispose();
         var assemblies=new[]{typeof(DependencyObject).Assembly,typeof(Visual).Assembly,typeof(Window).Assembly,
             typeof(System.Xaml.XamlServices).Assembly,typeof(XamlAccessLevel).Assembly,typeof(NativeWindowHost).Assembly};
-        Check("ordinary-default-load-context",()=>Require(assemblies.All(a=>AssemblyLoadContext.GetLoadContext(a)==AssemblyLoadContext.Default),"A framework assembly used a custom load context."));
+        Check("ordinary-default-load-context",()=>Require(assemblies.All(a=>AssemblyLoadContext.GetLoadContext(a)==AssemblyLoadContext.Default) && !AppDomain.CurrentDomain.GetAssemblies().Any(a=>a.GetName().Name?.StartsWith("Avalonia",StringComparison.Ordinal)==true),"A framework assembly used a custom load context or an Avalonia assembly was loaded."));
         var sharedFrameworks=AppDomain.CurrentDomain.GetAssemblies().Where(a=>!a.IsDynamic).Select(a=>a.Location.Replace('\\','/'))
             .Where(path=>path.Contains("/shared/",StringComparison.Ordinal)).Select(path=>path.Split("/shared/",StringSplitOptions.None)[1].Split('/')[0]).Distinct().ToArray();
         Check("netcore-only-framework-load",()=>Require(sharedFrameworks.All(name=>name=="Microsoft.NETCore.App") &&
@@ -251,7 +251,7 @@ internal static class Program
         }
         Require(bamlSha256 is not null,"Classic's resource manifest omitted its real theme dictionary.");
         Require(!AppDomain.CurrentDomain.GetAssemblies().Any(assembly=>assembly.GetName().Name=="PresentationUI"),
-            "The ordinary Classic control path loaded compile-only PresentationUI.");
+            "The ordinary Classic control path unexpectedly loaded document-viewer PresentationUI.");
         var windowsNativeTextModules=OperatingSystem.IsWindows()?Process.GetCurrentProcess().Modules.Cast<ProcessModule>()
             .Where(module=>module.ModuleName.Equals("libHarfBuzzSharp.dll",StringComparison.OrdinalIgnoreCase) ||
                 module.ModuleName.Equals("libSkiaSharp.dll",StringComparison.OrdinalIgnoreCase))
@@ -272,7 +272,7 @@ internal static class Program
             Require(candidates.Length==1,"Runtime asset is absent or has ambiguous deployment locations: "+name);
             Require(Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(candidates[0])))==(string?)file.Attribute("sha256"),"Runtime manifest mismatch: "+name);
         }
-        foreach(var name in new[]{"System.Private.Windows.GdiPlus","DirectWriteForwarder","ReachFramework","System.Printing","PresentationUI"})
+        foreach(var name in new[]{"System.Private.Windows.GdiPlus","DirectWriteForwarder","ReachFramework","System.Printing"})
             Require(!File.Exists(Path.Combine(AppContext.BaseDirectory,name+".dll")),"Compile-only contract reached runtime output: "+name);
         Require(manifest.Root!.Elements("file").Any(file=>Path.GetFileName((string?)file.Attribute("path"))=="System.Private.Windows.Core.dll"),
             "This consumer requires the source-built managed Windows.Core runtime profile.");

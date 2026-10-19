@@ -5,26 +5,20 @@
   "runtimeIdentifier": "linux-x64",
   "sourceBaseline": {
     "wpfCommit": "65d15adece1df9a73e3d1abc11f8bbf99e9fc7a9",
-    "avaloniaCommit": "2d79ba55fae1b1e71c69f93a668080c9029e6a31",
-    "avaloniaArchiveSha256": "9E9EE6EE270BFDC02FBC34296DA51EE6242325156D2B67CBED92D2CCBC2E2029",
     "unicodeVersion": "17.0.0"
   },
   "frameworkAssemblies": [
-    "WindowsBase", "System.Xaml", "System.Windows.Primitives", "System.Private.Windows.Core", "PresentationCore", "PresentationFramework", "PresentationFramework.Classic",
+    "WindowsBase", "System.Xaml", "System.Windows.Primitives", "System.Private.Windows.Core", "PresentationCore", "PresentationFramework", "PresentationFramework.Classic", "PresentationUI",
     "UIAutomationTypes", "UIAutomationProvider", "PresentationFramework-SystemCore", "PresentationFramework-SystemData",
     "PresentationFramework-SystemDrawing", "PresentationFramework-SystemXml", "PresentationFramework-SystemXmlLinq"
   ],
-  "backendAssemblies": [ "Wpf.Portable.NativeHost", "Avalonia.X11" ],
+  "backendAssemblies": [ "Wpf.Portable.NativeHost" ],
   "genuineManagedContracts": [ "Accessibility", "System.Windows.Input.Manipulations" ],
-  "metadataOnly": [ "System.Private.Windows.GdiPlus", "DirectWriteForwarder", "ReachFramework", "System.Printing", "PresentationUI" ],
+  "metadataOnly": [ "System.Private.Windows.GdiPlus", "DirectWriteForwarder", "ReachFramework", "System.Printing" ],
   "packages": {
-    "Avalonia": "12.1.4", "Avalonia.Desktop": "12.1.4", "Avalonia.FreeDesktop": "12.1.4",
-    "Avalonia.FreeDesktop.AtSpi": "12.1.4", "Avalonia.HarfBuzz": "12.1.4", "Avalonia.Native": "12.1.4",
-    "Avalonia.Remote.Protocol": "12.1.4", "Avalonia.Skia": "12.1.4", "Avalonia.Win32": "12.1.4",
-    "MicroCom.Runtime": "0.11.6", "Tmds.DBus.Protocol": "0.94.1",
     "HarfBuzzSharp": "8.3.1.5", "HarfBuzzSharp.NativeAssets.Linux": "8.3.1.5",
     "SkiaSharp": "3.119.4", "SkiaSharp.HarfBuzz": "3.119.4",
-    "SkiaSharp.NativeAssets.Linux": "3.119.4", "SkiaSharp.NativeAssets.Linux.NoDependencies": "3.119.4",
+    "SkiaSharp.NativeAssets.Linux": "3.119.4",
     "System.Configuration.ConfigurationManager": "10.0.13", "System.Diagnostics.EventLog": "10.0.13",
     "System.Drawing.Common": "10.0.13", "Microsoft.Win32.SystemEvents": "10.0.13",
     "System.Formats.Nrbf": "10.0.13", "System.IO.Packaging": "10.0.13",

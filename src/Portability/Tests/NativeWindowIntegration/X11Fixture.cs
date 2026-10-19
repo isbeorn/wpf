@@ -77,6 +77,76 @@ internal sealed class X11Fixture : IDisposable
         XSync(_display, false);
     }
 
+    internal KeyboardMapLease RemapSpareKey(params uint[] symbols) => new(this, symbols);
+
+    internal static string? NativeEnvironmentVariable(string name) => Marshal.PtrToStringUTF8(getenv(name));
+    internal static void SetNativeEnvironmentVariable(string name, string? value)
+    {
+        int result = value == null ? unsetenv(name) : setenv(name, value, 1);
+        if (result != 0) throw new InvalidOperationException("Cannot configure the owned native fixture environment: " + name);
+    }
+
+    internal sealed class KeyboardMapLease : IDisposable
+    {
+        private readonly X11Fixture _owner;
+        private readonly byte _code;
+        private readonly IntPtr[] _original;
+        private bool _disposed;
+
+        internal KeyboardMapLease(X11Fixture owner, uint[] symbols)
+        {
+            _owner = owner;
+            XDisplayKeycodes(owner._display, out int minimum, out int maximum);
+            if (minimum < 8 || maximum > 255 || minimum > maximum) throw new InvalidOperationException("Invalid native keycode range.");
+            _code = checked((byte)maximum);
+            var pressed = new byte[32];
+            XQueryKeymap(owner._display, pressed);
+            if ((pressed[_code >> 3] & (1 << (_code & 7))) != 0)
+                throw new InvalidOperationException("The spare native keycode is already physically pressed.");
+            var mapping = XGetKeyboardMapping(owner._display, _code, 1, out int width);
+            if (mapping == IntPtr.Zero || width < 1 || width > 256) throw new InvalidOperationException("Cannot snapshot the spare native key mapping.");
+            try
+            {
+                _original = new IntPtr[width];
+                Marshal.Copy(mapping, _original, 0, width);
+            }
+            finally { XFree(mapping); }
+            Remap(symbols);
+        }
+
+        internal void Remap(params uint[] symbols)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (symbols.Length is < 1 or > 256) throw new ArgumentOutOfRangeException(nameof(symbols));
+            var mapping = symbols.Select(value => checked((IntPtr)(long)value)).ToArray();
+            XChangeKeyboardMapping(_owner._display, _code, mapping.Length, mapping, 1);
+            XSync(_owner._display, false);
+        }
+
+        internal void Key(bool pressed)
+        {
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (!XTestFakeKeyEvent(_owner._display, _code, pressed, IntPtr.Zero))
+                throw new InvalidOperationException("The remapped native key transition failed.");
+            XSync(_owner._display, false);
+        }
+
+        internal void Tap()
+        {
+            try { Key(true); }
+            finally { Key(false); }
+        }
+
+        public void Dispose()
+        {
+            if (_disposed) return;
+            Key(false);
+            XChangeKeyboardMapping(_owner._display, _code, _original.Length, _original, 1);
+            XSync(_owner._display, false);
+            _disposed = true;
+        }
+    }
+
     internal void Button(uint button, bool pressed)
     {
         if (!XTestFakeButtonEvent(_display, button, pressed, IntPtr.Zero))
@@ -138,6 +208,14 @@ internal sealed class X11Fixture : IDisposable
         return new CoverLease(this, cover);
     }
 
+    internal IDisposable CreateFocusSentinel(out IntPtr window)
+    {
+        window = XCreateSimpleWindow(_display, _root, 0, 0, 1, 1, 0, IntPtr.Zero, IntPtr.Zero);
+        if (window == IntPtr.Zero) throw new InvalidOperationException("Cannot create the owned focus sentinel.");
+        try { XMapRaised(_display, window); Focus(window); }
+        catch { XDestroyWindow(_display, window); XSync(_display, false); throw; }
+        return new CoverLease(this, window);
+    }
     internal uint ScreenPixel(IntPtr window, int clientX, int clientY)
     {
         if (XTranslateCoordinates(_display, window, _root, clientX, clientY, out int x, out int y, out _) == 0)
@@ -226,13 +304,44 @@ internal sealed class X11Fixture : IDisposable
         if (!down || !up) throw new InvalidOperationException("XTest keyboard press/release injection failed.");
     }
 
-    internal uint Pixel(IntPtr window, int x, int y, bool preserveAlpha = false)
+    internal unsafe uint Pixel(IntPtr window, int x, int y, bool preserveAlpha = false)
     {
         XSync(_display, false);
-        IntPtr image = XGetImage(_display, window, x, y, 1, 1, unchecked((nuint)~0UL), 2);
-        if (image == IntPtr.Zero) throw new InvalidOperationException("Native XGetImage returned no surface pixels.");
-        try { return (uint)XGetPixel(image, 0, 0).ToUInt64() & (preserveAlpha ? uint.MaxValue : 0x00ffffff); }
-        finally { XDestroyImage(image); }
+        nuint serial = XNextRequest(_display);
+        NativeError? failed = null;
+        IntPtr prior = IntPtr.Zero;
+        NativeErrorHandler handler = (IntPtr display, ref NativeError error) =>
+        {
+            if (display == _display && error.Serial == serial && error.RequestCode == 73 && error.ErrorCode == 8)
+            {
+                failed = error;
+                return 0;
+            }
+            fixed (NativeError* pointer = &error)
+                return ((delegate* unmanaged[Cdecl]<IntPtr, NativeError*, int>)prior)(display, pointer);
+        };
+        prior = XSetErrorHandler(handler);
+        IntPtr image = IntPtr.Zero;
+        try
+        {
+            if (prior == IntPtr.Zero) throw new InvalidOperationException("Native pixel observation requires the existing X11 error handler.");
+            image = XGetImage(_display, window, x, y, 1, 1, unchecked((nuint)~0UL), 2);
+            XSync(_display, false);
+            if (failed is { } error)
+            {
+                int observed = XGetWindowAttributes(_display, window, out var geometry);
+                throw new InvalidOperationException($"Native XGetImage BadMatch: window=0x{window.ToInt64():x}, pixel=({x},{y}), serial={error.Serial}, " +
+                    $"attributes={observed}, geometry=({geometry.X},{geometry.Y},{geometry.Width},{geometry.Height}), mapState={geometry.MapState}.");
+            }
+            if (image == IntPtr.Zero) throw new InvalidOperationException("Native XGetImage returned no surface pixels.");
+            return (uint)XGetPixel(image, 0, 0).ToUInt64() & (preserveAlpha ? uint.MaxValue : 0x00ffffff);
+        }
+        finally
+        {
+            if (image != IntPtr.Zero) XDestroyImage(image);
+            XSetErrorHandler(prior);
+            GC.KeepAlive(handler);
+        }
     }
 
     internal (int Depth, bool OverrideRedirect) PopupAttributes(IntPtr window)
@@ -276,6 +385,18 @@ internal sealed class X11Fixture : IDisposable
         if (atoms.Contains(XInternAtom(_display, "_NET_WM_STATE_HIDDEN", false))) return "Minimized";
         return atoms.Contains(XInternAtom(_display, "_NET_WM_STATE_MAXIMIZED_HORZ", false)) &&
             atoms.Contains(XInternAtom(_display, "_NET_WM_STATE_MAXIMIZED_VERT", false)) ? "Maximized" : "Normal";
+    }
+    internal IReadOnlyList<IntPtr> SplashWindows => RootChildren.Where(window => Property(window, "_NET_WM_WINDOW_TYPE", 4).Contains(XInternAtom(_display, "_NET_WM_WINDOW_TYPE_SPLASH", false))).ToArray();
+    internal bool IsAbove(IntPtr window) => Property(window, "_NET_WM_STATE", 4).Contains(XInternAtom(_display, "_NET_WM_STATE_ABOVE", false));
+    internal bool HasZeroUserTime(IntPtr window)
+    {
+        var values = Property(window, "_NET_WM_USER_TIME", 6);
+        return values.Count == 1 && values[0] == IntPtr.Zero;
+    }
+    internal (int X, int Y, int Width, int Height) Bounds(IntPtr window)
+    {
+        if (XGetWindowAttributes(_display, window, out var attributes) == 0) throw new InvalidOperationException("Native window has no attributes.");
+        return (attributes.X, attributes.Y, attributes.Width, attributes.Height);
     }
     internal bool SkipsTaskbar(IntPtr window) => Property(window, "_NET_WM_STATE", 4).Contains(XInternAtom(_display, "_NET_WM_STATE_SKIP_TASKBAR", false));
     internal bool IsTopmost(IntPtr window) => Property(window, "_NET_WM_STATE", 4).Contains(XInternAtom(_display, "_NET_WM_STATE_ABOVE", false));
@@ -427,6 +548,11 @@ internal sealed class X11Fixture : IDisposable
     private struct NativeCursorImage
     { public short X, Y; public ushort Width, Height, XHot, YHot; public nuint Serial; public IntPtr Pixels; public nuint Atom; public IntPtr Name; }
     [StructLayout(LayoutKind.Sequential)]
+    private struct NativeError
+    { public int Type; public IntPtr Display; public nuint ResourceId, Serial; public byte ErrorCode, RequestCode, MinorCode; }
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+    private delegate int NativeErrorHandler(IntPtr display, ref NativeError error);
+    [StructLayout(LayoutKind.Sequential)]
     private struct ClientMessage
     { public int Type; public nuint Serial; public int SendEvent; public IntPtr Display, Window, MessageType; public int Format; public IntPtr Data0, Data1, Data2, Data3, Data4; }
     [StructLayout(LayoutKind.Explicit, Size = 192)]
@@ -462,6 +588,9 @@ internal sealed class X11Fixture : IDisposable
     [DllImport("libX11.so.6")] private static extern int XChangeProperty(IntPtr display, IntPtr window, IntPtr property, IntPtr type, int format, int mode, byte[] data, int count);
     [DllImport("libX11.so.6")] private static extern int XSetSelectionOwner(IntPtr display, IntPtr selection, IntPtr owner, IntPtr time);
     [DllImport("libX11.so.6")] private static extern int XSync(IntPtr display, bool discard);
+    [DllImport("libX11.so.6")] private static extern nuint XNextRequest(IntPtr display);
+    [DllImport("libX11.so.6")] private static extern IntPtr XSetErrorHandler(NativeErrorHandler handler);
+    [DllImport("libX11.so.6")] private static extern IntPtr XSetErrorHandler(IntPtr handler);
     [DllImport("libX11.so.6")] private static extern int XQueryTree(IntPtr display, IntPtr window, out IntPtr root, out IntPtr parent, out IntPtr children, out int count);
     [DllImport("libX11.so.6")] private static extern int XFetchName(IntPtr display, IntPtr window, out IntPtr name);
     [DllImport("libX11.so.6")] private static extern int XFree(IntPtr data);
@@ -475,6 +604,13 @@ internal sealed class X11Fixture : IDisposable
         out IntPtr count, out IntPtr remaining, out IntPtr data);
     [DllImport("libX11.so.6")] private static extern int XTranslateCoordinates(IntPtr display, IntPtr source, IntPtr destination, int x, int y, out int resultX, out int resultY, out IntPtr child);
     [DllImport("libX11.so.6")] private static extern byte XKeysymToKeycode(IntPtr display, IntPtr symbol);
+    [DllImport("libc.so.6")] private static extern IntPtr getenv([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    [DllImport("libc.so.6")] private static extern int setenv([MarshalAs(UnmanagedType.LPUTF8Str)] string name, [MarshalAs(UnmanagedType.LPUTF8Str)] string value, int overwrite);
+    [DllImport("libc.so.6")] private static extern int unsetenv([MarshalAs(UnmanagedType.LPUTF8Str)] string name);
+    [DllImport("libX11.so.6")] private static extern int XDisplayKeycodes(IntPtr display, out int minimum, out int maximum);
+    [DllImport("libX11.so.6")] private static extern int XQueryKeymap(IntPtr display, [Out] byte[] keys);
+    [DllImport("libX11.so.6")] private static extern IntPtr XGetKeyboardMapping(IntPtr display, byte first, int count, out int width);
+    [DllImport("libX11.so.6")] private static extern int XChangeKeyboardMapping(IntPtr display, int first, int width, IntPtr[] symbols, int count);
     [DllImport("libXtst.so.6")] private static extern bool XTestFakeKeyEvent(IntPtr display, uint code, bool press, IntPtr delay);
     [DllImport("libXtst.so.6")] private static extern bool XTestFakeButtonEvent(IntPtr display, uint button, bool press, IntPtr delay);
     [DllImport("libXtst.so.6")] private static extern bool XTestFakeMotionEvent(IntPtr display, int screen, int x, int y, IntPtr delay);

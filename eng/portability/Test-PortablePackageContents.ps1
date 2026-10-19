@@ -36,6 +36,15 @@ Check 'archive-runtime-allowlist-and-hashes' {
         }
     } finally { $zip.Dispose() }
 }
+Check 'avalonia-free-runtime-and-assembly-references' {
+    $provenance = Get-Content (Join-Path $distribution 'runtime/Provenance.json') -Raw | ConvertFrom-Json
+    if (@($provenance.profile.packages.PSObject.Properties.Name | Where-Object { $_ -match '^Avalonia(?:\.|$)' }).Count -gt 0) { throw 'The runtime profile still permits Avalonia packages.' }
+    foreach ($file in $manifest.portableRuntime.file | Where-Object kind -eq managed) {
+        $assembly = Get-PortableAssemblyInfo (Join-Path $distribution "runtime/$($file.path)")
+        if ($assembly.name -match '^Avalonia(?:\.|$)' -or @($assembly.references | Where-Object name -match '^Avalonia(?:\.|$)').Count -gt 0) { throw "Avalonia runtime identity or reference: $($file.path)" }
+    }
+    if ((Get-FileHash (Join-Path $distribution 'runtime/runtimes/linux-x64/native/libSkiaSharp.so')).Hash -ne '66C856EAF1A47A00B23204C30C6EE407987BF5086ECC0A1A6B4FD67526B0CD02') { throw 'The runtime contains a different Linux Skia native implementation.' }
+}
 Check 'sdk-tool-closure-and-package-relative-imports' {
     $zip=[IO.Compression.ZipFile]::OpenRead((Join-Path $distribution 'feed/Wpf.Portable.Sdk.10.0.0-portable.1.nupkg'))
     try {
@@ -99,15 +108,18 @@ if($ConsumerDirectory) {
                 $candidates=@((Join-Path $directory ([IO.Path]::GetFileName($file.path))),(Join-Path $directory $file.path) | Select-Object -Unique | Where-Object {Test-Path $_ -PathType Leaf})
                 if($candidates.Count -ne 1 -or (Get-FileHash $candidates[0]).Hash -ne $file.sha256) { throw "Consumer runtime asset differs or has ambiguous deployment locations: $($file.path)" }
             }
-            foreach($name in @('System.Private.Windows.GdiPlus','DirectWriteForwarder','ReachFramework','System.Printing','PresentationUI')) {
+            foreach($name in @('System.Private.Windows.GdiPlus','DirectWriteForwarder','ReachFramework','System.Printing')) {
                 if(Test-Path (Join-Path $directory "$name.dll")) { throw "Compile-only contract reached consumer output: $name" }
             }
+            if(!$expected.ContainsKey('PresentationUI.dll') -and (Test-Path (Join-Path $directory 'PresentationUI.dll'))) {throw 'Unqualified PresentationUI reached an older consumer profile.'}
             if(!$expected.ContainsKey('System.Private.Windows.Core.dll') -and (Test-Path (Join-Path $directory 'System.Private.Windows.Core.dll'))) {throw 'Unqualified Windows.Core reached an older consumer profile.'}
             $deps=Get-Content (Join-Path $directory 'App.deps.json') -Raw | ConvertFrom-Json -AsHashtable
             $target=$deps.targets[$deps.runtimeTarget.name]
+            if (@($deps.libraries.Keys | Where-Object { $_ -match '^Avalonia(?:[./]|$)' }).Count -gt 0) { throw 'Avalonia remains in the consumer dependency manifest.' }
             if(@($deps.libraries.Keys | Where-Object {$_ -match 'Microsoft.AspNetCore.App'}).Count -gt 0 -or
                 @(Get-ChildItem -LiteralPath $directory -File -Filter 'Microsoft.AspNetCore.*').Count -gt 0) { throw 'Auxiliary ASP.NET restore pack entered the application runtime.' }
-            $singleIdentities=@('WindowsBase','System.Windows.Extensions','Avalonia.X11')
+            $singleIdentities=@('WindowsBase','System.Windows.Extensions','Wpf.Portable.NativeHost')
+            if($expected.ContainsKey('PresentationUI.dll')) {$singleIdentities+='PresentationUI'}
             if($expected.ContainsKey('PresentationFramework.Classic.dll')) {$singleIdentities+='PresentationFramework.Classic'}
             if($expected.ContainsKey('System.Private.Windows.Core.dll')) {$singleIdentities+='System.Private.Windows.Core'}
             foreach($name in $singleIdentities) {
