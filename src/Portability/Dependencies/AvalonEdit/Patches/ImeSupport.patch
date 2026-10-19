@@ -1,0 +1,9 @@
+--- a/Editing/ImeSupport.cs
++++ b/Editing/ImeSupport.cs
+@@ -104,1 +104,5 @@
+-			hwndSource = (HwndSource)PresentationSource.FromVisual(this.textArea);
++#if PORTABLE_AVALONEDIT
++			hwndSource = PresentationSource.FromVisual(this.textArea) as HwndSource;
++#else
++			hwndSource = (HwndSource)PresentationSource.FromVisual(this.textArea);
++#endif

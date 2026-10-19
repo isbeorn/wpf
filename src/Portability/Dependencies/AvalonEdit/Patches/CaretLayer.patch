@@ -1,0 +1,38 @@
+--- a/Editing/CaretLayer.cs
++++ b/Editing/CaretLayer.cs
+@@ -69,7 +69,12 @@
+ 
+ 		void StartBlinkAnimation()
+ 		{
++#if PORTABLE_AVALONEDIT
++			TimeSpan blinkTime = PresentationSource.FromVisual(textArea) is System.Windows.Interop.HwndSource
++				? Win32.CaretBlinkTime : ReadPortableStartupCaretBlinkTime();
++#else
+ 			TimeSpan blinkTime = Win32.CaretBlinkTime;
++#endif
+ 			blink = true; // the caret should visible initially
+ 						  // This is important if blinking is disabled (system reports a negative blinkTime)
+ 			if (blinkTime.TotalMilliseconds > 0) {
+@@ -77,6 +82,22 @@
+ 				caretBlinkTimer.Start();
+ 			}
+ 		}
++
++#if PORTABLE_AVALONEDIT
++		static TimeSpan ReadPortableStartupCaretBlinkTime()
++		{
++			const string contract = "Portable AvalonEdit requires the Core startup-profile caret timing contract.";
++			const System.Reflection.BindingFlags flags = System.Reflection.BindingFlags.NonPublic;
++			var provider = typeof(Visual).Assembly.GetType("MS.Internal.Portability.Settings.PortableSystemSettingsProvider");
++			var current = provider?.GetProperty("Current", flags | System.Reflection.BindingFlags.Static);
++			object profile = current?.GetValue(null, null);
++			var timing = profile?.GetType().GetProperty("CaretBlinkTimeMilliseconds", flags | System.Reflection.BindingFlags.Instance);
++			object value = timing?.GetValue(profile, null);
++			if (!(value is int milliseconds) || milliseconds < -1 || milliseconds > int.MaxValue / 2)
++				throw new PlatformNotSupportedException(contract);
++			return TimeSpan.FromMilliseconds(milliseconds);
++		}
++#endif
+ 
+ 		void StopBlinkAnimation()
+ 		{

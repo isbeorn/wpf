@@ -1,0 +1,57 @@
+--- a/Editing/TextArea.cs
++++ b/Editing/TextArea.cs
+@@ -820,6 +820,9 @@
+ 		{
+ 			base.OnLostKeyboardFocus(e);
+ 			caret.Hide();
++#if PORTABLE_AVALONEDIT
++			ShowMouseCursor();
++#endif
+ 			ime.OnLostKeyboardFocus(e);
+ 		}
+ 		#endregion
+@@ -1046,12 +1049,31 @@
+ 			this.TouchEnter += delegate { ShowMouseCursor(); };
+ 			this.TouchLeave += delegate { ShowMouseCursor(); };
+ 			this.PreviewTouchMove += delegate { ShowMouseCursor(); };
+-		}
++#if PORTABLE_AVALONEDIT
++			this.Unloaded += delegate { ShowMouseCursor(); };
++			AddHandler(Mouse.QueryCursorEvent, new QueryCursorEventHandler(OnPortableQueryCursor), true);
++#endif
++		}
++
++#if PORTABLE_AVALONEDIT
++		void OnPortableQueryCursor(object sender, QueryCursorEventArgs e)
++		{
++			if (isMouseCursorHidden) {
++				e.Cursor = Cursors.None;
++				e.Handled = true;
++			}
++		}
++#endif
+ 
+ 		void ShowMouseCursor()
+ 		{
+ 			if (this.isMouseCursorHidden) {
++#if PORTABLE_AVALONEDIT
++				this.isMouseCursorHidden = false;
++				Mouse.UpdateCursor();
++#else
+ 				System.Windows.Forms.Cursor.Show();
++#endif
+ 				this.isMouseCursorHidden = false;
+ 			}
+ 		}
+@@ -1060,7 +1082,11 @@
+ 		{
+ 			if (Options.HideCursorWhileTyping && !this.isMouseCursorHidden && this.IsMouseOver) {
+ 				this.isMouseCursorHidden = true;
++#if PORTABLE_AVALONEDIT
++				Mouse.UpdateCursor();
++#else
+ 				System.Windows.Forms.Cursor.Hide();
++#endif
+ 			}
+ 		}
+ 

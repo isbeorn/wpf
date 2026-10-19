@@ -1,0 +1,49 @@
+<Project>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <PortableAvalonEdit Condition="'$(PortableAvalonEdit)' == ''">true</PortableAvalonEdit>
+    <DefineConstants Condition="'$(PortableAvalonEdit)' == 'true'">$(DefineConstants);PORTABLE_AVALONEDIT</DefineConstants>
+    <AssemblyName>ICSharpCode.AvalonEdit</AssemblyName>
+    <RootNamespace>ICSharpCode.AvalonEdit</RootNamespace>
+    <Version>6.3.1.120</Version>
+    <AssemblyVersion>6.3.1.120</AssemblyVersion>
+    <FileVersion>6.3.1.120</FileVersion>
+    <SignAssembly>true</SignAssembly>
+    <PublicSign>true</PublicSign>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)Original/ICSharpCode.AvalonEdit/ICSharpCode.AvalonEdit.snk</AssemblyOriginatorKeyFile>
+    <AvalonEditSourceDirectory>$(MSBuildThisFileDirectory)Original/ICSharpCode.AvalonEdit/</AvalonEditSourceDirectory>
+    <_AvalonEditReferences>PresentationFramework;PresentationCore;WindowsBase;System.Xaml;UIAutomationTypes;UIAutomationProvider;System.Private.Windows.Core</_AvalonEditReferences>
+    <AvalonEditPortableReferencesTargets Condition="'$(AvalonEditPortableReferencesTargets)' == ''">$(MSBuildThisFileDirectory)../../Framework/Build/PortableWpfReferences.targets</AvalonEditPortableReferencesTargets>
+    <AvalonEditWinFxTargets Condition="'$(AvalonEditWinFxTargets)' == ''">$(MSBuildThisFileDirectory)../../../Microsoft.DotNet.Wpf/src/PresentationBuildTasks/Microsoft.WinFX.targets</AvalonEditWinFxTargets>
+    <_PresentationBuildTasksAssembly>$(AvalonEditMarkupTaskAssembly)</_PresentationBuildTasksAssembly>
+  </PropertyGroup>
+  <Import Project="PortablePatches.props" Condition="'$(PortableAvalonEdit)' == 'true'" />
+  <ItemGroup>
+    <Compile Include="$(AvalonEditSourceDirectory)**/*.cs" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+    <Page Include="$(AvalonEditSourceDirectory)**/*.xaml" Link="%(RecursiveDir)%(Filename)%(Extension)" />
+    <Resource Include="$(AvalonEditSourceDirectory)Search/*.png" Link="Search/%(Filename)%(Extension)" />
+    <Resource Include="$(AvalonEditSourceDirectory)themes/RightArrow.cur" Link="themes/RightArrow.cur" />
+    <Resource Include="$(AvalonEditSourceDirectory)Highlighting/Resources/Resources.cs" Link="Highlighting/Resources/Resources.cs" />
+    <EmbeddedResource Include="$(AvalonEditSourceDirectory)Highlighting/Resources/*" Exclude="$(AvalonEditSourceDirectory)Highlighting/Resources/Resources.cs" LogicalName="ICSharpCode.AvalonEdit.Highlighting.Resources.%(Filename)%(Extension)" />
+    <None Include="LICENSE;upstream.json" CopyToOutputDirectory="PreserveNewest" TargetPath="ThirdPartyNotices/AvalonEdit/%(Filename)%(Extension)" />
+    <Reference Include="$(_AvalonEditReferences)">
+      <HintPath>$(AvalonEditFrameworkReferenceDirectory)/%(Identity).dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="System.Windows.Forms;System.Windows.Forms.Primitives;System.Drawing.Common">
+      <HintPath>$(AvalonEditWindowsFormsReferenceDirectory)/%(Identity).dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="$(AvalonEditPortableReferencesTargets)" />
+  <Import Project="$(AvalonEditWinFxTargets)" />
+  <ItemGroup Condition="'$(PortableAvalonEdit)' == 'true'"><Compile Remove="@(AvalonEditPatch->'$(AvalonEditSourceDirectory)%(Identity)')"/><Compile Include="@(AvalonEditPatch->'$(BaseIntermediateOutputPath)portable/%(Identity)')"/></ItemGroup>
+  <Import Project="VerifyUpstream.targets" />
+  <Import Project="PortableSources.targets" />
+  <Target Name="RequireReleasedAvalonEditInputs" BeforeTargets="PrepareForBuild">
+    <Error Condition="!Exists('$(AvalonEditFrameworkReferenceDirectory)/PresentationFramework.dll')" Text="Supply the root-released WPF reference family." />
+    <Error Condition="!Exists('$(AvalonEditMarkupTaskAssembly)')" Text="Supply the root-released source markup compiler; no transitive framework build is allowed." />
+    <Error Condition="!Exists('$(AvalonEditWindowsFormsReferenceDirectory)/System.Windows.Forms.dll')" Text="Supply genuine compile-only WindowsDesktop WinForms reference contracts." />
+  </Target>
+</Project>
