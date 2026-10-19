@@ -144,6 +144,23 @@ namespace System.Windows.Media.Imaging
         {
         }
 
+#if PORTABLE_WPF
+        internal BitmapFrameDecode(int index, BitmapDecoder decoder, PortableBitmapBuffer buffer,
+            double dpiX, double dpiY, bool icon) : base(true)
+        {
+            _frameNumber = index;
+            _decoder = decoder;
+            _isThumbnailCached = true;
+            InitializePortable(buffer, dpiX, dpiY);
+            if (icon)
+            {
+                _thumbnail = BitmapSource.Create(buffer.Width, buffer.Height, dpiX, dpiY,
+                    buffer.Format, null, buffer.BackBuffer, checked((int)buffer.Size), buffer.Stride);
+                _thumbnail.Freeze();
+            }
+        }
+#endif
+
         #endregion
 
         #region IUriContext
@@ -230,6 +247,10 @@ namespace System.Windows.Media.Imaging
             get
             {
                 ReadPreamble();
+#if PORTABLE_WPF
+                if (PortableBuffer != null) throw new NotSupportedException("Portable bitmap frames do not support metadata or color contexts.");
+#endif
+
                 if (!_isColorContextCached && !IsDownloading)
                 {
                     EnsureSource();
@@ -259,6 +280,9 @@ namespace System.Windows.Media.Imaging
             get
             {
                 ReadPreamble();
+#if PORTABLE_WPF
+                if (PortableBuffer != null) return false;
+#endif
                 return Decoder.IsDownloading;
             }
         }
@@ -273,6 +297,9 @@ namespace System.Windows.Media.Imaging
         public override InPlaceBitmapMetadataWriter CreateInPlaceBitmapMetadataWriter()
         {
             ReadPreamble();
+#if PORTABLE_WPF
+            if (PortableBuffer != null) throw new NotSupportedException("Portable bitmap frames do not support metadata writing.");
+#endif
 
             _decoder?.CheckOriginalWritable();
 
@@ -339,6 +366,18 @@ namespace System.Windows.Media.Imaging
         /// </summary>
         private void CopyCommon(BitmapFrameDecode sourceBitmapFrameDecode)
         {
+#if PORTABLE_WPF
+            if (sourceBitmapFrameDecode.PortableBuffer != null)
+            {
+                _frameNumber = sourceBitmapFrameDecode._frameNumber;
+                _decoder = sourceBitmapFrameDecode._decoder;
+                _thumbnail = sourceBitmapFrameDecode._thumbnail;
+                _isThumbnailCached = true;
+                _createOptions = sourceBitmapFrameDecode._createOptions;
+                _cacheOption = sourceBitmapFrameDecode._cacheOption;
+                return;
+            }
+#endif
             _bitmapInit.BeginInit();
             _frameNumber = sourceBitmapFrameDecode._frameNumber;
             _isThumbnailCached = sourceBitmapFrameDecode._isThumbnailCached;
@@ -616,6 +655,9 @@ namespace System.Windows.Media.Imaging
         {
             get
             {
+#if PORTABLE_WPF
+                if (PortableBuffer != null) throw new NotSupportedException("Portable bitmap frames do not support metadata or color contexts.");
+#endif
                 // Demand Site Of Origin on the URI before usage of metadata.
                 CheckIfSiteOfOrigin();
 
@@ -811,4 +853,3 @@ namespace System.Windows.Media.Imaging
 
     #endregion // BitmapFrameDecode
 }
-

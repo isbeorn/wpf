@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
   <ItemGroup>
-    <None Update="Assets/*.png" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="Assets/*.png;Assets/*.ico" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" />
     <ProjectReference Include="../../Framework/WindowsBase/WindowsBase.csproj" />
   </ItemGroup>

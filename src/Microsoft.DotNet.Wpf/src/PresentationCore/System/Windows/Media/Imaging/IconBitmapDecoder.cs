@@ -72,6 +72,14 @@ namespace System.Windows.Media.Imaging
         {
         }
 
+#if PORTABLE_WPF
+        internal IconBitmapDecoder(byte[] encoded, Uri baseUri, Uri uri, Stream stream,
+            BitmapCreateOptions options, BitmapCacheOption cache) : base(true)
+        {
+            InitializePortableDecoder(baseUri, uri, stream, options, cache, MILGuidData.GUID_ContainerFormatIco, encoded);
+        }
+#endif
+
         #region Internal Abstract
 
         /// Need to implement this to derive from the "sealed" object
@@ -85,4 +93,3 @@ namespace System.Windows.Media.Imaging
 
     #endregion
 }
-

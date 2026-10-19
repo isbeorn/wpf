@@ -31,6 +31,7 @@ Check("actual-scientific-source-precision-and-ownership", () =>
     }
 });
 PortablePngCases.Run(Check);
+PortableDecoderCases.Run(Check);
 RenderTargetBitmapCases.Run(Check);
 Check("render-target-invalidates-real-retained-consumer", () =>
 {
@@ -202,8 +203,8 @@ Check("rgb-and-byte-format-display-channels", () =>
 Check("named-unsupported-codecs-and-formats", () =>
 {
     ExpectPortableUnsupported(() => BitmapSource.Create(1, 1, 96, 96, PixelFormats.Rgba128Float, null, new float[4], 16));
-    ExpectPortableUnsupported(() => BitmapFrame.Create(new MemoryStream([1, 2, 3])));
-    ExpectPortableUnsupported(() => new PngBitmapDecoder(new MemoryStream([1, 2, 3]), BitmapCreateOptions.None, BitmapCacheOption.OnLoad));
+    Expect<FileFormatException>(() => BitmapFrame.Create(new MemoryStream([1, 2, 3])));
+    Expect<FileFormatException>(() => new PngBitmapDecoder(new MemoryStream([1, 2, 3]), BitmapCreateOptions.None, BitmapCacheOption.OnLoad));
     ExpectPortableUnsupported(() => { var bitmap = new BitmapImage(); bitmap.BeginInit(); bitmap.StreamSource = new MemoryStream([1, 2, 3]); bitmap.EndInit(); });
     ExpectPortableUnsupported(() => new PngBitmapEncoder().Save(new MemoryStream()));
 });
@@ -211,7 +212,7 @@ string[] nativeAssemblies = AppDomain.CurrentDomain.GetAssemblies().Where(assemb
 string[] nativeMappings = OperatingSystem.IsLinux() ? File.ReadAllLines("/proc/self/maps").Where(IsWindowsNative).ToArray() :
     System.Diagnostics.Process.GetCurrentProcess().Modules.Cast<System.Diagnostics.ProcessModule>().Where(module => IsWindowsNative(module.ModuleName)).Select(module => module.FileName).ToArray();
 Check("no-windows-native-runtime-dependencies", () => Require(nativeAssemblies.Length == 0 && nativeMappings.Length == 0, "Windows native modules were loaded."));
-Console.WriteLine(JsonSerializer.Serialize(new { probe = "actual-wpf-imaging-integration", os = Environment.OSVersion.Platform.ToString(), framework = typeof(BitmapSource).Assembly.Location, scope = "Owned raw scientific samples, real mutable bitmap APIs and retained DrawImage; codecs/conversion graphs unsupported.", nativeAssemblies, nativeMappings, checks }, new JsonSerializerOptions { WriteIndented = true }));
+Console.WriteLine(JsonSerializer.Serialize(new { probe = "actual-wpf-imaging-integration", os = Environment.OSVersion.Platform.ToString(), framework = typeof(BitmapSource).Assembly.Location, scope = "Owned scientific samples, mutable bitmaps, eager PNG/ICO factory frames, RenderTargetBitmap and retained DrawImage; other codec/conversion graphs unsupported.", nativeAssemblies, nativeMappings, checks }, new JsonSerializerOptions { WriteIndented = true }));
 return failed ? 1 : 0;
 
 void Require(bool condition, string detail) { if (!condition) throw new InvalidOperationException(detail); }

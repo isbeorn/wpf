@@ -61,12 +61,29 @@ dispatcher affinity, frozen cross-thread reads, alpha, channel order and retaine
 source lifetime. Both OS runs assert no loaded Windows interop assemblies or
 WPF native module mappings and require process exit zero.
 
-BitmapImage/decoder entry points and encoder Save report named unsupported
-codec diagnostics. Palettes, other formats, codec metadata/color profiles,
-native WIC handles, decoder frames, `BitmapFrame.Create(source)`, conversion
-graphs, cropping, transforms, RenderTargetBitmap, image brushes and animated
-image rectangles are separate gates. Unsupported source graphs may still contain
-native methods in the full compiled closure; this slice does not qualify them.
+The owned PNG `BitmapImage` profile supports eager OnLoad caller streams and
+local application pack resources. The decoder/frame profile supports eager
+Default/OnLoad caller streams and local application pack resources through actual
+`PngBitmapDecoder`, `IconBitmapDecoder`, `BitmapFrame.Create` and
+`ImageSourceConverter` paths. Other schemes and create/cache options fail
+explicitly. Callers retain their streams; frames own decoded pixels.
+
+PNG factories preserve raw profile samples and return Bgr32 for opaque RGB or
+Bgra32 for RGBA/transparency. BitmapImage retains its existing sRGB/Bgra32
+conversion. The supported ICO profile contains nonoverlapping PNG entries or
+32-bit BI_RGB BITMAPINFOHEADER DIB entries with complete XOR pixels and AND masks.
+All entries must decode before the frozen frame collection is published. ICO
+frames and their owned frozen thumbnails are Bgra32 at 96 DPI. ICO enumeration
+uses file directory order. This intentionally differs from WIC's undocumented
+sorting: the original six-frame NINA ICO starts with 256 pixels here and 128 on
+the calibrated Windows codec. No resolution-specific ordering is implemented.
+
+Decoder/frame metadata, color-context objects, codec information and metadata
+writing fail explicitly. Palettes, other codecs, native WIC handles,
+`BitmapFrame.Create(source)`, conversion graphs, cropping, transforms,
+image brushes and animated image rectangles remain separate
+gates. Unsupported source graphs may contain native methods in the compiled
+closure; this slice does not qualify them.
 Interpolation/scaling parity and color-managed/HDR display are not established.
 
 Storage is GC-owned. Mutable images retain a pinned raw buffer plus committed
@@ -88,3 +105,8 @@ dotnet build Tests/ImagingIntegration/ImagingIntegration.csproj -m:1 -p:Portable
 Run the resulting ImagingIntegration DLL from the repository root. Ubuntu uses
 the workspace's Linux SDK, `linux-packages`, `linux-cli-home`, isolated
 `framework-image-linux` outputs and the corresponding Linux artifact directory.
+
+RenderTargetBitmap has a separate portable implementation using the retained raster target.
+Its focused tests cover source-over rendering, Clear, four clone paths and retained
+consumer updates. The combined decoder, RenderTargetBitmap and native icon family
+requires its own current-source qualification before a full NINA launch claim.

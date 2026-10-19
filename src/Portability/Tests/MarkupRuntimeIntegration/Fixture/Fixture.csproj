@@ -13,6 +13,9 @@
     <Page Include="../../MarkupIntegration/Fixture/Views/Orbit View Ω.xaml" Link="Views/Orbit View Ω.xaml" />
     <Page Include="../../MarkupIntegration/Fixture/Dictionaries/Palette.xaml" Link="Dictionaries/Palette.xaml" />
     <Page Include="NamespaceValidation.xaml" />
+    <Page Include="DecoderImages.xaml" />
+    <Resource Include="../../ImagingIntegration/Assets/nina.ico" Link="Assets/nina.ico" />
+    <Resource Include="../../ImagingIntegration/Assets/dock*.png" Link="Assets/%(Filename)%(Extension)" />
     <Resource Include="../../MarkupIntegration/Fixture/Assets/CaseSensitive Ω.txt" Link="Assets/CaseSensitive Ω.txt" />
     <Resource Include="Assets/Opaque Payload Ω.fixtureopaque" />
     <Resource Include="Assets/Opaque Payload Ω.fixtureopaque" Link="Assets/NoExtension Ω" />

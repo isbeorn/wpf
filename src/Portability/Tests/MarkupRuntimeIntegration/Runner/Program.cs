@@ -64,6 +64,7 @@ internal static class Program
         Check("portable-message-font-profile-and-real-formatting", VerifyMessageFont);
         Check("text-element-inherits-portable-message-font", VerifyTextElement);
         Check("compiled-pack-png-uri-baseuri-delay-clone-and-freeze", PackPngCases.Run);
+        Check("compiled-pack-original-ico-png-converter-factories-and-images", PackDecoderCases.Run);
         foreach (string operation in new[] { "Clone", "CloneCurrentValue", "GetAsFrozen", "GetCurrentValueAsFrozen" })
             Check("compiled-pack-png-delayed-" + operation, () => PackPngCases.CloneDelayed(operation));
         Check("real-baml-usercontrol-construction", () =>
