@@ -14,7 +14,13 @@ var thread = new Thread(() =>
 {
     try
     {
-        if (args.Contains("--words")) result = WordSelectionCases.Capture();
+        if (args.Contains("--verify-alignment"))
+        {
+            TextOracleCases.VerifyAlignment(idealOnly: true);
+            result = new { check = "horizontal-paragraph-alignment-Ideal", status = "pass" };
+        }
+        else if (args.Contains("--capture-alignment")) result = TextOracleCases.CaptureAlignment();
+        else if (args.Contains("--words")) result = WordSelectionCases.Capture();
         else if (args.Contains("--controls"))
         {
             CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");

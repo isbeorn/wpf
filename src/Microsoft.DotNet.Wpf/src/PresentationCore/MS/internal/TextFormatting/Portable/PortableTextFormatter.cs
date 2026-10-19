@@ -152,12 +152,14 @@ namespace MS.Internal.TextFormatting.Portable
             ArgumentOutOfRangeException.ThrowIfNegative(first);
             if (double.IsNaN(width) || width < 0 || double.IsNaN(source.PixelsPerDip) || source.PixelsPerDip <= 0 || double.IsInfinity(source.PixelsPerDip))
                 throw new ArgumentOutOfRangeException(nameof(width));
+            if (properties.TextAlignment != TextAlignment.Left && !double.IsFinite(width))
+                throw new ArgumentOutOfRangeException(nameof(width));
             if ((previous != null && (previous.BreakRecord != IntPtr.Zero || previous.TextModifierScope != null)) ||
-                properties.TextAlignment != TextAlignment.Left ||
+                (properties.TextAlignment != TextAlignment.Left && properties.TextAlignment != TextAlignment.Center && properties.TextAlignment != TextAlignment.Right) ||
                 properties.LineHeight != 0 || properties.Indent != 0 || properties.ParagraphIndent != 0 || properties.TextMarkerProperties != null ||
                 (properties.Tabs != null && properties.Tabs.Count != 0) || (properties.TextDecorations != null && properties.TextDecorations.Count != 0) ||
                 properties.AlwaysCollapsible)
-                throw new NotSupportedException("Portable text supports horizontal left-aligned greedy paragraphs without markers, tabs, decorations or custom line heights.");
+                throw new NotSupportedException("Portable text supports horizontal Left, Center and Right greedy paragraphs without markers, tabs, decorations or custom line heights.");
         }
 
         private static Input Read(TextSource source, int first)

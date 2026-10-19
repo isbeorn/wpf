@@ -8,6 +8,11 @@ using System.Windows.Threading;
 using SkiaSharp;
 
 var checks = new List<object>();
+if (args.Contains("--capture-alignment"))
+{
+    Console.WriteLine(JsonSerializer.Serialize(TextOracleCases.CaptureAlignment(), new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
 if (args.Contains("--capture-oracle"))
 {
     Console.WriteLine(JsonSerializer.Serialize(TextOracleCases.Capture(), new JsonSerializerOptions { WriteIndented = true }));
@@ -30,6 +35,11 @@ try
     var properties = new RunProperties(new Typeface(family));
     var paragraph = new Paragraph(properties);
     using var formatter = TextFormatter.Create();
+    Regression("horizontal-paragraph-alignment", () =>
+    {
+        TextOracleCases.VerifyAlignment();
+        Require(true, "horizontal-paragraph-alignment", "Center and Right preserve shaping while aligning metrics, caret distances, bounds and retained drawing for both flow directions.");
+    });
     BidiTests.Run(formatter, Require, Regression);
     Regression("empty-and-end-caret-bounds-regression", () =>
     {
@@ -312,6 +322,9 @@ try
         Require(scripts.GetIndexedGlyphRuns().Count() == 2, "supported-mixed-script-itemization", "Latin and Greek are itemized into separately shaped WPF glyph runs.");
     Expect<NotSupportedException>(() => formatter.FormatLine(new Source(new[] { ("q", properties), ("\u0301", larger) }), 0, 1000, paragraph, null), "reject-formatting-inside-grapheme");
     Expect<NotSupportedException>(() => formatter.FormatLine(new Source("x", properties), 0, 1000, new Paragraph(properties, alignment: TextAlignment.Justify), null), "reject-justification");
+    Expect<NotSupportedException>(() => formatter.FormatLine(new Source("x", properties), 0, 1000, new Paragraph(properties, alignment: (TextAlignment)99), null), "reject-invalid-alignment");
+    foreach (var alignment in new[] { TextAlignment.Center, TextAlignment.Right })
+        Expect<ArgumentOutOfRangeException>(() => formatter.FormatLine(new Source("x", properties), 0, double.PositiveInfinity, new Paragraph(properties, alignment: alignment), null), "reject-infinite-alignment-width-" + alignment);
     Expect<NotSupportedException>(() => formatter.FormatLine(new Source(char.ConvertFromUtf32(0x10ffff), properties), 0, 1000, paragraph, null), "reject-missing-font-glyph");
     Expect<ArgumentOutOfRangeException>(() => formatter.FormatLine(new Source("x", properties), 0, double.NaN, paragraph, null), "reject-invalid-width");
     Expect<ArgumentOutOfRangeException>(() => formatter.FormatLine(new Source("", properties), int.MaxValue, 1000, paragraph, null), "reject-source-position-overflow");

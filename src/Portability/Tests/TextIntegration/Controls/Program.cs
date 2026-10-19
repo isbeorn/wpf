@@ -15,6 +15,7 @@ var thread = new Thread(() =>
     try
     {
         CultureInfo.CurrentCulture = CultureInfo.GetCultureInfo("en-US");
+        results.Add(VerifyAlignedTextBlock());
         foreach (object result in WordSelectionCases.Verify()) results.Add(result);
         var block = new TextBlock { Text = "Default 123", FontSize = 24,
             FontFamily = new FontFamily(new Uri(Path.Combine(AppContext.BaseDirectory, "Fonts") + Path.DirectorySeparatorChar), "./#DejaVu Sans") };
@@ -64,6 +65,52 @@ thread.Start();
 thread.Join();
 Console.WriteLine(JsonSerializer.Serialize(new { fixture = "actual-text-controls-and-word-selection", results, failure = failure?.ToString() }, new JsonSerializerOptions { WriteIndented = true }));
 return failure == null ? 0 : 1;
+
+static object VerifyAlignedTextBlock()
+{
+    const int width = 1100, height = 100;
+    var block = new TextBlock
+    {
+        Text = "Sequence Target Area\nAdd Deep Sky Object Sequences here or add Targets via Sky Atlas or Framing Assistant",
+        FontSize = 16, FontStyle = FontStyles.Italic, Foreground = Brushes.Black,
+        FontFamily = new FontFamily(new Uri(Path.Combine(AppContext.BaseDirectory, "Fonts") + Path.DirectorySeparatorChar), "./#DejaVu Sans"),
+        TextAlignment = TextAlignment.Center
+    };
+    block.Measure(new Size(width, height));
+    block.Arrange(new Rect(0, 0, width, height));
+    block.UpdateLayout();
+    Size measured = block.DesiredSize;
+    Type targetType = typeof(Visual).Assembly.GetType("MS.Internal.Portability.Rendering.PortableRenderTarget", true)!;
+    using var target = (IDisposable)Activator.CreateInstance(targetType, BindingFlags.Instance | BindingFlags.NonPublic, null, [block, width, height], null)!;
+    byte[]? original = null;
+    var positions = new List<int[]>();
+    foreach (TextAlignment alignment in new[] { TextAlignment.Center, TextAlignment.Right, TextAlignment.Left, TextAlignment.Center })
+    {
+        block.TextAlignment = alignment;
+        block.Measure(new Size(width, height));
+        block.Arrange(new Rect(0, 0, width, height));
+        block.UpdateLayout();
+        var frame = new DispatcherFrame();
+        Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.SystemIdle, new Action(() => frame.Continue = false));
+        Dispatcher.PushFrame(frame);
+        using var bitmap = (SKBitmap)targetType.GetMethod("Snapshot", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(target, null)!;
+        var left = new[] { width, width };
+        int split = (int)Math.Round(measured.Height / 2);
+        for (int y = 0; y < bitmap.Height; y++)
+            for (int x = 0; x < bitmap.Width; x++)
+                if (bitmap.GetPixel(x, y).Alpha != 0) left[y < split ? 0 : 1] = Math.Min(left[y < split ? 0 : 1], x);
+        if (left.Any(value => value == width) || block.DesiredSize != measured)
+            throw new InvalidOperationException("The original two-line message lost ink or changed its measured size under alignment.");
+        if (original == null) original = bitmap.Bytes;
+        else if (positions.Count == 3 && !original.SequenceEqual(bitmap.Bytes))
+            throw new InvalidOperationException("Restoring Center did not restore the retained TextBlock pixels.");
+        positions.Add(left);
+    }
+    for (int line = 0; line < 2; line++)
+        if (!(positions[2][line] < positions[0][line] && positions[0][line] < positions[1][line]))
+            throw new InvalidOperationException("The two actual rendered lines did not move Left < Center < Right.");
+    return new { name = "actual-nina-two-line-alignment-retained-restore", status = "pass", positions, measured.Width, measured.Height };
+}
 
 sealed class ControlParagraph(TextRunProperties properties) : TextParagraphProperties
 {

@@ -9,6 +9,144 @@ using System.Windows.Media.TextFormatting;
 
 static class TextOracleCases
 {
+    internal static object CaptureAlignment()
+    {
+        var family = new FontFamily(new Uri(Path.Combine(AppContext.BaseDirectory, "Fonts") + Path.DirectorySeparatorChar), "./DejaVuSans.ttf#DejaVu Sans");
+        var properties = new OracleProperties(new Typeface(family, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal));
+        var cases = new List<object>();
+        foreach (TextFormattingMode mode in new[] { TextFormattingMode.Ideal, TextFormattingMode.Display })
+        {
+            using var formatter = TextFormatter.Create(mode);
+            foreach (string text in new[] { "", "abc", "abc  ", "\u05d0\u05d1\u05d2  ", "abc \u05d0\u05d1\u05d2  ", "short\nlonger line  " })
+            foreach (FlowDirection flow in new[] { FlowDirection.LeftToRight, FlowDirection.RightToLeft })
+            {
+                var source = new OracleSource(text, properties);
+                using var natural = formatter.FormatLine(source, 0, 1000, new OracleParagraph(properties, flow), null);
+                foreach (double width in new[] { natural.Width + 60, natural.Width, Math.Max(1, natural.Width / 2), 0 }.Distinct())
+                foreach (TextAlignment alignment in new[] { TextAlignment.Left, TextAlignment.Center, TextAlignment.Right })
+                {
+                    int first = 0;
+                    TextLineBreak? previous = null;
+                    var lines = new List<object>();
+                    try
+                    {
+                        do
+                        {
+                            using var line = formatter.FormatLine(source, first, width, new OracleParagraph(properties, flow, alignment: alignment), previous!);
+                            previous?.Dispose();
+                            previous = line.GetTextLineBreak();
+                            int count = Math.Min(text.Length - first, line.Length - line.NewlineLength);
+                            var visual = new DrawingVisual();
+                            using (var context = visual.RenderOpen()) line.Draw(context, new Point(), InvertAxes.None);
+                            lines.Add(new { first, line.Length, line.NewlineLength, line.Start, line.Width, line.WidthIncludingTrailingWhitespace,
+                                line.OverhangLeading, line.OverhangTrailing,
+                                carets = Enumerable.Range(first, count + 1).Select(index => {
+                                    double distance = line.GetDistanceFromCharacterHit(new CharacterHit(index, 0));
+                                    var hit = line.GetCharacterHitFromDistance(distance);
+                                    return new { index, distance, hit.FirstCharacterIndex, hit.TrailingLength, roundtrip = line.GetDistanceFromCharacterHit(hit) };
+                                }).ToArray(),
+                                bounds = count == 0 ? Array.Empty<object>() : line.GetTextBounds(first, count).Select(bound => new { rectangle = Box(bound.Rectangle), flow = bound.FlowDirection.ToString() }).ToArray(),
+                                runs = line.GetIndexedGlyphRuns().Select(run => new { run.TextSourceCharacterIndex, run.TextSourceLength, run.GlyphRun.BidiLevel,
+                                    x = run.GlyphRun.BaselineOrigin.X, y = run.GlyphRun.BaselineOrigin.Y }).ToArray(), drawing = Describe(visual.Drawing) });
+                            first += line.Length;
+                        } while (first < text.Length);
+                    }
+                    finally { previous?.Dispose(); }
+                    cases.Add(new { text, mode = mode.ToString(), flow = flow.ToString(), alignment = alignment.ToString(), paragraphWidth = width, lines });
+                }
+            }
+        }
+        return new { framework = typeof(TextFormatter).Assembly.FullName,
+            frameworkFileVersion = System.Diagnostics.FileVersionInfo.GetVersionInfo(typeof(TextFormatter).Assembly.Location).FileVersion, cases };
+    }
+    internal static void VerifyAlignment(bool idealOnly = false)
+    {
+        var family = new FontFamily(new Uri(Path.Combine(AppContext.BaseDirectory, "Fonts") + Path.DirectorySeparatorChar), "./DejaVuSans.ttf#DejaVu Sans");
+        var properties = new OracleProperties(new Typeface(family, FontStyles.Normal, FontWeights.Normal, FontStretches.Normal));
+        foreach (TextFormattingMode mode in new[] { TextFormattingMode.Ideal, TextFormattingMode.Display })
+        {
+            if (idealOnly && mode != TextFormattingMode.Ideal) continue;
+            using var formatter = TextFormatter.Create(mode);
+            foreach (double pixelsPerDip in new[] { 1d, 1.5, 2 })
+            foreach (string text in new[] { "", "abc", "abc  ", "\u05d0\u05d1\u05d2  ", "abc \u05d0\u05d1\u05d2  ", "short\nlonger line  " })
+            foreach (FlowDirection flow in new[] { FlowDirection.LeftToRight, FlowDirection.RightToLeft })
+            {
+                var source = new OracleSource(text, properties) { PixelsPerDip = pixelsPerDip };
+                using var natural = formatter.FormatLine(source, 0, 1000, new OracleParagraph(properties, flow), null);
+                foreach (double width in new[] { natural.Width + 60, natural.Width, Math.Max(1, natural.Width / 2), 0 }.Distinct())
+                foreach (TextWrapping wrapping in new[] { TextWrapping.NoWrap, TextWrapping.Wrap })
+                foreach (TextAlignment alignment in new[] { TextAlignment.Center, TextAlignment.Right })
+                {
+                    int first = 0;
+                    do
+                    {
+                        using var left = formatter.FormatLine(source, first, width, new OracleParagraph(properties, flow, wrapping), null);
+                        using var aligned = formatter.FormatLine(source, first, width, new OracleParagraph(properties, flow, wrapping, alignment), null);
+                        double shift = (width - left.Width) / (alignment == TextAlignment.Center ? 2 : 1);
+                        if (mode == TextFormattingMode.Display) shift = Math.Round(shift * pixelsPerDip) / pixelsPerDip;
+                        string context = $"{mode}/{pixelsPerDip}/{flow}/{wrapping}/{alignment}/{width:R}/{first}/{text}";
+                        void Near(double actual, double expected, string property)
+                        {
+                            if (!double.IsFinite(actual) || !double.IsFinite(expected) || Math.Abs(actual - expected) > 0.01)
+                                throw new InvalidOperationException($"{context}: {property} expected {expected:R}, got {actual:R}.");
+                        }
+                        Near(aligned.Start, shift, "Start");
+                        Near(aligned.Length, left.Length, "Length");
+                        Near(aligned.TrailingWhitespaceLength, left.TrailingWhitespaceLength, "TrailingWhitespaceLength");
+                        Near(aligned.Height, left.Height, "Height");
+                        Near(aligned.Width, left.Width, "Width");
+                        Near(aligned.WidthIncludingTrailingWhitespace, left.WidthIncludingTrailingWhitespace, "WidthIncludingTrailingWhitespace");
+                        Near(aligned.OverhangLeading, left.OverhangLeading, "OverhangLeading");
+                        Near(aligned.OverhangTrailing, left.OverhangTrailing, "OverhangTrailing");
+                        int count = Math.Min(text.Length - first, left.Length - left.NewlineLength);
+                        for (int index = first; index <= first + count; index++)
+                        {
+                            double distance = aligned.GetDistanceFromCharacterHit(new CharacterHit(index, 0));
+                            Near(distance, left.GetDistanceFromCharacterHit(new CharacterHit(index, 0)) + shift, "caret distance");
+                            Near(aligned.GetDistanceFromCharacterHit(aligned.GetCharacterHitFromDistance(distance)), distance, "caret roundtrip");
+                        }
+                        if (count > 0)
+                        {
+                            var originalBounds = left.GetTextBounds(first, count).ToArray();
+                            var bounds = aligned.GetTextBounds(first, count).ToArray();
+                            if (bounds.Length != originalBounds.Length) throw new InvalidOperationException(context + ": bound count changed.");
+                            for (int index = 0; index < bounds.Length; index++)
+                            {
+                                double expectedLeft = originalBounds[index].Rectangle.Left + shift;
+                                double expectedRight = originalBounds[index].Rectangle.Right + shift;
+                                Near(bounds[index].Rectangle.X, expectedLeft, "selection X");
+                                Near(bounds[index].Rectangle.Width, expectedRight - expectedLeft, "selection width");
+                            }
+                        }
+                        var originalRuns = left.GetIndexedGlyphRuns().ToArray();
+                        var runs = aligned.GetIndexedGlyphRuns().ToArray();
+                        if (runs.Length != originalRuns.Length) throw new InvalidOperationException(context + ": glyph run count changed.");
+                        for (int index = 0; index < runs.Length; index++)
+                        {
+                            Near(runs[index].GlyphRun.BaselineOrigin.X, originalRuns[index].GlyphRun.BaselineOrigin.X, "indexed glyph origin");
+                            if (!runs[index].GlyphRun.GlyphIndices.SequenceEqual(originalRuns[index].GlyphRun.GlyphIndices) ||
+                                !runs[index].GlyphRun.AdvanceWidths.SequenceEqual(originalRuns[index].GlyphRun.AdvanceWidths) ||
+                                !runs[index].GlyphRun.ClusterMap.SequenceEqual(originalRuns[index].GlyphRun.ClusterMap))
+                                throw new InvalidOperationException(context + ": alignment changed shaping.");
+                        }
+                        Rect DrawBounds(TextLine line)
+                        {
+                            var visual = new DrawingVisual();
+                            using (var drawing = visual.RenderOpen()) line.Draw(drawing, new Point(7, 9), InvertAxes.None);
+                            return visual.Drawing.Bounds;
+                        }
+                        Rect originalInk = DrawBounds(left), ink = DrawBounds(aligned);
+                        if (!originalInk.IsEmpty)
+                        {
+                            Near(ink.X, originalInk.X + (flow == FlowDirection.LeftToRight ? shift : -shift), "drawing X");
+                            Near(ink.Width, originalInk.Width, "drawing width");
+                        }
+                        first += left.Length;
+                    } while (first < text.Length);
+                }
+            }
+        }
+    }
     internal static object CaptureBoundaries()
     {
         var family = new FontFamily(new Uri(Path.Combine(AppContext.BaseDirectory, "Fonts") + Path.DirectorySeparatorChar), "./DejaVuSans.ttf#DejaVu Sans");
@@ -121,10 +259,10 @@ static class TextOracleCases
         public override CultureInfo CultureInfo => CultureInfo.GetCultureInfo("en-US");
         public override TextEffectCollection TextEffects => null!;
     }
-    private sealed class OracleParagraph(TextRunProperties properties, FlowDirection flow, TextWrapping wrapping = TextWrapping.NoWrap) : TextParagraphProperties
+    private sealed class OracleParagraph(TextRunProperties properties, FlowDirection flow, TextWrapping wrapping = TextWrapping.NoWrap, TextAlignment alignment = TextAlignment.Left) : TextParagraphProperties
     {
         public override FlowDirection FlowDirection => flow;
-        public override TextAlignment TextAlignment => TextAlignment.Left;
+        public override TextAlignment TextAlignment => alignment;
         public override double LineHeight => 0;
         public override bool FirstLineInParagraph => true;
         public override TextRunProperties DefaultTextRunProperties => properties;

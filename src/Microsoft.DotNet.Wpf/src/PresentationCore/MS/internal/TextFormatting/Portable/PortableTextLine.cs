@@ -23,6 +23,7 @@ namespace MS.Internal.TextFormatting.Portable
         private sealed record LineRun(int Start, int Length, TextRun Source, GlyphRun Glyphs, double Offset, double Width);
         private readonly PortableParagraph _paragraph;
         private readonly double _drawingOffset;
+        private readonly double _alignmentOffset;
         private readonly int _first;
         private readonly string _text;
         private readonly int _newline;
@@ -116,6 +117,12 @@ namespace MS.Internal.TextFormatting.Portable
                     whitespaceWidth += run.Width - run.Glyphs.GetDistanceFromCaretCharacterHit(new CharacterHit(trailingStart - run.Start, 0));
             }
             _widthWithoutTrailing = _width - whitespaceWidth;
+            if (properties.TextAlignment != TextAlignment.Left)
+            {
+                _alignmentOffset = (paragraphWidth - _widthWithoutTrailing) / (properties.TextAlignment == TextAlignment.Center ? 2 : 1);
+                if (mode == TextFormattingMode.Display)
+                    _alignmentOffset = Math.Round(_alignmentOffset * pixelsPerDip) / pixelsPerDip;
+            }
             _overflow = paragraphWidth > 0 && _widthWithoutTrailing > paragraphWidth;
         }
 
@@ -220,7 +227,7 @@ namespace MS.Internal.TextFormatting.Portable
             ArgumentNullException.ThrowIfNull(context);
             if (inversion != InvertAxes.None)
                 throw new NotSupportedException("Portable inverted text drawing is not implemented.");
-            context.PushTransform(new TranslateTransform(origin.X, origin.Y));
+            context.PushTransform(new TranslateTransform(origin.X + (_paragraph.BaseLevel == 0 ? _alignmentOffset : -_alignmentOffset), origin.Y));
             try
             {
                 foreach (LineRun run in _runs)
@@ -256,6 +263,7 @@ namespace MS.Internal.TextFormatting.Portable
                 throw new ArgumentOutOfRangeException(nameof(distance));
             if (_runs.Count == 0)
                 return new CharacterHit(_first, 0);
+            distance -= _alignmentOffset;
             if (_paragraph.BaseLevel == 1) distance = _width - distance;
             LineRun run = _runs.Last();
             foreach (LineRun candidate in _runs)
@@ -269,10 +277,10 @@ namespace MS.Internal.TextFormatting.Portable
             Verify();
             ValidateHit(hit);
             int index = hit.FirstCharacterIndex - _first;
-            if (index >= _text.Length) return _width;
+            if (index >= _text.Length) return _width + _alignmentOffset;
             return ParagraphDistance(Distance(index, hit.TrailingLength));
         }
-        private double ParagraphDistance(double physical) => _paragraph.BaseLevel == 0 ? physical : _width - physical;
+        private double ParagraphDistance(double physical) => _alignmentOffset + (_paragraph.BaseLevel == 0 ? physical : _width - physical);
         private double Distance(int index, int trailing = 0)
         {
             foreach (LineRun run in _runs)
@@ -375,7 +383,7 @@ namespace MS.Internal.TextFormatting.Portable
         public override int TrailingWhitespaceLength => _trailing + _newline;
         public override int DependentLength => _dependent;
         public override int NewlineLength => _newline;
-        public override double Start => 0;
+        public override double Start => _alignmentOffset;
         public override double Width => _widthWithoutTrailing;
         public override double WidthIncludingTrailingWhitespace => _width;
         public override double Height => _height;

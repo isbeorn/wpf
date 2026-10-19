@@ -34,6 +34,28 @@ Signed overhang checks compare
 actual glyph ink with positive side margins, negative italic overhang and
 trailing whitespace excluded from visible width.
 
+Horizontal alignment supports Left, Center and Right for finite paragraph
+widths. The offset uses visible line width, excluding trailing whitespace, and
+may be negative when the line is wider than its paragraph. Ideal placement,
+caret distances, selection bounds and retained drawing follow the stock WPF
+relationships for both flow directions. Display rounds the alignment offset
+once to a device pixel and applies that same offset throughout the line.
+Stock Display may round individual coordinates differently and change an
+overhang by up to one device pixel in the calibrated cases. This bounded
+backend does not reproduce Line Services' per-coordinate pixel snapping.
+Left shaping and indexed glyph data remain unchanged. Justify, collapsing
+symbols and other unsupported paragraph features still fail explicitly.
+
+`StockOracle --capture-alignment` records stock metrics, carets, bounds,
+indexed glyph origins and retained drawings for both modes. Its
+`--verify-alignment` checks Ideal relationships only. The portable test also
+checks consistent Display placement at 1x, 1.5x and 2x DPI, zero/equal/narrow/
+wide paragraph widths, wrapping, explicit newlines and trailing whitespace.
+The Controls fixture uses the original two-line NINA target-area message in
+a real TextBlock, checking Measure/Arrange/OnRender through Center -> Right
+-> Left -> Center and exact restoration of retained pixels. This does not
+qualify the full NINA sequencer workflow.
+
 Caret and selection checks use real `CharacterHit`, `GlyphRun.ClusterMap` and
 `CaretStops`, including a combining sequence with multiple glyphs, a surrogate
 pair, both navigation directions, backspace, distance round trips and boundary
