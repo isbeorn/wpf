@@ -1071,6 +1071,43 @@ coherent family recorded here. Full shell, overnight, final package and native
 X11/XWayland/Orca workflows remain open. These local results do not complete
 Phases 2 through 5; native IME remains user-deferred and optimization is canceled.
 
+## Sealed managed compatibility checkpoint
+
+The [combined managed proof](../../artifacts/portability/combined-managed-fixes-20261019/README.md)
+for commit `27a8d1475` passes 992 existing checks per OS: Imaging 17, Markup 16,
+Rendering 50, Guideline 324, Text 348, TextControls 211 and Core 26. Both OSes
+also pass all 91,707 maintained Unicode 17 cases with zero input mutations.
+Each uses one Release Core/PF producer family, matching all 40 selected source/PDB
+documents and PE/PDB identities. All fixture processes exit zero with empty
+stderr; builds retain ten existing framework warning lines and zero errors.
+No source edits, test changes or binary overlays were used for this proof.
+
+Linux origin traces verify regular SkiaSharp.NativeAssets.Linux 3.119.4 plus
+actual Fontconfig/configuration reads. The Markup Runner's unchanged
+System.Drawing.Common 10.0.13 graph selects the official System.Private.Windows.Core
+runtime asset, SHA `704B2F1033961BE827E73BC04014C6925F2B38E4F72D023AB22E16ABE758C6BD`;
+other suites use its source-built auxiliary counterpart. Identical Core/PF
+producers do not imply identical transitive auxiliary binaries.
+
+The separate [PresentationUI proof](../../artifacts/portability/presentation-ui-integrated-main/README.md)
+at `05fdd11bb` passes PUI 5/5 and Markup 16/16 on each OS, with fresh normal
+Core/PF/PUI graphs. All four processes exit zero with empty stderr. All 123
+original inputs and 106 PUI PDB documents per OS match; three resource manifests
+and all 13 BAML entries are byte-identical across OSes. Each graph has ten
+existing dependency warning lines, zero PUI warnings and zero errors. The same
+official auxiliary selection described above remains explicit.
+
+This PUI gate covers original resources, themes, the genuine default template
+and initial 320 x 180 viewport layout with Document=null. It creates no
+Application or Window and does not qualify nonempty document text, raster,
+printing or XPS. The historical PTS red remains unchanged and was not rerun.
+
+These are standalone managed CPU results. Separate native input-router/focus
+qualification and integration with the current Core remain pending; no full
+owned NativeHost, package or desktop result follows. The accepted managed
+FlowDocument direction is not a nonempty-formatting pass. Phases 2 through 5
+remain open and the full NINA shell remains unlaunched.
+
 The user has deferred native focused-editor/IME composition integration.
 The investigation draft remains local and unqualified, with no new base/hook
 implementation. Committed transport and ordinary complete Unicode text retain

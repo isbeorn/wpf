@@ -14657,6 +14657,101 @@
       "sourceCommit": "0b49e8134744ecaf8254544fc9913490559f9bf8",
       "runtimeSourceCommit": "27cb8861574eb0c72cc4d20969190f38841b139d",
       "outcome": "partial"
+    },
+    {
+      "label": "sealed-combined-managed-27a8-release-and-unicode-proof",
+      "capturedAtUtc": "2026-10-19T16:43:56.4323452Z",
+      "headCommit": "b1b3bc92b7083d1d31313fd408daefd18669855e",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Commit 27a8d1475 passes seven existing managed Release suites on Windows and Linux: Imaging 17, Markup 16, Rendering 50, Guideline 324, Text 348, TextControls 211 and Core 26, totaling 992 per OS. Fourteen fixture processes exit 0 with empty stderr and no failures. Each OS uses one Core/PF producer family, no binary overlays and no source or fixture edits. All 40 selected production source/PDB documents and PE/PDB identities match. Ten existing framework warning lines and zero errors remain explicit.",
+      "unicode": "Both maintained probes pass 91,707 official Unicode 17 cases and 717,279 non-x character levels, with zero failures/input mutations. Windows retains the unchanged original negative control: 9 failures/23 input mutations. Linux uses the unchanged embedded C# probe through a disposable .NET wrapper because PowerShell is absent, with source/PDB correspondence recorded; no algorithm/assertion/tolerance change.",
+      "nativeAsset": "Every Linux process maps the regular SkiaSharp.NativeAssets.Linux 3.119.4 app-local libSkiaSharp.so (SHA 66C856EAF1A47A00B23204C30C6EE407987BF5086ECC0A1A6B4FD67526B0CD02) plus actual Fontconfig/configuration reads. No Avalonia dependency or competing Linux.NoDependencies package appears in these managed graphs.",
+      "auxiliarySelection": "Markup Runner retains ordinary System.Drawing.Common 10.0.13 dependency selection of official lib/net10.0/System.Private.Windows.Core.dll SHA 704B2F1033961BE827E73BC04014C6925F2B38E4F72D023AB22E16ABE758C6BD on both OSes. Other suites use the source-built auxiliary copy. This is an unchanged graph selection, not a manual overlay; identical Core/PF producer identity does not imply every transitive auxiliary binary is identical.",
+      "limitations": "Standalone managed CPU qualification only. No NativeHost, full native window/input/accessibility backend, package graph, native application replay or benchmark qualification. The separate native family still needs input-router/focus and current Core integration. FlowDocument implementation is accepted but nonempty formatting is not passed. Phases 2-5 remain open; full NINA shell unlaunched and native IME user-deferred.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/combined-managed-fixes-20261019/README.md",
+          "sha256": "f310b54cd03e2fb9b061c7510ce6f90181463497569d7f73698137e2de5b69d1",
+          "bytes": 6712
+        },
+        {
+          "path": "artifacts/portability/combined-managed-fixes-20261019/summary.json",
+          "sha256": "d818382b4a0b9f8b7fe39512c09c88fc27e2250044a0c8bc80dfbfb4c632df7a",
+          "bytes": 5789
+        },
+        {
+          "path": "artifacts/portability/combined-managed-fixes-20261019/freeze.json",
+          "sha256": "112e2742c3a520b0f0995d9d12ed82f583e8ca911c1fbaefe3a4615a99b9ec97",
+          "bytes": 19128
+        },
+        {
+          "path": "artifacts/portability/combined-managed-fixes-20261019/source-pin.json",
+          "sha256": "330826c52be0f94162dc1249299a5f44d525fc9eb0ef4b00f655b9cd74c772bd",
+          "bytes": 17950
+        },
+        {
+          "path": "artifacts/portability/combined-managed-fixes-20261019/windows/family-evidence.json",
+          "sha256": "22be669e42433c7af1a87edce81be37c2f46fa756bbee5e3bc06939318b164a2",
+          "bytes": 65312
+        },
+        {
+          "path": "artifacts/portability/combined-managed-fixes-20261019/linux/family-evidence.json",
+          "sha256": "b83d18a39aa38a251b7d0b1901a1d9fe1149af981da94f811945cba7bdec8910",
+          "bytes": 64936
+        }
+      ],
+      "sourceCommit": "27a8d14759113b71b50583d1fe2224079111ae49",
+      "outcome": "pass"
+    },
+    {
+      "label": "sealed-source-presentation-ui-05f-resource-template-integration",
+      "capturedAtUtc": "2026-10-19T16:45:38.7531959Z",
+      "headCommit": "b1b3bc92b7083d1d31313fd408daefd18669855e",
+      "phase2Status": "bounded-1hz-callback-cadence-passed-display-and-sustained-performance-pending",
+      "scope": "Separate exact commit 05fdd11bb passes PresentationUIIntegration 5/5 and MarkupRuntimeIntegration 16/16 on Windows and Linux from fresh normal Release Core/PF/PUI producer graphs, once per OS. All four processes exit zero with empty stderr; no prior binaries or overlays. All 123 original inputs and 106 PUI PDB documents per OS match actual source; PE/PDB GUIDs match. Original PresentationUI version 10/token 31bf3856ad364e35 identity is preserved, without Microsoft release authentication.",
+      "resources": "All three original resource manifests and all 13 compiled BAML entries are byte-identical across OSes. The PUI fixture covers all nine theme dictionaries, genuine component-key default template, PART_ContentHost and initial FlowDocumentView/viewport layout at 320 x 180 with Document=null. It creates no Application or Window; no document text/raster path is qualified.",
+      "warnings": "Each complete graph has zero errors and ten existing dependency warning lines; PUI itself has zero warning lines. Full Core/PF graphs are built, not reused to hide warnings.",
+      "auxiliarySelection": "Unchanged Markup System.Drawing.Common 10.0.13 selection uses official System.Private.Windows.Core SHA 704B2F1033961BE827E73BC04014C6925F2B38E4F72D023AB22E16ABE758C6BD rather than the other fixture source-built auxiliary. Exact PUI/Core/PF producer coherence does not claim every transitive auxiliary DLL is identical.",
+      "limitations": "Null-document resource/template/initial-layout integration only. Historical nonempty FlowDocument PTS failures remain open and were not rerun. The accepted owned managed FlowDocument design is not an implementation or formatting pass. No NativeHost, native input/clipboard/accessibility backend, package graph, printing/XPS, full NINA shell or desktop application replay is qualified. Prior 27a8 managed/Unicode proof retains its separate source pin. Phases 2-5 remain open and native IME user-deferred.",
+      "artifacts": [
+        {
+          "path": "artifacts/portability/presentation-ui-integrated-main/README.md",
+          "sha256": "feaf56c4f3190f9b9f0d7fabca7631eaf7ee358c5cd12200445dd9eb1a7b189d",
+          "bytes": 5345
+        },
+        {
+          "path": "artifacts/portability/presentation-ui-integrated-main/summary.json",
+          "sha256": "765e8d8418841a7c57cce3a44c945955522df03fd8c930f48f711739443c7579",
+          "bytes": 4062
+        },
+        {
+          "path": "artifacts/portability/presentation-ui-integrated-main/freeze.json",
+          "sha256": "669c214ff902bcae68e0e8c5379a844f7fd1b1e9d244f2cb9c6512fe0dd5ab49",
+          "bytes": 10114
+        },
+        {
+          "path": "artifacts/portability/presentation-ui-integrated-main/source-pin.json",
+          "sha256": "c9adbf8da35af1da06f8a1352d150800a6323f4b5d11cc7503bfbdc6eea2a4b0",
+          "bytes": 55910
+        },
+        {
+          "path": "artifacts/portability/presentation-ui-integrated-main/resource-equivalence.json",
+          "sha256": "26b34f44da20257f75be34133a5536e3217eac6b8dee7e353c1f1fc2736369d7",
+          "bytes": 3736
+        },
+        {
+          "path": "artifacts/portability/presentation-ui-integrated-main/windows/family-proof.json",
+          "sha256": "600322d1a0d65ba87daaf5b6e9ae76876f0753241a066cdedea863e259d86b09",
+          "bytes": 147118
+        },
+        {
+          "path": "artifacts/portability/presentation-ui-integrated-main/linux/family-proof.json",
+          "sha256": "a14a93f0ba696776ddfd71bd07435f228b9b0334e935bf7af1616328eeaaf57a",
+          "bytes": 148265
+        }
+      ],
+      "sourceCommit": "05fdd11bb5b2c3490b98fd6ee19c24ccf7ba09a0",
+      "outcome": "pass"
     }
   ],
   "resultsScope": "Historical initial source-integration checkpoint. Later immutable checkpoint records preserve subsequent repairs and verification without replacing negative evidence.",
