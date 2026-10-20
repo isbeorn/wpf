@@ -67,15 +67,25 @@ the full MainWindow capture-button workflow or a full application feature pass.
 
 ## Resume from this milestone
 
+- The next complete publication fixed actual simulator connection through the
+  original Camera page. Commit `ec8a250a0` routes CombinedGeometry through the
+  existing path conversion. Windows and Linux pass seven focused rendering
+  checks, all 59 rendering checks and all 631 geometry checks for that family.
+  The native full-app replay then reached Imaging's real docking-layout
+  initialization and exposed a hollow dashed-geometry bounds rejection. No
+  exposure was requested. Evidence is under
+  `current/nina/vm-combined-ui-20261020-1/handoff.json`; this is progress through
+  the original application, not a full Imaging workflow pass.
 - Inspect the existing NINA window in VMConnect for Linux-Physical-SSD. The
-  recorded lifetime is PID 1252728, start ticks 1687329 and XID `0x1600006`.
+  replacement lifetime is PID 1368971, start ticks 1845563 and XID `0x1600006`.
   Refresh these identities and the real session/auth path before acting later.
+  The preceding PID 1252728 exited normally with original plugin teardown.
 - The VM publication is
-  `/home/stefan/wpf-portability-local/phase5/nina-shell-20261020-1`.
+  `/home/stefan/wpf-portability-local/phase5/nina-shell-combined-20261020-1`.
   Its `close-owned.py` checks the recorded process and window identities before
   requesting normal window close. It has been prepared but not executed.
 - Use the full Image3 consumer at
-  `current/nina/shell-vm-launch-20261020-1/consumer`. Its manifest and the live
+  `current/nina/shell-vm-combined-20261020-1/consumer`. Its manifest and the live
   desktop handoff bind the complete publication, source proofs, launch arguments
   and owned state. Do not substitute the intermediate annotation-only consumer.
 - Next verify a simulator exposure through the actual full MainWindow UI, then
@@ -86,6 +96,26 @@ the full MainWindow capture-button workflow or a full application feature pass.
 - General WPF features unused by NINA, native IME and further accessibility
   qualification remain deferred. Vendor/USB drivers and physical equipment are
   excluded from this simulator-only build.
+
+## Accepted cached-image behavior
+
+For NINA's survey cache and thumbnails, use standard area downsampling and
+linear enlargement. The user accepted documented differences from Windows WIC's
+Fant filter and transfer-table approximation rather than implementing those
+tables. This applies to display/cache transforms, not the scientific processing
+algorithms or original camera samples. Exact identity and mirror transforms
+preserve source samples and format. Fractional Gray16 transforms retain float
+precision in Gray32Float, as observed in the Windows reference; they use the
+standard IEC sRGB transfer function.
+
+The reference calibration's tiny 5x3 checker differs by up to 31/255 after
+downsampling and its ramp by 9/255. These are measured fixture differences, not
+global error bounds. Exact mirroring and unchanged raw inputs remain required.
+The focused codec/transform candidate passes 45 Windows checks. Its independent
+review, Linux family qualification and real cached-survey integration remain
+pending. The associated original NINA.WPF.Base renderer/cache candidate passes
+40 Windows checks; nine of its Linux checks still require the new DrawingImage
+and file/JPEG framework paths. These candidates are not in the live publication.
 
 ## Accepted focused port
 

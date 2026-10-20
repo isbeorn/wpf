@@ -2,17 +2,26 @@
 
 Checkpoint date: 20 October 2026. Branch: `codex/nina-cross-platform`.
 
-The latest local status and resume instructions are in the
-[20 October handover](handover-2026-10-20.md). It records the final package,
-document, Markdown and window-placement results, the new empty-notification
-window boundary and the remaining docking and desktop gates.
+The latest NINA status and resume instructions are in the
+[NINA launch plan](nina-launch-plan.md). The earlier
+[20 October handover](handover-2026-10-20.md) records the package,
+document, Markdown and window-placement checkpoint before the subsequent
+empty-window, docking and NINA.Image repairs.
 Earlier checkpoints below retain their original scope.
 
-The experiments establish a viable open-source Linux x64 path for this fork. Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded text implementation and native controls run through the owned X11 adapter. The app-local SDK compiles genuine BAML on Linux and earlier package-only fixtures retain their recorded scope. Current scientific display and editor checks pass, but no usable full NINA window has been observed. Full application, desktop, package and long-running qualification remain open.
+The experiments establish a viable open-source Linux x64 path for this fork. Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded text implementation and native controls run through the owned X11 adapter. The app-local SDK compiles genuine BAML on Linux and earlier package-only fixtures retain their recorded scope. The original simulator-only NINA shell now opens on the real GNOME/XWayland desktop and connects to SimulatorCamera. The actual MainWindow Imaging workflow is blocked at a hollow dashed-geometry bounds rejection during docking-layout initialization. A separate genuine simulator/download/ImageControlVM integration passes 13 checks with the original image-processing defaults. Full application, desktop, final package and long-running qualification remain open.
 
 The Phase 0 reference/runtime gate and Phase 1 feasibility gate pass within the scopes recorded below. Phases 2 through 5 have not passed. The accepted [plan](../cross-platform-plan.md) remains the behavior contract. Physical desktop, full application and sustained-workload qualification remain later gates. Component checks, source compilation and managed test peers do not substitute for native WPF control behavior.
 
 ## Current owned-backend checkpoint
+
+The paragraphs and table in this section preserve the earlier
+`Stage-nina-integration-1` checkpoint. The user subsequently prioritized NINA's
+required components and approved the focused image port. That port is committed
+as `52f157449`; the latest native replay also verifies the CombinedGeometry
+repair in `ec8a250a0`. See the launch plan for current publication identities,
+accepted cache-filter differences and remaining integration failures. Later
+component results do not retroactively change the scope of older families.
 
 The released `Stage-nina-integration-1` family preserves complete 120-file
 Windows and Linux runtime inventories. Its [handoff](../../artifacts/portability/current/stage-nina-integration-1/handoff.json)
