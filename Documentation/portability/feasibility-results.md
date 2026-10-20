@@ -1,6 +1,6 @@
 # WPF cross platform feasibility results
 
-Checkpoint date: 20 October 2026. Branch: `codex/nina-cross-platform`.
+Checkpoint date: 21 October 2026. Branch: `codex/nina-cross-platform`.
 
 The latest NINA status and resume instructions are in the
 [NINA launch plan](nina-launch-plan.md). The earlier
@@ -9,7 +9,7 @@ document, Markdown and window-placement checkpoint before the subsequent
 empty-window, docking and NINA.Image repairs.
 Earlier checkpoints below retain their original scope.
 
-The experiments establish a viable open-source Linux x64 path for this fork. Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded text implementation and native controls run through the owned X11 adapter. The app-local SDK compiles genuine BAML on Linux and earlier package-only fixtures retain their recorded scope. The original simulator-only NINA shell now opens on the real GNOME/XWayland desktop, connects to SimulatorCamera and initializes the actual Imaging dock, plots and plugin pane. The tooltip animation user32 call is fixed. The next original 1-second snapshot starts, then natural tooltip display reaches the unimplemented mouse-relative popup placement path; image completion remains unqualified. A separate genuine simulator/download/ImageControlVM integration passes 13 checks with the original image-processing defaults. The NINA sky-map/cache component passes 42 checks on Windows and Linux, while its full Framing view exposes an empty-geometry rendering defect. Full application, desktop, final package and long-running qualification remain open.
+The experiments establish a viable open-source Linux x64 path for this fork. Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded text implementation and native controls run through the owned X11 adapter. The app-local SDK compiles genuine BAML on Linux and earlier package-only fixtures retain their recorded scope. Original simulator-only NINA now captures and displays a 640x480 image through the full application on the real GNOME/XWayland desktop, with AutoStretch, DetectStars, finite statistics and histogram data. Tooltip and empty-geometry faults are fixed. The NINA sky-map/cache component passes 42 checks on Windows and Linux and the original Framing integration passes 18 checks. Saved-layout restoration still reaches Windows-only virtual-screen metrics; NINA uses its original default-layout fallback. A later DrawingBrush redraw fault opens its error dialog, leaving cancellation and recovery unqualified. Full application, desktop, final package and long-running qualification remain open.
 
 The Phase 0 reference/runtime gate and Phase 1 feasibility gate pass within the scopes recorded below. Phases 2 through 5 have not passed. The accepted [plan](../cross-platform-plan.md) remains the behavior contract. Physical desktop, full application and sustained-workload qualification remain later gates. Component checks, source compilation and managed test peers do not substitute for native WPF control behavior.
 

@@ -1,4 +1,4 @@
-# NINA launch priority, 20 October 2026
+# NINA launch priority, 21 October 2026
 
 The user resumed work and prioritized NINA's required components and a usable
 Linux x64 launch. General WPF capabilities that NINA does not currently use,
@@ -77,26 +77,27 @@ the full MainWindow capture-button workflow or a full application feature pass.
   `current/nina/vm-combined-ui-20261020-1/handoff.json`; this is progress through
   the original application, not a full Imaging workflow pass.
 - Inspect the existing NINA window in VMConnect for Linux-Physical-SSD. The
-  replacement lifetime is PID 1560085, start ticks 2104488 and XID `0x1600006`.
+  replacement lifetime is PID 1674980, start ticks 2260119 and XID `0x1600006`.
   Refresh these identities and the real session/auth path before acting later.
   The preceding PID 1252728 exited normally with original plugin teardown.
   The subsequent bounds-fault lifetime PID 1368971 and tooltip-animation-fault
   lifetime PID 1492672 required exact-process TERM after both ordinary close
   routes failed. Their state and abnormal exits remain recorded; these are not
   clean shutdown results.
+  The subsequent PID 1560085 exited normally and saved its initialized docking
+  layout, disconnected the simulator and completed original plugin teardown.
 - The VM publication is
-  `/home/stefan/wpf-portability-local/phase5/nina-shell-tooltip-20261020-1`.
+  `/home/stefan/wpf-portability-local/phase5/nina-shell-joint-20261021-1`.
   Its `close-owned.py` checks the recorded process and window identities before
   requesting normal window close. It has been prepared but not executed.
 - Use the full Image3 consumer at
-  `current/nina/shell-vm-tooltip-20261020-1/consumer`. Its manifest and the live
+  `current/nina/shell-vm-joint-20261021-1/consumer`. Its manifest and the live
   desktop handoff bind the complete publication, source proofs, launch arguments
   and owned state. Do not substitute the intermediate annotation-only consumer.
-- Next verify a simulator exposure through the actual full MainWindow UI, then
-  qualify the NINA pages and interactions required for the initial target. The
-  existing default preparation fixture is now a passing diagnostic baseline.
-  Framing/Sky Atlas image drawing and other remaining application dependencies
-  need their own evidence before a full NINA compatibility claim.
+- The original full MainWindow now captures and displays a simulator image with
+  its processing defaults, finite statistics and histogram. Next repair the
+  reached DrawingBrush and saved-layout faults, then verify cancellation and
+  recovery and continue the remaining original application workflows.
 - General WPF features unused by NINA, native IME and further accessibility
   qualification remain deferred. Vendor/USB drivers and physical equipment are
   excluded from this simulator-only build.
@@ -130,11 +131,54 @@ Evidence is under `current/nina/vm-tooltip-ui-20261020-1/handoff.json`. The
 latest passive observation shows no further exposure progress and unchanged
 logs. Image completion, cancellation and recovery remain unqualified.
 
-The next bounded repair supplies the current pointer and cursor extent through
-the existing private native-window factory. It keeps physical screen
-coordinates and the original popup placement algorithm. No public WPF API or
-dependency is added. Other unused SystemParameters capabilities remain outside
-this repair.
+Commit `cc34a3290` supplies the current pointer and cursor extent through the
+existing private native-window factory. It keeps physical screen coordinates
+and the original popup placement algorithm. All 59 selected private native
+checks pass, including mouse placement at 96 and 192 DPI. Commit `f0a179f5e`
+skips matrix conversion for empty paths; all 680 geometry and 62 rendering
+checks pass on Windows and Linux. The complete joint runtime intake is
+`current/nina-popup-mouse-empty-geometry-integration-20261020-1/consumer-intake.json`,
+SHA-256 `EF8E2D4B562387CC7400A9110197A1069D0FD0195147AD861CDE8FBE5CF99C39`.
+Its complete 120-file runtime manifest is
+`F9D58F074575455B26653CECFB7426EAA3E5D0403AAF908B919F27E9581E1FD8`.
+
+## Latest native application replay
+
+The fresh shared 329-file publication uses this joint runtime and the unchanged
+eight declared application/control adaptations. Its manifest is
+`068B97C99731D808B720B5C71EBC7FD01EE3229F817C4AA45873D243A4B6BB22`.
+The real GNOME/XWayland run preserves the previous owned profile and layout.
+The saved profile had DetectStars disabled; the original UI toggle restored it
+before the workload, with AutoStretch enabled, High sensitivity and None noise
+reduction. Loop and Save remained off.
+
+The original 1-second simulator snapshot now displays a useful RANDOM 640x480
+image through the full application. Root inspected its native capture. The
+original Statistics pane reports finite values, including mean 4999.72 and
+standard deviation 100.07, and the original histogram displays its narrow raw
+16-bit peak. Zero detected stars is valid for this random-noise frame. This is
+functional acquisition and processing evidence, not the separate 6000x4000
+performance workload.
+
+Two defects remain explicit. Saved-layout deserialization calls the unported
+VirtualScreen metrics through AvalonDock. Original NINA catches that error and
+loads its own default layout, so the imaging observations above use that actual
+fallback. A later redraw rejects DrawingBrush and opens the original error
+dialog. The exact brush owner is not proven; the Classic ToolBar thumb is one
+concrete source candidate. The dialog holds keyboard focus, so the attempted
+10-second exposure edit did not take effect and does not qualify cancellation.
+Two additional 1-second captures do not match recorded test submissions; no
+human or automation attribution is inferred.
+
+The application remains passive with its error dialog open. Evidence is sealed
+under `current/nina/vm-joint-ui-20261021-1/imaging-unhandled-handoff.json`,
+SHA-256 `4A288B158C3661CFAD16E28C3E7412F9D31CC18CC60D7D8067700FEFA0E39665`,
+and `imaging-evidence-freeze.json`, SHA-256
+`BFB693CCE5AB99535780C09C2D85C6EA115A150EA166C81EC6CB300FB60B40DB`.
+Cancellation, recovery, actual Framing navigation and restored docking layout
+remain unqualified. The next repairs cover required DrawingBrush rendering and
+the four virtual-screen metrics, using the existing renderer and startup
+settings provider without a new dependency or public API.
 
 ## Accepted cached-image behavior
 
@@ -167,7 +211,16 @@ Windows skips the empty geometry; the portable renderer incorrectly converts
 its transform. A minimal public-API probe passes all eight cases on stock
 Windows and reproduces six failures on the old portable renderer. The proposed
 repair skips transforms only when the constructed raster path is empty.
-Framing18 remains unqualified pending this repair and a fresh complete family.
+Framing18 now passes all 18 checks on the joint family and shared publication:
+`current/nina/framing-replay-20261021-1/framing18-handoff.json`, SHA-256
+`24377093792D0151D6D505D3010E8D92BF7A899DF53E231910B7C7B202B52816`.
+All 378 input pins remain unchanged and 53 loaded modules match. The original
+fixture covers views, zoom, rotation, mosaic/overlap, signed dragging,
+owner/background coordinate updates and public disposal. It uses managed
+commands and routed clicks on private Xvfb, not native input. Original
+constructor background tasks have no public completion contract; process
+isolation bounds that remaining lifetime. Actual full-app Framing interaction
+and sustained resource qualification remain separate.
 
 ## Accepted focused port
 
