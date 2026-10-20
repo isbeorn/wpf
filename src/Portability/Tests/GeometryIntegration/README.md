@@ -54,7 +54,7 @@ The closest FrameworkElement regression is Gadget's unchanged actual Classic Pop
 
 ## Dashed render bounds
 
-Bounds queries support finite noncollapsed linear contours for LineGeometry, zero-radius RectangleGeometry and fully stroked filled PathGeometry/StreamGeometry. They share painting's dash normalization once, widen the actual dashed stroke and union its extent with the existing geometry fill extent. Width-zero and tolerance-skipped strokes preserve their geometry fallback before creating the dash effect. Geometry transforms precede widening and world transforms follow it. Named dashed bounds diagnostics retain hollow, collapsed, mixed-gap, curved, group and singular-transform boundaries. Dashed StrokeContains and widened geometry remain outside this support.
+Bounds queries support finite noncollapsed linear contours for LineGeometry, zero-radius RectangleGeometry and fully stroked PathGeometry/StreamGeometry, including hollow figures. They share painting's dash normalization once, widen the actual dashed stroke and union its extent with the existing geometry fill extent. All-hollow dashed queries also retain MIL's final-coordinate origin contribution. Width-zero and tolerance-skipped strokes preserve their geometry fallback before creating the dash effect. Geometry transforms precede widening and world transforms follow it. Named dashed bounds diagnostics retain collapsed, mixed-gap, curved, group and singular-transform boundaries. Dashed StrokeContains and widened geometry remain outside this support.
 
 DashedBoundsCases uses the unchanged stock WindowsDesktop 10.0.12 Reference project to capture DashedBoundsReference.json. It covers the genuine Classic ComboBox item focus pen: Rectangle (0.5,0.5,177,12.96875), width 1, Flat caps, [1,2], offset 0. Direct RectangleGeometry, explicit top-left PathGeometry and retained DrawRoundedRectangle return exactly (0,0,178,13.96875). The suite also checks positive/negative phase and period wrap, odd/even/negative and supported zero intervals, collection immutability, mutable retained queries, painting before/after bounds, tolerance and skip cases.
 
@@ -73,10 +73,50 @@ origin, leading/trailing gaps and geometry/world translation are compared to
 stock. The 16 calibrated raster cases compare full BGRA bytes against separately
 drawn directed rows and include a deliberately stroked-connector negative
 control. Retained queries run before/after paint and same-object mutations.
-Joined, fully stroked hollow, all-gap, closed, curved, grouped, collapsed and
+Joined mixed-gap, all-gap, closed mixed-gap, curved, grouped, collapsed and
 non-Flat-cap neighbors remain rejected. Existing no-ink conservative bounds
 behavior remains separately documented above; this slice does not widen that
 qualification.
+
+The hollow calibration uses stock WindowsDesktop 10.0.12 and includes the
+OxyPlot source-derived open unfilled PolyLineTo route with Flat caps, width 1
+and LongDash [10,1]. Its representative points (10,20) and (90,20) are test
+coordinates rather than captured live application values. Public bounds,
+retained DrawingVisual bounds and a real Path layout all retain (0,0,90,20.5).
+The cases also exercise open/closed PathGeometry and StreamGeometry, matching
+Flat/Round/Square caps, signed dash phases, geometry/world transforms,
+multiple and mixed filled/hollow figures, skipped pens and empty dash ink.
+The fully stroked neighbor of the original isolated-run grid now checks
+that its bounds contain the actual raster; mixed-gap restrictions remain.
+
+All 44 raw native hollow vectors remain in DashedBoundsReference.json. The
+existing one-ULP native comparison applies to 38 cases. Six cases instead
+check preserved independent paint/outline references and require every occupied
+raster cell to intersect the returned bounds, including the public/retained
+routes and final-coordinate origin:
+
+- At phase .5 or its period-equivalent 3.5, the open joined path's native bound
+  ends at Y=25 while Skia ends at Y=21. Native includes a zero-length terminal
+  ON dash in its conservative bound. Both complete BGRA rasters are identical,
+  occupy (10,9,21,12) and fit both bounds. The portable expectation comes from
+  that stock occupied-pixel box unioned with the query origin.
+- The four closed Round-cap queries end at Y=25.400001525878906 in Skia and
+  Y=25.40005874633789 in stock. This difference of .000057220458984375 is below
+  the requested default absolute tolerance .25. The independent filled control
+  on the old combined-only Core has exactly the same portable outline and
+  raster as the new hollow path. Its stock/Skia rasters differ at 65 channels
+  with maximum delta 53, a pre-existing round-stroke renderer difference.
+  The expectation preserves the old filled-control outline and raster with
+  the hollow query's origin contribution, rather than changing the comparator.
+
+The raw stock/current/old-filled captures and PE/PDB source proofs are retained
+under artifacts/portability/current/hollow-dashed-bounds-20261020-1/diagnostic.
+The captured half-phase stock raster SHA-256 is
+07EE84EC1EFC20E09A891144A956D89ADD72265E7ED65F41FE058A0BF4E01AFC;
+the old-Core Round filled-control raster is
+AB11FAF307F2A62771EDAB8551309685BF56CA885FC19D8E5CF9D75366EE9E47.
+These six expectations describe the existing bounded backend profile, not
+native conservative-extent or round-stroke pixel parity.
 
 GridAffineReference.json records four disjoint diagonal/reflected/skewed stock
 bounds cases. All four bounds and independent-row unions are checked, with

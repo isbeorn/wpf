@@ -79,7 +79,7 @@ namespace MS.Internal.Portability.Rendering
                     bool dashed = pen.DashStyle != null && pen.DashStyle.Dashes.Count != 0;
                     bool isolatedHollowRuns = dashed && IsIsolatedHollowRuns(source, pen);
                     // A hollow figure contributes the native query origin, after any world transform.
-                    if (isolatedHollowRuns) result.Union(new Rect(0, 0, 0, 0));
+                    if (dashed && fill.IsEmpty) result.Union(new Rect(0, 0, 0, 0));
                     if (dashed && halfWidth != 0 && !world.HasInverse)
                         throw new NotSupportedException("Portable dashed bounds do not support singular world transforms.");
                     double determinant = Math.Abs(world.M11 * world.M22 - world.M12 * world.M21);
@@ -147,8 +147,6 @@ namespace MS.Internal.Portability.Rendering
                     throw new NotSupportedException($"Portable dashed bounds do not support geometry type {source.GetType().FullName}.");
                 foreach (PathFigure figure in path.Figures)
                 {
-                    if (!figure.IsFilled)
-                        throw new NotSupportedException("Portable dashed bounds do not support hollow figures.");
                     foreach (PathSegment segment in figure.Segments)
                         if (!segment.IsStroked)
                             throw new NotSupportedException("Portable dashed bounds do not support unstroked segments.");

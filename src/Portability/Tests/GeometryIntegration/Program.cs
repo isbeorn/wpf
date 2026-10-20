@@ -3,6 +3,18 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Media;
 
+if (args.Length == 1 && args[0] is "--capture-hollow-dashed-ink" or "--capture-hollow-dashed-filled-ink")
+{
+    Console.WriteLine(JsonSerializer.Serialize(DashedBoundsCases.CaptureHollowInk(args[0] == "--capture-hollow-dashed-filled-ink"), new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
+
+if (args.Length == 1 && args[0] == "--capture-hollow-dashed-bounds")
+{
+    Console.WriteLine(JsonSerializer.Serialize(DashedBoundsCases.CaptureHollow(), new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
+
 if (args.Length == 1 && args[0] == "--capture-grid-affine")
 {
     Console.WriteLine(JsonSerializer.Serialize(GridBoundsCases.CaptureAffine(), new JsonSerializerOptions { WriteIndented = true }));
@@ -49,6 +61,12 @@ if (args.Length == 1 && args[0] == "--capture-bounds-precision")
 
 var checks = new List<object>();
 var failed = false;
+if (args.Contains("--hollow-dashed-bounds-only"))
+{
+    DashedBoundsCases.RunHollow(Check);
+    Console.WriteLine(JsonSerializer.Serialize(new { probe = "hollow-dashed-bounds", corePath = typeof(Geometry).Assembly.Location, checks }, new JsonSerializerOptions { WriteIndented = true }));
+    return failed ? 1 : 0;
+}
 var rectangle = new RectangleGeometry(new Rect(10, 10, 20, 20));
 Check("rectangle-interior", () => rectangle.FillContains(new Point(20, 20)), true);
 Check("rectangle-exterior", () => rectangle.FillContains(new Point(5, 20)), false);

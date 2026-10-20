@@ -72,6 +72,13 @@ internal static class GridBoundsCases
         check("grid-arbitrary-direction-reflection-and-affine-controls", AffineControls, true);
 #if PORTABLE_GEOMETRY_TESTS
         check("grid-same-path-pen-rejection-and-restoration", RejectAndRestore, true);
+        check("grid-fully-stroked-hollow-bounds-cover-ink", () =>
+        {
+            var path = PathGeometry.CreateFromGeometry(original);
+            foreach (var segment in path.Figures[0].Segments) segment.IsStroked = true;
+            Rect bounds = VisualBounds(path, Pen(), Translation);
+            return bounds.Contains(new Point(0, 0)) && Covered(Paint(path, Pen(), Translation), bounds);
+        }, true);
         foreach (var sample in Rejected())
             check("grid-reject-and-recover-" + sample.Name, () =>
             {
@@ -226,7 +233,6 @@ internal static class GridBoundsCases
         var path = PathGeometry.CreateFromGeometry(Original());
         var closed = path.Clone(); closed.Figures[0].IsClosed = true; yield return ("closed", closed, Pen());
         var joined = path.Clone(); joined.Figures[0].Segments[1].IsStroked = true; yield return ("joined", joined, Pen());
-        var solid = path.Clone(); foreach (var segment in solid.Figures[0].Segments) segment.IsStroked = true; yield return ("fully-stroked", solid, Pen());
         var empty = path.Clone(); foreach (var segment in empty.Figures[0].Segments) segment.IsStroked = false; yield return ("all-gap", empty, Pen());
         var collapsed = path.Clone(); ((LineSegment)collapsed.Figures[0].Segments[0]).Point = collapsed.Figures[0].StartPoint; yield return ("collapsed-run", collapsed, Pen());
         var curve = path.Clone(); curve.Figures[0].Segments[0] = new BezierSegment(new(40, 760), new(60, 770), new(469.5, 768.5), true); yield return ("curve", curve, Pen());

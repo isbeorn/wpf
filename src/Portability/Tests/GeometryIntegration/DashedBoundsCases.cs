@@ -1,5 +1,6 @@
 using System.IO;
 using System.Reflection;
+using System.Security.Cryptography;
 #if PORTABLE_GEOMETRY_TESTS
 using SkiaSharp;
 #endif
@@ -11,6 +12,79 @@ using System.Windows.Media.Imaging;
 internal static class DashedBoundsCases
 {
     internal static Dictionary<string, double[]> Capture() => Samples().ToDictionary(s => s.Name, s => Values(s.Query()));
+    internal static Dictionary<string, double[]> CaptureHollow() => HollowSamples().ToDictionary(s => s.Name, s => Values(s.Query()));
+    internal static object[] CaptureHollowInk(bool filledOnly)
+    {
+        var records = new List<object>();
+        foreach (bool filled in filledOnly ? new[] { true } : new[] { false, true })
+            foreach (bool round in new[] { false, true })
+            {
+                var geometry = (PathGeometry)Hollow(false, round);
+                geometry.Figures[0].IsFilled = filled;
+                var pen = Dash([1, 2], round ? 0 : .5, 2, round ? PenLineCap.Round : PenLineCap.Flat);
+                var visual = new DrawingVisual();
+                using (DrawingContext context = visual.RenderOpen()) context.DrawGeometry(null, pen, geometry);
+                Rect bounds = VisualTreeHelper.GetContentBounds(visual);
+                byte[] pixels = Pixels(visual, 64, 48);
+                Rect ink = Rect.Empty;
+                int outside = 0;
+                for (int y = 0; y < 48; y++)
+                    for (int x = 0; x < 64; x++)
+                        if (pixels[(y * 64 + x) * 4 + 3] != 0)
+                        {
+                            ink.Union(new Rect(x, y, 1, 1));
+                            if (x < Math.Floor(bounds.Left) || x >= Math.Ceiling(bounds.Right) ||
+                                y < Math.Floor(bounds.Top) || y >= Math.Ceiling(bounds.Bottom)) outside++;
+                        }
+                records.Add(new { name = (round ? "closed-round" : "half-phase") + (filled ? "-filled-control" : "-hollow"),
+                    bounds = Values(bounds), inkBounds = Values(ink), outsideReportedRasterCells = outside,
+                    pixels = Convert.ToBase64String(pixels) });
+            }
+        return records.ToArray();
+    }
+
+    internal static void RunHollow(Action<string, Func<bool>, bool> check)
+    {
+        var reference = JsonSerializer.Deserialize<Dictionary<string, double[]>>(File.ReadAllText(
+            Path.Combine(AppContext.BaseDirectory, "DashedBoundsReference.json")))!;
+        foreach (var sample in HollowSamples())
+#if PORTABLE_GEOMETRY_TESTS
+            check("dashed-bounds-" + sample.Name, () => UsesHollowBackendOutline(sample.Name)
+                ? HollowBackendOutline(sample.Name, sample.Query()) : Equal(sample.Query(), reference[sample.Name]), true);
+#else
+            check("dashed-bounds-" + sample.Name, () => Equal(sample.Query(), reference[sample.Name]), true);
+#endif
+    }
+
+#if PORTABLE_GEOMETRY_TESTS
+    private static bool UsesHollowBackendOutline(string name) => name is
+        "hollow-path-closed-Round" or "hollow-path-closed-Round-retained" or
+        "hollow-stream-closed-Round" or "hollow-stream-closed-Round-retained" or
+        "hollow-phase-0.5" or "hollow-phase-3.5";
+
+    private static bool HollowBackendOutline(string name, Rect actual)
+    {
+        bool round = name.Contains("closed", StringComparison.Ordinal);
+        Geometry geometry = Hollow(name.Contains("stream", StringComparison.Ordinal), round);
+        var pen = Dash([1, 2], round ? 0 : name == "hollow-phase-3.5" ? 3.5 : .5, 2,
+            round ? PenLineCap.Round : PenLineCap.Flat);
+        // Round uses the preserved old-Core filled outline; phase uses the stock occupied-pixel box.
+        double[] outline = round ? [0, 0, 31, 25.400001525878906] : [0, 0, 31, 21];
+        string raster = round ? "AB11FAF307F2A62771EDAB8551309685BF56CA885FC19D8E5CF9D75366EE9E47" :
+            "07EE84EC1EFC20E09A891144A956D89ADD72265E7ED65F41FE058A0BF4E01AFC";
+        var visual = new DrawingVisual();
+        using (DrawingContext context = visual.RenderOpen()) context.DrawGeometry(null, pen, geometry);
+        if (!Equal(actual, outline) || !Equal(VisualTreeHelper.GetContentBounds(visual), outline)) return false;
+        byte[] pixels = Pixels(visual, 64, 48);
+        if (Convert.ToHexString(SHA256.HashData(pixels)) != raster) return false;
+        for (int y = 0; y < 48; y++)
+            for (int x = 0; x < 64; x++)
+                if (pixels[(y * 64 + x) * 4 + 3] != 0 &&
+                    (x < Math.Floor(actual.Left) || x >= Math.Ceiling(actual.Right) ||
+                     y < Math.Floor(actual.Top) || y >= Math.Ceiling(actual.Bottom))) return false;
+        return true;
+    }
+#endif
 
     internal static void Run(Action<string, Func<bool>, bool> check)
     {
@@ -29,6 +103,7 @@ internal static class DashedBoundsCases
 #endif
             check("dashed-bounds-" + sample.Name, () => Equal(sample.Query(), reference[sample.Name]), true);
         }
+        RunHollow(check);
         check("dashed-bounds-retained-mutation-and-restore", RetainedMutation, true);
         check("dashed-bounds-focus-paint-and-query", FocusPaint, true);
         foreach (var sample in RectangleRouteSamples())
@@ -95,6 +170,107 @@ internal static class DashedBoundsCases
         Add("sparse-solid-control", () => Line().GetRenderBounds(new Pen(Brushes.Black, 2) { StartLineCap = PenLineCap.Square, EndLineCap = PenLineCap.Square }));
         return samples;
         void Add(string name, Func<Rect> query) => samples.Add((name, query));
+    }
+
+    private static IEnumerable<(string Name, Func<Rect> Query)> HollowSamples()
+    {
+        yield return ("hollow-oxyplot-longdash-polyline", () => OxyPlotLine().GetRenderBounds(Dash([10, 1])));
+        yield return ("hollow-oxyplot-longdash-retained", () => Content(d => d.DrawGeometry(null, Dash([10, 1]), OxyPlotLine())));
+        yield return ("hollow-oxyplot-longdash-path-layout", HollowPathLayout);
+        yield return ("hollow-simple-open-line", () => { var path = OpenPath(); path.Figures[0].IsFilled = false; return path.GetRenderBounds(Dash([1, 2])); });
+        foreach (bool stream in new[] { false, true })
+            foreach (bool closed in new[] { false, true })
+                foreach (PenLineCap cap in new[] { PenLineCap.Flat, PenLineCap.Round, PenLineCap.Square })
+                {
+                    var geometry = Hollow(stream, closed);
+                    var pen = Dash([1, 2], 0, 2, cap);
+                    string name = $"hollow-{(stream ? "stream" : "path")}-{(closed ? "closed" : "open")}-{cap}";
+                    yield return (name, () => geometry.GetRenderBounds(pen));
+                    yield return (name + "-retained", () => Content(d => d.DrawGeometry(null, pen, geometry)));
+                }
+        foreach (double offset in new[] { .5, -.5, 3.5, -3.5 })
+        {
+            var pen = Dash([1, 2], offset, 2);
+            yield return (FormattableString.Invariant($"hollow-phase-{offset}"), () => Hollow(false, false).GetRenderBounds(pen));
+        }
+        foreach (var entry in new[] { (Name: "translation", Matrix: new Matrix(1, 0, 0, 1, 40, 30)),
+            (Name: "scale", Matrix: new Matrix(2, 0, 0, 3, 7, 9)), (Name: "reflection", Matrix: new Matrix(-2, 0, 0, 1.5, 120, 5)) })
+        {
+            var geometry = Hollow(false, false);
+            var pen = Dash([1, 2], 0, 2);
+            yield return ("hollow-geometry-" + entry.Name, () => { geometry.Transform = new MatrixTransform(entry.Matrix); return geometry.GetRenderBounds(pen); });
+            yield return ("hollow-world-" + entry.Name, () => Content(d => d.DrawGeometry(null, pen, Hollow(false, false)), new MatrixTransform(entry.Matrix)));
+        }
+        yield return ("hollow-zero-width", () => Hollow(false, false).GetRenderBounds(Dash([0, 0], 0, 0)));
+        yield return ("hollow-skipped-pen", () => Hollow(false, false).GetRenderBounds(Dash([0, 0]), 1000, ToleranceType.Absolute));
+        yield return ("hollow-world-skipped-pen", () => Content(d => d.DrawGeometry(null, Dash([0, 0], 0, 0), Hollow(false, false)), new TranslateTransform(40, 30)));
+        yield return ("hollow-all-ink-skipped", () =>
+        {
+            var path = OpenPath(); path.Figures[0].IsFilled = false;
+            return path.GetRenderBounds(Dash([1, 100], 2, 2));
+        });
+        yield return ("hollow-multiple-figures", () =>
+        {
+            var path = (PathGeometry)Hollow(false, false);
+            path.Figures.Add(new PathFigure(new Point(60, 40), [new LineSegment(new Point(70, 40), true)], false) { IsFilled = false });
+            return path.GetRenderBounds(Dash([1, 2], 0, 2));
+        });
+        yield return ("hollow-mixed-filled-figures", () =>
+        {
+            var path = (PathGeometry)Hollow(false, false);
+            path.Figures.Add(new PathFigure(new Point(60, 40), [new LineSegment(new Point(70, 40), true), new LineSegment(new Point(70, 50), true)], true));
+            return path.GetRenderBounds(Dash([1, 2], 0, 2));
+        });
+    }
+
+    private static StreamGeometry OxyPlotLine()
+    {
+        var geometry = new StreamGeometry();
+        using (StreamGeometryContext context = geometry.Open())
+        {
+            context.BeginFigure(new Point(10, 20), false, false);
+            context.PolyLineTo([new Point(90, 20)], true, false);
+        }
+        geometry.Freeze();
+        return geometry;
+    }
+
+    private static Rect HollowPathLayout()
+    {
+        Rect result = Rect.Empty;
+        Exception? failure = null;
+        var thread = new Thread(() =>
+        {
+            try
+            {
+                var path = new System.Windows.Shapes.Path { Data = OxyPlotLine(), Stroke = Brushes.Black,
+                    StrokeThickness = 1, StrokeDashArray = new DoubleCollection([10, 1]), Stretch = Stretch.None };
+                path.Measure(new Size(128, 64));
+                path.Arrange(new Rect(0, 0, 128, 64));
+                result = VisualTreeHelper.GetContentBounds(path);
+            }
+            catch (Exception exception) { failure = exception; }
+            finally { System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeShutdown(); }
+        });
+        if (OperatingSystem.IsWindows()) thread.SetApartmentState(ApartmentState.STA);
+        thread.Start(); thread.Join();
+        if (failure != null) System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(failure).Throw();
+        return result;
+    }
+
+    private static Geometry Hollow(bool stream, bool closed)
+    {
+        if (!stream)
+            return new PathGeometry([new PathFigure(new Point(10, 10),
+                [new LineSegment(new Point(30, 10), true), new LineSegment(new Point(30, 25), true)], closed) { IsFilled = false }]);
+        var geometry = new StreamGeometry();
+        using (StreamGeometryContext context = geometry.Open())
+        {
+            context.BeginFigure(new Point(10, 10), false, closed);
+            context.LineTo(new Point(30, 10), true, false);
+            context.LineTo(new Point(30, 25), true, false);
+        }
+        return geometry;
     }
 
     private static bool RetainedMutation()
@@ -351,7 +527,6 @@ internal static class DashedBoundsCases
     private static IEnumerable<(string Name, Func<Rect> Query, string Diagnostic)> UnsupportedSamples()
     {
         var pen = Dash([1, 2]);
-        yield return ("hollow", () => { var p = OpenPath(); p.Figures[0].IsFilled = false; return p.GetRenderBounds(pen); }, "hollow");
         yield return ("collapsed", () => new LineGeometry(new Point(10, 10), new Point(10, 10)).GetRenderBounds(pen), "collapsed");
         yield return ("post-transform-collapse", () => new LineGeometry(new Point(10, 10), new Point(20, 10)) { Transform = new ScaleTransform(0, 1) }.GetRenderBounds(pen), "collapsed");
         yield return ("mixed-gap", () => { var p = OpenPath(); p.Figures[0].Segments[0].IsStroked = false; return p.GetRenderBounds(pen); }, "unstroked");
