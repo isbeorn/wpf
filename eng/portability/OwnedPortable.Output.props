@@ -7,5 +7,14 @@
     <BaseOutputPath>$(OwnedPortableBuildRoot)/bin/$(OS)/$(CurrentOutputProject)/</BaseOutputPath>
     <BaseIntermediateOutputPath>$(OwnedPortableBuildRoot)/obj/$(OS)/$(CurrentOutputProject)/</BaseIntermediateOutputPath>
     <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+    <NuGetLockFilePath Condition="'$(OwnedPortablePackageCaptureRoot)' != ''">$(BaseIntermediateOutputPath)packages.packaging.lock.json</NuGetLockFilePath>
+    <CustomAfterMicrosoftCommonTargets Condition="'$(OwnedPortablePackageCaptureRoot)' != '' and '$(MSBuildProjectName)' == 'PresentationBuildTasks'">$(OwnedPortableRepositoryRoot)src/Portability/Packaging/CompilerClosure.targets</CustomAfterMicrosoftCommonTargets>
   </PropertyGroup>
+  <Target Name="CapturePortableDistributionInputs" AfterTargets="CoreCompile" Condition="'$(OwnedPortablePackageCaptureRoot)' != ''">
+    <ItemGroup>
+      <_PortableDistributionInput Include="@(Compile);@(EmbeddedResource);@(Page);@(ApplicationDefinition);@(Resource);@(AdditionalFiles);@(Analyzer);@(PortableSourceInput);$(MSBuildAllProjects);$(ProjectAssetsFile)" />
+    </ItemGroup>
+    <MakeDir Directories="$(OwnedPortablePackageCaptureRoot)/$(MSBuildProjectName)/$(TargetFramework)/$(RuntimeIdentifier)" />
+    <WriteLinesToFile File="$(OwnedPortablePackageCaptureRoot)/$(MSBuildProjectName)/$(TargetFramework)/$(RuntimeIdentifier)/portable-inputs.txt" Lines="@(_PortableDistributionInput->'%(FullPath)')" Overwrite="true" WriteOnlyWhenDifferent="true" />
+  </Target>
 </Project>

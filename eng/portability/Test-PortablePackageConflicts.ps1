@@ -1,5 +1,6 @@
 [CmdletBinding()]
-param([Parameter(Mandatory)][string] $DistributionDirectory,[string] $Dotnet='dotnet')
+param([Parameter(Mandatory)][string] $DistributionDirectory,[string] $Dotnet='dotnet',
+    [string] $PackageCache = "$([Environment]::GetFolderPath('UserProfile'))/.nuget/packages")
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
 $env:DOTNET_GENERATE_ASPNET_CERTIFICATE='false'
@@ -14,12 +15,12 @@ $feed=Join-Path $testRoot 'feed'
 New-Item -ItemType Directory -Path $feed | Out-Null
 Copy-Item -Path (Join-Path $distribution 'feed/*.nupkg') -Destination $feed
 foreach($version in @('10.0.13','10.0.12')) {
-    Copy-Item -LiteralPath (Join-Path $repo "artifacts/portability/packages/system.windows.extensions/$version/system.windows.extensions.$version.nupkg") -Destination $feed
+    Copy-Item -LiteralPath (Join-Path $PackageCache "system.windows.extensions/$version/system.windows.extensions.$version.nupkg") -Destination $feed
 }
 $nativePackageId='SkiaSharp.NativeAssets.Win32'
 $nativePackageVersion='3.119.4'
 $nativePackageDirectory=$nativePackageId.ToLowerInvariant()
-Copy-Item -LiteralPath (Join-Path $repo "artifacts/portability/packages/$nativePackageDirectory/$nativePackageVersion/$nativePackageDirectory.$nativePackageVersion.nupkg") -Destination $feed
+Copy-Item -LiteralPath (Join-Path $PackageCache "$nativePackageDirectory/$nativePackageVersion/$nativePackageDirectory.$nativePackageVersion.nupkg") -Destination $feed
 $results=[Collections.Generic.List[object]]::new()
 foreach($version in @('10.0.13','10.0.12')) {
     $consumer=Join-Path $testRoot $version

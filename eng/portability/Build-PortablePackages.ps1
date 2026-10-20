@@ -1,7 +1,9 @@
 [CmdletBinding()]
 param(
     [string] $OutputDirectory,
-    [string] $Dotnet = 'dotnet'
+    [string] $Dotnet = 'dotnet',
+    [string] $Workspace,
+    [string] $PackageCache = "$([Environment]::GetFolderPath('UserProfile'))/.nuget/packages"
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -14,34 +16,75 @@ if (!$OutputDirectory) { $OutputDirectory = Join-Path $repo ('artifacts/portabil
 $output = [IO.Path]::GetFullPath($OutputDirectory)
 if (Test-Path $output) { throw "Select a fresh output directory: $output" }
 New-Item -ItemType Directory -Path $output | Out-Null
-$env:NUGET_PACKAGES = Join-Path $repo 'artifacts/portability/packages'
-$env:DOTNET_CLI_HOME = Join-Path $repo 'artifacts/portability/cli-home'
+if (!$Workspace) { $Workspace = Join-Path $repo 'artifacts/portability/current' }
+$workspaceRoot = [IO.Path]::GetFullPath($Workspace).Replace('\','/')
+$env:NUGET_PACKAGES = [IO.Path]::GetFullPath($PackageCache)
+$env:DOTNET_CLI_HOME = Join-Path $workspaceRoot 'cli-home'
+$buildRoot = "$workspaceRoot/build"
+$captureRoot = Join-Path $output 'inputs'
+$osName = if ([Environment]::OSVersion.Platform -eq [PlatformID]::Win32NT) { 'Windows_NT' } else { 'Unix' }
 $env:MSBUILDDISABLENODEREUSE = '1'
 $env:DOTNET_GENERATE_ASPNET_CERTIFICATE='false'
 $env:DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE='true'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT='1'
-$isolation = @("-p:DirectoryBuildPropsPath=$(Join-Path $packaging 'IsolatedBuild.props')",
-    "-p:PortableDistributionBuildRoot=$($output.Replace('\','/'))/graph/",
-    "-p:_PresentationBuildTasksAssembly=$($output.Replace('\','/'))/graph/bin/PresentationBuildTasks/Release/net10.0/PresentationBuildTasks.dll")
+$buildProperties = @(
+    "-p:CustomAfterDirectoryBuildProps=$(Join-Path $PSScriptRoot 'OwnedPortable.Output.props')",
+    "-p:OwnedPortableBuildRoot=$buildRoot",
+    "-p:OwnedPortableRepositoryRoot=$($repo.Replace('\','/'))/",
+    "-p:WindowsCoreArchive=$workspaceRoot/prereqs/windows-core.zip",
+    "-p:WindowsCoreSourceRoot=$workspaceRoot/prereqs/windows-core/upstream/",
+    "-p:WpfSourceRoot=$($repo.Replace('\','/'))/src/Microsoft.DotNet.Wpf/src/",
+    "-p:OwnedPortablePackageCaptureRoot=$($captureRoot.Replace('\','/'))",
+    "-p:_PresentationBuildTasksAssembly=$buildRoot/bin/$osName/PresentationBuildTasks/Release/net10.0/PresentationBuildTasks.dll",
+    '-p:RestoreLockedMode=true')
 function Invoke-Build([string[]] $Arguments) {
     & $Dotnet @Arguments
     if ($LASTEXITCODE -ne 0) { throw "dotnet failed ($LASTEXITCODE): $($Arguments -join ' ')" }
 }
+$projectPaths = @{}
+function Get-ProjectTargetPath([string] $Project, [switch] $RuntimeProject) {
+    $key = "$Project|$RuntimeProject"
+    if (!$projectPaths.ContainsKey($key)) {
+        $arguments = @('msbuild', $Project, '-p:Configuration=Release', '-getProperty:TargetPath') + $buildProperties
+        if ($RuntimeProject) {
+            $referenceArguments = @('msbuild', $Project, '-p:Configuration=Release', '-getProperty:IsRidAgnostic,TargetPath', '-p:UseAppHost=false', "-p:PublishDir=$(Join-Path $output 'published')") + $buildProperties
+            $referenceResult = & $Dotnet @referenceArguments
+            if ($LASTEXITCODE -ne 0) { throw "Project reference evaluation failed: $Project" }
+            $reference = ($referenceResult -join [Environment]::NewLine) | ConvertFrom-Json
+            if ($reference.Properties.IsRidAgnostic -ne 'false') {
+                $result = $reference.Properties.TargetPath
+            } else {
+                $arguments += @("-p:RuntimeIdentifier=$($profile.runtimeIdentifier)", '-p:SelfContained=false', '-p:UseAppHost=false', "-p:PublishDir=$(Join-Path $output 'published')")
+                $result = & $Dotnet @arguments
+            }
+        } else {
+            $result = & $Dotnet @arguments
+        }
+        if ($LASTEXITCODE -ne 0) { throw "Project TargetPath evaluation failed: $Project" }
+        $path = ($result -join [Environment]::NewLine).Trim()
+        if (![IO.Path]::IsPathRooted($path) -or !(Test-Path -LiteralPath $path -PathType Leaf)) { throw "Evaluated project output is missing: $Project ($path)" }
+        $projectPaths[$key] = $path
+    }
+    return $projectPaths[$key]
+}
 Push-Location $portable
 try {
     if ((& $Dotnet --version).Trim() -ne $profile.sdk) { throw "Portable package producer requires SDK $($profile.sdk)." }
+    Invoke-Build (@('build','Markup/PresentationBuildTasks/PresentationBuildTasks.csproj','-c','Release','--disable-build-servers') + $buildProperties)
     Invoke-Build (@('restore','Packaging/Stage/Stage.csproj','-r',$profile.runtimeIdentifier,
-        '-p:SelfContained=true','-p:RuntimeFrameworkVersion=10.0.12') + $isolation)
-    foreach ($assetsFile in Get-ChildItem (Join-Path $output 'graph/obj') -Filter 'project.assets.json' -Recurse) {
-        $assets = Get-Content $assetsFile.FullName -Raw | ConvertFrom-Json -AsHashtable
+        '-p:SelfContained=true','-p:RuntimeFrameworkVersion=10.0.12','-p:UseAppHost=true') + $buildProperties)
+    Invoke-Build (@('publish','Packaging/Stage/Stage.csproj','-c','Release','-r',$profile.runtimeIdentifier,
+        '--self-contained','false','--disable-build-servers','-v:diag','-p:UseAppHost=false','-o',(Join-Path $output 'published')) + $buildProperties)
+    $capturedInputs = @(Get-ChildItem -LiteralPath $captureRoot -Filter 'portable-inputs.txt' -Recurse | Get-Content | Sort-Object -Unique)
+    if ($capturedInputs.Count -eq 0) { throw 'No inputs were captured from the package producer projects.' }
+    $capturedAssets = @($capturedInputs | Where-Object { [IO.Path]::GetFileName($_) -eq 'project.assets.json' })
+    if ($capturedAssets.Count -eq 0) { throw 'No project assets were captured from the package producer projects.' }
+    foreach ($assetsFile in $capturedAssets) {
+        $assets = Get-Content -LiteralPath $assetsFile -Raw | ConvertFrom-Json -AsHashtable
         if (@($assets.libraries.Keys | Where-Object { $_ -match '^Avalonia(?:[./]|$)' }).Count -gt 0) {
-            throw "Avalonia dependency entered the delivery graph: $($assetsFile.FullName)"
+            throw "Avalonia dependency entered the delivery graph: $assetsFile"
         }
     }
-    Invoke-Build (@('publish','Packaging/Stage/Stage.csproj','-c','Release','-r',$profile.runtimeIdentifier,
-        '--self-contained','false','--disable-build-servers','-v:diag','-p:UseAppHost=false','-o',(Join-Path $output 'published')) + $isolation)
-    Invoke-Build (@('build','Markup/PresentationBuildTasks/PresentationBuildTasks.csproj','-c','Release','--disable-build-servers',
-        "-p:CustomAfterMicrosoftCommonTargets=$(Join-Path $packaging 'CompilerClosure.targets')") + $isolation)
     $published = Join-Path $output 'published'
     $runtime = Join-Path $output 'runtime'
     $sdk = Join-Path $output 'sdk'
@@ -122,7 +165,8 @@ try {
                     $sourceOrigin = "$($library.path)/$asset"
                 } elseif ($assemblyName -in ($profile.frameworkAssemblies + $profile.backendAssemblies)) {
                     $projectName=if($assemblyName -eq 'Wpf.Portable.NativeHost') {'NativeHost'} else {$assemblyName}
-                    $projectOutput=Join-Path $output "graph/bin/$projectName/Release/net10.0/$name"
+                    $projectFile = if ($assemblyName -in $profile.backendAssemblies) { "Backend/NativeHost/$projectName.csproj" } else { "Framework/$projectName/$projectName.csproj" }
+                    $projectOutput = Get-ProjectTargetPath $projectFile -RuntimeProject
                     if(!(Test-Path $projectOutput) -or (Get-FileHash $projectOutput).Hash -ne (Get-FileHash $source).Hash) { throw "Runtime source assembly differs from its actual project output: $name" }
                     $sourceOrigin = if($assemblyName -in $profile.backendAssemblies) {"source:src/Portability/Backend/NativeHost/$projectName.csproj"} else {"source:src/Portability/Framework/$projectName/$projectName.csproj"}
                     $id = ''; $version = ''
@@ -161,7 +205,7 @@ try {
     Copy-Item -LiteralPath (Join-Path $packaging 'Sdk') -Destination (Join-Path $sdk 'Sdk') -Recurse
     Copy-PortableFile (Join-Path $repo 'src/Microsoft.DotNet.Wpf/src/PresentationBuildTasks/Microsoft.WinFX.targets') (Join-Path $sdk 'targets/Microsoft.WinFX.targets')
     Copy-PortableFile (Join-Path $packaging 'PortableProfile.targets') (Join-Path $sdk 'targets/PortableProfile.targets')
-    $compiler = Join-Path $output 'graph/bin/PresentationBuildTasks/Release/net10.0'
+    $compiler = Split-Path -Parent (Get-ProjectTargetPath 'Markup/PresentationBuildTasks/PresentationBuildTasks.csproj')
     $compilerFiles = @('PresentationBuildTasks.dll','PresentationBuildTasks.deps.json','System.CodeDom.dll','System.Reflection.MetadataLoadContext.dll')
     foreach ($name in $compilerFiles) { Copy-PortableFile (Join-Path $compiler $name) (Join-Path $sdk "tools/net10.0/$name") }
     foreach ($id in @('system.codedom','system.reflection.metadataloadcontext')) {
@@ -180,7 +224,7 @@ try {
     $provenance = [ordered]@{ profile=$profile; sourceRevision=(& git -C $repo rev-parse HEAD).Trim(); assets=$records; compilerFiles=$compilerFiles; producedUtc=[DateTime]::UtcNow.ToString('O') }
     $provenance | ConvertTo-Json -Depth 20 | Set-Content (Join-Path $runtime 'Provenance.json') -Encoding utf8NoBOM
     Copy-PortableFile (Join-Path $runtime 'Provenance.json') (Join-Path $sdk 'Provenance.json')
-    $sourceInputs=@(Get-ChildItem (Join-Path $output 'graph/obj') -Filter 'portable-inputs.txt' -Recurse | Get-Content | Sort-Object -Unique | Where-Object {Test-Path -LiteralPath $_ -PathType Leaf} | ForEach-Object {
+    $sourceInputs=@($capturedInputs | Where-Object {Test-Path -LiteralPath $_ -PathType Leaf} | ForEach-Object {
         $path=[IO.Path]::GetFullPath($_)
         $relative=if($path.StartsWith($repo,[StringComparison]::OrdinalIgnoreCase)) {[IO.Path]::GetRelativePath($repo,$path).Replace('\','/')} else {$path}
         [ordered]@{path=$relative;sha256=(Get-FileHash -LiteralPath $path).Hash}
@@ -199,8 +243,8 @@ try {
     @(Get-ChildItem -LiteralPath $sdk -File -Recurse | ForEach-Object {
         [ordered]@{ path=[IO.Path]::GetRelativePath($sdk,$_.FullName).Replace('\','/'); sha256=(Get-FileHash $_.FullName).Hash }
     }) | ConvertTo-Json -Depth 5 | Set-Content (Join-Path $sdk 'SdkManifest.json') -Encoding utf8NoBOM
-    Invoke-Build @('pack','Packaging/RuntimePackage/RuntimePackage.csproj','-c','Release','--disable-build-servers',"-p:RuntimeStageDirectory=$runtime",'-o',$feed)
-    Invoke-Build @('pack','Packaging/SdkPackage/SdkPackage.csproj','-c','Release','--disable-build-servers',"-p:SdkStageDirectory=$sdk",'-o',$feed)
+    Invoke-Build (@('pack','Packaging/RuntimePackage/RuntimePackage.csproj','-c','Release','--disable-build-servers',"-p:RuntimeStageDirectory=$runtime",'-o',$feed) + $buildProperties)
+    Invoke-Build (@('pack','Packaging/SdkPackage/SdkPackage.csproj','-c','Release','--disable-build-servers',"-p:SdkStageDirectory=$sdk",'-o',$feed) + $buildProperties)
     & (Join-Path $PSScriptRoot 'Test-PortablePackageContents.ps1') -DistributionDirectory $output
     [ordered]@{ output=$output; feed=$feed; managed=@($records | Where-Object kind -eq managed).Count; native=@($records | Where-Object kind -eq native).Count;
         packages=@(Get-ChildItem -LiteralPath $feed -Filter 'Wpf.Portable.*.nupkg' | ForEach-Object {@{file=$_.Name;sha256=(Get-FileHash $_.FullName).Hash}})
