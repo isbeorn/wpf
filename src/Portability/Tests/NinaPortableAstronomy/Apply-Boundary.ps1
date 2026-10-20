@@ -1,11 +1,11 @@
 param([Parameter(Mandatory)][string] $Source)
 $ErrorActionPreference = 'Stop'
 $utf8 = [Text.UTF8Encoding]::new($false)
-function Edit-Text([string] $Relative, [scriptblock] $Edit) {
+function Edit-Text([string] $Relative, [scriptblock] $Edit, [Text.Encoding] $Encoding = $utf8) {
     $path = Join-Path $Source $Relative
-    $text = [IO.File]::ReadAllText($path).Replace("`r`n", "`n")
+    $text = [IO.File]::ReadAllText($path, $Encoding).Replace("`r`n", "`n")
     $new = & $Edit $text
-    [IO.File]::WriteAllText($path, $new, $utf8)
+    [IO.File]::WriteAllText($path, $new, $Encoding)
 }
 function Replace-Once([string] $Text, [string] $Before, [string] $After) {
     if ($Text.IndexOf($Before, [StringComparison]::Ordinal) -lt 0 -or $Text.IndexOf($Before, [StringComparison]::Ordinal) -ne $Text.LastIndexOf($Before, [StringComparison]::Ordinal)) { throw "Expected exactly one boundary: $Before" }
@@ -114,3 +114,16 @@ Edit-Text 'NINA.Core/Utility/DocumentationIndex.cs' {
     if ([regex]::Matches($text, $pattern).Count -ne 13) { throw 'Expected all thirteen original DocumentationIndex URI getters.' }
     [regex]::Replace($text, $pattern, 'new UriBuilder(new Uri(Path.Combine($1), UriKind.Absolute))')
 }
+Edit-Text 'NINA.Core/Utility/Notification/NotificationHostWindow.xaml.cs' {
+    param($text)
+    $text = Replace-Once $text '            SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;' @'
+            if (OperatingSystem.IsWindows()) {
+                SystemEvents.DisplaySettingsChanged += OnDisplaySettingsChanged;
+            }
+'@
+    Replace-Once $text '            SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;' @'
+            if (OperatingSystem.IsWindows()) {
+                SystemEvents.DisplaySettingsChanged -= OnDisplaySettingsChanged;
+            }
+'@
+} ([Text.Encoding]::Latin1)

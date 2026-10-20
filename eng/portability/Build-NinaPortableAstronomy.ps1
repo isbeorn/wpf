@@ -101,7 +101,7 @@ $changes = foreach ($file in $pin.files) {
     $hash = (Get-FileHash "$output/source/$($file.path)").Hash
     if ($hash -cne $file.sha256) { [ordered]@{ path = $file.path; before = $file.sha256; after = $hash } }
 }
-if (@($changes).Count -ne 7) { throw 'Expected exactly seven adapted upstream files.' }
+if (@($changes).Count -ne 8) { throw 'Expected exactly eight adapted upstream files.' }
 Save "$output/adaptations.json" ($changes | ConvertTo-Json -Depth 4)
 Save "$output/global.json" '{"sdk":{"version":"10.0.401","rollForward":"disable"}}'
 Save "$output/Directory.Build.props" '<Project/>'

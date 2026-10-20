@@ -6,7 +6,7 @@
   "tools": [
     {
       "parameter": "MarkupCompiler",
-      "sha256": "35F821C33543A2E0E1C22091E8308D9996F3AFDB101112D4A9659BC314CE0BED"
+      "sha256": "EE7BFF1CB0E4A0F0865629A4A422C778BEA503AC19C3788438700899F7EBEE19"
     },
     {
       "parameter": "WinFxTargets",

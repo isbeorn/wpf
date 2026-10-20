@@ -483,3 +483,16 @@
                      pluginFileInfo.DeleteAlternateDataStream("Zone.Identifier");
                  }
  
+--- a/NINA/View/ProfileSelectView.xaml.cs
++++ b/NINA/View/ProfileSelectView.xaml.cs
+@@ -28,7 +28,9 @@ public partial class ProfileSelectView : Window {
+         public ProfileSelectView() {
+             this.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+             InitializeComponent();
+-            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
++            if (OperatingSystem.IsWindows()) {
++                SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;
++            }
+         }
+ 
+         private void SystemEvents_DisplaySettingsChanged(object sender, EventArgs e) {

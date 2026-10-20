@@ -212,5 +212,16 @@
         "after": "                if (OperatingSystem.IsWindows() && pluginFileInfo.AlternateDataStreamExists(\"Zone.Identifier\")) {"
       }
     ]
+  },
+  {
+    "path": "NINA/View/ProfileSelectView.xaml.cs",
+    "inputSha256": "DEB9989FBC63E8C28A9987F9836652303F1A85639F8EE076117CD37D34F762B5",
+    "outputSha256": "B2227E41EFD58644011D7A6186D91BD1281CF72E10C2EC34ED557825D2AFA04A",
+    "edits": [
+      {
+        "before": "            SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;",
+        "after": "            if (OperatingSystem.IsWindows()) {\n                SystemEvents.DisplaySettingsChanged += SystemEvents_DisplaySettingsChanged;\n            }"
+      }
+    ]
   }
 ]
