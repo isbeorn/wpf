@@ -72,6 +72,33 @@ The observed startup uses one WPF dispatcher with nested frames. [DeviceChooserV
 
 Keep separate from WPF implementation: `ASCOM.Com.Components` 3.1.0, vendor device DLLs and SDK processes, System.Drawing/Windows Forms usage in the imaging graph, System.Management/WMI in [Logger](https://github.com/isbeorn/nina/blob/4742afae0a09c79be772f23fcf163fb5852d2775/NINA.Core/Utility/Logger.cs), NTFS plugin handling and the WebView2 browser engine. Direct references show their presence; this pass did not certify reachability or platform behavior for all paths. Linux ARM64 additionally needs architecture-specific native dependencies and validation; a Linux x64 result cannot establish it.
 
+### Subsequent application imaging audit: 20 October 2026
+
+The [actual integration-1 startup](../../artifacts/portability/current/nina/shell-integration-1/first-run-handoff.json)
+reaches original MainWindow.Show before asynchronous binding initializes
+NINA.Image's StarAnnotator. Its static System.Drawing brush resources enter GDI+
+and fail to load gdiplus.dll. This is an observed application dependency, separate
+from WPF's prepared-frame display support. The user deferred NINA.Image adaptation
+until the remaining WPF gates are finished.
+
+Framing has an additional application drawing dependency. Source inspection of
+the pinned FramingAssistantVM.LoadImage and SkyMapAnnotator.Initialize shows that
+the real workflow creates SkyMapRasterRenderer, including offline SKYATLAS mode.
+The renderer declares static System.Drawing brush, pen, hatch and font resources
+and uses Bitmap storage. It belongs to NINA.WPF.Base, not the WPF framework.
+Its retained source SHA256 is
+45274D62225185D8B2FFAC964ACEAC1D4BDAA53820D7BC1E81FBBBD59B52527C;
+SkyMapAnnotator is
+8A00B3B3B20F9DA9F382D5808DDA556E1FEA703AD8D200B4E68AEE05FF7806A8.
+This identifies another required application boundary; no Linux framing run or
+replacement renderer is qualified by that inspection. FILE mode additionally
+enters the deferred NINA.Image preparation path.
+
+The historical 18-check stock framing result remains a historical pointer. Its
+preparation-8 test sources, assertions and raw survey fixture were absent during
+this audit. Retained catalog/native astronomy inputs and an empty survey-cache
+metadata file cannot reconstruct that evidence or establish a Linux replay.
+
 No shader `.ps`, `.fx`, `.hlsl` or `Shader`-named path occurs in the complete pinned tree. No ShaderEffect, PixelShader or D3DImage match occurs in the selected source content. This does not exclude shaders or native rendering inside third-party controls or unselected source.
 
 ## Verification performed
