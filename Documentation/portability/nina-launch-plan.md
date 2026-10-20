@@ -77,15 +77,18 @@ the full MainWindow capture-button workflow or a full application feature pass.
   `current/nina/vm-combined-ui-20261020-1/handoff.json`; this is progress through
   the original application, not a full Imaging workflow pass.
 - Inspect the existing NINA window in VMConnect for Linux-Physical-SSD. The
-  replacement lifetime is PID 1368971, start ticks 1845563 and XID `0x1600006`.
+  replacement lifetime is PID 1492672, start ticks 2013560 and XID `0x1600006`.
   Refresh these identities and the real session/auth path before acting later.
   The preceding PID 1252728 exited normally with original plugin teardown.
+  The subsequent bounds-fault lifetime PID 1368971 required exact-process TERM
+  after both ordinary close routes failed. Its state and abnormal exit remain
+  recorded; it is not a clean shutdown result.
 - The VM publication is
-  `/home/stefan/wpf-portability-local/phase5/nina-shell-combined-20261020-1`.
+  `/home/stefan/wpf-portability-local/phase5/nina-shell-imaging-20261020-1`.
   Its `close-owned.py` checks the recorded process and window identities before
   requesting normal window close. It has been prepared but not executed.
 - Use the full Image3 consumer at
-  `current/nina/shell-vm-combined-20261020-1/consumer`. Its manifest and the live
+  `current/nina/shell-vm-imaging-20261020-1/consumer`. Its manifest and the live
   desktop handoff bind the complete publication, source proofs, launch arguments
   and owned state. Do not substitute the intermediate annotation-only consumer.
 - Next verify a simulator exposure through the actual full MainWindow UI, then
@@ -96,6 +99,29 @@ the full MainWindow capture-button workflow or a full application feature pass.
 - General WPF features unused by NINA, native IME and further accessibility
   qualification remain deferred. Vendor/USB drivers and physical equipment are
   excluded from this simulator-only build.
+
+The latest whole framework family passes Imaging 48, focused DrawingImage 3,
+full Rendering 62 and Geometry 674 plus focused hollow bounds 44 on Windows and
+Linux. Its final intake is
+`current/nina-imaging-rendering-integration-20261020-1/final-consumer-intake.json`.
+DrawingImage is committed in `02be96020`, cache codecs and transforms in
+`9b4fea5aa` and hollow dashed bounds in `73efdfb23`. The six initial strict
+bounds comparisons remain preserved as failed evidence. Independent native and
+old-backend raster comparisons establish the documented conservative-extent
+and Round-stroke differences; native golden vectors remain unchanged.
+
+With this runtime, the original full application now initializes its Imaging
+dock, statistics area, Guider/HFR plots and the allowlisted example plugin pane
+on the real GNOME/XWayland desktop. Root inspected the native capture. One
+original 1-second snapshot was requested with Loop and Save off. A tooltip then
+called the unported `SystemParameters.ToolTipAnimation` user32 entry point.
+The view remained at image preparation with no completed image or populated
+statistics. Snapshot completion, cancellation and recovery are not qualified.
+Evidence is under `current/nina/vm-imaging-ui-20261020-1/handoff.json`.
+
+The next bounded repair uses the existing portable disabled-animation policy
+for ToolTipAnimation and ToolTipFade, with a genuine ToolTip open/close/reopen
+regression. Other unused SystemParameters capabilities are outside this repair.
 
 ## Accepted cached-image behavior
 
@@ -111,11 +137,15 @@ standard IEC sRGB transfer function.
 The reference calibration's tiny 5x3 checker differs by up to 31/255 after
 downsampling and its ramp by 9/255. These are measured fixture differences, not
 global error bounds. Exact mirroring and unchanged raw inputs remain required.
-The focused codec/transform candidate passes 45 Windows checks. Its independent
-review, Linux family qualification and real cached-survey integration remain
-pending. The associated original NINA.WPF.Base renderer/cache candidate passes
-40 Windows checks; nine of its Linux checks still require the new DrawingImage
-and file/JPEG framework paths. These candidates are not in the live publication.
+The focused codec/transform implementation passes 48 checks on each OS and both
+independent reviews are clear. The original NINA.WPF.Base renderer/cache
+candidate passes 42 checks on stock Windows, adapted Windows and Linux. These
+include real cache save/load, all three thumbnail sizes, decoded content,
+source preservation and renderer/cache eviction ownership. Full framing view
+integration is still running. This Base component is not yet in the live VM
+publication. Its actual Linux runtime proof and original producer reference
+family proof remain separate in
+`current/nina/wpfbase-framing-20261020-1/fresh-linux42-1/linux42-handoff.json`.
 
 ## Accepted focused port
 
