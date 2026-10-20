@@ -76,9 +76,10 @@ the full MainWindow capture-button workflow or a full application feature pass.
   exposure was requested. Evidence is under
   `current/nina/vm-combined-ui-20261020-1/handoff.json`; this is progress through
   the original application, not a full Imaging workflow pass.
-- Inspect the existing NINA window in VMConnect for Linux-Physical-SSD. The
-  replacement lifetime is PID 1674980, start ticks 2260119 and XID `0x1600006`.
-  Refresh these identities and the real session/auth path before acting later.
+- The latest faulted NINA lifetime on Linux-Physical-SSD was PID 1674980,
+  start ticks 2260119 and XID `0x1600006`. It is now stopped with preserved
+  profile/layout state. Observe fresh identities and the real session/auth path
+  before the next publication.
   The preceding PID 1252728 exited normally with original plugin teardown.
   The subsequent bounds-fault lifetime PID 1368971 and tooltip-animation-fault
   lifetime PID 1492672 required exact-process TERM after both ordinary close
@@ -88,8 +89,8 @@ the full MainWindow capture-button workflow or a full application feature pass.
   layout, disconnected the simulator and completed original plugin teardown.
 - The VM publication is
   `/home/stefan/wpf-portability-local/phase5/nina-shell-joint-20261021-1`.
-  Its `close-owned.py` checks the recorded process and window identities before
-  requesting normal window close. It has been prepared but not executed.
+  Its close receipts record both failed ordinary close routes and the subsequent
+  exact-process TERM. No normal shutdown is claimed for this faulted lifetime.
 - Use the full Image3 consumer at
   `current/nina/shell-vm-joint-20261021-1/consumer`. Its manifest and the live
   desktop handoff bind the complete publication, source proofs, launch arguments
@@ -170,7 +171,14 @@ concrete source candidate. The dialog holds keyboard focus, so the attempted
 Two additional 1-second captures do not match recorded test submissions; no
 human or automation attribution is inferred.
 
-The application remains passive with its error dialog open. Evidence is sealed
+The faulted lifetime has been stopped after preserving its profile, settings,
+logs and original failed dock XML. Both the original error dialog's No action
+and an ordinary main-window close failed to exit. An exact-process TERM was
+required; no KILL was sent and this does not qualify normal shutdown. The
+separate cleanup receipt is
+`current/nina/vm-joint-ui-20261021-1/close-handoff.json`, SHA-256
+`AE157FF3ED9BFFA08091993888C03751B842C38458E7EDFA191B1840254A1766`.
+The original imaging evidence is sealed
 under `current/nina/vm-joint-ui-20261021-1/imaging-unhandled-handoff.json`,
 SHA-256 `4A288B158C3661CFAD16E28C3E7412F9D31CC18CC60D7D8067700FEFA0E39665`,
 and `imaging-evidence-freeze.json`, SHA-256
@@ -221,6 +229,23 @@ commands and routed clicks on private Xvfb, not native input. Original
 constructor background tasks have no public completion contract; process
 isolation bounds that remaining lifetime. Actual full-app Framing interaction
 and sustained resource qualification remain separate.
+
+The extended Framing21 integration also passes its original 18 checks and three
+cache workflow checks on that same shared publication. It saves through the
+original VM command, verifies the cache XML, JPEG and 500/150/75-pixel thumbnails,
+then reloads the selected cache entry into the real ImageView binding without a
+survey request. With saving disabled, a declared field-of-view cache miss makes
+exactly one new offline survey request and preserves every existing cache file
+and original source sample. Evidence is
+`current/nina/framing-cache-workflow-20261021-1/cache21-handoff.json`, SHA-256
+`EB1680B739FE43BA4F3D3DE7711AE04D1FE7B68CC89E128865F3E8A8B9A7207B`.
+This remains an isolated original-view/VM workflow, not full-app native input.
+
+The pending DrawingBrush repair covers the declared NINA and Classic shape-fill
+profiles with TileMode.None or Tile. Outer placement guidelines are included.
+The existing managed drawing walker does not apply DrawingGroup.GuidelineSet
+inside the source drawing; none of the four inspected brush declarations uses
+that property. General source-guideline parity remains later WPF work.
 
 ## Accepted focused port
 
