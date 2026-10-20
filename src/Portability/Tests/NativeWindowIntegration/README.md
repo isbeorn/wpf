@@ -50,3 +50,13 @@ Existing Tmds.DBus.Protocol is now a direct test reference after removal of the 
 Each mode requires passing JSON, completion, zero process exit and cleanup. The default watchdog is 40 seconds. Keep exact source/binary/PDB and display/WM scope with results. Prior backend proofs remain historical. Fresh package consumers, GNOME X11, GNOME XWayland, composited ARGB appearance, actual picker UI and Orca are separate qualification gates.
 
 `--message-box-only` exercises the private managed MessageBox through public overloads. It uses actual XTest Enter/Escape/button input, all seven button sets and native close, owner-only modality/focus, repeated and concurrent ownerless calls while the original UI is blocked, exact offhost exception identity and post-failure recovery. The controller resolves concurrent dialog handles before dispatching close input, then joins before another case starts. This qualifies owned private-X11 software input, not physical input or the earlier incomplete Windows stock seven-set calibration.
+
+`--tooltip-only` exercises genuine ToolTip construction, layout, native mapping,
+close and reopen with fresh popup sources and pointer-capture cleanup. It also
+checks both tooltip animation settings and their resource keys, including local
+override/removal. The portable backend disables tooltip animation and fade using
+the existing ComboBox animation policy; native Windows branches remain unchanged.
+The resource probe enables transparency, matching ToolTip's own popup and its
+animation coercion rules. The four focused checks and the existing popup,
+window-presentation and ordinary native-window regressions pass on private X11.
+Actual NINA capture remains a separate full-application check.

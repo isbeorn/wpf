@@ -1503,6 +1503,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return false;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.ToolTipAnimation])
@@ -1521,6 +1524,7 @@ namespace System.Windows
                 }
 
                 return _toolTipAnimation;
+#endif
             }
         }
 
@@ -1531,6 +1535,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return false;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.ToolTipFade])
@@ -1549,6 +1556,7 @@ namespace System.Windows
                 }
 
                 return _tooltipFade;
+#endif
             }
         }
 

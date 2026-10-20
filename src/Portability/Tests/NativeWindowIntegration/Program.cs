@@ -124,6 +124,13 @@ try
                     WindowPresentationCases.Exercise(native, Run, Wait, Drain);
                     completed = true;
                 }
+                else if (args.Contains("--tooltip-only", StringComparer.Ordinal))
+                {
+                    Require(fontPath is not null && File.Exists(fontPath), "Pass the pinned font path.");
+                    Run("genuine-ToolTip-open-close-reopen", () => PopupCases.ToolTipLifetime(native, Wait, Drain, fontPath!));
+                    Run("portable-ToolTip-animation-resources", PopupCases.VerifyToolTipAnimationResources);
+                    completed = true;
+                }
                 else if (args.Contains("--popup-placement-only", StringComparer.Ordinal))
                 {
                     Run("genuine-Classic-native-popup-placement-DPI", () => PopupCases.PlacementByNativeClick(native, Drain, fontPath!));

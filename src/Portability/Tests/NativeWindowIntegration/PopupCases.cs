@@ -16,6 +16,77 @@ internal static class PopupCases
 {
     internal static readonly List<object> Observations = [];
 
+    internal static void VerifyToolTipAnimationResources()
+    {
+        foreach (var setting in new (ResourceKey Key, Func<bool> Read)[]
+        {
+            (SystemParameters.ToolTipAnimationKey, () => SystemParameters.ToolTipAnimation),
+            (SystemParameters.ToolTipFadeKey, () => SystemParameters.ToolTipFade)
+        })
+        {
+            Require(!setting.Read(), "Portable tooltip animation settings must be disabled.");
+            var consumer = new ToggleButton();
+            consumer.SetResourceReference(ToggleButton.IsCheckedProperty, setting.Key);
+            Require(consumer.IsChecked == false, "The tooltip setting resource did not resolve its portable value.");
+            consumer.Resources[setting.Key] = true;
+            Require(consumer.IsChecked == true, "The tooltip setting resource ignored a local override.");
+            consumer.Resources.Remove(setting.Key);
+            Require(consumer.IsChecked == false, "Removing the tooltip setting override did not restore the portable value.");
+        }
+        var popup = new Popup { AllowsTransparency = true };
+        popup.SetResourceReference(Popup.PopupAnimationProperty, SystemParameters.ToolTipPopupAnimationKey);
+        Require(SystemParameters.ToolTipPopupAnimation == PopupAnimation.None && popup.PopupAnimation == PopupAnimation.None,
+            "The tooltip popup animation resource did not resolve None.");
+        popup.Resources[SystemParameters.ToolTipPopupAnimationKey] = PopupAnimation.Fade;
+        Require(popup.PopupAnimation == PopupAnimation.Fade, "The tooltip popup animation resource ignored a local override.");
+        popup.Resources.Remove(SystemParameters.ToolTipPopupAnimationKey);
+        Require(popup.PopupAnimation == PopupAnimation.None, "Removing the tooltip popup animation override did not restore None.");
+        Observations.Add(new { kind = "portable-tooltip-animation-resources", animation = false, fade = false,
+            popupAnimation = popup.PopupAnimation.ToString(), localOverridesAndRemoval = true });
+    }
+
+    internal static void ToolTipLifetime(X11Fixture native, Action<Func<bool>> wait, Action drain, string fontPath)
+    {
+        var owner = new Border { Width = 120, Height = 40, Background = Brushes.Green };
+        var window = new Window { Title = "Genuine portable ToolTip lifetime", Width = 300, Height = 180,
+            Content = owner, Background = Brushes.White };
+        var tooltip = new ToolTip { Content = new Border { Width = 80, Height = 24, Background = Brushes.Red },
+            PlacementTarget = owner, Placement = PlacementMode.Bottom,
+            FontFamily = new FontFamily(new Uri(Path.GetFullPath(fontPath)), "DejaVu Sans"), FontSize = 12 };
+        int opened = 0, closed = 0;
+        tooltip.Opened += (_, _) => opened++;
+        tooltip.Closed += (_, _) => closed++;
+        PresentationSource? previousSource = null;
+        try
+        {
+            window.Show();
+            wait(() => owner.IsLoaded && owner.ActualWidth > 0);
+            drain();
+            var ownerSource = PresentationSource.FromVisual(window)!;
+            for (int cycle = 1; cycle <= 2; cycle++)
+            {
+                tooltip.IsOpen = true;
+                wait(() => opened == cycle && PresentationSource.FromVisual(tooltip) is { IsDisposed: false });
+                drain();
+                var source = PresentationSource.FromVisual(tooltip)!;
+                IntPtr xid = PopupHandle(source);
+                Require(tooltip.Template is not null && tooltip.IsMeasureValid && tooltip.IsArrangeValid &&
+                    source != ownerSource && source != previousSource && native.IsMapped(xid),
+                    "The genuine ToolTip did not construct, lay out and map a fresh separate Popup source.");
+                Require(Mouse.Captured is null && native.CanAcquirePointerGrab(), "The default ToolTip unexpectedly captured the pointer.");
+                tooltip.IsOpen = false;
+                wait(() => closed == cycle && source.IsDisposed);
+                drain();
+                Require(!tooltip.IsOpen && !native.RootChildren.Contains(xid) && Mouse.Captured is null && native.CanAcquirePointerGrab(),
+                    "Closing the genuine ToolTip retained its Popup source, native window or pointer capture.");
+                Observations.Add(new { kind = "genuine-tooltip-open-close", cycle, opened, closed,
+                    xid = xid.ToInt64().ToString("x"), source.IsDisposed });
+                previousSource = source;
+            }
+        }
+        finally { tooltip.IsOpen = false; window.Close(); drain(); }
+    }
+
     internal static void VerifyAutoScrollTime()
     {
         var profile = typeof(Mouse).Assembly.GetType("MS.Internal.Portability.Settings.PortableSystemSettingsProvider")!
