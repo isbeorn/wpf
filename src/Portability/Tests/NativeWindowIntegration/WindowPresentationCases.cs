@@ -1,11 +1,157 @@
 extern alias WpfFork;
 
 using WpfFork::System.Windows;
+using WpfFork::System.Windows.Controls;
 using WpfFork::System.Windows.Input;
 using WpfFork::System.Windows.Media;
 
 internal static class WindowPresentationCases
 {
+    internal static void ExerciseEmptySizes(X11Fixture native, Action<string, Action> run, Action<Func<bool>> wait, Action drain,
+        int requestedDpi, Action<object> observe)
+    {
+        double scale = requestedDpi / 96d;
+        run("native-empty-transparent-SizeToContent-show-hide-grow-remove-reopen", () =>
+        {
+            var items = new ItemsControl { ItemsPanel = new ItemsPanelTemplate(new FrameworkElementFactory(typeof(StackPanel))) };
+            var window = new Window { Title = "Genuine WPF empty notification host", WindowStyle = WindowStyle.None,
+                AllowsTransparency = true, Background = Brushes.Transparent, SizeToContent = SizeToContent.WidthAndHeight,
+                ResizeMode = ResizeMode.NoResize, ShowActivated = false, ShowInTaskbar = false, Content = new Grid { Children = { items } } };
+            int initialized = 0, closed = 0;
+            window.SourceInitialized += (_, _) => initialized++;
+            window.Closed += (_, _) => closed++;
+            try
+            {
+                window.Show(); window.Hide();
+                var xid = native.FindWindow(window.Title);
+                Require(xid != IntPtr.Zero, "Synchronous empty Show/Hide did not retain its native Window.");
+                wait(() => !native.IsMapped(xid) && native.Size(xid) == (1u, 1u));
+                var source = PresentationSource.FromVisual(window)!;
+                Require(Equal(VisualTreeHelper.GetDpi(window).DpiScaleX, scale), "The empty Window did not use the controlled DPI.");
+                items.Items.Add(new Border { Width = 80, Height = 48, Background = Brushes.Red });
+                window.Show();
+                wait(() => native.IsMapped(xid) && native.Size(xid) == ((uint)(80 * scale), (uint)(48 * scale)) && native.Pixel(xid, 4, 4, true) == 0xffff0000);
+                items.Items.Clear();
+                wait(() => native.Size(xid) == (1u, 1u) && native.Pixel(xid, 0, 0, true) == 0);
+                window.Hide(); wait(() => !native.IsMapped(xid)); window.Show();
+                wait(() => native.IsMapped(xid) && native.Size(xid) == (1u, 1u));
+                items.Items.Add(new Border { Width = 56, Height = 32, Background = Brushes.Green });
+                wait(() => native.Size(xid) == ((uint)(56 * scale), (uint)(32 * scale)) && native.Pixel(xid, 4, 4, true) == 0xff008000);
+                items.Items.Clear(); wait(() => native.Size(xid) == (1u, 1u)); drain();
+                Require(initialized == 1 && ReferenceEquals(source, PresentationSource.FromVisual(window)), "Empty/grown hide-show replaced the original source.");
+                var physical = native.Size(xid);
+                observe(new { kind = "empty-notification-host", requestedDpi, nativeWidth = physical.Width, nativeHeight = physical.Height, window.ActualWidth, window.ActualHeight, initialized });
+            }
+            finally { window.Close(); drain(); }
+            Require(closed == 1 && PresentationSource.FromVisual(window) is null && native.FindWindow(window.Title) == IntPtr.Zero,
+                "The empty notification host did not close and detach once.");
+        });
+        run("native-zero-subpixel-thresholds-both-axes-initial-shown-and-recovery", () =>
+        {
+            foreach (double pixels in new[] { 0, 0.5, 1, 1.5, 2 })
+            foreach (Size extent in new[] { new Size(pixels / scale, 40), new Size(40, pixels / scale), new Size(pixels / scale, pixels / scale) })
+            foreach (bool initial in new[] { true, false })
+            {
+                var window = new Window { Title = "Genuine WPF minimum extent " + pixels + extent + initial,
+                    WindowStyle = WindowStyle.None, Width = initial ? extent.Width : 80, Height = initial ? extent.Height : 60,
+                    ShowActivated = false, Background = Brushes.Red };
+                try
+                {
+                    window.Show(); var xid = native.FindWindow(window.Title); wait(() => native.IsMapped(xid));
+                    if (!initial) { window.Width = extent.Width; window.Height = extent.Height; }
+                    var expected = ((uint)Math.Max(1, Math.Floor(extent.Width * scale)), (uint)Math.Max(1, Math.Floor(extent.Height * scale)));
+                    wait(() => native.Size(xid) == expected && native.Pixel(xid, 0, 0) == 0xff0000);
+                    drain();
+                    Require(Equal(window.ActualWidth * scale, expected.Item1) && Equal(window.ActualHeight * scale, expected.Item2),
+                        "Published Window layout differs from the actual minimum native client geometry.");
+                    window.Width = 80; window.Height = 60;
+                    wait(() => native.Size(xid) == ((uint)(80 * scale), (uint)(60 * scale)) && native.Pixel(xid, 4, 4) == 0xff0000);
+                    window.Width = extent.Width; window.Height = extent.Height;
+                    wait(() => native.Size(xid) == expected && native.Pixel(xid, 0, 0) == 0xff0000);
+                    var physical = native.Size(xid);
+                    observe(new { kind = "minimum-native-extent", requestedDpi, pixels, initial, requested = extent, nativeWidth = physical.Width, nativeHeight = physical.Height });
+                }
+                finally { window.Close(); drain(); }
+            }
+            var recovery = new Window { Title = "Genuine WPF frame after minimum extents", Width = 80, Height = 60,
+                WindowStyle = WindowStyle.None, ShowActivated = false, Background = Brushes.Blue };
+            try
+            {
+                recovery.Show(); var xid = native.FindWindow(recovery.Title);
+                wait(() => native.IsMapped(xid) && native.Pixel(xid, 4, 4) == 0xff);
+            }
+            finally { recovery.Close(); drain(); }
+        });
+        run("native-finite-maximum-pixel-sentinel-and-invalid-input-preservation", () =>
+        {
+            var window = new Window { Title = "Genuine WPF finite maximum constraints", Width = 80, Height = 60,
+                WindowStyle = WindowStyle.None, ShowActivated = false, Background = Brushes.Red };
+            try
+            {
+                window.Show(); var xid = native.FindWindow(window.Title); wait(() => native.IsMapped(xid));
+                object peer = OwnedNativeAccess.Peer(PresentationSource.FromVisual(window)!);
+                var setSize = peer.GetType().GetMethod("SetClientSize")!.CreateDelegate<Action<Size>>(peer);
+                var setConstraints = peer.GetType().GetMethod("SetClientSizeConstraints")!.CreateDelegate<Action<Size, Size>>(peer);
+                OwnedNativeAccess.Call(OwnedNativeAccess.Connection, "Synchronize");
+                var hintsBeforeRejects = ((IEnumerable<IntPtr>)OwnedNativeAccess.Call(native, "Property", xid, "WM_NORMAL_HINTS", 41)!).ToArray();
+                Require(hintsBeforeRejects.Length >= 9, "The original WM_NORMAL_HINTS property is missing its size fields.");
+                foreach (double invalid in new[] { double.NaN, double.PositiveInfinity, double.NegativeInfinity, -1, double.MaxValue, 65536 / scale })
+                {
+                    Reject(() => setSize(new Size(invalid, 60)));
+                    Reject(() => setSize(new Size(80, invalid)));
+                }
+                Reject(() => window.Width = -1); Reject(() => window.Height = -1);
+                foreach (double invalid in new[] { double.NaN, double.NegativeInfinity, -1, double.MaxValue, 65536 / scale })
+                {
+                    Reject(() => setConstraints(new Size(), new Size(invalid, double.PositiveInfinity)));
+                    Reject(() => setConstraints(new Size(), new Size(double.PositiveInfinity, invalid)));
+                }
+                OwnedNativeAccess.Call(OwnedNativeAccess.Connection, "Synchronize");
+                Require(((IEnumerable<IntPtr>)OwnedNativeAccess.Call(native, "Property", xid, "WM_NORMAL_HINTS", 41)!).SequenceEqual(hintsBeforeRejects),
+                    "A rejected native size or maximum changed the actual WM_NORMAL_HINTS sequence.");
+                Require(native.Size(xid) == ((uint)(80 * scale), (uint)(60 * scale)), "A rejected native size or maximum changed client geometry.");
+                foreach (Size maximum in new[] { new Size(0, double.PositiveInfinity), new Size(double.PositiveInfinity, 0),
+                    new Size(0.5 / scale, double.PositiveInfinity), new Size(double.PositiveInfinity, 0.5 / scale),
+                    new Size(2 / scale, 2 / scale), new Size(double.PositiveInfinity, double.PositiveInfinity) })
+                {
+                    window.MaxWidth = maximum.Width; window.MaxHeight = maximum.Height;
+                    bool finite = !double.IsPositiveInfinity(maximum.Width) || !double.IsPositiveInfinity(maximum.Height);
+                    long width = double.IsPositiveInfinity(maximum.Width) ? 65535 : Math.Max(1, (long)Math.Floor(maximum.Width * scale));
+                    long height = double.IsPositiveInfinity(maximum.Height) ? 65535 : Math.Max(1, (long)Math.Floor(maximum.Height * scale));
+                    wait(() => MaximumMatches(finite, width, height));
+                    observe(new { kind = "finite-native-maximum", requestedDpi, maximum = maximum.ToString(System.Globalization.CultureInfo.InvariantCulture), finite, width, height });
+                }
+                wait(() =>
+                {
+                    var physical = native.Size(xid);
+                    var client = (Size)OwnedNativeAccess.Get(peer, "ClientSize");
+                    return Equal(window.Width * scale, physical.Width) && Equal(window.Height * scale, physical.Height)
+                        && Equal(window.ActualWidth * scale, physical.Width) && Equal(window.ActualHeight * scale, physical.Height)
+                        && Equal(client.Width * scale, physical.Width) && Equal(client.Height * scale, physical.Height);
+                });
+                window.Width = 80; window.Height = 60;
+                wait(() => native.Size(xid) == ((uint)(80 * scale), (uint)(60 * scale)) && native.Pixel(xid, 4, 4) == 0xff0000);
+
+                bool MaximumMatches(bool finite, long width, long height)
+                {
+                    var hints = (IEnumerable<IntPtr>)OwnedNativeAccess.Call(native, "Property", xid, "WM_NORMAL_HINTS", 41)!;
+                    long[] values = hints.Select(value => value.ToInt64()).ToArray();
+                    Require(values.Length >= 9, "The actual WM_NORMAL_HINTS property is missing its size fields.");
+                    bool hasMaximum = (values[0] & (1 << 5)) != 0;
+                    return hasMaximum == finite && (!finite || values[7] == width && values[8] == height);
+                }
+            }
+            finally { window.Close(); drain(); }
+
+            static void Reject(Action body)
+            {
+                try { body(); }
+                catch (Exception error) when (error is ArgumentException or OverflowException or PlatformNotSupportedException) { return; }
+                throw new InvalidOperationException("An invalid native size or maximum was accepted.");
+            }
+        });
+    }
+
     internal static void Exercise(X11Fixture native, Action<string, Action> run, Action<Func<bool>> wait, Action drain)
     {
         run("native-Window-startup-centering-and-hide-show", () =>

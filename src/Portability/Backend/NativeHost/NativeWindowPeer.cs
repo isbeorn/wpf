@@ -732,10 +732,10 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
       _ => throw new PlatformNotSupportedException("The native window state is unsupported.") };
     private int ToPixels(double value)
     {
-        if (!double.IsFinite(value) || value <= 0 || value * _window.Scale < 1)
-            throw new PlatformNotSupportedException("The owned X11 Window requires at least one native client pixel on each axis.");
-        return checked((int)(value * _window.Scale));
+        if (!double.IsFinite(value) || value < 0)
+            throw new PlatformNotSupportedException("The owned X11 Window requires finite nonnegative client dimensions.");
+        return Math.Max(1, checked((int)(value * _window.Scale)));
     }
     private int ToMinimumPixels(double value) => Math.Max(1, checked((int)(value * _window.Scale)));
-    private int ToMaximumPixels(double value) => double.IsPositiveInfinity(value) ? 0 : checked((int)(value * _window.Scale));
+    private int ToMaximumPixels(double value) => double.IsPositiveInfinity(value) ? 0 : ToPixels(value);
 }

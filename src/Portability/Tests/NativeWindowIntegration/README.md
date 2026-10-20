@@ -4,7 +4,15 @@ This fixture uses actual source-built WPF Window, controls, presentation source,
 
 Run only on a dedicated Xvfb server. X11Fixture publishes private XSETTINGS and refuses to replace an existing owner. Both byte orders, positive boundaries, the declared 5-pixel missing-distance fallback, malformed payloads and setting-name grammar remain covered. Controlled click thresholds test both signs of each axis at 4/5 physical pixels and 399/400 milliseconds through the actual WPF source provider, without claiming exact native sleep timing.
 
-The default sequence preserves hidden construction, actual source/layout, synchronous premultiplied BGRA presentation, buffer validation, previous-frame overlap clear/clip, retained/expose/occlusion repaint, stale-cache and already-equal size requests, paired grow/shrink, zero/subpixel diagnostics/recovery, one-pixel/DPI round trips, exact RGB48 source preservation and repeated lifetimes. Real Button/TextBox input covers paired keys, all five buttons, held snapshots, outside release, capture transfer/loss/recovery, cursor visibility/shape, disable/enable, activation, Hide/Show, ownership, synchronous modal frames and canceled/accepted/reentrant close.
+The default sequence preserves hidden construction, actual source/layout, synchronous premultiplied BGRA presentation, buffer validation, previous-frame overlap clear/clip, retained/expose/occlusion repaint, stale-cache and already-equal size requests, paired grow/shrink, zero/subpixel allocation/recovery, one-pixel/DPI round trips, exact RGB48 source preservation and repeated lifetimes. Real Button/TextBox input covers paired keys, all five buttons, held snapshots, outside release, capture transfer/loss/recovery, cursor visibility/shape, disable/enable, activation, Hide/Show, ownership, synchronous modal frames and canceled/accepted/reentrant close.
+
+`--empty-window-only --chrome-dpi=96` isolates a genuine transparent borderless
+notification-style Window: synchronous empty Show/Hide, item add/remove, native
+pixels, same-source reopen and close cleanup. `--minimum-window-extents-only`
+also checks both axes around one physical pixel, initial/live sizing, finite
+maximum hints, invalid requests and unrelated-window recovery. Repeat at 144
+DPI for fractional scaling. The default mode additionally covers the minimum
+pixel DPI round trips. The existing watchdog and private-display rules apply.
 
 | Focused mode | Required observable behavior |
 |---|---|

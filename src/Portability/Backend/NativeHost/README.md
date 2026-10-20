@@ -22,6 +22,15 @@ The peer creates a hidden native window before attaching the real WPF source. It
 
 ## Desktop contracts
 
+Finite nonnegative client-size requests use at least one physical X11 pixel per
+axis. Zero and subpixel requests retain the existing size acknowledgement path;
+observed native geometry remains authoritative. Finite zero/subpixel maximum
+constraints also use at least one pixel; only positive infinity means unbounded.
+Invalid or out-of-range requests still fail. This native minimum differs from
+the measured WindowsDesktop 10.0.12 transparent NoResize window, which used a
+2x2 client at 96 DPI for empty content. The port does not emulate that Windows
+minimum or replace native measurements with synthetic logical geometry.
+
 The native peer preserves requested versus observed window state, physical client/screen conversion, visibility, enablement, ownership, focus and capture policy. Pointer and key decoding belongs to the X11 input adapter; WPF report creation, activation and popup keyboard-recipient policy stay in the peer. Complete committed text enters the existing WPF text report path. Native IME transport/preedit is deferred; that does not permit splitting or dropping complete Unicode text commits. Visibility and enablement transitions reset native compose state without changing physical held-key truth. An active popup recipient also resets composition on its native keyboard owner when hidden, disabled or closed. Native horizontal-wheel flags pass through the existing WPF input path, which does not currently produce a routed horizontal-scroll event; no public horizontal-scrolling support is claimed.
 
 Startup reads actual XSETTINGS pointer preferences. Net/DoubleClickTime must be a positive observed integer. A valid payload omitting only Net/DoubleClickDistance uses the declared five-physical-pixel product fallback. Malformed values, missing time and missing owners remain failures. The bounded parser and per-field provenance are unchanged. Colors and drag thresholds remain the explicit portable-light-v1 profile. Primary-screen DIPs derive once from actual monitor pixels and published positive desktop logical DPI. When XSETTINGS and Xresources publish no logical DPI, the declared fallback is 96 DPI; physical monitor density does not select desktop scale. Global XSETTINGS DPI changes retain the native physical client extent while updating the reported scale. Logical Window dimensions therefore change until the application explicitly resizes the window; reapplying logical dimensions requests their new physical extent. Ambiguous primary observations remain absent rather than inventing a monitor. Settings remain one immutable process snapshot. The first successful native settings registration supplies it before WPF consumes it; additional UI threads validate their native observations and reuse that snapshot.
@@ -37,7 +46,7 @@ AT-SPI registers real WPF automation peers with stable native object identities.
 The candidate must pass the existing meaningful native fixtures after their framework-specific plumbing is retargeted:
 
 - Actual WPF priority ordering, timers, cross-thread wake, bounded waits, nested frames, input fairness, exception recovery and shutdown.
-- Window grow/shrink, legal one-pixel boundaries, rejected zero/subpixel requests, DPI round trips, state/restore transitions and reentrant close followed by unrelated native activity.
+- Window grow/shrink, zero/subpixel requests quantized to legal one-pixel boundaries, finite maximum constraints, DPI round trips, state/restore transitions and reentrant close followed by unrelated native activity.
 - Show/hide, enable/disable, focus gain/loss, both sides of key/button transitions, all five buttons, held snapshots, capture transfer/loss/release and cursor shape/visibility restoration.
 - Independent pixel readback, retained invalidation, expose/uncover, ARGB storage, popup placement, nonactivation and owner/modal lifetime.
 - Unicode clipboard transfer, ownership replacement, PRIMARY isolation and real TextBox copy/cut/paste commands and bindings.

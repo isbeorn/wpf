@@ -106,6 +106,19 @@ try
                     ChromeCases.Exercise(native, Run, Wait, Drain, chromeRequestedDpi, windowManagerTrace.Enqueue);
                     completed = true;
                 }
+                else if (args.Contains("--empty-window-only", StringComparer.Ordinal))
+                {
+                    WindowPresentationCases.ExerciseEmptySizes(native, (name, action) =>
+                    {
+                        if (name == "native-empty-transparent-SizeToContent-show-hide-grow-remove-reopen") Run(name, action);
+                    }, Wait, Drain, chromeRequestedDpi, windowManagerTrace.Enqueue);
+                    completed = true;
+                }
+                else if (args.Contains("--minimum-window-extents-only", StringComparer.Ordinal))
+                {
+                    WindowPresentationCases.ExerciseEmptySizes(native, Run, Wait, Drain, chromeRequestedDpi, windowManagerTrace.Enqueue);
+                    completed = true;
+                }
                 else if (args.Contains("--window-presentation-only", StringComparer.Ordinal))
                 {
                     WindowPresentationCases.Exercise(native, Run, Wait, Drain);
@@ -426,54 +439,7 @@ void Exercise(X11Fixture native)
         }
         finally { sizeWindow.Close(); }
     });
-    Run("native-zero-subpixel-diagnostics-minimum-pixel-and-recovery", () =>
-    {
-        foreach (var invalid in new (double Width, double Height)[] { (0, 100), (180, 0), (0, 0), (0.5, 100), (180, 0.5), (0.5, 0.5) })
-        {
-            var shown = new Window { Title = "Genuine WPF invalid shown extent " + invalid, Width = 180, Height = 100,
-                ShowActivated = false, Background = Brushes.Red };
-            try
-            {
-                shown.Show(); var xid = native.FindWindow(shown.Title);
-                Wait(() => native.IsMapped(xid) && native.Pixel(xid, 5, 5) == 0x00ff0000);
-                ExpectUnsupported(() => { shown.Width = invalid.Width; shown.Height = invalid.Height; });
-                shown.Width = 180; shown.Height = 100;
-                Wait(() => native.Size(xid) == (180u, 100u) && native.Pixel(xid, 175, 95) == 0x00ff0000); Drain();
-                Require(shown.ActualWidth == 180 && shown.ActualHeight == 100, "The shown Window did not recover supported dimensions.");
-            }
-            finally { shown.Close(); }
-            var initial = new Window { Title = "Genuine WPF invalid initial extent " + invalid, Width = invalid.Width,
-                Height = invalid.Height, ShowActivated = false, Background = Brushes.Red };
-            try { ExpectUnsupported(initial.Show); }
-            finally { initial.Close(); }
-            var unrelated = new Window { Title = "Genuine WPF frame after rejected extent " + invalid, Width = 180, Height = 100,
-                ShowActivated = false, Background = Brushes.Blue };
-            try
-            {
-                unrelated.Show(); var xid = native.FindWindow(unrelated.Title);
-                Wait(() => native.IsMapped(xid) && native.Pixel(xid, 175, 95) == 0x000000ff);
-            }
-            finally { unrelated.Close(); }
-        }
-        var minimum = new Window { Title = "Genuine WPF minimum native pixel", Width = 1, Height = 1,
-            ShowActivated = false, Background = Brushes.Red };
-        try
-        {
-            minimum.Show(); var xid = native.FindWindow(minimum.Title);
-            Wait(() => native.Size(xid) == (1u, 1u) && native.Pixel(xid, 0, 0) == 0x00ff0000);
-            minimum.Width = 180; minimum.Height = 100;
-            Wait(() => native.Size(xid) == (180u, 100u) && native.Pixel(xid, 175, 95) == 0x00ff0000);
-            minimum.Width = 1; minimum.Height = 1;
-            Wait(() => native.Size(xid) == (1u, 1u) && native.Pixel(xid, 0, 0) == 0x00ff0000);
-        }
-        finally { minimum.Close(); }
-        static void ExpectUnsupported(Action action)
-        {
-            try { action(); }
-            catch (PlatformNotSupportedException exception) when (exception.Message.Contains("at least one native client pixel", StringComparison.Ordinal)) { return; }
-            throw new InvalidOperationException("A zero/subpixel native extent did not receive the named managed profile diagnostic.");
-        }
-    });
+    WindowPresentationCases.ExerciseEmptySizes(native, Run, Wait, Drain, chromeRequestedDpi, windowManagerTrace.Enqueue);
     Run("native-minimum-pixel-dpi-roundtrips-and-unrelated-frame", () =>
     {
         try

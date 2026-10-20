@@ -347,7 +347,8 @@ namespace System.Windows
         private static bool PortablePixelRequestMatches(double actual, double requested)
         {
             return MS.Internal.DoubleUtil.AreClose(actual, Math.Floor(requested)) ||
-                MS.Internal.DoubleUtil.AreClose(actual, Math.Ceiling(requested));
+                MS.Internal.DoubleUtil.AreClose(actual, Math.Ceiling(requested)) ||
+                (requested == 0 && MS.Internal.DoubleUtil.AreClose(actual, 1));
         }
 
         private void PortableAcknowledgeBounds()

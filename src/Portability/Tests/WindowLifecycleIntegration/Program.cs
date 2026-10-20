@@ -17,12 +17,14 @@ if (args.Length == 2 && args[0] == "--application-run")
     });
 
 var checks = new List<Check>();
+bool emptyWindowOnly = args.SequenceEqual(new[] { "--empty-window-only" });
 var thread = new Thread(() =>
 {
     PortableSystemSettingsProvider.Register(PortableSystemSettings.CreateInitialLightProfile(
         pointerSettings: new PortablePointerSettings(4, 4, 500)));
     void Run(string name, Action body)
     {
+        if (emptyWindowOnly && name != "size-to-content-zero-and-one-pixel-acks-stale-growth-and-settlement") return;
         try { body(); checks.Add(new(name, "pass", "Observed real Window with managed peer.")); }
         catch (Exception exception) { checks.Add(new(name, "fail", exception.ToString())); }
     }
@@ -807,6 +809,64 @@ var thread = new Thread(() =>
         }
         finally { factory.InitialDpi = new DpiScale(1, 1); }
     });
+    Run("size-to-content-zero-and-one-pixel-acks-stale-growth-and-settlement", () =>
+    {
+        try
+        {
+            foreach (DpiScale dpi in new[] { new DpiScale(1, 1), new DpiScale(1.5, 2) })
+            foreach (SizeToContent mode in new[] { SizeToContent.Width, SizeToContent.Height, SizeToContent.WidthAndHeight })
+            foreach (bool minimumPixel in new[] { false, true })
+            {
+                factory.InitialDpi = dpi;
+                Size Quantized(Size client) => new(
+                    Math.Max(minimumPixel ? 1 : 0, Math.Floor(client.Width * dpi.DpiScaleX)) / dpi.DpiScaleX + 16,
+                    Math.Max(minimumPixel ? 1 : 0, Math.Floor(client.Height * dpi.DpiScaleY)) / dpi.DpiScaleY + 40);
+                var element = new SizingElement(); element.SetDesired(new Size());
+                var window = new Window { Width = 280, Height = 220, Content = element };
+                try
+                {
+                    window.Show(); var peer = factory.Last; Drain(); peer.DeferBounds = true;
+                    window.SizeToContent = mode; window.UpdateLayout(); Drain();
+                    Assert((mode == SizeToContent.Height || peer.LastClientRequest.Width == 0) &&
+                        (mode == SizeToContent.Width || peer.LastClientRequest.Height == 0), "Empty content did not produce zero intent on its selected axes");
+                    Size empty = Quantized(peer.LastClientRequest);
+                    int requests = peer.ClientSizeRequests;
+                    for (int repeat = 0; repeat < 3; repeat++)
+                    {
+                        peer.PublishGeometry(empty, peer.DesktopPosition); window.UpdateLayout(); Drain();
+                        Assert(peer.ClientSizeRequests == requests && window.RestoreBounds.Size == empty,
+                            "Zero or one-pixel acknowledgement did not settle empty content without resubmission");
+                    }
+                    element.SetDesired(new Size(160, 120)); window.UpdateLayout(); Drain();
+                    Assert(peer.ClientSizeRequests > requests, "Content growth did not supersede empty size intent");
+                    Size desiredGrowth = window.RestoreBounds.Size, grown = Quantized(peer.LastClientRequest);
+                    requests = peer.ClientSizeRequests;
+                    peer.PublishGeometry(empty, peer.DesktopPosition); window.UpdateLayout(); Drain();
+                    Assert(window.RestoreBounds.Size == desiredGrowth && peer.ClientSizeRequests == requests,
+                        "A stale empty acknowledgement replaced newer content growth or caused another request");
+                    peer.PublishGeometry(grown, peer.DesktopPosition); window.UpdateLayout(); Drain();
+                    Assert(window.RestoreBounds.Size == grown && peer.ClientSizeRequests == requests, "Content growth did not settle after the stale empty acknowledgement");
+                    element.SetDesired(new Size()); window.UpdateLayout(); Drain();
+                    Assert(peer.ClientSizeRequests > requests, "Removing content did not restore empty size intent");
+                    empty = Quantized(peer.LastClientRequest); requests = peer.ClientSizeRequests;
+                    for (int repeat = 0; repeat < 3; repeat++)
+                    {
+                        peer.PublishGeometry(empty, peer.DesktopPosition); window.UpdateLayout(); Drain();
+                        Assert(peer.ClientSizeRequests == requests && window.RestoreBounds.Size == empty,
+                            "Repeated layout after content removal retried acknowledged zero or one-pixel geometry");
+                    }
+                    window.Hide(); window.Show(); window.UpdateLayout(); Drain();
+                    Assert(ReferenceEquals(peer, factory.Last) && peer.ClientSizeRequests == requests,
+                        "Empty hide-show recreated the peer or resumed settled size requests");
+                    window.SizeToContent = SizeToContent.Manual;
+                    element.SetDesired(new Size(200, 140)); window.UpdateLayout(); Drain();
+                    Assert(peer.ClientSizeRequests == requests && window.RestoreBounds.Size == empty, "Manual sizing resumed automatic empty-content requests");
+                }
+                finally { window.Close(); }
+            }
+        }
+        finally { factory.InitialDpi = new DpiScale(1, 1); }
+    });
     Run("modal-capture-release-owner-close-hide-and-enable-reentry", () =>
     {
         foreach (string action in new[] { "close", "hide", "disable", "throw" })
@@ -1110,8 +1170,9 @@ var thread = new Thread(() =>
 if (OperatingSystem.IsWindows()) thread.SetApartmentState(ApartmentState.STA);
 thread.Start();
 if (!thread.Join(TimeSpan.FromSeconds(30))) checks.Add(new("watchdog", "fail", "Window lifecycle exceeded 30 seconds."));
-foreach (ApplicationRunResult result in ApplicationRunCases.RunAll())
-    checks.Add(new(result.name, result.status, result.detail));
+if (!emptyWindowOnly)
+    foreach (ApplicationRunResult result in ApplicationRunCases.RunAll())
+        checks.Add(new(result.name, result.status, result.detail));
 Console.WriteLine(JsonSerializer.Serialize(new { probe = "window-lifecycle-integration", os = RuntimeInformation.OSDescription,
     scope = "real source-built Window/PresentationSource with managed contract peer and process-isolated public Application.Run; no native host or raw input proof", checks }, new JsonSerializerOptions { WriteIndented = true }));
 return checks.Any(check => check.status == "fail") ? 1 : 0;
