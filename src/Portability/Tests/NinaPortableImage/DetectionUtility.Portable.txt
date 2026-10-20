@@ -1,0 +1,9 @@
+        internal static PortableImageBuffer ResizeForDetection(PortableImageBuffer image, int maxWidth, double resizeFactor) {
+            if (image.Width <= maxWidth) return image;
+            var resized = new PortableImageBuffer((int)Math.Floor(image.Width * resizeFactor), (int)Math.Floor(image.Height * resizeFactor), image.Format);
+            try {
+                using (var source = image.Borrow()) using (var destination = resized.Borrow()) new ResizeBicubic(resized.Width, resized.Height).Apply(source, destination);
+            } catch { resized.Dispose(); throw; }
+            image.Dispose();
+            return resized;
+        }

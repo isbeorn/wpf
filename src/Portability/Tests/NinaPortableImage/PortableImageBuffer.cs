@@ -31,6 +31,13 @@ namespace NINA.Image.ImageAnalysis {
 
         internal UnmanagedImage Borrow() => new UnmanagedImage(Memory, Width, Height, Stride, Format);
 
+        internal unsafe void CopyTo(PortableImageBuffer destination) {
+            if (destination.Width != Width || destination.Height != Height || destination.Format != Format) throw new ArgumentException("Image buffer geometry differs.");
+            for (int y = 0; y < Height; y++) {
+                new ReadOnlySpan<byte>((byte*)Memory + y * Stride, Stride).CopyTo(new Span<byte>((byte*)destination.Memory + y * destination.Stride, destination.Stride));
+            }
+        }
+
         internal static PortableImageBuffer FromSource(BitmapSource source) {
             var format = source.Format == PixelFormats.Gray16 ? DrawingFormat.Format16bppGrayScale
                 : source.Format == PixelFormats.Rgb48 ? DrawingFormat.Format48bppRgb

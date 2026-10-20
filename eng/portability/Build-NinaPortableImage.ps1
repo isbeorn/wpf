@@ -80,7 +80,7 @@ $changes = @(foreach ($file in $pin.files) {
     $hash = (Get-FileHash "$output/source/$($file.path)").Hash
     if ($hash -cne $file.sha256) { [ordered]@{ path = $file.path; before = $file.sha256; after = $hash } }
 })
-if ($changes.Count -ne 1) { throw 'Expected one annotation-only adapted upstream file.' }
+if ($changes.Count -ne 5) { throw 'Expected five adapted upstream Image files.' }
 Save "$output/adaptations.json" ($changes | ConvertTo-Json -Depth 4)
 Save "$output/global.json" '{"sdk":{"version":"10.0.401","rollForward":"disable"}}'
 Save "$output/Directory.Build.props" '<Project/>'
@@ -176,7 +176,7 @@ $activeSources = @(Get-ChildItem -LiteralPath $fixture -Recurse -File | ForEach-
 })
 [IO.File]::Copy($PSCommandPath, "$output/wrapper-source/Build-NinaPortableImage.ps1")
 Save "$output/image-consumer-intake.json" ([ordered]@{
-    status = 'source-proven-annotation-only-component-default-image-processing-not-yet-qualified'; scope = 'annotation-only'
+    status = 'source-proven-image-component-behavior-qualification-separate'; scope = 'image-processing-and-annotation'
     sourceRevision = $pin.revision; assembly = $dll; sha256 = (Get-FileHash $dll).Hash; pdb = $pdb; pdbSha256 = (Get-FileHash $pdb).Hash; identity = $identity
     pePdbIdentityMatch = $true; sourceDocuments = $sourceDocuments.Count; allSourceDocumentsResolveAndMatchActualFiles = $true
     sourceProof = "$output/source-proof.json"; sourceProofSha256 = (Get-FileHash "$output/source-proof.json").Hash
@@ -189,4 +189,4 @@ Save "$output/image-consumer-intake.json" ([ordered]@{
     frameworkRuntimeDirectory = $frameworkRoot; frameworkRuntimeManifest = [IO.Path]::GetFullPath($FrameworkRuntimeManifest)
     frameworkRuntimeManifestSha256 = $ExpectedFrameworkRuntimeManifestSha256; frameworkRuntimeFiles = $ExpectedFrameworkRuntimeFileCount; buildExit = 0
 } | ConvertTo-Json -Depth 7)
-Write-Output "Source-built annotation-only NINA.Image candidate: $output/image-consumer-intake.json"
+Write-Output "Source-built NINA.Image candidate: $output/image-consumer-intake.json"

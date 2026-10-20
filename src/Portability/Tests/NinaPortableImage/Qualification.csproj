@@ -7,12 +7,17 @@
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- Accord's borrowed-buffer API uses PixelFormat enum tags without activating GDI. -->
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
+    <Compile Include="Program.cs;ProcessingCases.cs" />
     <Reference Include="$(OriginalManagedDirectory)/*.dll" Exclude="$(OriginalManagedDirectory)/NINA.Image.dll;$(OriginalManagedDirectory)/NINA.Core.dll" Private="false" />
-    <Reference Include="$(NinaImagePath);$(NinaCorePath);$(FrameworkRuntimeDirectory)/*.dll" Private="false" />
-    <Reference Include="WindowsBase" HintPath="$(FrameworkRuntimeDirectory)/WindowsBase.dll" Private="true" />
+    <Reference Include="$(NinaImagePath);$(NinaCorePath)" Private="false" />
+    <Reference Include="$(FrameworkRuntimeDirectory)/*.dll" Private="false" Condition="'$(ImageProfile)' != 'stock'" />
+    <Reference Include="WindowsBase" HintPath="$(FrameworkRuntimeDirectory)/WindowsBase.dll" Private="true" Condition="'$(ImageProfile)' != 'stock'" />
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" Condition="'$(ImageProfile)' == 'stock'" />
   </ItemGroup>
   <Target Name="ValidateImageInputs" BeforeTargets="ResolveReferences">
     <Error Condition="!Exists('$(NinaImagePath)') or !Exists('$(NinaCorePath)') or !Exists('$(FrameworkRuntimeDirectory)/PresentationCore.dll')" Text="The pinned image assembly, Core and coherent WPF runtime are required." />

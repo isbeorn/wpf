@@ -7,13 +7,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using NINA.Image.ImageAnalysis;
 
-internal static class Program {
+internal static partial class Program {
     private static readonly List<object> cases = new();
     private static int failures;
 
     [STAThread]
     private static int Main(string[] args) {
-        if (args.Length != 5) throw new ArgumentException("Expected report, Image DLL, Core DLL, stock directory and framework directory.");
+        if (args.Length != 5 && args.Length != 7) throw new ArgumentException("Expected report, Image DLL, Core DLL, stock directory, framework directory and optional science mode/reference directory.");
         AssemblyLoadContext.Default.Resolving += (_, name) => {
             string? candidate = name.Name == "NINA.Image" ? args[1] : name.Name == "NINA.Core" ? args[2] : null;
             if (candidate != null) return AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.GetFullPath(candidate));
@@ -23,10 +23,11 @@ internal static class Program {
             }
             return null;
         };
-        RunAnnotationCases();
+        if (args.Length == 5) RunAnnotationCases();
+        else RunProcessingCases(args[6], args[5] == "science-reference");
         var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
             .Select(a => new { name = a.GetName().Name, path = a.Location, sha256 = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(a.Location))) });
-        File.WriteAllText(args[0], JsonSerializer.Serialize(new { status = failures == 0 ? "pass" : "fail", scope = "NINA.Image focused annotation component; no application or acquisition qualification", cases, assemblies }, new JsonSerializerOptions { WriteIndented = true }));
+        File.WriteAllText(args[0], JsonSerializer.Serialize(new { status = failures == 0 ? "pass" : "fail", scope = "NINA.Image focused component; no application or acquisition qualification", cases, assemblies }, new JsonSerializerOptions { WriteIndented = true }));
         return failures == 0 ? 0 : 1;
     }
 

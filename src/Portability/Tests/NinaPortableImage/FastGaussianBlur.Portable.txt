@@ -1,0 +1,16 @@
+        internal FastGaussianBlur(PortableImageBuffer image) {
+            _width = image.Width;
+            _height = image.Height;
+            gray = new byte[checked(_width * _height)];
+            for (int y = 0; y < _height; y++) Marshal.Copy(IntPtr.Add(image.Memory, y * image.Stride), gray, y * _width, _width);
+        }
+
+        internal PortableImageBuffer ProcessBuffer(int radial) {
+            var dest = new byte[checked(_width * _height)];
+            gaussBlur_4(gray, dest, radial);
+            var output = new PortableImageBuffer(_width, _height, PixelFormat.Format8bppIndexed);
+            try {
+                for (int y = 0; y < _height; y++) Marshal.Copy(dest, y * _width, IntPtr.Add(output.Memory, y * output.Stride), _width);
+                return output;
+            } catch { output.Dispose(); throw; }
+        }
