@@ -188,7 +188,7 @@ namespace MS.Internal.Portability.Rendering
                     default:
                         throw new NotSupportedException($"Portable rendering does not support geometry type {geometry.GetType().FullName}.");
                 }
-                if (geometry.Transform != null && !geometry.Transform.Value.IsIdentity)
+                if (!path.IsEmpty && geometry.Transform != null && !geometry.Transform.Value.IsIdentity)
                 {
                     Matrix transform = geometry.Transform.Value;
                     var matrix = new SKMatrix(Scalar(transform.M11), Scalar(transform.M21), Scalar(transform.OffsetX),

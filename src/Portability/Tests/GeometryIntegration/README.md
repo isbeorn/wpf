@@ -118,6 +118,31 @@ AB11FAF307F2A62771EDAB8551309685BF56CA885FC19D8E5CF9D75366EE9E47.
 These six expectations describe the existing bounded backend profile, not
 native conservative-extent or round-stroke pixel parity.
 
+## Empty geometry transforms
+
+An empty Path with Width 40, Margin 5 and Fill, Uniform or UniformToFill stretch
+has DesiredSize (50,10) and RenderSize (0,0). Both stock and portable Shape layout
+produce an empty rendered StreamGeometry with identity scale and NaN offsets:
+the stretch matrix scales at Rect.Empty's infinite location. A null Data value
+uses Geometry.Empty before that rendered clone is made. Rendering the clone
+must leave the frame and its siblings intact, as stock Windows does.
+
+The raster converter skips transform conversion only when its constructed
+SKPath has no commands. Empty StreamGeometry, PathGeometry and GeometryGroup
+drawings and clips retain their no-paint/empty-clip behavior without changing
+the caller's geometry or matrix. Finite collapsed lines and zero-width
+rectangles still paint strokes. Move-only and collapsed paths with invalid
+transforms retain the existing portable ArithmeticException boundary; stock
+silently omits such invalid nonempty geometry. Those validation assertions are
+portable-only and do not claim native equivalence.
+
+The six public regressions run in the existing GeometryIntegration fixture,
+including actual Path layout, RenderTargetBitmap painting, empty group children,
+clip push/pop and caller-state checks. `--empty-geometry-only` selects them;
+the existing hollow selector keeps its 44 checks. Native calibration and the
+old-Core failing runs are retained under
+artifacts/portability/current/framing-transform-diagnosis-20261020-1.
+
 GridAffineReference.json records four disjoint diagonal/reflected/skewed stock
 bounds cases. All four bounds and independent-row unions are checked, with
 occupied raster cells intersecting the reported bounds. One pre-existing Skia

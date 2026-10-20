@@ -61,6 +61,18 @@ if (args.Length == 1 && args[0] == "--capture-bounds-precision")
 
 var checks = new List<object>();
 var failed = false;
+if (!args.Contains("--hollow-dashed-bounds-only"))
+{
+    foreach (Stretch stretch in Enum.GetValues<Stretch>())
+        Check($"empty-path-{stretch}-null-and-stream-layout", () => { EmptyGeometryCases.Layout(stretch); return true; }, true);
+    Check("empty-transformed-geometries-drawing-and-clip", () => { EmptyGeometryCases.DrawingAndClip(); return true; }, true);
+    Check("empty-path-guard-preserves-collapsed-and-move-only-validation", () => { EmptyGeometryCases.NonemptyCommands(); return true; }, true);
+}
+if (args.Contains("--empty-geometry-only"))
+{
+    Console.WriteLine(JsonSerializer.Serialize(new { probe = "empty-geometry-rendering", corePath = typeof(Geometry).Assembly.Location, checks }, new JsonSerializerOptions { WriteIndented = true }));
+    return failed ? 1 : 0;
+}
 if (args.Contains("--hollow-dashed-bounds-only"))
 {
     DashedBoundsCases.RunHollow(Check);
