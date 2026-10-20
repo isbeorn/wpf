@@ -36,16 +36,16 @@ for origin in Microsoft Port; do
         "$dotnet" publish App/App.csproj -c Release -r linux-x64 --self-contained true -p:RuntimeFrameworkVersion=10.0.12 --disable-build-servers -o publish-sc >publish-sc.log 2>&1
         native_failed=0
         set +e
-        xvfb-run -a "$dotnet" publish/App.dll --complete-view --verify >results.json 2>stderr.log
+        xvfb-run -a --server-args="-screen 0 1536x1152x24" "$dotnet" publish/App.dll --complete-view --verify >results.json 2>stderr.log
         if [ "$?" -ne 0 ]; then native_failed=1; fi
         "$dotnet" publish/App.dll --audit-complete-view-results results.json >audit-results.json 2>audit-stderr.log
         if [ "$?" -ne 0 ]; then native_failed=1; fi
-        xvfb-run -a env -u DOTNET_ROOT -u DOTNET_ROOT_X64 ./publish-sc/App --complete-view --verify >results-sc.json 2>stderr-sc.log
+        xvfb-run -a --server-args="-screen 0 1536x1152x24" env -u DOTNET_ROOT -u DOTNET_ROOT_X64 ./publish-sc/App --complete-view --verify >results-sc.json 2>stderr-sc.log
         if [ "$?" -ne 0 ]; then native_failed=1; fi
         "$dotnet" publish/App.dll --audit-complete-view-results results-sc.json >audit-results-sc.json 2>audit-stderr-sc.log
         if [ "$?" -ne 0 ]; then native_failed=1; fi
         if [ "$origin" = Microsoft ]; then
-            xvfb-run -a "$dotnet" publish/App.dll --native >phase1-default-results.json 2>phase1-default-stderr.log
+            xvfb-run -a --server-args="-screen 0 1536x1152x24" "$dotnet" publish/App.dll --native >phase1-default-results.json 2>phase1-default-stderr.log
             if [ "$?" -ne 0 ]; then native_failed=1; fi
         fi
         set -e
