@@ -83,19 +83,63 @@ internal static class ChromeCases
                     });
                     Require(window.MinWidth == 180 && window.MinHeight == 120 && window.MaxWidth == 500 && window.MaxHeight == 350, "ResizeMode changed public constraints.");
                 }
+                void ObserveOrigin(string phase, ResizeMode mode, (int X, int Y)? baseline = null)
+                {
+                    if (trace == null) return;
+                    try
+                    {
+                        object? WindowField(string name) => typeof(Window).GetField(name, OwnedNativeAccess.Members)!.GetValue(window);
+                        var peer = OwnedNativeAccess.Peer(PresentationSource.FromVisual(window)!);
+                        var peerDesktop = (Point)OwnedNativeAccess.Get(peer, "_desktopPosition");
+                        var peerClient = (Point)OwnedNativeAccess.Get(peer, "_clientScreenOrigin");
+                        var requestedDesktop = (Point)WindowField("_portableRequestedDesktopPosition")!;
+                        var restore = (Rect)WindowField("_portableRestoreBounds")!;
+                        var cached = new
+                        {
+                            peerDesktopX = peerDesktop.X, peerDesktopY = peerDesktop.Y,
+                            peerClientX = peerClient.X, peerClientY = peerClient.Y,
+                            peerMetricsState = OwnedNativeAccess.Get(peer, "_metricsState").ToString(),
+                            peerMetricsRefreshQueued = (bool)OwnedNativeAccess.Get(peer, "_metricsRefreshQueued"),
+                            peerStateRequestPending = (bool)OwnedNativeAccess.Get(peer, "_stateRequestPending"),
+                            windowPendingBounds = WindowField("_portablePendingBounds")!.ToString(),
+                            windowBoundsAwaitingAck = WindowField("_portableBoundsAwaitingAck")!.ToString(),
+                            windowStateRequest = WindowField("_portableStateRequest")?.ToString(),
+                            requestedDesktopX = requestedDesktop.X, requestedDesktopY = requestedDesktop.Y,
+                            restoreX = restore.X, restoreY = restore.Y,
+                            publicLeft = window.Left, publicTop = window.Top, publicState = window.WindowState.ToString(), currentMode = window.ResizeMode.ToString()
+                        };
+                        var client = native.ClientOrigin(xid); var nativeFrame = native.FrameExtents(xid); var frame = nativeFrame ?? default;
+                        trace(new { stage = "resize-mode-origin", phase, custom, mode = mode.ToString(), requestedDpi, cached,
+                            baselineClientX = baseline?.X, baselineClientY = baseline?.Y,
+                            clientX = client.X, clientY = client.Y,
+                            frameLeft = frame.Left, frameTop = frame.Top, frameRight = frame.Right, frameBottom = frame.Bottom,
+                            framePresent = nativeFrame.HasValue, outerX = client.X - frame.Left, outerY = client.Y - frame.Top });
+                    }
+                    catch (Exception diagnosticError)
+                    {
+                        trace(new { stage = "resize-mode-origin-snapshot-error", phase, custom, mode = mode.ToString(),
+                            error = diagnosticError.ToString() });
+                    }
+                }
                 foreach (var mode in new[] { ResizeMode.NoResize, ResizeMode.CanMinimize, ResizeMode.CanResize })
                 {
+                    ObserveOrigin("before-resize-mode", mode);
                     window.ResizeMode = mode; var restoreOrigin = native.ClientOrigin(xid);
+                    ObserveOrigin("baseline-saved", mode, restoreOrigin);
                     string pendingTransition = "Minimized";
                     try
                     {
                         window.WindowState = WindowState.Minimized; wait(() => window.WindowState == WindowState.Minimized && native.State(xid) == "Minimized" && !native.IsMapped(xid));
                         pendingTransition = "Normal-after-Minimized";
+                        ObserveOrigin("before-restore-from-minimized", mode, restoreOrigin);
                         window.WindowState = WindowState.Normal; wait(() => native.IsMapped(xid) && window.WindowState == WindowState.Normal && native.State(xid) == "Normal" && native.ClientOrigin(xid) == restoreOrigin);
+                        ObserveOrigin("after-restore-from-minimized", mode, restoreOrigin);
                         pendingTransition = "Maximized";
                         window.WindowState = WindowState.Maximized; wait(() => window.WindowState == WindowState.Maximized && native.State(xid) == "Maximized");
                         pendingTransition = "Normal-after-Maximized";
+                        ObserveOrigin("before-restore-from-maximized", mode, restoreOrigin);
                         window.WindowState = WindowState.Normal; wait(() => window.WindowState == WindowState.Normal && native.State(xid) == "Normal" && native.ClientOrigin(xid) == restoreOrigin);
+                        ObserveOrigin("after-restore-from-maximized", mode, restoreOrigin);
                     }
                     catch (Exception failure)
                     {
