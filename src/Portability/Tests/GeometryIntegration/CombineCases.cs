@@ -192,6 +192,15 @@ internal static class CombineCases
             new EllipseGeometry(new Point(25, 10), 12, 8), GeometryCombineMode.Union, "rounded"), true);
         var arc = new PathGeometry([new PathFigure(new Point(0, 10), [new ArcSegment(new Point(20, 10), new Size(10, 8), 0, false, SweepDirection.Clockwise, false)], true)]);
         check("combine-arc", () => Regions(arc, b, GeometryCombineMode.Exclude, "arc"), true);
+        foreach (GeometryCombineMode mode in Enum.GetValues<GeometryCombineMode>())
+            check($"combine-nested-operand-both-sides-{mode}", () =>
+            {
+                PathGeometry left = Geometry.Combine(new CombinedGeometry(GeometryCombineMode.Union, a, Geometry.Empty), b, mode, null);
+                PathGeometry right = Geometry.Combine(a, new CombinedGeometry(GeometryCombineMode.Union, b, Geometry.Empty), mode, null);
+                Point[] points = [new Point(5, 10), new Point(15, 10), new Point(25, 10)];
+                return points.Select(p => left.FillContains(p, 0, ToleranceType.Absolute)).SequenceEqual(expected[(int)mode]) &&
+                    points.Select(p => right.FillContains(p, 0, ToleranceType.Absolute)).SequenceEqual(expected[(int)mode]);
+            }, true);
         RunContracts(check);
     }
 
@@ -293,8 +302,6 @@ internal static class CombineCases
         check("combine-empty-operand-does-not-expand-relative-extent", () => Throws<NotSupportedException>(() => Geometry.Combine(
             new EllipseGeometry(new Point(100000000, 100000000), 16, 8), Geometry.Empty, GeometryCombineMode.Union, null, 1e-5, ToleranceType.Relative), "tolerance"), true);
         check("combine-invalid-mode-diagnostic", () => Throws<NotSupportedException>(() => Geometry.Combine(a, b, (GeometryCombineMode)123, null), "123"), true);
-        check("combine-unsupported-operand-diagnostic", () => Throws<NotSupportedException>(() => Geometry.Combine(new CombinedGeometry(GeometryCombineMode.Union, a, b), b,
-            GeometryCombineMode.Union, null), "CombinedGeometry"), true);
         foreach (ToleranceType type in Enum.GetValues<ToleranceType>())
         foreach (double tolerance in new[] { double.NegativeInfinity, -1d, 0d, 1e-20, double.NaN })
             check($"combine-conic-precision-diagnostic-{type}-{tolerance:R}", () => Throws<NotSupportedException>(() => Geometry.Combine(

@@ -151,6 +151,10 @@ namespace MS.Internal.Portability.Rendering
             {
                 switch (geometry)
                 {
+                    case CombinedGeometry combined:
+                        // The combined path already contains this geometry's transform.
+                        Append(destination, combined.GetAsPathGeometry(), stroke, closeFillContours, includeHollows);
+                        return;
                     case RectangleGeometry rectangle:
                         if (!rectangle.Rect.IsEmpty && (rectangle.Rect.Width == 0 || rectangle.Rect.Height == 0))
                         {

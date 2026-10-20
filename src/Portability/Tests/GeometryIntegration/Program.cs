@@ -133,6 +133,10 @@ var combined = new CombinedGeometry(GeometryCombineMode.Exclude,
     new RectangleGeometry(new Rect(0, 0, 30, 30)), new RectangleGeometry(new Rect(10, 10, 10, 10)));
 Check("combined-fill-excluded-hole", () => combined.FillContains(new Point(15, 15)), false);
 Check("combined-fill-kept-shell", () => combined.FillContains(new Point(5, 5)), true);
+Check("combined-stroke-outer-edge", () => combined.StrokeContains(new Pen(Brushes.Red, 4), new Point(0, 5)), true);
+Check("combined-stroke-hole-edge", () => combined.StrokeContains(new Pen(Brushes.Red, 4), new Point(10, 15)), true);
+Check("combined-stroke-hole-interior", () => combined.StrokeContains(new Pen(Brushes.Red, 4), new Point(15, 15)), false);
+Check("combined-stroke-filled-interior", () => combined.StrokeContains(new Pen(Brushes.Red, 4), new Point(5, 5)), false);
 var cubic = new PathGeometry([new PathFigure(new Point(0, 0),
     [new BezierSegment(new Point(0, 20), new Point(20, 20), new Point(20, 0), true)], true)]);
 Check("cubic-fill-inside", () => cubic.FillContains(new Point(10, 5)), true);
@@ -149,7 +153,6 @@ Check("relative-extent-includes-unfilled-figure", () => distantHollow.FillContai
 Check("unfilled-figure-is-not-a-hit", () => distantHollow.FillContains(new Point(1005, 5), 0.001, ToleranceType.Relative), false);
 #if PORTABLE_GEOMETRY_TESTS
 Reject("unsupported-dashed-stroke", () => line.StrokeContains(new Pen(Brushes.Red, 4) { DashStyle = DashStyles.Dash }, new Point(10, 0)), "dashed");
-Reject("unsupported-combined-stroke", () => combined.StrokeContains(new Pen(Brushes.Red, 4), new Point(0, 0)), "CombinedGeometry");
 Reject("unsupported-mixed-end-caps", () => line.StrokeContains(new Pen(Brushes.Red, 4) { EndLineCap = PenLineCap.Round }, new Point(10, 0)), "end caps");
 #endif
 

@@ -12,6 +12,19 @@ using SkiaSharp;
 
 var checks = new List<object>();
 var failed = false;
+if (!args.Contains("--render-preference-only") && !args.Contains("--visibility-only"))
+{
+    foreach (GeometryCombineMode mode in Enum.GetValues<GeometryCombineMode>())
+        Run($"combined-geometry-{mode}-drawing-and-visual-clips", () => CombinedGeometryCases.Clips(mode));
+    Run("combined-geometry-fill-rules-hollows-empty-and-nested-operands", CombinedGeometryCases.Operands);
+    Run("combined-geometry-draw-fill-and-stroke", CombinedGeometryCases.Draw);
+    Run("combined-geometry-retained-clip-mutate-and-restore", () => CombinedGeometryCases.Retained(Drain));
+}
+if (args.Contains("--combined-geometry-only"))
+{
+    Console.WriteLine(JsonSerializer.Serialize(new { probe = "combined-geometry-rendering", corePath = typeof(DrawingVisual).Assembly.Location, checks }, new JsonSerializerOptions { WriteIndented = true }));
+    return failed ? 1 : 0;
+}
 Run("process-render-mode-preference-roundtrip-invalid-and-cpu-raster", () =>
 {
     Require(RenderOptions.ProcessRenderMode == System.Windows.Interop.RenderMode.Default, "Initial process rendering preference must be Default.");
