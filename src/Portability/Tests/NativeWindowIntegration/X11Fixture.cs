@@ -27,7 +27,16 @@ internal sealed class X11Fixture : IDisposable
         XSync(_display, false);
     }
 
-    internal IntPtr FindWindow(string title) => FindWindow(_root, title, 0);
+    internal IntPtr FindWindow(string title)
+    {
+        XGrabServer(_display);
+        try { return FindWindow(_root, title, 0); }
+        finally
+        {
+            XUngrabServer(_display);
+            XSync(_display, false);
+        }
+    }
     internal (int Width, int Height) ScreenSize => Size(_root);
 
     private IntPtr FindWindow(IntPtr parent, string title, int depth)
@@ -706,6 +715,8 @@ internal sealed class X11Fixture : IDisposable
     [DllImport("libX11.so.6")] private static extern IntPtr XSetErrorHandler(NativeErrorHandler handler);
     [DllImport("libX11.so.6")] private static extern IntPtr XSetErrorHandler(IntPtr handler);
     [DllImport("libX11.so.6")] private static extern int XQueryPointer(IntPtr display, IntPtr window, out IntPtr root, out IntPtr child, out int rootX, out int rootY, out int x, out int y, out uint mask);
+    [DllImport("libX11.so.6")] private static extern int XGrabServer(IntPtr display);
+    [DllImport("libX11.so.6")] private static extern int XUngrabServer(IntPtr display);
     [DllImport("libX11.so.6")] private static extern int XQueryTree(IntPtr display, IntPtr window, out IntPtr root, out IntPtr parent, out IntPtr children, out int count);
     [DllImport("libX11.so.6")] private static extern int XFetchName(IntPtr display, IntPtr window, out IntPtr name);
     [DllImport("libX11.so.6")] private static extern int XFree(IntPtr data);
