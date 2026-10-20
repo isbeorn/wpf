@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Interop;
+using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Shell;
@@ -16,6 +17,16 @@ namespace System.Windows
 {
     public partial class Window
     {
+        private readonly bool _portableFrameworkOwned;
+
+        internal Window(bool inRbw, bool portableFrameworkOwned)
+        {
+            _inTrustedSubWindow = inRbw;
+            _portableFrameworkOwned = portableFrameworkOwned;
+            if (portableFrameworkOwned) InheritanceBehavior = InheritanceBehavior.SkipToThemeNext;
+            Initialize();
+        }
+
         private IPortableWindowPeer _portablePeer;
         private PortablePresentationSource _portableSource;
         private bool _portableUpdatingMetrics;
@@ -623,7 +634,9 @@ namespace System.Windows
             finally { peer?.Dispose(); }
         }
 
-        private bool? PortableShowDialog()
+        internal bool? PortableShowMessageBox() => PortableShowDialog(messageBox: true);
+
+        private bool? PortableShowDialog(bool messageBox = false)
         {
             VerifyApiSupported();
             VerifyContextAndObjectState();
@@ -635,12 +648,14 @@ namespace System.Windows
             EnsureDialogCommand();
             var disabled = new List<KeyValuePair<Window, bool>>();
             Window previousActive = null;
+            IInputElement previousFocus = messageBox ? Keyboard.FocusedElement : null;
+            bool previousOwnerModal = messageBox && _ownerWindow != null && _ownerWindow._portableModal;
             foreach (PresentationSource source in PresentationSource.CurrentSources)
             {
-                if (source.RootVisual is Window window && window.Dispatcher == Dispatcher && window != this && !window._disposed && window._portablePeer != null)
+                if (source.Dispatcher == Dispatcher && source.RootVisual is Window window && window != this && !window._disposed && window._portablePeer != null)
                 {
                     if (window._portablePeer.IsActive) previousActive = window;
-                    if (window._portablePeer.IsVisible && window._portablePeer.IsEnabled)
+                    if ((!messageBox || ReferenceEquals(window, _ownerWindow)) && window._portablePeer.IsVisible && window._portablePeer.IsEnabled)
                         disabled.Add(new KeyValuePair<Window, bool>(window, true));
                 }
             }
@@ -658,17 +673,21 @@ namespace System.Windows
                     peer.ReleaseMouseCapture();
                     if (window._disposed || !ReferenceEquals(peer, window._portablePeer))
                     {
-                        window._portableModal = false;
+                        window._portableModal = previousOwnerModal;
                         continue;
                     }
                     peer.SetEnabled(false);
                 }
+                if (messageBox && _disposed) return false;
                 _showingAsDialog = true;
                 Show();
                 if (_showingAsDialog && _isVisible && !_disposed)
                 {
-                    pushed = true;
-                    ComponentDispatcher.PushModal();
+                    if (!messageBox)
+                    {
+                        pushed = true;
+                        ComponentDispatcher.PushModal();
+                    }
                     if (_showingAsDialog && _isVisible && !_disposed)
                     {
                         _dispatcherFrame = new DispatcherFrame();
@@ -693,7 +712,7 @@ namespace System.Windows
                 foreach (var entry in disabled)
                 {
                     bool restore = entry.Key._portableModal;
-                    entry.Key._portableModal = false;
+                    entry.Key._portableModal = previousOwnerModal;
                     if (restore && !entry.Key._disposed && entry.Key._portablePeer != null)
                     {
                         try { entry.Key._portablePeer.SetEnabled(entry.Value && entry.Key.IsEnabled); }
@@ -702,7 +721,12 @@ namespace System.Windows
                 }
                 if (previousActive != null && !previousActive._disposed && previousActive._portablePeer?.IsVisible == true && previousActive._portablePeer.IsEnabled)
                 {
-                    try { previousActive._portablePeer.Activate(); }
+                    try
+                    {
+                        previousActive._portablePeer.Activate();
+                        if (messageBox && previousFocus is DependencyObject element && Window.GetWindow(element) == previousActive)
+                            Keyboard.Focus(previousFocus);
+                    }
                     catch (Exception exception) { failure ??= System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(exception); }
                 }
                 if (!bodyFailed) failure?.Throw();

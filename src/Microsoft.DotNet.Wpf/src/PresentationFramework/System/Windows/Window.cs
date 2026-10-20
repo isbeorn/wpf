@@ -7409,6 +7409,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                if (_portableFrameworkOwned) return false;
+#endif
                 return (Application.Current != null);
             }
         }

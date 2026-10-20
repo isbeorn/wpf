@@ -83,6 +83,11 @@ try
                     PointerGeometryCases.Exercise(native, Run, Wait, Drain, chromeRequestedDpi, windowManagerTrace.Enqueue);
                     completed = true;
                 }
+                else if (args.Contains("--message-box-only", StringComparer.Ordinal))
+                {
+                    MessageBoxNativeCases.Exercise(native, Run, Wait, Drain, chromeRequestedDpi, windowManagerTrace.Enqueue);
+                    completed = true;
+                }
                 else if (args.Contains("--chrome-state-denial-only", StringComparer.Ordinal))
                 {
                     ChromeCases.StateDenial(native, Run, Wait, Drain, windowManagerTrace.Enqueue);

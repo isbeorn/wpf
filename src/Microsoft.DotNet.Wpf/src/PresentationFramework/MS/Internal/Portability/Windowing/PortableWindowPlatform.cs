@@ -103,6 +103,8 @@ namespace MS.Internal.Portability.Windowing
             _factory = factory;
         }
 
+        internal static bool HasFactory => _factory != null;
+
         internal static IPortableWindowFactory Factory => _factory ??
             throw new PlatformNotSupportedException("A portable window backend must be registered before showing a Window.");
     }

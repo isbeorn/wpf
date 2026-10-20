@@ -8,6 +8,7 @@
     <Compile Remove="WindowTestAccess.cs" />
     <Compile Remove="StockOracle/**/*.cs" />
     <ProjectReference Include="../../Framework/PresentationFramework/PresentationFramework.csproj" />
+    <ProjectReference Include="../../Framework/PresentationFramework.Classic/PresentationFramework.Classic.csproj" />
   </ItemGroup>
   <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
   <Import Project="../../Framework/Build/PublicSigning.targets" />

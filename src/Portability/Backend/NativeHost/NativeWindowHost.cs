@@ -54,6 +54,7 @@ public static class NativeWindowHost
             var factory = new NativeWindowFactory(session.Connection, screens, dialogs, automation);
             session.Own(factory);
             PortableWindowPlatform.RegisterFactory(factory);
+            PortableMessageBoxPlatform.RegisterExecutor(NativeMessageBoxHost.Instance);
             WpfFork::MS.Internal.Portability.Clipboard.PortableClipboard.Register(clipboard);
             WpfFork::MS.Internal.Portability.PortableSplashPlatform.Register(new NativeSplashFactory(session.Connection, screens));
         }

@@ -14,6 +14,7 @@
     <Compile Include="$(WpfSourceDir)PresentationFramework/MS/Internal/documents/Portable/*.cs" />
     <Compile Include="$(WpfSourceDir)PresentationFramework/System/Windows/Shell/WindowChromeWorker.Portable.cs" />
     <Compile Include="$(WpfSourceDir)PresentationFramework/System/Windows/Window.Portable.cs" Condition="Exists('$(WpfSourceDir)PresentationFramework/System/Windows/Window.Portable.cs')" />
+    <Compile Include="$(WpfSourceDir)PresentationFramework/System/Windows/MessageBox.Portable.cs" />
     <Compile Include="$(WpfSourceDir)PresentationFramework/Microsoft/Win32/FileDialog.Portable.cs" />
     <Compile Include="$(WpfSourceDir)PresentationFramework/MS/Internal/Portability/Windowing/*.cs" />
     <Compile Include="$(WpfSourceDir)PresentationFramework/MS/Internal/Portability/Input/*.cs" />

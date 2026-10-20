@@ -1006,6 +1006,8 @@ var thread = new Thread(() =>
         }
     });
 
+    MessageBoxCases.Exercise(factory, Run);
+
 }) { IsBackground = true };
 if (OperatingSystem.IsWindows()) thread.SetApartmentState(ApartmentState.STA);
 thread.Start();

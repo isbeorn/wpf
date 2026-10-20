@@ -461,20 +461,29 @@ namespace System.Windows.Input
 
         private PresentationSource GetActiveSource()
         {
+#if PORTABLE_WPF
+            PresentationSource source = InputManager.Current.PortableInputState.KeyboardSource;
+            return source?.IsDisposed == false ? source : null;
+#else
             IntPtr hwnd = MS.Win32.UnsafeNativeMethods.GetActiveWindow();
             if (hwnd != IntPtr.Zero)
                 return HwndSource.FromHwnd(hwnd);
 
             return null;
+#endif
         }
 
         private PresentationSource CriticalGetActiveSource()
         {
+#if PORTABLE_WPF
+            return GetActiveSource();
+#else
             IntPtr hwnd = MS.Win32.UnsafeNativeMethods.GetActiveWindow();
             if (hwnd != IntPtr.Zero)
                 return HwndSource.CriticalFromHwnd(hwnd);
 
             return null;
+#endif
         }
 
         
