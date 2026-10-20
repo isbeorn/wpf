@@ -59,6 +59,13 @@ internal static partial class X11WindowNative
         [FieldOffset(88)] public nint Data4;
     }
     [StructLayout(LayoutKind.Sequential)]
+    internal struct WindowChanges
+    {
+        public int X, Y, Width, Height, BorderWidth;
+        public nuint Sibling;
+        public int StackMode;
+    }
+    [StructLayout(LayoutKind.Sequential)]
     internal struct WmHints
     {
         public nint Flags;
@@ -102,6 +109,8 @@ internal static partial class X11WindowNative
     [DllImport(Xlib)] internal static extern int XSetTransientForHint(nint display, nuint window, nuint owner);
     [DllImport(Xlib)] internal static extern int XStoreName(nint display, nuint window, byte[] title);
     [DllImport(Xlib)] internal static extern int XGetWindowAttributes(nint display, nuint window, out WindowAttributes attributes);
+    [DllImport(Xlib)] internal static extern int XQueryTree(nint display, nuint window, out nuint root, out nuint parent, out nint children, out uint count);
+    [DllImport(Xlib)] internal static extern int XReconfigureWMWindow(nint display, nuint window, int screen, uint valueMask, ref WindowChanges changes);
     [DllImport(Xlib)] internal static extern int XTranslateCoordinates(nint display, nuint source, nuint destination,
         int x, int y, out int destinationX, out int destinationY, out nuint child);
     [DllImport(Xlib)] internal static extern int XGetWindowProperty(nint display, nuint window, nuint property,

@@ -3,6 +3,8 @@
 
 #if PORTABLE_WPF
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shell;
@@ -86,6 +88,10 @@ namespace MS.Internal.Portability.Windowing
         IPortableWindowPeer CreateWindow(PresentationSource source, PortableWindowOptions options);
         Rect GetWindowStartupWorkArea(PresentationSource source, PresentationSource owner) =>
             throw new PlatformNotSupportedException("The registered backend does not supply Window startup work areas.");
+        IReadOnlyList<PresentationSource> GetWindowStackingOrder(IReadOnlyList<PresentationSource> sources) =>
+            throw new PlatformNotSupportedException("The registered backend does not supply native window stacking order.");
+        void RaiseWithoutActivation(PresentationSource source) =>
+            throw new PlatformNotSupportedException("The registered backend does not support nonactivating window raises.");
         IPortablePopupPeer CreatePopup(PresentationSource source, PresentationSource owner, bool transparent) =>
             throw new PlatformNotSupportedException("The registered backend does not support native Popups.");
         Rect GetPopupScreenBounds(PresentationSource owner, Rect targetBounds, Point targetPoint, bool useWorkArea) =>
@@ -103,6 +109,30 @@ namespace MS.Internal.Portability.Windowing
             if (_factory != null)
                 throw new InvalidOperationException("A portable window factory is already registered on this thread.");
             _factory = factory;
+        }
+
+        internal static IReadOnlyList<Window> GetWindowsByZOrder(IReadOnlyList<Window> windows)
+        {
+            ArgumentNullException.ThrowIfNull(windows);
+            var sources = new Dictionary<PresentationSource, Window>();
+            foreach (Window window in windows)
+            {
+                ArgumentNullException.ThrowIfNull(window);
+                window.VerifyAccess();
+                if (!window.IsVisible) continue;
+                PresentationSource source = PresentationSource.FromVisual(window);
+                if (source != null && !source.IsDisposed) sources.TryAdd(source, window);
+            }
+            return Factory.GetWindowStackingOrder(sources.Keys.ToArray()).Select(source => sources[source]).ToArray();
+        }
+
+        internal static void RaiseWithoutActivation(Window window)
+        {
+            ArgumentNullException.ThrowIfNull(window);
+            window.VerifyAccess();
+            if (!window.IsVisible) return;
+            PresentationSource source = PresentationSource.FromVisual(window);
+            if (source != null && !source.IsDisposed) Factory.RaiseWithoutActivation(source);
         }
 
         internal static bool HasFactory => _factory != null;

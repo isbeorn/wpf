@@ -323,6 +323,64 @@ internal sealed class X11Window : IDisposable
         XGetInputFocus(Connection.Display, out focus, out _);
         return focus == Handle;
     }
+    internal static IReadOnlyList<X11Window> GetStackingOrder(X11Connection connection, IReadOnlyList<X11Window> windows)
+    {
+        connection.VerifyOwner();
+        var clients = new Dictionary<nuint, X11Window>();
+        foreach (var window in windows)
+        {
+            if (window.Connection != connection) throw new ArgumentException("Stacking candidates must share the native connection.", nameof(windows));
+            if (!window.IsVisible || !IsViewable(connection, window.Handle)) continue;
+            nuint ancestor = window.Handle;
+            var visited = new HashSet<nuint>();
+            while (ancestor != 0 && visited.Add(ancestor))
+            {
+                if (!TryQueryTree(connection, ancestor, out nuint parent, out _)) break;
+                if (parent == connection.RootWindow) { clients.Add(ancestor, window); break; }
+                ancestor = parent;
+            }
+        }
+        if (!TryQueryTree(connection, connection.RootWindow, out _, out nuint[] children))
+            throw new InvalidOperationException("Cannot query the native root window stacking order.");
+        var ordered = new List<X11Window>();
+        for (int i = children.Length - 1; i >= 0; i--)
+            if (clients.TryGetValue(children[i], out var window)) ordered.Add(window);
+        return ordered;
+    }
+    private static bool IsViewable(X11Connection connection, nuint window)
+    {
+        int status = 0;
+        WindowAttributes attributes = default;
+        return connection.TryForeignRequest(() => status = XGetWindowAttributes(connection.Display, window, out attributes))
+            && status != 0 && attributes.MapState == 2;
+    }
+    private static bool TryQueryTree(X11Connection connection, nuint window, out nuint parent, out nuint[] children)
+    {
+        int status = 0;
+        nuint nativeParent = 0;
+        nint data = 0;
+        uint count = 0;
+        try
+        {
+            bool success = connection.TryForeignRequest(() => status = XQueryTree(connection.Display, window, out _, out nativeParent, out data, out count));
+            parent = nativeParent;
+            if (!success || status == 0) { children = []; return false; }
+            if (count != 0 && data == 0) throw new InvalidOperationException("The native window tree returned no child storage.");
+            children = new nuint[checked((int)count)];
+            for (int i = 0; i < children.Length; i++) children[i] = (nuint)Marshal.ReadIntPtr(data, checked(i * nint.Size));
+            return true;
+        }
+        finally { if (data != 0) XFree(data); }
+    }
+    internal void RaiseWithoutActivation()
+    {
+        Verify();
+        if (!IsVisible || !IsViewable(Connection, Handle)) return;
+        var changes = new WindowChanges { StackMode = 0 }; // Above, without changing geometry or focus.
+        if (XReconfigureWMWindow(Connection.Display, Handle, XDefaultScreen(Connection.Display), 1 << 6, ref changes) == 0)
+            throw new InvalidOperationException("Cannot request a nonactivating native window raise.");
+        Connection.Flush();
+    }
     public void RequestState(X11WindowState state)
     {
         Verify();

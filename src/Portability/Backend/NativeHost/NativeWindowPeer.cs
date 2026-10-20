@@ -61,6 +61,33 @@ internal sealed class NativeWindowFactory(X11Connection connection, X11Screens s
         var area = screens.ReadForRect(target).WorkingArea;
         return new WpfRect(area.X, area.Y, area.Width, area.Height);
     }
+    public IReadOnlyList<WpfSource> GetWindowStackingOrder(IReadOnlyList<WpfSource> sources)
+    {
+        connection.VerifyOwner();
+        var candidates = new Dictionary<X11Window, WpfSource>();
+        foreach (var source in sources)
+        {
+            source.VerifyAccess();
+            if (source.IsDisposed) continue;
+            if (source.RootVisual is not WpfFork::System.Windows.Window)
+                throw new ArgumentException("A stacking source must host a Window.", nameof(sources));
+            var window = _windows.FirstOrDefault(pair => pair.Value.Source == source).Key;
+            if (window is null) throw new ArgumentException("The presentation source is not registered with this window factory.", nameof(sources));
+            if (!source.IsDisposed && window.IsVisible) candidates.TryAdd(window, source);
+        }
+        return X11Window.GetStackingOrder(connection, candidates.Keys.ToArray()).Select(window => candidates[window]).ToArray();
+    }
+    public void RaiseWithoutActivation(WpfSource source)
+    {
+        connection.VerifyOwner();
+        source.VerifyAccess();
+        if (source.IsDisposed) return;
+        if (source.RootVisual is not WpfFork::System.Windows.Window)
+            throw new ArgumentException("A raised source must host a Window.", nameof(source));
+        var window = _windows.FirstOrDefault(pair => pair.Value.Source == source).Key
+            ?? throw new ArgumentException("The presentation source is not registered with this window factory.", nameof(source));
+        if (!source.IsDisposed && window.IsVisible) window.RaiseWithoutActivation();
+    }
     public IPortablePopupPeer CreatePopup(WpfSource source, WpfSource ownerSource, bool transparent)
     {
         source.VerifyAccess();
