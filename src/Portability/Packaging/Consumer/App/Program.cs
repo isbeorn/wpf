@@ -275,9 +275,16 @@ internal static class Program
         foreach(var name in new[]{"System.Private.Windows.GdiPlus","DirectWriteForwarder","ReachFramework","System.Printing"})
             Require(!File.Exists(Path.Combine(AppContext.BaseDirectory,name+".dll")),"Compile-only contract reached runtime output: "+name);
         Require(manifest.Root!.Elements("file").Any(file=>Path.GetFileName((string?)file.Attribute("path"))=="System.Private.Windows.Core.dll"),
-            "This consumer requires the source-built managed Windows.Core runtime profile.");
+            "This consumer requires the qualified managed Windows.Core runtime profile.");
         VerifyManagedWindowsCore();
-        Require(Directory.Exists(Path.Combine(AppContext.BaseDirectory,"ThirdPartyNotices/Wpf.Portable.Runtime/Windows.Core")),"Windows.Core source notices were not propagated.");
+        using var provenance = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContext.BaseDirectory,"PortableWpf/Provenance.json")));
+        var helperOrigin = provenance.RootElement.GetProperty("assets").EnumerateArray()
+            .Single(asset=>asset.GetProperty("path").GetString()=="lib/net10.0/System.Private.Windows.Core.dll").GetProperty("origin").GetString()!;
+        var noticeRoot = Path.Combine(AppContext.BaseDirectory,"ThirdPartyNotices/Wpf.Portable.Runtime");
+        var helperNotices = helperOrigin.StartsWith("source:",StringComparison.Ordinal)
+            ? Path.Combine(noticeRoot,"Windows.Core")
+            : Path.Combine(noticeRoot,"packages",helperOrigin.Split('/')[0],helperOrigin.Split('/')[1]);
+        Require(Directory.Exists(helperNotices),"Windows.Core origin notices were not propagated.");
         Require(Directory.Exists(Path.Combine(AppContext.BaseDirectory,"ThirdPartyNotices/Wpf.Portable.Runtime/TextUnicode")),"Unicode source notices were not propagated into application output.");
     }
 

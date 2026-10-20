@@ -29,9 +29,21 @@ Check 'archive-runtime-allowlist-and-hashes' {
             if((Get-FileHash -LiteralPath $helperPath).Hash -ne $expected['System.Private.Windows.Core.dll'].sha256) {throw 'Windows.Core loose helper bytes differ from the archive-verified manifest.'}
             $helper=Get-PortableAssemblyInfo $helperPath
             if($helper.machine -ne 'I386' -or $helper.corFlags -notmatch 'ILOnly' -or $helper.nativeHeaderSize -ne 0 -or
-                $helper.version -ne '10.0.0.0' -or $helper.token -ne 'b77a5c561934e089') {throw 'Windows.Core is not the qualified source-built IL-only helper.'}
-            foreach($name in @('LICENSE.TXT','SourcePin.json','SourceManifest.props')) {
-                if(!$zip.GetEntry("ThirdPartyNotices/Windows.Core/$name")) {throw "Windows.Core source notice missing: $name"}
+                $helper.version -ne '10.0.0.0' -or $helper.token -ne 'b77a5c561934e089') {throw 'Windows.Core is not the qualified IL-only helper.'}
+            $helperOrigins = @((Get-Content (Join-Path $distribution 'runtime/Provenance.json') -Raw | ConvertFrom-Json).assets | Where-Object path -eq 'lib/net10.0/System.Private.Windows.Core.dll')
+            if($helperOrigins.Count -ne 1) {throw 'Windows.Core must have one recorded runtime origin.'}
+            $helperOrigin = $helperOrigins[0].origin
+            if($helperOrigin -like 'source:*') {
+                $noticeRoot = 'ThirdPartyNotices/Windows.Core'
+                $noticeFiles = @('LICENSE.TXT','SourcePin.json','SourceManifest.props')
+            } else {
+                if($zip.GetEntry('ThirdPartyNotices/Windows.Core/SourcePin.json')) {throw 'Package-origin Windows.Core carries an unrelated source-project pin.'}
+                $originParts = $helperOrigin.Split('/')
+                $noticeRoot = "ThirdPartyNotices/packages/$($originParts[0])/$($originParts[1])"
+                $noticeFiles = @('LICENSE.TXT','THIRD-PARTY-NOTICES.TXT')
+            }
+            foreach($name in $noticeFiles) {
+                if(!$zip.GetEntry("$noticeRoot/$name")) {throw "Windows.Core origin notice missing: $noticeRoot/$name"}
             }
         }
     } finally { $zip.Dispose() }
@@ -53,7 +65,7 @@ Check 'sdk-tool-closure-and-package-relative-imports' {
             if("tools/net10.0/$required.dll" -notin $tools) { throw "Compiler dependency missing: $required" }
         }
         if($tools.Count -ne 3) { throw "Unexpected compiler task closure: $($tools -join ', ')" }
-        if($expected.ContainsKey('System.Private.Windows.Core.dll') -and $zip.GetEntry('tools/contracts/System.Private.Windows.Core.dll')) {throw 'The source-built runtime helper still has a competing SDK contract copy.'}
+        if($expected.ContainsKey('System.Private.Windows.Core.dll') -and $zip.GetEntry('tools/contracts/System.Private.Windows.Core.dll')) {throw 'The runtime helper still has a competing SDK contract copy.'}
         foreach($entry in $zip.Entries | Where-Object FullName -match '\.(props|targets)$') {
             $reader=[IO.StreamReader]::new($entry.Open())
             try { $text=$reader.ReadToEnd() } finally { $reader.Dispose() }

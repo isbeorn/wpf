@@ -79,7 +79,7 @@ try {
             }
             if ($name -eq 'System.Private.Windows.Core.dll' -and ($identity.machine -ne 'I386' -or $identity.corFlags -notmatch 'ILOnly' -or
                 $identity.nativeHeaderSize -ne 0 -or $identity.version -ne '10.0.0.0' -or $identity.token -ne 'b77a5c561934e089')) {
-                throw 'Windows.Core runtime must be the original-source AnyCPU IL-only ECMA helper.'
+                throw 'Windows.Core runtime must be the qualified AnyCPU IL-only ECMA helper.'
             }
         }
         else {
@@ -150,8 +150,10 @@ try {
     $unicodeNotices = Join-Path $published 'ThirdPartyNotices/TextUnicode'
     if (!(Test-Path $unicodeNotices)) { throw 'The required Unicode source notices were not published.' }
     Copy-Item -LiteralPath $unicodeNotices -Destination (Join-Path $runtime 'ThirdPartyNotices/TextUnicode') -Recurse
-    foreach ($name in @('LICENSE.TXT','SourcePin.json','SourceManifest.props')) {
-        Copy-PortableFile (Join-Path $portable "Framework/System.Private.Windows.Core/$name") (Join-Path $runtime "ThirdPartyNotices/Windows.Core/$name")
+    if (($records | Where-Object path -eq 'lib/net10.0/System.Private.Windows.Core.dll').origin -like 'source:*') {
+        foreach ($name in @('LICENSE.TXT','SourcePin.json','SourceManifest.props')) {
+            Copy-PortableFile (Join-Path $portable "Framework/System.Private.Windows.Core/$name") (Join-Path $runtime "ThirdPartyNotices/Windows.Core/$name")
+        }
     }
     $manifest.Save((Join-Path $runtime 'RuntimeManifest.xml'))
     Copy-PortableFile (Join-Path $packaging 'RuntimePolicy.targets') (Join-Path $runtime 'buildTransitive/Wpf.Portable.Runtime.targets')
