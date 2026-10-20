@@ -18,7 +18,9 @@ copy_evidence() {
         if [ -f "$file" ]; then cp -a "$file" "$prepared/"; fi
     done
     if [ -d App/bin ]; then cp -a App/bin "$prepared/App/"; fi
-    for directory in custom-bin publish-fdd publish-linux-fdd publish-linux-sc; do
+    if [ -d App/obj ]; then cp -a App/obj "$prepared/App/"; fi
+    if [ -d Companion/obj ]; then cp -a Companion/obj "$prepared/Companion/"; fi
+    for directory in custom-bin custom-obj publish-fdd publish-linux-fdd publish-linux-sc; do
         if [ -d "$directory" ]; then cp -a "$directory" "$prepared/"; fi
     done
     exit "$status"
