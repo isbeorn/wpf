@@ -1,10 +1,34 @@
 # WPF cross platform feasibility results
 
-Checkpoint date: 19 October 2026. Branch: `codex/nina-cross-platform`.
+Checkpoint date: 20 October 2026. Branch: `codex/nina-cross-platform`.
 
-The experiments establish a viable open-source Linux x64 path for this fork. Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded text implementation and native controls run through the selected X11 adapter. The app-local SDK compiles genuine BAML on Linux and runs unchanged Microsoft-produced fixtures. An unchanged NINA view now passes package-only construction/layout and native presentation checks. The refreshed 24 MP workload sustains the requested short 1 Hz callback cadence after the conversion repair. Full NINA compatibility, complete display qualification and long-running stability remain open.
+The experiments establish a viable open-source Linux x64 path for this fork. Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded text implementation and native controls run through the owned X11 adapter. The app-local SDK compiles genuine BAML on Linux and earlier package-only fixtures retain their recorded scope. Current scientific display and editor checks pass, but no usable full NINA window has been observed. Full application, desktop, package and long-running qualification remain open.
 
 The Phase 0 reference/runtime gate and Phase 1 feasibility gate pass within the scopes recorded below. Phases 2 through 5 have not passed. The accepted [plan](../cross-platform-plan.md) remains the behavior contract. Physical desktop, full application and sustained-workload qualification remain later gates. Component checks, source compilation and managed test peers do not substitute for native WPF control behavior.
+
+## Current owned-backend checkpoint
+
+The released `Stage-nina-integration-1` family preserves complete 120-file
+Windows and Linux runtime inventories. Its [handoff](../../artifacts/portability/current/stage-nina-integration-1/handoff.json)
+records the actual source snapshot, held docking changes and compiler outputs.
+Later Section/List and MessageBox changes are not covered by that frozen family.
+
+| Gate | Current evidence | Limit |
+| --- | --- | --- |
+| Scientific display | The [tracked native recipe](../../src/Portability/Tests/NinaPortableViews/NativeImaging/README.md) passes Gray16 48/48 and Rgb48 48/48 at 6000x4000, with complete source ownership and native capture parity. [Raw qualification](../../artifacts/portability/current/reports/nina-imaging-durable-4/durable-qualification.json) | Private Xvfb, prepared frames and reported-only timing. AutoStretch and DetectStars are disabled. Acquisition, image preparation and annotations are not qualified. |
+| Original editor/control workflow | The [AvalonEdit port](../../src/Portability/Dependencies/AvalonEdit/README.md) preserves 254 attributed originals and three guarded adaptations. The [sealed replay](../../artifacts/portability/current/richtext/nina-integration-1/closeout-seal.json) records 55 passing checks, including native cursor restoration and caret timer profiles. | Native IME, physical keyboard, live GNOME and the complete NINA document remain separate. |
+| Managed document blocks | [Section/List qualification](../../artifacts/portability/current/section-list-verification/handoff.json) passes 31 checks on each OS and three stock checks. Genuine DOM, markers, pointers, RTL caret geometry and child rollback are exercised. | Table layout, inline images and full Markdown callback/link interaction remain open. |
+| Original application startup | The [actual integration-1 attempt](../../artifacts/portability/current/nina/shell-integration-1/first-run-handoff.json) reaches original App.Main, composition and MainWindow.Show before asynchronous binding initializes StarAnnotator. | StarAnnotator requests Windows GDI+ through System.Drawing.Common. No usable native MainWindow or retained pixels were observed. The capture is inconclusive with zero frames. |
+
+The user chose to finish WPF gates before adapting NINA.Image. That application
+work, including any startup-only GDI deferral, remains deferred. The separate
+MessageBox error-handler failure is being addressed through the approved private
+managed dialog design; it is not the primary startup failure. Docking interruption,
+document table/image integration, current package-only consumers, native desktop
+interaction and Orca remain required. The accepted Rgb48 timing policy and canceled
+optimization remain unchanged. No complete Phase 2-5 or full NINA claim follows.
+
+## Historical 19 October checkpoint
 
 On 19 October 2026 the user approved replacing the Avalonia adapter with an
 owned Linux X11 backend inside `Wpf.Portable.NativeHost`, retaining WPF semantics

@@ -76,7 +76,25 @@ user32 failure is secondary. No usable Window is observed; owned cleanup is
 verified afterward. This preserves the first failed startup as historical
 evidence; the later checkpoint below records the subsequent source changes.
 
-### Current NINA startup and source checkpoint
+### Current NINA startup boundary: 20 October 2026
+
+The [integration-1 application attempt](../../artifacts/portability/current/nina/shell-integration-1/first-run-handoff.json)
+uses the complete released owned runtime and the original offline simulator
+composition. It reaches App.Main, real composition and MainWindow.Show, then
+asynchronous binding triggers original StarAnnotator initialization. Its static
+System.Drawing brushes enter GDI+ and fail to load gdiplus.dll. No usable native
+MainWindow or retained pixels were observed; the zero-frame capture is
+inconclusive. Owned-process cleanup passed and the first failure remains retained.
+
+The user has deferred the NINA.Image adaptation until the WPF gates are finished.
+Do not treat the passing prepared-frame scientific display checks as image
+preparation, star detection or full startup evidence. The approved private managed
+MessageBox work addresses the separate user32 failure in error recovery. The
+[current feasibility checkpoint](feasibility-results.md#current-owned-backend-checkpoint)
+records the completed editor, scientific display and Section/List results plus
+remaining integration and desktop gates.
+
+### Historical bc9 NINA startup and source checkpoint
 
 The [bc9 checkpoint](../../artifacts/portability/owned-bc9-main-qualification/README.md)
 uses fresh eleven-project Windows/Linux builds of `bc9f04df9`. Each OS passes
