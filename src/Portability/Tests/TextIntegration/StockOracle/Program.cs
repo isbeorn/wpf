@@ -14,7 +14,11 @@ var thread = new Thread(() =>
 {
     try
     {
-        if (args.Contains("--system-fonts")) result = SystemFontEnumerationCases.Verify(portable: false);
+        if (args.Contains("--verify-inverted-control")) result = new { status = "pass", cases = InvertedTextBlockCases.Verify(RasterInvertedVisual) };
+        else if (args.Contains("--verify-inversion")) result = new { status = "pass", cases = InvertedTextCases.Verify() };
+        else if (args.Contains("--capture-inverted-control")) result = InvertedTextBlockCases.Capture(RasterInvertedVisual);
+        else if (args.Contains("--capture-inversion")) result = InvertedTextCases.Capture();
+        else if (args.Contains("--system-fonts")) result = SystemFontEnumerationCases.Verify(portable: false);
         else if (args.Contains("--wrapped-textblock")) result = WrappedTextBlockCases.Verify(RasterWrappedTextBlock);
         else if (args.Contains("--modifier-continuation")) result = ModifierContinuationCases.Capture();
         else if (args.Contains("--capture-hidden")) result = HiddenRunCases.Capture();
@@ -59,6 +63,14 @@ static byte[] RasterWrappedTextBlock(TextBlock block, int width, int height)
 {
     var bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
     bitmap.Render(block);
+    var pixels = new byte[width * height * 4];
+    bitmap.CopyPixels(pixels, width * 4, 0);
+    return pixels;
+}
+static byte[] RasterInvertedVisual(Visual visual, int width, int height)
+{
+    var bitmap = new RenderTargetBitmap(width, height, 96, 96, PixelFormats.Pbgra32);
+    bitmap.Render(visual);
     var pixels = new byte[width * height * 4];
     bitmap.CopyPixels(pixels, width * 4, 0);
     return pixels;

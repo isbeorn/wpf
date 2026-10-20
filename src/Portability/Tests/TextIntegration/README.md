@@ -290,3 +290,13 @@ catalog from its existing directories. It includes .ttf and .otf files;
 collection files (.ttc), composite families and named variable-font instances
 are outside this catalog. No font installation refresh or additional
 `Fonts.GetFontFamilies` URI support is introduced.
+
+InvertedTextCases uses the existing stock anti-inversion contract for all four
+InvertAxes flags, both flow directions and nonzero origins under a caller affine
+transform. It checks glyph baselines, background/decoration corners, original
+embedded-object surface/baseline arguments and sibling restoration after object
+Draw throws. The fixed-scene comparison allows only floating-point arithmetic
+roundoff, not font/raster differences. Actual RTL TextBlock layout verifies
+unmirrored retained glyph orientation and nonempty same-backend pixels. These
+checks do not claim cross-backend glyph raster equality or broaden unsupported
+text formatting profiles.

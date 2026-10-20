@@ -7,6 +7,7 @@ using System.Windows.Media.TextFormatting;
 using System.Windows.Threading;
 using SkiaSharp;
 
+if (args.Contains("--capture-inversion")) { Console.WriteLine(JsonSerializer.Serialize(InvertedTextCases.Capture(), new JsonSerializerOptions { WriteIndented = true })); return 0; }
 if (args.Contains("--capture-hidden")) { Console.WriteLine(JsonSerializer.Serialize(HiddenRunCases.Capture(), new JsonSerializerOptions { WriteIndented = true })); return 0; }
 if (args.Contains("--capture-modifier-continuation")) { Console.WriteLine(JsonSerializer.Serialize(ModifierContinuationCases.Capture(), new JsonSerializerOptions { WriteIndented = true })); return 0; }
 var checks = new List<object>();
@@ -46,6 +47,11 @@ try
     Regression("hidden-source-runs", () => HiddenRunCases.Verify(formatter, Require));
     Regression("hidden-source-suffix", () => HiddenRunCases.VerifySourceSuffix(formatter, Require));
     Regression("automatic-line-height", () => HiddenRunCases.VerifyAutomaticHeight(Require));
+    Regression("inverted-text-drawing", () =>
+    {
+        int cases = InvertedTextCases.Verify();
+        Require(cases == 66, "inverted-text-drawing", "All axes preserve stock surface, origin, background, decoration, object callback and exception restoration contracts for both flows.");
+    });
     Regression("document-source-runs", () => DocumentRunCases.Verify(formatter, Require));
     Regression("document-source-boundaries", () => DocumentRunCases.VerifyBoundaries(formatter, Require));
     Regression("modifier-soft-continuation", () => ModifierContinuationCases.Verify(Require));

@@ -21,7 +21,13 @@ var thread = new Thread(() =>
             return;
         }
         results.Add(SystemFontEnumerationCases.Verify(portable: true));
-        results.AddRange(WrappedTextBlockCases.Verify(RasterWrappedTextBlock));
+        if (args.Contains("--capture-inverted-control"))
+        {
+            results.AddRange(InvertedTextBlockCases.Capture(RasterVisual));
+            return;
+        }
+        results.AddRange(InvertedTextBlockCases.Verify(RasterVisual));
+        results.AddRange(WrappedTextBlockCases.Verify(RasterVisual));
         results.Add(VerifyAlignedTextBlock());
         foreach (object result in WordSelectionCases.Verify()) results.Add(result);
         var block = new TextBlock { Text = "Default 123", FontSize = 24,
@@ -73,7 +79,7 @@ thread.Join();
 Console.WriteLine(JsonSerializer.Serialize(new { fixture = "actual-text-controls-and-word-selection", results, failure = failure?.ToString() }, new JsonSerializerOptions { WriteIndented = true }));
 return failure == null ? 0 : 1;
 
-static byte[] RasterWrappedTextBlock(TextBlock block, int width, int height)
+static byte[] RasterVisual(Visual block, int width, int height)
 {
     Type targetType = typeof(Visual).Assembly.GetType("MS.Internal.Portability.Rendering.PortableRenderTarget", true)!;
     using var target = (IDisposable)Activator.CreateInstance(targetType, BindingFlags.Instance | BindingFlags.NonPublic, null, [block, width, height], null)!;

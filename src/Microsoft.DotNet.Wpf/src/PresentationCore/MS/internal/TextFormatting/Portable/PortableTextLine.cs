@@ -23,6 +23,7 @@ namespace MS.Internal.TextFormatting.Portable
         private sealed record LineRun(int Start, int Length, TextRun Source, TextRunProperties Properties, GlyphRun Glyphs, int Level, double Offset, double Width, TextEmbeddedObjectMetrics ObjectMetrics = null);
         private readonly PortableParagraph _paragraph;
         private readonly double _drawingOffset;
+        private readonly double _paragraphWidth;
         private readonly double _alignmentOffset;
         private readonly int _first;
         private readonly int _textStart;
@@ -47,6 +48,7 @@ namespace MS.Internal.TextFormatting.Portable
             : base(pixelsPerDip)
         {
             _paragraph = paragraph;
+            _paragraphWidth = paragraphWidth;
             string text = paragraph.Text.Substring(start, length);
             _textStart = start;
             _first = paragraph.First + (start == 0 ? 0 : paragraph.SourceOffset(start));
@@ -104,6 +106,8 @@ namespace MS.Internal.TextFormatting.Portable
                     {
                         if (!double.IsFinite(objectBounds.X) || !double.IsFinite(objectBounds.Y) || !double.IsFinite(objectBounds.Width) || !double.IsFinite(objectBounds.Height))
                             throw new ArgumentException("Embedded text object ink bounds must be finite.");
+                        // Embedded bounds are in paragraph UV coordinates.
+                        if (paragraph.BaseLevel == 1) objectBounds.X = shape.Width - objectBounds.Right;
                         objectBounds.Offset(_width, _baseline);
                         ink.Union(objectBounds);
                     }
@@ -261,9 +265,16 @@ namespace MS.Internal.TextFormatting.Portable
         {
             Verify();
             ArgumentNullException.ThrowIfNull(context);
-            if (inversion != InvertAxes.None)
-                throw new NotSupportedException("Portable inverted text drawing is not implemented.");
-            context.PushTransform(new TranslateTransform(origin.X + (_paragraph.BaseLevel == 0 ? _alignmentOffset : -_alignmentOffset), origin.Y));
+            MatrixTransform antiInversion = TextFormatterImp.CreateAntiInversionTransform(inversion, _paragraphWidth, _height);
+            if (antiInversion != null) context.PushTransform(antiInversion);
+            try { DrawTextLine(context, origin, antiInversion); }
+            finally { if (antiInversion != null) context.Pop(); }
+        }
+        private void DrawTextLine(DrawingContext context, Point origin, MatrixTransform antiInversion)
+        {
+            double x = _paragraph.BaseLevel == 1 && antiInversion != null ? -origin.X : origin.X;
+            var translation = new TranslateTransform(x + (_paragraph.BaseLevel == 0 ? _alignmentOffset : -_alignmentOffset), origin.Y);
+            context.PushTransform(translation);
             try
             {
                 foreach (LineRun run in _runs)
@@ -271,7 +282,17 @@ namespace MS.Internal.TextFormatting.Portable
                     if (run.Properties.BackgroundBrush != null)
                         context.DrawRectangle(run.Properties.BackgroundBrush, null, new Rect(_drawingOffset + run.Offset, 0, run.Width, _height));
                     if (run.Source is TextEmbeddedObject item)
-                        item.Draw(context, new Point(_drawingOffset + run.Offset, _baseline), _paragraph.BaseLevel == 1, false);
+                    {
+                        bool rightToLeft = _paragraph.BaseLevel == 1;
+                        double baselineX = _drawingOffset + run.Offset + (rightToLeft ? run.Width - _alignmentOffset : _alignmentOffset);
+                        if (rightToLeft && antiInversion != null) baselineX = _paragraphWidth - baselineX;
+                        Matrix restore = translation.Value;
+                        if (antiInversion != null) restore.Append(antiInversion.Value);
+                        restore.Invert();
+                        context.PushTransform(new MatrixTransform(restore));
+                        try { item.Draw(context, new Point(origin.X + baselineX, origin.Y + _baseline), rightToLeft, false); }
+                        finally { context.Pop(); }
+                    }
                     else
                         context.DrawGlyphRun(run.Properties.ForegroundBrush, run.Glyphs);
                     if (run.Properties.TextDecorations != null)
