@@ -5,7 +5,7 @@ umask 077
 ulimit -c 0
 
 if [[ $# -lt 5 || $# -gt 6 ]]; then
-    printf '%s\n' 'Usage: Run-NinaRichText.sh repository dotnet PreparedConsumerFreeze.json SHA256 original21|controls10|profiles8 [profile]'
+    printf '%s\n' 'Usage: Run-NinaRichText.sh repository dotnet PreparedConsumerFreeze.json SHA256 original21|controls10|profiles8|markdown33 [profile]'
     exit 2
 fi
 repository=$(realpath -- "$1")
@@ -19,15 +19,16 @@ case "$proof/" in "$repository/artifacts/portability/"*) ;; *) exit 2;; esac
 [[ "$freeze_hash" =~ ^[A-Fa-f0-9]{64}$ ]]
 case "$suite" in
     original21) [[ -z "$profile" ]]; mode=richtext-control; assembly=NinaPortableViews; expected=21;;
+    markdown33) [[ -z "$profile" ]]; mode=richtext-control; assembly=NinaMarkdownComposite; expected=33;;
     controls10) [[ -z "$profile" ]]; mode=editor-controls; assembly=AvalonEditControlChecks; expected=10;;
     profiles8) [[ "$profile" == -1 || "$profile" == 0 || "$profile" == 80 ]]; mode=caret-profile; assembly=AvalonEditCaretProfiles; expected=8;;
     *) exit 2;;
 esac
 
 verify_freeze() {
-    python3 - "$repository" "$freeze" "$freeze_hash" "$assembly" <<'PY'
+    python3 - "$repository" "$freeze" "$freeze_hash" "$assembly" "$suite" <<'PY'
 import hashlib,json,pathlib,shutil,sys
-root,freeze=map(pathlib.Path,sys.argv[1:3]);expected,assembly=sys.argv[3:]
+root,freeze=map(pathlib.Path,sys.argv[1:3]);expected,assembly,suite=sys.argv[3:]
 def sha(path):
     with path.open('rb') as stream:return hashlib.file_digest(stream,'sha256').hexdigest().upper()
 assert sha(freeze)==expected.upper(),'Prepared freeze hash differs'
@@ -50,7 +51,8 @@ child=root/'src/Portability/Tests/NinaPortableViews/RichText'
 provenance=child/'SourceProvenance.json'
 assert provenance.relative_to(root).as_posix() in listed,'Source provenance must be frozen'
 source=json.loads(provenance.read_text())
-for item in source['sources']:
+sources=source['sources']+(source['markdownComposite']['sources'] if suite=='markdown33' else [])
+for item in sources:
     path=child/item['path']
     assert path.relative_to(root).as_posix() in listed
     assert sha(path)==item['sha256'],'Qualified source changed'
@@ -169,6 +171,23 @@ raw=json.loads((run/'runtime.json').read_text()) if (run/'runtime.json').exists(
 stderr=(run/'stderr.log').stat().st_size if (run/'stderr.log').exists() else None
 passed=sum(item['status']=='pass' for item in raw['checks']) if raw else 0
 complete=bool(code==0 and not cleanup and unchanged and stderr==0 and raw and not raw['failed'] and len(raw['checks'])==expected and passed==expected and raw['expectedCheckCount']==expected and not raw['unreachedOrFailedChecks'])
+if sys.argv[6]=='markdown33':
+    expected_names=["declared-runtime-inputs","single-runtime-type-universe","guarded-profile-and-log-paths","original-in-memory-provider-before-preference-reads","original-33-resource-dictionaries","original-consumer-Hyperlink-dictionary","actual-isolated-profile","original-package-and-resource-identities","detached-original-PluginsView-BAML-only","consumer-recipe-bound-original-MarkdownStyle","measured-genuine-code-editor-and-text-lines","original-effective-AvalonEdit-style","actual-codeblock-policy","initial-control-raster","outer-scroll-down-and-return","editor-horizontal-scroll-and-return","selection-extend-shrink-reverse-clear","focus-away-and-return","read-only-input-and-delete-policy","document-replace-and-return","fresh-close-and-reopen","composite-original-BAML-model-binding-callback","composite-original-DOM-and-styles","composite-original-async-image-loader","composite-table-and-child-layout","composite-inline-image-retained-pixels","composite-original-readonly-editor-selection","composite-document-selection-forward-reverse","composite-outer-scroll-return","composite-width-A-B-A","composite-original-command-enabled-disabled-restored","composite-model-replace-restore","composite-host-close"]
+    def optional_namespace_probe(event):
+        identities={
+            'System.Windows.Controls.Ribbon, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089',
+            'System.Windows.Controls.Ribbon, Culture=neutral, PublicKeyToken=b77a5c561934e089',
+            'WindowsFormsIntegration, Version=10.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35',
+            'WindowsFormsIntegration, Culture=neutral, PublicKeyToken=31bf3856ad364e35'}
+        return bool(isinstance(event,dict) and event.get('exceptionType')=='System.IO.FileNotFoundException' and
+                    event.get('fileName') in identities and event.get('hasInnerException') is False and
+                    event.get('namespaceProbe') is True and isinstance(event.get('callerStack'),str) and bool(event['callerStack']))
+    complete=bool(complete and raw.get('probe')=='original-NINA-richtext-control' and
+                  raw.get('mode')=='richtext-control' and raw.get('failed') is False and
+                  raw.get('expectedCheckCount')==33 and raw.get('unreachedOrFailedChecks')==[] and
+                  [item['name'] for item in raw['checks']]==expected_names and len(set(expected_names))==33 and
+                  isinstance(raw.get('dependencyFailures'),list) and
+                  all(optional_namespace_probe(event) for event in raw['dependencyFailures']))
 report=dict(childExit=code,deadlineSeconds=45,cleanupVerified=not cleanup,runtimeUnchanged=unchanged,stderrBytes=stderr,passed=passed,expectedChecks=expected,complete=complete,suite=sys.argv[6],profile=sys.argv[7],privateXvfb=True,physicalKeyboard=False,nativeIme=False,rawResult=str(run/'runtime.json'))
 (run/'launcher-result.json').write_text(json.dumps(report,indent=2)+'\n')
 print(json.dumps(report));print(str(run))

@@ -1,0 +1,4 @@
+*.cs -text
+*.md -text
+*.py -text
+*.png binary

@@ -5,13 +5,14 @@ recipe. SourceProvenance.json records each byte hash and newline count. The
 targeted .gitattributes rules retain the single embedded CRLF in Program.cs and
 the LF bytes in the other sources regardless of checkout conversion settings.
 
-The three ordinary executable projects select explicit source sets:
+The ordinary executable projects select explicit source sets:
 
 | Project | Assembly | Process checks |
 | --- | --- | --- |
 | NinaRichText.csproj | NinaPortableViews | 21 |
 | NinaEditorControls.csproj | AvalonEditControlChecks | 10 |
 | NinaCaretProfiles.csproj | AvalonEditCaretProfiles | 8 for each -1/0/80 profile |
+| NinaMarkdownComposite.csproj | NinaMarkdownComposite | 33 |
 
 There is one shared copy of RichTextCases and the original in-memory provider.
 The three Program variants and two EditorControlCases variants are retained
@@ -35,8 +36,8 @@ Projects do not reference framework projects or build a framework Stage. Each
 uses a complete root-released Stage and generated SourceStageReferences.props,
 plus a selected fixture containing Closure.json and References.props.
 
-The selected closure must retain159 original members from the tracked BF610
-stock160 baseline and exactly one explicitly declared source-adapted AvalonEdit.
+For the original three variants, the selected closure retains 159 original members
+from the tracked BF610 stock160 baseline and one declared source-adapted AvalonEdit.
 Preserve its source, PE/PDB, identity, resource and licensing proof. It is not an
 unchanged160 binary claim. The unchanged host's historical check name
 unchanged-160-original-closure verifies the selected manifest's actual hashes;
@@ -118,7 +119,7 @@ Ribbon/WindowsFormsIntegration FileNotFound probes during resource loading; they
 did not escape or fail the checks. No assemblies are added to hide them. The raw
 legacy nativeInput=false field does not erase explicit private XTest pointer
 observations. Physical keyboard, native IME, live GNOME, full PluginsView Loaded,
-catalog, external plugin, rich-document composite and full NINA startup remain
+catalog, external plugin, broader rich-document coverage and full NINA startup remain
 separate gates. The earlier stock nonportable21+9 run is separate retained
 WindowsDesktop evidence, not qualification of this new repository-native path.
 
@@ -145,3 +146,91 @@ replay-results.json SHA256
 D6FFC469793965A213CD6B34569A7ABDE113805993088A57152E69DF92678823.
 Future fixture or input changes require fresh build/PDB/closure and native replay
 verification; this retained result does not qualify a different family.
+
+## Original Markdown composite variant
+
+NinaMarkdownComposite.csproj adds the calibrated Markdown33 workflow under
+Markdown/. It reuses RichTextCases, OriginalStartupHook, X11Fixture, the existing
+font and all original resource sources. Markdown/MarkdownCompositeCases.cs,
+CompositeInputs/composite.md and local.png preserve their qualified bytes. The
+additional SourceProvenance.markdownComposite entry records their hashes and
+the source-intake adaptations without changing the original seven source entries.
+
+Prepare this variant with the existing NinaFixtureDirectory,
+NinaSourceStageDirectory and generated SourceStageReferences.props contract.
+The selected160 closure declares158 original members plus the explicitly
+source-adapted AvalonDock and AvalonEdit members. Freeze the complete released
+Stage inventory, selected closure, ordinary runtime output, source/PDB proof,
+project metadata, new Markdown sources/inputs and the existing runner. This
+variant reads the copied Closure.json and verifies loaded assemblies against
+its own ordinary output. It does not read a temporary shared consumer root or
+borrow another consumer's deps/runtimeconfig.
+
+Use the existing build driver with the additional ordinary project:
+
+```powershell
+./eng/portability/Build-OwnedPortable.ps1 -Os linux -Label NinaMarkdownComposite `
+    -Project src/Portability/Tests/NinaPortableViews/RichText/NinaMarkdownComposite.csproj `
+    -Workspace $workspace -PackageCache $packageCache
+```
+
+With its separately prepared ordinary output freeze, replay through the same
+private-display runner:
+
+```bash
+bash eng/portability/Run-NinaRichText.sh "$repository" "$dotnet" "$markdownFreeze" "$markdownHash" markdown33
+python3 src/Portability/Tests/NinaPortableViews/RichText/Markdown/Verify-Classification.py
+```
+
+Markdown33 retains the original21 behavior checks plus12 composite checks:
+original PluginsView Description subtree and model binding, original DOM/style
+and callback marker policy, asynchronous local PNG loading, real table/list/code
+layout, exact retained image channels/chroma, forward/reverse document and child
+selection, outer scroll, width A-B-A, command enable/disable/restore, model
+replace/restore and host close. Full PluginsView Loaded, catalog, browser command
+execution, physical keyboard, native IME and full NINA startup remain separate.
+
+Every first-chance dependency event remains in raw dependencyFailures with its
+exception type, missing identity, inner-exception state and live caller evidence.
+The markdown33 classifier accepts only the four qualified full/short Ribbon and
+WindowsFormsIntegration identities as FileNotFoundException with no inner
+exception and the genuine typed ResolveAssembly -> GetAssembly ->
+EnsureXmlnsAssembliesLoaded chain. All other events fail qualification. It also
+requires the exact ordered33 names, all pass statuses, child exit0, empty stderr,
+unchanged frozen inputs and verified cleanup. The other three suite classifiers
+are unchanged. The saved-data checker exercises this actual runner branch; it
+does not replace runtime verification of the C# caller predicate.
+
+The ignored projection passed33/33 with all96 raw events preserved and qualified
+as optional namespace probes, zero unclassified events and all289 shared runtime
+files unchanged. Its compiled freeze is
+8F1062A530224F87706B1968F271E7F414760C9FF3445A20702BBF92427DA7AB.
+
+The ordinary project and input transport then passed 33/33 against the complete
+window-placement-integration-3 EWMH-qualified Stage family, root release
+97571F0CF9F3CB68B9004BE25CCE55A7D51531AAC3892C73C857C9B6275511A6.
+One optimized Release build had zero warnings/errors and exact PE/PDB identity
+with eight source documents. Its own 292-file output contained the 120 released
+Stage files and selected closure of 158 original members plus the two adapted
+components. No framework was rebuilt and the existing 289-file shared runtime
+remained unchanged.
+
+The single private-display replay retained all 96 typed optional namespace probes,
+24 for each full/short identity, with zero unknown dependency failures. All 33
+ordered checks passed, the child exited 0, stderr was empty and process, display
+and private runtime cleanup were verified. All 684 frozen rows were unchanged at
+replay closeout. The actual runner classifier's 33 saved-data controls also passed.
+The older variants' 55 checks have not been replayed against this newest family.
+Full PluginsView Loaded, browser command execution, catalog, physical keyboard,
+native IME, desktop-session behavior and full NINA startup remain separate gates.
+
+Receipts: artifacts/portability/current/richtext/markdown33-stage3-replay-1.
+PreparedConsumerFreeze.json SHA256
+3B100EBF4351E635F9135329862B0F0BA1073E858F6DFA39CA35C9A787D7EE43;
+qualified-result.json SHA256
+7C2BD9B889839489AF521C65044F357F57F04BCF187F6A174F5D89A277EB194C;
+qualification-seal.json SHA256
+FCE66E47D19ECCDB158B860E3606215CC27DED015AB7F2F062F83FA88FEF105C.
+This README and SourceProvenance.json describe that completed run after closeout.
+Their documentation-only delta is recorded separately; the historical source-ready
+manifest and compiled freeze retain the exact pre-closeout documentation bytes.
