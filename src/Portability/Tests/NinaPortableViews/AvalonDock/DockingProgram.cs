@@ -22,6 +22,10 @@ internal static partial class DockingProgram
     [STAThread]
     private static int Main(string[] args)
     {
+        bool pointerMode = Environment.GetEnvironmentVariable("NINA_POINTER_DOCKING") == "1";
+#if NINA_STOCK_REFERENCE
+        Require(!pointerMode, "The stock fixture uses a noninput desktop and does not inject pointer gestures.");
+#endif
         bool themeOnly = Environment.GetEnvironmentVariable("NINA_WINDOW_THEME_ONLY") == "1";
         if (themeOnly || Environment.GetEnvironmentVariable("NINA_SHOW_READINESS_ONLY") == "1")
         {
@@ -54,7 +58,13 @@ internal static partial class DockingProgram
 #if NINA_STOCK_REFERENCE
             Check("private-noninput-desktop", () => VerifyDesktop(args));
 #else
-            Check("private-Xvfb-bootstrap", () => { Require(OperatingSystem.IsLinux() && args.SequenceEqual(new[] { "--private-xvfb" }), "Dedicated private Xvfb is required."); native = new X11Fixture("little"); Wpf.Portable.NativeHost.NativeWindowHost.InitializeForCurrentThread(); });
+            Check("private-Xvfb-bootstrap", () =>
+            {
+                Require(OperatingSystem.IsLinux() && args.SequenceEqual(new[] { "--private-xvfb" }), "Dedicated private Xvfb is required.");
+                native = new X11Fixture("little");
+                if (pointerMode) native.SetDpi(int.Parse(Environment.GetEnvironmentVariable("NINA_POINTER_DPI") ?? "96", System.Globalization.CultureInfo.InvariantCulture));
+                Wpf.Portable.NativeHost.NativeWindowHost.InitializeForCurrentThread();
+            });
 #endif
             Check("original-NINA-and-selected-AvalonDock-closure", VerifyClosure);
             Check("selected-WPF-and-AvalonDock", () =>
@@ -99,8 +109,8 @@ internal static partial class DockingProgram
             };
             manager.Loaded += (_, _) => loaded++;
             manager.Unloaded += (_, _) => unloaded++;
-            owner = new Window { Title = "AvalonDock original NINA panes", Content = manager, Width = 1200, Height = 800,
-                Left = 20, Top = 20, ShowActivated = false };
+            owner = new Window { Title = "AvalonDock original NINA panes", Content = manager, Width = pointerMode ? 640 : 1200, Height = pointerMode ? 480 : 800,
+                Left = pointerMode ? 40 : 20, Top = pointerMode ? 50 : 20, ShowActivated = false };
             Check("real-DockingManager-Loaded-with-original-views", () =>
             {
                 owner.Show();
@@ -109,6 +119,9 @@ internal static partial class DockingProgram
                 VerifyContainers(manager, "initial-layout");
                 Record(manager, imagePane, graphPane, "docked");
             });
+#if !NINA_STOCK_REFERENCE
+            if (pointerMode) ExercisePointerDocking(native!, owner, manager, imagePane, graphPane);
+#endif
             foreach (var pane in new[] { imagePane, graphPane })
             {
                 Check(pane.ContentId + "/Float-Dock", () =>
@@ -160,6 +173,10 @@ internal static partial class DockingProgram
                 Require(simulation.GuideStepsHistory.ChangeId > previous, "Original guide history failed after restoration.");
                 Observations.Add(new { stage = "serialized-docked-layout", xml = xml.ToString() });
             });
+#if !NINA_STOCK_REFERENCE
+            if (pointerMode) ExercisePointerOwnerClose(native!, owner, manager,
+                manager.Layout.Descendents().OfType<LayoutAnchorable>().Single(pane => pane.ContentId == "original-guider"));
+#endif
             Check("accepted-owner-close", () => { owner.Close(); Settle(); Require(unloaded == 1 && !manager.IsLoaded, "Manager did not unload once."); });
         }
         catch (Exception e)
@@ -180,7 +197,9 @@ internal static partial class DockingProgram
         }
         var result = JsonSerializer.Serialize(new { probe = "AvalonDock-two-original-NINA-anchorables", failed = failure is not null,
             phase, checks = Checks, observations = Observations, nativeFailures = NativeFailures,
-            scope = "Explicitly hash-selected4.74.1 component with original NINA views/resources. Private desktop or Xvfb replay only. No interactive activation/dragging, substitute controls or full Overview/equipment claim.",
+            scope = pointerMode
+                ? "Hash-selected4.74.1 component, genuine original NINA views and private XTest press/held-motion/release. Physical desktop, other WMs, mixed-monitor DPI and full NINA remain unqualified."
+                : "Explicitly hash-selected4.74.1 component with original NINA views/resources. Private desktop or Xvfb replay only. No interactive activation/dragging, substitute controls or full Overview/equipment claim.",
             assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic && (a.GetName().Name!.StartsWith("NINA", StringComparison.Ordinal) || a.GetName().Name == "AvalonDock"))
                 .Select(a => new { identity = a.FullName, path = a.Location, sha256 = Hash(a.Location) }) }, new JsonSerializerOptions { WriteIndented = true });
         var resultPath = Environment.GetEnvironmentVariable("NINA_AVALONDOCK_RESULT_PATH");
@@ -195,8 +214,8 @@ internal static partial class DockingProgram
         var source = PresentationSource.FromVisual(floating);
         Require(source is not null, "Floating source detached before size observation.");
         object peer = source!.GetType().GetField("_host", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(source)!;
-        object bridge = peer.GetType().GetField("_native", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(peer)!;
-        var xid = (IntPtr)bridge.GetType().GetField("_handle", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(bridge)!;
+        object nativeWindow = peer.GetType().GetField("_window", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(peer)!;
+        var xid = unchecked((IntPtr)(nint)(nuint)nativeWindow.GetType().GetProperty("Handle")!.GetValue(nativeWindow)!);
         var client = (Size)peer.GetType().GetProperty("ClientSize")!.GetValue(peer)!;
         var outer = (Size)peer.GetType().GetProperty("OuterSize")!.GetValue(peer)!;
         var peerDpi = (DpiScale)peer.GetType().GetProperty("DpiScale")!.GetValue(peer)!;
@@ -214,8 +233,10 @@ internal static partial class DockingProgram
         Require(dpi.DpiScaleX > 0 && dpi.DpiScaleY > 0
             && Equal(dpi.DpiScaleX, peerDpi.DpiScaleX) && Equal(dpi.DpiScaleY, peerDpi.DpiScaleY),
             "Visual and native-host DPI disagree.");
-        Require(Equal(outer.Width, client.Width) && Equal(outer.Height, client.Height),
-            "This private no-WM Xvfb calibration requires zero native frame extents.");
+        var frame = native.FrameExtents(xid) ?? (Left: 0, Right: 0, Top: 0, Bottom: 0);
+        Require(Equal(pixels.Width + frame.Left + frame.Right, outer.Width * dpi.DpiScaleX)
+            && Equal(pixels.Height + frame.Top + frame.Bottom, outer.Height * dpi.DpiScaleY),
+            "The actual native frame extents disagree with acknowledged WPF outer size.");
         Require(Equal(pixels.Width, client.Width * dpi.DpiScaleX) && Equal(pixels.Height, client.Height * dpi.DpiScaleY),
             "Native client pixels and acknowledged client DIPs disagree.");
         Require(Equal(floating.ActualWidth, outer.Width) && Equal(floating.ActualHeight, outer.Height)

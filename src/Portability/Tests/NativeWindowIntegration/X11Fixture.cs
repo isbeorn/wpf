@@ -385,6 +385,19 @@ internal sealed class X11Fixture : IDisposable
             return (x, y);
         }
     }
+    internal IntPtr StackingAncestor(IntPtr window)
+    {
+        var visited = new HashSet<IntPtr>();
+        while (window != IntPtr.Zero && visited.Add(window))
+        {
+            if (XQueryTree(_display, window, out _, out var parent, out var children, out _) == 0)
+                throw new InvalidOperationException("Cannot query the native stacking parent.");
+            if (children != IntPtr.Zero) XFree(children);
+            if (parent == _root) return window;
+            window = parent;
+        }
+        throw new InvalidOperationException("The native client has no distinct root stacking ancestor.");
+    }
     internal IReadOnlyList<IntPtr> RootChildren
     {
         get

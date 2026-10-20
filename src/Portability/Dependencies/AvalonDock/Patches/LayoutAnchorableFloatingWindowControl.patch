@@ -55,21 +55,3 @@
  			IsVisibleChanged -= LayoutAnchorableFloatingWindowControl_IsVisibleChanged;
  			BindingOperations.ClearBinding(this, VisibilityProperty);
  			BindingOperations.ClearBinding(this, SingleContentLayoutItemProperty);
-@@ -285,6 +306,9 @@
- 
- 		private void CreateOverlayWindow(LayoutFloatingWindowControl draggingWindow)
- 		{
-+#if PORTABLE_AVALONDOCK
-+			throw new PlatformNotSupportedException("AvalonDock portable drag-overlay presentation is not implemented.");
-+#else
- 			if (_overlayWindow == null) _overlayWindow = new OverlayWindow(this);
- 
- 			// Usually, the overlay window is made a child of the main window. However, if the floating
-@@ -300,6 +324,7 @@
- 			_overlayWindow.Top = rectWindow.Top;
- 			_overlayWindow.Width = rectWindow.Width;
- 			_overlayWindow.Height = rectWindow.Height;
-+#endif
- 		}
- 
- 		private bool OpenContextMenu()

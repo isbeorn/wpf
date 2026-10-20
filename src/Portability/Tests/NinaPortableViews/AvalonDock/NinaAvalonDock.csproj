@@ -12,7 +12,7 @@
     <DefineConstants Condition="'$(NinaStockWindowsReference)' == 'true'">$(DefineConstants);NINA_STOCK_REFERENCE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="DockingProgram.cs;GraphSimulation.cs;ShowReadinessCases.cs;ThemeWindowCases.cs" />
+    <Compile Include="DockingProgram.cs;GraphSimulation.cs;ShowReadinessCases.cs;ThemeWindowCases.cs;PointerDockingCases.cs" />
     <None Include="$(NinaFixtureDirectory)/Closure.json" Link="Closure.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="ResourceSources.json" CopyToOutputDirectory="PreserveNewest" />
     <FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" Condition="'$(NinaStockWindowsReference)' == 'true'" />

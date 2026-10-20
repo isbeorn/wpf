@@ -43,6 +43,13 @@ select a separate result file so original NINA stdout diagnostics remain raw.
 Use an external 45-second watchdog and retain stdout, stderr and exit code.
 Do not run this diagnostic against a physical or existing user desktop.
 
+Pointer replays require a 1024x768 logical desktop: use a 1280x960 physical
+Xvfb screen at 120 DPI or 2048x1536 at 192 DPI and verify the measured WPF DPI
+and native bounds.
+Maximized-caption replays require the existing private Openbox profile so the
+WM can acknowledge maximization and apply its native geometry before dragging.
+Plain Xvfb cannot establish that precondition.
+
 For stock calibration, build with NinaStockWindowsReference=true. Runtime is
 stock WindowsDesktop10.0.12 and the child requires --private-noninput-desktop.
 It refuses the input or Default desktop before constructing WPF resources.
@@ -69,7 +76,24 @@ particular private Xvfb profile requires zero native WM frame extents. Both
 original view identities and the graph's simulation DataContext are checked
 following docked XML restoration.
 
-This is not pointer docking, interactive focus, auto-hide, floating XML restore,
-cancelled closure, full Overview, hardware or desktop qualification. The complete
-accepted docking gate still requires pointer drag/drop, focus, persistence,
-cancellation and cleanup verification.
+The later component7/ordinary fixture8 qualification passes ten private Linux
+profiles with 140 check executions. These include native pointer drops for both
+original views, overlapping native targets in both orders, nonactivating raises,
+caption exclusions, Escape/outside-release/capture-transfer recovery, a two-tab
+floating pane and the existing programmatic/XML neighbors. Actual 96, 120 and
+192 DPI observations and corresponding physical viewports are retained. Openbox
+profiles also verify maximized stationary release and held-motion restoration.
+
+Canceled user Close now preserves the same floating source/model and permits
+the next genuine native caption drag/drop. Accepted Close during an active drag
+cleans the source, capture, overlays, input handler and native grab. The portable
+close-state repair covers the pinned concrete controls and public Closing
+handlers. External subclasses that cancel after their base OnClosing call are
+outside that qualification; forced shutdown may ignore cancellation.
+
+The focused and remaining-matrix handoffs are retained separately under
+`artifacts/portability/current/docking-qualification/fixture8-preparation/`.
+The 140 executions include repeated checks across profiles, not 140 distinct
+tests. This remains a two-view Xvfb/Openbox result. It does not qualify full
+Overview, auto-hide, floating XML restore, hardware, a user desktop, other window
+managers or full NINA.

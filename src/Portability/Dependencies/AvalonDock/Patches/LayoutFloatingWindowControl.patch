@@ -1,9 +1,14 @@
 --- a/Controls/LayoutFloatingWindowControl.cs
 +++ b/Controls/LayoutFloatingWindowControl.cs
-@@ -43,8 +43,10 @@
+@@ -43,8 +43,15 @@
  		private bool _isInternalChange; // false
  		private readonly ILayoutElement _model;
  		private bool _attachDrag = false;
++#if PORTABLE_AVALONDOCK
++		private bool _portablePositionAtPointer;
++		private Point _portableDragOffset;
++		private Point _portableDragStart;
++#endif
 +#if !PORTABLE_AVALONDOCK
  		private HwndSource _hwndSrc;
  		private HwndSourceHook _hwndSrcHook;
@@ -11,7 +16,7 @@
  		private DragService _dragService = null;
  		private bool _internalCloseFlag = false;
  		private bool _isClosing = false;
-@@ -68,6 +70,10 @@
+@@ -68,6 +75,10 @@
  			Unloaded += OnUnloaded;
  			Closing += OnClosing;
  			SizeChanged += OnSizeChanged;
@@ -22,17 +27,19 @@
  			_model = model;
  		}
  
-@@ -346,6 +352,9 @@
+@@ -346,6 +357,11 @@
  
  		internal void AttachDrag(bool onActivated = true)
  		{
 +#if PORTABLE_AVALONDOCK
-+			throw new PlatformNotSupportedException("AvalonDock portable pointer docking is not implemented.");
++			_attachDrag = true;
++			_portablePositionAtPointer = onActivated;
++			TryBeginPortableDrag();
 +#else
  			if (onActivated)
  			{
  				_attachDrag = true;
-@@ -357,6 +366,7 @@
+@@ -357,6 +373,7 @@
  				var lParam = new IntPtr(((int)Left & 0xFFFF) | ((int)Top << 16));
  				Win32Helper.SendMessage(windowHandle, Win32Helper.WM_NCLBUTTONDOWN, new IntPtr(Win32Helper.HT_CAPTION), lParam);
  			}
@@ -40,11 +47,12 @@
  		}
  
  		protected virtual IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-@@ -517,15 +527,21 @@
+@@ -517,15 +534,22 @@
  		protected override void OnClosed(EventArgs e)
  		{
  			SizeChanged -= OnSizeChanged;
 +#if PORTABLE_AVALONDOCK
++			EndPortableDrag(false, default);
 +			LocationChanged -= OnPortableLocationChanged;
 +			Activated -= OnPortableActivated;
 +#endif
@@ -62,7 +70,22 @@
  			}
  
  			base.OnClosed(e);
-@@ -574,7 +590,30 @@
+@@ -552,8 +576,14 @@
+ 
+ 		protected override void OnClosing(CancelEventArgs e)
+ 		{
++#if PORTABLE_AVALONDOCK
++			_isClosing = true;
++#endif
+ 			base.OnClosing(e);
+ 			AssureOwnerIsNotMinimized();
++#if PORTABLE_AVALONDOCK
++			if (e.Cancel) _isClosing = false;
++#endif
+ 		}
+ 
+ 		/// <summary>
+@@ -574,7 +604,30 @@
  		{
  			if (!(sender is LayoutFloatingWindowControl lfwc)) return null;
  			if (lfwc.IsLoaded && lfwc.IsContentImmutable) return lfwc.Content;
@@ -93,7 +116,7 @@
  		}
  
  		private void OnLoaded(object sender, RoutedEventArgs e)
-@@ -584,9 +623,13 @@
+@@ -584,12 +637,19 @@
  			this.UpdateOwnership();
  			ApplyResizeBorderThickness();
  
@@ -107,11 +130,34 @@
  			// Restore maximize state
  			var maximized = Model.Descendents().OfType<ILayoutElementForFloatingWindow>().Any(l => l.IsMaximized);
  			UpdateMaximizedState(maximized);
-@@ -657,10 +700,21 @@
++#if PORTABLE_AVALONDOCK
++			TryBeginPortableDrag();
++#endif
+ 		}
+ 
+ 		internal void UpdateOwnership()
+@@ -627,6 +687,14 @@
+ 		protected override void OnPreviewKeyDown(KeyEventArgs e)
+ 		{
+ 			base.OnPreviewKeyDown(e);
++#if PORTABLE_AVALONDOCK
++			if (e.Key == Key.Escape && (_attachDrag || _dragService != null))
++			{
++				EndPortableDrag(false, default);
++				e.Handled = true;
++				return;
++			}
++#endif
+ 			var manager = Model?.Root?.Manager;
+ 			if (manager == null || !manager.AllowMovingFloatingWindowWithKeyboard)
+ 			{
+@@ -657,10 +725,136 @@
  		private void OnUnloaded(object sender, RoutedEventArgs e)
  		{
  			Unloaded -= OnUnloaded;
-+#if !PORTABLE_AVALONDOCK
++#if PORTABLE_AVALONDOCK
++			EndPortableDrag(false, default);
++#else
  			if (_hwndSrc == null) return;
  			_hwndSrc.RemoveHook(_hwndSrcHook);
 +#endif
@@ -124,6 +170,119 @@
 +		private void OnPortableActivated(object sender, EventArgs e)
 +		{
 +			if (IsLoaded) UpdateWindowsSizeBasedOnMinSize();
++			TryBeginPortableDrag();
++		}
++
++		private void TryBeginPortableDrag()
++		{
++			if (!_attachDrag || !IsLoaded || !IsVisible || !IsEnabled || !IsActive || _isClosing
++				|| PresentationSource.FromVisual(this) == null) return;
++			// Capture activates the new mouse source and reconciles its physical held-button snapshot.
++			if (!Mouse.Capture(this, CaptureMode.SubTree)) { _attachDrag = false; return; }
++			if (!_attachDrag || !IsVisible || Mouse.LeftButton != MouseButtonState.Pressed)
++			{
++				EndPortableDrag(false, default);
++				return;
++			}
++			_attachDrag = false;
++			var physical = PointToScreen(Mouse.GetPosition(this));
++			_portableDragStart = physical;
++			var logical = this.TransformToDeviceDPI(physical);
++			_portableDragOffset = _portablePositionAtPointer
++				? (DragDelta == default ? new Point(3, 3) : DragDelta)
++				: new Point(logical.X - Left, logical.Y - Top);
++			_dragService = new DragService(this);
++			InputManager.Current.PreProcessInput += OnPortablePreProcessInput;
++			SetIsDragging(true);
++			MovePortableDrag(physical);
++		}
++
++		protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
++		{
++			base.OnPreviewMouseLeftButtonDown(e);
++			if (e.Handled || e.ClickCount != 1 || _dragService != null) return;
++			var chrome = WindowChrome.GetWindowChrome(this);
++			if (chrome == null || chrome.CaptionHeight <= 0) return;
++			var point = e.GetPosition(this);
++			var border = chrome.ResizeBorderThickness;
++			if (point.X < border.Left || point.X >= ActualWidth - border.Right
++				|| point.Y < border.Top || point.Y >= border.Top + chrome.CaptionHeight) return;
++			var hit = InputHitTest(point);
++			if (hit != null && WindowChrome.GetIsHitTestVisibleInChrome(hit)) return;
++			if (!Activate() || !IsVisible || !IsEnabled || _isClosing || PresentationSource.FromVisual(this) == null) return;
++			AttachDrag(false);
++			if (_dragService != null) e.Handled = true;
++		}
++
++		protected override void OnPreviewMouseMove(MouseEventArgs e)
++		{
++			base.OnPreviewMouseMove(e);
++			if (_dragService == null) return;
++			// WPF promotes a release-associated move before the matching button-up.
++			if (e.LeftButton == MouseButtonState.Pressed) MovePortableDrag(PointToScreen(e.GetPosition(this)));
++			e.Handled = true;
++		}
++
++		private void MovePortableDrag(Point physical)
++		{
++			var service = _dragService;
++			if (service == null) return;
++			if (IsMaximized && physical == _portableDragStart) return;
++			if (IsMaximized) UpdateMaximizedState(false);
++			if (_dragService != service) return;
++			// Keep this event's screen point: moving the source changes local-to-screen transforms.
++			var logical = this.TransformToDeviceDPI(physical);
++			Left = logical.X - _portableDragOffset.X;
++			if (_dragService != service) return;
++			Top = logical.Y - _portableDragOffset.Y;
++			if (_dragService == service) service.UpdateMouseLocation(physical);
++		}
++
++		protected override void OnPreviewMouseLeftButtonUp(MouseButtonEventArgs e)
++		{
++			base.OnPreviewMouseLeftButtonUp(e);
++			if (_dragService == null) return;
++			EndPortableDrag(true, PointToScreen(e.GetPosition(this)));
++			e.Handled = true;
++		}
++
++		protected override void OnLostMouseCapture(MouseEventArgs e)
++		{
++			base.OnLostMouseCapture(e);
++			if (Mouse.Captured != this) EndPortableDrag(false, default);
++		}
++
++		private void OnPortablePreProcessInput(object sender, PreProcessInputEventArgs e)
++		{
++			if (_dragService != null && Mouse.Captured == this && e.StagingItem.Input is KeyEventArgs key
++				&& key.RoutedEvent == Keyboard.PreviewKeyDownEvent && key.Key == Key.Escape)
++			{
++				EndPortableDrag(false, default);
++				key.Handled = true;
++			}
++		}
++
++		private void EndPortableDrag(bool drop, Point physical)
++		{
++			InputManager.Current.PreProcessInput -= OnPortablePreProcessInput;
++			_attachDrag = false;
++			var service = _dragService;
++			_dragService = null;
++			bool handled = false;
++			try
++			{
++				if (service != null)
++				{
++					if (drop) service.Drop(physical, out handled);
++					else service.Abort();
++				}
++			}
++			finally
++			{
++				SetIsDragging(false);
++				if (Mouse.Captured == this) Mouse.Capture(null);
++			}
++			if (handled) InternalClose();
 +		}
 +#endif
  
