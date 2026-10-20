@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>AvalonEditControlChecks</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Controls/Program.cs;Controls/EditorControlCases.cs" />
+  </ItemGroup>
+</Project>

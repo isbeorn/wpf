@@ -1,0 +1,8 @@
+# Preserve the qualified source bytes, including the original mixed-EOL host.
+Program.cs -text whitespace=blank-at-eol,-blank-at-eof,space-before-tab,cr-at-eol
+RichTextCases.cs -text
+OriginalStartupHook.cs -text
+Controls/Program.cs -text
+Controls/EditorControlCases.cs -text
+Profiles/Program.cs -text
+Profiles/EditorControlCases.cs -text

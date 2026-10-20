@@ -1,0 +1,17 @@
+<Project>
+  <Import Project="../Directory.Build.targets" />
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)RichTextCases.cs;$(MSBuildThisFileDirectory)OriginalStartupHook.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)../../NativeWindowIntegration/X11Fixture.cs" Link="X11Fixture.cs" />
+    <None Include="$(MSBuildThisFileDirectory)../AvalonDock/ResourceSources.json" Link="ResourceSources.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(MSBuildThisFileDirectory)../../Fixtures/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(NinaFixtureDirectory)/Closure.json" Link="Closure.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(NinaSourceStageDirectory)/**/*" Exclude="$(NinaSourceStageDirectory)/*.dll" Link="%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" Condition="'$(NinaSourceStageDirectory)' != ''" />
+  </ItemGroup>
+  <Import Project="$(NinaPortableArtifacts)/SourceStageReferences.props" Condition="Exists('$(NinaPortableArtifacts)/SourceStageReferences.props')" />
+  <Import Project="$(NinaFixtureDirectory)/References.props" Condition="Exists('$(NinaFixtureDirectory)/References.props')" />
+  <Import Project="../../../Framework/Build/PortableWpfReferences.targets" />
+  <Target Name="RequirePreparedRichTextInputs" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(NinaPortableArtifacts)/SourceStageReferences.props') or !Exists('$(NinaFixtureDirectory)/References.props') or !Exists('$(NinaSourceStageDirectory)/Wpf.Portable.NativeHost.dll')" Text="Prepare the complete released Stage and explicit selected159+1 NINA closure before building this consumer. See RichText/README.md." />
+  </Target>
+</Project>

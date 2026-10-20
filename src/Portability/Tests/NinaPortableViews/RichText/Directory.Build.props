@@ -1,0 +1,23 @@
+<Project>
+  <Import Project="../Directory.Build.props" />
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <StartupObject>Program</StartupObject>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblySearchPath_UseCandidateAssemblyFiles>false</AssemblySearchPath_UseCandidateAssemblyFiles>
+    <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
+    <RollForward>Disable</RollForward>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <NuGetLockFilePath>$(MSBuildThisFileDirectory)packages.lock.json</NuGetLockFilePath>
+    <NinaFixtureDirectory Condition="'$(NinaFixtureDirectory)' == ''">$(NinaPortableArtifacts)/fixture</NinaFixtureDirectory>
+    <BaseOutputPath>$(NinaPortableArtifacts)/richtext/bin/$(OS)/$(MSBuildProjectName)/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(NinaPortableArtifacts)/richtext/obj/$(OS)/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="[3.119.4]" />
+    <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="[8.3.1.5]" />
+  </ItemGroup>
+</Project>

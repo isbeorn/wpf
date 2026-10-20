@@ -1,0 +1,132 @@
+{
+  "qualification": "Source preservation of the accepted55-check Linux recipe; repository-native intake needs its own build and replay",
+  "qualifiedCloseoutSealSha256": "65CDFBE20F5A3FB4722985B75621CDDA0B6A97E33944AF09D7B4507877BB9F27",
+  "frameworkReleaseSha256": "65CB9568510342C6E3EDAB32307DDD530F24F7205FD86AFD28308CDEF88ECFDB",
+  "sourceAdaptedComponentReleaseSha256": "700E883070BA51E3D12E161CCF76C5ABD0D6F01FD7ABFF5EB447B1B634E34182",
+  "originalNinaRevision": "4742afae0a09c79be772f23fcf163fb5852d2775",
+  "originalStock160ClosureSha256": "BF6107020B8CD5EB07AD402DCB799F80CEF777DBD19282DAE1B0EC04409F0163",
+  "componentIdentity": "ICSharpCode.AvalonEdit, Version=6.3.1.120, Culture=neutral, PublicKeyToken=9cc39be672370310",
+  "selectedRuntime": "159 original stock members plus one explicitly source-adapted AvalonEdit; not unchanged-binary compatibility",
+  "sources": [
+    {
+      "path": "Program.cs",
+      "origin": "artifacts/portability/current/richtext/consumer-hook3/nina-integration-1/harness/Program.cs",
+      "sha256": "E9436BF21022E5D770407774AAB7DA07B0A29B43B79626A11A431EB75EBE71ED",
+      "bytes": 15729,
+      "CRLF": 1,
+      "LF": 228
+    },
+    {
+      "path": "RichTextCases.cs",
+      "origin": "artifacts/portability/current/richtext/consumer-hook3/nina-integration-1/harness/RichTextCases.cs",
+      "sha256": "435643ACAABBD7E4ED7A66E256519CDEA3C9661E6007D677CC06DD1C3FEDF216",
+      "bytes": 23111,
+      "CRLF": 0,
+      "LF": 296
+    },
+    {
+      "path": "OriginalStartupHook.cs",
+      "origin": "artifacts/portability/current/richtext/consumer-hook3/nina-integration-1/harness/OriginalStartupHook.cs",
+      "sha256": "03190286A71B080121CA65DE902A2DDC0B0C0CEFF66F8E40AFB1B8480EBD2988",
+      "bytes": 5329,
+      "CRLF": 0,
+      "LF": 111
+    },
+    {
+      "path": "Controls/Program.cs",
+      "origin": "artifacts/portability/current/richtext/consumer-hook3/nina-integration-1/controls-harness/Program.cs",
+      "sha256": "6121710372BA0E13257B5530DF528D07551691AF6910E0E3A2CC858786D2B582",
+      "bytes": 15783,
+      "CRLF": 0,
+      "LF": 229
+    },
+    {
+      "path": "Controls/EditorControlCases.cs",
+      "origin": "artifacts/portability/current/richtext/consumer-hook3/nina-integration-1/controls-harness/EditorControlCases.cs",
+      "sha256": "C63A3DE569E36D1325DF247DACFE9C54EEF0D55E23E59855F044D24AFF88FC01",
+      "bytes": 12073,
+      "CRLF": 0,
+      "LF": 160
+    },
+    {
+      "path": "Profiles/Program.cs",
+      "origin": "artifacts/portability/current/richtext/consumer-hook3/nina-integration-1/profile-harness/Program.cs",
+      "sha256": "0BB598197917B575B0E2808BA081A33A36053B84331EDC321C590D2B206C0A2C",
+      "bytes": 15781,
+      "CRLF": 0,
+      "LF": 229
+    },
+    {
+      "path": "Profiles/EditorControlCases.cs",
+      "origin": "artifacts/portability/current/richtext/consumer-hook3/nina-integration-1/profile-harness/EditorControlCases.cs",
+      "sha256": "A9AF4A2EA4B8B1AE9143F32272CA4A78CE591DB5E1683143E99D794E35500C67",
+      "bytes": 12078,
+      "CRLF": 0,
+      "LF": 160
+    }
+  ],
+  "linkedInputsAtIntake": [
+    {
+      "path": "src/Portability/Tests/NativeWindowIntegration/X11Fixture.cs",
+      "sha256": "3BCF1B72BB1EF9A7AD6BBBEFFFE62A98E2B5D974165F02C10B49DA6756D62268"
+    },
+    {
+      "path": "src/Portability/Tests/Fixtures/Fonts/DejaVuSans.ttf",
+      "sha256": "35226AC1E50D1B60AF2FF7DA5878D8EDE0C83BC00FE84713F265CB6DED8F5F9F"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/AvalonDock/ResourceSources.json",
+      "sha256": "9ECBEB18E491C710E70FA0B8070B114CDC46691FB21E3D4E1AEE40BF12B37D55"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/NativeImaging/packages.lock.json",
+      "sha256": "AA7AE7F6A95D578EFB90C2A935F217E97546A615CA8929D0ADBF139CDAE385A8"
+    }
+  ],
+  "expectedProcesses": [
+    {
+      "suite": "original21",
+      "checks": 21
+    },
+    {
+      "suite": "controls10",
+      "checks": 10
+    },
+    {
+      "suite": "profiles8",
+      "profile": -1,
+      "checks": 8
+    },
+    {
+      "suite": "profiles8",
+      "profile": 0,
+      "checks": 8
+    },
+    {
+      "suite": "profiles8",
+      "profile": 80,
+      "checks": 8
+    }
+  ],
+  "runnerOrigins": [
+    {
+      "path": "artifacts/portability/current/richtext/consumer-hook3/nina-integration-1/Run-Original21.sh",
+      "sha256": "DE181FECDD043750242D3F364864314E3A4EFD353BE06BE41EE29E4ED1C10CC0"
+    },
+    {
+      "path": "artifacts/portability/current/richtext/consumer-hook3/nina-integration-1/Run-Controls.sh",
+      "sha256": "525A98CAF0722A2C8752C4D42AFC5568AD52035F2E0FE17B37F626E6A29955BC"
+    },
+    {
+      "path": "artifacts/portability/current/richtext/consumer-hook3/nina-integration-1/Run-Profiles.sh",
+      "sha256": "63593448FDF4F5F0BC32F49BD4C41B16C8F8B9FFE9E69400CCF260C3146E8D27"
+    }
+  ],
+  "runnerAdaptations": [
+    "Parameters replace historical absolute artifact paths",
+    "Inline unchanged XOpenDisplay readiness body",
+    "Retain owned child process group with start-time and session validation, as existing Run-NinaNativeImaging",
+    "Retain watchdog and complete process/output/cleanup classification",
+    "Verify existing PreparedConsumerFreeze before and after execution; no new review or release protocol"
+  ]
+}
