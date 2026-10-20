@@ -78,7 +78,12 @@ try
         {
             try
             {
-                if (args.Contains("--chrome-state-denial-only", StringComparer.Ordinal))
+                if (args.Contains("--pointer-geometry-only", StringComparer.Ordinal))
+                {
+                    PointerGeometryCases.Exercise(native, Run, Wait, Drain, chromeRequestedDpi, windowManagerTrace.Enqueue);
+                    completed = true;
+                }
+                else if (args.Contains("--chrome-state-denial-only", StringComparer.Ordinal))
                 {
                     ChromeCases.StateDenial(native, Run, Wait, Drain, windowManagerTrace.Enqueue);
                     completed = true;

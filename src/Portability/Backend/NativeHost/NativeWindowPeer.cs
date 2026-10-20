@@ -604,7 +604,15 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
                 bool stateChanged = _stateChangedPending;
                 _stateChangedPending = false;
                 var previousState = _metricsState;
+                var previousOrigin = _clientScreenOrigin;
                 RefreshMetrics();
+                if (_clientScreenOrigin != previousOrigin && _mouseActive && IsVisible && IsEnabled)
+                {
+                    var position = _input.ReadPointerState().PhysicalClientPosition;
+                    RawInput?.Invoke(new RawMouseInputReport(InputMode.Foreground, Environment.TickCount, _source,
+                        RawMouseActions.AbsoluteMove, checked((int)position.X), checked((int)position.Y), 0, IntPtr.Zero));
+                    if (!CanNotify) return;
+                }
                 if (stateChanged && IsVisible)
                 {
                     if (_stateRequestPending && _metricsState == _requestedState) _stateRequestPending = false;

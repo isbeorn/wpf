@@ -349,6 +349,15 @@ internal sealed class X11Fixture : IDisposable
         if (XGetWindowAttributes(_display, window, out var attributes) == 0) throw new InvalidOperationException("Popup has no native attributes.");
         return (attributes.Depth, attributes.OverrideRedirect != 0);
     }
+    internal (int X, int Y) PointerPosition
+    {
+        get
+        {
+            if (XQueryPointer(_display, _root, out _, out _, out int x, out int y, out _, out _, out _) == 0)
+                throw new InvalidOperationException("Cannot query the private native pointer position.");
+            return (x, y);
+        }
+    }
     internal IReadOnlyList<IntPtr> RootChildren
     {
         get
@@ -696,6 +705,7 @@ internal sealed class X11Fixture : IDisposable
     [DllImport("libX11.so.6")] private static extern nuint XNextRequest(IntPtr display);
     [DllImport("libX11.so.6")] private static extern IntPtr XSetErrorHandler(NativeErrorHandler handler);
     [DllImport("libX11.so.6")] private static extern IntPtr XSetErrorHandler(IntPtr handler);
+    [DllImport("libX11.so.6")] private static extern int XQueryPointer(IntPtr display, IntPtr window, out IntPtr root, out IntPtr child, out int rootX, out int rootY, out int x, out int y, out uint mask);
     [DllImport("libX11.so.6")] private static extern int XQueryTree(IntPtr display, IntPtr window, out IntPtr root, out IntPtr parent, out IntPtr children, out int count);
     [DllImport("libX11.so.6")] private static extern int XFetchName(IntPtr display, IntPtr window, out IntPtr name);
     [DllImport("libX11.so.6")] private static extern int XFree(IntPtr data);
