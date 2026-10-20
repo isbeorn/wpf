@@ -19,6 +19,7 @@ using Visual = WpfFork::System.Windows.Media.Visual;
 if (args.FirstOrDefault() == "--splash-only") return SplashChecks.Run(args[1..]);
 if (args.FirstOrDefault() == "--splash-unregistered") return SplashChecks.Unregistered();
 if (args.FirstOrDefault() == "--primary-screen-only") return PrimaryScreenCases.Run(args[1..]);
+if (args.FirstOrDefault() == "--virtual-screen-only") return VirtualScreenCases.Run(args[1..]);
 if (args.FirstOrDefault() == "--ibus-transport") throw new PlatformNotSupportedException("Native IME transport is deferred in the owned X11 profile.");
 if (args.FirstOrDefault() == "--clipboard-peer") return ClipboardCases.Peer(args[1..]);
 if (args.FirstOrDefault() == "--file-dialog-protocol") return FileDialogCases.Run(args[1..]);

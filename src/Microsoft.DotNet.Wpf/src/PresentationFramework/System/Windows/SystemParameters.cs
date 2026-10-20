@@ -3369,6 +3369,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.VirtualScreenBoundsDip.Width;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.VirtualScreenWidth])
@@ -3379,6 +3382,7 @@ namespace System.Windows
                 }
 
                 return _virtualScreenWidth;
+#endif
             }
         }
 
@@ -3392,6 +3396,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.VirtualScreenBoundsDip.Height;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.VirtualScreenHeight])
@@ -3402,6 +3409,7 @@ namespace System.Windows
                 }
 
                 return _virtualScreenHeight;
+#endif
             }
         }
 
@@ -3849,6 +3857,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.VirtualScreenBoundsDip.Left;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.VirtualScreenLeft])
@@ -3859,6 +3870,7 @@ namespace System.Windows
                 }
 
                 return _virtualScreenLeft;
+#endif
             }
         }
 
@@ -3872,6 +3884,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.VirtualScreenBoundsDip.Top;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.VirtualScreenTop])
@@ -3882,6 +3897,7 @@ namespace System.Windows
                 }
 
                 return _virtualScreenTop;
+#endif
             }
         }
 

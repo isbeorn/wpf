@@ -34,6 +34,7 @@ pixel DPI round trips. The existing watchdog and private-display rules apply.
 | `--atspi-richtext-only` | Also selects the actual RichTextBox provider case. Qualification remains pending native PTS/managed bottomless document support. |
 | `--atspi-disconnect-only` | Real owned-bus disconnect before the queued Closed callback, followed by actual Window/source cleanup. Requires the runner's exact bus PID/start identity. |
 | `--primary-screen-only <scale>` | Independent root pixels, observed native screen snapshot, once-only DIP conversion and closed ComboBox metadata. |
+| `--virtual-screen-only <scale>` | Four process-wide desktop metrics and resource keys, full bounds versus reserved work area, background reads and immutable startup values. |
 | `--splash-only --dpi=96` or `192` | Existing SplashScreen resource/lifetime checks plus independent splash/focus observations. `--splash-unregistered` uses a fresh process for missing-backend failure. |
 
 Popup serial checks construct owned X11 ABI payloads and enter actual core/XI2 handlers. They preserve obsolete/current/newer ordering, both crossing directions and native zero/maximum rollover. Temporary fixture observers count CaptureLost without releasing the independently held real server grab; original callback delegates/router state are restored before ordinary native activity resumes. No production test hook is added.
@@ -70,3 +71,12 @@ The resource probe enables transparency, matching ToolTip's own popup and its
 animation coercion rules. The four focused checks and the existing popup,
 window-presentation and ordinary native-window regressions pass on private X11.
 Actual NINA capture remains a separate full-application check.
+
+The joint DrawingBrush/virtual-screen family passes all 87 selected native checks:
+the prior 59 popup/tooltip/window checks, nine virtual-screen checks at each of
+96 and 192 DPI and five primary-screen checks at each DPI. These use fresh owned
+Xvfb processes. Declared monitor vectors additionally exercise signed origins,
+gaps, enumeration order and fractional DPI conversion through the actual startup
+union helper. They do not qualify physical multi-monitor behavior or live desktop
+topology changes. Original NINA saved-layout restoration is verified separately
+through the full application.

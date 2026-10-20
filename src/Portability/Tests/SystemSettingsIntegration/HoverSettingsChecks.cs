@@ -91,12 +91,12 @@ internal static partial class Program
         object current = CurrentProfile();
         Type type = current.GetType();
         object defaults = type.GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance).Single().Invoke(
-            ["hover-defaults", GetProperty(current, "Colors"), false, false, null, 1.0, 500, false, 4.0, 4.0, null, null, Type.Missing, Type.Missing, Type.Missing]);
+            ["hover-defaults", GetProperty(current, "Colors"), false, false, null, 1.0, 500, false, 4.0, 4.0, null, null, Type.Missing, Type.Missing, Type.Missing, Type.Missing]);
         Require((int)GetProperty(defaults, "MouseHoverTimeMilliseconds") == 400
             && (double)GetProperty(defaults, "MouseHoverWidthDip") == 4.0
             && (double)GetProperty(defaults, "MouseHoverHeightDip") == 4.0, "Constructor optional hover defaults changed.");
         object factoryDefaults = type.GetMethod("CreateInitialLightProfile", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null,
-            [false, null, 1.0, 500, false, 4.0, 4.0, null, null, Type.Missing, Type.Missing, Type.Missing])!;
+            [false, null, 1.0, 500, false, 4.0, 4.0, null, null, Type.Missing, Type.Missing, Type.Missing, Type.Missing])!;
         Require((int)GetProperty(factoryDefaults, "MouseHoverTimeMilliseconds") == 400
             && (double)GetProperty(factoryDefaults, "MouseHoverWidthDip") == 4.0
             && (double)GetProperty(factoryDefaults, "MouseHoverHeightDip") == 4.0, "Factory optional hover defaults changed.");

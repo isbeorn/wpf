@@ -91,7 +91,7 @@ internal static class PrimaryScreenChecks
         if (box.MaxDropDownHeight != height / 3 || shadow.MaxHeight != height / 3 || box.IsDropDownOpen)
             throw new InvalidOperationException("Clearing a local dropdown height did not restore metadata while closed.");
         Type profile = typeof(SolidColorBrush).Assembly.GetType("MS.Internal.Portability.Settings.PortableSystemSettings", true)!;
-        object replacement = profile.GetMethod("CreateInitialLightProfile", BindingFlags.Static | BindingFlags.NonPublic)!.Invoke(null, [false, null, 1.0, 500, false, 4.0, 4.0, null, Create(701, 503), 400, 4.0, 4.0])!;
+        object replacement = profile.GetMethod("CreateInitialLightProfile", BindingFlags.Static | BindingFlags.NonPublic)!.Invoke(null, [false, null, 1.0, 500, false, 4.0, 4.0, null, Create(701, 503), 400, 4.0, 4.0, null])!;
         Type provider = typeof(SolidColorBrush).Assembly.GetType("MS.Internal.Portability.Settings.PortableSystemSettingsProvider", true)!;
         bool frozen = false;
         try { provider.GetMethod("Register", BindingFlags.Static | BindingFlags.NonPublic)!.Invoke(null, [replacement]); }

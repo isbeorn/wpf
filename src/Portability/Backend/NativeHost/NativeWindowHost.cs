@@ -6,6 +6,7 @@ using Wpf.Portable.NativeHost.Linux;
 using Wpf.Portable.NativeHost.Linux.Accessibility;
 using WpfFork::MS.Internal.Portability.Settings;
 using WpfFork::MS.Internal.Portability.Windowing;
+using WpfRect = WpfFork::System.Windows.Rect;
 
 namespace Wpf.Portable.NativeHost;
 
@@ -26,8 +27,11 @@ public static class NativeWindowHost
             session.Own(screens);
             var (data, origin) = screens.ReadPointerSettingsProperty();
             var preferences = ResolvePointerPreferences(XSettingsPointerPreferences.Parse(data), origin);
+            var observedScreens = screens.ReadAll();
+            var markedPrimary = observedScreens.Where(screen => screen.IsPrimary).ToArray();
+            X11Screen? selectedPrimary = markedPrimary.Length == 1 ? markedPrimary[0] : observedScreens.Count == 1 ? observedScreens[0] : null;
             PortablePrimaryScreenMetrics? primaryMetrics = null;
-            if (screens.ReadPrimary() is { } primary)
+            if (selectedPrimary is { } primary)
             {
                 double scale = primary.Dpi / 96d;
                 if (primary.Bounds.Width <= 0 || primary.Bounds.Height <= 0 || !double.IsFinite(scale) || scale <= 0)
@@ -42,7 +46,8 @@ public static class NativeWindowHost
                 if (!s_settingsRegistered)
                 {
                     PortableSystemSettingsProvider.Register(PortableSystemSettings.CreateInitialLightProfile(pointerSettings:
-                        new PortablePointerSettings(preferences.Distance, preferences.Distance, preferences.Time), primaryScreenMetrics: primaryMetrics));
+                        new PortablePointerSettings(preferences.Distance, preferences.Distance, preferences.Time), primaryScreenMetrics: primaryMetrics,
+                        virtualScreenBoundsDip: GetVirtualScreenBounds(observedScreens)));
                     PointerPreferences = preferences;
                     s_settingsRegistered = true;
                 }
@@ -66,6 +71,15 @@ public static class NativeWindowHost
             catch (Exception cleanupFailure) { throw new AggregateException("Native host initialization and cleanup failed.", startupFailure, cleanupFailure); }
             throw;
         }
+    }
+
+    private static WpfRect GetVirtualScreenBounds(IReadOnlyList<X11Screen> screens)
+    {
+        WpfRect bounds = WpfRect.Empty;
+        foreach (var screen in screens)
+            bounds.Union(new WpfRect(screen.Bounds.X, screen.Bounds.Y, screen.Bounds.Width, screen.Bounds.Height));
+        double scale = screens[0].Dpi / 96d;
+        return new WpfRect(bounds.X / scale, bounds.Y / scale, bounds.Width / scale, bounds.Height / scale);
     }
 
     private static NativePointerPreferences ResolvePointerPreferences(XSettingsPointerPreferences parsed, string origin)

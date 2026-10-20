@@ -48,3 +48,21 @@ Primary-screen width and height are an optional immutable pair of positive finit
 The initial portable Classic animation policy is `ComboBoxAnimation=false`, so the unchanged `ComboBoxPopupAnimation` getter resolves `None`. Both original resource keys retain independent override/removal semantics. This policy does not observe desktop animation preferences or qualify opening a native popup.
 
 The portable Classic repeat policy fixes `KeyboardDelay=1` and `KeyboardSpeed=31`. The unchanged RepeatButton calculations therefore supply 500 ms Delay and 33 ms Interval. These are declared product defaults, not observed desktop keyboard preferences. The fixture constructs and lays out the genuine Classic RepeatButton, verifies both original resource keys with independent override/removal and checks local Delay/Interval removal restores those metadata defaults. It does not time an OS keyboard repeat engine or alter RepeatButton's timer.
+
+Virtual-screen left, top, width and height use an optional immutable DIP rectangle
+in the same process-wide startup profile. The native host unions full monitor
+bounds, including negative origins and gaps, then divides once by the observed
+desktop DPI. Work-area reservations do not shrink that rectangle. Missing values
+produce a named prerequisite diagnostic before user32; empty or nonfinite bounds
+are rejected. Background callers read the same snapshot. Live topology and DPI
+updates remain outside this profile.
+
+`--virtual-screen-settings` covers signed fractional values, all four original
+resource keys with override/removal, constructor validation, value-copy isolation,
+background reads and rejected late replacement. `--virtual-screen-unavailable`
+checks all four missing-value diagnostics in a separate process. The final joint
+family passes 121 positive settings checks per OS across ten processes. The
+standalone `--primary-screen-constructor` readiness diagnostic deliberately skips
+registration and fails with the missing-primary prerequisite; it is not a positive
+suite route. Valid closed ComboBox construction is covered by the registered
+primary-screen profile.

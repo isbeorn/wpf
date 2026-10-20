@@ -25,7 +25,7 @@ internal static partial class Program
         var core = typeof(Visual).Assembly;
         var settings = core.GetType("MS.Internal.Portability.Settings.PortableSystemSettings", true)!;
         var profile = settings.GetMethod("CreateInitialLightProfile", BindingFlags.Static | BindingFlags.NonPublic)!
-            .Invoke(null, new object?[] { false, null, 1d, value, false, 4d, 4d, null, null, 400, 4d, 4d });
+            .Invoke(null, new object?[] { false, null, 1d, value, false, 4d, 4d, null, null, 400, 4d, 4d, null });
         core.GetType("MS.Internal.Portability.Settings.PortableSystemSettingsProvider", true)!
             .GetMethod("Register", BindingFlags.Static | BindingFlags.NonPublic)!.Invoke(null, new[] { profile });
         blinkFixture = value;

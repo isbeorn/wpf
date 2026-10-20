@@ -57,7 +57,7 @@ internal static class SystemMetricChecks
         }
 
         object replacement = profile.GetType().GetMethod("CreateInitialLightProfile", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null,
-            [false, null, 1.0, 500, false, 4.0, 4.0, Create([31, 37, 41, 43]), null, 400, 4.0, 4.0])!;
+            [false, null, 1.0, 500, false, 4.0, 4.0, Create([31, 37, 41, 43]), null, 400, 4.0, 4.0, null])!;
         bool immutable = false;
         try { provider.GetMethod("Register", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, [replacement]); }
         catch (TargetInvocationException exception) when (exception.InnerException is InvalidOperationException) { immutable = true; }

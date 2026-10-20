@@ -24,6 +24,10 @@ internal static partial class Program
             return PrimaryScreenChecks.RunUnavailable();
         if (args.SequenceEqual(new[] { "--primary-screen-constructor" }, StringComparer.Ordinal))
             return PrimaryScreenChecks.RunConstructor();
+        if (args.SequenceEqual(new[] { "--virtual-screen-settings" }, StringComparer.Ordinal))
+            return RunVirtualScreenSettings(false);
+        if (args.SequenceEqual(new[] { "--virtual-screen-unavailable" }, StringComparer.Ordinal))
+            return RunVirtualScreenSettings(true);
         if (args.SequenceEqual(new[] { "--classic-dictionary-diagnostic" }, StringComparer.Ordinal))
             return RunClassicDictionaryDiagnostic();
         if (args.SequenceEqual(new[] { "--default-theme-layout" }, StringComparer.Ordinal))
@@ -54,7 +58,7 @@ internal static partial class Program
                 object profile = CreateProfile(always, pointer ? CreatePointer() : null, scrollBarMetrics: metricFixture ? SystemMetricChecks.CreateFixture() : null, primaryScreenMetrics: screenFixture ? PrimaryScreenChecks.CreateFixture() : null);
                 if (highContrast)
                     profile = profile.GetType().GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance).Single().Invoke(
-                        ["test-high-contrast-v1", GetProperty(profile, "Colors"), always, true, pointer ? CreatePointer() : null, 2.0, -1, true, 2.5, 7.5, GetProperty(profile, "ScrollBarMetrics"), screenFixture ? GetProperty(profile, "PrimaryScreenMetrics") : null, 400, 4.0, 4.0]);
+                        ["test-high-contrast-v1", GetProperty(profile, "Colors"), always, true, pointer ? CreatePointer() : null, 2.0, -1, true, 2.5, 7.5, GetProperty(profile, "ScrollBarMetrics"), screenFixture ? GetProperty(profile, "PrimaryScreenMetrics") : null, 400, 4.0, 4.0, null]);
                 if (always || pointer || highContrast || metricFixture || screenFixture) Register(profile);
                 Require((string)GetProperty(CurrentProfile(), "ProfileName") == (highContrast ? "test-high-contrast-v1" : "portable-light-v1"), "Profile identity mismatch.");
                 return "Named startup palette registered before consumption; fixture preferences do not claim desktop theme parity.";
@@ -173,13 +177,13 @@ internal static partial class Program
         var mutable = (IDictionary)Activator.CreateInstance(typeof(Dictionary<,>).MakeGenericType(roleType, typeof(uint)))!;
         foreach (DictionaryEntry entry in colors) mutable.Add(entry.Key, entry.Value);
         var constructor = source.GetType().GetConstructors(BindingFlags.NonPublic | BindingFlags.Instance).Single();
-        var copied = constructor.Invoke(["copied-profile", mutable, false, false, null, 1.0, 500, false, 4.0, 4.0, null, null, 400, 4.0, 4.0]);
+        var copied = constructor.Invoke(["copied-profile", mutable, false, false, null, 1.0, 500, false, 4.0, 4.0, null, null, 400, 4.0, 4.0, null]);
         var role = Enum.Parse(roleType, "ControlText");
         var original = mutable[role];
         mutable[role] = 0xFF000000u;
         Require(Equals(source.GetType().GetMethod("GetColor", BindingFlags.NonPublic | BindingFlags.Instance)!.Invoke(copied, [role]), original), "Snapshot retained the caller's mutable palette.");
         mutable.Remove(role);
-        try { _ = constructor.Invoke(["incomplete-profile", mutable, false, false, null, 1.0, 500, false, 4.0, 4.0, null, null, 400, 4.0, 4.0]); }
+        try { _ = constructor.Invoke(["incomplete-profile", mutable, false, false, null, 1.0, 500, false, 4.0, 4.0, null, null, 400, 4.0, 4.0, null]); }
         catch (TargetInvocationException exception) when (exception.InnerException is ArgumentException inner && inner.Message.Contains("ControlText", StringComparison.Ordinal))
         { return "Snapshot copied the palette and rejected a missing color with a named role diagnostic."; }
         throw new InvalidOperationException("Incomplete palette was accepted.");
@@ -380,7 +384,7 @@ internal static partial class Program
     private static Type CoreType(string name) => typeof(SolidColorBrush).Assembly.GetType("MS.Internal.Portability.Settings." + name, throwOnError: true)!;
     private static object GetProperty(object instance, string name) => instance.GetType().GetProperty(name, BindingFlags.NonPublic | BindingFlags.Instance)!.GetValue(instance)!;
     private static object CreatePointer() => Activator.CreateInstance(CoreType("PortablePointerSettings"), BindingFlags.NonPublic | BindingFlags.Instance, null, [4, 6, 500], null)!;
-    private static object CreateProfile(bool cues, object? pointer = null, double width = 1.0, int blink = 500, double horizontalDrag = 4.0, double verticalDrag = 4.0, object? scrollBarMetrics = null, object? primaryScreenMetrics = null, int hoverTime = 400, double hoverWidth = 4.0, double hoverHeight = 4.0) => CoreType("PortableSystemSettings").GetMethod("CreateInitialLightProfile", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, [cues, pointer, width, blink, false, horizontalDrag, verticalDrag, scrollBarMetrics, primaryScreenMetrics, hoverTime, hoverWidth, hoverHeight])!;
+    private static object CreateProfile(bool cues, object? pointer = null, double width = 1.0, int blink = 500, double horizontalDrag = 4.0, double verticalDrag = 4.0, object? scrollBarMetrics = null, object? primaryScreenMetrics = null, int hoverTime = 400, double hoverWidth = 4.0, double hoverHeight = 4.0, Rect? virtualScreenBoundsDip = null) => CoreType("PortableSystemSettings").GetMethod("CreateInitialLightProfile", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, [cues, pointer, width, blink, false, horizontalDrag, verticalDrag, scrollBarMetrics, primaryScreenMetrics, hoverTime, hoverWidth, hoverHeight, virtualScreenBoundsDip])!;
     private static object CurrentProfile() => CoreType("PortableSystemSettingsProvider").GetProperty("Current", BindingFlags.NonPublic | BindingFlags.Static)!.GetValue(null)!;
     private static void Register(object profile) => CoreType("PortableSystemSettingsProvider").GetMethod("Register", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, [profile]);
     private static void Require(bool condition, string message) { if (!condition) throw new InvalidOperationException(message); }

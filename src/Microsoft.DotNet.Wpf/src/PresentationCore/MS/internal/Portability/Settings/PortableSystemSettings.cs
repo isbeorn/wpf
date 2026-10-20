@@ -86,13 +86,15 @@ namespace MS.Internal.Portability.Settings
     {
         private readonly PortablePointerSettings? _pointerSettings;
         private readonly PortablePrimaryScreenMetrics? _primaryScreenMetrics;
+        private readonly Rect? _virtualScreenBoundsDip;
 
         internal PortableSystemSettings(string profileName, IReadOnlyDictionary<PortableSystemColor, uint> colors,
             bool keyboardCues, bool highContrast, PortablePointerSettings? pointerSettings = null,
             double caretWidthDip = 1.0, int caretBlinkTimeMilliseconds = 500, bool mouseVanish = false,
             double minimumHorizontalDragDistanceDip = 4.0, double minimumVerticalDragDistanceDip = 4.0,
             PortableScrollBarMetrics? scrollBarMetrics = null, PortablePrimaryScreenMetrics? primaryScreenMetrics = null,
-            int mouseHoverTimeMilliseconds = 400, double mouseHoverWidthDip = 4.0, double mouseHoverHeightDip = 4.0)
+            int mouseHoverTimeMilliseconds = 400, double mouseHoverWidthDip = 4.0, double mouseHoverHeightDip = 4.0,
+            Rect? virtualScreenBoundsDip = null)
         {
             ArgumentException.ThrowIfNullOrWhiteSpace(profileName);
             ArgumentNullException.ThrowIfNull(colors);
@@ -110,6 +112,10 @@ namespace MS.Internal.Portability.Settings
                 throw new ArgumentOutOfRangeException(nameof(mouseHoverWidthDip), "Mouse hover width must be finite and positive in DIPs.");
             if (!double.IsFinite(mouseHoverHeightDip) || mouseHoverHeightDip <= 0)
                 throw new ArgumentOutOfRangeException(nameof(mouseHoverHeightDip), "Mouse hover height must be finite and positive in DIPs.");
+            if (virtualScreenBoundsDip is Rect bounds &&
+                (!double.IsFinite(bounds.X) || !double.IsFinite(bounds.Y) || !double.IsFinite(bounds.Width) || !double.IsFinite(bounds.Height) ||
+                 bounds.Width <= 0 || bounds.Height <= 0 || !double.IsFinite(bounds.Right) || !double.IsFinite(bounds.Bottom)))
+                throw new ArgumentOutOfRangeException(nameof(virtualScreenBoundsDip), "Virtual-screen bounds must have finite coordinates and positive finite dimensions in DIPs.");
             var palette = new Dictionary<PortableSystemColor, uint>();
             foreach (var role in Enum.GetValues<PortableSystemColor>())
             {
@@ -128,6 +134,7 @@ namespace MS.Internal.Portability.Settings
             HighContrast = highContrast;
             _pointerSettings = pointerSettings;
             _primaryScreenMetrics = primaryScreenMetrics;
+            _virtualScreenBoundsDip = virtualScreenBoundsDip;
             CaretWidthDip = caretWidthDip;
             CaretBlinkTimeMilliseconds = caretBlinkTimeMilliseconds;
             MouseVanish = mouseVanish;
@@ -164,6 +171,9 @@ namespace MS.Internal.Portability.Settings
         internal PortablePrimaryScreenMetrics PrimaryScreenMetrics => _primaryScreenMetrics ?? throw new PlatformNotSupportedException(
             $"Portable settings profile '{ProfileName}' does not supply observed primary-screen metrics. Register native screen settings before constructing controls that require them.");
 
+        internal Rect VirtualScreenBoundsDip => _virtualScreenBoundsDip ?? throw new PlatformNotSupportedException(
+            $"Portable settings profile '{ProfileName}' does not supply observed virtual-screen bounds. Register native screen settings before reading desktop metrics.");
+
         internal uint GetColor(PortableSystemColor role) => Colors.TryGetValue(role, out uint color) ? color :
             throw new ArgumentOutOfRangeException(nameof(role), role, $"Color role is not supplied by settings profile '{ProfileName}'.");
 
@@ -171,7 +181,8 @@ namespace MS.Internal.Portability.Settings
             double caretWidthDip = 1.0, int caretBlinkTimeMilliseconds = 500, bool mouseVanish = false,
             double minimumHorizontalDragDistanceDip = 4.0, double minimumVerticalDragDistanceDip = 4.0,
             PortableScrollBarMetrics? scrollBarMetrics = null, PortablePrimaryScreenMetrics? primaryScreenMetrics = null,
-            int mouseHoverTimeMilliseconds = 400, double mouseHoverWidthDip = 4.0, double mouseHoverHeightDip = 4.0) =>
+            int mouseHoverTimeMilliseconds = 400, double mouseHoverWidthDip = 4.0, double mouseHoverHeightDip = 4.0,
+            Rect? virtualScreenBoundsDip = null) =>
             new PortableSystemSettings("portable-light-v1", new Dictionary<PortableSystemColor, uint>
             {
                 [PortableSystemColor.ActiveBorder] = 0xFF6B7280,
@@ -213,7 +224,7 @@ namespace MS.Internal.Portability.Settings
                 [PortableSystemColor.AccentDark3] = 0xFF09192A
             }, keyboardCues, highContrast: false, pointerSettings, caretWidthDip, caretBlinkTimeMilliseconds, mouseVanish,
                 minimumHorizontalDragDistanceDip, minimumVerticalDragDistanceDip, scrollBarMetrics, primaryScreenMetrics,
-                mouseHoverTimeMilliseconds, mouseHoverWidthDip, mouseHoverHeightDip);
+                mouseHoverTimeMilliseconds, mouseHoverWidthDip, mouseHoverHeightDip, virtualScreenBoundsDip);
     }
 }
 #endif
