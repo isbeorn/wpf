@@ -57,3 +57,34 @@ geometry-bounds comparisons retain their explicitly documented backend scope.
 
 
 Content-free ContainerVisual subclasses use the same retained child traversal, transform, clip and invalidation rules as ContainerVisual. DrawingVisual and UIElement keep their existing content dispatch. HostVisual remains explicitly unsupported because it hosts a separate composition target; Viewport3DVisual and effects retain their named diagnostics. The regression checks derived-container child pixels, mutation, remove/re-add and sibling state recovery. The genuine PF UIElementIsland integration is verified separately by the FlowDocument owner.
+
+Use `--drawing-brush-only` for six DrawingBrush checks. The bounded profile covers
+rectangle, rounded rectangle, ellipse and geometry fills with TileMode.None or
+Tile. The existing drawing walker records a picture shader using the same
+viewbox, viewport, stretch, alignment and brush transform mapping as VisualBrush.
+The viewport defines the repetition period, including transparent Uniform
+padding. No persistent picture cache or new rendering engine is introduced.
+DrawingBrush pens, glyph foregrounds and Flip modes retain named rejections, as
+do unsupported operations inside the source drawing such as opacity masks.
+
+The source-derived Classic theme check uses the two square gray/white ToolBar
+Thumb pattern with absolute 4x4 viewbox and viewport at 96 and 192 DPI. A second
+tiled check exercises Uniform padding, nonzero source coordinates, both brush
+transforms and an outer transform with guidelines. The other checks cover
+non-tiled Uniform mapping, clipping, opacity, sibling state, empty content,
+freezing and dispatcher-driven child mutation followed by removal and restoration.
+The four static profiles are calibrated against stock WPF 10.0.12. The released
+portable family rejects DrawingBrush before pixels are painted. The later actual
+NINA paint exception identifies the brush type and DrawRectangle entry point;
+it does not establish which retained brush instance caused it. The Classic
+ResizeGrip tile and NINA camera_shutter/Observatory Uniform resources are known
+source profiles, not identified live owners.
+
+The final joint family passes all six focused cases and all 68 rendering cases
+on Windows and Linux. Picture shaders normalize their tile origin, so the shader
+matrix restores the viewport origin before the brush transform and outer device
+transform. A negative viewport with scaling and translation checks that order
+against stock WPF. Tested guidelines belong to outer placement; the existing
+walker does not apply DrawingGroup.GuidelineSet inside the source drawing. None
+of the four inspected NINA/Classic brush declarations uses that property and
+general source-guideline parity remains unqualified.

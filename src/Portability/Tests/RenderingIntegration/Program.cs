@@ -12,6 +12,20 @@ using SkiaSharp;
 
 var checks = new List<object>();
 var failed = false;
+if (args.Contains("--drawing-brush-only") || args.Length == 0)
+{
+    Run("drawing-brush-classic-absolute-tile-and-freeze", DrawingBrushCases.ClassicTile);
+    Run("drawing-brush-uniform-source-bounds-transform-clip-and-empty", DrawingBrushCases.UniformAndState);
+    Run("drawing-brush-tile-viewport-padding-relative-transform-and-guidelines", DrawingBrushCases.TilePadding);
+    Run("drawing-brush-ellipse-rounded-geometry-and-empty-content", DrawingBrushCases.ShapesAndEmpty);
+    Run("drawing-brush-explicit-unsupported-profiles", DrawingBrushCases.Unsupported);
+    Run("drawing-brush-retained-child-mutate-remove-and-restore", () => DrawingBrushCases.Retained(Drain));
+}
+if (args.Contains("--drawing-brush-only"))
+{
+    Console.WriteLine(JsonSerializer.Serialize(new { probe = "drawing-brush-rendering", corePath = typeof(DrawingVisual).Assembly.Location, checks }, new JsonSerializerOptions { WriteIndented = true }));
+    return failed ? 1 : 0;
+}
 if (!args.Contains("--render-preference-only") && !args.Contains("--visibility-only") && !args.Contains("--drawing-image-only"))
 {
     foreach (GeometryCombineMode mode in Enum.GetValues<GeometryCombineMode>())
