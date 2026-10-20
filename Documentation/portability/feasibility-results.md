@@ -9,7 +9,27 @@ document, Markdown and window-placement checkpoint before the subsequent
 empty-window, docking and NINA.Image repairs.
 Earlier checkpoints below retain their original scope.
 
-The experiments establish a viable open-source Linux x64 path for this fork. Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded text implementation and native controls run through the owned X11 adapter. The app-local SDK compiles genuine BAML on Linux and earlier package-only fixtures retain their recorded scope. Original simulator-only NINA now captures and displays a 640x480 image through the full application on the real GNOME/XWayland desktop, with AutoStretch, DetectStars, finite statistics and histogram data. Tooltip and empty-geometry faults are fixed. The NINA sky-map/cache component passes 42 checks on Windows and Linux and the original Framing/cache integration passes 21 checks. Saved-layout restoration still reaches Windows-only virtual-screen metrics; NINA uses its original default-layout fallback. A later DrawingBrush redraw fault opens its error dialog, leaving cancellation and recovery unqualified. Full application, desktop, final package and long-running qualification remain open.
+The experiments establish a viable open-source Linux x64 path for this fork.
+Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded
+text implementation and native controls run through the owned X11 adapter. The
+app-local SDK compiles genuine BAML on Linux. Original simulator-only NINA now
+captures and displays a 640x480 image through the full application on the real
+GNOME/XWayland desktop, with AutoStretch, DetectStars, finite statistics and
+histogram data. Native cancellation, recovery, normal close and a second launch
+with the saved original layout pass. Virtual-screen metrics and DrawingBrush
+shape fills clear the previous faults. The official-template plugin pane and
+Installed/offline-catalog view also work. The current runtime and native receipts
+are recorded in the launch plan.
+
+Three required paths remain under repair: floating-window height grows by the
+caption size after restart, Offline Sky Map creation still invokes the Windows
+grayscale-palette factory and sequence dragging requires a retained Gaussian
+blur layer. The sky-map/cache component passes 42 checks on Windows and Linux
+and the now-tracked original Framing/cache recipe passes 21 checks on the current
+Linux runtime. These component results do not qualify the failed native Offline
+Sky Map route. Remaining full application, desktop, final package and sustained
+workload gates are open; unused WPF capabilities, native IME and further
+accessibility work remain deferred at the user's request.
 
 The Phase 0 reference/runtime gate and Phase 1 feasibility gate pass within the scopes recorded below. Phases 2 through 5 have not passed. The accepted [plan](../cross-platform-plan.md) remains the behavior contract. Physical desktop, full application and sustained-workload qualification remain later gates. Component checks, source compilation and managed test peers do not substitute for native WPF control behavior.
 

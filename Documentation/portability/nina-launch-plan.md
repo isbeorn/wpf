@@ -6,6 +6,68 @@ further accessibility qualification and native IME are later work. The earlier
 ordering that deferred NINA.Image until all WPF gates finished is superseded.
 Everything remains local on `codex/nina-cross-platform`.
 
+## Active checkpoint
+
+The complete original simulator-only application now completes a native
+1-second capture, a 10-second capture cancellation and a subsequent recovery
+capture on GNOME/XWayland. AutoStretch and DetectStars retain the persisted
+defaults. The completed images have finite statistics and histogram data.
+Ordinary close exits zero, saves the initialized original layout, disconnects
+SimulatorCamera and completes the original plugin teardown. A second lifetime
+restores that layout without the earlier fallback. The official-template plugin
+pane hides and reopens and its Installed/offline-catalog view works.
+
+The actual publication is the complete 329-file consumer at
+`current/nina/shell-vm-brush-20261021-1/consumer`, manifest
+`70D6BBF844298277EC5FF89DCA6D5E62CAA664929D15CA731E5C3A377542AF36`.
+Its whole framework manifest is `4E804208D2420743C7DF47DEC3DFC44967C6A9558EC82F6CE089ED25006E997A`.
+The guest directory is
+`/home/stefan/wpf-portability-local/phase5/nina-shell-brush-20261021-1`.
+The passive second lifetime was PID 1884015, start ticks 2540746; refresh its
+identity and desktop authorization before any further action. Native capture,
+cancellation, close and relaunch evidence is
+`current/nina/vm-brush-ui-20261021-1/capture-lifecycle-handoff.json`, SHA-256
+`6FD2CF31F0E3BC3862E2EAEE76D61C6C2F888D1C43B6ACF707BB127C779A6776`.
+
+Three focused NINA requirements are being repaired in the existing owners:
+
+- Floating Statistics saves outer height 726 as 763 after the caption arrives
+  late, then restores that enlarged value. Reconcile the affected size axes in
+  `Window.Portable.cs` before acknowledging old client geometry. Preserve outer
+  dimensions through frame addition/removal, DPI and save/recreate while still
+  accepting later native user resizing. Do not adjust AvalonDock serialization.
+- Original Offline Sky Map creation evaluates `BitmapPalettes.Gray256` before
+  creating its non-indexed Gray8 background. That palette still calls the
+  Windows MIL factory. Supply its 256 immutable opaque grayscale entries and
+  accept/ignore the Gray8 palette as native WPF does. Preserve source bytes,
+  freezing, cloning, rendering and null Gray8.Palette; indexed images and unused
+  palette types remain outside this repair.
+- Original sequence dragging uses a zero-duration Radius 0 -> 10 BlurEffect
+  animation on the source subtree. Extend the retained walker with a transient
+  Gaussian layer for the default Performance profile and axis-aligned
+  transforms. Preserve native radius truncation, minimum scale and device cap,
+  clip/effect/opacity ordering, retained invalidation and restoration on drop or
+  Escape. Other effects, kernels, bias profiles and skew stay explicit unsupported.
+
+Each repair uses existing tests and native/reference tooling, with a failing
+reproduction before its production change. No new dependency, public API or
+backend service is planned. Qualify one combined framework family, then replay
+the actual application through restored floating dimensions, offline Framing
+and sequence drag/drop/cancel. Component tests do not replace those native gates.
+The offline Framing first-fault receipt is
+`current/nina/vm-brush-ui-20261021-1/lifetime2/broader-first-fault-handoff.json`,
+SHA-256 `4E41355D7D24E128BAEFDE55ED810D76197976F7F8027BBA7A0C8FD427D0E5F1`.
+
+Commit `aeb11e6` preserves the original Framing/cache recipe in
+`src/Portability/Tests/NinaPortableViews/Framing`. A fresh entry-only build and
+private Xvfb replay pass all 21 checks on the current shared consumer, with
+412 unchanged inputs and clean shutdown. Its corrected handoff is
+`current/nina/framing-tracked-replay-20261021-1/framing21-handoff-corrected.json`,
+SHA-256 `80B37BDEF8972E36AEEC8A54C7787F8038521818DD0D7F82D07B912FC70E2D27`.
+This is managed view/VM/cache coverage, not actual native Offline Sky Map input.
+
+The sections below retain earlier attempts and their original limitations.
+
 ## Original startup boundary
 
 The initial original App/MainWindow attempt reached `MainWindow.Show`, then failed
@@ -19,7 +81,7 @@ star sensitivity and None noise reduction and disables annotations. A visible
 shell is the first milestone. A default simulator exposure also requires genuine
 stretching and detection; the prepared-image display tests do not cover them.
 
-## Current progress
+## Earlier startup and image-processing checkpoints
 
 The original simulator-only App/MainWindow now opens on the owned Linux backend.
 The retained run `shell-startup-20261020-2/runs/run.rVHt3aYM` contains two actual
@@ -65,7 +127,7 @@ initialization order and changes no application code. This integration uses the
 existing native view fixture with genuine NINA objects; it does not establish
 the full MainWindow capture-button workflow or a full application feature pass.
 
-## Resume from this milestone
+## Earlier integration sequence
 
 - The next complete publication fixed actual simulator connection through the
   original Camera page. Commit `ec8a250a0` routes CombinedGeometry through the
@@ -143,7 +205,7 @@ SHA-256 `EF8E2D4B562387CC7400A9110197A1069D0FD0195147AD861CDE8FBE5CF99C39`.
 Its complete 120-file runtime manifest is
 `F9D58F074575455B26653CECFB7426EAA3E5D0403AAF908B919F27E9581E1FD8`.
 
-## Latest native application replay
+## Prior faulted native application replay
 
 The fresh shared 329-file publication uses this joint runtime and the unchanged
 eight declared application/control adaptations. Its manifest is
@@ -172,8 +234,10 @@ Two additional 1-second captures do not match recorded test submissions; no
 human or automation attribution is inferred.
 
 The faulted lifetime has been stopped after preserving its profile, settings,
-logs and original failed dock XML. Both the original error dialog's No action
-and an ordinary main-window close failed to exit. An exact-process TERM was
+logs and original failed dock XML. An attempted Alt+N accelerator for the error
+dialog's No button and an ordinary main-window close both failed to exit. Native
+key submission and focus were verified; No-handler execution was not observed.
+An exact-process TERM was
 required; no KILL was sent and this does not qualify normal shutdown. The
 separate cleanup receipt is
 `current/nina/vm-joint-ui-20261021-1/close-handoff.json`, SHA-256
@@ -187,6 +251,34 @@ Cancellation, recovery, actual Framing navigation and restored docking layout
 remain unqualified. The next repairs cover required DrawingBrush rendering and
 the four virtual-screen metrics, using the existing renderer and startup
 settings provider without a new dependency or public API.
+
+Both repairs are now committed and pass the targeted framework qualification.
+Commit `138cb5f3c` provides process-wide virtual-screen metrics from the existing
+native startup inventory. Commit `953c2be4a` renders DrawingBrush shape fills
+through the existing walker, including viewport-origin correction. The final
+family passes all 68 rendering checks, including six focused brush cases, and
+121 positive settings checks on each OS plus 87 native checks with owned cleanup.
+The standalone unregistered ComboBox constructor remains a failed readiness
+diagnostic, outside the positive suite. Earlier invalid-cycle and pixel failures
+are retained with their exact producing sources.
+
+The final intake is
+`current/nina-drawingbrush-virtualscreen-integration-20261021-1/origin-correction/consumer-intake.json`,
+SHA-256 `46CC619B0132EED283B5AA1C9AD9B146ED8BD51C52E5BCFC29C2DA72430757B2`.
+Its whole 120-file runtime manifest is
+`4E804208D2420743C7DF47DEC3DFC44967C6A9558EC82F6CE089ED25006E997A`.
+Both PF builds have 23 warnings: the prior 19 and four native cache fields that
+the portable getter guards no longer assign. Core, Host and final test builds
+have zero warnings and errors. The source-proven new Core reuses the exact new
+PF/Host outputs after the brush correction; it does not rebuild NINA.
+
+The fresh shared 329-file application publication is
+`current/nina/shell-vm-brush-20261021-1/consumer`, manifest
+`70D6BBF844298277EC5FF89DCA6D5E62CAA664929D15CA731E5C3A377542AF36`.
+Root independently verified every runtime and publication member. The native
+replay uses the preserved original failed layout and profile. At composition,
+component passes did not establish native restore, cancellation or normal
+shutdown. The subsequent actual results are in the active checkpoint above.
 
 ## Accepted cached-image behavior
 
@@ -241,7 +333,7 @@ and original source sample. Evidence is
 `EB1680B739FE43BA4F3D3DE7711AE04D1FE7B68CC89E128865F3E8A8B9A7207B`.
 This remains an isolated original-view/VM workflow, not full-app native input.
 
-The pending DrawingBrush repair covers the declared NINA and Classic shape-fill
+The committed DrawingBrush repair covers the declared NINA and Classic shape-fill
 profiles with TileMode.None or Tile. Outer placement guidelines are included.
 The existing managed drawing walker does not apply DrawingGroup.GuidelineSet
 inside the source drawing; none of the four inspected brush declarations uses
