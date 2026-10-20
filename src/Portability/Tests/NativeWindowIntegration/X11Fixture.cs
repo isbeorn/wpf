@@ -365,6 +365,38 @@ internal sealed class X11Fixture : IDisposable
         }
     }
 
+    internal (uint[] Window, uint[] Root) Pixels(IntPtr window, IReadOnlyList<(int X, int Y)> points)
+    {
+        if (points.Count == 0) throw new ArgumentException("Native pixel sampling requires points.", nameof(points));
+        int left = points.Min(point => point.X), top = points.Min(point => point.Y);
+        int right = points.Max(point => point.X), bottom = points.Max(point => point.Y);
+        uint width = checked((uint)(right - left + 1)), height = checked((uint)(bottom - top + 1));
+        if (XTranslateCoordinates(_display, window, _root, 0, 0, out int originX, out int originY, out _) == 0)
+            throw new InvalidOperationException("Cannot locate the native sampling region.");
+        int rootX = checked(originX + left), rootY = checked(originY + top);
+        IntPtr windowImage = IntPtr.Zero, rootImage = IntPtr.Zero;
+        try
+        {
+            XSync(_display, false);
+            windowImage = XGetImage(_display, window, left, top, width, height, unchecked((nuint)~0UL), 2);
+            if (windowImage == IntPtr.Zero) throw new InvalidOperationException("Native XGetImage returned no window sampling region.");
+            rootImage = XGetImage(_display, _root, rootX, rootY, width, height, unchecked((nuint)~0UL), 2);
+            if (rootImage == IntPtr.Zero) throw new InvalidOperationException("Native XGetImage returned no root sampling region.");
+            var windowPixels = new uint[points.Count]; var rootPixels = new uint[points.Count];
+            for (int index = 0; index < points.Count; index++)
+            {
+                int x = points[index].X - left, y = points[index].Y - top;
+                windowPixels[index] = (uint)XGetPixel(windowImage, x, y).ToUInt64() & 0x00ffffff;
+                rootPixels[index] = (uint)XGetPixel(rootImage, x, y).ToUInt64() & 0x00ffffff;
+            }
+            return (windowPixels, rootPixels);
+        }
+        finally
+        {
+            try { if (rootImage != IntPtr.Zero) XDestroyImage(rootImage); }
+            finally { if (windowImage != IntPtr.Zero) XDestroyImage(windowImage); }
+        }
+    }
     internal unsafe bool IsMapped(IntPtr window)
     {
         if (window == IntPtr.Zero) return false;

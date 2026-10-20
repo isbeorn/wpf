@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <StartupObject>Program</StartupObject>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblySearchPath_UseCandidateAssemblyFiles>false</AssemblySearchPath_UseCandidateAssemblyFiles>
+    <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
+    <RollForward>Disable</RollForward>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs;ImageControlCases.cs;NativeImageCases.cs" />
+    <Compile Include="../../NativeWindowIntegration/X11Fixture.cs" Link="X11Fixture.cs" />
+    <None Include="../AvalonDock/ResourceSources.json" Link="ResourceSources.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(NinaFixtureDirectory)/Closure.json" Link="Closure.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="$(NinaSourceStageDirectory)/**/*" Exclude="$(NinaSourceStageDirectory)/*.dll" Link="%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" Condition="'$(NinaSourceStageDirectory)' != ''" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="[3.119.4]" />
+    <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="[8.3.1.5]" />
+  </ItemGroup>
+  <Import Project="$(NinaPortableArtifacts)/SourceStageReferences.props" Condition="Exists('$(NinaPortableArtifacts)/SourceStageReferences.props')" />
+  <Import Project="$(NinaFixtureDirectory)/References.props" Condition="Exists('$(NinaFixtureDirectory)/References.props')" />
+  <Import Project="../../../Framework/Build/PortableWpfReferences.targets" />
+  <Target Name="RequireReviewedNativeImagingInputs" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(NinaPortableArtifacts)/SourceStageReferences.props') or !Exists('$(NinaFixtureDirectory)/References.props') or !Exists('$(NinaSourceStageDirectory)/Wpf.Portable.NativeHost.dll')" Text="Prepare one released complete Stage and the pinned original NINA closure with eng/portability/Run-NinaNativeImaging.ps1 -Action Build." />
+  </Target>
+</Project>

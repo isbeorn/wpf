@@ -1,0 +1,4 @@
+# Preserve the accepted mixed line endings and source hashes on checkout.
+Program.cs -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+ImageControlCases.cs -text
+NativeImageCases.cs -text
