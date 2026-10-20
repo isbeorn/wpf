@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using System.Xml.Linq;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -23,6 +24,15 @@ internal static class Program
     [STAThread]
     public static int Main(string[] args)
     {
+        if (args.Any(value => value.StartsWith("--desktop", StringComparison.OrdinalIgnoreCase)))
+        {
+            if (args.Length != 1 || args[0] != "--desktop-accessibility")
+            {
+                Console.Error.WriteLine("Use --desktop-accessibility alone; verification and unknown desktop arguments are not accepted.");
+                return 2;
+            }
+            return RunDesktopAccessibility();
+        }
         if (args.Length == 2 && args[0] == "--audit-complete-view-results") return AuditCompleteViewResults(args[1]);
         var checks = new List<CheckResult>(); bool failed = false;
         object? classicTheme = null;
@@ -260,6 +270,85 @@ internal static class Program
         return new {identity=classic.FullName,path=classic.Location,loadContext=AssemblyLoadContext.GetLoadContext(classic)?.Name,
             sha256=Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(classic.Location))),resourceName,bamlKey,bamlSha256,
             measuredTextLayout,userControlContentWidth=content.ActualWidth,userControlContentHeight=content.ActualHeight,windowsNativeTextModules};
+    }
+
+    private static int RunDesktopAccessibility()
+    {
+        if (!OperatingSystem.IsLinux())
+        {
+            Console.Error.WriteLine("Desktop accessibility mode requires Linux.");
+            return 2;
+        }
+        if (string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DISPLAY")) ||
+            string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("DBUS_SESSION_BUS_ADDRESS")) ||
+            Environment.GetEnvironmentVariable("WPF_ATSPI_PRIVATE_BUS") == "1")
+        {
+            Console.Error.WriteLine("Desktop accessibility mode requires the existing desktop display and session bus, without the private-bus fixture.");
+            return 2;
+        }
+
+        NativeWindowHost.InitializeForCurrentThread();
+        var application = new App();
+        Window? window = null;
+        bool opened = false, closed = false;
+        try
+        {
+            application.InitializeComponent();
+            var view = new View();
+            AutomationProperties.SetName(view.Editor, "Editor");
+            window = new Window { Title = "WPF desktop accessibility " + Environment.ProcessId, Width = 420, Height = 240, Content = view };
+            var elapsed = Stopwatch.StartNew();
+            var observations = new List<object>();
+            int dropped = 0;
+
+            object Snapshot(string kind)
+            {
+                string text = view.Editor.Text;
+                return new
+                {
+                    kind, elapsedMilliseconds = elapsed.ElapsedMilliseconds, view.Clicks,
+                    Text = text.Length <= 1024 ? text : null, TextLength = text.Length, TextOmitted = text.Length > 1024,
+                    view.Editor.CaretIndex, view.Editor.SelectionStart, view.Editor.SelectionLength,
+                    focusedElementName = (Keyboard.FocusedElement as FrameworkElement)?.Name,
+                    buttonFocused = view.ActionButton.IsKeyboardFocused, editorFocused = view.Editor.IsKeyboardFocused
+                };
+            }
+            void Observe(string kind)
+            {
+                if (observations.Count < 64) observations.Add(Snapshot(kind));
+                else dropped++;
+            }
+
+            window.ContentRendered += (_, _) =>
+            {
+                if (opened) return;
+                opened = true;
+                Observe("opened");
+            };
+            view.ActionButton.Click += (_, _) => Observe("button-click");
+            view.Editor.TextChanged += (_, _) => Observe("text-changed");
+            view.Editor.SelectionChanged += (_, _) => Observe("selection-changed");
+            window.AddHandler(Keyboard.GotKeyboardFocusEvent, new KeyboardFocusChangedEventHandler((_, _) => Observe("focus-gained")), true);
+            window.AddHandler(Keyboard.LostKeyboardFocusEvent, new KeyboardFocusChangedEventHandler((_, _) => Observe("focus-lost")), true);
+            window.PreviewKeyUp += (_, _) => Observe("key-up");
+            window.Closed += (_, _) =>
+            {
+                closed = true;
+                Console.WriteLine(JsonSerializer.Serialize(new
+                {
+                    probe = "packaged-wpf-desktop-accessibility", processId = Environment.ProcessId,
+                    scope = "Observed public control state; keyboard and Orca qualification require external evidence.",
+                    Opened = opened, Closed = closed, final = Snapshot("closed"), observations, droppedObservations = dropped
+                }));
+            };
+            int exit = application.Run(window);
+            return exit == 0 && opened && closed ? 0 : 1;
+        }
+        finally
+        {
+            try { if (window is not null && !closed) window.Close(); }
+            finally { if (!application.Dispatcher.HasShutdownStarted) application.Shutdown(); }
+        }
     }
 
     private static void AuditRuntimeAssets()
