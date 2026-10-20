@@ -18,7 +18,7 @@ namespace System.Windows.Media.Imaging
             return Decode(bytes, colorManage);
         }
 
-        internal static (PortableBitmapBuffer Buffer, double DpiX, double DpiY) Decode(byte[] bytes, bool colorManage)
+        internal static (PortableBitmapBuffer Buffer, double DpiX, double DpiY) Decode(byte[] bytes, bool colorManage, bool preservePixelFormat = false)
         {
             using SKData data = SKData.CreateCopy(bytes);
             using SKCodec codec = SKCodec.Create(data) ?? throw new FileFormatException("Invalid portable PNG data.");
@@ -27,7 +27,7 @@ namespace System.Windows.Media.Imaging
             var metadata = ReadPortablePngMetadata(bytes);
             if (codec.Info.Width != metadata.Width || codec.Info.Height != metadata.Height)
                 throw new FileFormatException("Portable PNG header and decoded dimensions differ.");
-            PixelFormat format = colorManage || metadata.HasAlpha || codec.Info.AlphaType != SKAlphaType.Opaque ? PixelFormats.Bgra32 : PixelFormats.Bgr32;
+            PixelFormat format = (colorManage && !preservePixelFormat) || metadata.HasAlpha || codec.Info.AlphaType != SKAlphaType.Opaque ? PixelFormats.Bgra32 : PixelFormats.Bgr32;
             PortableBitmapBuffer buffer = DecodePixels(codec, format, colorManage);
             return (buffer, metadata.DpiX, metadata.DpiY);
         }

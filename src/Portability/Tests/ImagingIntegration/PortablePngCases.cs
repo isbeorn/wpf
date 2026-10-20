@@ -84,16 +84,10 @@ internal static class PortablePngCases
                 Unsupported(() => Load(stream));
                 Require(stream.CanRead, "Unsupported decode closed caller stream.");
             }
-            using (var bitmap = new SKBitmap(1, 1))
-            using (SKData jpeg = bitmap.Encode(SKEncodedImageFormat.Jpeg, 100))
-            using (var stream = new MemoryStream(jpeg.ToArray())) Unsupported(() => Load(stream));
             foreach (Action<BitmapImage> setting in new Action<BitmapImage>[]
             {
-                image => image.DecodePixelWidth = 1,
-                image => image.DecodePixelHeight = 1,
                 image => image.SourceRect = new Int32Rect(0, 0, 1, 1),
                 image => image.Rotation = Rotation.Rotate90,
-                image => image.CreateOptions = BitmapCreateOptions.PreservePixelFormat,
                 image => image.CreateOptions = BitmapCreateOptions.IgnoreColorProfile,
                 image => image.CreateOptions = BitmapCreateOptions.IgnoreImageCache,
                 image => image.CacheOption = BitmapCacheOption.None,

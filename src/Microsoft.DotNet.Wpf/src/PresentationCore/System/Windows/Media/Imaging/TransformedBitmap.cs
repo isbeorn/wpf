@@ -154,6 +154,9 @@ namespace System.Windows.Media.Imaging
         ///
         internal override void FinalizeCreation()
         {
+#if PORTABLE_WPF
+            FinalizePortableCreation();
+#else
             _bitmapInit.EnsureInitializedComplete();
             BitmapSourceSafeMILHandle wicTransformer = null;
 
@@ -252,6 +255,7 @@ namespace System.Windows.Media.Imaging
 
             CreationCompleted = true;
             UpdateCachedSettings();
+#endif
         }
 
         /// <summary>

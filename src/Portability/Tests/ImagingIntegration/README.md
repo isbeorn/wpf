@@ -67,12 +67,13 @@ The owned PNG `BitmapImage` profile supports eager OnLoad caller streams and
 local application pack resources. The decoder/frame profile supports eager
 Default/OnLoad caller streams and local application pack resources through actual
 `PngBitmapDecoder`, `IconBitmapDecoder`, `BitmapFrame.Create` and
-`ImageSourceConverter` paths. Other schemes and create/cache options fail
+`ImageSourceConverter` paths. Other decoder schemes and create/cache options fail
 explicitly. Callers retain their streams; frames own decoded pixels.
 
 PNG factories preserve raw profile samples and return Bgr32 for opaque RGB or
 Bgra32 for RGBA/transparency. BitmapImage retains its existing sRGB/Bgra32
-conversion. The supported ICO profile contains nonoverlapping PNG entries or
+conversion. PreservePixelFormat selects Bgr32 for opaque RGB without disabling
+embedded profile conversion. The supported ICO profile contains nonoverlapping PNG entries or
 32-bit BI_RGB BITMAPINFOHEADER DIB entries with complete XOR pixels and AND masks.
 All entries must decode before the frozen frame collection is published. ICO
 frames and their owned frozen thumbnails are Bgra32 at 96 DPI. ICO enumeration
@@ -81,8 +82,8 @@ sorting: the original six-frame NINA ICO starts with 256 pixels here and 128 on
 the calibrated Windows codec. No resolution-specific ordering is implemented.
 
 Decoder/frame metadata, color-context objects, codec information and metadata
-writing fail explicitly. Palettes, other codecs, native WIC handles,
-conversion graphs, cropping, transforms,
+writing fail explicitly. Palettes, codecs beyond PNG/JPEG/ICO, native WIC handles,
+conversion graphs, cropping, transforms beyond axis scaling and mirrors,
 image brushes and animated image rectangles remain separate
 gates. Unsupported source graphs may contain native methods in the compiled
 closure; this slice does not qualify them.
@@ -127,7 +128,84 @@ The original red reports retain both the WIC source-handle failure and blanket
 PNG Save guard. Direct decoded-frame Save is intentionally still unsupported;
 the positive public Create(source)-to-Save pipeline now crosses both old guards.
 
-Interpolation/scaling parity and color-managed/HDR display are not established.
+## NINA sky-survey cache
+
+BitmapImage also supports eager OnLoad absolute local file URIs, JPEG input,
+PreservePixelFormat and DecodePixelWidth/Height. A single requested axis keeps
+the integer aspect ratio with a minimum of one pixel; two axes set both sizes.
+JPEG factory frames are Gray8 or Bgr32. PreservePixelFormat BitmapImage color
+JPEGs use Bgr24. JFIF density is read in inches or centimeters, with a default
+of 96 DPI. The existing XPS package-origin check runs before local file access.
+Caller streams stay open and owned file streams close after the synchronous
+decode. Remote URIs, delayed loading, rotation and other create options remain
+unsupported.
+
+The actual CacheSkySurvey.LoadJpg path also uses JpegBitmapDecoder with an
+absolute local file URI, OnLoad and PreservePixelFormat. This typed decoder
+and the BitmapDecoder factory support eager local JPEG files with None or
+PreservePixelFormat. Both return the stock Gray8/Bgr32 raw decoder samples;
+PreservePixelFormat does not change decoder-frame color conversion or format.
+PNG/ICO decoder create options retain their prior restrictions. Remote/UNC
+URIs and local files outside OnLoad remain unsupported. The ambient XPS
+package check precedes file access and owned file streams close before return.
+
+Typed/factory file tests create frozen frames on a worker, delete the file after
+same-thread sample verification and render the frames through genuine DrawImage
+and RenderTargetBitmap on the UI thread. Raw URI-frame CopyPixels on another
+thread retains an observed stock limitation: URI serialization touches the
+thread-affine decoder even when the frame is frozen. No BitmapSource security
+or serialization path was changed to bypass that limitation.
+
+The source-backed JPEG encoder supports the actual original and thumbnail cache
+pipeline with QualityLevel 1 through 100, including NINA's quality 70. It writes
+rounded integer JFIF density and uses 96 DPI for nonpositive finite source DPI.
+Nonfinite or unrepresentable density rejects before output. Transform flags,
+decoder metadata and nondefault global/frame metadata remain unsupported.
+JPEG uses the same Save ownership, preflight retry and one-shot rules as PNG.
+Gray16, Rgb48 and Gray32Float sources are converted only in owned output staging;
+their source format and CopyPixels samples remain unchanged.
+
+TransformedBitmap supports finite axis scales and mirrors over owned pixels.
+Identity and pure mirrors copy samples exactly, including Gray16/Rgb48 low bits.
+Sizes round to the nearest integer with a minimum of one pixel. Resizing Gray16
+uses the IEC sRGB inverse transfer function before filtering and returns
+Gray32Float; Rgb48 resizing returns Pbgra32, matching the stock result formats.
+Gray32Float storage, copies and clones retain floating samples. Display and JPEG
+staging apply the forward transfer function to those linear grayscale samples.
+
+The selected filters are standard area coverage on shrinking axes and linear
+interpolation at source coordinate `destination * sourceSize / destinationSize`
+on growing axes, with clamped edges. Each axis chooses independently. Filtering
+uses premultiplied color or linear floating grayscale, preserving transparent
+edges and grayscale working precision. These filters intentionally differ from
+Windows WIC Fant. No arbitrary pixel tolerance or WIC rounding emulation is used.
+The user accepted this bounded filter difference for the cache on 2026-10-20.
+
+The retained genuine WindowsDesktop 10.0.12 calibration compares a 5x3 ramp and
+checker with complete pixels. The standard shrink differs from WIC by at most
+9/255 for the ramp and 31/255 for the checker at 3x2, and 8/255 and 9/255 at 2x2.
+The aligned 10x6 linear expansion matches both byte corpora exactly. Gray16
+checker shrink differs by up to 0.122222215 in linear float and its ramp by
+0.04790604 because the filters differ. Separately, the exact IEC transfer at
+32768 is 0.2140482 while WIC records about 0.21405274. The captured uniform and
+expansion transfer differences stay below 0.0000053 in linear float. These are
+case-specific observations, not a universal error bound. JPEG remains lossy and
+the codecs are not claimed to produce identical pixels or encoded bytes.
+
+Stock source, complete observations and red reports are retained under
+`artifacts/portability/current/nina-cache-codecs-20261020-1`. Integration checks
+exercise actual 500x500, 150x150 and 75x75 cache thumbnails, both high-bit source
+formats, exact mirror/restore, frozen file deletion, independent decode axes,
+quality tables, float constant/area invariants and premultiplied alpha. General
+color-managed/HDR display and other conversion graphs remain unqualified.
+
+The embedded linear RGB PNG regression verifies independently known 64/128/192
+linear samples become 137/188/225 sRGB samples with both ordinary BitmapImage
+and PreservePixelFormat. Raw decoder samples remain unchanged. JPEG content
+checks retain externally known red/green positions in the stock fixtures and
+verify independent red/green/blue patches and dark/mid/light bands through
+eight-bit and high-bit original/thumbnail encoding. Channel dominance and
+luminance order catch black output or channel swaps without lossy tolerances.
 
 Storage is GC-owned. Mutable images retain a pinned raw buffer plus committed
 raw data, and a draw temporarily allocates a BGRA display bitmap. Large camera

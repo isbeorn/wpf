@@ -145,7 +145,6 @@ internal static class PortablePngEncodeCases
             Expect<InvalidOperationException>(() => new PngBitmapEncoder().Thumbnail = frame);
             Expect<InvalidOperationException>(() => new PngBitmapEncoder().Preview = frame);
             Expect<NotSupportedException>(() => { _ = new PngBitmapEncoder().CodecInfo; });
-            Expect<NotSupportedException>(() => { var jpeg = new JpegBitmapEncoder(); jpeg.Frames.Add(frame); jpeg.Save(untouched); });
         });
         check("encode-png-cache-shaped-frozen-onload-image-and-closed-input", () =>
         {

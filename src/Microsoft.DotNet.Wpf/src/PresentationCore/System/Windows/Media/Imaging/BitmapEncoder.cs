@@ -320,20 +320,21 @@ namespace System.Windows.Media.Imaging
 #if PORTABLE_WPF
             VerifyAccess();
             EnsureBuiltIn();
-            if (this is not PngBitmapEncoder png)
-                throw new NotSupportedException("Portable bitmap encoding supports only PNG.");
+            if (this is not PngBitmapEncoder && this is not JpegBitmapEncoder)
+                throw new NotSupportedException("Portable bitmap encoding supports only PNG or JPEG.");
+            string portableCodec = this is PngBitmapEncoder ? "PNG" : "JPEG";
             if (_hasSaved)
                 throw new InvalidOperationException(SR.Image_OnlyOneSave);
             if (_frames == null || _frames.Count == 0)
                 throw new NotSupportedException(SR.Format(SR.Image_NoFrames, null));
             if (_frames.Count != 1 || _thumbnail != null || _preview != null || _metadata != null ||
                 _readOnlycolorContexts != null || _palette != null)
-                throw new NotSupportedException("Portable PNG encoding requires one frame without global thumbnails, previews, metadata, color contexts or palettes.");
+                throw new NotSupportedException("Portable " + portableCodec + " encoding requires one frame without global thumbnails, previews, metadata, color contexts or palettes.");
             ArgumentNullException.ThrowIfNull(stream);
             _ = stream.Position;
             if (!stream.CanSeek || !stream.CanWrite)
-                throw new NotSupportedException("Portable PNG encoding requires a seekable writable stream.");
-            byte[] bytes = png.EncodePortable(_frames[0]);
+                throw new NotSupportedException("Portable " + portableCodec + " encoding requires a seekable writable stream.");
+            byte[] bytes = this is PngBitmapEncoder png ? png.EncodePortable(_frames[0]) : ((JpegBitmapEncoder)this).EncodePortable(_frames[0]);
             // A failed output attempt consumes the encoder, as does a successful Save.
             _hasSaved = true;
             try
@@ -342,7 +343,7 @@ namespace System.Windows.Media.Imaging
             }
             catch (Exception exception) when (exception is System.IO.IOException || exception is NotSupportedException)
             {
-                throw new InvalidOperationException("Cannot write to the portable PNG stream.", exception);
+                throw new InvalidOperationException("Cannot write to the portable " + portableCodec + " stream.", exception);
             }
 #else
             VerifyAccess();

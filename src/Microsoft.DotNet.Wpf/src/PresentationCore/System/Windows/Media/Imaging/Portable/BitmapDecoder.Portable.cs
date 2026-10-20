@@ -22,25 +22,32 @@ namespace System.Windows.Media.Imaging
         private static NotSupportedException UnsupportedPortableDecoder(string feature) =>
             new NotSupportedException("Portable bitmap decoding does not support " + feature + ".");
 
-        private static void ValidatePortableOptions(BitmapCreateOptions options, BitmapCacheOption cache, RequestCachePolicy policy)
+        private static void ValidatePortableOptions(BitmapCreateOptions options, BitmapCacheOption cache, RequestCachePolicy policy, bool jpeg = false)
         {
-            if (options != BitmapCreateOptions.None || policy != null ||
+            bool supportedOptions = options == BitmapCreateOptions.None ||
+                (jpeg && options == BitmapCreateOptions.PreservePixelFormat && cache == BitmapCacheOption.OnLoad);
+            if (!supportedOptions || policy != null ||
                 (cache != BitmapCacheOption.Default && cache != BitmapCacheOption.OnLoad))
                 throw UnsupportedPortableDecoder("create options or cache policies outside eager Default/OnLoad");
         }
 
-        private static byte[] ReadPortableInput(Uri baseUri, Uri uri, Stream stream)
+        private static byte[] ReadPortableInput(Uri baseUri, Uri uri, Stream stream, BitmapCacheOption cache, bool localJpeg)
         {
             if (uri != null)
             {
                 Uri resolved = baseUri == null ? uri : BaseUriHelper.GetResolvedUri(baseUri, uri);
                 if (resolved.IsAbsoluteUri && !XpsLoadingContext.IsUriAllowedInCurrentContext(resolved))
                     throw new FileFormatException(SR.Resource_XpsPackageBoundaryViolation);
+                if (localJpeg && resolved.IsAbsoluteUri && resolved.IsFile && !resolved.IsUnc && cache == BitmapCacheOption.OnLoad)
+                {
+                    using Stream owned = File.OpenRead(resolved.LocalPath);
+                    return ReadPortableInput(null, null, owned, cache, localJpeg: false);
+                }
                 if (!resolved.IsAbsoluteUri || resolved.Scheme != "pack" || !BaseUriHelper.IsPackApplicationUri(resolved))
                     throw UnsupportedPortableDecoder("URI sources outside the local application pack");
                 using (WebResponse response = WpfWebRequestHelper.CreateRequestAndGetResponse(resolved))
                 using (Stream owned = response.GetResponseStream())
-                    return ReadPortableInput(null, null, owned);
+                    return ReadPortableInput(null, null, owned, cache, localJpeg: false);
             }
             ArgumentNullException.ThrowIfNull(stream);
             using var memory = new MemoryStream();
@@ -55,34 +62,48 @@ namespace System.Windows.Media.Imaging
             if (bytes.Length >= 4 && BinaryPrimitives.ReadUInt16LittleEndian(bytes) == 0 &&
                 BinaryPrimitives.ReadUInt16LittleEndian(bytes.AsSpan(2)) == 1)
                 return MILGuidData.GUID_ContainerFormatIco;
+            if (bytes.Length >= 3 && bytes[0] == 255 && bytes[1] == 216 && bytes[2] == 255)
+                return MILGuidData.GUID_ContainerFormatJpeg;
             if (bytes.Length < 8) throw new FileFormatException("Incomplete portable bitmap header.");
-            throw UnsupportedPortableDecoder("encoded formats other than PNG or ICO");
+            throw UnsupportedPortableDecoder("encoded formats other than PNG, JPEG or ICO");
         }
 
         private static BitmapDecoder CreatePortableDecoder(Uri baseUri, Uri uri, Stream stream,
             BitmapCreateOptions options, BitmapCacheOption cache, RequestCachePolicy policy)
         {
-            ValidatePortableOptions(options, cache, policy);
-            byte[] bytes = ReadPortableInput(baseUri, uri, stream);
+            ValidatePortableOptions(options, cache, policy, jpeg: true);
+            byte[] bytes = ReadPortableInput(baseUri, uri, stream, cache, localJpeg: true);
             Guid container = PortableContainer(bytes);
+            ValidatePortableOptions(options, cache, policy, jpeg: container == MILGuidData.GUID_ContainerFormatJpeg);
+            if (uri != null && container != MILGuidData.GUID_ContainerFormatJpeg)
+            {
+                Uri resolved = baseUri == null ? uri : BaseUriHelper.GetResolvedUri(baseUri, uri);
+                if (resolved.IsAbsoluteUri && resolved.IsFile)
+                    throw UnsupportedPortableDecoder("local file codecs other than JPEG");
+            }
             if (container == MILGuidData.GUID_ContainerFormatPng)
                 return new PngBitmapDecoder(bytes, baseUri, uri, stream, options, cache);
+            if (container == MILGuidData.GUID_ContainerFormatJpeg)
+                return new JpegBitmapDecoder(bytes, baseUri, uri, stream, options, cache);
             return new IconBitmapDecoder(bytes, baseUri, uri, stream, options, cache);
         }
 
         internal void InitializePortableDecoder(Uri baseUri, Uri uri, Stream stream, BitmapCreateOptions options,
             BitmapCacheOption cache, Guid expectedContainer, byte[] encoded)
         {
-            ValidatePortableOptions(options, cache, null);
-            if (expectedContainer != MILGuidData.GUID_ContainerFormatPng && expectedContainer != MILGuidData.GUID_ContainerFormatIco)
-                throw UnsupportedPortableDecoder("codecs other than PNG or ICO");
-            byte[] bytes = encoded ?? ReadPortableInput(baseUri, uri, stream);
+            ValidatePortableOptions(options, cache, null, jpeg: expectedContainer == MILGuidData.GUID_ContainerFormatJpeg);
+            if (expectedContainer != MILGuidData.GUID_ContainerFormatPng && expectedContainer != MILGuidData.GUID_ContainerFormatIco &&
+                expectedContainer != MILGuidData.GUID_ContainerFormatJpeg)
+                throw UnsupportedPortableDecoder("codecs other than PNG, JPEG or ICO");
+            byte[] bytes = encoded ?? ReadPortableInput(baseUri, uri, stream, cache, localJpeg: expectedContainer == MILGuidData.GUID_ContainerFormatJpeg);
             Guid container = PortableContainer(bytes);
             if (container != expectedContainer)
                 throw new FileFormatException("The encoded bitmap does not match the requested decoder.");
             bool icon = container == MILGuidData.GUID_ContainerFormatIco;
             var decoded = icon ? DecodePortableIcon(bytes) :
-                new List<(PortableBitmapBuffer Buffer, double DpiX, double DpiY)> { PortablePngDecoder.Decode(bytes, colorManage: false) };
+                new List<(PortableBitmapBuffer Buffer, double DpiX, double DpiY)> {
+                    container == MILGuidData.GUID_ContainerFormatJpeg ? PortableJpegDecoder.Decode(bytes, preservePixelFormat: false, colorManage: false) :
+                    PortablePngDecoder.Decode(bytes, colorManage: false) };
             _baseUri = baseUri;
             _uri = uri;
             _stream = stream;
