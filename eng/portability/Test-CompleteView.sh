@@ -61,6 +61,11 @@ for origin in Microsoft Port; do
     done
     if [ -d "$work/$origin/publish" ]; then cp -a "$work/$origin/publish" "$prepared/$origin/"; fi
     if [ -d "$work/$origin/publish-sc" ]; then cp -a "$work/$origin/publish-sc" "$prepared/$origin/"; fi
+    for project in App Companion FixtureControls; do
+        if [ -d "$work/$origin/$project/obj" ]; then
+            cp -a "$work/$origin/$project/obj" "$prepared/$origin/$project/"
+        fi
+    done
 done
 printf 'Complete-view execution root: %s\n' "$work"
 exit "$failed"
