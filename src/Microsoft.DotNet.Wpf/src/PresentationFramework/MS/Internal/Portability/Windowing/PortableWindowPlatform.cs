@@ -84,6 +84,8 @@ namespace MS.Internal.Portability.Windowing
     internal interface IPortableWindowFactory
     {
         IPortableWindowPeer CreateWindow(PresentationSource source, PortableWindowOptions options);
+        Rect GetWindowStartupWorkArea(PresentationSource source, PresentationSource owner) =>
+            throw new PlatformNotSupportedException("The registered backend does not supply Window startup work areas.");
         IPortablePopupPeer CreatePopup(PresentationSource source, PresentationSource owner, bool transparent) =>
             throw new PlatformNotSupportedException("The registered backend does not support native Popups.");
         Rect GetPopupScreenBounds(PresentationSource owner, Rect targetBounds, Point targetPoint, bool useWorkArea) =>

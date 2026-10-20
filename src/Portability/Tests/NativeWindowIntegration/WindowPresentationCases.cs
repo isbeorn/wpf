@@ -8,6 +8,64 @@ internal static class WindowPresentationCases
 {
     internal static void Exercise(X11Fixture native, Action<string, Action> run, Action<Func<bool>> wait, Action drain)
     {
+        run("native-Window-startup-centering-and-hide-show", () =>
+        {
+            var screensType = typeof(Wpf.Portable.NativeHost.NativeWindowHost).Assembly.GetType("Wpf.Portable.NativeHost.Linux.X11Screens")!;
+            using var screens = (IDisposable)Activator.CreateInstance(screensType, OwnedNativeAccess.Members, null, [OwnedNativeAccess.Connection], null)!;
+            var screen = OwnedNativeAccess.Call(screens, "ReadPrimary") ?? throw new InvalidOperationException("The owned startup placement fixture requires its observed single screen.");
+            var observed = OwnedNativeAccess.Get(screen, "WorkingArea");
+            var area = new Rect((int)OwnedNativeAccess.Get(observed, "X"), (int)OwnedNativeAccess.Get(observed, "Y"),
+                (int)OwnedNativeAccess.Get(observed, "Width"), (int)OwnedNativeAccess.Get(observed, "Height"));
+            var owner = new Window { Title = "Genuine WPF startup placement owner", Left = 100, Top = 90, Width = 400, Height = 280,
+                ShowActivated = false };
+            try
+            {
+                owner.Show(); var ownerXid = native.FindWindow(owner.Title);
+                wait(() => native.IsMapped(ownerXid)); drain();
+                foreach (bool owned in new[] { false, true })
+                foreach (WindowStartupLocation location in new[] { WindowStartupLocation.CenterScreen, WindowStartupLocation.CenterOwner })
+                {
+                    var window = new Window { Title = "Genuine WPF startup placement " + owned + location, Left = 20, Top = 30,
+                        Width = 180, Height = 120, ShowActivated = false, Owner = owned ? owner : null, WindowStartupLocation = location };
+                    int initialized = 0; window.SourceInitialized += (_, _) => initialized++;
+                    try
+                    {
+                        window.Show(); var xid = native.FindWindow(window.Title);
+                        wait(() => native.IsMapped(xid) && Centered());
+                        var source = PresentationSource.FromVisual(window);
+                        window.Hide(); wait(() => !native.IsMapped(xid));
+                        window.Left = 120; window.Top = 140; window.Show();
+                        var dpi = VisualTreeHelper.GetDpi(window);
+                        wait(() => native.IsMapped(xid) && Math.Abs(Bounds(xid).X - 120 * dpi.DpiScaleX) <= 1 && Math.Abs(Bounds(xid).Y - 140 * dpi.DpiScaleY) <= 1);
+                        Require(initialized == 1 && native.FindWindow(window.Title) == xid && ReferenceEquals(source, PresentationSource.FromVisual(window)),
+                            "Startup placement changed native identity or repeated centering through hide/show.");
+
+                        bool Centered()
+                        {
+                            Rect actual = Bounds(xid), target = location == WindowStartupLocation.CenterOwner && owned ? Bounds(ownerXid) : area;
+                            var dpi = VisualTreeHelper.GetDpi(window);
+                            double x = location == WindowStartupLocation.CenterOwner && !owned ? 20 * dpi.DpiScaleX : target.X + (target.Width - actual.Width) / 2;
+                            double y = location == WindowStartupLocation.CenterOwner && !owned ? 30 * dpi.DpiScaleY : target.Y + (target.Height - actual.Height) / 2;
+                            if (location == WindowStartupLocation.CenterOwner && owned)
+                            {
+                                x = Math.Max(area.Left, Math.Min(x, area.Right - actual.Width));
+                                y = Math.Max(area.Top, Math.Min(y, area.Bottom - actual.Height));
+                            }
+                            return Math.Abs(actual.X - x) <= 1 && Math.Abs(actual.Y - y) <= 1;
+                        }
+                    }
+                    finally { window.Close(); drain(); }
+                }
+            }
+            finally { owner.Close(); drain(); }
+
+            Rect Bounds(IntPtr xid)
+            {
+                var origin = native.ClientOrigin(xid); var size = native.Size(xid);
+                var frame = native.FrameExtents(xid) ?? (Left: 0, Right: 0, Top: 0, Bottom: 0);
+                return new Rect(origin.X - frame.Left, origin.Y - frame.Top, size.Width + frame.Left + frame.Right, size.Height + frame.Top + frame.Bottom);
+            }
+        });
         run("native-mapping-lifetime-show-hide-show-close", () =>
         {
             Require(!native.IsMapped(IntPtr.Zero), "A zero native window was mapped.");

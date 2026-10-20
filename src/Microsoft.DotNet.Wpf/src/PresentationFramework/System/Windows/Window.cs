@@ -1151,9 +1151,6 @@ namespace System.Windows
                 {
                     throw new InvalidEnumArgumentException("value", (int)value, typeof( WindowStartupLocation ));
                 }
-#if PORTABLE_WPF
-                if (value != WindowStartupLocation.Manual) throw PortableUnsupported(nameof(WindowStartupLocation));
-#endif
                 _windowStartupLocation = value;
             }
         }

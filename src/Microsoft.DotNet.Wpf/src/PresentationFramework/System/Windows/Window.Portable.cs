@@ -109,7 +109,6 @@ namespace System.Windows
             if (WindowStyle is not WindowStyle.None and not WindowStyle.SingleBorderWindow) throw PortableUnsupported(nameof(WindowStyle));
             VerifyConsistencyWithAllowsTransparency();
             if (TaskbarItemInfo != null) throw PortableUnsupported(nameof(TaskbarItemInfo));
-            if (WindowStartupLocation != WindowStartupLocation.Manual) throw PortableUnsupported(nameof(WindowStartupLocation));
 
             var source = new PortablePresentationSource(PortableLayoutRoot);
             IPortableWindowPeer peer = null;
@@ -248,6 +247,40 @@ namespace System.Windows
             ValidateTopLeft(x);
             ValidateTopLeft(y);
             return new Point(MS.Internal.DoubleUtil.DoubleToInt(x), MS.Internal.DoubleUtil.DoubleToInt(y));
+        }
+
+        private void PortableApplyStartupLocation()
+        {
+            if (WindowState != WindowState.Normal || WindowStartupLocation == WindowStartupLocation.Manual) return;
+            IPortableWindowPeer owner = _ownerWindow?._portablePeer;
+            if (WindowStartupLocation == WindowStartupLocation.CenterOwner && owner == null) return;
+            Rect area = PortableWindowPlatform.Factory.GetWindowStartupWorkArea(_portableSource, _ownerWindow?._portableSource);
+            DpiScale dpi = _portablePeer.DpiScale;
+            Rect restore = _portableRestoreBounds;
+            Size size = new Size(restore.Width * dpi.DpiScaleX, restore.Height * dpi.DpiScaleY);
+            double x = area.X + (area.Width - size.Width) / 2;
+            double y = area.Y + (area.Height - size.Height) / 2;
+            if (WindowStartupLocation == WindowStartupLocation.CenterOwner && _ownerWindow.WindowState == WindowState.Normal)
+            {
+                x = owner.DesktopPosition.X + (owner.OuterSize.Width * owner.DpiScale.DpiScaleX - size.Width) / 2;
+                y = owner.DesktopPosition.Y + (owner.OuterSize.Height * owner.DpiScale.DpiScaleY - size.Height) / 2;
+                x = Math.Max(area.Left, Math.Min(x, area.Right - size.Width));
+                y = Math.Max(area.Top, Math.Min(y, area.Bottom - size.Height));
+            }
+            restore.Location = new Point(x / dpi.DpiScaleX, y / dpi.DpiScaleY);
+            _portableRestoreBounds = restore;
+            bool updating = _updateHwndLocation;
+            _updateHwndLocation = false;
+            try
+            {
+                SetCurrentValue(LeftProperty, restore.X);
+                if (_disposed || _portablePeer == null) return;
+                SetCurrentValue(TopProperty, restore.Y);
+            }
+            finally { _updateHwndLocation = updating; }
+            if (_disposed || _portablePeer == null) return;
+            PortableQueueBounds(PortableBoundsChanges.Left | PortableBoundsChanges.Top);
+            PortableApplyBounds();
         }
 
         private void PortableInitializeBounds()
@@ -514,11 +547,15 @@ namespace System.Windows
                 if (Application.IsShuttingDown) return null;
                 PortableCreateSource();
                 if (_disposed || _portablePeer == null) return null;
-                if (_portableHasBeenShown)
+                PortableLayoutRoot(_portablePeer.ClientSize);
+                if (_disposed || _portablePeer == null) return null;
+                if (Visibility != Visibility.Visible)
                 {
-                    PortableLayoutRoot(_portablePeer.ClientSize);
-                    if (_disposed || _portablePeer == null) return null;
+                    PortableEndDialog();
+                    return null;
                 }
+                if (!_portableHasBeenShown) PortableApplyStartupLocation();
+                if (_disposed || _portablePeer == null) return null;
                 if (Visibility != Visibility.Visible)
                 {
                     PortableEndDialog();

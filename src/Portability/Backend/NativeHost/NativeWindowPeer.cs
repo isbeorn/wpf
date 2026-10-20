@@ -41,6 +41,26 @@ internal sealed class NativeWindowFactory(X11Connection connection, X11Screens s
         }
         catch { window.Dispose(); throw; }
     }
+    public WpfRect GetWindowStartupWorkArea(WpfSource source, WpfSource? owner)
+    {
+        connection.VerifyOwner();
+        source.VerifyAccess();
+        owner?.VerifyAccess();
+        var window = _windows.Single(pair => pair.Value.Source == (owner ?? source));
+        var metrics = window.Key.ReadMetrics();
+        X11PixelRect target;
+        if (owner is not null)
+            target = new(metrics.ClientX - metrics.FrameExtents.Left, metrics.ClientY - metrics.FrameExtents.Top,
+                metrics.ClientWidth + metrics.FrameExtents.Left + metrics.FrameExtents.Right,
+                metrics.ClientHeight + metrics.FrameExtents.Top + metrics.FrameExtents.Bottom);
+        else
+        {
+            var pointer = window.Value.GetPointerState().PhysicalClientPosition;
+            target = new(checked((int)Math.Floor(pointer.X + metrics.ClientX)), checked((int)Math.Floor(pointer.Y + metrics.ClientY)), 1, 1);
+        }
+        var area = screens.ReadForRect(target).WorkingArea;
+        return new WpfRect(area.X, area.Y, area.Width, area.Height);
+    }
     public IPortablePopupPeer CreatePopup(WpfSource source, WpfSource ownerSource, bool transparent)
     {
         source.VerifyAccess();

@@ -41,6 +41,104 @@ var thread = new Thread(() =>
         Assert(window.Title == "Before" && window.Width == 320 && window.Height == 240, "Initial values");
         window.Close();
     });
+    Run("startup-location-screen-manual-and-first-show", () =>
+    {
+        try
+        {
+            factory.InitialDpi = new DpiScale(1.5, 2);
+            factory.StartupWorkArea = new Rect(-1200, -200, 900, 800);
+            foreach (WindowStartupLocation location in new[] { WindowStartupLocation.Manual, WindowStartupLocation.CenterScreen })
+            {
+                var window = new Window { Left = 24, Top = 36, Width = 320, Height = 200, WindowStartupLocation = location };
+                try
+                {
+                    window.Show(); var peer = factory.Last; var source = PresentationSource.FromVisual(window);
+                    var expected = location == WindowStartupLocation.Manual ? new Point(36, 72) : new Point(-990, 0);
+                    Assert(peer.DesktopPosition == expected, "Startup location did not preserve Manual or center physical outer bounds.");
+                    Assert(window.Left == expected.X / 1.5 && window.Top == expected.Y / 2, "Centered public coordinates were not converted once per DPI axis.");
+                    window.Hide(); window.Left = 80; window.Top = 90; window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                    int requests = peer.DesktopPositionRequests;
+                    window.Show();
+                    Assert(peer.DesktopPosition == new Point(120, 180) && peer.DesktopPositionRequests == requests &&
+                        ReferenceEquals(source, PresentationSource.FromVisual(window)), "Hide/move/show repeated startup centering or replaced the source.");
+                }
+                finally { window.Close(); }
+            }
+        }
+        finally { factory.InitialDpi = new DpiScale(1, 1); factory.StartupWorkArea = new Rect(0, 0, 1600, 1000); }
+    });
+    Run("startup-location-owner-fallback-and-clamping", () =>
+    {
+        var owner = new Window { Left = 100, Top = 80, Width = 600, Height = 400 }; owner.Show();
+        try
+        {
+            foreach (WindowState state in new[] { WindowState.Normal, WindowState.Maximized, WindowState.Minimized })
+            {
+                owner.WindowState = state;
+                var child = new Window { Owner = owner, Width = 200, Height = 100, WindowStartupLocation = WindowStartupLocation.CenterOwner };
+                try
+                {
+                    child.Show();
+                    Assert(factory.Last.DesktopPosition == (state == WindowState.Normal ? new Point(300, 230) : new Point(700, 450)),
+                        "CenterOwner did not use normal owner bounds or screen fallback for max/min owner.");
+                }
+                finally { child.Close(); }
+            }
+            owner.WindowState = WindowState.Normal;
+            foreach (bool oversized in new[] { false, true })
+            {
+                owner.Left = 1400; owner.Top = 900;
+                var child = new Window { Owner = owner, Width = oversized ? 1800 : 400, Height = oversized ? 1200 : 300,
+                    WindowStartupLocation = WindowStartupLocation.CenterOwner };
+                try
+                {
+                    child.Show();
+                    Assert(factory.Last.DesktopPosition == (oversized ? new Point() : new Point(1200, 700)),
+                        "Owner centering did not clamp both axes to the observed working area.");
+                }
+                finally { child.Close(); }
+            }
+        }
+        finally { owner.Close(); }
+        var unowned = new Window { Left = 70, Top = 90, Width = 200, Height = 100, WindowStartupLocation = WindowStartupLocation.CenterOwner };
+        try { unowned.Show(); Assert(factory.Last.DesktopPosition == new Point(70, 90), "CenterOwner without an owner did not retain Manual placement."); }
+        finally { unowned.Close(); }
+    });
+    Run("startup-location-latest-layout-and-nonnormal-state", () =>
+    {
+        var window = new Window { Left = 30, Top = 40, Width = 300, Height = 200 };
+        window.SourceInitialized += (_, _) =>
+        {
+            window.Content = new Border { Width = 240, Height = 140 };
+            window.SizeToContent = SizeToContent.WidthAndHeight;
+            window.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+        };
+        try
+        {
+            window.Show(); var peer = factory.Last;
+            Assert(peer.DesktopPosition == new Point((1600 - peer.OuterSize.Width) / 2, (1000 - peer.OuterSize.Height) / 2),
+                "Centering ignored SourceInitialized changes or SizeToContent's measured outer size.");
+        }
+        finally { window.Close(); }
+        foreach (WindowState state in new[] { WindowState.Maximized, WindowState.Minimized })
+        {
+            var nonnormal = new Window { Left = 30, Top = 40, Width = 300, Height = 200,
+                WindowState = state, WindowStartupLocation = WindowStartupLocation.CenterScreen };
+            try
+            {
+                nonnormal.Show(); nonnormal.WindowState = WindowState.Normal;
+                Assert(factory.Last.DesktopPosition == new Point(30, 40), "Initial non-Normal state acquired an invented centered restore position.");
+            }
+            finally { nonnormal.Close(); }
+        }
+        var invalid = new Window();
+        try
+        {
+            try { invalid.WindowStartupLocation = (WindowStartupLocation)99; throw new InvalidDataException("Expected enum validation."); }
+            catch (System.ComponentModel.InvalidEnumArgumentException) { }
+        }
+        finally { invalid.Close(); }
+    });
     Run("taskbar-before-source-and-source-initialized-latest-value", () =>
     {
         var window = new Window { ShowActivated = false };
@@ -1036,6 +1134,8 @@ sealed class ManagedFactory : IPortableWindowFactory
     public bool DecorateOnShow { get; set; }
     public bool ReportMetricsOnShow { get; set; } = true;
     public DpiScale InitialDpi { get; set; } = new(1, 1);
+    public Rect StartupWorkArea { get; set; } = new(0, 0, 1600, 1000);
+    public Rect GetWindowStartupWorkArea(PresentationSource source, PresentationSource? owner) => StartupWorkArea;
     private ManagedPeer? _active;
     public void Activate(ManagedPeer peer)
     {
