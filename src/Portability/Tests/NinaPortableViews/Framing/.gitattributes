@@ -1,0 +1,3 @@
+# Keep the qualified producing source bytes and mixed line endings.
+*.cs -text
+*.sh text eol=lf

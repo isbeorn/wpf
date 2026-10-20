@@ -1,0 +1,215 @@
+{
+  "status": "PASS: TRACKED FIXTURE BUILT AND 21 CHECKS PASSED; POST-RUN DOCUMENTATION ONLY",
+  "scope": "Only new Framing directory plus one parent Compile Remove exclusion",
+  "qualifiedSourceFiles": 10,
+  "qualifiedSourceBytesUnchanged": true,
+  "newProjectFiles": 0,
+  "newDependencies": 0,
+  "newHarnesses": 0,
+  "productionChanges": 0,
+  "buildOrRuntimeInvocations": 2,
+  "staticChecks": {
+    "powershellParserErrors": 0,
+    "xmlDocumentsParsed": 2,
+    "bashBuildParseExit": 0,
+    "bashRunParseExit": 0,
+    "qualifiedSourceHashMatches": 10,
+    "hardcodedWorkspaceOrCurrentArtifactPathsInDrivers": 0,
+    "runnerLoadGuardSyntheticCases": 16
+  },
+  "behaviorChecklist": [
+    "Exact10 accepted Cache21 source bytes with newline preservation.",
+    "Preserve all18 original assertions plus3 VM cache checks and first-fault capture/abort.",
+    "Parameterize actual repository/output/shared329 consumer/runtime intake; no runtime composition.",
+    "Link existing settings-provider/font and generate pinned survey/original34 URI order; copy original SQL only from verified consumer.",
+    "Compile only small entry with Private=false via existing project and reject extra DLL copies.",
+    "Bind PE/PDB/13 producing documents and keep historical component/compile family distinct from actual runtime.",
+    "Run only frozen reviewed inputs on disjoint private Xvfb with loaded closure/DefaultALC, continuity and cleanup checks.",
+    "Document isolated managed scope and original background-task lifetime limitation."
+  ],
+  "parentProject": {
+    "path": "src/Portability/Tests/NinaPortableViews/NinaPortableViews.csproj",
+    "sha256": "ECA4DD424CE443B41631B3E53FE1092EEF4B05F7C67B47FF98100C4BEA79B12E",
+    "change": "Add Framing/**/*.cs to existing Compile Remove, one line changed."
+  },
+  "diffSizeBeforeThisFreeze": {
+    "newFiles": 17,
+    "newBytes": 152236.0,
+    "newLines": 2355.0,
+    "parentLinesChanged": 1
+  },
+  "files": [
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/.gitattributes",
+      "bytes": 96,
+      "lines": 3,
+      "sha256": "80EDEAFA1BBF6E90CEA129826FAD2066678D27E39DC685EE2ACF6858843F1696"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/Build.ps1",
+      "bytes": 13772,
+      "lines": 198,
+      "sha256": "2E5C4771038612B190A1E4C207CC1F2415612945B02C89DD7682956458174BAA"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/Build.sh",
+      "bytes": 1174,
+      "lines": 18,
+      "sha256": "D17D0BE9CC31E8D8894AD24B789C1DB96FC8193559B951EB96C376158A62D668"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/DisconnectedCameraHandler.cs",
+      "bytes": 713,
+      "lines": 17,
+      "sha256": "E7286A3E25EA9D23FE843E4D51EEE36D7448F57DEDA8A53ED64C35EF93715CBA"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/FixedServices.cs",
+      "bytes": 2761,
+      "lines": 61,
+      "sha256": "09DF6CD61EB6088C1CA14CC6625D13269EFB669994BCD86CA0E4EB739ECA15A8"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/Fixture.targets",
+      "bytes": 1764,
+      "lines": 31,
+      "sha256": "95A5CD77DD5F33457468EE6C36926621C14BAC9446C487BDFBC7897325500268"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/FramingCacheCases.cs",
+      "bytes": 10600,
+      "lines": 121,
+      "sha256": "3C7CDA3EEC6F4CEEF41CACE9812E20345A48600E835D6CAE6BF7BD319D012EDD"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/FramingCases.cs",
+      "bytes": 23391,
+      "lines": 306,
+      "sha256": "681F051A8EA8E1E6C4B08D18B727EF2A0D2D655FE177DFB50E96B49C3779D0F8"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/GeometryFaultCapture.cs",
+      "bytes": 11811,
+      "lines": 144,
+      "sha256": "03EE9D5D860B417718FD2508AA08E861D5F4145D1AE245312DDF68D5C44F3003"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/GlobalUsings.cs",
+      "bytes": 23,
+      "lines": 1,
+      "sha256": "8FD297FD56CBF1099D3DC3B8CDF1FA1A829C1E080164267B45DB73C63BD61EC9"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/InactiveSequenceMediator.cs",
+      "bytes": 590,
+      "lines": 15,
+      "sha256": "D592B7E07A5D6FA9910C3AB0CAA243A249F1DFBF7853E2E6CA72431C13A1AC5E"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/Program.cs",
+      "bytes": 12510,
+      "lines": 182,
+      "sha256": "AED1BC626CC64755762D6AC0249CE30033214542E680D704DC5A394F96CCEE13"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/README.md",
+      "bytes": 8559,
+      "lines": 137,
+      "sha256": "FC19B3E61FD01C9EA4C79E08420939EA30D7DECEF0D976A96E2C66B2F07A14C6"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/Run.sh",
+      "bytes": 9708,
+      "lines": 151,
+      "sha256": "71CDB2F071BE016F5DC5912CF9556B3D9F0CC76C6BB9C40E250AC4E5F5800FFE"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/RuntimeGuards.cs",
+      "bytes": 3838,
+      "lines": 62,
+      "sha256": "410BDBCFE39019950CCCFDE14D4CBA36E6C3E59ADAEE4DD232E993CFA95093DB"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/SourceProvenance.json",
+      "bytes": 7933,
+      "lines": 148,
+      "sha256": "828B7D521A81E57660E93A74758C0F13A84B33E92B757F971940391D4052260C"
+    },
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/Framing/X11Fixture.cs",
+      "bytes": 44359,
+      "lines": 780,
+      "sha256": "A558ED4C92FC483BB1E15D2661DFB19BDF51E25A3346257AA1A9F9EA6FD5E43E"
+    }
+  ],
+  "previousRecipeFreezeSha256": "09B81BA350F7B0D26D06BDC378EDAF4ECE1AC910E55A6F1A42592F4060950746",
+  "runnerRepair": {
+    "scope": "Run.sh event validation before evidence dedup plus SDK/generated evidence documentation",
+    "syntheticCases": 16,
+    "syntheticChecksPassed": true,
+    "historicalPinned": 53,
+    "historicalSdkBcl": 63,
+    "historicalGeneratedUnhashed": 3,
+    "originalBadDuplicateAcceptanceReproduced": true,
+    "dotnetWorkloadsExecuted": 0,
+    "testScriptSha256": "B9CFB275E6C614EE1AA1D915987C80A7A6B589363BA4313995A32387C56E3894",
+    "testResultsSha256": "3061E451C1A01AD05BDBCEBB62487C19305B35AC2ACCE3564CE27384E2097B30",
+    "actualDiffSha256": "5AEFC48070C8285FD85D4D05431A0719864BDACD2D264A2DFDBC65C9E5087CD9",
+    "selectedSdkRootInput": "/mnt/e/Projects/wpf/artifacts/portability/current/prereqs/sdk-linux-x64",
+    "selectedSdkRootRealpath": "/mnt/e/Projects/wpf/artifacts/portability/current/prereqs/sdk-linux-x64",
+    "selectedSharedFrameworkRealpath": "/mnt/e/Projects/wpf/artifacts/portability/current/prereqs/sdk-linux-x64/shared/Microsoft.NETCore.App/10.0.12",
+    "SDKHashPolicy": "BCL locations are exact selected SDK shared-framework files; observed hashes are distinct from consumer pins."
+  },
+  "executedQualification": {
+    "handoff": "artifacts/portability/current/nina/framing-tracked-replay-20261021-1/framing21-handoff-corrected.json",
+    "handoffSha256": "80B37BDEF8972E36AEEC8A54C7787F8038521818DD0D7F82D07B912FC70E2D27",
+    "fixtureOnlyBuilds": 1,
+    "fixtureRuns": 1,
+    "passingChecks": 21,
+    "originalFramingChecks": 18,
+    "cacheChecks": 3,
+    "buildWarnings": 0,
+    "buildErrors": 0,
+    "sourceDocuments": 13,
+    "pePdbIdentityMatch": true,
+    "inputFiles": 412,
+    "inputsUnchanged": true,
+    "selectedSdkBclModules": 63,
+    "generatedUnhashedModules": 3,
+    "childExit": 0,
+    "childStderrBytes": 0,
+    "cleanupFailed": 0,
+    "consumerCopies": 0,
+    "producerBuilds": 0,
+    "actualGuestUiActions": 0,
+    "actualRuntimeFamilySha256": "4E804208D2420743C7DF47DEC3DFC44967C6A9558EC82F6CE089ED25006E997A",
+    "runtimeIntakeSha256": "46CC619B0132EED283B5AA1C9AD9B146ED8BD51C52E5BCFC29C2DA72430757B2",
+    "scope": "Original Framing18 plus actual VM cache3 in private Linux Xvfb; not full App, guest UI, native input, hardware or network.",
+    "pinnedLoadedModules": 53,
+    "explicitDefaultPinnedEventMembers": 49,
+    "runtimeOnlyPinnedMembersAssertedDefault": 4,
+    "invalidRawEventContexts": 0
+  },
+  "postRunDocumentation": {
+    "changes": [
+      "README.md",
+      "RecipeSourceFreeze.json"
+    ],
+    "codeOrTestChanges": false,
+    "rerunRequired": false,
+    "reason": "Record the completed released replay; preserve exact producing documentation to resolve all 412 original input pins.",
+    "producingSnapshots": [
+      {
+        "originalPath": "src/Portability/Tests/NinaPortableViews/Framing/README.md",
+        "retainedPath": "artifacts/portability/current/nina/framing-tracked-replay-20261021-1/isolated-runs/run.iltFzwoe/producing-documentation/README.md",
+        "sha256": "0414CD5244ADC345575F36743202D194FB9363D0F6DE6B68E0683E7AA51E0AC6"
+      },
+      {
+        "originalPath": "src/Portability/Tests/NinaPortableViews/Framing/RecipeSourceFreeze.json",
+        "retainedPath": "artifacts/portability/current/nina/framing-tracked-replay-20261021-1/isolated-runs/run.iltFzwoe/producing-documentation/RecipeSourceFreeze.json",
+        "sha256": "09B81BA350F7B0D26D06BDC378EDAF4ECE1AC910E55A6F1A42592F4060950746"
+      }
+    ],
+    "receiptClassificationCorrection": "Preserve original DADA75 receipt; derivative 80B37B separates 49 explicit Default events from 4 runtime-only observations covered by the passing original six-module Default/path/hash assertion. No raw contexts are invented and no code or runtime is changed."
+  }
+}

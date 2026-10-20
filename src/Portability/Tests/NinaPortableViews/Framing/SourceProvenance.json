@@ -1,0 +1,148 @@
+{
+  "scope": "Original 18 Framing checks plus 3 actual VM cache save/reload/recovery checks in private Linux Xvfb with deterministic offline public survey/nighttime services; not full App/guest UI/network/file import",
+  "sourceRevision": "4742afae0a09c79be772f23fcf163fb5852d2775",
+  "qualifiedCache21Handoff": "artifacts/portability/current/nina/framing-cache-workflow-20261021-1/cache21-handoff.json",
+  "qualifiedCache21HandoffSha256": "EB1680B739FE43BA4F3D3DE7711AE04D1FE7B68CC89E128865F3E8A8B9A7207B",
+  "qualifiedFixtureDllSha256": "0F05A7BB1AA434E3BC49F93249DB77D564A317546B1AB8ACECD9E6749768051C",
+  "qualifiedFixturePdbSha256": "FF289F2410B1BDC2D73CFB97B23A0281108C876140E98EF6E2C6302B3AB9FDE1",
+  "qualifiedFixtureSourceProofSha256": "59F81105B4ABFD1A77D4C51F9A78BF98EB883704CDB3271661A0732A6A54FFA3",
+  "qualifiedCompileFamilySha256": "F9D58F074575455B26653CECFB7426EAA3E5D0403AAF908B919F27E9581E1FD8",
+  "baseProducerReferenceFamilySha256": "31225F143C4D154F5FD4409BC79A627B830DA734E10EAB5B1241E25C614977A2",
+  "baseCompilerManifestSha256": "E667D1C6F114F0F0BFF6F78BE29AB29D4292FF03CC3693DBBDABE31D81099B41",
+  "baseIntakeSha256": "A27F4416A08E0F6D9299DC4893B2BBAD64C4A3F821B59D80BC403AE928C6FA9B",
+  "baseDllSha256": "41955DF0ECB7D5D442403F0535967EE329DB470010F75AED73EBB7AA14A4A973",
+  "basePdbSha256": "BCAFFBC55E087140168EB0894AA2CAC33A0B8E76B4153283613C71185B8F2383",
+  "originalAppXamlSha256": "699252C5BAFC3C5BE89E174B96771FD18786B3B2540DCAF45D206E5A151AFEAA",
+  "surveySha256": "D4591C53990EFB220952E32E3F125A9C46F9C1E92D257AD05690E41BE83AAB1A",
+  "sources": [
+    {
+      "path": "DisconnectedCameraHandler.cs",
+      "origin": "artifacts/portability/current/nina/framing-cache-workflow-20261021-1/source/DisconnectedCameraHandler.cs",
+      "sha256": "E7286A3E25EA9D23FE843E4D51EEE36D7448F57DEDA8A53ED64C35EF93715CBA",
+      "bytes": 713
+    },
+    {
+      "path": "FixedServices.cs",
+      "origin": "artifacts/portability/current/nina/framing-cache-workflow-20261021-1/source/FixedServices.cs",
+      "sha256": "09DF6CD61EB6088C1CA14CC6625D13269EFB669994BCD86CA0E4EB739ECA15A8",
+      "bytes": 2761
+    },
+    {
+      "path": "FramingCacheCases.cs",
+      "origin": "artifacts/portability/current/nina/framing-cache-workflow-20261021-1/source/FramingCacheCases.cs",
+      "sha256": "3C7CDA3EEC6F4CEEF41CACE9812E20345A48600E835D6CAE6BF7BD319D012EDD",
+      "bytes": 10600
+    },
+    {
+      "path": "FramingCases.cs",
+      "origin": "artifacts/portability/current/nina/framing-cache-workflow-20261021-1/source/FramingCases.cs",
+      "sha256": "681F051A8EA8E1E6C4B08D18B727EF2A0D2D655FE177DFB50E96B49C3779D0F8",
+      "bytes": 23391
+    },
+    {
+      "path": "GeometryFaultCapture.cs",
+      "origin": "artifacts/portability/current/nina/framing-cache-workflow-20261021-1/source/GeometryFaultCapture.cs",
+      "sha256": "03EE9D5D860B417718FD2508AA08E861D5F4145D1AE245312DDF68D5C44F3003",
+      "bytes": 11811
+    },
+    {
+      "path": "GlobalUsings.cs",
+      "origin": "artifacts/portability/current/nina/framing-cache-workflow-20261021-1/source/GlobalUsings.cs",
+      "sha256": "8FD297FD56CBF1099D3DC3B8CDF1FA1A829C1E080164267B45DB73C63BD61EC9",
+      "bytes": 23
+    },
+    {
+      "path": "InactiveSequenceMediator.cs",
+      "origin": "artifacts/portability/current/nina/framing-cache-workflow-20261021-1/source/InactiveSequenceMediator.cs",
+      "sha256": "D592B7E07A5D6FA9910C3AB0CAA243A249F1DFBF7853E2E6CA72431C13A1AC5E",
+      "bytes": 590
+    },
+    {
+      "path": "Program.cs",
+      "origin": "artifacts/portability/current/nina/framing-cache-workflow-20261021-1/source/Program.cs",
+      "sha256": "AED1BC626CC64755762D6AC0249CE30033214542E680D704DC5A394F96CCEE13",
+      "bytes": 12510
+    },
+    {
+      "path": "RuntimeGuards.cs",
+      "origin": "artifacts/portability/current/nina/framing-cache-workflow-20261021-1/source/RuntimeGuards.cs",
+      "sha256": "410BDBCFE39019950CCCFDE14D4CBA36E6C3E59ADAEE4DD232E993CFA95093DB",
+      "bytes": 3838
+    },
+    {
+      "path": "X11Fixture.cs",
+      "origin": "artifacts/portability/current/nina/framing-cache-workflow-20261021-1/source/X11Fixture.cs",
+      "sha256": "A558ED4C92FC483BB1E15D2661DFB19BDF51E25A3346257AA1A9F9EA6FD5E43E",
+      "bytes": 44359
+    }
+  ],
+  "sharedSources": [
+    {
+      "path": "src/Portability/Tests/NinaPortableViews/RichText/OriginalStartupHook.cs",
+      "sha256": "03190286A71B080121CA65DE902A2DDC0B0C0CEFF66F8E40AFB1B8480EBD2988"
+    },
+    {
+      "path": "src/Portability/Tests/Fixtures/Fonts/DejaVuSans.ttf",
+      "sha256": "35226AC1E50D1B60AF2FF7DA5878D8EDE0C83BC00FE84713F265CB6DED8F5F9F"
+    }
+  ],
+  "resourceSources": [
+    "/NINA.WPF.Base;component/Resources/StaticResources/ProfileService.xaml",
+    "/NINA.WPF.Base;component/Resources/StaticResources/SVGDictionary.xaml",
+    "/NINA.WPF.Base;component/Resources/StaticResources/Brushes.xaml",
+    "/NINA.WPF.Base;component/Resources/StaticResources/Converters.xaml",
+    "/NINA;component/Resources/StaticResources/DataTemplates.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/Button.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/Path.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/TextBlock.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/TextBox.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/TabControl.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/CheckBox.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/DataGrid.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/ListView.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/GroupBox.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/RepeatButton.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/ToggleButton.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/Slider.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/Expander.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/ScrollViewer.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/ComboBox.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/GridSplitter.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/ProgressBar.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/Tooltip.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/CancellableButton.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/DatePicker.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/StepperControl.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/ContextMenu.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/Hyperlink.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/SplitButton.xaml",
+    "/NINA.WPF.Base;component/Resources/Styles/ColorPicker.xaml",
+    "/NINA;component/Resources/Styles/Window.xaml",
+    "/NINA;component/Resources/Styles/AvalonDock.xaml",
+    "/NINA;component/Resources/Styles/Oxyplot.xaml",
+    "/NINA;component/Resources/Styles/Markdown.xaml"
+  ],
+  "executionCheckNames": [
+    "coherent-source-adapted-consumer",
+    "released-whole-runtime-default-ALC",
+    "guarded-owned-paths-before-native-or-profile-init",
+    "original-in-memory-preference-provider",
+    "original-offline-catalog-initializer-and-nonempty-queries",
+    "original-34-dictionaries",
+    "real-public-17-argument-constructor",
+    "original-view-and-overlay-BAML",
+    "constructor-cache-and-hips-readiness",
+    "real-static-load-and-annotator",
+    "original-imageview-static-zoom-pair",
+    "field-size-and-rotation-pairs",
+    "mosaic-counts-and-bound-overlap-pairs",
+    "managed-drag-forward-and-reverse",
+    "real-dynamic-zoom-boundaries",
+    "owner-and-background-public-setcoordinates",
+    "real-vm-cache-save-and-thumbnails",
+    "real-vm-cache-source-reload",
+    "cache-disabled-fov-miss-recovery",
+    "real-layout-overlay-and-raster",
+    "public-disposal-and-source-detach"
+  ]
+}

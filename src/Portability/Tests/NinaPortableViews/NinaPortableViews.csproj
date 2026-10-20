@@ -6,7 +6,7 @@
     <TargetFramework Condition="'$(NinaStockWindowsReference)' == 'true'">net10.0-windows</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="AvalonDock/**/*.cs;NativeImaging/**/*.cs;RichText/**/*.cs" />
+    <Compile Remove="AvalonDock/**/*.cs;NativeImaging/**/*.cs;RichText/**/*.cs;Framing/**/*.cs" />
     <PackageReference Include="Wpf.Portable.Runtime" Version="[10.0.0-portable.1]" Condition="'$(NinaStockWindowsReference)' != 'true'" />
     <FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" Condition="'$(NinaStockWindowsReference)' == 'true'" />
     <None Include="$(NinaFixtureDirectory)/Closure.json" Link="Closure.json" CopyToOutputDirectory="PreserveNewest" />
