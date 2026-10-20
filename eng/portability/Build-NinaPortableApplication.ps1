@@ -10,6 +10,7 @@ param(
     [Parameter(Mandatory)][string] $PortableReferencesTargets,
     [Parameter(Mandatory)][string] $OriginalManagedClosure,
     [Parameter(Mandatory)][string] $AvalonDockPath,
+    [string] $AvalonEditPath,
     [Parameter(Mandatory)][string] $SystemEventsContractPath,
     [Parameter(Mandatory)][string] $MvvmGeneratorPath,
     [Parameter(Mandatory)][string] $OutputDirectory,
@@ -133,6 +134,14 @@ if ($originalBaseline -cne 'historical-original160') {
     if ([Reflection.AssemblyName]::GetAssemblyName($AvalonDockPath).FullName -cne $currentComponents.avalonDockIdentity) { throw 'Current source-built AvalonDock identity differs.' }
 }
 Assert-Hash $AvalonDockPath $avalonDockHash
+$sourceBuiltAvalonEdit = ![string]::IsNullOrWhiteSpace($AvalonEditPath)
+$avalonEditHash = $null
+if ($sourceBuiltAvalonEdit) {
+    if ($null -eq $currentComponents) { throw 'Source-adapted AvalonEdit requires current component pins and an exact coherent framework family.' }
+    $avalonEditHash = $currentComponents.avalonEditSha256
+    Assert-Hash $AvalonEditPath $avalonEditHash
+    if ([Reflection.AssemblyName]::GetAssemblyName($AvalonEditPath).FullName -cne $currentComponents.avalonEditIdentity) { throw 'Current source-built AvalonEdit identity differs.' }
+}
 Assert-Hash $SystemEventsContractPath $pin.systemEventsContractSha256
 Assert-Hash $MvvmGeneratorPath $pin.mvvmGeneratorSha256
 Assert-Hash (Join-Path $fixture 'App.xaml.cs.patch') $pin.consolePatchSha256
@@ -264,7 +273,7 @@ if ($SimulatorQualification) {
 }
 $null = Add-Element $project $references Compile @{ Include = "$fixture/PortableEntry.cs"; Link = 'Portability/PortableEntry.cs' }
 foreach ($file in $closure.files | Where-Object { !$_.outputPath.Contains('/') -and $_.outputPath -notin @('NINA.dll', 'AvalonDock.dll') }) {
-    $referencePath = if ($SimulatorQualification -and $file.outputPath -ceq 'NINA.Plugin.dll') { "$output/plugin-bin/Release/net10.0/NINA.Plugin.dll" } else { "$closureDirectory/managed/$($file.outputPath)" }
+    $referencePath = if ($sourceBuiltAvalonEdit -and $file.outputPath -ceq 'ICSharpCode.AvalonEdit.dll') { [IO.Path]::GetFullPath($AvalonEditPath) } elseif ($SimulatorQualification -and $file.outputPath -ceq 'NINA.Plugin.dll') { "$output/plugin-bin/Release/net10.0/NINA.Plugin.dll" } else { "$closureDirectory/managed/$($file.outputPath)" }
     $null = Add-Element $project $references Reference @{ Include = [IO.Path]::GetFileNameWithoutExtension($file.outputPath); HintPath = $referencePath; Private = 'true' }
 }
 $null = Add-Element $project $references Reference @{ Include = 'AvalonDock'; HintPath = [IO.Path]::GetFullPath($AvalonDockPath); Private = 'true' }
@@ -299,7 +308,8 @@ if ($SimulatorQualification) {
     $pluginReferences = Add-Element $pluginProject $pluginRoot ItemGroup @{}
     $null = Add-Element $pluginProject $pluginReferences Compile @{ Include = $pluginIntakeSource; Link = 'Portability/SimulatorPluginIntake.cs' }
     foreach ($file in $closure.files | Where-Object { !$_.outputPath.Contains('/') -and $_.outputPath -notin @('NINA.dll', 'NINA.Plugin.dll', 'AvalonDock.dll') }) {
-        $null = Add-Element $pluginProject $pluginReferences Reference @{ Include = [IO.Path]::GetFileNameWithoutExtension($file.outputPath); HintPath = "$closureDirectory/managed/$($file.outputPath)"; Private = 'true' }
+        $pluginReferencePath = if ($sourceBuiltAvalonEdit -and $file.outputPath -ceq 'ICSharpCode.AvalonEdit.dll') { [IO.Path]::GetFullPath($AvalonEditPath) } else { "$closureDirectory/managed/$($file.outputPath)" }
+        $null = Add-Element $pluginProject $pluginReferences Reference @{ Include = [IO.Path]::GetFileNameWithoutExtension($file.outputPath); HintPath = $pluginReferencePath; Private = 'true' }
     }
     $null = Add-Element $pluginProject $pluginReferences Reference @{ Include = 'AvalonDock'; HintPath = [IO.Path]::GetFullPath($AvalonDockPath); Private = 'true' }
     $null = Add-Element $pluginProject $pluginReferences Reference @{ Include = "$FrameworkRuntimeDirectory/*.dll"; Private = 'true' }
@@ -392,7 +402,7 @@ $result = [ordered]@{
     originalManagedClosure = $OriginalManagedClosure; originalManagedClosureSha256 = (Get-FileHash $OriginalManagedClosure).Hash; originalBaseline = $originalBaseline; editorConfigSha256 = $pin.editorConfigSha256
     frameworkRuntimeManifest = [IO.Path]::GetFullPath($FrameworkRuntimeManifest); frameworkRuntimeManifestSha256 = (Get-FileHash $FrameworkRuntimeManifest).Hash; frameworkRuntimeFileCount = $ExpectedFrameworkRuntimeFileCount; frameworkRuntimeConfiguration = 'Release'; frameworkRuntimeDirectory = $FrameworkRuntimeDirectory
     markupCompiler = [IO.Path]::GetFullPath($MarkupCompiler); markupCompilerSha256 = (Get-FileHash $MarkupCompiler).Hash
-    avalonDockSha256 = $avalonDockHash; componentBaseline = $componentBaseline; systemEventsCompileContractSha256 = $pin.systemEventsContractSha256; systemEventsRuntimeSupplied = $systemEventsRuntimeSupplied; systemEventsRuntimeSha256 = $systemEventsRuntimeSha256
+    avalonDockSha256 = $avalonDockHash; avalonEditSourceAdapted = $sourceBuiltAvalonEdit; avalonEditSha256 = $avalonEditHash; componentBaseline = $componentBaseline; systemEventsCompileContractSha256 = $pin.systemEventsContractSha256; systemEventsRuntimeSupplied = $systemEventsRuntimeSupplied; systemEventsRuntimeSha256 = $systemEventsRuntimeSha256
     nativeDeploymentOmissions = @($substitutions | Where-Object kind -eq 'absent-native-deployment-item').Count
 }
 if ($SimulatorQualification) {
@@ -403,7 +413,7 @@ if ($SimulatorQualification) {
         buildFlag = 'NINA_SIMULATOR_QUALIFICATION'; runtimeModeSwitch = $false; fixtureManifestSha256 = $pin.simulatorQualificationManifestSha256
         pluginSourceFilesVerified = $pluginPin.files.Count; pluginAssembly = $pluginAssembly; pluginAssemblySha256 = (Get-FileHash $pluginAssembly).Hash
         pluginPdb = "$output/plugin-bin/Release/net10.0/NINA.Plugin.pdb"; pluginPdbSha256 = (Get-FileHash "$output/plugin-bin/Release/net10.0/NINA.Plugin.pdb").Hash
-        unchangedOriginalPEs = 157; derivedOriginalPEs = @('NINA.dll', 'NINA.Plugin.dll', 'AvalonDock.dll')
+        unchangedOriginalPEs = $(if ($sourceBuiltAvalonEdit) { 156 } else { 157 }); derivedOriginalPEs = @('NINA.dll', 'NINA.Plugin.dll', 'AvalonDock.dll') + $(if ($sourceBuiltAvalonEdit) { @('ICSharpCode.AvalonEdit.dll') } else { @() })
         officialTemplateFixture = $officialPluginPin; stagedFixture = "$output/qualification-inputs/QualificationPlugins"
         runtimePluginIntakeSource = $pluginIntakeSource; runtimePluginIntakeSourceSha256 = (Get-FileHash $pluginIntakeSource).Hash
         fullShellQualified = $false; nativeAstronomySupplied = $false; windowsValidStartupIsolationQualified = $false
