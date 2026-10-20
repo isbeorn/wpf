@@ -45,5 +45,15 @@ An ImageBrush with a null ImageSource paints transparently for supported fill an
 
 The process-rendering-preference regression starts with Default, sets SoftwareOnly/Default/SoftwareOnly and reads the process-wide value from another thread. Both invalid negative and upper enum values preserve the previous preference and keep the existing InvalidEnumArgumentException contract. Genuine retained CPU pixels remain correct under both preferences. The portable backend stores the requested preference; both values currently use its selected CPU profile, with no hardware-rendering claim. The ordinary Windows WPF native branches remain unchanged. Use --render-preference-only for this focused non-UI check.
 
+Use `--drawing-image-only` for three focused DrawingImage regressions. They
+exercise source bounds mapped into a nonuniform destination, nested images and
+clips, empty drawings and zero-sized destinations, sibling state restoration and
+retained child mutation, removal and restoration. The drawing is traversed through
+the existing retained walker rather than flattened into a bitmap. All three
+reproduce the previous unsupported-storage diagnostic against the released
+CombinedGeometry-only family. The joint imaging/rendering family passes all
+three focused cases and all 62 rendering cases on Windows and Linux. Separate
+geometry-bounds comparisons retain their explicitly documented backend scope.
+
 
 Content-free ContainerVisual subclasses use the same retained child traversal, transform, clip and invalidation rules as ContainerVisual. DrawingVisual and UIElement keep their existing content dispatch. HostVisual remains explicitly unsupported because it hosts a separate composition target; Viewport3DVisual and effects retain their named diagnostics. The regression checks derived-container child pixels, mutation, remove/re-add and sibling state recovery. The genuine PF UIElementIsland integration is verified separately by the FlowDocument owner.

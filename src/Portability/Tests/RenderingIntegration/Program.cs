@@ -12,7 +12,7 @@ using SkiaSharp;
 
 var checks = new List<object>();
 var failed = false;
-if (!args.Contains("--render-preference-only") && !args.Contains("--visibility-only"))
+if (!args.Contains("--render-preference-only") && !args.Contains("--visibility-only") && !args.Contains("--drawing-image-only"))
 {
     foreach (GeometryCombineMode mode in Enum.GetValues<GeometryCombineMode>())
         Run($"combined-geometry-{mode}-drawing-and-visual-clips", () => CombinedGeometryCases.Clips(mode));
@@ -23,6 +23,17 @@ if (!args.Contains("--render-preference-only") && !args.Contains("--visibility-o
 if (args.Contains("--combined-geometry-only"))
 {
     Console.WriteLine(JsonSerializer.Serialize(new { probe = "combined-geometry-rendering", corePath = typeof(DrawingVisual).Assembly.Location, checks }, new JsonSerializerOptions { WriteIndented = true }));
+    return failed ? 1 : 0;
+}
+if (!args.Contains("--render-preference-only") && !args.Contains("--visibility-only"))
+{
+    Run("drawing-image-normalizes-bounds-and-restores-state", DrawingImageCases.BoundsAndState);
+    Run("drawing-image-nested-clipped-empty-and-zero-destination", DrawingImageCases.NestedAndEmpty);
+    Run("drawing-image-retained-child-mutate-remove-and-restore", () => DrawingImageCases.Retained(Drain));
+}
+if (args.Contains("--drawing-image-only"))
+{
+    Console.WriteLine(JsonSerializer.Serialize(new { probe = "drawing-image-rendering", corePath = typeof(DrawingVisual).Assembly.Location, checks }, new JsonSerializerOptions { WriteIndented = true }));
     return failed ? 1 : 0;
 }
 Run("process-render-mode-preference-roundtrip-invalid-and-cpu-raster", () =>

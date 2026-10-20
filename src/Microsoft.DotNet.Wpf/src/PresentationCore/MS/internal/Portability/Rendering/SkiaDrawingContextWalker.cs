@@ -256,6 +256,21 @@ namespace MS.Internal.Portability.Rendering
         public override void DrawImage(ImageSource imageSource, Rect rectangle)
         {
             if (imageSource == null || rectangle.IsEmpty) return;
+            if (imageSource is DrawingImage drawingImage)
+            {
+                Drawing drawing = drawingImage.Drawing;
+                Rect bounds = drawing?.Bounds ?? Rect.Empty;
+                if (bounds.IsEmpty || bounds.Width == 0 || bounds.Height == 0 || rectangle.Width == 0 || rectangle.Height == 0)
+                    return;
+                double scaleX = rectangle.Width / bounds.Width;
+                double scaleY = rectangle.Height / bounds.Height;
+                var transform = new MatrixTransform(scaleX, 0, 0, scaleY,
+                    rectangle.Left - bounds.Left * scaleX, rectangle.Top - bounds.Top * scaleY);
+                PushTransform(transform);
+                try { DrawDrawing(drawing); }
+                finally { Pop(); }
+                return;
+            }
             if (!(imageSource is System.Windows.Media.Imaging.BitmapSource bitmap) || bitmap.PortableBuffer == null)
                 throw Unsupported("image sources without portable bitmap storage");
             SKSamplingOptions options = _bitmapScalingMode switch
