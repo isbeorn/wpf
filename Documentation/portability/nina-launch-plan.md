@@ -6,9 +6,9 @@ further accessibility qualification and native IME are later work. The earlier
 ordering that deferred NINA.Image until all WPF gates finished is superseded.
 Everything remains local on `codex/nina-cross-platform`.
 
-## Current startup boundary
+## Original startup boundary
 
-The last original App/MainWindow attempt reached `MainWindow.Show`, then failed
+The initial original App/MainWindow attempt reached `MainWindow.Show`, then failed
 asynchronously when binding metadata initialized StarAnnotator's GDI resources.
 There was no retained native MainWindow map or useful pixel capture. The original
 failure remains in
@@ -18,6 +18,74 @@ The persisted simulator profile enables AutoStretch and DetectStars, uses High
 star sensitivity and None noise reduction and disables annotations. A visible
 shell is the first milestone. A default simulator exposure also requires genuine
 stretching and detection; the prepared-image display tests do not cover them.
+
+## Current progress
+
+The original simulator-only App/MainWindow now opens on the owned Linux backend.
+The retained run `shell-startup-20261020-2/runs/run.rVHt3aYM` contains two actual
+800x600 window captures. Both show the original Camera page, navigation, caption
+and controls. Root inspected the second capture. The application closed with
+exit zero, no standard-error output and observed original plugin teardown.
+
+The startup observer subsequently failed its unconditional docking-layout file
+check. The original application starts on Equipment and creates its Imaging
+docking manager only after selecting that page. Its save method deliberately
+requires that initialization. This startup run performed no UI actions, so it
+does not qualify initialized docking-layout persistence. The original failed
+observer result remains intact; no application change is needed for this check.
+
+The complete five-file image-processing port is committed as `52f157449`.
+Focused qualification passed 25 checks against original Windows, 30 against
+adapted Windows and 30 on Linux, including actual cancellation and recovery on
+the same detector and source image. Independent correctness and maintainability
+reviews found no remaining supported defect. Evidence is under
+`current/nina/image-cancellation-20261020-1/cancellation-handoff.json`.
+
+A fresh full application publication with this final image component has also
+opened on the real Ubuntu 22.04 GNOME/XWayland desktop in Linux-Physical-SSD.
+All 328 published files matched before launch. Its SOFA and NOVAS libraries use
+the same qualified original sources compiled for the VM's glibc 2.35. Root
+inspected its actual Camera-page capture and the application was left running
+for the user. Evidence is under `current/nina/vm-desktop-launch-20261020-1`.
+No hardware or exposure command was issued in this full application session.
+
+The original SimulatorCamera, CameraVM, camera mediator and ImageControlVM
+preparation now pass 13 native Linux integration checks with the persisted
+processing defaults. A real RANDOM 640x480 monochrome capture was downloaded,
+stretched, analyzed and displayed through the original ImageControlView binding.
+Annotation off/on/off preserved all raw samples and restored the exact original
+stretched display. Camera disconnect, normal window close and cleanup passed.
+The random-noise image contained zero detected stars, which is valid. Separate
+component checks cover actual star geometry and labels.
+
+Evidence is under `current/nina/image-vm-preparation-20261020-1`, corrected run
+`run.UDktsGBp`. The first attempt skipped the original equipment composition
+step and stopped before download. The corrected fixture follows the original
+initialization order and changes no application code. This integration uses the
+existing native view fixture with genuine NINA objects; it does not establish
+the full MainWindow capture-button workflow or a full application feature pass.
+
+## Resume from this milestone
+
+- Inspect the existing NINA window in VMConnect for Linux-Physical-SSD. The
+  recorded lifetime is PID 1252728, start ticks 1687329 and XID `0x1600006`.
+  Refresh these identities and the real session/auth path before acting later.
+- The VM publication is
+  `/home/stefan/wpf-portability-local/phase5/nina-shell-20261020-1`.
+  Its `close-owned.py` checks the recorded process and window identities before
+  requesting normal window close. It has been prepared but not executed.
+- Use the full Image3 consumer at
+  `current/nina/shell-vm-launch-20261020-1/consumer`. Its manifest and the live
+  desktop handoff bind the complete publication, source proofs, launch arguments
+  and owned state. Do not substitute the intermediate annotation-only consumer.
+- Next verify a simulator exposure through the actual full MainWindow UI, then
+  qualify the NINA pages and interactions required for the initial target. The
+  existing default preparation fixture is now a passing diagnostic baseline.
+  Framing/Sky Atlas image drawing and other remaining application dependencies
+  need their own evidence before a full NINA compatibility claim.
+- General WPF features unused by NINA, native IME and further accessibility
+  qualification remain deferred. Vendor/USB drivers and physical equipment are
+  excluded from this simulator-only build.
 
 ## Accepted focused port
 
