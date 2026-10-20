@@ -1,6 +1,7 @@
 [CmdletBinding()]
 param([Parameter(Mandatory)][string] $DistributionDirectory,[string] $Dotnet='dotnet',
-    [string] $PackageCache = "$([Environment]::GetFolderPath('UserProfile'))/.nuget/packages")
+    [string] $PackageCache = "$([Environment]::GetFolderPath('UserProfile'))/.nuget/packages",
+    [ValidatePattern('^$|^[A-Za-z0-9][A-Za-z0-9._-]*$')][string] $OracleName = '')
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
 $env:DOTNET_GENERATE_ASPNET_CERTIFICATE='false'
@@ -26,7 +27,7 @@ foreach($version in @('10.0.13','10.0.12')) {
     $consumer=Join-Path $testRoot $version
     New-Item -ItemType Directory -Path $consumer | Out-Null
     Copy-Item -Path (Join-Path $repo 'src/Portability/Packaging/Consumer/*') -Destination $consumer -Recurse
-    Copy-PortableFrozenOracle $repo $consumer
+    Copy-PortableFrozenOracle $repo $consumer -OracleName $OracleName
     Copy-Item (Join-Path $repo 'src/Portability/Tests/NativeWindowIntegration/X11Fixture.cs') (Join-Path $consumer 'App/X11Fixture.cs')
     Copy-Item (Join-Path $repo 'src/Portability/Tests/Fixtures/Fonts/DejaVuSans.ttf') (Join-Path $consumer 'DejaVuSans.ttf')
     '<Project />' | Set-Content (Join-Path $consumer 'Directory.Build.props')

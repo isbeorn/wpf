@@ -5,6 +5,7 @@
     <StartupObject>PackageConsumer.Program</StartupObject>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
     <FixtureOrigin Condition="'$(FixtureOrigin)' == ''">Microsoft</FixtureOrigin>
   </PropertyGroup>

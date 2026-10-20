@@ -116,3 +116,15 @@ mutation: existing Core file-font selection does not synthesize missing style
 faces. Those generated failure reports were deleted during external cleanup;
 the current named-family profile passes on Windows and Linux. This slice does not
 repair or qualify single-file synthetic-style parity.
+
+## Named Microsoft compiler references
+
+The original default `MicrosoftCompilerOracle.json` remains the historical60D2A40A reference. A missing copy does not authorize replacing its hash. Fresh reference `microsoft-sdk10.0.401-f03fc3311-20261020` has its own named manifest and archive; its F0A9688D fixture is a new Microsoft SDK10.0.401 compile of the unchanged fixture sources, not byte-identical recovery of the historical assembly. Its generated source retains the original3738598F hash. Separate evidence pins its PE/PDB, source checksums, embedded BAML/resources, connector IL and offscreen stock7-case/11-check behavior.
+
+Pass `-OracleName microsoft-sdk10.0.401-f03fc3311-20261020` explicitly to `Capture-MicrosoftCompilerOracle.ps1`, `Test-PortablePackages.ps1`, `Test-PortablePackageConflicts.ps1` and `Prepare-CompleteView.ps1` to select this reference. Omission retains the historical default selection. The package consumer receives the selected manifest under its existing `Frozen/MicrosoftCompilerOracle.json` filename and still checks the exact selected binary hash. No historical oracle is recompiled or rebaselined by consumer preparation. These stock reference cases do not show a Window or inject native input.
+
+From the repository root, prepare both compiler origins with the explicitly selected reference and approved package hashes:
+
+```powershell
+./eng/portability/Prepare-CompleteView.ps1 -DistributionDirectory $distribution -DestinationDirectory $destination -ExpectedRuntimeSha256 $runtimeSha256 -ExpectedSdkSha256 $sdkSha256 -OracleName microsoft-sdk10.0.401-f03fc3311-20261020
+```

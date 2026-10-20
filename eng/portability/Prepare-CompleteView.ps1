@@ -3,7 +3,8 @@ param(
     [Parameter(Mandatory)][string] $DistributionDirectory,
     [Parameter(Mandatory)][string] $DestinationDirectory,
     [ValidatePattern('^[A-Fa-f0-9]{64}$')][string] $ExpectedRuntimeSha256 = '0A263235AF0529E4BACBBDF446B26C21995CEB958F77B839BAEDA98D5915844E',
-    [ValidatePattern('^[A-Fa-f0-9]{64}$')][string] $ExpectedSdkSha256 = '2B957A26B154EEC2467618A1478D97D520A6E42606F92609D68FC121D91D0F80'
+    [ValidatePattern('^[A-Fa-f0-9]{64}$')][string] $ExpectedSdkSha256 = '2B957A26B154EEC2467618A1478D97D520A6E42606F92609D68FC121D91D0F80',
+    [ValidatePattern('^$|^[A-Za-z0-9][A-Za-z0-9._-]*$')][string] $OracleName = ''
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
@@ -26,16 +27,17 @@ $feed = Join-Path $distribution 'feed'
 if ($feed -notmatch '^([A-Za-z]):[\\/](.*)$') { throw 'This preparation requires a WSL-mounted Windows workspace.' }
 $linuxFeed = '/mnt/' + $Matches[1].ToLowerInvariant() + '/' + $Matches[2].Replace('\', '/')
 $escapedFeed = [Security.SecurityElement]::Escape($linuxFeed)
-$frozen = Join-Path $repo 'artifacts/portability/markup-runtime-integration/microsoft-oracle/FixtureControls.dll'
-$identity = [Reflection.AssemblyName]::GetAssemblyName($frozen).FullName
-$frozenHash = (Get-FileHash -LiteralPath $frozen).Hash
+
 $source = Join-Path $repo 'src/Portability/Probes/WindowsReference/FixtureControls'
 $sourceFiles = @('FixtureView.xaml', 'FixtureView.xaml.cs', 'FixtureResources.xaml')
 foreach ($origin in @('Microsoft', 'Port')) {
     $consumer = Join-Path $destination $origin
     New-Item -ItemType Directory -Path $consumer | Out-Null
     Copy-Item -Path (Join-Path $repo 'src/Portability/Packaging/Consumer/*') -Destination $consumer -Recurse
-    Copy-PortableFrozenOracle $repo $consumer
+    Copy-PortableFrozenOracle $repo $consumer -OracleName $OracleName
+    $frozen = Join-Path $consumer 'Frozen/FixtureControls.dll'
+    $identity = [Reflection.AssemblyName]::GetAssemblyName($frozen).FullName
+    $frozenHash = (Get-FileHash -LiteralPath $frozen).Hash
     Copy-Item -LiteralPath (Join-Path $repo 'src/Portability/Tests/NativeWindowIntegration/X11Fixture.cs') -Destination (Join-Path $consumer 'App/X11Fixture.cs')
     Copy-Item -LiteralPath (Join-Path $repo 'src/Portability/Tests/Fixtures/Fonts/DejaVuSans.ttf') -Destination (Join-Path $consumer 'DejaVuSans.ttf')
     Copy-Item -LiteralPath (Join-Path $repo 'src/Portability/Dependencies/TextUnicode/Licenses/DejaVu.txt') -Destination (Join-Path $consumer 'DejaVu.txt')

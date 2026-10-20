@@ -77,10 +77,14 @@ function Get-PortableAssetOrigin([string] $StageFile, [string] $AssetPath, $Libr
     return $null
 }
 
-function Copy-PortableFrozenOracle([string] $RepositoryRoot,[string] $ConsumerDirectory) {
-    $originPath=Join-Path $RepositoryRoot 'src/Portability/Tests/MarkupRuntimeIntegration/MicrosoftCompilerOracle.json'
+function Copy-PortableFrozenOracle([string] $RepositoryRoot,[string] $ConsumerDirectory,
+    [ValidatePattern('^$|^[A-Za-z0-9][A-Za-z0-9._-]*$')][string] $OracleName = '') {
+    $manifestFile=if($OracleName) {"MicrosoftCompilerOracle.$OracleName.json"} else {'MicrosoftCompilerOracle.json'}
+    $originPath=Join-Path $RepositoryRoot "src/Portability/Tests/MarkupRuntimeIntegration/$manifestFile"
     $origin=Get-Content $originPath -Raw | ConvertFrom-Json
-    $binary=Join-Path $RepositoryRoot 'artifacts/portability/markup-runtime-integration/microsoft-oracle/FixtureControls.dll'
+    if($OracleName -and $origin.oracleName -cne $OracleName) {throw 'Named Microsoft oracle manifest does not match the requested name.'}
+    $archivePath=if($OracleName) {"artifacts/portability/markup-runtime-integration/microsoft-oracles/$OracleName"} else {'artifacts/portability/markup-runtime-integration/microsoft-oracle'}
+    $binary=Join-Path $RepositoryRoot "$archivePath/FixtureControls.dll"
     if((Get-FileHash $binary).Hash -ne $origin.fixtureSha256) { throw 'The frozen Microsoft BAML oracle bytes differ from their recorded origin.' }
     Copy-PortableFile $binary (Join-Path $ConsumerDirectory 'Frozen/FixtureControls.dll')
     Copy-PortableFile $originPath (Join-Path $ConsumerDirectory 'Frozen/MicrosoftCompilerOracle.json')

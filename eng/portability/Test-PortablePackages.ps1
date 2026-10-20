@@ -2,7 +2,8 @@
 param(
     [Parameter(Mandatory)][string] $DistributionDirectory,
     [ValidateSet('Windows','PrepareLinux')][string] $HostProfile = 'Windows',
-    [string] $Dotnet = 'dotnet'
+    [string] $Dotnet = 'dotnet',
+    [ValidatePattern('^$|^[A-Za-z0-9][A-Za-z0-9._-]*$')][string] $OracleName = ''
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
@@ -13,7 +14,7 @@ $consumer=Join-Path $distribution ('external-' + $HostProfile.ToLowerInvariant()
 if(Test-Path $consumer) { throw "Use a clean external consumer directory: $consumer" }
 New-Item -ItemType Directory -Path $consumer | Out-Null
 Copy-Item -Path (Join-Path $repo 'src/Portability/Packaging/Consumer/*') -Destination $consumer -Recurse
-Copy-PortableFrozenOracle $repo $consumer
+Copy-PortableFrozenOracle $repo $consumer -OracleName $OracleName
 Copy-Item -LiteralPath (Join-Path $repo 'src/Portability/Tests/NativeWindowIntegration/X11Fixture.cs') -Destination (Join-Path $consumer 'App/X11Fixture.cs')
 Copy-Item -LiteralPath (Join-Path $repo 'src/Portability/Tests/Fixtures/Fonts/DejaVuSans.ttf') -Destination (Join-Path $consumer 'DejaVuSans.ttf')
 Copy-Item -LiteralPath (Join-Path $repo 'src/Portability/Dependencies/TextUnicode/Licenses/DejaVu.txt') -Destination (Join-Path $consumer 'DejaVu.txt')

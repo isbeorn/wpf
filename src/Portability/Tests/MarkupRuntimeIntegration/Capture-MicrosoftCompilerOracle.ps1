@@ -1,10 +1,12 @@
 [CmdletBinding()]
-param()
+param([ValidatePattern('^$|^[A-Za-z0-9][A-Za-z0-9._-]*$')][string] $OracleName = '')
 
 $ErrorActionPreference = 'Stop'
 $repositoryRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../../..'))
-$manifestPath = Join-Path $PSScriptRoot 'MicrosoftCompilerOracle.json'
+$manifestFile = if ($OracleName) { "MicrosoftCompilerOracle.$OracleName.json" } else { 'MicrosoftCompilerOracle.json' }
+$manifestPath = Join-Path $PSScriptRoot $manifestFile
 $manifest = Get-Content -LiteralPath $manifestPath -Raw | ConvertFrom-Json
+if ($OracleName -and $manifest.oracleName -cne $OracleName) { throw 'Named Microsoft oracle manifest does not match the requested name.' }
 $checks = @(
     @{ Path = Join-Path $repositoryRoot $manifest.fixtureOriginalPath; Expected = $manifest.fixtureSha256 },
     @{ Path = Join-Path $repositoryRoot $manifest.fixtureProject; Expected = $manifest.fixtureProjectSha256 },
@@ -21,7 +23,8 @@ $generated = Get-Content -LiteralPath (Join-Path $repositoryRoot $manifest.gener
 if (-not $generated.Contains('GeneratedCodeAttribute("PresentationBuildTasks", "10.0.12.0")')) {
     throw 'Original generated source does not identify the installed Microsoft compiler.'
 }
-$archive = Join-Path $repositoryRoot 'artifacts/portability/markup-runtime-integration/microsoft-oracle'
+$archivePath = if ($OracleName) { "artifacts/portability/markup-runtime-integration/microsoft-oracles/$OracleName" } else { 'artifacts/portability/markup-runtime-integration/microsoft-oracle' }
+$archive = Join-Path $repositoryRoot $archivePath
 New-Item -ItemType Directory -Force -Path $archive | Out-Null
 $binary = Join-Path $archive $manifest.fixtureAssembly
 if (Test-Path -LiteralPath $binary) {
