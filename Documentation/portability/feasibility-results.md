@@ -2,6 +2,11 @@
 
 Checkpoint date: 20 October 2026. Branch: `codex/nina-cross-platform`.
 
+The latest local status and resume instructions are in the
+[20 October handover](handover-2026-10-20.md). It records the later package,
+document and window-placement results plus the real GNOME startup failure.
+Earlier checkpoints below retain their original scope.
+
 The experiments establish a viable open-source Linux x64 path for this fork. Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded text implementation and native controls run through the owned X11 adapter. The app-local SDK compiles genuine BAML on Linux and earlier package-only fixtures retain their recorded scope. Current scientific display and editor checks pass, but no usable full NINA window has been observed. Full application, desktop, package and long-running qualification remain open.
 
 The Phase 0 reference/runtime gate and Phase 1 feasibility gate pass within the scopes recorded below. Phases 2 through 5 have not passed. The accepted [plan](../cross-platform-plan.md) remains the behavior contract. Physical desktop, full application and sustained-workload qualification remain later gates. Component checks, source compilation and managed test peers do not substitute for native WPF control behavior.
