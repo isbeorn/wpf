@@ -9,6 +9,8 @@ using System.Windows.Media;
 internal static class PrimaryScreenChecks
 {
     private static Type MetricsType => typeof(SolidColorBrush).Assembly.GetType("MS.Internal.Portability.Settings.PortablePrimaryScreenMetrics", true)!;
+    private static readonly Int32Rect FixtureWorkAreaPixels = new(37, 53, 1800, 1000);
+    private const double FixtureScale = 1.25;
     internal static object CreateFixture() => Create(1537.25, 947.75);
 
     internal static string Verify(bool supplied)
@@ -17,7 +19,8 @@ internal static class PrimaryScreenChecks
         {
             Missing(() => SystemParameters.PrimaryScreenWidth);
             Missing(() => SystemParameters.PrimaryScreenHeight);
-            return "Both missing primary-screen axes report the named immutable-profile prerequisite without native lookup.";
+            Missing(() => SystemParameters.WorkArea);
+            return "Missing primary-screen axes and work area report the named immutable-profile prerequisite without native lookup.";
         }
         const double width = 1537.25, height = 947.75;
         if (SystemParameters.PrimaryScreenWidth != width || SystemParameters.PrimaryScreenHeight != height)
@@ -34,6 +37,18 @@ internal static class PrimaryScreenChecks
         element.Measure(new Size(2000, 2000)); element.Arrange(new Rect(0, 0, width, height));
         if (element.ActualWidth != width || element.ActualHeight != height || !ReferenceEquals(x, SystemParameters.PrimaryScreenWidthKey) || !ReferenceEquals(y, SystemParameters.PrimaryScreenHeightKey))
             throw new InvalidOperationException("Primary-screen resource key identity or DIP layout changed.");
+        var expectedWorkArea = new Rect(37 / FixtureScale, 53 / FixtureScale, 1800 / FixtureScale, 1000 / FixtureScale);
+        ResourceKey workAreaKey = SystemParameters.WorkAreaKey;
+        element.SetResourceReference(FrameworkElement.TagProperty, workAreaKey);
+        if (SystemParameters.WorkArea != expectedWorkArea || !Equals(element.Tag, expectedWorkArea))
+            throw new InvalidOperationException("The declared work-area origin and size were not converted once to DIPs or its resource key differs.");
+        var localWorkArea = new Rect(-17.5, 23.25, 701.5, 503.25);
+        element.Resources[workAreaKey] = localWorkArea;
+        if (!Equals(element.Tag, localWorkArea) || SystemParameters.WorkArea != expectedWorkArea)
+            throw new InvalidOperationException("A local work-area resource override changed the system snapshot or was ignored.");
+        element.Resources.Remove(workAreaKey);
+        if (!Equals(element.Tag, expectedWorkArea) || !ReferenceEquals(workAreaKey, SystemParameters.WorkAreaKey))
+            throw new InvalidOperationException("Removing a work-area resource override did not restore the original key value.");
         for (int axis = 0; axis < 2; axis++)
         {
             foreach (double value in new[] { 0, -double.Epsilon, -1, double.NaN, double.PositiveInfinity, double.NegativeInfinity })
@@ -50,6 +65,17 @@ internal static class PrimaryScreenChecks
                     throw new InvalidOperationException("A finite positive primary-screen boundary was rounded or rejected.");
             }
         }
+        foreach (double scale in new[] { 0, -double.Epsilon, -1, double.NaN, double.PositiveInfinity, double.NegativeInfinity })
+        {
+            bool rejected = false;
+            try { Create(width, height, scale); }
+            catch (TargetInvocationException error) when (error.InnerException is ArgumentOutOfRangeException range && range.ParamName == "scale") { rejected = true; }
+            if (!rejected) throw new InvalidOperationException("An invalid work-area scale was accepted or misidentified.");
+        }
+        object fractionalMetric = Create(width, height);
+        if (!Equals(MetricsType.GetProperty("WorkAreaPixels", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(fractionalMetric), FixtureWorkAreaPixels) ||
+            !Equals(MetricsType.GetProperty("WorkAreaDip", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(fractionalMetric), expectedWorkArea))
+            throw new InvalidOperationException("The metrics snapshot lost its native pixels or fractional DIP work area.");
         var box = new ComboBox { Width = 180, Height = 32 };
         box.Items.Add("Declared test screen"); box.SelectedIndex = 0;
         box.BeginInit(); box.EndInit(); box.ApplyTemplate();
@@ -70,9 +96,9 @@ internal static class PrimaryScreenChecks
         bool frozen = false;
         try { provider.GetMethod("Register", BindingFlags.Static | BindingFlags.NonPublic)!.Invoke(null, [replacement]); }
         catch (TargetInvocationException error) when (error.InnerException is InvalidOperationException) { frozen = true; }
-        if (!frozen || SystemParameters.PrimaryScreenWidth != width || SystemParameters.PrimaryScreenHeight != height)
+        if (!frozen || SystemParameters.PrimaryScreenWidth != width || SystemParameters.PrimaryScreenHeight != height || SystemParameters.WorkArea != expectedWorkArea)
             throw new InvalidOperationException("Consumed primary-screen metrics were replaced.");
-        return "Declared asymmetric fractional DIP pair, independent resource override/removal, boundaries and freeze, plus genuine closed Classic ComboBox metadata/template binding.";
+        return "Declared fractional screen/work-area snapshot, independent resource override/removal, axis and scale boundaries and freeze, plus genuine closed Classic ComboBox metadata/template binding.";
 
         void Exact(double expectedWidth, double expectedHeight)
         {
@@ -86,9 +112,10 @@ internal static class PrimaryScreenChecks
         try
         {
             Missing(() => SystemParameters.PrimaryScreenWidth); Missing(() => SystemParameters.PrimaryScreenHeight);
+            Missing(() => SystemParameters.WorkArea);
             try { _ = new ComboBox(); throw new InvalidOperationException("ComboBox invented missing screen dimensions."); }
             catch (TypeInitializationException error) when (error.InnerException is PlatformNotSupportedException unsupported && unsupported.Message.Contains("primary-screen", StringComparison.Ordinal)) { }
-            detail = "Both getters and real ComboBox initialization fail with an explicit native-screen prerequisite in a separate process.";
+            detail = "Screen-axis/work-area getters and real ComboBox initialization fail with an explicit native-screen prerequisite in a separate process.";
             passed = true;
         }
         catch (Exception error) { detail = error.ToString(); }
@@ -160,8 +187,8 @@ internal static class PrimaryScreenChecks
         return (string)profile.GetType().GetProperty("ProfileName", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(profile)!;
     }
 
-    private static object Create(double width, double height) => Activator.CreateInstance(MetricsType, BindingFlags.Instance | BindingFlags.NonPublic, null, [width, height], null)!;
-    private static void Missing(Func<double> read)
+    private static object Create(double width, double height, double scale = FixtureScale) => Activator.CreateInstance(MetricsType, BindingFlags.Instance | BindingFlags.NonPublic, null, [width, height, FixtureWorkAreaPixels, scale], null)!;
+    private static void Missing<T>(Func<T> read)
     {
         try { _ = read(); }
         catch (PlatformNotSupportedException error) when (error.Message.Contains(CurrentProfileName(), StringComparison.Ordinal) && error.Message.Contains("primary-screen", StringComparison.Ordinal)) { return; }

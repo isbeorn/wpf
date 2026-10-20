@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Windows;
 
 namespace MS.Internal.Portability.Settings
 {
@@ -56,18 +57,29 @@ namespace MS.Internal.Portability.Settings
 
     internal sealed class PortablePrimaryScreenMetrics
     {
-        internal PortablePrimaryScreenMetrics(double widthDip, double heightDip)
+        internal PortablePrimaryScreenMetrics(double widthDip, double heightDip, Int32Rect workAreaPixels, double scale)
         {
             if (!double.IsFinite(widthDip) || widthDip <= 0)
                 throw new ArgumentOutOfRangeException(nameof(widthDip), "Primary-screen width must be finite and positive in DIPs.");
             if (!double.IsFinite(heightDip) || heightDip <= 0)
                 throw new ArgumentOutOfRangeException(nameof(heightDip), "Primary-screen height must be finite and positive in DIPs.");
+            ArgumentOutOfRangeException.ThrowIfNegative(workAreaPixels.Width);
+            ArgumentOutOfRangeException.ThrowIfNegative(workAreaPixels.Height);
+            if (!double.IsFinite(scale) || scale <= 0)
+                throw new ArgumentOutOfRangeException(nameof(scale), "Primary-screen scale must be finite and positive.");
+            _ = checked(workAreaPixels.X + workAreaPixels.Width);
+            _ = checked(workAreaPixels.Y + workAreaPixels.Height);
             WidthDip = widthDip;
             HeightDip = heightDip;
+            WorkAreaPixels = workAreaPixels;
+            WorkAreaDip = new Rect(workAreaPixels.X / scale, workAreaPixels.Y / scale,
+                workAreaPixels.Width / scale, workAreaPixels.Height / scale);
         }
 
         internal double WidthDip { get; }
         internal double HeightDip { get; }
+        internal Int32Rect WorkAreaPixels { get; }
+        internal Rect WorkAreaDip { get; }
     }
 
     internal sealed class PortableSystemSettings

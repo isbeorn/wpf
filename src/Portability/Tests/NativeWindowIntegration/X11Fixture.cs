@@ -198,6 +198,24 @@ internal sealed class X11Fixture : IDisposable
     [DllImport("libX11.so.6")]
     private static extern int XMoveWindow(IntPtr display, IntPtr window, int x, int y);
 
+    internal void SetDesktopWorkArea(int x, int y, int width, int height)
+        => SetDesktopWorkAreas([(uint)x, (uint)y, (uint)width, (uint)height], 0);
+
+    internal void SetDesktopWorkAreas(uint[] values, uint? currentDesktop)
+    {
+        var bytes = new byte[values.Length * IntPtr.Size];
+        for (int index = 0; index < values.Length; index++)
+            BitConverter.GetBytes((long)values[index]).CopyTo(bytes, index * IntPtr.Size);
+        XChangeProperty(_display, _root, XInternAtom(_display, "_NET_WORKAREA", false),
+            (IntPtr)6, 32, 0, bytes, values.Length);
+        IntPtr desktop = XInternAtom(_display, "_NET_CURRENT_DESKTOP", false);
+        if (currentDesktop is { } selected)
+            XChangeProperty(_display, _root, desktop, (IntPtr)6, 32, 0, BitConverter.GetBytes((long)selected), 1);
+        else
+            XDeleteProperty(_display, _root, desktop);
+        XSync(_display, false);
+    }
+
     internal void SetDpi(int dpi)
     {
         byte[] data = Encoding.ASCII.GetBytes("Xft.dpi:\t" + dpi + "\n");
@@ -709,6 +727,7 @@ internal sealed class X11Fixture : IDisposable
     [DllImport("libX11.so.6")] private static extern int XUngrabPointer(IntPtr display, IntPtr time);
     [DllImport("libX11.so.6")] private static extern IntPtr XInternAtom(IntPtr display, string name, bool onlyExisting);
     [DllImport("libX11.so.6")] private static extern int XChangeProperty(IntPtr display, IntPtr window, IntPtr property, IntPtr type, int format, int mode, byte[] data, int count);
+    [DllImport("libX11.so.6")] private static extern int XDeleteProperty(IntPtr display, IntPtr window, IntPtr property);
     [DllImport("libX11.so.6")] private static extern int XSetSelectionOwner(IntPtr display, IntPtr selection, IntPtr owner, IntPtr time);
     [DllImport("libX11.so.6")] private static extern int XSync(IntPtr display, bool discard);
     [DllImport("libX11.so.6")] private static extern nuint XNextRequest(IntPtr display);

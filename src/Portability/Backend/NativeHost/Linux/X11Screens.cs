@@ -166,9 +166,15 @@ internal sealed class X11Screens : IDisposable
         var work = ReadLongProperty(_connection, _connection.RootWindow, "_NET_WORKAREA", 6, 4096);
         if (work.Length == 0) return null;
         var desktops = ReadLongProperty(_connection, _connection.RootWindow, "_NET_CURRENT_DESKTOP", 6, 1);
-        if (work.Length % 4 != 0 || desktops.Length != 1 || desktops[0] >= (nuint)(work.Length / 4))
+        if (work.Length % 4 != 0 || desktops.Length > 1 || (desktops.Length == 1 && desktops[0] >= (nuint)(work.Length / 4)))
             throw new InvalidOperationException("The EWMH desktop work area is malformed.");
-        int offset = checked((int)desktops[0] * 4);
+        int offset = desktops.Length == 1 ? checked((int)desktops[0] * 4) : 0;
+        if (desktops.Length == 0)
+        {
+            for (int index = 4; index < work.Length; index++)
+                if (work[index] != work[index % 4])
+                    throw new InvalidOperationException("The EWMH desktop work area is ambiguous without a current desktop.");
+        }
         if (work.Skip(offset).Take(4).Any(value => value > uint.MaxValue) || work[offset + 2] is 0 or > int.MaxValue || work[offset + 3] is 0 or > int.MaxValue)
             throw new InvalidOperationException("The EWMH desktop work area is outside supported pixel bounds.");
         return new(unchecked((int)(uint)work[offset]), unchecked((int)(uint)work[offset + 1]), (int)work[offset + 2], (int)work[offset + 3]);

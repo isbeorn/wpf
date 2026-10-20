@@ -32,7 +32,9 @@ public static class NativeWindowHost
                 double scale = primary.Dpi / 96d;
                 if (primary.Bounds.Width <= 0 || primary.Bounds.Height <= 0 || !double.IsFinite(scale) || scale <= 0)
                     throw new PlatformNotSupportedException("The native X11 screen service reported invalid primary-screen bounds or scaling.");
-                primaryMetrics = new PortablePrimaryScreenMetrics(primary.Bounds.Width / scale, primary.Bounds.Height / scale);
+                var workArea = primary.WorkingArea;
+                primaryMetrics = new PortablePrimaryScreenMetrics(primary.Bounds.Width / scale, primary.Bounds.Height / scale,
+                    new WpfFork::System.Windows.Int32Rect(workArea.X, workArea.Y, workArea.Width, workArea.Height), scale);
             }
 
             lock (s_settingsSync)

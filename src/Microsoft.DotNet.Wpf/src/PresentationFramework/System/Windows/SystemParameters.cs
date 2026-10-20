@@ -355,6 +355,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                var workArea = PortableSystemSettingsProvider.Current.PrimaryScreenMetrics.WorkAreaPixels;
+                return new NativeMethods.RECT(workArea.X, workArea.Y,
+                    checked(workArea.X + workArea.Width), checked(workArea.Y + workArea.Height));
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.WorkAreaInternal])
@@ -374,6 +379,7 @@ namespace System.Windows
                 }
 
                 return _workAreaInternal;
+#endif
             }
         }
 
@@ -384,6 +390,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.PrimaryScreenMetrics.WorkAreaDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.WorkArea])
@@ -396,6 +405,7 @@ namespace System.Windows
                 }
 
                 return _workArea;
+#endif
             }
         }
 
