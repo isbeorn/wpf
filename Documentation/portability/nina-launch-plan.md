@@ -77,18 +77,19 @@ the full MainWindow capture-button workflow or a full application feature pass.
   `current/nina/vm-combined-ui-20261020-1/handoff.json`; this is progress through
   the original application, not a full Imaging workflow pass.
 - Inspect the existing NINA window in VMConnect for Linux-Physical-SSD. The
-  replacement lifetime is PID 1492672, start ticks 2013560 and XID `0x1600006`.
+  replacement lifetime is PID 1560085, start ticks 2104488 and XID `0x1600006`.
   Refresh these identities and the real session/auth path before acting later.
   The preceding PID 1252728 exited normally with original plugin teardown.
-  The subsequent bounds-fault lifetime PID 1368971 required exact-process TERM
-  after both ordinary close routes failed. Its state and abnormal exit remain
-  recorded; it is not a clean shutdown result.
+  The subsequent bounds-fault lifetime PID 1368971 and tooltip-animation-fault
+  lifetime PID 1492672 required exact-process TERM after both ordinary close
+  routes failed. Their state and abnormal exits remain recorded; these are not
+  clean shutdown results.
 - The VM publication is
-  `/home/stefan/wpf-portability-local/phase5/nina-shell-imaging-20261020-1`.
+  `/home/stefan/wpf-portability-local/phase5/nina-shell-tooltip-20261020-1`.
   Its `close-owned.py` checks the recorded process and window identities before
   requesting normal window close. It has been prepared but not executed.
 - Use the full Image3 consumer at
-  `current/nina/shell-vm-imaging-20261020-1/consumer`. Its manifest and the live
+  `current/nina/shell-vm-tooltip-20261020-1/consumer`. Its manifest and the live
   desktop handoff bind the complete publication, source proofs, launch arguments
   and owned state. Do not substitute the intermediate annotation-only consumer.
 - Next verify a simulator exposure through the actual full MainWindow UI, then
@@ -119,9 +120,21 @@ The view remained at image preparation with no completed image or populated
 statistics. Snapshot completion, cancellation and recovery are not qualified.
 Evidence is under `current/nina/vm-imaging-ui-20261020-1/handoff.json`.
 
-The next bounded repair uses the existing portable disabled-animation policy
-for ToolTipAnimation and ToolTipFade, with a genuine ToolTip open/close/reopen
-regression. Other unused SystemParameters capabilities are outside this repair.
+Commit `03edd88ba` applies the existing portable disabled-animation policy to
+ToolTipAnimation and ToolTipFade. All 49 targeted native checks pass, including
+genuine ToolTip open/close/reopen and popup/window regressions. The subsequent
+fresh 329-file full application publication clears that user32 call, initializes
+Imaging and starts one original 1-second snapshot. Natural tooltip display then
+hits the deliberately unimplemented mouse-relative Popup placement path.
+Evidence is under `current/nina/vm-tooltip-ui-20261020-1/handoff.json`. The
+latest passive observation shows no further exposure progress and unchanged
+logs. Image completion, cancellation and recovery remain unqualified.
+
+The next bounded repair supplies the current pointer and cursor extent through
+the existing private native-window factory. It keeps physical screen
+coordinates and the original popup placement algorithm. No public WPF API or
+dependency is added. Other unused SystemParameters capabilities remain outside
+this repair.
 
 ## Accepted cached-image behavior
 
@@ -141,11 +154,20 @@ The focused codec/transform implementation passes 48 checks on each OS and both
 independent reviews are clear. The original NINA.WPF.Base renderer/cache
 candidate passes 42 checks on stock Windows, adapted Windows and Linux. These
 include real cache save/load, all three thumbnail sizes, decoded content,
-source preservation and renderer/cache eviction ownership. Full framing view
-integration is still running. This Base component is not yet in the live VM
-publication. Its actual Linux runtime proof and original producer reference
-family proof remain separate in
+source preservation and renderer/cache eviction ownership. The Base port is
+committed in `16e092972` and selected in the current complete VM publication.
+Actual Framing interaction has not been attempted there. Its actual Linux
+runtime proof and original producer reference family proof remain separate in
 `current/nina/wpfbase-framing-20261020-1/fresh-linux42-1/linux42-handoff.json`.
+
+The recovered original Framing18 integration reaches initial view paint, where
+an empty Path in a button template exposes a separate framework defect. WPF
+layout produces an empty StreamGeometry with NaN translation offsets. Stock
+Windows skips the empty geometry; the portable renderer incorrectly converts
+its transform. A minimal public-API probe passes all eight cases on stock
+Windows and reproduces six failures on the old portable renderer. The proposed
+repair skips transforms only when the constructed raster path is empty.
+Framing18 remains unqualified pending this repair and a fresh complete family.
 
 ## Accepted focused port
 
