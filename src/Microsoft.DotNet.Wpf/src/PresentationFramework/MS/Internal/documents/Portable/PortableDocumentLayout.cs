@@ -18,6 +18,7 @@ namespace MS.Internal.Documents
         private readonly TextFormatter _formatter;
         private readonly List<Line> _lines = new List<Line>();
         private readonly List<NavigationLine> _navigationLines = new List<NavigationLine>();
+        private PortableDocumentLayout _previous;
         internal ContainerVisual Visual { get; } = new ContainerVisual();
         internal Size Size { get; private set; }
         internal ReadOnlyCollection<TextSegment> Segments { get; }
@@ -31,7 +32,7 @@ namespace MS.Internal.Documents
 
         internal static PortableDocumentLayout Format(FlowDocument document, double width, Thickness margin, PortableDocumentLayout previous)
         {
-            var layout = new PortableDocumentLayout(document);
+            var layout = new PortableDocumentLayout(document) { _previous = previous };
             try
             {
                 double pendingMargin = 0;
@@ -48,19 +49,23 @@ namespace MS.Internal.Documents
                         marker.Text.Draw(dc, marker.Origin, InvertAxes.None);
                 }
                 layout.Visual.Children.Add(drawing);
+                layout._generation = document.TextContainer.LayoutGeneration;
                 return layout;
             }
             catch (Exception failure)
             {
-                try { layout.RestorePreviousChildLayout(failure); }
-                finally { layout.Dispose(); }
+                var errors = new List<Exception> { failure };
+                layout.RollbackChildren(previous, errors);
+                try { layout.Dispose(); }
+                catch (Exception cleanup) { errors.Add(cleanup); }
+                if (errors.Count > 1) throw new AggregateException("Document formatting failed and rollback could not be fully completed.", errors);
                 throw;
             }
         }
 
         private double FormatParagraph(TextElement owner, double x, double y, double width)
         {
-            var source = new ParagraphSource(owner, _document.PixelsPerDip);
+            var source = new ParagraphSource(this, owner, width, _document.PixelsPerDip);
             if (owner is Paragraph paragraph && (!double.IsNaN(paragraph.LineHeight) || paragraph.Padding != new Thickness() || paragraph.BorderThickness != new Thickness()))
                 throw new PlatformNotSupportedException("Portable paragraph custom line height, padding and borders are not yet supported.");
             var properties = new LineProperties(owner, _document, source.DefaultProperties, null);
@@ -90,6 +95,8 @@ namespace MS.Internal.Documents
             Line previous = null;
             foreach (Line line in _lines)
             {
+                if (line.Source.Length == 1 && position.IsAtInsertionPosition && position.CompareTo(line.Source.Start) == 0)
+                    return line;
                 int offset = line.Source.Start.GetOffsetToPosition((TextPointer)position);
                 if (offset < line.Offset || (offset == line.Offset && position.LogicalDirection == LogicalDirection.Backward))
                     return previous ?? line;
@@ -106,11 +113,13 @@ namespace MS.Internal.Documents
         internal TextPointer HitTest(Point point, bool snap)
         {
             foreach (Child child in _children)
-                if (child.Bounds.Contains(point)) return child.Container.ContentStart.GetPositionAtOffset(point.X < child.Bounds.Left + child.Bounds.Width / 2 ? 0 : 1);
+                if (!child.IsInline && child.Bounds.Contains(point)) return child.Container.ContentStart.GetPositionAtOffset(point.X < child.Bounds.Left + child.Bounds.Width / 2 ? 0 : 1);
+            Cell cell = FindCell(point);
             Line nearest = null;
             double distance = double.PositiveInfinity;
             foreach (Line line in _lines)
             {
+                if (cell != null && (line.Source.Start.CompareTo(cell.Element.ContentStart) < 0 || line.Source.Start.CompareTo(cell.Element.ContentEnd) > 0)) continue;
                 var bounds = line.ToPageRectangle(new Rect(line.Text.Start, 0,
                     line.Text.WidthIncludingTrailingWhitespace, line.Text.Height));
                 double dy = point.Y < bounds.Top ? bounds.Top - point.Y : Math.Max(0, point.Y - bounds.Bottom);
@@ -131,7 +140,7 @@ namespace MS.Internal.Documents
         internal Rect GetCaretRectangle(ITextPointer position)
         {
             foreach (Child child in _children)
-                if (position.CompareTo(child.Container.ContentStart) >= 0 && position.CompareTo(child.Container.ContentEnd) <= 0)
+                if (!child.IsInline && position.CompareTo(child.Container.ContentStart) >= 0 && position.CompareTo(child.Container.ContentEnd) <= 0)
                     return new Rect(position.CompareTo(child.Container.ContentStart) == 0 ? child.Bounds.Left : child.Bounds.Right, child.Bounds.Top, 0, child.Bounds.Height);
             Line line = FindLine(position);
             if (line == null) return Rect.Empty;
@@ -160,7 +169,7 @@ namespace MS.Internal.Documents
                 }
             }
             foreach (Child child in _children)
-                if (start.CompareTo(child.Container.ContentEnd) < 0 && end.CompareTo(child.Container.ContentStart) > 0)
+                if (!child.IsInline && start.CompareTo(child.Container.ContentEnd) < 0 && end.CompareTo(child.Container.ContentStart) > 0)
                     result.Add(child.Bounds);
             return result;
         }
@@ -215,8 +224,16 @@ namespace MS.Internal.Documents
             Line line = child == null ? FindLine(position) : null;
             int index = _navigationLines.FindIndex(entry => child != null ? entry.Child == child : entry.Text == line);
             if (index < 0) return position;
-            int target = (int)Math.Clamp((long)index + count, 0, _navigationLines.Count - 1);
-            moved = target - index;
+            int target = index;
+            int direction = Math.Sign(count);
+            long steps = Math.Min(Math.Abs((long)count), _navigationLines.Count);
+            for (long step = 0; step < steps; step++)
+            {
+                int next = AdjacentLine(target, direction, x);
+                if (next == target) break;
+                target = next;
+                moved += direction;
+            }
             NavigationLine targetLine = _navigationLines[target];
             if (targetLine.Child != null)
             {
@@ -245,20 +262,27 @@ namespace MS.Internal.Documents
 
         public void Dispose()
         {
-            Visual.Children.Clear();
-            DisposeChildren();
+            var errors = new List<Exception>();
+            try { Visual.Children.Clear(); }
+            catch (Exception error) { errors.Add(error); }
+            try { DisposeChildren(); }
+            catch (Exception error) { errors.Add(error); }
             foreach (Line line in _lines) line.Text.Dispose();
             foreach (Marker marker in _markers) marker.Text.Dispose();
             _markers.Clear();
             _lines.Clear();
             _navigationLines.Clear();
+            _cells.Clear();
+            _previous = null;
             _formatter.Dispose();
+            if (errors.Count != 0) throw new AggregateException("Document layout could not be fully released.", errors);
         }
 
         private sealed class NavigationLine
         {
             internal readonly Line Text;
             internal readonly Child Child;
+            internal Cell Cell;
             internal NavigationLine(Line text) { Text = text; }
             internal NavigationLine(Child child) { Child = child; }
         }
@@ -285,8 +309,12 @@ namespace MS.Internal.Documents
             internal readonly int Length;
             internal readonly TextProperties DefaultProperties;
             private readonly double _pixelsPerDip;
-            internal ParagraphSource(TextElement paragraph, double pixelsPerDip)
+            private readonly PortableDocumentLayout _layout;
+            private readonly double _width;
+            internal ParagraphSource(PortableDocumentLayout layout, TextElement paragraph, double width, double pixelsPerDip)
             {
+                _layout = layout;
+                _width = width;
                 Start = paragraph.ContentStart;
                 Length = Start.GetOffsetToPosition(paragraph.ContentEnd) + 1;
                 _pixelsPerDip = PixelsPerDip = pixelsPerDip;
@@ -304,14 +332,25 @@ namespace MS.Internal.Documents
                     case TextPointerContext.ElementStart:
                         Inline inline = GetInline(pointer);
                         if (inline is LineBreak) return new TextEndOfLine(2);
+                        if (inline is InlineUIContainer container)
+                        {
+                            _layout.InlineChild(container, _width, _layout._previous);
+                            return new TextHidden(1);
+                        }
                         if (inline.IsEmpty)
                             return new TextCharacters("\u200b\u200b", new TextProperties(inline, ((ITextPointer)pointer).CreateStaticPointer(), false, true, _pixelsPerDip));
                         TextDecorationCollection decorations = DynamicPropertyReader.GetTextDecorations(inline);
                         return decorations == null || decorations.Count == 0 ? new TextHidden(1) :
                             new TextSpanModifier(1, decorations, inline.Foreground);
                     case TextPointerContext.ElementEnd:
-                        TextDecorationCollection endingDecorations = DynamicPropertyReader.GetTextDecorations(GetInline(pointer));
+                        Inline ending = GetInline(pointer);
+                        if (ending is InlineUIContainer) return new TextHidden(1);
+                        TextDecorationCollection endingDecorations = DynamicPropertyReader.GetTextDecorations(ending);
                         return endingDecorations == null || endingDecorations.Count == 0 ? new TextHidden(1) : new TextEndOfSegment(1);
+                    case TextPointerContext.EmbeddedElement:
+                        var owner = (InlineUIContainer)pointer.Parent;
+                        Child child = _layout.InlineChild(owner, _width, _layout._previous);
+                        return new EmbeddedRun(child, new TextProperties(owner, ((ITextPointer)pointer).CreateStaticPointer(), false, true, _pixelsPerDip));
                     default:
                         throw new PlatformNotSupportedException("Portable FlowDocument embedded content is not yet supported.");
                 }
@@ -319,7 +358,7 @@ namespace MS.Internal.Documents
             private static Inline GetInline(TextPointer pointer)
             {
                 object element = pointer.GetAdjacentElement(LogicalDirection.Forward);
-                if (element is not Inline inline || (inline is not Run && inline is not Span && inline is not LineBreak))
+                if (element is not Inline inline || (inline is not Run && inline is not Span && inline is not LineBreak && inline is not InlineUIContainer))
                     throw new PlatformNotSupportedException("Portable FlowDocument inline type is not supported: " + element?.GetType().Name);
                 if (inline.Parent != null && inline.FlowDirection != (FlowDirection)inline.Parent.GetValue(FrameworkElement.FlowDirectionProperty))
                     throw new NotSupportedException("Portable FlowDocument inline directional embedding is not supported.");

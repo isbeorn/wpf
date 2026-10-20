@@ -30,6 +30,22 @@ internal static class Program
             try { checks.Add(new { name, status = "pass", detail = action() }); }
             catch (Exception exception) { failed = true; checks.Add(new { name, status = "fail", detail = exception.ToString() }); }
         }
+        if (args.SequenceEqual(new[] { "--flow-document-inline-child" }))
+        {
+            Check("genuine-flow-document-inline-child", FlowDocumentCases.InlineChild);
+            Check("genuine-flow-document-inline-child-rollback-and-publication", FlowDocumentCases.InlineChildFailures);
+            Console.WriteLine(JsonSerializer.Serialize(new { checks }, new JsonSerializerOptions { WriteIndented = true }));
+            return failed ? 1 : 0;
+        }
+        if (args.SequenceEqual(new[] { "--flow-document-tables" }))
+        {
+            Check("genuine-flow-document-auto-table-layout-and-navigation", FlowDocumentCases.TableLayout);
+            Check("genuine-flow-document-table-empty-narrow-and-rtl", FlowDocumentCases.TableEdges);
+            Check("genuine-flow-document-unequal-wrapped-auto-columns", FlowDocumentCases.TableAutoWidths);
+            Check("genuine-flow-document-table-background-layers-and-spacing", FlowDocumentCases.TableBackgroundLayers);
+            Console.WriteLine(JsonSerializer.Serialize(new { checks }, new JsonSerializerOptions { WriteIndented = true }));
+            return failed ? 1 : 0;
+        }
         if (args.SequenceEqual(new[] { "--flow-document-blocks" }))
         {
             Check("genuine-flow-document-section-list-layout", FlowDocumentCases.SectionListLayout);

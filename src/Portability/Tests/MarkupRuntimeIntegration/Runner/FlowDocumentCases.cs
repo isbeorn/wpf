@@ -185,7 +185,7 @@ internal static partial class FlowDocumentCases
         viewer.Width = width; viewer.Height = 220;
         viewer.Measure(new Size(width, 220)); viewer.Arrange(new Rect(0, 0, width, 220)); viewer.UpdateLayout();
     }
-    private static byte[] Raster(FrameworkElement viewer)
+    private static byte[] Raster(Visual viewer)
     {
         Type? targetType = typeof(Visual).Assembly.GetType("MS.Internal.Portability.Rendering.PortableRenderTarget");
         if (targetType != null)

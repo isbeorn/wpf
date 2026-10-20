@@ -40,13 +40,18 @@ namespace MS.Internal.Documents
         private BlockResult FormatBlock(TextElement element, double x, double y, double width, ref double pendingMargin,
             bool suppressTopSpace, FlowDirection parentDirection, PortableDocumentLayout previous)
         {
-            if (element is not Paragraph && element is not BlockUIContainer && element is not Section && element is not System.Windows.Documents.List && element is not ListItem)
+            if (element is not Paragraph && element is not BlockUIContainer && element is not Section && element is not System.Windows.Documents.List && element is not ListItem && element is not Table)
                 throw new PlatformNotSupportedException("Portable FlowDocument block type is not supported: " + element.GetType().Name);
 
             var list = element as System.Windows.Documents.List;
             List<Marker> markers = list == null ? null : CreateMarkers(list);
             Thickness? autoPadding = list == null || !HasAutoPadding(list.Padding) ? null : MarkerPadding(list, markers);
             var mbp = PtsHost.MbpInfo.FromElement(element, _document.PixelsPerDip, autoPadding);
+            if (element is Table emptyTable && !TableHasCells(emptyTable))
+            {
+                mbp.Border = new Thickness();
+                mbp.Padding = new Thickness();
+            }
             if (parentDirection == FlowDirection.RightToLeft) mbp.MirrorMargin();
             FlowDirection direction = (FlowDirection)element.GetValue(Block.FlowDirectionProperty);
             if (direction == FlowDirection.RightToLeft) mbp.MirrorBP();
@@ -78,6 +83,13 @@ namespace MS.Internal.Documents
                 top = y - topInset;
                 double bottom = FormatChild(child, x, y, width, previous);
                 content = new BlockResult(y, bottom, bottom);
+            }
+            else if (element is Table table)
+            {
+                y += pendingMargin;
+                pendingMargin = 0;
+                top = y - topInset;
+                content = FormatTable(table, x, y, width, previous);
             }
             else if (list != null)
             {

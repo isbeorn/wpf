@@ -104,12 +104,17 @@ internal static partial class FlowDocumentCases
         var span = new Span(prior) { TextDecorations = TextDecorations.Strikethrough };
         var next = new Run("omega"); var empty = new Span { FontSize = 50 }; var lineBreak = new LineBreak();
         TextSource source; TextPointer start;
+        IDisposable? layout = null;
         Type? portable = typeof(FlowDocument).Assembly.GetType("MS.Internal.Documents.PortableDocumentLayout+ParagraphSource");
         if (portable != null)
         {
             var paragraph = new Paragraph(); paragraph.Inlines.Add(span); paragraph.Inlines.Add(next); paragraph.Inlines.Add(empty); paragraph.Inlines.Add(lineBreak);
-            _ = InlineDocument(paragraph); start = paragraph.ContentStart;
-            source = (TextSource)Activator.CreateInstance(portable, BindingFlags.Instance | BindingFlags.NonPublic, null, new object[] { paragraph, 1d }, null)!;
+            var document = InlineDocument(paragraph); start = paragraph.ContentStart;
+            Type layoutType = portable.DeclaringType!;
+            layout = (IDisposable)layoutType.GetMethod("Format", BindingFlags.Static | BindingFlags.NonPublic)!
+                .Invoke(null, new object?[] { document, 380d, document.PagePadding, null })!;
+            object line = ((System.Collections.IEnumerable)layoutType.GetField("_lines", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(layout)!).Cast<object>().First();
+            source = (TextSource)line.GetType().GetField("Source", BindingFlags.Instance | BindingFlags.NonPublic)!.GetValue(line)!;
         }
         else
         {
@@ -132,7 +137,7 @@ internal static partial class FlowDocumentCases
             }
             return "Actual source runs preserve decoration/empty/LineBreak edges and preceding text length/culture across nested hidden symbols.";
         }
-        finally { (source as IDisposable)?.Dispose(); }
+        finally { (source as IDisposable)?.Dispose(); layout?.Dispose(); }
     }
 
     internal static string InlineFailure()
@@ -146,10 +151,10 @@ internal static partial class FlowDocumentCases
         {
             Layout(viewer, 380); Size oldDesired = child.DesiredSize, oldRender = child.RenderSize;
             Vector oldOffset = VisualTreeHelper.GetOffset(child); var parent = VisualTreeHelper.GetParent(child); byte[] original = Raster(viewer);
-            var rejected = new InlineUIContainer(new Border()); paragraph.Inlines.Add(rejected);
+            var rejected = new Figure(new Paragraph(new Run("DEFERRED FIGURE"))); paragraph.Inlines.Add(rejected);
             PlatformNotSupportedException? failure = null;
             try { Layout(viewer, 180); } catch (PlatformNotSupportedException error) { failure = error; }
-            Require(failure != null && failure.Message.Contains("InlineUIContainer", StringComparison.Ordinal), "Unsupported inline did not preserve the primary type-specific error.");
+            Require(failure != null && failure.Message.Contains("Figure", StringComparison.Ordinal), "Unsupported inline did not preserve the primary type-specific error.");
             Require(child.DesiredSize == oldDesired && child.RenderSize == oldRender && VisualTreeHelper.GetOffset(child) == oldOffset && ReferenceEquals(VisualTreeHelper.GetParent(child), parent), "Failed inline layout changed committed child state or ownership.");
             Require(Raster(viewer).SequenceEqual(original), "Failed inline layout changed committed pixels.");
             paragraph.Inlines.Remove(rejected); Layout(viewer, 380);

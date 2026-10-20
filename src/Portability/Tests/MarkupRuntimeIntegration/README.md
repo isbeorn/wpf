@@ -80,11 +80,29 @@ and restoration; they do not claim per-run rectangle parity. Color checks observ
 hue contrast for thin antialiased decorations rather than requiring opaque
 reference pixels. LineBreak selection preserves unchanged TextRangeBase behavior:
 Environment.NewLine yields CRLF on Windows and LF on Linux.
+Table selection and whole-document serialization use the same native line-ending
+contract, with cell tabs, row order and anchor-dependent cross-RowGroup selection
+preserved. This is an accepted OS difference in the unchanged TextRangeBase
+serializer. The document layout keeps the original source symbols and pointers.
 
-Directional inline embedding remains explicitly unsupported, as do
-InlineUIContainer, figures and floaters in this slice. Core formatter property
-limits remain in force. Lists, markers, sections, tables, pagination, editable
-RichTextBox and the full original link/composite recipes remain separate gates.
+Directional inline embedding, figures and floaters remain explicitly unsupported.
+Core formatter property limits remain in force. Pagination, printing, editable
+RichTextBox and the full original NINA link/composite recipe remain separate gates.
+
+The managed bottomless layout also supports Section/List blocks, the observed
+unspanned Auto-column table profile and genuine InlineUIContainer children.
+`--flow-document-tables` checks cell geometry, forward/reverse selection, empty-cell
+navigation, RTL, unequal/wrapped content and layered group/row/cell backgrounds.
+Non-Auto columns and row/column spans fail explicitly. `--flow-document-inline-child`
+checks Label-to-local-PNG replacement, baseline and size changes, detach/reattach
+and one embedded source symbol. Failure cases preserve committed child ownership,
+geometry, page pixels and background caches, then recover through normal layout.
+Notification failures after publication retain the committed replacement.
+
+The focused document gate passes 20 checks across ten modes on each of Windows
+and Linux, including the existing paragraph, styled-inline, Section/List and
+block-child regressions. This does not qualify the original MdXaml composite or
+arbitrary table layout and rich-text editing.
 
 Styled ink qualification requests named Arial on Windows and the already installed
 Liberation Sans family on Linux. It requires genuine
@@ -96,5 +114,5 @@ contracts retain the fixed DejaVuSans.ttf fixture. A stronger fixture using only
 that Regular file previously passed stock but failed the portable Bold ink
 mutation: existing Core file-font selection does not synthesize missing style
 faces. Those generated failure reports were deleted during external cleanup;
-fresh qualification is pending. This slice does not repair or qualify single-file
-synthetic-style parity.
+the current named-family profile passes on Windows and Linux. This slice does not
+repair or qualify single-file synthetic-style parity.
