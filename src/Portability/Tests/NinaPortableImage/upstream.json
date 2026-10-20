@@ -1,0 +1,377 @@
+{
+  "revision": "4742afae0a09c79be772f23fcf163fb5852d2775",
+  "sourceLicense": "MPL-2.0",
+  "editorConfigSha256": "C9ECF96BA93AE164A4A2F17A8D4F4FC6FEDEEB9E4E6A9742E62EA7D9CC680870",
+  "files": [
+    {
+      "path": "CommonAssemblyInfo.cs",
+      "blob": "e15abab863d6ffb958e07a8e5760c76d39bc98eb",
+      "sha256": "2DAD6C61D5E695CE4A8FA2EF0CBB5552E2692EBB11123DA02E332AEA97E03F75"
+    },
+    {
+      "path": "Directory.Build.props",
+      "blob": "cb5048a39a25e6b66d953958c5d626b84640df1b",
+      "sha256": "9ED19ADC3920BDFDF3282E3DD8F3A22652DD0C08551127630A9781417B95D3BD"
+    },
+    {
+      "path": "LICENSE.txt",
+      "blob": "f4bbcd200ad42bbb2fe2faf67e87e8619fafc17a",
+      "sha256": "C76F740D1521B9BED9CA7A04AD526C310493C62621B1341D623B431736533B30"
+    },
+    {
+      "path": "NINA.Image/app.config",
+      "blob": "b246669fb8dee17c8e205a3fb49e9e8e2ed34cfe",
+      "sha256": "A73067CDF5622608A41D1527778B8EC29F13194BC8A08940A0357D28C11D93B3"
+    },
+    {
+      "path": "NINA.Image/ARCHITECTURE.md",
+      "blob": "ecdeb31bfaa242ca0fcdf2efc4e5341b6eda88da",
+      "sha256": "C1B6EC965F6C67CAFA0E55C58FACDEAFF1E86F072D2C92799D0169F966C58F7D"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FileSaveInfo.cs",
+      "blob": "4e256d19839f41cd0ad800c33d0f6fda5ce4da81",
+      "sha256": "BEDDDAEB3F0DC6361D4B65AD0F6924E8D834359584CEB521446B2C89A960A913"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FITS/CFitsioFITS.cs",
+      "blob": "bb718bf4e70aa8884a24dbec6f1f1ae7ea2f7ffc",
+      "sha256": "273D4D47C22DFB526CE01A335858673AD2D3F5D61986F0F3D2D6354EDDB89DCA"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FITS/CFitsioFITSReader.cs",
+      "blob": "3dbeb610453176467c6d5e09a38a72770dc111ab",
+      "sha256": "C052CB01E39A2F6D98A1D51F0134A6F80E8BC3836A53EA6C74CD2A53420BA7D4"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FITS/CfitsioNative.cs",
+      "blob": "97b5ffc9fed5610795f342b9644537dacb09ff7d",
+      "sha256": "70B9EF856A2092AD056C8450B592C9B9CF7EEC04CEE72A40CD644F2A2853EE4A"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FITS/DataConverter/ByteConverter.cs",
+      "blob": "05dcf07cc8ef53c3bfe54a53ab3a2ec087f70237",
+      "sha256": "C32DCB8BBD95FC1DF1DC552F65A4CB5F0478D3EEFDD8E51042C82B21BD8501C7"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FITS/DataConverter/DoubleConverter.cs",
+      "blob": "ea841da4d3741ab8dfb3ce8aad2972982c6c66db",
+      "sha256": "4FD626B8605460EF1ED3E528DDD815AD815EAFE3AE949F0826A49E88CF3904EA"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FITS/DataConverter/FloatConverter.cs",
+      "blob": "df63b64e08345573b68619d1e11a2822e97f471a",
+      "sha256": "812A0F76C247054FDC03F971B6F6604A4046789EE8E0FEAB8FA927BE7A915E08"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FITS/DataConverter/IDataConverter.cs",
+      "blob": "8e91b3fa76e02254939cc34f3fbde8e49a1455e4",
+      "sha256": "EC0159A2713F0CD3A716B18B0EECE71544B06BAFC54A3A757ACC7A9E852321C4"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FITS/DataConverter/IntConverter.cs",
+      "blob": "880ddb478f92d71f2c948115e8a463700505c497",
+      "sha256": "EE84BFD76F756BF241BE12730DB6A97D6F6B976D5D2D02AEE40338CE2F8A1748"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FITS/DataConverter/LongConverter.cs",
+      "blob": "90fa75f594e5c6cfed57365a6892f5f6c112fc67",
+      "sha256": "BF3FC362DBCC5559C476D77C3E4D6946F0133B8A7AB4D27365F5803BAA0E9837"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FITS/DataConverter/ShortConverter.cs",
+      "blob": "15c4728fb4bbf642db9eed02d2d9fdb2271a142b",
+      "sha256": "D5E7D3CCAF99C7BF6EF9CEE9F50FD081DFDDBABA916F5407249B2F61A73402BA"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FITS/FITS.cs",
+      "blob": "fb83f011633423263140e4e298b18c5ff52f32f3",
+      "sha256": "3A8DF5B7754BC3344EE5F67492B24AF71B1B9B260E1D6AC7AD2DE9704CF2B2FB"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FITS/FITSData.cs",
+      "blob": "3259183df1204589906b370d9db1a7986ace3f69",
+      "sha256": "6D4E5B4B8399F4AB3EE595E9D1741A8AD7320037FB92CF2B50101E23A6FDB6FA"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FITS/FITSHeader.cs",
+      "blob": "fb7fa574f140e74dba42706dd83ac3ed1a979448",
+      "sha256": "CF6C154760E593EA51960CB3AD21CBAE509DB26EB435EFBF719AECDE031EDDDA"
+    },
+    {
+      "path": "NINA.Image/FileFormat/FITS/FITSHeaderCard.cs",
+      "blob": "758e3767d3fccb031e64c6027ceeb4a3ba48d5ed",
+      "sha256": "00798B29D9C19C60CD709F9D9AE5A2E6C02B1F2F7C95AC0C674D55AAFD62313E"
+    },
+    {
+      "path": "NINA.Image/FileFormat/XISF/DataConverter/Float32Converter.cs",
+      "blob": "5b1efa37c1127b5a3b9d8700a1861fd386a00b3f",
+      "sha256": "4303226FCD2F1E8E6001194C27CB954502EE18F619FFE2624A57C22A5627CCE8"
+    },
+    {
+      "path": "NINA.Image/FileFormat/XISF/DataConverter/Float64Converter.cs",
+      "blob": "e19996304b350523e4c024e1df673a560ebda524",
+      "sha256": "14D66DA0D85381FC1C65F75FAF6391A108898456A3945161A7DFF3A9BBBBB33A"
+    },
+    {
+      "path": "NINA.Image/FileFormat/XISF/DataConverter/IDataConverter.cs",
+      "blob": "fc2beac3ac7412015b3279c5e62ae30fdc22f6b3",
+      "sha256": "038D003F3D5E20859554D6FB1F392C674AE71344481616EE41DE324218595E72"
+    },
+    {
+      "path": "NINA.Image/FileFormat/XISF/DataConverter/UInt16Converter.cs",
+      "blob": "20b6fd56f3d1b00c4a964cb8e653a3132029685d",
+      "sha256": "E806D4683A981A1D10610853E113747AE004B76D975889BA873BF6AFB8B0E78E"
+    },
+    {
+      "path": "NINA.Image/FileFormat/XISF/DataConverter/UInt32Converter.cs",
+      "blob": "693e5552c8698b20ca6ca81b9d69fd75cdf00db8",
+      "sha256": "F7AC85F77E1C4FCC73B3E2C9DC6447E368E4913FEEC6278C5946812A6AFF28AE"
+    },
+    {
+      "path": "NINA.Image/FileFormat/XISF/DataConverter/UInt64Converter.cs",
+      "blob": "cfed1001ef56fad72521e8b6e0d3db324d9d901f",
+      "sha256": "D5CD627D80FDE18ADEA774588836EBE87D9A204238159BC3934A256536477035"
+    },
+    {
+      "path": "NINA.Image/FileFormat/XISF/DataConverter/UInt8Converter.cs",
+      "blob": "02a7cbbe7320cdd39f81de560dedf1fec4900b30",
+      "sha256": "86FB6690571C04FA5C369FB6964784CF022BD9FDD401D702E9E1F4E9AAB331D8"
+    },
+    {
+      "path": "NINA.Image/FileFormat/XISF/XISF.cs",
+      "blob": "406856717e3c51c5e60cbf29fd3bf59923d9e249",
+      "sha256": "AD165F86EA56DF6F830B1263FE99EAA8FAB36C0A8F71BE8DDAFCF780A1DECC5C"
+    },
+    {
+      "path": "NINA.Image/FileFormat/XISF/XISFData.cs",
+      "blob": "9ac2545ad3cd62d56d33971993775b77596ac1e4",
+      "sha256": "EF1788E8BFD9AED7AFDC84B6F890D586EC8D87E59AE73AAAE14DD50412F666AC"
+    },
+    {
+      "path": "NINA.Image/FileFormat/XISF/XISFHeader.cs",
+      "blob": "74db6b3e4de05f06cea2c26e9db688ad1b70f81e",
+      "sha256": "2C3BB6BFAC401990C865A7C59BFC14AE5BACEE7A12D6D5B510115503487E16B6"
+    },
+    {
+      "path": "NINA.Image/FileFormat/XISF/XISFImageProperty.cs",
+      "blob": "95d080f442a0c43fccd0b7d96c7dd4aca2f65169",
+      "sha256": "024C4F28ACC4483C45A18423E14DF3703D441C13DD47647793E0E996F248EC73"
+    },
+    {
+      "path": "NINA.Image/FileFormat/XISF/XISFMetaDataProperty.cs",
+      "blob": "9eda8b5f49889e4e688238fa51325324ff2b34b7",
+      "sha256": "9C33D1602A17C1CB701FEFA150682FA572CF60577949423FB0F94CF5DE6F5651"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/BahtinovAnalysis.cs",
+      "blob": "fb2317216e8541a344aba2a20e06cbc6a8f485dd",
+      "sha256": "D9923C6D5735C078E0BA6E9888E60093D09C61A7C9D7B32C684D9D10770B0521"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/BahtinovImage.cs",
+      "blob": "62451a26249d7e9839d7be00035cb3afbf118057",
+      "sha256": "9010D978E6ACA40CC26BCBFAC923065AB448464D4BE9170E940AB93B3B6BCDF2"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/BayerFilter16bpp.cs",
+      "blob": "3e9dd998ab7e55666fafead7e1d08bfa9cb0d7f1",
+      "sha256": "B523E70ED8425C89D4168CFC288A19551DA5E3CAB3D76BEA5160EEFD3468F487"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/BayerPatternUtility.cs",
+      "blob": "1b51f0d794c62e405a172723fba6662ae9eefbf4",
+      "sha256": "B0D01E18E338D33AC22C38836DCE581E247F64562B482E65B1A190C4505E1D63"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/ColorRemappingGeneral.cs",
+      "blob": "1621590b6412e191b286ac9194bee3f86e32f737",
+      "sha256": "5B14046262FFFA53C034401430B41C9B0649AE6AEBE38C9AB5555C02728FCD1C"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/ContrastDetection.cs",
+      "blob": "414d587fca449cf86e574d30e3a54be17d62803d",
+      "sha256": "A075ACC61C52333189CC0CAD5FAAC8353F871521F90E70ABAFAEF69D37CA480C"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/DetectionUtility.cs",
+      "blob": "3d8fcda1aadc841929dfd8b4882c623a94efdecd",
+      "sha256": "177316D6F6B52FB82F72EA87B24D31795DB36C71F6FBB1D1EE4F18870E3A186F"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/FastGaussianBlur.cs",
+      "blob": "028b2528dab629e4cbde2f8967e80ec4e45ac454",
+      "sha256": "8A0FF9B804029BB568D17C2E07DF10A132C4088E12CD895219035B8EEB1C83B2"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/HistogramMath.cs",
+      "blob": "b38311874733716b64cccefd657158ea33ab7933",
+      "sha256": "8F40D229A76175DB4CB2560FFAA8A38814F81D0496D9DDB62E296D7736FF4AC0"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/IContrastDetection.cs",
+      "blob": "b2fe579a703d00f1247d99942acac7b8a14a00a8",
+      "sha256": "1F2FF2D71421E909DF802EE11DBF18B9F9FC69AA353C1C1901DD994449946120"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/ImageUtility.cs",
+      "blob": "84e7dc54fbb430aba85d1551837ad10c4787278d",
+      "sha256": "5F1C359638C3372582825AE050ECFC60C8BA21DB4A67A197064842D0879CBF1C"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/IStarAnnotator.cs",
+      "blob": "bea4d66490e2d1e01b8ac92ddc226df6d97f8035",
+      "sha256": "8B1488E8CC5FBD0B08758D4A14D9A8766F03FE6C41A65BB8632E2C7A8231104E"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/IStarDetection.cs",
+      "blob": "e893b22dcd17ef96f2627273832d3cdc22a97967",
+      "sha256": "063105AE1367A626E12F4D7F11319FFF202173CEAEBE63AAF9D5FCD4C4C0E0C2"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/NoBlurCannyEdgeDetector.cs",
+      "blob": "109a1a64dccd68dd201ecbd1bcf185cca661403b",
+      "sha256": "CAC94272BFFEC3837033DA94A41182FEF0657ECC99A76A05216F2D2200F5C3B4"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/StarAnnotator.cs",
+      "blob": "28a019efd96647619fd882c3855732ebed343b14",
+      "sha256": "D396DBAB503F83A3C04523E771767F186C2A5066DCB9736CA80EC91AD2E070E1"
+    },
+    {
+      "path": "NINA.Image/ImageAnalysis/StarDetection.cs",
+      "blob": "240d9bd26b2e1d9610b7a7a313330064e5f37d55",
+      "sha256": "8A191602E1264992008094259C7084104F588F23DF341C7CF9177FBD17BCB748"
+    },
+    {
+      "path": "NINA.Image/ImageData/AllImageStatistics.cs",
+      "blob": "f65709e56b0aeecc4e3782a0e3ef16694eb476bf",
+      "sha256": "C10012EE59D03BC2EAA2F5828F83397E5052FD5B8A1C239D92D158FA8E72CB2C"
+    },
+    {
+      "path": "NINA.Image/ImageData/BaseImageData.cs",
+      "blob": "3dff00f662b24d47cec66c5b392ab87e6a28847c",
+      "sha256": "D425DC73DD86881C3A8AB10B122D855C6633FF5D28855D01B603C72FF9D59694"
+    },
+    {
+      "path": "NINA.Image/ImageData/DebayeredImage.cs",
+      "blob": "8d73a111e68c3f18a1d0ddd2e9d6e5dffa0e5640",
+      "sha256": "A371536C0D9951BF6C0A0663906253E190078ADCE35BC5F56A6543A5B441DECF"
+    },
+    {
+      "path": "NINA.Image/ImageData/DebayeredImageData.cs",
+      "blob": "f73e8ef665b9531ba1a159f4b1d7df595a79180c",
+      "sha256": "9B3EE3A1D088707B81F0B01D632D2E5D35EF344F1A5F540D701DCD55CE1D8AD5"
+    },
+    {
+      "path": "NINA.Image/ImageData/ExposureData.cs",
+      "blob": "1fc384ff8b073be89e8116f1ee2560a7a4225404",
+      "sha256": "0D8ABD1C84B3E1851EDF944D9092253008CCE4DECD8722B27EBBE7A367A71E65"
+    },
+    {
+      "path": "NINA.Image/ImageData/ImageArray.cs",
+      "blob": "be00f5532f0847b114925ad74526a52fe5c48cbd",
+      "sha256": "DAA994355EDB351859B19BE4C5E9AE0847F5B2C01C02B7309A540706B2879AF2"
+    },
+    {
+      "path": "NINA.Image/ImageData/ImageArrayExposureData.cs",
+      "blob": "7d07a0f6238a8c2f4bc7f2de5baf048d8c4c18bd",
+      "sha256": "38A9CD245D872D34DB464395F89F92F0FE218DFC1087CA79A0C2775C1B21FDF7"
+    },
+    {
+      "path": "NINA.Image/ImageData/ImageMetaData.cs",
+      "blob": "b67a8e25a08d1029f55895a8305b7216db7d5ee0",
+      "sha256": "856FED907FCD930CE2281E51DB3AB7DDE14DE6523C97FF7607D4518FC29DC58E"
+    },
+    {
+      "path": "NINA.Image/ImageData/ImageProperties.cs",
+      "blob": "ed38edc374c361bc89e45578b7d3e9c10d9d4f87",
+      "sha256": "038E74A348F11FB07998519C4E9D1C1156A41B53A5E92C3690C9F19E333F0B0B"
+    },
+    {
+      "path": "NINA.Image/ImageData/ImageStatistics.cs",
+      "blob": "5febf9671f2182023df85338e1c587041c51a737",
+      "sha256": "429743A4EE05FD714692199684ABE7B37CFC49E0F14027AA7A280D94BB68F286"
+    },
+    {
+      "path": "NINA.Image/ImageData/LRGBArrays.cs",
+      "blob": "832c9f18cb73238e63446021c6f6917dce97df4e",
+      "sha256": "5445DBA0B4E046CB4C3ED5C64EDFF4E9EA4AF879B60274FD89749CF1715B025A"
+    },
+    {
+      "path": "NINA.Image/ImageData/RenderedImage.cs",
+      "blob": "46dd749b73f8e19ab41d5870a0269235c66e3e1c",
+      "sha256": "0877A8EBCCD6B808E9E266A270010DAE6522753365DF2BE036671C53C46B4DBE"
+    },
+    {
+      "path": "NINA.Image/ImageData/StarDetectionAnalysis.cs",
+      "blob": "cafe07025f5e7dd4b071d5a3a19461c8df52cbd7",
+      "sha256": "089CC3EC9C93CCC01032827CDAA78EDB3F79D123593F8269DCCFB79939066492"
+    },
+    {
+      "path": "NINA.Image/Interfaces/IDebayeredImage.cs",
+      "blob": "e779ec23658e962fefae2ae9b54f77b2d59dc955",
+      "sha256": "B3E53A1830C7640BEE0E1EE42C7E7C1FD69845BB11450BF8341BDB53E34EDC19"
+    },
+    {
+      "path": "NINA.Image/Interfaces/IExposureData.cs",
+      "blob": "0ad4521fcf6a45b44a6c67eecfa25794819cec02",
+      "sha256": "7EA0378DA1CF043763D108FE6893517C585ECE8D667EFE49F153B84CF85402CC"
+    },
+    {
+      "path": "NINA.Image/Interfaces/IImageArray.cs",
+      "blob": "fff235bc9310dbc3e168a90d21a7be3cf73e965b",
+      "sha256": "9B086D0DA18D4D56236BEA0F250AA6A4A910DFB3E36B2EAFE65D877D80BF2D17"
+    },
+    {
+      "path": "NINA.Image/Interfaces/IImageData.cs",
+      "blob": "798c1c3105a9a4959c428b0ef815396bf7d481d3",
+      "sha256": "4233FD0B3307D748512128B9DD20E1E063867D8A1F2B2C86B7849F5EB2A47B93"
+    },
+    {
+      "path": "NINA.Image/Interfaces/IImageStatistics.cs",
+      "blob": "24cccbeff45d546dc61b64888ce8876eb42e985a",
+      "sha256": "90BB0FE03E6B491066E6E27EFACDA10C81B688B6B3F6A20B22FE3D25786885DD"
+    },
+    {
+      "path": "NINA.Image/Interfaces/IRawConverter.cs",
+      "blob": "e45529e9604e9d9c51869088c60678c611c6399a",
+      "sha256": "E29478B77A579AD46F4C250A889FC8B32E1F1A901D68634124D3C43141E56B5F"
+    },
+    {
+      "path": "NINA.Image/Interfaces/IRenderedImage.cs",
+      "blob": "d7a2f9561fe09a6be4b45a54b251d4deea950661",
+      "sha256": "B80113EF47719A02754C010908E55F196EFCD9CD6B72634B165D5950A8F6486F"
+    },
+    {
+      "path": "NINA.Image/Interfaces/IStarDetectionAnalysis.cs",
+      "blob": "de0ff36ea0526e831532dcd1d80395e9ae2875ad",
+      "sha256": "460BA21C5391EEDBD0A285D90F00B362DDA0EC7E595DABB521241F5D854558C6"
+    },
+    {
+      "path": "NINA.Image/NINA.Image.csproj",
+      "blob": "d815d3c8df23fd53a6df8bc5cf65f036fd26e489",
+      "sha256": "7B024EF3E1AB30AAB1B4B506870E3C43D6DA4636C31FFCF268A0FC4D45DD741C"
+    },
+    {
+      "path": "NINA.Image/Properties/AssemblyInfo.cs",
+      "blob": "acc68e6524a0465c346902dd1aa0afff91276554",
+      "sha256": "146762CEC7A39A06F3C0A69A9B99CBBAC7B01BF91F7BFD3A5F4F4AD42F8B41AD"
+    },
+    {
+      "path": "NINA.Image/RawConverter/LibRawConverter.cs",
+      "blob": "c9d9d8b9fb61565f1338a53cdf2d3f28d2b2e201",
+      "sha256": "D2B821DCE4F51D84BEC91DC483AF15D8AB36EF8386DD6E23278EC67F2C859819"
+    },
+    {
+      "path": "NINA.Image/RawConverter/RawConverterFactory.cs",
+      "blob": "04ee0f2993748d8a29d3c81f0b1110fa8f05b525",
+      "sha256": "08658C28BB35E058B80DD05823D1E2DD43BA06F4A791203250B5F1B9E5121E9A"
+    },
+    {
+      "path": "NINA.Image/Thumbnail.cs",
+      "blob": "54521c8969515cbc6fe38a536dcdab3b8b4374c6",
+      "sha256": "EB956CE92C0F7D45F0B027A675BE6DB56B8A085D63CF968493DA65CBCFD30E4B"
+    }
+  ]
+}

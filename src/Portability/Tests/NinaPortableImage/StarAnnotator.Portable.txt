@@ -1,0 +1,50 @@
+        private Task<BitmapSource> GetAnnotatedImagePortable(StarDetectionParams p, StarDetectionResult result, BitmapSource imageToAnnotate, int maxStars, CancellationToken token) {
+            return Task.Run(() => {
+                using (var background = PortableImageBuffer.Gray8(imageToAnnotate)) {
+                    var visual = new System.Windows.Media.DrawingVisual();
+                    using (var drawing = visual.RenderOpen()) {
+                        drawing.DrawImage(background.ToSource(), new System.Windows.Rect(0, 0, background.Width, background.Height));
+                        var starBoxPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.DarkRed, 1);
+                        var centroidPen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.DarkBlue, 0.5);
+                        var rectanglePen = new System.Windows.Media.Pen(System.Windows.Media.Brushes.LightYellow, 2);
+                        var starList = result.StarList;
+                        if (starList?.Count > 0) {
+                            if (maxStars > 0 && starList.Count > maxStars) {
+                                starList = new List<DetectedStar>(starList);
+                                starList.Sort((item1, item2) => item2.AverageBrightness.CompareTo(item1.AverageBrightness));
+                                starList = starList.GetRange(0, maxStars);
+                            }
+                            foreach (var star in starList) {
+                                token.ThrowIfCancellationRequested();
+                                drawing.DrawRectangle(null, starBoxPen, new System.Windows.Rect(star.BoundingBox.X, star.BoundingBox.Y, star.BoundingBox.Width, star.BoundingBox.Height));
+                                var text = new System.Windows.Media.FormattedText(star.HFR.ToString("##.##"), System.Globalization.CultureInfo.CurrentCulture, System.Windows.FlowDirection.LeftToRight,
+                                    new System.Windows.Media.Typeface("Arial"), 24, System.Windows.Media.Brushes.Yellow, 1);
+                                drawing.DrawText(text, new System.Windows.Point(star.Position.X - 25, star.Position.Y + 15));
+                                var length = (float)star.HFR;
+                                drawing.DrawLine(centroidPen, new System.Windows.Point(star.Position.X - length, star.Position.Y), new System.Windows.Point(star.Position.X + length, star.Position.Y));
+                                drawing.DrawLine(centroidPen, new System.Windows.Point(star.Position.X, star.Position.Y - length), new System.Windows.Point(star.Position.X, star.Position.Y + length));
+                            }
+                        }
+                        if (p.UseROI) {
+                            drawing.DrawRectangle(null, rectanglePen, new System.Windows.Rect((float)(1 - p.InnerCropRatio) * background.Width / 2, (float)(1 - p.InnerCropRatio) * background.Height / 2, (float)p.InnerCropRatio * background.Width, (float)p.InnerCropRatio * background.Height));
+                            if (p.OuterCropRatio < 1) {
+                                drawing.DrawRectangle(null, rectanglePen, new System.Windows.Rect((float)(1 - p.OuterCropRatio) * background.Width / 2, (float)(1 - p.OuterCropRatio) * background.Height / 2, (float)p.OuterCropRatio * background.Width, (float)p.OuterCropRatio * background.Height));
+                            }
+                        }
+                    }
+                    var rendered = new RenderTargetBitmap(background.Width, background.Height, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
+                    rendered.Render(visual);
+                    var pixels = new byte[checked(background.Width * background.Height * 4)];
+                    rendered.CopyPixels(pixels, checked(background.Width * 4), 0);
+                    var bgr = new byte[checked(background.Width * background.Height * 3)];
+                    for (int sourceIndex = 0, destinationIndex = 0; sourceIndex < pixels.Length; sourceIndex += 4, destinationIndex += 3) {
+                        bgr[destinationIndex] = pixels[sourceIndex];
+                        bgr[destinationIndex + 1] = pixels[sourceIndex + 1];
+                        bgr[destinationIndex + 2] = pixels[sourceIndex + 2];
+                    }
+                    var output = BitmapSource.Create(background.Width, background.Height, 96, 96, System.Windows.Media.PixelFormats.Bgr24, null, bgr, checked(background.Width * 3));
+                    output.Freeze();
+                    return (BitmapSource)output;
+                }
+            });
+        }

@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
+    <RollForward>Disable</RollForward>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Reference Include="$(OriginalManagedDirectory)/*.dll" Exclude="$(OriginalManagedDirectory)/NINA.Image.dll;$(OriginalManagedDirectory)/NINA.Core.dll" Private="false" />
+    <Reference Include="$(NinaImagePath);$(NinaCorePath);$(FrameworkRuntimeDirectory)/*.dll" Private="false" />
+    <Reference Include="WindowsBase" HintPath="$(FrameworkRuntimeDirectory)/WindowsBase.dll" Private="true" />
+  </ItemGroup>
+  <Target Name="ValidateImageInputs" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(NinaImagePath)') or !Exists('$(NinaCorePath)') or !Exists('$(FrameworkRuntimeDirectory)/PresentationCore.dll')" Text="The pinned image assembly, Core and coherent WPF runtime are required." />
+  </Target>
+</Project>
