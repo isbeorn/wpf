@@ -103,6 +103,15 @@ internal sealed class NativeWindowFactory(X11Connection connection, X11Screens s
         }
         catch { window.Dispose(); throw; }
     }
+    public WpfRect GetPopupMouseRect(WpfSource owner, bool includeCursor)
+    {
+        connection.VerifyOwner();
+        owner.VerifyAccess();
+        ObjectDisposedException.ThrowIf(owner.IsDisposed, owner);
+        if (!_windows.Any(pair => pair.Value.Source == owner && pair.Value.IsVisible && pair.Key.Handle != 0))
+            throw new InvalidOperationException("Mouse-relative Popup placement requires a live visible native owner.");
+        return X11Cursor.ReadPopupPlacement(connection, includeCursor);
+    }
     public WpfRect GetPopupScreenBounds(WpfSource owner, WpfRect targetBounds, WpfPoint point, bool useWorkArea)
     {
         owner.VerifyAccess();

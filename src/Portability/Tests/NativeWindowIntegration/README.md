@@ -19,6 +19,7 @@ pixel DPI round trips. The existing watchdog and private-display rules apply.
 | `--wm-only` | Real EWMH state/restore in both directions, pending geometry, state/DPI callback close and unrelated subsequent frames. Requires a real WM. |
 | `--window-presentation-only` | Decorations, topmost and transparent pixels, resize, capture, Hide/Show and owner closure. |
 | `--popup-only` | Genuine Classic ComboBox template, separate PopupRoot source, native mouse selection/dismissal, paired Enter/Escape/Tab/Shift+Tab, owner native focus, real grabs, movement, lifecycle and callback reentry. |
+| `--mouse-placement-only` | Natural default ToolTip hover, native departure and reopen; Mouse/MousePoint anchors, cursor hotspots, both motion directions and four screen corners. Repeat with `--chrome-dpi=192`. |
 | `--popup-placement-only` | Native edge nudging and content-height restriction. Startup scaling comes from native DPI policy/settings. |
 | `--popup-reconciliation-only` | Real release over owner/popup/unrelated/root, queued reconciliation, recapture and unmap cleanup. |
 | `--popup-alpha-only` | Both StaysOpen values, premultiplied ARGB32 storage, foreign-grab rejection and retry. |
@@ -48,6 +49,15 @@ dotnet build Tests/NativeWindowIntegration/NativeWindowIntegration.csproj -c Rel
 Existing Tmds.DBus.Protocol is now a direct test reference after removal of the former transitive dependency. No test framework is added. Linux requires Xlib, XInput2, XTest, XFixes, RandR, GLib/GIO, libxkbcommon, fonts and the existing Skia/HarfBuzz native assets. Pass `--font=<absolute pinned DejaVuSans.ttf>` for editor modes. Portal/AT-SPI modes require owned buses and their WPF_FILE_DIALOG_PRIVATE_BUS=1/WPF_ATSPI_PRIVATE_BUS=1 guards. Never attach the protocol-only portal to a live desktop bus.
 
 Each mode requires passing JSON, completion, zero process exit and cleanup. The default watchdog is 40 seconds. Keep exact source/binary/PDB and display/WM scope with results. Prior backend proofs remain historical. Fresh package consumers, GNOME X11, GNOME XWayland, composited ARGB appearance, actual picker UI and Orca are separate qualification gates.
+
+Mouse placement reads one XFixes cursor image snapshot for physical screen
+position, occupied alpha extent and hotspot. MousePoint uses the pointer itself;
+Mouse clears the occupied cursor bottom using the existing WPF pixel margins.
+The existing popup placement algorithm retains DPI conversion, work area
+restriction and screen edge nudging. Private Xvfb/Openbox verification passed
+all 59 checks: five mouse-placement checks at each of 96 and 192 DPI plus the
+existing 49 tooltip, popup and window checks. Actual NINA input and physical
+desktop qualification remain separate.
 
 `--message-box-only` exercises the private managed MessageBox through public overloads. It uses actual XTest Enter/Escape/button input, all seven button sets and native close, owner-only modality/focus, repeated and concurrent ownerless calls while the original UI is blocked, exact offhost exception identity and post-failure recovery. The controller resolves concurrent dialog handles before dispatching close input, then joins before another case starts. This qualifies owned private-X11 software input, not physical input or the earlier incomplete Windows stock seven-set calibration.
 

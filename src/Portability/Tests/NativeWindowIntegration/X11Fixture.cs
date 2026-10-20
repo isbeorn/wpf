@@ -288,6 +288,29 @@ internal sealed class X11Fixture : IDisposable
         return result == 0;
     }
 
+    internal (int X, int Y, int Right, int Bottom) CursorPlacementBounds()
+    {
+        IntPtr memory = XFixesGetCursorImage(_display);
+        if (memory == IntPtr.Zero) throw new InvalidOperationException("XFixesGetCursorImage returned no native image.");
+        try
+        {
+            var image = Marshal.PtrToStructure<NativeCursorImage>(memory);
+            int count = checked(image.Width * image.Height);
+            if (count <= 0 || count > 1048576 || image.Pixels == IntPtr.Zero || image.XHot >= image.Width || image.YHot >= image.Height)
+                throw new InvalidOperationException("The native cursor image layout is invalid.");
+            int right = -1, bottom = -1;
+            for (int index = 0; index < count; index++)
+            {
+                ulong pixel = unchecked((ulong)Marshal.ReadIntPtr(image.Pixels, checked(index * IntPtr.Size)).ToInt64());
+                if ((pixel & 0xff000000) == 0) continue;
+                right = Math.Max(right, index % image.Width);
+                bottom = Math.Max(bottom, index / image.Width);
+            }
+            return (image.X, image.Y, image.X + right - image.XHot, image.Y + bottom - image.YHot);
+        }
+        finally { XFree(memory); }
+    }
+
     internal (bool Visible, ulong Fingerprint) CursorImage()
     {
         IntPtr memory = XFixesGetCursorImage(_display);

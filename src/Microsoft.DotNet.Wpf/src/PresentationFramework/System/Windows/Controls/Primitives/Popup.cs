@@ -2732,6 +2732,9 @@ namespace System.Windows.Controls.Primitives
 
         private Rect GetMouseRect(PlacementMode placement)
         {
+#if PORTABLE_WPF
+            return _secHelper.GetMouseRect(GetTarget(), placement == PlacementMode.Mouse);
+#else
             NativeMethods.POINT mousePoint = _secHelper.GetMouseCursorPos(GetTarget());
 
             if (placement == PlacementMode.Mouse)
@@ -2748,6 +2751,7 @@ namespace System.Windows.Controls.Primitives
                 // In MousePoint mode, the mouse position is the target
                 return new Rect(mousePoint.x, mousePoint.y, 0, 0);
             }
+#endif
         }
 
         /// <summary>
@@ -2996,9 +3000,12 @@ namespace System.Windows.Controls.Primitives
                 var provider = source?.GetInputProvider(typeof(MouseDevice)) as MS.Internal.Portability.Input.PortableInputProvider;
                 return provider?.ClientToScreen(clientPoint) ?? throw new PlatformNotSupportedException("Popup placement requires an attached portable input source.");
             }
-            internal NativeMethods.POINT GetMouseCursorPos(Visual targetVisual)
+            internal Rect GetMouseRect(Visual targetVisual, bool includeCursor)
             {
-                throw new PlatformNotSupportedException("Mouse-relative portable Popup placement is not qualified.");
+                PresentationSource source = GetPresentationSource(targetVisual) ?? _owner;
+                if (source == null)
+                    throw new PlatformNotSupportedException("Mouse-relative Popup placement requires an attached portable owner.");
+                return MS.Internal.Portability.Windowing.PortableWindowPlatform.Factory.GetPopupMouseRect(source, includeCursor);
             }
             internal void SetPopupPos(bool position, int x, int y, bool size, int width, int height)
             {

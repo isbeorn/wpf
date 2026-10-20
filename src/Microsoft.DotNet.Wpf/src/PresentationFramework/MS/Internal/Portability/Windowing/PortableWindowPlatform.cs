@@ -96,6 +96,8 @@ namespace MS.Internal.Portability.Windowing
             throw new PlatformNotSupportedException("The registered backend does not support native Popups.");
         Rect GetPopupScreenBounds(PresentationSource owner, Rect targetBounds, Point targetPoint, bool useWorkArea) =>
             throw new PlatformNotSupportedException("The registered backend does not supply Popup screen bounds.");
+        Rect GetPopupMouseRect(PresentationSource owner, bool includeCursor) =>
+            throw new PlatformNotSupportedException("The registered backend does not supply Popup mouse placement.");
     }
 
     internal static class PortableWindowPlatform

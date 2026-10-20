@@ -124,6 +124,12 @@ try
                     WindowPresentationCases.Exercise(native, Run, Wait, Drain);
                     completed = true;
                 }
+                else if (args.Contains("--mouse-placement-only", StringComparer.Ordinal))
+                {
+                    Require(fontPath is not null && File.Exists(fontPath), "Pass the pinned font path.");
+                    MousePopupCases.Exercise(native, Run, Wait, Drain, fontPath!, chromeRequestedDpi);
+                    completed = true;
+                }
                 else if (args.Contains("--tooltip-only", StringComparer.Ordinal))
                 {
                     Require(fontPath is not null && File.Exists(fontPath), "Pass the pinned font path.");

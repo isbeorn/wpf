@@ -2,6 +2,7 @@ extern alias WpfFork;
 
 using System.Runtime.InteropServices;
 using WpfCursor = WpfFork::System.Windows.Input.Cursor;
+using WpfRect = WpfFork::System.Windows.Rect;
 
 namespace Wpf.Portable.NativeHost.Linux;
 
@@ -11,6 +12,34 @@ internal sealed class X11Cursor(X11Window window) : IDisposable
     private string _shape = "left_ptr";
     private bool _visible = true;
     private bool _disposed;
+
+    internal static WpfRect ReadPopupPlacement(X11Connection connection, bool includeCursor)
+    {
+        connection.VerifyOwner();
+        nint memory = XFixesGetCursorImage(connection.Display);
+        if (memory == 0) throw new InvalidOperationException("XFixesGetCursorImage returned no native cursor image.");
+        try
+        {
+            var image = Marshal.PtrToStructure<CursorImage>(memory);
+            int count = checked(image.Width * image.Height);
+            if (count <= 0 || count > 1048576 || image.Pixels == 0 || image.XHot >= image.Width || image.YHot >= image.Height)
+                throw new InvalidOperationException("The native cursor image layout is invalid.");
+            if (!includeCursor) return new WpfRect(image.X, image.Y, 0, 0);
+
+            int right = -1, bottom = -1;
+            for (int index = 0; index < count; index++)
+            {
+                nuint pixel = unchecked((nuint)Marshal.ReadIntPtr(image.Pixels, checked(index * IntPtr.Size)));
+                if ((pixel & 0xff000000) == 0) continue;
+                right = Math.Max(right, index % image.Width);
+                bottom = Math.Max(bottom, index / image.Width);
+            }
+            return bottom < 0
+                ? new WpfRect(image.X, image.Y - 1, 0, 2)
+                : new WpfRect(image.X, image.Y - 1, Math.Max(0, right + 1 - image.XHot), Math.Max(0, bottom + 3 - image.YHot));
+        }
+        finally { X11Native.XFree(memory); }
+    }
 
     internal bool SetCursor(WpfCursor cursor)
     {
@@ -72,6 +101,10 @@ internal sealed class X11Cursor(X11Window window) : IDisposable
         _cursors.Clear();
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    private struct CursorImage
+    { internal short X, Y; internal ushort Width, Height, XHot, YHot; internal nuint Serial; internal nint Pixels; internal nuint Atom; internal nint Name; }
+    [DllImport("libXfixes.so.3")] private static extern nint XFixesGetCursorImage(nint display);
     [StructLayout(LayoutKind.Sequential)]
     private struct XColor { internal nuint Pixel; internal ushort Red, Green, Blue; internal byte Flags, Pad; }
     [DllImport("libXcursor.so.1")] private static extern nuint XcursorLibraryLoadCursor(nint display, [MarshalAs(UnmanagedType.LPUTF8Str)] string name);
