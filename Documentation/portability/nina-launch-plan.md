@@ -8,12 +8,14 @@ Everything remains local on `codex/nina-cross-platform`.
 
 ## Active checkpoint
 
-The latest 52E/549D runtime has completed native simulator capture, cancellation,
-recovery and clean close/relaunch. Offline Framing loads, zooms and pans. The
-application is now closed after a rounded dashed Slider focus visual exposed a
-new hit-test bounds rejection. A hidden floating pane also changes its saved
-Top by one caption height. Those two WPF repairs precede the remaining Framing
-and sequence checks. The detailed receipts and final restart baseline follow.
+The latest 9A/9D runtime now passes actual hidden-pane save/relaunch and Framing
+rotation, mosaic and overlap changes. The earlier 52E/549D runtime completed
+native simulator capture, cancellation, recovery and clean close/relaunch.
+The application is now closed normally after the original sequence Add button
+exposed the next WPF gap: its programmatic ContextMenu has no PlacementTarget,
+which portable Popup rejects. Preserve that genuine targetless opening behavior;
+do not patch NINA's template with an invented anchor. Sequence editing/execution
+and actual drag remain pending. The detailed receipts and restart baseline follow.
 
 The complete original simulator-only application now completes a native
 1-second capture, a 10-second capture cancellation and a subsequent recovery
@@ -123,8 +125,9 @@ The current behavior checklist is:
   and through the existing native window tests.
 - [x] Publish one complete framework family with the unchanged NINA components.
 - [x] Preserve Statistics outer height 800 across native close and relaunch.
-- [ ] Preserve floating-window position after hiding its page and saving.
-- [ ] Operate the actual offline Framing map and its input controls.
+- [x] Preserve floating-window position after hiding its page and saving.
+- [x] Operate the actual offline Framing map and its input controls.
+- [ ] Open the original unanchored sequence ContextMenu through its Click animation.
 - [ ] Add and edit sequence instructions, complete a sequence, cancel a running
   sequence and complete it again after reset.
 - [ ] Complete and cancel the original sequence drag operation with its blur.
@@ -241,8 +244,65 @@ retains the old-Core precompute failure before filtering the non-hit-testable
 focus visual. Native and candidate Windows focused checks pass 7/7 and Windows
 Geometry passes 689/689. Two exact alpha-1 antialiasing fringe cells are recorded
 as optional raster witnesses; all other occupied cells remain strictly checked.
-Linux and combined-family qualification remain pending. Neither repair has yet
-been replayed in the actual application.
+The rounded-focus repair is committed as `723e5860a` and hidden placement as
+`c898bed42`. Both OSes pass Geometry 7 focused/689 full, Rendering 75, guideline
+dashes 48 and isolated lifecycle 104. The latter is focused 14, full 89 and empty
+window 1, including repeated coverage. Native frame controls pass five checks at
+96 DPI and five at 192 DPI with complete private Xvfb/Openbox cleanup. Windows
+Geometry reuses the reviewed successor entry against the identical ordinary Core;
+it was not repeated solely to produce another copy of the same result.
+
+The new ordinary Stage has 120 files and 591,035,032 bytes, manifest SHA-256
+`9A69056C7CC061303A7F164F37BF795AB98BEABE24E331C2842CAF8AA8C92109`.
+Only Core/PF and the Stage wrapper's DLL/PDB pairs change. The intake is
+`current/nina-rounded-focus-hidden-position-integration-20261021-1/consumer-intake.json`,
+SHA-256 `3804F2EBC6A364383B08904F35FEE31CD5A574619C480D0718B45030112C8944`.
+Root independently verified all 120 members and 37 nested intake pins. All 882
+protected records remain unchanged. Ordinary runtime and isolated friend test
+assemblies remain separate. The two author lanes plus integration retain
+2,002,176,068 bytes, below their combined 2 GiB cap.
+
+The initial missing-native-search-path and generated-obj-glob runner failures
+are preserved separately from product behavior. Corrected small leaves reuse
+the existing native assets and output-routing props. Both PF builds retain the
+parent's 26 warnings with zero errors; ordinary Core, Stage and final external
+leaves have zero warnings/errors. No new dependency or harness was added.
+
+The actual replay used the fresh whole publication under
+`current/nina/vm-focus-position-ui-20261021-1`, 329 files and 684,233,094 bytes.
+Manifest SHA-256 is
+`9D067830319C42AC1D503B32E6D2CA3F22BC0521E1D989B0534DF12883E39CCC`
+and composition SHA-256 is
+`7A5E59FED63655AAB39774DCDDC34FD543BA06A76D4E158286609847B22751A4`.
+Root verified all 329 members. All eight NINA components remain unchanged.
+
+On real GNOME, normal close while Imaging was hidden saved Statistics at exactly
+1370x800 and 1074,516. A second lifetime restored client 1370x763 at 1074,553
+plus the observed 37-pixel caption, giving the same outer dimensions/position.
+The original Framing SKYATLAS loaded its local catalog and overlays. Rotation
+30 -> 0, mosaic 1x1 -> 2x1 -> 2x2 -> 2x1 -> 1x1 and overlap 20% -> 25% -> 20%
+visibly update and restore. Root inspected both focused-30 and restored-zero
+screenshots. No camera connection or exposure was submitted in these lifetimes.
+
+The next original sequence Add button stopped at
+`A portable Popup requires an attached placement target`, wrapped by the original
+BooleanAnimation error reporting. Its style-set ContextMenu has no target and
+opens directly through a zero-time Click storyboard, bypassing the context-menu
+service that ordinarily assigns one. Existing anchored popup tests cannot cover
+this path. No item insertion, sequence run or custom drag is claimed.
+
+The observed original No button completed normal shutdown: exit zero, empty
+stderr, original layout/equipment/profile/NOVAS/plugin teardown and all 327
+immutable members unchanged. Both processes and supervisors are absent. The
+sealed replay is `current/nina/vm-focus-position-ui-20261021-1/replay-handoff.json`,
+SHA-256 `CCFAE8237BDA6A63B205436AA74122E3FF3614FEFA1A4896FF2D1FB25F29A62A`.
+Latest guest state is `after-no-pointer-20261021-1` under
+`/home/stefan/wpf-portability-local/phase5/nina-shell-focus-position-20261021-1`.
+Its profile SHA-256 is
+`B0DBB6712C6F623012AF40FD851CAD7C74EAD41926396714184085E7F8E853F6`
+and dock SHA-256 is
+`0C565FAC8A94E619BE71A229672AC56B22E2FDB7A3254CDE765E39D83AEA3136`.
+Statistics remains 1370x800 at 1074,516 even after later hidden-page saves.
 
 One failed helper returned before keyboard input, but its caller still submitted
 a queued mosaic click. That driver failure is retained without a mosaic claim.
@@ -319,6 +379,24 @@ platform separators alone do not turn those into nested date/type directories.
 Include this actual default-pattern case rather than hiding the gap with a
 simple temporary pattern. These are required NINA file-I/O gates, separate from
 the already-passing prepared-frame display and capture-only workflows.
+
+The filename-pattern correction is committed as `ae0644dbe`: normalize template
+backslashes before macro substitution, leaving native sanitization and custom
+token values intact. The old Core fails seven of 15 Linux cases while Windows
+passes all 15. The new source-proven Core passes 15 pattern and 13 existing URI
+checks on each OS. Its PE is
+`422502A5902374CAD7D6CF661B085FD47F777C4BB54E9CD2C1A618C084BA78F4`.
+The existing generated Core project was built alone; no Astrometry/App rebuild
+or new harness was needed. Actual App saving still awaits integration.
+
+Commit `b09c297eb` adds Linux startup-only opt-in WPF diagnostics through
+`WPF_NINA_PORTABLE_DIAGNOSTICS=1`. Standard Warning trace sources and one shared
+flushed stderr listener run after NativeHost initialization and before App.Main.
+Default and Windows startup are unchanged. The existing view fixture links the
+actual entry; enabled and disabled runs pass five checks each, including genuine
+binding/resource errors, recovery and source cleanup. Self-review and independent
+maintainability/test-value review are clear. A final installed App build/replay
+remains pending; the small leaf does not execute App.Main.
 
 The sections below retain earlier attempts and their original limitations.
 
