@@ -1439,11 +1439,10 @@ XWayland, not Xorg. The installed login choices include Ubuntu on Xorg; switchin
 requires coordinating a normal logout/login with the user after closing NINA.
 Native IME and further Orca work remain explicitly deferred.
 
-Actual desktop clipboard exchange and exact Open/Save accept/cancel outcomes
-remain separate gates. The retained private fixtures pass clipboard nine and
-portal 31 checks, but historical human picker runs selected different files or
-accepted an intended Cancel. Do not count those as strict outcome passes. Use
-the original NINA sequence Save As/Open paths for the next bounded desktop run.
+Actual desktop clipboard exchange and the original sequence Open/Save
+accept/cancel outcomes now pass as recorded in the current checkpoint above.
+Historical human picker attempts retain their original limitations and are not
+used as strict outcome evidence.
 
 The resource ledger still has no accepted shell memory, native-allocation or
 thread-growth budgets. The proposed overnight workload uses the original
@@ -1480,11 +1479,34 @@ exit propagation, wrapper-only launch failure, surviving owned group members,
 interrupted exits and exclusion of unrelated groups. Independent review closed
 the supported cleanup and exit-classification findings. The observer retains
 the direct wrapper until group cleanup completes and reports an App exit only
-after actual App discovery without observer interruption. The installed App and
-profiler have not run through this observer. It requires a separately released,
-normally closed prior lifetime, exact state carry and refreshed guest/tool
-facts. Its summary-only output cannot establish end-live allocation bytes,
-native-memory totals or overnight stability.
+after actual App discovery without observer interruption. The installed App
+subsequently ran once through this observer after normal shutdown and exact
+state carry. It aborted after 3.64 seconds with `free(): invalid size`, before
+mapping MainWindow or producing an allocation summary. The wrapper propagated
+exit 134. No timeout signal was sent and all owned processes were absent
+afterward. The native stack reaches `libHarfBuzzSharp.so` from libc free; this
+identifies a call site without proving an allocator cause. The failed
+observation is sealed in
+`current/nina/overnight-preparation-20261021-1/memusage-app-final5-1-execution/FAILED-OBSERVATION-HANDOFF.json`,
+SHA-256 `4CEA04C2B719A4F9742F74375E36FC3AA61EFC67A863E4B77C5C8D8ED8CDB551`.
+Root verified all 32 evidence pins. The system retained a 30,327,613-byte,
+root-owned crash dump, exceeding the probe's 15 MiB guest observation cap. Its
+identity and size are recorded; it was neither copied nor deleted.
+
+A matched ordinary launch of the same final5 installation and postfailure
+profile/layout passed without preload. Its original Camera view rendered at
+2490x1573, then the original window-close protocol produced exit zero after
+35 seconds, with empty stderr and normal application, camera and plugin
+shutdown. No capture command ran. All 317 immutable installation files, prior
+logs, 15 external files, both FITS files and the absolute Framing cache remained
+unchanged. Root verified the native captures and all 20 evidence pins in
+`current/nina/overnight-preparation-20261021-1/ordinary-no-preload-control-1-execution/ORDINARY-CONTROL-HANDOFF.json`,
+SHA-256 `49A78E6E2133A094D964CEDDAE908358C9151047BA58817AEBE0BEB1DA152F82`.
+This implicates instrumentation or its changed startup environment; it does not
+establish the specific allocator incompatibility. No profiler retry, allocation
+result or overnight pass is claimed. The next closed profile is
+`1A480EBB5D081941A1D08B1EECA1FFB7D8BE6F71313FB39C6BF87926DFF07121`;
+the dock remains `B6FE0E452C5A210B34E08AF44D9A42A4B2DCB7158719C2D9896FA8E5F8F598DB`.
 
 The sections below retain earlier attempts and their original limitations.
 
