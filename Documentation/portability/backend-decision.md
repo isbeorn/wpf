@@ -76,7 +76,14 @@ user32 failure is secondary. No usable Window is observed; owned cleanup is
 verified afterward. This preserves the first failed startup as historical
 evidence; the later checkpoint below records the subsequent source changes.
 
-### Current NINA startup boundary: 20 October 2026
+### Historical NINA startup boundary: 20 October 2026
+
+The [21 October application checkpoint](nina-launch-plan.md#active-checkpoint)
+supersedes this startup boundary. The original App/MainWindow now runs on the
+owned Linux backend, captures simulator images and executes a short advanced
+sequence. The user subsequently prioritized NINA.Image and required application
+components, superseding the earlier deferral recorded below. Final package,
+desktop and sustained-session qualification remain open.
 
 The [integration-1 application attempt](../../artifacts/portability/current/nina/shell-integration-1/first-run-handoff.json)
 uses the complete released owned runtime and the original offline simulator

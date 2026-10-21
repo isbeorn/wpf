@@ -40,8 +40,23 @@ under `current/nina/vm-sequence-fits-ui-20261021-1`. Root rehashed every member.
 The whole guest publication and native linkage verify, and the original App
 has launched once on GNOME/XWayland with diagnostics off and the saved state.
 Its actual Add menu now opens without the former animation/popup exception;
-root inspected startup and menu pixels. Native sequence interaction is still in
-progress. There is no sequence execution, drag or saved-capture claim yet.
+root inspected startup and menu pixels. The original menu has inserted a real
+Sequential Instruction Set. Native controls added and edited two annotations and
+a one-second wait, duplicated/deleted a spare item and moved an item down and
+back up. The original Play command completed all three items in order. A later
+60-second wait was observed running, then stopped before the final annotation.
+Reset/restart then exposed a new first fault: after Wait1 finished, its status
+notification contended on the weak-event read lock. The private
+`ReaderWriterLockWrapper.NonPumpingSynchronizationContext.Wait` entered
+`kernel32.dll` and threw DllNotFoundException on Linux. NINA's original
+ContinueOnError ran the final annotation, leaving the wait failed; this is not a
+successful restart. Further UI input is held while the raw exception and state
+are preserved. Genuine custom drag and saved capture remain pending. Raw
+observations are in the same run directory, including
+`sequence-first-run-observe.json` and `sequence-cancel-observe.json`.
+The restart record is `sequence-restart-observe.json`; its filtered log omits
+some exception frames. The complete `sequence-restart-original.log` is retained,
+SHA-256 `F69710939B3BC0819F9F4D9AC11A4E78DF94CB8BA349244201CE331F193FE074`.
 
 The complete original simulator-only application now completes a native
 1-second capture, a 10-second capture cancellation and a subsequent recovery
@@ -153,7 +168,7 @@ The current behavior checklist is:
 - [x] Preserve Statistics outer height 800 across native close and relaunch.
 - [x] Preserve floating-window position after hiding its page and saving.
 - [x] Operate the actual offline Framing map and its input controls.
-- [ ] Open the original unanchored sequence ContextMenu through its Click animation.
+- [x] Open the original unanchored sequence ContextMenu through its Click animation.
 - [ ] Add and edit sequence instructions, complete a sequence, cancel a running
   sequence and complete it again after reset.
 - [ ] Complete and cancel the original sequence drag operation with its blur.
@@ -453,8 +468,30 @@ tests the actual entry's diagnostics helper and does not execute App.Main.
 
 ## Remaining Phase 5 execution evidence
 
-Final packages, actual Xorg desktop qualification and the sustained original
-simulator session remain open. The current guest session is GNOME Wayland with
+Fresh candidate packages now build through the ordinary producer at source
+`5967f51cb`. The Runtime package is
+`D164CE8942B6DD96BD841AC29F496DFAC263BA87081984A4934765D4518AACB6`
+and SDK package is
+`6AEF82281C5E34CB30A1EA1D0F303DE720C1EB1A093D2F1E9B3F61F31CD6766D`.
+The producer exits zero with 27 warnings and no errors or stderr. All four
+archive audits pass. Its actual 18 producer/compiler PE/PDB pairs have 4,289
+matching source-document records. These are new producer outputs, not byte
+copies of the earlier Stage. The sealed handoff is
+`current/final-distribution-20261021-1-proof/handoff.json`, SHA-256
+`FBA8B33D5154D91981EC683C81B73CCBF0DADBEFFF4DB071A0555F496C592B96`.
+Root independently rehashed its 22 receipt pins and all 199 immutable payload
+members. The original producer audit is preserved before consumer execution.
+The Windows consumer passes 37 checks, conflicts pass eight and runtime policy
+passes 14. Clean Linux consumers and both compiler-origin complete-view checks
+remain in progress. The guest's initial readiness check found no Xvfb before
+any restore/build/native run; a bounded official Ubuntu prerequisite extraction
+is being prepared without a system installation or change to the live desktop.
+Package production alone does not pass those gates or qualify the current
+Stage-based NINA publication on the final package boundary. The newly exposed
+weak-event wait defect requires a source successor before a final release claim.
+
+Final package execution, actual Xorg desktop qualification and the sustained
+original simulator session remain open. The current guest session is GNOME Wayland with
 XWayland, not Xorg. The installed login choices include Ubuntu on Xorg; switching
 requires coordinating a normal logout/login with the user after closing NINA.
 Native IME and further Orca work remain explicitly deferred.
@@ -474,6 +511,16 @@ traffic, tool-reported peak, process RSS/PSS and end-live bytes are distinct;
 the probe does not establish the latter, an overnight budget or whole-App
 compatibility. The unchanged fixture's small generated-file location exception
 is recorded, with released consumers and pinned inputs unchanged.
+
+A bounded read-only process sampler now extends the existing health reader.
+Its five one-second validation samples checked the same PID, start time, UID,
+executable, arguments and working directory before and after each sample.
+All 19 offline controls and the single live smoke pass, with exit zero, empty
+stderr and no app signals or input. The sealed packet is
+`current/nina/overnight-preparation-20261021-1/sampling-1/handoff.json`, SHA-256
+`0A8FE915E41FD30EED7BC3F99E296586D7B3DFBF8EA58E42F67C2FE86CEB4D4A`.
+This qualifies the sampler only. Its samples overlap sequence interaction and
+are neither idle baseline nor sustained-workload measurements.
 
 The sections below retain earlier attempts and their original limitations.
 
