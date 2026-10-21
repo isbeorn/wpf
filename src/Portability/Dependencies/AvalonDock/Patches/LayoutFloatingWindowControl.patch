@@ -85,7 +85,7 @@
  		}
  
  		/// <summary>
-@@ -574,7 +604,30 @@
+@@ -574,7 +604,43 @@
  		{
  			if (!(sender is LayoutFloatingWindowControl lfwc)) return null;
  			if (lfwc.IsLoaded && lfwc.IsContentImmutable) return lfwc.Content;
@@ -103,6 +103,19 @@
 +#endif
 +		}
 +
++#if PORTABLE_AVALONDOCK
++		protected internal override DependencyObject GetUIParentCore()
++		{
++			var source = PresentationSource.FromVisual(this);
++			if (source != null && !source.IsDisposed && _model?.Root?.Manager is DockingManager manager
++				&& manager.Dispatcher == Dispatcher && manager.FloatingWindows.Contains(this)
++				&& PresentationSource.FromVisual(manager) is PresentationSource managerSource && !managerSource.IsDisposed
++				&& !ReferenceEquals(source, managerSource))
++				return manager;
++			return base.GetUIParentCore();
++		}
++#endif
++
 +		internal Visual ContentRootVisual
 +		{
 +			get
@@ -116,7 +129,7 @@
  		}
  
  		private void OnLoaded(object sender, RoutedEventArgs e)
-@@ -584,12 +637,19 @@
+@@ -584,12 +650,19 @@
  			this.UpdateOwnership();
  			ApplyResizeBorderThickness();
  
@@ -136,7 +149,7 @@
  		}
  
  		internal void UpdateOwnership()
-@@ -627,6 +687,14 @@
+@@ -627,6 +700,14 @@
  		protected override void OnPreviewKeyDown(KeyEventArgs e)
  		{
  			base.OnPreviewKeyDown(e);
@@ -151,7 +164,7 @@
  			var manager = Model?.Root?.Manager;
  			if (manager == null || !manager.AllowMovingFloatingWindowWithKeyboard)
  			{
-@@ -657,10 +725,136 @@
+@@ -657,10 +738,136 @@
  		private void OnUnloaded(object sender, RoutedEventArgs e)
  		{
  			Unloaded -= OnUnloaded;

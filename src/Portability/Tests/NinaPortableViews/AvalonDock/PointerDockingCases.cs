@@ -29,6 +29,16 @@ internal static partial class DockingProgram
             Check("pointer-maximized-caption-restores-and-next-drop", () => MaximizedCaption(native, manager, image));
             return;
         }
+        if (Environment.GetEnvironmentVariable("NINA_FLOATING_TAB_HEADERS_ONLY") == "1")
+        {
+            ((LayoutAnchorablePane)graph.Parent).Children.Remove(graph);
+            ((LayoutAnchorablePane)image.Parent).Children.Add(graph);
+            manager.Layout.CollectGarbage(); Settle();
+            Check("pointer-original-NINA-floating-tab-titles-and-manager-route", () => FloatingTabHeaders(native, manager, image));
+            Check("pointer-original-NINA-floating-tab-canceled-close", () => CanceledCloseAndRecovery(native, manager, image, true));
+            Check("pointer-original-NINA-floating-tab-current-manager", () => FloatingTabCurrentManager(native, manager, image));
+            return;
+        }
         var recoveryOnly = Environment.GetEnvironmentVariable("NINA_POINTER_RECOVERY_ONLY");
         if (recoveryOnly is "1" or "2")
         {
@@ -114,7 +124,7 @@ internal static partial class DockingProgram
         Check("pointer-capture-transfer-and-next-drag", () => CaptureTransferAndRecovery(native, manager, image));
     }
 
-    private static void CanceledCloseAndRecovery(X11Fixture native, DockingManager manager, LayoutAnchorable pane)
+    private static void CanceledCloseAndRecovery(X11Fixture native, DockingManager manager, LayoutAnchorable pane, bool verifyHeaders = false)
     {
         LayoutFloatingWindowControl? floating = null;
         MouseButtonEventHandler? observePress = null;
@@ -157,6 +167,16 @@ internal static partial class DockingProgram
                 xid = xid.ToInt64(), bounds.X, bounds.Y, bounds.Width, bounds.Height,
                 floating.IsVisible, floating.IsActive, nativeFocus = native.FocusedWindow.ToInt64(),
                 originalClosingFlag = Field(floating, "_isClosing"), contents = contents.Select(item => item.ContentId).ToArray() });
+            if (verifyHeaders)
+            {
+                VerifyTabHeaders(floating, manager, "canceled-close-original-tab-headers");
+                Require(ReferenceEquals(FloatingUIParent(floating), manager), "Canceled close lost the live manager bridge.");
+                floating.Hide(); Settle();
+                Require(!native.IsMapped(xid) && ReferenceEquals(PresentationSource.FromVisual(floating), source)
+                    && ReferenceEquals(FloatingUIParent(floating), manager), "Hide lost the retained source or manager bridge.");
+                floating.Show(); Settle(); PointerWait(() => native.IsMapped(xid), "The hidden original floating source did not remap.");
+                VerifyTabHeaders(floating, manager, "reshown-original-tab-headers"); VerifyFloatingManagerRoute(native, manager, floating);
+            }
             pane.CanHide = canHide;
             observePress = (_, args) => presses.Add(new { stage = "native-canceled-close-recovery-press", args.ClickCount,
                 args.Timestamp, args.Handled, originalSource = args.OriginalSource?.GetType().FullName,
@@ -166,6 +186,7 @@ internal static partial class DockingProgram
             PointerDrop(native, manager, pane, "Right", 64);
             Require(presses.Count == 1 && closing == 2 && closed == 1,
                 "Canceled-close recovery did not deliver one native press and one subsequent accepted drop close.");
+            if (verifyHeaders) Require(FloatingUIParent(floating) == null, "Accepted close retained the manager bridge.");
         }
         finally
         {
@@ -327,6 +348,106 @@ internal static partial class DockingProgram
             if (floating is not null) floating.RemoveHandler(Mouse.PreviewMouseDownEvent, observe);
             native.Button(1, false); Mouse.Capture(null);
         }
+    }
+
+    private static void VerifyTabHeaders(DependencyObject root, DockingManager manager, string stage)
+    {
+        var tabs = VisualDescendants(root).OfType<LayoutAnchorableTabItem>().Where(tab => tab.IsVisible).ToArray();
+        Require(tabs.Length == 2, "The original two-tab header probe did not realize both tabs.");
+        var values = tabs.Select(tab =>
+        {
+            var presenter = VisualDescendants(tab).OfType<ContentPresenter>().Single(item => ReferenceEquals(item.Content, tab.Model));
+            var texts = VisualDescendants(presenter).OfType<TextBlock>().Select(block => block.Text).ToArray();
+            var binding = BindingOperations.GetBindingExpression(presenter, ContentPresenter.ContentTemplateProperty);
+            return new { tab.Model.ContentId, tab.Model.Title, texts, templateMatches = ReferenceEquals(presenter.ContentTemplate, manager.AnchorableHeaderTemplate),
+                bindingStatus = binding?.Status.ToString(), managerMatches = ReferenceEquals(binding?.DataItem, manager), tab.ActualWidth, tab.ActualHeight };
+        }).ToArray();
+        Observations.Add(new { stage, values });
+        Require(values.All(value => value.templateMatches && value.managerMatches && value.texts.Contains(value.Title)),
+            "Original NINA tabs did not render their model Titles through their actual manager header template.");
+    }
+
+    private static object? FloatingUIParent(LayoutFloatingWindowControl floating) =>
+        typeof(LayoutFloatingWindowControl).GetMethod("GetUIParentCore", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(floating, null);
+
+    private static void VerifyFloatingManagerRoute(X11Fixture native, DockingManager manager, LayoutFloatingWindowControl floating, DockingManager? stale = null)
+    {
+        var tab = VisualDescendants(floating).OfType<LayoutAnchorableTabItem>().First(item => item.IsVisible);
+        int presses = 0, commands = 0, staleCalls = 0;
+        MouseButtonEventHandler press = (_, _) => presses++;
+        MouseButtonEventHandler stalePress = (_, _) => staleCalls++;
+        var command = new RoutedCommand("FloatingManagerRoute", typeof(DockingProgram));
+        var binding = new CommandBinding(command, (_, args) => { commands++; args.Handled = true; });
+        var staleBinding = new CommandBinding(command, (_, args) => { staleCalls++; args.Handled = true; });
+        manager.AddHandler(Mouse.PreviewMouseDownEvent, press, true); manager.CommandBindings.Add(binding);
+        stale?.AddHandler(Mouse.PreviewMouseDownEvent, stalePress, true); stale?.CommandBindings.Add(staleBinding);
+        try
+        {
+            command.Execute(null, tab);
+            var point = tab.PointToScreen(new Point(tab.ActualWidth / 2, tab.ActualHeight / 2));
+            native.MovePointer((int)Math.Round(point.X), (int)Math.Round(point.Y)); Settle();
+            native.Button(1, true); native.Button(1, false);
+            PointerWait(() => presses == 1 && Mouse.LeftButton == MouseButtonState.Released, "The original manager did not receive exactly one floating-tab native press.");
+            Require(commands == 1 && staleCalls == 0 && ReferenceEquals(FloatingUIParent(floating), manager)
+                && native.FocusedWindow == NativeHandle(floating) && Mouse.Captured == null && native.CanAcquirePointerGrab(),
+                "Floating command/input ancestry duplicated, reached a stale manager or changed native focus/capture.");
+            Observations.Add(new { stage = "floating-original-manager-route", presses, commands, staleCalls,
+                xid = NativeHandle(floating).ToInt64(), nativeFocus = native.FocusedWindow.ToInt64() });
+        }
+        finally
+        {
+            native.Button(1, false); manager.RemoveHandler(Mouse.PreviewMouseDownEvent, press); manager.CommandBindings.Remove(binding);
+            stale?.RemoveHandler(Mouse.PreviewMouseDownEvent, stalePress); stale?.CommandBindings.Remove(staleBinding);
+        }
+    }
+
+    private static void ReleaseHeaderDrag(X11Fixture native, LayoutFloatingWindowControl floating)
+    {
+        MoveHeldPointerAndWait(native, floating, new Point(3, 3)); native.Button(1, false);
+        PointerWait(() => Mouse.Captured == null && Field(floating, "_dragService") is null && !VisibleOverlays().Any(), "The header probe retained its native drag.");
+        Require(native.CanAcquirePointerGrab(), "The header probe retained its native pointer grab.");
+    }
+
+    private static void FloatingTabHeaders(X11Fixture native, DockingManager manager, LayoutAnchorable image)
+    {
+        VerifyTabHeaders(manager, manager, "docked-original-tab-headers");
+        var panes = ((LayoutAnchorablePane)image.Parent).Children.ToArray(); var titles = panes.Select(pane => pane.Title).ToArray();
+        try
+        {
+            var floating = BeginPointerFloat(native, manager, image);
+            VerifyTabHeaders(floating, manager, "loaded-floating-original-tab-headers");
+            ReleaseHeaderDrag(native, floating); VerifyFloatingManagerRoute(native, manager, floating);
+            foreach (var pane in panes) pane.Title += " [floating]";
+            Settle(); VerifyTabHeaders(floating, manager, "changed-floating-original-tab-headers");
+            PointerDrop(native, manager, image, "Right", 64);
+            Require(FloatingUIParent(floating) == null, "A closed floating source retained its manager bridge.");
+            VerifyTabHeaders(manager, manager, "redocked-original-tab-headers");
+        }
+        finally { native.Button(1, false); Mouse.Capture(null); for (int index = 0; index < panes.Length; index++) panes[index].Title = titles[index]; }
+    }
+
+    private static void FloatingTabCurrentManager(X11Fixture native, DockingManager manager, LayoutAnchorable image)
+    {
+        var layout = manager.Layout; var next = new DockingManager();
+        var owner = new Window { Title = "Original header next manager", Content = next, Left = 700, Top = 300, Width = 320, Height = 300, ShowActivated = false };
+        try
+        {
+            owner.Show(); Settle(); PointerWait(() => native.IsMapped(NativeHandle(owner)), "The second original manager did not map.");
+            manager.Layout = new LayoutRoot { RootPanel = new LayoutPanel() }; next.Layout = layout; Settle();
+            VerifyTabHeaders(next, next, "reparented-original-manager-docked");
+            var floating = BeginPointerFloat(native, next, image);
+            VerifyTabHeaders(floating, next, "reparented-original-manager-floating");
+            ReleaseHeaderDrag(native, floating); VerifyFloatingManagerRoute(native, next, floating, manager);
+            PointerDrop(native, next, image, "Right", 64);
+            Require(FloatingUIParent(floating) == null, "The reparented closed source retained its current manager.");
+        }
+        finally
+        {
+            native.Button(1, false); Mouse.Capture(null);
+            if (ReferenceEquals(next.Layout, layout)) { next.Layout = new LayoutRoot { RootPanel = new LayoutPanel() }; manager.Layout = layout; }
+            owner.Close(); Settle();
+        }
+        VerifyTabHeaders(manager, manager, "restored-original-manager-docked");
     }
 
     private static void CaptureTransferAndRecovery(X11Fixture native, DockingManager manager, LayoutAnchorable image)

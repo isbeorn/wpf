@@ -97,3 +97,17 @@ The 140 executions include repeated checks across profiles, not 140 distinct
 tests. This remains a two-view Xvfb/Openbox result. It does not qualify full
 Overview, auto-hide, floating XML restore, hardware, a user desktop, other window
 managers or full NINA.
+
+`NINA_FLOATING_TAB_HEADERS_ONLY=1` selects three focused original-style cases:
+rendered two-tab titles and manager routes, canceled Close with Hide/Show and a
+layout transferred to another real DockingManager. Each starts through the
+existing genuine native group-float gesture. The original NINA header binding
+must select the current manager's AnchorableHeaderTemplate by Loaded, render
+both model Titles and follow later Title changes. Manager input and routed
+command handlers must execute once without changing floating focus/capture.
+Canceled Close and Hide preserve the live manager bridge; accepted drop/close
+removes it. Reparenting checks the current manager and excludes the former one.
+The existing programmatic/XML and owner-close neighbors still run, for thirteen
+checks in this focused profile. `NINA_POINTER_RECOVERY_ONLY=2` retains its prior
+meaning and behavior. Native tests remain private Xvfb/Openbox evidence rather
+than full NINA or physical-desktop qualification.

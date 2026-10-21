@@ -402,6 +402,49 @@ The handoff is
 `current/nina/desktop-gates-20261021-2/trajectory-1-HANDOFF.json`, SHA-256
 `25B017911DAF74BC1E22C818C2A08FE373CE97A74A86BF463280666C6A976CA4`.
 
+### Floating tab header ancestry repair
+
+The managed floating presenter had lost the original HWND host's route to its
+DockingManager. NINA's unchanged tab template therefore rendered the model type
+name instead of its Title. A causal private native run reproduces that failure
+with both original docked titles correct and both floating template bindings
+unresolved. The portable component now supplies the existing GetUIParentCore
+fallback to its current registered manager across distinct live presentation
+sources. It adds no stored parent, public API or NativeHost dependency and leaves
+Window.Parent unchanged. Canceled Close and Hide retain the route; accepted
+close and layout transfer cannot keep the former manager route.
+
+The focused original-template profile passes 13 checks. The unchanged two-tab
+capture recovery profile passes 11 and the full pointer profile passes 19, all
+on private 96-DPI Xvfb. All three children exit zero with empty stderr, zero
+native failures and complete process/display cleanup. Native input and routed
+commands each reach the current manager once, with no calls to the former
+manager after layout transfer. Independent correctness and maintainability/test
+reviews have no supported findings. The source repair is portable-only; no new
+Windows foreground reference was run.
+
+The source-built component preserves all 1,462 decoded public declarations,
+original resources, assembly identity and public key. Its build has no errors
+and 2,683 warnings, including two additional CS3002 emissions for the inherited
+protected override in the temporary and final compilation. No warning is
+suppressed. The fresh ordinary NINA publication contains 319 files, with only
+AvalonDock.dll/PDB changed from final5. Root rehashed every published member and
+all 1,257 protected inputs, then verified all 33 final handoff pins, 167 component
+source/PDB documents, nine fixture source/PDB documents and the three raw check
+lists. The component is qualified in this fixture, not yet observed in the full
+desktop App. The separate guide-position defect remains open.
+
+The repair handoff is
+`current/nina/floating-tab-header-20261021-1/handoff.json`, SHA-256
+`469849B5DF55E7B6C92125E73B038C60F5209F895A307DA4EDE8CB1BCDA473A0`.
+The shared publication is
+`current/nina/vm-package-docking-20261021-1/local-publication-handoff.json`, SHA-256
+`77C8ADF2E3425E8F865290C5AEDDE02A0F75AF1FB399A62F9E41225316BE61BF`.
+Its immutable manifest is
+`27E595E8992D7731A2293AF48A53F47DF50E3B72936FA2170AA1500432F81052`.
+App/BAML, scientific components, original satellites and WPF package identities
+remain unchanged.
+
 Commit `b6b30ebc6` also includes AvalonDock's existing license and provenance
 receipt in generated NINA build output and normal publication. Disposable SDK
 copy targets verify both files byte-for-byte at both destinations, with all six
