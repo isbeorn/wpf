@@ -55,7 +55,8 @@ has opened visibly on GNOME/XWayland. No Snapshot was invoked during its first
 lifetime. The user's subsequent navigation exposed another unsupported brush:
 LinearGradientBrush through DrawRoundedRectangle. The application closed
 normally and the user's final profile/layout are preserved. Reopening waits
-for that focused renderer repair. Useful displayed image, statistics,
+for a coherent package containing the focused gradient repair, which now passes
+its stock and isolated portable checks. Useful displayed image, statistics,
 original UI readback and annotation toggling remain open. Earlier capture and
 Framing passes retain their own runtime scope.
 
@@ -412,9 +413,49 @@ members and the absolute Framing cache remain exact. Preserve the final profile
 `431D8B0FF1B8A1E731FBB1C0741F6E1F7427ACDDBFAAD4D58BF393BAFFE2A54D`
 and dock layout
 `C7C2F56D141568496A7B39A02D2E86B30826654FBB3A526B946248BAB05A39AB`.
-Combined local/guest retention is 390,711,256 bytes, below the 400 MiB cap.
-The next step is a causal gradient regression, the focused brush repair and a
-coherent package successor before resuming actual NINA imaging.
+Final combined local/guest retention is 390,720,677 bytes, below the 400 MiB cap.
+Root verified the 17-member terminal fault manifest. Actual NINA imaging waits
+for a coherent package successor containing the gradient repair below.
+
+The gradient repair adds a private paint branch in the existing renderer. Its
+behavior checklist covers four fill shapes, bounds-relative and absolute
+projection, affine brush transforms, guideline/DPI coordinates, stop alpha and
+opacity, stable duplicate ordering, retained mutation/animation and restoration
+after an unsupported mode. Non-sRGB interpolation, non-Pad spread, invalid
+multiple-stop offsets and singular/nonfinite transforms remain explicit
+unsupported profiles; gradient pens/glyphs and radial gradients stay outside
+this slice. Stock also confirms that null brush transforms mean identity. The
+small fix applies symmetrically to the existing shared tile brush mapper.
+
+The old final3 Core reproduces the unsupported gradient failure. Stock WPF
+passes Gradient6 and ImageBrush6, including the null-transform controls. The
+isolated portable Core builds with zero warnings/errors and passes the same
+12 focused checks, exit zero with empty stderr. Both independent production
+reviews are clear. Root verified all seven frozen sources, both author PE/PDB
+pairs and 1,440 actual producing documents. The frozen source descriptor is
+`current/linear-gradient-rendering-20261021-1/reports/source-freeze.json`, SHA-256
+`89566C0577A8E22FB8940CB1273968252D96744D480F7331AAE2FF887AE3DED3`.
+The author Core is
+`AB8C0D3DF39D5296A16199E92C4A6B200725F992F85E0F77D20E492D9D8C2D92`;
+it is an isolated verification build, not the next distribution.
+
+Eight raw stock/portable profiles were compared independently. The source-derived
+blue-alpha gradient differs by at most one byte unit at 96 DPI and two at
+192 DPI; diagonal color differences are at most one with exact alpha.
+Transparent-colored stops over green differ by at most one color unit at
+96 DPI and two at 192 DPI with exact alpha. Coincident-endpoint
+solid blue has exact interior pixels and separate rounded-edge differences of
+51/57 units in the existing shape path. These are fixture measurements, not a
+universal tolerance or a claim of Windows pixel identity. The comparison is
+`current/linear-gradient-rendering-20261021-1/reports/author-native-gradient-comparison.json`,
+SHA-256 `521825FB9CA96B8544083B47210B43EF2000DB0B1C8CD29F65898AACB3123729`.
+The new package will run the affected rendering/image regressions on each OS
+and an ordinary native Linux SDK consumer before the next actual NINA replay.
+The terminal author handoff is
+`current/linear-gradient-rendering-20261021-1/reports/author-green-handoff.json`,
+SHA-256 `55A2D7D90289BFB0E2ED152F080295FFCC4ED7281EAAEB94B6DAE582E01FAF8F`.
+All 143 protected inputs remain exact and no command remains active. Retention
+is 73,109,717 bytes, below the 128 MiB author cap.
 
 Separately, the corrected private caption diagnostic passes all 11 checks on
 the current 306-file runtime. Independent native client origin and WPF screen

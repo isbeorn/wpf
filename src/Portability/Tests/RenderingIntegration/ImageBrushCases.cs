@@ -77,6 +77,10 @@ internal static class ImageBrushCases
         Pixel(mappedPixels, 20, 20, Colors.Transparent);
         Require(mapped.Viewbox == new Rect(1, 0, 2, 2) && mapped.Transform.Value.OffsetX == 16,
             "ImageBrush mapping changed caller transforms or viewbox.");
+        var nullable = new ImageBrush(source) { Transform = null!, RelativeTransform = null! };
+        byte[] nullPixels = Render(Scene(dc => dc.DrawRectangle(nullable, null, new Rect(4, 4, 32, 16))));
+        byte[] identityPixels = Render(Scene(dc => dc.DrawRectangle(new ImageBrush(source), null, new Rect(4, 4, 32, 16))));
+        Require(nullPixels.SequenceEqual(identityPixels), "Null TileBrush transforms differed from Identity.");
     }
 
     private static void ShapesAndState()

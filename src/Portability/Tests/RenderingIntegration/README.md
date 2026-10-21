@@ -189,3 +189,35 @@ NINA thumbnail's UniformToFill profile. The successor uses the same DIP-sized
 source with wider flat color bands after stock calibration. The actual bound
 NINA Grid.Background and complete application workflow remain separate replay
 gates; these component scenes do not establish their completion.
+
+`--linear-gradient-only` runs six shared LinearGradientBrush fill checks. The
+bounded profile uses sRGB non-premultiplied color interpolation, Pad spread,
+finite offsets in [0,1] and finite invertible brush transforms. Relative mapping
+first maps endpoints into absolute shape bounds; a shader in that brush space
+then receives RelativeTransform about those bounds followed by Transform. This
+preserves diagonal color-band projection in non-square bounds and under affine
+transforms. DrawGeometry supplies its actual fill bounds. When guideline drawing
+resets the canvas matrix, the shader includes the outer matrix as well.
+
+The existing Skia linear-gradient shader owns interpolation. Stop sorting is
+stable and uses a copied array, preserving coincident-stop order and caller
+collections. Zero/null stops are transparent, one stop is solid and coincident
+Pad endpoints use the last sorted stop, as calibrated against stock WPF. Stop
+alpha is retained in the shader and brush opacity is applied once by its paint.
+Non-sRGB interpolation, Repeat/Reflect spread, nonfinite or out-of-range stop
+offsets, nonfinite points and singular/nonfinite brush transforms have named
+unsupported diagnostics. Gradient pens, glyph brushes and radial gradients
+retain the existing unsupported brush boundary.
+
+The windowless stock oracle shares all six public scenes. It qualifies the
+source-derived NINA four-stop blue-alpha profile, all four fill shapes, relative
+versus absolute projection, guidelines at 96/192 DPI, nonuniform/sheared and
+reflected brush transforms versus equivalent drawing transforms, transparent
+colored endpoints over green, empty/single/duplicate stops and current animated
+opacity. Portable retained checks observe stop/collection/opacity mutation and
+restoration without manual rendering. One unsupported-spread failure is restored
+on the same brush and target. `--capture-linear-gradient=<absolute JSON path>`
+captures eight raw profiles; the explicit `--capture-linear-gradient-on-failure`
+option preserves failed checks and exit status while enabling diagnostics.
+These fixtures do not identify the actual NINA visual that owned the reported
+gradient and do not claim general gradient or Windows pixel parity.

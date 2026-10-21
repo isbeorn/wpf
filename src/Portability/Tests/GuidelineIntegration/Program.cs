@@ -22,6 +22,22 @@ var thread = new Thread(() =>
 {
     CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
 #if STOCK
+    if (args.Contains("--linear-gradient-only"))
+    {
+        LinearGradientCases.Run((name, test) =>
+        {
+            try { test(); results.Add(new { name, passed = true }); }
+            catch (Exception exception) { failed = true; results.Add(new { name, passed = false, detail = exception.ToString() }); }
+        }, () => { });
+        string? capture = args.FirstOrDefault(argument => argument.StartsWith("--capture-linear-gradient=", StringComparison.Ordinal));
+        if (capture != null && (!failed || args.Contains("--capture-linear-gradient-on-failure")))
+        {
+            try { File.WriteAllText(capture["--capture-linear-gradient=".Length..], JsonSerializer.Serialize(LinearGradientCases.CaptureCalibration(), new JsonSerializerOptions { WriteIndented = true })); }
+            catch (Exception exception) { failed = true; results.Add(new { name = "linear-gradient-capture", passed = false, detail = exception.ToString() }); }
+        }
+        Dispatcher.CurrentDispatcher.InvokeShutdown();
+        return;
+    }
     if (args.Contains("--image-brush-only"))
     {
         ImageBrushCases.Run((name, test) =>

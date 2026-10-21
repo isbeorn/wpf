@@ -12,6 +12,16 @@ using SkiaSharp;
 
 var checks = new List<object>();
 var failed = false;
+if (args.Contains("--linear-gradient-only") || args.Length == 0)
+    LinearGradientCases.Run(Run, Drain);
+if (args.Contains("--linear-gradient-only"))
+{
+    Console.WriteLine(JsonSerializer.Serialize(new { probe = "linear-gradient-rendering", corePath = typeof(DrawingVisual).Assembly.Location, checks }, new JsonSerializerOptions { WriteIndented = true }));
+    string? capture = args.FirstOrDefault(argument => argument.StartsWith("--capture-linear-gradient=", StringComparison.Ordinal));
+    if (capture != null && (!failed || args.Contains("--capture-linear-gradient-on-failure")))
+        File.WriteAllText(capture["--capture-linear-gradient=".Length..], JsonSerializer.Serialize(LinearGradientCases.CaptureCalibration(), new JsonSerializerOptions { WriteIndented = true }));
+    return failed ? 1 : 0;
+}
 if (args.Contains("--image-brush-only") || args.Length == 0)
     ImageBrushCases.Run(Run, Drain);
 if (args.Contains("--image-brush-only"))

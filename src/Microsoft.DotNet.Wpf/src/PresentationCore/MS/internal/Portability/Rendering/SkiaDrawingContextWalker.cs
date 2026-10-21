@@ -140,7 +140,7 @@ namespace MS.Internal.Portability.Rendering
                 if (brush is VisualBrush || brush is ImageBrush)
                     DrawTileBrushFill((TileBrush)brush, fill, geometry.Bounds);
                 else if (brush != null)
-                    using (SKPaint paint = CreateBrush(brush, brush is DrawingBrush ? geometry.Bounds : Rect.Empty)) DrawSnappedPath(fill, paint);
+                    using (SKPaint paint = CreateBrush(brush, brush is DrawingBrush || brush is LinearGradientBrush ? geometry.Bounds : Rect.Empty)) DrawSnappedPath(fill, paint);
             }
             if (pen != null && pen.Brush != null && pen.Thickness != 0)
                 using (SKPath stroke = SkiaGeometry.CreateStrokePath(geometry, pen))
@@ -512,9 +512,9 @@ namespace MS.Internal.Portability.Rendering
                 viewport.Y + ay * viewport.Height - (viewbox.Y + ay * viewbox.Height) * sy);
             // CBrushTypeUtils applies the normalized bounds transform before the absolute transform.
             brushTransform = new Matrix(1 / bounds.Width, 0, 0, 1 / bounds.Height, -bounds.X / bounds.Width, -bounds.Y / bounds.Height);
-            brushTransform.Append(brush.RelativeTransform.Value);
+            brushTransform.Append(brush.RelativeTransform?.Value ?? Matrix.Identity);
             brushTransform.Append(new Matrix(bounds.Width, 0, 0, bounds.Height, bounds.X, bounds.Y));
-            brushTransform.Append(brush.Transform.Value);
+            brushTransform.Append(brush.Transform?.Value ?? Matrix.Identity);
             RequireFinite(mapping); RequireFinite(brushTransform);
             return mapping.HasInverse && brushTransform.HasInverse;
         }
@@ -530,16 +530,17 @@ namespace MS.Internal.Portability.Rendering
         private static bool UsableRectangle(Rect value) => !value.IsEmpty && value.Width > 0 && value.Height > 0 &&
             double.IsFinite(value.X) && double.IsFinite(value.Y) && double.IsFinite(value.Right) && double.IsFinite(value.Bottom);
 
-        private static void RequireFinite(Matrix matrix)
+        private static void RequireFinite(Matrix matrix, string brushType = "tile brush")
         {
             SKMatrix value = ToMatrix(matrix);
             if (!float.IsFinite(value.ScaleX) || !float.IsFinite(value.ScaleY) || !float.IsFinite(value.SkewX) ||
                 !float.IsFinite(value.SkewY) || !float.IsFinite(value.TransX) || !float.IsFinite(value.TransY))
-                throw Unsupported("non-finite tile brush transforms");
+                throw Unsupported($"non-finite {brushType} transforms");
         }
 
         private SKPaint CreateBrush(Brush brush, Rect bounds)
         {
+            if (brush is LinearGradientBrush gradient) return CreateLinearGradientBrush(gradient, bounds);
             if (!(brush is DrawingBrush drawingBrush)) return CreateBrush(brush);
             if (drawingBrush.TileMode != TileMode.None && drawingBrush.TileMode != TileMode.Tile)
                 throw Unsupported($"DrawingBrush tile mode {drawingBrush.TileMode}");
@@ -570,6 +571,54 @@ namespace MS.Internal.Portability.Rendering
             }
             finally { _activeDrawingBrushes.Remove(drawingBrush); }
         }
+
+        private SKPaint CreateLinearGradientBrush(LinearGradientBrush brush, Rect bounds)
+        {
+            GradientStop[] stops = brush.GradientStops?.ToArray() ?? [];
+            if (stops.Length == 0) return GradientColor(default, brush.Opacity);
+            if (stops.Length == 1) return GradientColor(stops[0].Color, brush.Opacity);
+            if (brush.ColorInterpolationMode != ColorInterpolationMode.SRgbLinearInterpolation)
+                throw Unsupported("LinearGradientBrush color interpolation other than sRGB");
+            if (brush.SpreadMethod != GradientSpreadMethod.Pad)
+                throw Unsupported($"LinearGradientBrush spread {brush.SpreadMethod}");
+            if (stops.Any(stop => !double.IsFinite(stop.Offset) || stop.Offset < 0 || stop.Offset > 1))
+                throw Unsupported("LinearGradientBrush stop offsets outside the finite [0,1] profile");
+            if (!UsableRectangle(bounds)) return GradientColor(default, brush.Opacity);
+
+            SKPoint start = ToPoint(brush.StartPoint), end = ToPoint(brush.EndPoint);
+            if (brush.MappingMode == BrushMappingMode.RelativeToBoundingBox)
+            {
+                // MIL maps endpoints into absolute brush space before constructing perpendicular color bands.
+                start = new SKPoint((float)(bounds.X + start.X * bounds.Width), (float)(bounds.Y + start.Y * bounds.Height));
+                end = new SKPoint((float)(bounds.X + end.X * bounds.Width), (float)(bounds.Y + end.Y * bounds.Height));
+            }
+            else if (brush.MappingMode != BrushMappingMode.Absolute) throw Unsupported($"LinearGradientBrush mapping {brush.MappingMode}");
+            if (!float.IsFinite(start.X) || !float.IsFinite(start.Y) || !float.IsFinite(end.X) || !float.IsFinite(end.Y))
+                throw Unsupported("non-finite LinearGradientBrush points");
+
+            var matrix = new Matrix(1 / bounds.Width, 0, 0, 1 / bounds.Height, -bounds.X / bounds.Width, -bounds.Y / bounds.Height);
+            matrix.Append(brush.RelativeTransform?.Value ?? Matrix.Identity);
+            matrix.Append(new Matrix(bounds.Width, 0, 0, bounds.Height, bounds.X, bounds.Y));
+            matrix.Append(brush.Transform?.Value ?? Matrix.Identity);
+            RequireFinite(matrix, "LinearGradientBrush");
+            SKMatrix transform = ToMatrix(matrix);
+            if (!matrix.HasInverse || !transform.TryInvert(out _)) throw Unsupported("singular LinearGradientBrush transforms");
+
+            // OrderBy is stable, preserving the left/right order of coincident stops without changing the caller.
+            stops = stops.OrderBy(stop => stop.Offset).ToArray();
+            if (start == end) return GradientColor(stops[stops.Length - 1].Color, brush.Opacity);
+            SKColor[] colors = stops.Select(stop => new SKColor(stop.Color.R, stop.Color.G, stop.Color.B, stop.Color.A)).ToArray();
+            float[] positions = stops.Select(stop => (float)stop.Offset).ToArray();
+            if (!_guidelines.IsEmpty) transform = SKMatrix.Concat(Canvas.TotalMatrix, transform);
+            using SKShader shader = SKShader.CreateLinearGradient(start, end, colors, positions, SKShaderTileMode.Clamp, transform)
+                ?? throw new InvalidOperationException("The portable linear gradient shader could not be created.");
+            return new SKPaint { IsAntialias = true, Shader = shader, Color = new SKColor(255, 255, 255, Alpha(brush.Opacity)) };
+        }
+
+        private static SKPaint GradientColor(Color color, double opacity) => new SKPaint
+        {
+            IsAntialias = true, Color = new SKColor(color.R, color.G, color.B, Alpha(color.A / 255d * opacity))
+        };
 
         private static SKPaint CreateBrush(Brush brush)
         {
