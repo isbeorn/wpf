@@ -6,6 +6,35 @@ further accessibility qualification and native IME are later work. The earlier
 ordering that deferred NINA.Image until all WPF gates finished is superseded.
 Everything remains local on `codex/nina-cross-platform`.
 
+The implementation keeps real WPF controls and NINA application logic, with an
+owned Linux layer supplying the operating-system services underneath. The
+component overview below distinguishes that project code from retained libraries.
+
+| Component | What has been built | Retained libraries and services |
+| --- | --- | --- |
+| Framework and XAML | Original WPF property system, bindings, commands, events, layout, controls and BAML compiler, adapted for portable builds. | .NET 10, WindowsBase, PresentationCore, PresentationFramework, System.Xaml and PresentationBuildTasks. |
+| Linux windows and dispatcher | Owned NativeHost creates windows and connects Linux events to WPF's existing dispatcher and window lifecycle. | X11 and GLib; GNOME Wayland currently uses XWayland. |
+| Keyboard, mouse and cursors | Owned adapters feed focus, capture, pointer and keyboard events into real WPF input routing. | XInput2, XKB, libxkbcommon, XFixes and Xcursor. |
+| Drawing and effects | Owned renderer translates WPF geometry, brushes, clipping, images and selected effects into CPU-rendered surfaces. | SkiaSharp 3.119.4 and native Skia. |
+| Text and Unicode | Owned text integration provides shaping, fonts, wrapping, caret and selection behavior for the covered controls. | HarfBuzzSharp 8.3.1.5, native HarfBuzz, Skia font services, Fontconfig and maintained Unicode 17 algorithms/data. |
+| Bitmap storage and codecs | Owned buffers retain Gray16/RGB48 scientific precision; display conversion stays separate from raw samples. | Skia codecs decode PNG/JPEG assets. |
+| Documents and supporting controls | Managed document layout supports covered Markdown content; original editor, chart and specialist controls run through portable WPF. | AvalonEdit, MdXaml, OxyPlot, Extended WPF Toolkit and Microsoft.Xaml.Behaviors. |
+| Docking | Adapted window hosting retains NINA's original docking model, controls, templates and layout serialization. | Dirkster.AvalonDock. |
+| Desktop integration | Owned clipboard, dialog and accessibility adapters expose the existing WPF-facing contracts. | X11 clipboard ownership, GIO/D-Bus desktop portals and AT-SPI. |
+| NINA science and files | Original view models, mediators, profiles and simulator use owned image buffers and focused platform adaptations. | Accord processing kernels, SOFA, NOVAS, SQLite and CFITSIO 4.7.0. |
+| Distribution | Runtime and compiler packages support ordinary external consumers and compile NINA's original App/MainWindow markup. | Wpf.Portable.Runtime and Wpf.Portable.Sdk. |
+
+There is no Avalonia runtime, framework, build or source-import dependency. The
+34 attributed Unicode algorithm/data derivatives are directly maintained source.
+AvalonDock and AvalonEdit are separate control projects that NINA already uses.
+
+This is an implementation inventory, not a claim that every API or component
+workflow is qualified. Real NINA has launched and passed native sequence
+workflows. The current image path still needs the approved Accord metadata
+adaptation and actual snapshot/FITS save/readback replay. Native IME, broader
+rich-text editing/printing, real hardware, ARM64 and macOS remain unqualified or
+deferred. Detailed evidence and remaining gates follow.
+
 ## Active checkpoint
 
 The original NINA App/MainWindow has run visibly on GNOME/XWayland through the
@@ -148,7 +177,7 @@ Accord metadata-query source adaptation is under design review. No scientific
 kernel change or GdiPlus deployment is authorized by this helper repair, and
 the next actual App retry remains unreleased.
 
-The next design proposal, awaiting the user's decision, promotes the existing
+The user approved the focused design below on 21 October 2026. It promotes the existing
 `Accord.Imaging` dependency to an explicitly source-adapted component. It retains
 the pinned NINA source revision, original netstandard2.0 target, C# 7.3 settings,
 assembly identity and public API. The change is seven metadata expressions in
@@ -186,8 +215,8 @@ FITS13 and legacy1. Package operations must succeed without deploying or loading
 GdiPlus. Existing borrowed-buffer tests cover stride, padding and source
 ownership. Keep the combined local/guest preparation below 96 MiB. Only after
 these checks and independent reviews pass may a fresh whole NINA publication
-retry the original snapshot, file save and UI readback. No Accord source edit
-or build has started.
+retry the original snapshot, file save and UI readback. Implementation is
+released within this scope.
 
 Separately, the corrected private caption diagnostic passes all 11 checks on
 the current 306-file runtime. Independent native client origin and WPF screen
