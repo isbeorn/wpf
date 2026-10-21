@@ -30,9 +30,9 @@ AvalonDock and AvalonEdit are separate control projects that NINA already uses.
 
 This is an implementation inventory, not a claim that every API or component
 workflow is qualified. Real NINA has launched and passed native sequence
-workflows. The current image path still needs the approved Accord metadata
-adaptation and actual snapshot/FITS save/readback replay. Native IME, broader
-rich-text editing/printing, real hardware, ARM64 and macOS remain unqualified or
+workflows. The approved Accord metadata adaptation passes the component image
+regressions; actual snapshot/FITS save/readback replay is in progress. Native
+IME, broader rich-text editing/printing, real hardware, ARM64 and macOS remain unqualified or
 deferred. Detailed evidence and remaining gates follow.
 
 ## Active checkpoint
@@ -43,9 +43,10 @@ cancellation, reset, restart and palette drag/drop/Escape pass in that packaged
 application. Floating caption/redocking remains under diagnosis. The last actual
 image workflow stopped at `System.Private.Windows.GdiPlus` dependencies. The
 Image/Accord repairs now pass the component package graph's complete image
-regression without GdiPlus. Actual FITS saving and UI readback still need a fresh
-whole-application replay. Earlier capture and Framing passes retain their own
-runtime scope; they do not replace that replay.
+regression without GdiPlus. A fresh 317-file application has opened visibly on
+GNOME/XWayland with those repairs. Actual FITS saving and UI readback are being
+replayed through its original controls. Earlier capture and Framing passes
+retain their own runtime scope; they do not replace that replay.
 
 The targetless sequence ContextMenu opening is repaired in commit `0b12eb772`. The original null
 PlacementTarget remains unchanged; an eligible active keyboard source supplies
@@ -233,8 +234,27 @@ pins and all 290 producing PDB source documents, with matching PE/PDB identity.
 The explicit final source descriptor is
 `current/nina/star-detection-package-20261021-1/accord-source-freeze-v3.json`,
 SHA-256 `763EB2B8D04BEF6C3F14D307F25855F3374B2915040894E6F9BAB4D39CADC9D6`.
-The corresponding source/license distribution rows are being sealed. The next
-whole NINA publication and actual snapshot, save and readback remain unreleased.
+The source/license distribution is sealed in
+`current/nina/star-detection-package-20261021-1/accord-final-handoff.json`,
+SHA-256 `2DBFF9BB3AD14A24A723F02424EA9C726DE5D9DE8255B933612C3B288FF84D3D`.
+Root verified all 24 evidence pins and all 14 distribution rows. The retained
+source archive has 613 entries, each independently checked against its manifest,
+with no duplicates or hash/length mismatches. It includes original and modified
+sources, notices, build instructions and the exact recipe. Retained component
+data stays below the 96 MiB cap.
+
+The fresh whole application is
+`current/nina/vm-package-image-retry-20261021-1/consumer`: 317 files and
+130,112,917 bytes. Its manifest SHA-256 is
+`FCD4945DB61CC4CF086AC284A313A299303A3634355B37B4BF7ABFCCD7C7FAAF`,
+and composition handoff is
+`18CFC732B5140A0631FF68EAC7D18AF8591F96608FB0B02CCC6C5A02D0BD1F33`.
+Root rehashed every member: 303 base files are unchanged, three existing files
+are replaced and 11 are added. Ordinary dependency metadata and runtimeconfig
+are byte-identical to the qualified base. The final closed profile/layout are
+carried separately and the absolute Framing cache is unchanged. Whole guest
+transfer and native linkage verify. The original App has mapped successfully
+with diagnostics off; actual snapshot, save and readback remain under test.
 
 Separately, the corrected private caption diagnostic passes all 11 checks on
 the current 306-file runtime. Independent native client origin and WPF screen
