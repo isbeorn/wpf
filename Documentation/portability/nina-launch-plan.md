@@ -309,7 +309,11 @@ members remain unchanged. All UI/guest observation ends around 10:20:36 UTC,
 inside the released window, with NINA left passive. Root inspected the images
 and verified all 34 UI evidence files. This does not qualify histogram refresh,
 caption/redocking, overnight operation, native allocation totals or 24MP App
-throughput. The visible histogram placeholder remains under investigation.
+throughput. The pilot receipts' histogram "placeholder" description overstates
+the observation: original `HistogramView.xaml` always draws the center icon,
+independently of its AreaSeries. The visible left-hand peak matches the original
+raw 16-bit histogram's bins 6-8 for these samples. No missing-renderer defect is
+established; exact asynchronous refresh timing remains unmeasured.
 
 Sampler handoff is
 `current/nina/overnight-preparation-20261021-1/pilot-final5-1/handoff.json`, SHA-256
