@@ -218,7 +218,7 @@ namespace MS.Internal.Portability.Rendering
         {
             if ((pen.StartLineCap != pen.DashCap || pen.EndLineCap != pen.DashCap) && HasGaps(geometry))
                 throw new NotSupportedException("Portable mixed-segment strokes require matching outer and gap caps.");
-            if (geometry is RectangleGeometry rectangle && (rectangle.RadiusX == 0 || rectangle.RadiusY == 0) &&
+            if (geometry is RectangleGeometry rectangle &&
                 pen.DashStyle != null && pen.DashStyle.Dashes.Count != 0)
                 geometry = rectangle.GetAsPathGeometry();
             return Create(geometry, true);

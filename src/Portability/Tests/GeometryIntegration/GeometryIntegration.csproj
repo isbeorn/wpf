@@ -5,6 +5,7 @@
     <None Update="GridDrawingSnapshot.json;GridBoundsReference.json;GridAffineReference.json" CopyToOutputDirectory="PreserveNewest" />
     <None Update="BoundsPrecisionReference.json" CopyToOutputDirectory="PreserveNewest" />
     <None Update="DashedBoundsReference.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="RoundedDashBoundsReference.json" CopyToOutputDirectory="PreserveNewest" />
     <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" />
     <ProjectReference Include="../../Framework/PresentationFramework/PresentationFramework.csproj" />
     <ProjectReference Include="../../Framework/WindowsBase/WindowsBase.csproj" />

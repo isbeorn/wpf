@@ -3,6 +3,12 @@ using System.Text.Json;
 using System.Windows;
 using System.Windows.Media;
 
+if (args.Length == 1 && args[0] == "--capture-rounded-dashed-bounds")
+{
+    Console.WriteLine(JsonSerializer.Serialize(RoundedDashBoundsCases.Capture(), new JsonSerializerOptions { WriteIndented = true }));
+    return 0;
+}
+
 if (args.Length == 1 && args[0] is "--capture-hollow-dashed-ink" or "--capture-hollow-dashed-filled-ink")
 {
     Console.WriteLine(JsonSerializer.Serialize(DashedBoundsCases.CaptureHollowInk(args[0] == "--capture-hollow-dashed-filled-ink"), new JsonSerializerOptions { WriteIndented = true }));
@@ -61,6 +67,12 @@ if (args.Length == 1 && args[0] == "--capture-bounds-precision")
 
 var checks = new List<object>();
 var failed = false;
+if (args.Contains("--rounded-dashed-bounds-only"))
+{
+    RoundedDashBoundsCases.Run(Check);
+    Console.WriteLine(JsonSerializer.Serialize(new { probe = "rounded-dashed-bounds", corePath = typeof(Geometry).Assembly.Location, checks }, new JsonSerializerOptions { WriteIndented = true }));
+    return failed ? 1 : 0;
+}
 if (!args.Contains("--hollow-dashed-bounds-only"))
 {
     foreach (Stretch stretch in Enum.GetValues<Stretch>())
@@ -191,6 +203,7 @@ OutlineCases.Run(Check);
 BoundsCases.Run(Check);
 CrosshairBoundsCases.Run(Check);
 DashedBoundsCases.Run(Check);
+RoundedDashBoundsCases.Run(Check);
 GridBoundsCases.Run(Check);
 MixedStrokeCases.Run(Check);
 Console.WriteLine(JsonSerializer.Serialize(new

@@ -168,8 +168,10 @@ namespace MS.Internal.Portability.Rendering
                     }
                     else if (verb == SKPathVerb.Line)
                         nonconstant |= points[0] != points[1];
+                    else if (verb == SKPathVerb.Cubic)
+                        nonconstant |= points[0] != points[1] || points[0] != points[2] || points[0] != points[3];
                     else if (verb != SKPathVerb.Close)
-                        throw new NotSupportedException("Portable dashed bounds require linear contours.");
+                        throw new NotSupportedException("Portable dashed bounds require linear or cubic contours.");
                 }
                 if (!contour || !nonconstant) RejectCollapsed();
             }

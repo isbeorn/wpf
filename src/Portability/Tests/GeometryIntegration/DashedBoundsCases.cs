@@ -106,6 +106,7 @@ internal static class DashedBoundsCases
         RunHollow(check);
         check("dashed-bounds-retained-mutation-and-restore", RetainedMutation, true);
         check("dashed-bounds-focus-paint-and-query", FocusPaint, true);
+        check("dashed-bounds-rounded-curve", RoundedDashBoundsCases.LegacyCurve, true);
         foreach (var sample in RectangleRouteSamples())
             check("dashed-bounds-rectangle-route-" + sample.Name, () => CheckRectangleRoute(sample), true);
 #if PORTABLE_GEOMETRY_TESTS
@@ -530,7 +531,10 @@ internal static class DashedBoundsCases
         yield return ("collapsed", () => new LineGeometry(new Point(10, 10), new Point(10, 10)).GetRenderBounds(pen), "collapsed");
         yield return ("post-transform-collapse", () => new LineGeometry(new Point(10, 10), new Point(20, 10)) { Transform = new ScaleTransform(0, 1) }.GetRenderBounds(pen), "collapsed");
         yield return ("mixed-gap", () => { var p = OpenPath(); p.Figures[0].Segments[0].IsStroked = false; return p.GetRenderBounds(pen); }, "unstroked");
-        yield return ("curve", () => new RectangleGeometry(FocusRect, 2, 2).GetRenderBounds(pen), "linear");
+        yield return ("quadratic-curve", () => new PathGeometry([new PathFigure(new Point(10, 10),
+            [new QuadraticBezierSegment(new Point(20, 0), new Point(30, 10), true)], false)]).GetRenderBounds(pen), "linear or cubic");
+        yield return ("conic-curve", () => new PathGeometry([new PathFigure(new Point(10, 10),
+            [new ArcSegment(new Point(30, 10), new Size(10, 10), 0, false, SweepDirection.Clockwise, true)], false)]).GetRenderBounds(pen), "linear or cubic");
         yield return ("group", () => new GeometryGroup { Children = { Rectangle() } }.GetRenderBounds(pen), "type");
         yield return ("singular-world", () => Content(d => d.DrawRoundedRectangle(null, pen, FocusRect, 0, 0), new ScaleTransform(0, 1)), "singular");
         foreach (var entry in new[] { (Name: "tiny-cycle", Pen: Dash([.001, .001]), Diagnostic: "tiny"), (Name: "zero-cycle", Pen: Dash([0, 0]), Diagnostic: "zero"),

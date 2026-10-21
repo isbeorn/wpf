@@ -94,13 +94,15 @@ namespace MS.Internal.Portability.Rendering
                 using (SKPaint paint = CreateBrush(brush, rectangle)) DrawSnappedPath(fill, paint);
                 brush = null;
             }
-            bool dashedRectangle = (radiusX == 0 || radiusY == 0) && pen?.DashStyle?.Dashes?.Count > 0;
+            bool dashedRectangle = pen?.DashStyle?.Dashes?.Count > 0;
             if (!_guidelines.IsEmpty || dashedRectangle)
             {
-                using var path = new SKPath();
-                // Native zero-radius figures start at top-left; Skia AddRoundRect starts at bottom-left.
-                if (dashedRectangle) path.AddRect(ToRect(rectangle));
-                else path.AddRoundRect(ToRect(rectangle), (float)Math.Min(Math.Abs(radiusX), rectangle.Width / 2), (float)Math.Min(Math.Abs(radiusY), rectangle.Height / 2));
+                // Match the cubic contour and dash origin used by rectangle bounds.
+                using var path = dashedRectangle
+                    ? SkiaGeometry.Create(new RectangleGeometry(rectangle, radiusX, radiusY).GetAsPathGeometry(), true)
+                    : new SKPath();
+                if (!dashedRectangle)
+                    path.AddRoundRect(ToRect(rectangle), (float)Math.Min(Math.Abs(radiusX), rectangle.Width / 2), (float)Math.Min(Math.Abs(radiusY), rectangle.Height / 2));
                 Paint(brush, pen, rectangle, paint => DrawSnappedPath(path, paint));
                 return;
             }
