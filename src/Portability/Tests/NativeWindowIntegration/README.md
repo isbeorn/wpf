@@ -6,6 +6,18 @@ Run only on a dedicated Xvfb server. X11Fixture publishes private XSETTINGS and 
 
 The default sequence preserves hidden construction, actual source/layout, synchronous premultiplied BGRA presentation, buffer validation, previous-frame overlap clear/clip, retained/expose/occlusion repaint, stale-cache and already-equal size requests, paired grow/shrink, zero/subpixel allocation/recovery, one-pixel/DPI round trips, exact RGB48 source preservation and repeated lifetimes. Real Button/TextBox input covers paired keys, all five buttons, held snapshots, outside release, capture transfer/loss/recovery, cursor visibility/shape, disable/enable, activation, Hide/Show, ownership, synchronous modal frames and canceled/accepted/reentrant close.
 
+`--owned-input-only` also checks logical focus restoration between real native
+window sources without a second textbox click. Native focus, WPF active source,
+remembered scope element, actual keyboard focus, text and binding updates are
+separate observations. Explicit focus requests must not transiently restore an
+old target. Hidden, disabled, removed and moved remembered targets and reentrant
+redirect/close/Hide/disable callbacks remain covered. Restore mode is captured
+when the presentation source is constructed, before its lazy input provider;
+Auto/None tests change the global default before first input and after later
+activation to verify source-lifetime policy. `--chrome-only` additionally pairs
+Main-like and owned floating captions with genuine textbox click/key controls,
+stationary caption activation, held movement and modal/nonactivation exclusions.
+
 `--empty-window-only --chrome-dpi=96` isolates a genuine transparent borderless
 notification-style Window: synchronous empty Show/Hide, item add/remove, native
 pixels, same-source reopen and close cleanup. `--minimum-window-extents-only`

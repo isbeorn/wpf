@@ -13,6 +13,7 @@ namespace MS.Internal.Portability.Windowing
     internal sealed class PortablePresentationSource : PresentationSource, IDisposable
     {
         private readonly Action<Size> _layoutRoot;
+        private readonly RestoreFocusMode _restoreFocusMode;
         private IPortablePresentationHost _host;
         private PortableCompositionTarget _compositionTarget;
         private PortableRenderTarget _rasterTarget;
@@ -28,6 +29,7 @@ namespace MS.Internal.Portability.Windowing
         {
             ArgumentNullException.ThrowIfNull(layoutRoot);
             _layoutRoot = layoutRoot;
+            _restoreFocusMode = Keyboard.DefaultRestoreFocusMode;
         }
 
         internal void AttachHost(IPortablePresentationHost host)
@@ -204,7 +206,7 @@ namespace MS.Internal.Portability.Windowing
         }
 
         private PortableInputProvider EnsureInputProvider() =>
-            _inputProvider ??= new PortableInputProvider(this, _host as IPortableInputHost);
+            _inputProvider ??= new PortableInputProvider(this, _host as IPortableInputHost, _restoreFocusMode);
 
         private PortableRenderTarget CreateRasterTarget(Visual root, HostMetrics metrics)
         {

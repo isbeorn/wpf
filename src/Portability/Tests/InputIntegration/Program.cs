@@ -273,6 +273,7 @@ void Exercise()
         Expect<InvalidOperationException>(() => provider.SourceFromScreenPoint(new Point(320, 212)));
         PortablePresentationSource? foreign = null;
         var otherThread = new Thread(() => foreign = new PortablePresentationSource(_ => { }));
+        if (OperatingSystem.IsWindows()) otherThread.SetApartmentState(ApartmentState.STA);
         otherThread.Start(); otherThread.Join();
         host.HitSource = foreign;
         Expect<InvalidOperationException>(() => provider.SourceFromScreenPoint(new Point(320, 212)));

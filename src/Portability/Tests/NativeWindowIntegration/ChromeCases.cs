@@ -16,6 +16,7 @@ internal static class ChromeCases
         trace?.Invoke(new { stage = "chrome-observed-viewport", requestedDpi, width = viewport.Width, height = viewport.Height });
         Require(viewport.Width >= 1024 * requestedScale && viewport.Height >= 768 * requestedScale,
             "Chrome gesture qualification requires at least 1024x768 logical DIPs of actual native root geometry.");
+        Activation(native, run, wait, drain, requestedDpi, trace);
         run("public-WindowChrome-declared-defaults-and-validation", () =>
         {
             var chrome = new WindowChrome();
@@ -373,6 +374,177 @@ internal static class ChromeCases
             native.MovePointer(p.X + dx, p.Y + dy); drain(); native.Button(1, false); drain();
         }
     }
+    internal static void Activation(X11Fixture native, Action<string, Action> run, Action<Func<bool>> wait, Action drain,
+        int requestedDpi = 96, Action<object>? trace = null)
+    {
+        Require(native.HasWindowManager, "Caption activation requires the private native window manager.");
+        foreach (var assembly in new[] { typeof(Window).Assembly, typeof(Visual).Assembly,
+            typeof(WpfFork::System.Windows.Threading.Dispatcher).Assembly, typeof(Wpf.Portable.NativeHost.NativeWindowHost).Assembly })
+            trace?.Invoke(new { stage = "caption-activation-loaded-module", name = assembly.GetName().Name, path = assembly.Location,
+                sha256 = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.IO.File.ReadAllBytes(assembly.Location))),
+                defaultContext = ReferenceEquals(System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(assembly), System.Runtime.Loader.AssemblyLoadContext.Default) });
+
+        run("native-WindowChrome-caption-activation-owner-floating-and-textbox-controls", () =>
+        {
+            var mainBox = new TextBox { Width = 180, Height = 40 };
+            var floatBox = new TextBox { Width = 180, Height = 40 };
+            var main = Create("Caption activation Main", mainBox, 60);
+            var floating = Create("Caption activation owned floating", floatBox, 500);
+            IntPtr mainXid = IntPtr.Zero, floatXid = IntPtr.Zero;
+            int mainKeys = 0, floatKeys = 0;
+            main.PreviewKeyDown += (_, args) => { mainKeys++; ObserveKey("Main", args); };
+            floating.PreviewKeyDown += (_, args) => { floatKeys++; ObserveKey("floating", args); };
+            try
+            {
+                main.Show(); mainXid = native.FindWindow(main.Title); wait(() => native.IsMapped(mainXid));
+                floating.Owner = main; floating.Show(); floatXid = native.FindWindow(floating.Title);
+                wait(() => native.IsMapped(mainXid) && native.IsMapped(floatXid)); drain();
+                Require(native.TransientOwner(floatXid) == mainXid, "The floating control is not genuinely owned by Main.");
+                var dpi = VisualTreeHelper.GetDpi(main);
+                Require(Near(dpi.DpiScaleX, requestedDpi / 96.0) && Near(dpi.DpiScaleY, requestedDpi / 96.0), "Caption activation DPI differs from the requested native profile.");
+                TextControl(main, mainBox, mainXid, 'a');
+                TextControl(floating, floatBox, floatXid, 'b');
+                Caption(main, mainXid, new Point(100, 22), false);
+                int previousMainKeys = mainKeys, previousFloatKeys = floatKeys;
+                native.Key('c', true); native.Key('c', false); drain();
+                Observe("Main-caption-key-delivery");
+                Require(mainKeys == previousMainKeys + 1 && floatKeys == previousFloatKeys,
+                    "A real key after the Main caption press did not reach Main exclusively.");
+                Caption(floating, floatXid, new Point(130, 22), true);
+                previousMainKeys = mainKeys; previousFloatKeys = floatKeys;
+                native.Key('d', true); native.Key('d', false); drain();
+                Observe("floating-caption-key-delivery");
+                Require(floatKeys == previousFloatKeys + 1 && mainKeys == previousMainKeys,
+                    "A real key after the floating caption drag did not reach the floating source exclusively.");
+                Caption(main, mainXid, new Point(160, 22), true);
+            }
+            finally { native.Button(1, false); floating.Close(); main.Close(); drain(); }
+            Require(PresentationSource.FromVisual(main) == null && PresentationSource.FromVisual(floating) == null && native.CanAcquirePointerGrab(),
+                "Caption activation retained a source or native grab.");
+
+            void Observe(string phase)
+            {
+                var pointer = native.PointerPosition;
+                var mainOrigin = native.ClientOrigin(mainXid); var floatingOrigin = native.ClientOrigin(floatXid);
+                var mainScope = FocusManager.GetFocusedElement(main); var floatingScope = FocusManager.GetFocusedElement(floating);
+                trace?.Invoke(new { stage = "caption-activation", phase,
+                    mainXid = mainXid.ToInt64(), floatingXid = floatXid.ToInt64(), nativeFocus = native.FocusedWindow.ToInt64(),
+                    keyboardMain = ReferenceEquals(Keyboard.PrimaryDevice.ActiveSource, PresentationSource.FromVisual(main)),
+                    keyboardFloating = ReferenceEquals(Keyboard.PrimaryDevice.ActiveSource, PresentationSource.FromVisual(floating)),
+                    mainActive = main.IsActive, floatingActive = floating.IsActive, mainKeys, floatKeys,
+                    mainText = mainBox.Text, floatingText = floatBox.Text, captured = Mouse.Captured?.GetType().FullName,
+                    focusedElement = Keyboard.FocusedElement?.GetType().FullName,
+                    focusedMainBox = ReferenceEquals(Keyboard.FocusedElement, mainBox),
+                    focusedFloatingBox = ReferenceEquals(Keyboard.FocusedElement, floatBox),
+                    mainScopeElement = mainScope?.GetType().FullName, mainScopeRemembersBox = ReferenceEquals(mainScope, mainBox),
+                    floatingScopeElement = floatingScope?.GetType().FullName, floatingScopeRemembersBox = ReferenceEquals(floatingScope, floatBox),
+                    mainBox.IsKeyboardFocusWithin, floatingFocusWithin = floatBox.IsKeyboardFocusWithin,
+                    pointerGrabAvailable = phase.EndsWith("-caption-released", StringComparison.Ordinal) || phase.EndsWith("key-delivery", StringComparison.Ordinal)
+                        ? native.CanAcquirePointerGrab() : (bool?)null,
+                    pointerX = pointer.X, pointerY = pointer.Y, mainX = mainOrigin.X, mainY = mainOrigin.Y,
+                    floatingX = floatingOrigin.X, floatingY = floatingOrigin.Y });
+            }
+            void ObserveKey(string target, KeyEventArgs args) => trace?.Invoke(new { stage = "caption-activation-preview-key", target,
+                key = args.Key.ToString(), originalSource = args.OriginalSource?.GetType().FullName,
+                focusedElement = Keyboard.FocusedElement?.GetType().FullName, nativeFocus = native.FocusedWindow.ToInt64(),
+                keyboardMain = ReferenceEquals(Keyboard.PrimaryDevice.ActiveSource, PresentationSource.FromVisual(main)),
+                keyboardFloating = ReferenceEquals(Keyboard.PrimaryDevice.ActiveSource, PresentationSource.FromVisual(floating)) });
+            void TextControl(Window window, TextBox box, IntPtr xid, char key)
+            {
+                var point = box.TranslatePoint(new Point(box.ActualWidth / 2, box.ActualHeight / 2), window);
+                Click(window, point); wait(() => Focused(window, xid) && box.IsKeyboardFocusWithin);
+                int length = box.Text.Length; native.Key(key, true); native.Key(key, false); drain(); Observe(window.Title + "-textbox-control");
+                Require(box.Text.Length == length + 1 && box.Text.Contains(key), "The positive textbox control did not receive the genuine native key.");
+            }
+            void Caption(Window window, IntPtr xid, Point local, bool move)
+            {
+                var origin = native.ClientOrigin(xid); var point = Screen(window, local);
+                native.MovePointer(point.X, point.Y); native.Button(1, true); drain(); Observe(window.Title + "-caption-held");
+                if (move) { native.MovePointer(point.X + 20, point.Y + 12); drain(); }
+                native.Button(1, false); drain(); Observe(window.Title + "-caption-released");
+                wait(() => Focused(window, xid));
+                if (move) wait(() => native.ClientOrigin(xid) == (origin.X + 20, origin.Y + 12));
+                else Require(native.ClientOrigin(xid) == origin, "A stationary caption press changed native position.");
+                Require(Mouse.Captured == null && native.CanAcquirePointerGrab(), "The completed caption operation retained capture.");
+            }
+        });
+
+        run("native-WindowChrome-caption-disabled-reenabled-and-nonactivating-popup", () =>
+        {
+            var mainBox = new TextBox { Width = 180, Height = 40 };
+            var floatingBox = new TextBox { Width = 180, Height = 40 };
+            var main = Create("Caption enabled owner", mainBox, 60);
+            var floating = Create("Caption enabled floating", floatingBox, 500);
+            var popup = new WpfFork::System.Windows.Controls.Primitives.Popup { PlacementTarget = floatingBox, StaysOpen = true,
+                Child = new Border { Width = 60, Height = 35, Background = Brushes.Green } };
+            try
+            {
+                main.Show(); var mainXid = native.FindWindow(main.Title); wait(() => native.IsMapped(mainXid));
+                floating.Owner = main; floating.Show(); var floatXid = native.FindWindow(floating.Title);
+                wait(() => native.IsMapped(mainXid) && native.IsMapped(floatXid)); drain();
+                Click(floating, floatingBox.TranslatePoint(new Point(20, 20), floating)); wait(() => Focused(floating, floatXid));
+                main.IsEnabled = false; drain(); Click(main, new Point(100, 22));
+                Require(Focused(floating, floatXid) && !main.Activate(), "A disabled owner stole focus through caption or Activate.");
+                main.IsEnabled = true; drain(); Click(main, new Point(130, 22)); wait(() => Focused(main, mainXid));
+                Click(floating, floatingBox.TranslatePoint(new Point(20, 20), floating)); wait(() => Focused(floating, floatXid));
+                popup.IsOpen = true; wait(() => PresentationSource.FromVisual(popup.Child) != null); drain();
+                Require(Focused(floating, floatXid), "Showing a nonactivating Popup changed native or WPF keyboard ownership.");
+                popup.IsOpen = false; drain(); Require(Focused(floating, floatXid), "Closing a nonactivating Popup changed keyboard ownership.");
+            }
+            finally { native.Button(1, false); popup.IsOpen = false; floating.Close(); main.Close(); drain(); }
+        });
+
+        run("native-WindowChrome-caption-modal-owner-exclusion-and-restoration", () =>
+        {
+            var owner = Create("Caption modal owner", new TextBox { Width = 180, Height = 40 }, 60);
+            var dialogBox = new TextBox { Width = 180, Height = 40 };
+            var dialog = Create("Caption modal dialog", dialogBox, 500);
+            Exception? failure = null; bool exercised = false;
+            var timer = new WpfFork::System.Windows.Threading.DispatcherTimer { Interval = TimeSpan.FromMilliseconds(50) };
+            timer.Tick += (_, _) =>
+            {
+                var dialogXid = native.FindWindow(dialog.Title);
+                if (dialogXid == IntPtr.Zero || !native.IsMapped(dialogXid) || dialogBox.ActualWidth == 0) return;
+                timer.Stop();
+                try
+                {
+                    Click(dialog, dialogBox.TranslatePoint(new Point(20, 20), dialog)); wait(() => Focused(dialog, dialogXid));
+                    Click(owner, new Point(100, 22));
+                    Require(Focused(dialog, dialogXid) && !owner.Activate(), "A modal-disabled owner accepted caption activation.");
+                    exercised = true;
+                }
+                catch (Exception error) { failure = error; }
+                finally { dialog.DialogResult = true; }
+            };
+            try
+            {
+                owner.Show(); var ownerXid = native.FindWindow(owner.Title); wait(() => native.IsMapped(ownerXid));
+                dialog.Owner = owner; timer.Start();
+                Require(dialog.ShowDialog() == true && exercised && failure == null, "Modal caption exclusion failed: " + failure);
+                Click(owner, new Point(130, 22)); wait(() => Focused(owner, ownerXid));
+            }
+            finally { timer.Stop(); native.Button(1, false); dialog.Close(); owner.Close(); drain(); }
+        });
+
+        Window Create(string title, TextBox box, int left)
+        {
+            var window = new Window { Title = title, Width = 320, Height = 220, Left = left, Top = 100,
+                ShowActivated = true, Background = Brushes.DarkRed, Content = box };
+            WindowChrome.SetWindowChrome(window, NewChrome());
+            window.PreviewMouseDown += (_, args) => trace?.Invoke(new { stage = "caption-activation-press", title,
+                args.ClickCount, handled = args.Handled, originalSource = args.OriginalSource?.GetType().FullName,
+                nativeFocus = native.FocusedWindow.ToInt64(), local = args.GetPosition(window).ToString() });
+            return window;
+        }
+        bool Focused(Window window, IntPtr xid) => native.FocusedWindow == xid && window.IsActive &&
+            ReferenceEquals(Keyboard.PrimaryDevice.ActiveSource, PresentationSource.FromVisual(window));
+        void Click(Window window, Point point)
+        {
+            var screen = Screen(window, point); native.MovePointer(screen.X, screen.Y);
+            native.Button(1, true); drain(); native.Button(1, false); drain();
+        }
+    }
+
     internal static void StateDenial(X11Fixture native, Action<string, Action> run, Action<Func<bool>> wait, Action drain, Action<object>? trace = null)
     {
         run("native-WM-denied-state-background-input-repaint-and-supersession", () =>

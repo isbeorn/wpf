@@ -15,6 +15,8 @@ namespace MS.Internal.Portability.Input
         private readonly IPortableInputHost _host;
         private readonly InputManager _manager;
         private readonly InputProviderSite _site;
+        private readonly RestoreFocusMode _restoreFocusMode;
+        private bool _acquiringFocus;
         private bool _disposed;
         private bool _disposing;
         private bool _captured;
@@ -22,13 +24,14 @@ namespace MS.Internal.Portability.Input
         private uint _captureGeneration;
         private bool _cursorHidden;
 
-        internal PortableInputProvider(PresentationSource source, IPortableInputHost host)
+        internal PortableInputProvider(PresentationSource source, IPortableInputHost host, RestoreFocusMode restoreFocusMode)
         {
             ArgumentNullException.ThrowIfNull(source);
             source.VerifyAccess();
             ObjectDisposedException.ThrowIf(source.IsDisposed, source);
             _source = source;
             _host = host;
+            _restoreFocusMode = restoreFocusMode;
             _manager = InputManager.UnsecureCurrent;
             _site = _manager.RegisterInputProvider(this);
         }
@@ -44,6 +47,7 @@ namespace MS.Internal.Portability.Input
             ArgumentNullException.ThrowIfNull(report);
             if (!ReferenceEquals(report.InputSource, _source))
                 throw new ArgumentException("The input report belongs to a different presentation source.", nameof(report));
+            bool restoreFocus = false;
             if (report is RawKeyboardInputReport keyboard)
             {
                 if ((keyboard.Actions & RawKeyboardActions.Activate) == 0 && _manager.PortableInputState.KeyboardSource != _source)
@@ -53,6 +57,8 @@ namespace MS.Internal.Portability.Input
                     PortableTextCompositionSession.Current.CancelSource(_source);
                     if (_disposed || _source.IsDisposed) return false;
                 }
+                restoreFocus = (keyboard.Actions & RawKeyboardActions.Activate) != 0 && !_acquiringFocus &&
+                    _restoreFocusMode == RestoreFocusMode.Auto && _manager.PrimaryKeyboardDevice.ActiveSource != _source;
                 _manager.PortableInputState.Update(keyboard, _host);
             }
             else if (report is RawMouseInputReport mouse)
@@ -94,7 +100,30 @@ namespace MS.Internal.Portability.Input
             }
             else
                 throw new PlatformNotSupportedException($"Portable input does not support report type '{report.GetType().Name}'.");
-            return _site.ReportInput(report);
+            bool result = _site.ReportInput(report);
+            if (restoreFocus) RestoreFocus();
+            return result;
+        }
+
+        private bool OwnsNativeFocus => !_disposed && !_disposing && !_source.IsDisposed &&
+            _manager.PrimaryKeyboardDevice.ActiveSource == _source && _manager.PortableInputState.KeyboardSource == _source &&
+            _host?.AcquireFocus(true) == true;
+
+        private void RestoreFocus()
+        {
+            if (!OwnsNativeFocus) return;
+            var focused = Keyboard.FocusedElement as DependencyObject;
+            if (focused != null && PresentationSource.CriticalFromVisual(focused) == _source) return;
+            var root = _source.RootVisual;
+            if (root == null) return;
+            IInputElement target = FocusManager.GetFocusedElement(root, true);
+            if (!OwnsNativeFocus) return;
+            focused = Keyboard.FocusedElement as DependencyObject;
+            if (focused != null && PresentationSource.CriticalFromVisual(focused) == _source) return;
+            Keyboard.Focus(target);
+            if (!OwnsNativeFocus) return;
+            focused = Keyboard.FocusedElement as DependencyObject;
+            if (focused != null && PresentationSource.CriticalFromVisual(focused) != _source) Keyboard.ClearFocus();
         }
 
         private bool CanAcceptPreedit { get { _source.VerifyAccess(); return !_disposed && !_disposing && !_source.IsDisposed; } }
@@ -109,13 +138,19 @@ namespace MS.Internal.Portability.Input
         {
             VerifyActive();
             if (_disposing) return false;
-            bool acquired = _host?.AcquireFocus(checkOnly) == true;
-            if (_disposed || _disposing || _source.IsDisposed) return false;
-            if (acquired && !checkOnly && _manager.PortableInputState.KeyboardSource != _source)
-                ReportInput(new RawKeyboardInputReport(_source, InputMode.Foreground, Environment.TickCount,
-                    RawKeyboardActions.Activate, 0, false, false, 0, IntPtr.Zero));
-            return acquired && !_disposed && !_disposing && !_source.IsDisposed &&
-                (checkOnly || _manager.PortableInputState.KeyboardSource == _source);
+            bool wasAcquiringFocus = _acquiringFocus;
+            if (!checkOnly) _acquiringFocus = true;
+            try
+            {
+                bool acquired = _host?.AcquireFocus(checkOnly) == true;
+                if (_disposed || _disposing || _source.IsDisposed) return false;
+                if (acquired && !checkOnly && _manager.PortableInputState.KeyboardSource != _source)
+                    ReportInput(new RawKeyboardInputReport(_source, InputMode.Foreground, Environment.TickCount,
+                        RawKeyboardActions.Activate, 0, false, false, 0, IntPtr.Zero));
+                return acquired && !_disposed && !_disposing && !_source.IsDisposed &&
+                    (checkOnly || _manager.PortableInputState.KeyboardSource == _source);
+            }
+            finally { _acquiringFocus = wasAcquiringFocus; }
         }
 
         public bool CaptureMouse()

@@ -183,6 +183,52 @@ not close caption/redocking, focus restoration, actual pickers/clipboard, Xorg,
 installed diagnostics, allocation or overnight gates. It is the actual 640x480
 simulator workflow, not a 24-megapixel or sustained 1-Hz application result.
 
+### Keyboard focus restoration
+
+The isolated caption probe showed that native activation, Window.IsActive and
+WPF's active keyboard source could all switch successfully while
+Keyboard.FocusedElement stayed null. FocusManager still remembered the live
+TextBox, but the next genuine key reached neither that TextBox nor the window's
+PreviewKeyDown route. The same failure reproduces without custom chrome.
+
+The repair stays in PresentationCore. Each portable presentation source captures
+Keyboard.DefaultRestoreFocusMode at construction, before its lazy provider is
+created. External native activation restores the existing validated logical
+focus only while that source still owns native and WPF keyboard input. Explicit
+focus requests retain precedence, including during nested acquisition, and
+callback-selected targets are rechecked before restoration. No Host, chrome or
+public API changes are needed.
+
+The final source freeze is `source-ready-v4.json`, SHA-256
+`77AC510EA4A31B082EAE2A52FF07FE2F7DBF593711E7B91CDE646DC2BEA730C6`.
+The ordinary Core passes 19 focused native checks, 28 broader input checks and
+11 anchored-popup neighbors on private Xvfb, with Openbox for caption checks.
+Existing headless input 36
+and presentation-source lifetime 29 pass on each OS using a separate test-friend
+Core that must not enter a release. All processes exit zero with empty stderr;
+owned display/process/socket/lock cleanup passes. Root independently verified
+the final reports, 28 handoff pins, normal Core's 1,428 source documents and the
+final native entry's 25 source documents. Both independent reviews are clear.
+The handoff is `current/caption-activation-20261021-1/final-handoff.json`, SHA-256
+`C01916804F674C40D1431451D9849BD5251336B616053045B80502E91C3FE7CD`.
+
+Earlier fixture failures are retained: Windows foreign-source construction
+needed its existing thread to be STA, a witness needed native/source activation
+before calculating its click coordinates and compose selection needed actual
+mouse-release delivery. These are setup corrections, not additional production
+repairs. Ordinary package production, package-derived native checks and the
+actual NINA focus/caption replay remain pending. The separate GNOME/XWayland
+synthetic-input activation observation remains unresolved.
+
+Commit `b6b30ebc6` also includes AvalonDock's existing license and provenance
+receipt in generated NINA build output and normal publication. Disposable SDK
+copy targets verify both files byte-for-byte at both destinations, with all six
+original App item sets unchanged. Existing publications remain frozen; the next
+application publication must include this pair. Current runtime/SDK notices,
+graphics/text notices and adapted Accord source material are present. A complete
+outward NINA corresponding-source distribution remains separate from the
+retained local source/build receipts and is not claimed here.
+
 ### Earlier targeted repairs and application runs
 
 The targetless sequence ContextMenu opening is repaired in commit `0b12eb772`. The original null
