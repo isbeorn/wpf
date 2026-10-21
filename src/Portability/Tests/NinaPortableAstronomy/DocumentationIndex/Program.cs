@@ -5,6 +5,7 @@ using NINA.Core.Utility;
 
 internal static class Program {
     private static int Main(string[] args) {
+        if (args.FirstOrDefault() == "--image-patterns") return ImagePatternChecks.Run(args[1..]);
         if (args.Length != 1) {
             Console.Error.WriteLine("Specify an absolute application directory or --assembly-directory.");
             return 2;

@@ -28,6 +28,10 @@ Edit-Text 'NINA.Core/Utility/DllLoader.cs' {
 '@
     Replace-Once $text "return FileVersionInfo.GetVersionInfo(path.Replace('/', '\\'));" "return FileVersionInfo.GetVersionInfo(OperatingSystem.IsWindows() ? path.Replace('/', '\\') : path);"
 }
+Edit-Text 'NINA.Core/Model/ImagePattern.cs' {
+    param($text)
+    Replace-Once $text '            string s = filePatternMacro;' "            string s = filePatternMacro.Replace('\\', Path.DirectorySeparatorChar);"
+} ([Text.Encoding]::Latin1)
 Edit-Text 'NINA.Astrometry/NOVAS.cs' {
     param($text)
     $text = Replace-Once $text '                return NOVAS_CalDate(jtd, ref year, ref month, ref day, ref hour);' @'

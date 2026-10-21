@@ -1,6 +1,6 @@
 # Pinned genuine NINA astronomy on Linux x64
 
-`eng/portability/Build-NinaPortableAstronomy.ps1` builds the complete pinned NINA.Core and NINA.Astrometry source assemblies against one supplied portable WPF family. Its 670-file manifest covers both assemblies, the original SOFA 2023-10-11 distribution, NOVAS C3.1, NINA licensing and common assembly identity. The helper verifies source/tool/closure hashes, regenerates the original protobuf API with the existing pinned compiler and preserves Core's original XAML/resources. It changes eight original files and adds one private assembly resolver. Windows branches retain the original PInvokes and names. The sixth source boundary makes only the Linux default DatabaseInteraction constructor use `Path.Combine(CoreUtil.APPLICATIONTEMPPATH, "NINA.sqlite")`; the explicit connection-string constructor and all queries stay unchanged. The seventh constructs DocumentationIndex builders from an explicit absolute Uri, preserving all13 public getters, filesystem paths and fragments on both OSes. The real-getter regression is in `DocumentationIndex/`. The eighth guards both NotificationHostWindow `SystemEvents.DisplaySettingsChanged` subscription and removal with `OperatingSystem.IsWindows()`. It preserves the source's legacy single-byte encoding, Reposition and main-window hooks. Linux receives no notification solely from that Windows event; genuine WPF layout and normal window events remain. No event shim, new API or scientific bypass is introduced.
+`eng/portability/Build-NinaPortableAstronomy.ps1` builds the complete pinned NINA.Core and NINA.Astrometry source assemblies against one supplied portable WPF family. Its 670-file manifest covers both assemblies, the original SOFA 2023-10-11 distribution, NOVAS C3.1, NINA licensing and common assembly identity. The helper verifies source/tool/closure hashes, regenerates the original protobuf API with the existing pinned compiler and preserves Core's original XAML/resources. It changes nine original files and adds one private assembly resolver. Windows branches retain the original PInvokes and names. The sixth source boundary makes only the Linux default DatabaseInteraction constructor use `Path.Combine(CoreUtil.APPLICATIONTEMPPATH, "NINA.sqlite")`; the explicit connection-string constructor and all queries stay unchanged. The seventh constructs DocumentationIndex builders from an explicit absolute Uri, preserving all13 public getters, filesystem paths and fragments on both OSes. The real-getter regression is in `DocumentationIndex/`. The eighth guards both NotificationHostWindow `SystemEvents.DisplaySettingsChanged` subscription and removal with `OperatingSystem.IsWindows()`. It preserves the source's legacy single-byte encoding, Reposition and main-window hooks. Linux receives no notification solely from that Windows event; genuine WPF layout and normal window events remain. No event shim, new API or scientific bypass is introduced.
 
 The historical original160 manifest remains pinned in upstream.json. Both NINA source-build helpers additionally accept the one named fresh stock source-build manifest in `NinaPortableViews/CurrentBaselinePin.json`. Its160 PEs have fresh compiled hashes and provenance; this is not a reproduction of historical Closure.json bytes. Both paths retain exact manifest and individual PE hash checks. Build evidence records which baseline was consumed.
 
@@ -23,3 +23,20 @@ The original Linux path can silently create a duplicate genuine auto-initialized
 Full App/MainWindow, original workflow views and simulator capture remain separate gates. No synthetic nighttime service, downloaded ephemeris or replacement calculation is used.
 
 The framework intake requires FrameworkRuntimeDirectory, FrameworkRuntimeManifest, ExpectedFrameworkRuntimeManifestSha256 and ExpectedFrameworkRuntimeFileCount from one reviewed whole Unix Release producer family. It verifies the manifest pin, complete unique safe-relative path set, every file hash and active profile assemblies, rejecting extra, missing and legacy Avalonia runtime assets. Raw Stage qualification does not claim curated package delivery.
+
+The ninth boundary normalizes backslashes only in the filename-pattern template
+before macro substitution. Persisted Windows-style date/type folders therefore
+use native directory separators on Linux. CoreUtil's separator array and native
+filename sanitizers remain unchanged. Values passed through Set retain its
+existing slash-to-hyphen handling; a literal backslash supplied through public
+Add/ImagePattern.Value remains a filename character on Linux. Windows template
+normalization is a no-op. The focused public-parser regression is in the existing
+DocumentationIndex console's `--image-patterns` route.
+
+The bounded Core-only repair reuses the qualified generated
+NINA.Core.Portable.csproj in a fresh pinned source projection, including its
+existing adaptations and generated protobuf inputs. Only copy-local reference
+metadata and output/intermediate paths change in that private project. Its normal
+SDK 10.0.401 build does not build NINA.Astrometry or the application. The original
+combined producer remains the durable recipe and still verifies its complete
+source and dependency manifests.

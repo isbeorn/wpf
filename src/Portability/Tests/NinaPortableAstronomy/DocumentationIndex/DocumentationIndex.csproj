@@ -13,6 +13,11 @@
       <HintPath>$(NinaCorePath)</HintPath>
       <Private>true</Private>
     </Reference>
+    <Reference Include="CommunityToolkit.Mvvm" Condition="'$(OriginalManagedDirectory)' != ''">
+      <HintPath>$(OriginalManagedDirectory)/CommunityToolkit.Mvvm.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="$(FrameworkRuntimeDirectory)/*.dll" Condition="'$(FrameworkRuntimeDirectory)' != ''" Private="true" />
   </ItemGroup>
   <Target Name="RequireNinaCore" BeforeTargets="ResolveReferences">
     <Error Condition="'$(NinaCorePath)' == '' or !Exists('$(NinaCorePath)')" Text="Supply the complete original or declared source-adapted NINA.Core assembly through NinaCorePath." />
