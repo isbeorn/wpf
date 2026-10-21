@@ -8,9 +8,10 @@ NINA App/MainWindow has run on GNOME/XWayland with capture, cancellation, recove
 layout restoration and sequence execution. A contended weak-event wait found
 during sequence restart is repaired and qualified at component, package and actual
 application boundaries. The latest packaged application also captures, displays
-and saves a valid FITS image. Original thumbnail reload is blocked by eager
-construction of a Windows raw converter before FITS dispatch. Native
-drag/docking, readback, desktop service and sustained-workload gates remain open.
+and saves a valid FITS image. The focused raw-converter initialization repair
+also passes actual thumbnail reload, annotation on/off processing and recovery
+capture. Native drag/docking, focus restoration, desktop service and
+sustained-workload gates remain open.
 General WPF features
 unused by NINA, native IME and further accessibility qualification are deferred.
 The historical implementation notes at the end retain their original scope.

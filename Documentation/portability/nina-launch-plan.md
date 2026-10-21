@@ -34,10 +34,10 @@ workflows. The approved Accord metadata adaptation passes the component image
 regressions and the actual simulator Snapshot saves a valid FITS file. Rendering
 initially stopped at an unsupported ImageBrush. That renderer gap is now fixed,
 passes the affected component tests and is included in newly qualified packages.
-The successor NINA application has captured and displayed a useful simulator
-image, shown finite statistics and saved a valid FITS file. Original thumbnail
-reload then exposed eager construction of a Windows-only raw converter before
-FITS dispatch. Readback, annotation toggling and sustained operation remain open.
+The successor NINA application has captured and displayed useful simulator
+images, shown finite statistics and saved valid FITS files. The focused raw-load
+repair also passes original thumbnail reload, annotation on/off preparation and
+recovery capture. Sustained operation and the remaining desktop gates stay open.
 Native IME, broader rich-text editing/printing, real hardware, ARM64 and macOS
 remain unqualified or deferred. Detailed evidence and remaining gates follow.
 
@@ -58,9 +58,10 @@ lifetime. The user's subsequent navigation exposed another unsupported brush:
 LinearGradientBrush through DrawRoundedRectangle. The application closed
 normally and the user's final profile/layout are preserved. The gradient repair
 is now included in the final4 packages and the next actual NINA lifetime has
-passed capture, useful image display, finite statistics and FITS save. Original
-UI readback and annotation toggling remain open. Earlier capture and Framing
-passes retain their own runtime scope.
+passed capture, useful image display, finite statistics and FITS save. The Image
+successor also passes original UI readback, annotation on/off preparation and
+recovery capture as recorded below. Earlier capture and Framing passes retain
+their own runtime scope.
 
 ### Final4 package and actual imaging checkpoint
 
@@ -140,8 +141,47 @@ Root verified all 72 resolved source-document hashes, the final five-file freeze
 members match the preceding component and the 74 upstream inputs remain pinned.
 The handoff is `current/nina/fits-factory-reload-20261021-1/final-handoff.json`,
 SHA-256 `828FA3859B7816BC666EDD48E460142ED87F5535ECBB6FDCE7F9EA2775FCEA4C`.
-Actual NINA replay remains pending a coherent successor publication. Successful
-raw decoding and native Windows CFITSIO are outside this repair's qualification.
+Successful raw decoding and native Windows CFITSIO are outside this repair's
+qualification.
+
+### Actual App replay after the raw-load repair
+
+The coherent successor retains the same 317 paths and changes only the Image
+DLL/PDB pair. All other 315 members, including WPF, App/BAML, generated dependency
+files, Accord and native assets remain byte-identical. Root rehashed every
+member and its 16 publication evidence pins. The publication manifest is
+`AEEA0374848D602EA45DC5CC2F3ADD5AFEA9DFF1E3842E5B24DE827BA9BF411D`;
+the local handoff is `current/nina/vm-package-fits-factory-20261021-1/HANDOFF.md`,
+SHA-256 `E42E78777F612E184F0D1A9616DB3DDA67C812CC65C90599FE24C1C3C4DA292B`.
+
+On the actual GNOME/XWayland desktop with diagnostics off, the original one-second
+Save-on/Loop-off Snapshot displays a useful 640x480 noise image and saves FITS
+`310E659F04AECB044CF5B197A3D53002B0BB4F4588CAD440B424982231C1130E`.
+Independent decoding verifies all 307,200 ushort samples and header semantics.
+The original Image History thumbnail then reaches `LoadOriginalImage` and
+`PrepareImage` successfully, without the former LibRaw error. The file is not an
+injected history item; each fresh session starts with empty original history.
+
+The original Options control persists AnnotateImage=true. A subsequent genuine
+DetectStars-on Snapshot completes preparation/display and saving with that value.
+The same control restores false and a third Snapshot completes recovery. All
+three original save-worker successes are present and ordinary stderr is empty.
+These RANDOM frames have zero detected stars; actual colored marks remain
+separately qualified by the component annotation tests. Root inspected the
+reloaded image and recovery statistics pixels, and verified all 24 native
+functional evidence files. No error or FATAL appears in the complete 16,966-byte
+functional log. Its SHA-256 is
+`88B497FD5F972EB1679C75BFA96A525FBD5FB16C1165594C6E9DA44EB9E37963`.
+
+The actual functional handoff is
+`current/nina/vm-package-fits-factory-20261021-1/native-functional-handoff.json`,
+SHA-256 `AF51FE714055D2156E06497BA23BC695631D7F8F5BFAFF082918519EFFE0CC7F`.
+The application remains open and passive with its temporary panes restored,
+Save=true, Loop=false and annotation=false. The 25-minute resource pilot is
+prepared but unexecuted pending the extended desktop-idle window. This pass does
+not close caption/redocking, focus restoration, actual pickers/clipboard, Xorg,
+installed diagnostics, allocation or overnight gates. It is the actual 640x480
+simulator workflow, not a 24-megapixel or sustained 1-Hz application result.
 
 ### Earlier targeted repairs and application runs
 
