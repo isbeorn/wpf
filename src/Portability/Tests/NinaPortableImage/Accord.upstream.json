@@ -1,0 +1,1827 @@
+{
+  "revision": "4742afae0a09c79be772f23fcf163fb5852d2775",
+  "sourceIntakeSha256": "CE6F18C1278AA14AA466AD9EB80B109CDA52E669A70FDED79767F28EAA71A6E1",
+  "project": "Accord.Imaging/Accord.Imaging (NETStandard).csproj",
+  "originalAssemblySha256": "BE51CE9A30C63DFE9BEF4CF49D3C7E99F5FB8B020E229D2513CEEDBA744A018F",
+  "originalAssemblyIdentity": "Accord.Imaging, Version=3.5.3.0, Culture=neutral, PublicKeyToken=null",
+  "files": [
+    {
+      "path": "Accord.Imaging/AForge.Imaging/BlockMatch.cs",
+      "blob": "0c94936e58df5a37e566c2210f92eeb56de9c5b7",
+      "sha256": "02F11A4572EE23819A03509011A8D3A95C5A806E4052C5AD60D1FBC8A8CCA98E",
+      "bytes": 1912
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Color Reduction/BurkesColorDithering.cs",
+      "blob": "ca895aa5e9b409ad990ad15b980d7a991df0b3df",
+      "sha256": "21163EEDF4312FDE1C2D430F299F48AB12329AA49F3994766B8F02D8285323ED",
+      "bytes": 2707
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Color Reduction/ColorErrorDiffusionToAdjacentNeighbors.cs",
+      "blob": "2f9acf198c4dee037bb67ee9e8024bc4bff249ed",
+      "sha256": "10D127C42E40AD237939D34DAF1A87789619510457CB9E2CB09A5EA8CC741935",
+      "bytes": 7003
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Color Reduction/ColorImageQuantizer.cs",
+      "blob": "67e185557e9fc8d531154c1542ccb95b1365812c",
+      "sha256": "184B7335D349AFF600EC53DB8F6885F0911EC2C54072E650C001444C0E2256F2",
+      "bytes": 16027
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Color Reduction/ErrorDiffusionColorDithering.cs",
+      "blob": "e757c6f5131c67057624618126b3e6c4eef1e72d",
+      "sha256": "8B445A64BFF54F25254EE1870B36AF9E1E3658DD71E4C4C0307264FFD4E122ED",
+      "bytes": 12513
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Color Reduction/FloydSteinbergColorDithering.cs",
+      "blob": "c5123426bfa23f436aa138542bb3395d22158d54",
+      "sha256": "A85D09476A79A06D3FEB8BB98E06390449F44366BB24A29F2D7E5500AF885B13",
+      "bytes": 2756
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Color Reduction/IColorQuantizer.cs",
+      "blob": "e5ac7f96cca4964801ef21aad8078b0bf76f811a",
+      "sha256": "D6710F1AD6CBFC56B56E66D17AC785FDBE9C3994DF3B16DE6EE8346E8387F557",
+      "bytes": 2297
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Color Reduction/JarvisJudiceNinkeColorDithering.cs",
+      "blob": "242b332de34b75d105bf23626f2681e306e90190",
+      "sha256": "9FD3AC6D34A168F70717CA9B04D2478855EFB2703D448392393FC9D38F8B1606",
+      "bytes": 2796
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Color Reduction/MedianCutCube.cs",
+      "blob": "6dbba9288598296a21eab0fb8a1bf9156ea99509",
+      "sha256": "890E84314D69F5B3B1256E0BBC5D97D1B58F002FFA4EE4A3D4DA35D6A0C31764",
+      "bytes": 4234
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Color Reduction/MedianCutQuantizer.cs",
+      "blob": "84e55a772775e32d848d142579edef012903d43e",
+      "sha256": "899AB20F4AA926DAE689406D76ABE624080AB9C011647EE4827A7B97BBABDB81",
+      "bytes": 4751
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Color Reduction/OrderedColorDithering.cs",
+      "blob": "b985d8f7877388e005d3494a327335392c6de2f8",
+      "sha256": "624C9F5A6574FC58B6B1A792EDF154FA5DFB431CCEFB0B18A9FCF5315EA47291",
+      "bytes": 13509
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Color Reduction/SierraColorDithering.cs",
+      "blob": "0ef6d074064d82cfae51de35b828ff9d3988747d",
+      "sha256": "F0B5F351116CC645C7310DD25211A99E833E976A934FB4BD2829B1088C7A427A",
+      "bytes": 2445
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Color Reduction/StuckiColorDithering.cs",
+      "blob": "a43bad9582264eebf52b38f73877e6354fa7e183",
+      "sha256": "B49AD31D621A68D7A16B61787E2C94181BF78BE14A4DCBD2AA8F3EE24642B068",
+      "bytes": 2708
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Complex Filters/FrequencyFilter.cs",
+      "blob": "eed9ae677367228ff7194399c3692cd298046a59",
+      "sha256": "CF916F25C6C00D64F131B7D50D6FC9BD8907E75E96E11E5D79140513391B9E37",
+      "bytes": 4256
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Complex Filters/IComplexFilter.cs",
+      "blob": "7224da7e15e8fc54b00d3b64688ae9e208945d58",
+      "sha256": "A41F134E86A3C240BFA6CBFAA2637D4AC862C0470DA42CD8F120B81CA3A22B08",
+      "bytes": 923
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/ComplexImage.cs",
+      "blob": "a0ecb78812d0c6b4e6b59ad9733baaa63b196e2e",
+      "sha256": "F7E09DF244E22A231B064045F5644128064D90BD7840C1807068907B0C3AF06A",
+      "bytes": 9951
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/DocumentSkewChecker.cs",
+      "blob": "4ca0cbe423d6d316375ce549c8f053cf59c81860",
+      "sha256": "635E56508E631C55FFA17D9D7E0959BBA2CC84FE28EC8E59BFE54EBBC4D53E76",
+      "bytes": 18925
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Drawing.cs",
+      "blob": "883538dac539ed3967569f4380bac2c2b9b06c18",
+      "sha256": "B1676A219F6B6F22F808D951786FA673B834A85CEB9D13895FA3A2385989BE50",
+      "bytes": 27930
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Exceptions.cs",
+      "blob": "26735d8e8a47b414025ff7a5127ec3b921793412",
+      "sha256": "71FEB3CEBB3808CD4C1F4378F0C6D378A062392402BAA47DD9829586207E1874",
+      "bytes": 3807
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/2 Source filters/Add.cs",
+      "blob": "9d6e958a80c7c90d498363e54ed7ec8149edf6d1",
+      "sha256": "0CD70D8688CCD4C750E1E144CCD593D1A6C2D9BC0F0C5E0231DCAAFC8DA8A26A",
+      "bytes": 6982
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/2 Source filters/Difference.cs",
+      "blob": "a09f2933d9e2b08032c759f7a89a4cdd510a973e",
+      "sha256": "823F2ABFA949438F08DE305360A9D8C174FD5B8975D833F3E5F2265C66144AF6",
+      "bytes": 7544
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/2 Source filters/Divide.cs",
+      "blob": "f85041dc83696694f78c3d6f056009be2dd224d1",
+      "sha256": "E4021DBD6CBDBE7B75CF82734C31A20D0907B54A2C2D3B1BD679CD156C6E25C1",
+      "bytes": 7455
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/2 Source filters/Intersect.cs",
+      "blob": "7078449484521dcdd7d1f84d3ef28c19d3dfdd14",
+      "sha256": "CFEE7D660ED7148B9E653BDFC7C10CB4177EE03C4D13392C5D8659AF59E0A36B",
+      "bytes": 6738
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/2 Source filters/Merge.cs",
+      "blob": "8c5fafc59f9eca11845de1648f47a6df914afcf4",
+      "sha256": "DAD8B7FC3CCD55004EBA6DB6F041E66286A0DF079792663E743264718658FD66",
+      "bytes": 6592
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/2 Source filters/Morph.cs",
+      "blob": "aa9529ee7f3dcdf495298fc549b49f1953f9ce9c",
+      "sha256": "A50697526D482397FE4FC81CA01DC50496EA18D698DC47903C857C9914F8BFFC",
+      "bytes": 5262
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/2 Source filters/MoveTowards.cs",
+      "blob": "e1e0aaed454100bebe6295e365ec10b1325c8bb4",
+      "sha256": "E9155182D4E6C1AC5C3F18CA43336398F0A6797D1CE8C4B9D81F3B144437AD26",
+      "bytes": 9593
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/2 Source filters/Multiply.cs",
+      "blob": "6a5292740d1291dcf5b8954b0b0c46dd636d16dd",
+      "sha256": "F39640BD6AC18A9C0E27365980EAB5B01B6E668F87FDF34BFAC8807B723ACAFF",
+      "bytes": 7212
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/2 Source filters/StereoAnaglyph.cs",
+      "blob": "d5ab0cf489bf9a82abf56a88caaad31a772dbe1e",
+      "sha256": "EF4EA8EDBA7C5AE4DB3CC97E6B8BA937B2E1B29CBA91CB05B1728BA110EC22B3",
+      "bytes": 10708
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/2 Source filters/Subtract.cs",
+      "blob": "1df1c7d9de80713636727179e713968d550ea582",
+      "sha256": "FD3CA308D59D94EFE81F4B12530D152EC5C4174FA8EA79CE83993FE152091221",
+      "bytes": 7038
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/2 Source filters/ThresholdedDifference.cs",
+      "blob": "b97890b7ce802203f67c7106df266bc8856865b4",
+      "sha256": "C355693FE4F28770210AF4C56A8CD829466A0EF3D2B909C9D2A2DFD00863078D",
+      "bytes": 8268
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/2 Source filters/ThresholdedEuclideanDifference.cs",
+      "blob": "0edff5d6b3d826b4483b3ee82f17c22f02037bd9",
+      "sha256": "38138F6E64AF4A9D0BF18B82874C57FF3B08CE5774733918CB402460167D449E",
+      "bytes": 8019
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Adaptive Binarization/BradleyLocalThresholding.cs",
+      "blob": "d9913dc82f4cc9cc6169447b9bfcf5ce06e8311d",
+      "sha256": "9DCC1A5EFD7C1842C722CEDDAEFDE716A633DCD2DB0A8DF4D1B8B42628F80AD1",
+      "bytes": 5773
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Adaptive Binarization/IterativeThreshold.cs",
+      "blob": "91ee56ca1d2e3128317d658e00a9329160808285",
+      "sha256": "1FCAD7973C376DCDF1131D57B7B4873CDDB1BCDF908A1F596C421C6A387D417F",
+      "bytes": 11945
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Adaptive Binarization/OtsuThreshold.cs",
+      "blob": "86831b4f6342440339e8c20694b49958a7f385a3",
+      "sha256": "257B9950E66B622685D7E3065F3AE7F1095AFBD082CC8188DE728BEBA008A71A",
+      "bytes": 10230
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Adaptive Binarization/SISThreshold.cs",
+      "blob": "71248a49c833ccbe9a06d12398b93f2d3c83214d",
+      "sha256": "D5084715CEC15F572F00DB1B1CDEBA98F1E86F76EA5B5905FD45BA27CBCA9EC0",
+      "bytes": 8983
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Base classes/BaseFilter.cs",
+      "blob": "4c9af66a08ceab913368f0a8248964c4f35bde9d",
+      "sha256": "91F947EC2E388483074AFD5117CD672C5825A1301B94F4AEDB03178A4984C8D3",
+      "bytes": 9743
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Base classes/BaseFilter2.cs",
+      "blob": "77d7aae48856d249dac14f7e5810ca56eca0ddf6",
+      "sha256": "E354F66024879ADCBAAAE256F5896711C8C58426AA9B3875D2243416DCB82D64",
+      "bytes": 7573
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Base classes/BaseInPlaceFilter.cs",
+      "blob": "9285bf24d63d1da6ff86610b04410815029c522a",
+      "sha256": "D31FC3ED96975C98EE3A6AEDDB5A88F568550BCF54FEC787A75A95BE71990083",
+      "bytes": 11431
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Base classes/BaseInPlaceFilter2.cs",
+      "blob": "8ef468d3cec4669fe39ac35be2a1504b92033f9f",
+      "sha256": "C090222A1392607090F3260E7926F17077F9BD15DD5ED08AEC1BA163D9DCEC61",
+      "bytes": 7610
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Base classes/BaseInPlacePartialFilter.cs",
+      "blob": "7c1e66c54e2e669c4189ee4f086ffca62f4694f8",
+      "sha256": "D11712071236E6103208DC4B085541ED71E1464DD54538C4E454AB071A1C3D96",
+      "bytes": 14414
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Base classes/BaseResizeFilter.cs",
+      "blob": "74344f8e3575a182e4ca982d66e2e7154c445c6a",
+      "sha256": "E27815F9805A2F228FBAB02CC0F06098D2B45C69D148430B9BF7DA8756B33C7B",
+      "bytes": 3469
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Base classes/BaseRotateFilter.cs",
+      "blob": "01942f3da09238f6f88876432928ae163950e4d1",
+      "sha256": "2D8450F755F617BA92E325E240FFE3F6BE48C6555E43AE86D343D8794AEDF4F9",
+      "bytes": 4793
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Base classes/BaseTransformationFilter.cs",
+      "blob": "00986512edc9964a5391345cc47bd98567902683",
+      "sha256": "BE03F73F8AF52DEF0E027E2DAB2578BF605B021F80E5858578E35123732669A5",
+      "bytes": 12257
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Base classes/BaseUsingCopyPartialFilter.cs",
+      "blob": "161382b3146dfa1ee9d5cae49fb8811f0762c58f",
+      "sha256": "33FFF6E968583DF6706DC5CAFA94F825D0826A6E6F180EF462C22CC6F54999F9",
+      "bytes": 14571
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Binarization/BayerDithering.cs",
+      "blob": "89888bd72562c48e83456483a4f1eacd4f515f88",
+      "sha256": "E3FD56F7E0514C045737401844519077D9F47BB16A8666512D92985EB5FAA9B6",
+      "bytes": 1589
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Binarization/BurkesDithering.cs",
+      "blob": "188160e5d2ccb61b21a3030ec068d2ea23a71e59",
+      "sha256": "2B82521BCAB1EB8D48938A19D46EE8D80C8E588A4A68F6DA3B512189DA06F30A",
+      "bytes": 1951
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Binarization/ErrorDiffusionDithering.cs",
+      "blob": "815ab147523bb6498906ac2ba0e0b14e06f24553",
+      "sha256": "20317A6C96C24CF969DFCC325BD7482C06145FF6CB6360D92DE0CF47729F8B79",
+      "bytes": 5757
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Binarization/ErrorDiffusionToAdjacentNeighbors.cs",
+      "blob": "81f0a8283176fcc7482308903da837dec77c1f09",
+      "sha256": "1DDA79AD48167ED19F945959024EF8D339D3DFC59EA90E4F7D5D17E6A5E37F49",
+      "bytes": 5507
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Binarization/FloydSteinbergDithering.cs",
+      "blob": "12020bbae5fc7c7b81ccc4e742d785978af80265",
+      "sha256": "D5F16A20201DD6F15073903A3FF178ABCBDE66AF3000CF7229CAF53081F6CA89",
+      "bytes": 2002
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Binarization/JarvisJudiceNinkeDithering.cs",
+      "blob": "bf1b9be7cbd42836f086d6b00d1cd54635654523",
+      "sha256": "86597F3AFA8614ADD46247E3BD72BA7636158A0951D05EEEFD82BFACD4FC9E3A",
+      "bytes": 2111
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Binarization/OrderedDithering.cs",
+      "blob": "39163e8ce7e9bf5930ae0ae10816a2bb23ccc715",
+      "sha256": "E733E6546D2A78682429DE6994B3CB461CA8B8B154DED689F874661D7AE03B01",
+      "bytes": 4488
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Binarization/SierraDithering.cs",
+      "blob": "00293e72738ef7726f931b938d931bd284d7c756",
+      "sha256": "C83B84CA789A2D8144EFA7CF8CD303219CD5C272F49F2985D7FB821227C46B59",
+      "bytes": 2014
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Binarization/StuckiDithering.cs",
+      "blob": "aa60afd0ad86195cf044ec6c5bdcc0459f65d69c",
+      "sha256": "7F531C9DEEC612EF81C6B1644869B351B9F63A264480F1639860C7E4BA1D8218",
+      "bytes": 2023
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Binarization/Threshold.cs",
+      "blob": "3f787dac4d699568d3a2f961e75d65288b1b7b19",
+      "sha256": "7CAA2445B539C2D1F1F020CD29F0023080320043AB9709FB3115842308F98F16",
+      "bytes": 5200
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Binarization/ThresholdWithCarry.cs",
+      "blob": "c4d792c4b25640c2a0ef0a49e48a9bfbccef5772",
+      "sha256": "BE839210646D83BF9FEABF8F24A323D2CD880B2E71670E90CD01D536AB8FDF00",
+      "bytes": 4624
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/BayerFilter.cs",
+      "blob": "5c49184e78e2c6a02c9942bbee3588650ad054ee",
+      "sha256": "3A4CF5644EF93DAF369BA71697598D97D78D4D62035DEFD23DD4E6350BEFB328",
+      "bytes": 9757
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/BayerFilterOptimized.cs",
+      "blob": "1c4620f48235e5e62efc62b6866893f25a00eec9",
+      "sha256": "4365342B3BB6CF1799ED25F9A995CEB87C2F3EEDAE964F7B0F32B3087F7ACC57",
+      "bytes": 18997
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/BrightnessCorrection.cs",
+      "blob": "5d4a875e2dd5de4aa2262f4a92314e4a3f08faa3",
+      "sha256": "DD4EE553D98E5D1C916ED796490A0379E0A1EABB777C8BDB19D0B323B9FBB5ED",
+      "bytes": 4795
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/ChannelFiltering.cs",
+      "blob": "6c3d852e5b8a2250b20d14f49fb563cbb24af652",
+      "sha256": "0E8CDCFA576314446E33967C9304C14C7E0D890349D72197D875282BB9A7A3EE",
+      "bytes": 9748
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/ColorFiltering.cs",
+      "blob": "e3c0ccce8681e3af1ef85437ad0387698c93757a",
+      "sha256": "66790B70682F3C921C2B0A615BAA189803FEA832D02288E06D1C5A76B2B5B87A",
+      "bytes": 7169
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/ColorRemapping.cs",
+      "blob": "53b35134da9d6ad8e2a41e25b84bf831be27431a",
+      "sha256": "4A31673B72681AD67FBA6FF95FF85526B32B79A6A48F4576099939545CA7F802",
+      "bytes": 9615
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/ContrastCorrection.cs",
+      "blob": "f80a5148e0b9bf8f6a0643b160d9472889f7a55f",
+      "sha256": "F58A2C7859BD37ADAB947CA09AA76FE84CD5771E3921426CE49755F6D922C0B5",
+      "bytes": 4848
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/ContrastStretch.cs",
+      "blob": "46a304ee2d0bd5866d72e2f3ca12e053303643d2",
+      "sha256": "C10DF4523B74FB198D8B02674601C6E6721271F0FFCD2E213F399C4E2DA9F7AE",
+      "bytes": 6245
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/EuclideanColorFiltering.cs",
+      "blob": "68c6be3cdc22378afb25c844eeca9871504fb811",
+      "sha256": "02DAE268CF8B85C7CE486D5289E7DA82355C1429043BB6FC8F12291B4373F3FF",
+      "bytes": 6965
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/ExtractChannel.cs",
+      "blob": "f78799257ba1507643945231bdfb52c82fe2309a",
+      "sha256": "E71BFBF5707F47B5A45FC71D3D6F82612D001B2B22930C9CBE2518E37D9CF491",
+      "bytes": 6416
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/GammaCorrection.cs",
+      "blob": "c6459d58d158ef231c46dec73ee3b6fb38bfd5dd",
+      "sha256": "12D796839775E66EB533F0F91A457629E251A501497D75BE7FF3AA7A735B435D",
+      "bytes": 4549
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/Grayscale.cs",
+      "blob": "d1812d9a05fa64502853c7deadd8af501bfcbdfe",
+      "sha256": "932372D5B468C5A729E6301224731CA7CBFD2CBB09298D7668E4B47EBA830566",
+      "bytes": 9518
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/GrayscaleBT709.cs",
+      "blob": "d603a1a717242647a76b588be02ef84374cd59a4",
+      "sha256": "00B304206FF1A70F4169EF4B2D7E02CF13636D52FCDC3ADD62E9C320D7825F24",
+      "bytes": 1109
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/GrayscaleRMY.cs",
+      "blob": "53fc5a52a2f70636c6a76639f4edbbd361c05b24",
+      "sha256": "1DD695402206643673EEF79A05B65C6F5A3B8FAED4C447F73042C0E069217D50",
+      "bytes": 1089
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/GrayscaleToRGB.cs",
+      "blob": "f06e205377d2824aa97b64851f6c3f70aaa37742",
+      "sha256": "9CC1BFB494E4C876D7D7D7A0D0BE364CF6F65A9E8C7A470BDC8E6F97AD2DB72E",
+      "bytes": 2945
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/GrayscaleY.cs",
+      "blob": "310bd85b18f67f21fa772a4cf0f4b63b4167eb46",
+      "sha256": "4C2F3FB977CCF37B59F35BA231DE50BC6FEDBBF00C586A5CB06D1FCBD1ED78EE",
+      "bytes": 1083
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/HistogramEqualization.cs",
+      "blob": "c70ae8884778c393439d7eb3c8c674d976fb14bd",
+      "sha256": "6065987BE9E3634DCA66917AB2943616E48950507FFEA07BA1E9321FE38028EB",
+      "bytes": 7424
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/Invert.cs",
+      "blob": "22bb1bbdbf0f1f05946c59f5a86c95b9ce85bb74",
+      "sha256": "3BC3641723BDD85C368CCD42D8FA0FEAF3DE1CAE0739DA9AE90A04E140FAC1E3",
+      "bytes": 4331
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/LevelsLinear.cs",
+      "blob": "b1a103d55423b78fc4a1ec54288d90860eca1358",
+      "sha256": "A695AFCA0A1D58D4966B694108F4B1590E7C8B393321CAA20F966413065AEAA8",
+      "bytes": 9833
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/LevelsLinear16bpp.cs",
+      "blob": "2a482e70eaa4a5c67500a70d32e975f2838852c5",
+      "sha256": "BB868C3FBCBECA9B6B7B96885ADB7D4BE4A1C6B8D57331BB4D0369172C085A1E",
+      "bytes": 9689
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/ReplaceChannel.cs",
+      "blob": "34c9a4a928713bfb4fcb514e6f63c935397323ff",
+      "sha256": "D8DF320502470194178045989B101D847F661E6B5FA73A915AB61FBD41B14783",
+      "bytes": 12982
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/RotateChannels.cs",
+      "blob": "4ff00ddd134b634df6fd8057296e3a1c68ea7d52",
+      "sha256": "69903B7DDDFAA3C63237B3E9208607C7088F953236223385492F2E798D558507",
+      "bytes": 3515
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Filters/Sepia.cs",
+      "blob": "807c754aac851d8569422aaf743702e47e18a404",
+      "sha256": "CDAFBDE69522261CE469E01E3F9E3C6B75B6DFB2B74A80FDA86C1F1890199338",
+      "bytes": 4403
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Color Segmentation/SimplePosterization.cs",
+      "blob": "1f8503cb09bb3c8bc986c9a2c09568dc24f4425e",
+      "sha256": "15703926161ABC6294A9E1C821C57610E034CC1690D4DC07387BEC6352AA2E97",
+      "bytes": 8439
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Convolution/Blur.cs",
+      "blob": "a475329252b307ac0c4afee153d5efb1daef837c",
+      "sha256": "9AAD27B039A63AF2787EF1E7A227ABA18EFFE97264C078D7CEAAB11AAF6D1304",
+      "bytes": 1812
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Convolution/Convolution.cs",
+      "blob": "56331b1d6beb884679e36021c1d6e18cc0f156d6",
+      "sha256": "F27ED264B23E38080D51EFE39C1E22D89C1C57428F0C754BDA06EEE03AA3AA6D",
+      "bytes": 35046
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Convolution/Edges.cs",
+      "blob": "1829cc31353253446107f56a18825a30dd4561dd",
+      "sha256": "F1C97E839807B2A4A98C2F25632A93E1D61B2ED4F52D69D54454FF2D83759DF9",
+      "bytes": 1420
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Convolution/FastBoxBlur.cs",
+      "blob": "bd4328a25c43b688a0f1bf9c65bef720ef49018c",
+      "sha256": "BCB4EFA14E1D8A79DB00AF7F2B92E23DB390E5F244D33A221EA3994D9E2E6BEA",
+      "bytes": 10686
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Convolution/GaussianBlur.cs",
+      "blob": "9501efebae17ae3411387983a553d86d01c42219",
+      "sha256": "9792006C66440927A148F4D6BD10E2C72E799A4051FFBF40C02E57756D7582D6",
+      "bytes": 6020
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Convolution/Mean.cs",
+      "blob": "edca44af65811077ad53e9563516545b074ee1e3",
+      "sha256": "A8C4D68338FBA8DD6A069DB95D22070A391CB881D122AB0B3764521F4A1DF1F5",
+      "bytes": 1942
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Convolution/Sharpen.cs",
+      "blob": "6772743d4740559ca65fda5f52f46bfc5af8e680",
+      "sha256": "03C6CFFB96A9930AC8482654C47936BF23BAB681D7D77AF01B279C1316C1E03E",
+      "bytes": 1426
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Convolution/SharpenEx.cs",
+      "blob": "27b25d985a80feae2a3141c72070840ee38f9fd2",
+      "sha256": "B8C23244A10B224B77A1F3D70F720B37D7A3B5C7C3297783DB12145E99859F18",
+      "bytes": 6726
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Edge Detectors/CannyEdgeDetector.cs",
+      "blob": "776d5a8906d5d8c84f5d3663ca08df1f26047a0c",
+      "sha256": "55B06BFB68AFDAB965AAAED4045203DBD33A63232C5F685F0711A5E73CCA791B",
+      "bytes": 13903
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Edge Detectors/DifferenceEdgeDetector.cs",
+      "blob": "c2ac85249101fccc700ba00a30a8f70ddf8920b1",
+      "sha256": "AE533DFFC525F165874AC929D4D1B7A86F128E8D8529CEBB3CB9DDCE07C7E404",
+      "bytes": 5255
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Edge Detectors/HomogenityEdgeDetector.cs",
+      "blob": "59acfd47cbf5578a9009dbd25566432bfb613010",
+      "sha256": "60B44B06D6D84737929280EB43DAB845080F819F6CDA9E943A3B76E112C72D27",
+      "bytes": 6145
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Edge Detectors/SobelEdgeDetector.cs",
+      "blob": "40db34225eb29f5621e9bbc26a029e206941c3da",
+      "sha256": "E651A31889C41DB49C1E1F68A23D5DE70CCE48396C673B1FD95EB1628494C56D",
+      "bytes": 6650
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/FilterIterator.cs",
+      "blob": "981f6327432e3fb848154783a9e740cbde2cfd0c",
+      "sha256": "1942850971A2A22D87AA826BEC0FD1BE5F434111E357BCEDA31228906110CACA",
+      "bytes": 10446
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/FiltersSequence.cs",
+      "blob": "1697c63eda1fc8299ca8903510e3f6b8368f82c6",
+      "sha256": "6A5A560AC6944539517AC0B417C0F561289A67554B289EAB4B66B08B0F095A51",
+      "bytes": 8361
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Flood Fillers/PointedColorFloodFill.cs",
+      "blob": "9dd6dea0e3715a093aac85810ff7df86e05b5698",
+      "sha256": "63E2AD103B0CA2E8979A2969CA15D6C03E8D83BF6754E74F4E6BDAC80C65B2C9",
+      "bytes": 16453
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Flood Fillers/PointedMeanFloodFill.cs",
+      "blob": "ad9540544d0645e0b35fd234feb6e877adf66c17",
+      "sha256": "729D4B31D3CDCA3DA491CC7A96B1D6F7AF792FBD8F9C7E954377542FFD3A4B55",
+      "bytes": 15467
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/HSL Filters/HSLFiltering.cs",
+      "blob": "b883dd50d9aefb7aaa577620eefe87f066e37b97",
+      "sha256": "F717D40FCD0A20C8D9FEE7B99095E02F830CE83D094939C3E1038D38048697FD",
+      "bytes": 10744
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/HSL Filters/HSLLinear.cs",
+      "blob": "449a17c5d9710ab6be7d9b3eee65fd3e92ec4e11",
+      "sha256": "7554732D3AD250B9F77BCAFE14296C20D33C4DA61196D6BA17DDB90A5967A977",
+      "bytes": 7070
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/HSL Filters/HueModifier.cs",
+      "blob": "eda3b7baf941cc7ddad13048306ff0bb62bf989b",
+      "sha256": "63ECD68E9EE2FF7F03AD40B9ABE269CF0F1558E7AC45B0B84FAC3B13EEA4A4E1",
+      "bytes": 4739
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/HSL Filters/SaturationCorrection.cs",
+      "blob": "9d3c79f985c0bedf7b13f74473efd4b778c28322",
+      "sha256": "4C2B661BD4104695DDC94D645C9ADD6234A2626192B96C155EB5EF91B9066A01",
+      "bytes": 5402
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/IFilter.cs",
+      "blob": "63628d99ca61ab93e2d67dcf5c1e2d110fdb1a11",
+      "sha256": "403035D57B96156299AC37D864C72E540EAE110BE54CA87798BAE6B63A6A4AB3",
+      "bytes": 3274
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/IFilterInformation.cs",
+      "blob": "f327aa58bd494a7f7522f71396bd355a1319812e",
+      "sha256": "05E5DBCE38FA13EBEB72F5059153652D9024731272833225F6D208AC5A54E084",
+      "bytes": 2771
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/IInPlaceFilter.cs",
+      "blob": "9aacd65f08af4bfac445d64bc714050eb0811da1",
+      "sha256": "F116AF9A132D2EE922B4C219A03185A4D24C133EAE91E493C3BCA3892827875D",
+      "bytes": 1915
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/IInPlacePartialFilter.cs",
+      "blob": "d4c3329863ebbb79f9a757ab433139ba444b4373",
+      "sha256": "A40CCFBC4790A10ACBED770DDA3E99A860B652C80A881DD3DCD119C2AD117551",
+      "bytes": 2406
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/IlluminationCorrection/FlatFieldCorrection.cs",
+      "blob": "359289a9c262005e61460312fb5255fac662ed33",
+      "sha256": "B4E7D0DB4696A1278885727F2CB8E21C7E1422C709F7C1129F5E7D2C4F9908B3",
+      "bytes": 11734
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Morphology/BottomHat.cs",
+      "blob": "ebe3f21e02f2b7af1463f6d086e912a4e7ad3ee3",
+      "sha256": "DB8017B247F98A17467EF3C90552AEB28A95239122F4E09D6948FF8BD7FDABED",
+      "bytes": 3742
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Morphology/Closing.cs",
+      "blob": "94aa71c3fc7ba58ceecbc5dcd9f42d0fe83b2cfe",
+      "sha256": "8B7B019D134E8B65183D5332B0236A630CBB15BD9D3C8941CB0AF1D17CB0849F",
+      "bytes": 11940
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Morphology/Dilation.cs",
+      "blob": "485c5ee7323fe1a97442c26e7f1fbec2e4f820a6",
+      "sha256": "C7634B9217EC2B6940D86A4E3CA31FDC4AC743433D975C3DCED3800DAB9BDA56",
+      "bytes": 19471
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Morphology/Erosion.cs",
+      "blob": "874b094e69fb22db40fa9810d47902d5b4b61e21",
+      "sha256": "CE56B599205DCA8235A8F11F44D65D7B5BF44E38A09E3B24A75A9FBAB3A307B1",
+      "bytes": 18828
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Morphology/HitAndMiss.cs",
+      "blob": "b4a8beaf65eeebdb90e097fc67bc599add5bfd57",
+      "sha256": "E48B7FA81FBFAC69391D6BC11845FB75CE491231DD63795617DCA8FDF97F0498",
+      "bytes": 10563
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Morphology/Opening.cs",
+      "blob": "70c11cbdbc5de3d42f1c0449fee8f6c622c61ca4",
+      "sha256": "56ADCEFB7626C48F9BEB1B572558D7A54AA7B8F16E54D4676E1D2E0AE4235F9C",
+      "bytes": 11889
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Morphology/Specific Optimizations/BinaryDilation3x3.cs",
+      "blob": "6664cb806569f6186c7b167fc9e2708cf3f86270",
+      "sha256": "718DC25C38635F23191578433BE15FBF698692D16E858547EE48C501B1D55DCE",
+      "bytes": 7085
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Morphology/Specific Optimizations/BinaryErosion3x3.cs",
+      "blob": "334cb5f49e19fc318791ae3067dd4b6f28c551f9",
+      "sha256": "C38D4A466461CDAB105BFDDC6DDE7F2AB7624ADB35F421A7470AC46939DA63D6",
+      "bytes": 4958
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Morphology/Specific Optimizations/Dilation3x3.cs",
+      "blob": "9e0b7b84b599ef1b2a3002ae738e4b60902dc656",
+      "sha256": "D36906614B5DEEABCC1632357FDD722F387EA5F92A00C3379A9C72A2C573A592",
+      "bytes": 9151
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Morphology/Specific Optimizations/Erosion3.x3.cs",
+      "blob": "87c6dee3cca0bcc39d2747631b50492a0696492c",
+      "sha256": "533F045D14BFBED11F9604864052A17B7C144158B6FC5C50AF68386608042065",
+      "bytes": 8344
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Morphology/TopHat.cs",
+      "blob": "288afd9cc12992a4a71dc30b56cacb28ab55ba34",
+      "sha256": "8D90A1EA82140FEFBE9B252CF7A8F6D4AF8AD8DFB4EF58913599786B0EB34369",
+      "bytes": 3631
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Noise generation/AdditiveNoise.cs",
+      "blob": "69f0d4ba5900b912403efe80356f4ce6ef0e88a5",
+      "sha256": "EA41491426F7CE2743242A4FF4B8C50780EA847D8FF5A701FE211736A23C4FFC",
+      "bytes": 4508
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Noise generation/SaltAndPepperNoise.cs",
+      "blob": "bb00a8eb186b643765985a5e7fc1e66e85243740",
+      "sha256": "1919A8B61BC69B91C30BECBCC83DBCEE31EF36F27069466045A49F56075E2C75",
+      "bytes": 4801
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Normalized RGB/ExtractNormalizedRGBChannel.cs",
+      "blob": "221e3eed11e2a73ebc98cd4b7234c3a9d430a6e2",
+      "sha256": "898A9FD4087CA8CE10C381BC2F01761231BD400371D6E0C7C6FAB500C66C6A8B",
+      "bytes": 6192
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/ApplyMask.cs",
+      "blob": "ce9e2c75e70e7e205c824eca6aed3679eeb0518e",
+      "sha256": "5CD70416C6111079C4103D29389C5402CC8CE72A83B9597051BF3E36AA7B417B",
+      "bytes": 15788
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/CanvasCrop.cs",
+      "blob": "dc32a71b54b5c8b9c92d8b3667f71806b8f172ae",
+      "sha256": "8063BD1531C854134A4EA1D7FA8B291A4491D1E2759A044390D0872CCC753FE5",
+      "bytes": 8196
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/CanvasFill.cs",
+      "blob": "8edb095bd9dc84be4e96d53dbf0cf79dc928de90",
+      "sha256": "77F0D3695DB6CE8B9E0E78985BCE7E6D9B2401A1BF6C5366B9D73D094466803C",
+      "bytes": 8146
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/CanvasMove.cs",
+      "blob": "cd3fd50e4317a0c11ba660433f4d1b7c550d294d",
+      "sha256": "2752F6DFDDE4E821D4A71500E9DBFB4D3002B4F12ADAA4365A593A3DA728D6D6",
+      "bytes": 14599
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/CornersMarker.cs",
+      "blob": "cd7c7d37d4df51fbe502e93994b731280023244f",
+      "sha256": "A135371193D56CCFD333B6AAC198F3442292FABBD4A0F602C6E65CDB56DB1B81",
+      "bytes": 4292
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/FillHoles.cs",
+      "blob": "db8254653374d117bfc0ace2c1d157afde4088fc",
+      "sha256": "75CA5B6979B754568AC905D1FB6177D959668D6C439033774CDD35A9F00E700E",
+      "bytes": 8072
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/HorizontalRunLengthSmoothing.cs",
+      "blob": "4dc48ce014453da6a578fbf29543cda35dd6c5b5",
+      "sha256": "51BA3441548DC1D1B146DCBBD832306794D98067A1D65C001E6ACFC828C59CBE",
+      "bytes": 6670
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/ImageWarp.cs",
+      "blob": "b2320933c57cbe1a112c2fd792a88ba986a95e3b",
+      "sha256": "1DA4C47F4CF679211AEF988433BD5021C18454B58B90C670BBA3C78FDE83B378",
+      "bytes": 7525
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/Jitter.cs",
+      "blob": "ac34fcb7162118c8e15dfc3023b1426a1775ae30",
+      "sha256": "93433FA5CABE08A46A406990CB14279F08CF77CA2C683951286003A79371FCD1",
+      "bytes": 6356
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/MaskedFilter.cs",
+      "blob": "229cfb55408c0dab62a5ff6d716202edbf819be6",
+      "sha256": "1A9FC4F2652E8F2CCF05C7EFB00968E81A242477EAC94CAC7CBEC6D873F3F80F",
+      "bytes": 20257
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/Mirror.cs",
+      "blob": "98c8b9961e20dc29775c9e268507fce458db8d17",
+      "sha256": "3015D6589AC61A508C027E38D36444EEB87CAA4D42964B6A605156BC770D30F7",
+      "bytes": 7577
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/OilPainting.cs",
+      "blob": "c79dd25d41d10a75efe08313703a847304109e8a",
+      "sha256": "200F3D047103D2AC218AAB608EAC041AB4A741D4D6A0B469A65D6A68E1BCAB64",
+      "bytes": 10655
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/Pixellate.cs",
+      "blob": "144540cec26eac2742f523a9cea6e13f8dab9e92",
+      "sha256": "7DD042C6B7AB7E726868A211C7B71391575D7AFA26AE253F314940DA8271CE47",
+      "bytes": 8994
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/SimpleSkeletonization.cs",
+      "blob": "c3da30435d658e94d4d4c6f4284d41ec91968273",
+      "sha256": "DB13B4563D2D9D47BB470A153BD0DCDEF533B4FCDEEC7544E24E56D62750F23D",
+      "bytes": 7147
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/TexturedFilter.cs",
+      "blob": "ff6a21c1e6ee49593bca345e643de375495677b2",
+      "sha256": "0539A388991D331F9B0402B192C6A3CBCFC85598FE366EC4B718C3839615012C",
+      "bytes": 18389
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/TexturedMerge.cs",
+      "blob": "f24ef54c37513a42218ae1f9958328ac858120d0",
+      "sha256": "8BE8C45AF85449E6C55DD96DD53F7FF450767A810C1FBE601A29A23433D13550",
+      "bytes": 7966
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/Texturer.cs",
+      "blob": "c47a40dbe13245bed6cfe60144ad01ecbf3e2e98",
+      "sha256": "4E59CFE647132B37357CF36B7A7F0548397509968927DC3D9BBBDE74396A5C51",
+      "bytes": 10013
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/VerticalRunLengthSmoothing.cs",
+      "blob": "2954e4ce8bd0392bfcd258731100ef3485dfaff1",
+      "sha256": "AF54B40D97D5ACEAB383D5AACFF464F0FC48780EC5614B4C942728AC852773FF",
+      "bytes": 6784
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/WaterWave.cs",
+      "blob": "28b2f9121112ee96b5f8483ae6972c72ff8e7e2d",
+      "sha256": "E66335F4B5F1EBA0A273F31AC741BD6E7996E60BF5B599396741C73DF59AAAA2",
+      "bytes": 7647
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Other/ZhangSuenSkeletonization.cs",
+      "blob": "4ac5f606d07b1f56a18ac9228f999a687995d25a",
+      "sha256": "908E93D153D79BFF2B3B3809D8D46B025A9642011F296E2F7E2E2BD823825D6B",
+      "bytes": 10887
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Smooting/AdaptiveSmooth.cs",
+      "blob": "0f5629c1052e40a0b633adcbe6e554375e489742",
+      "sha256": "70CE0177AC9A7A500D542D87A213424DE83DE86B83969B86DEB81688D0FB1E7F",
+      "bytes": 10418
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Smooting/BilateralSmoothing.cs",
+      "blob": "47615577e6d6491520ce570f8e5d656395151e23",
+      "sha256": "A6C0546EF4730145427CED823DC789B4B2FB874EDF757E452BC807C628ACE39B",
+      "bytes": 31779
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Smooting/ConservativeSmoothing.cs",
+      "blob": "82d4b4c5d34c0f076dbee68486999db4e597f025",
+      "sha256": "8F73AA34D189852D677CA76E8914BBAECCA62C4F5203D23AEC8753B9DB47DB6F",
+      "bytes": 10696
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Smooting/Median.cs",
+      "blob": "b97206dc555dbe6419adf1bd51b98be081d8d7fd",
+      "sha256": "68D16718519D6E7E2A122F87285D0131C6F5659548DD3FD53716F1FBE55C79E7",
+      "bytes": 8946
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/BackwardQuadrilateralTransformation.cs",
+      "blob": "b3fe704aa10967ec7d18db9ef6737353d4cc9d1b",
+      "sha256": "A987447AF6FB0C11AD3E38BB6C576C7CB1C1D3E6F2C628DAE2A99E26E33BA3AB",
+      "bytes": 17733
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/Crop.cs",
+      "blob": "9edf4ed6edd2dbcb80fdddd00d3e04b512c96b7d",
+      "sha256": "CF4357E6EC940C6737E2C4DAE16FC70DDC558E06B8C6D31409A6974C1F801A1C",
+      "bytes": 4909
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/Quad.cs",
+      "blob": "881c157b546ece3082fe992ade15300ac3036ea8",
+      "sha256": "28EADE0FA20F3A919824E4225584571C8CD4C5EBB4A3360B319880DF375B8B46",
+      "bytes": 4772
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/QuadrilateralTransformation.cs",
+      "blob": "b077aad9176f9c843149e4b6a86c97cb82a476b8",
+      "sha256": "58FE52C6A1C093A6924FCC2521E9F3512C2D015DE3847031B39218ACB7191AF6",
+      "bytes": 16398
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/QuadrilateralTransformationBilinear.cs",
+      "blob": "ea36930b802f97ee49da1f34796ac78c3afc6803",
+      "sha256": "D1106C4D8B72C52A7436CA7FAE181683550938BE67BA9B682D1B13179AC09080",
+      "bytes": 7561
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/QuadrilateralTransformationNearestNeighbor.cs",
+      "blob": "deffbdd71d82c29ae68474f5d3cd733fd99b279c",
+      "sha256": "964B50A5C07A1B8F0959F6CE18FF8A2C7A3C2B4639AC5CAC82D84C5443851240",
+      "bytes": 7607
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/ResizeBicubic.cs",
+      "blob": "f60add4681f7bb53631c88273c147338c9fb73e9",
+      "sha256": "3FC3BFC1E5F396AE902391E1E0F8F1CF902D24165A203EE4143FC47D97B2B3A3",
+      "bytes": 11695
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/ResizeBilinear.cs",
+      "blob": "8f5be5bf1c970510218daee99e1d5796a478d8c6",
+      "sha256": "982A3A651A4AEC47A83803BD7ECC916D5771088984955DF937D57B7795769E8A",
+      "bytes": 6386
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/ResizeNearestNeighbor.cs",
+      "blob": "0e8ce4bfd6500470f77cbfce7ed0cc768220d904",
+      "sha256": "A634DD00B54EAAE7B4411CE31A57D63153F1E5A7C80CDE077F12EEE8FF6EB045",
+      "bytes": 5321
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/RotateBicubic.cs",
+      "blob": "dbdd6be8448ebcb86e4844eb0625e6d5d5a0029f",
+      "sha256": "B9783ED981C4D56BB86C41842B452427A5D82E8531E72B22AAECDB5B9F94677A",
+      "bytes": 10903
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/RotateBilinear.cs",
+      "blob": "b86299344a89d5715bc6f87d82350455d7515538",
+      "sha256": "74FBB4E31C77A48D7F5D70D18653BC89A337CD0F7942178BB8D2D38EC7A36B74",
+      "bytes": 10571
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/Shrink.cs",
+      "blob": "8394f99a4f77d08e6d6b5656c2363a949813a210",
+      "sha256": "A709073F176AAE5B9DFBF82499121DED4C687EA7E83D567E092F2FADBBB9DC38",
+      "bytes": 7344
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/SimpleQuadrilateralTransformation.cs",
+      "blob": "ee755df05c39ecfe69ae6e7f9f62d41fa760e0ec",
+      "sha256": "C10B9254903CA277B71301B5B699E3B704267C7A670ECF06580DD62AC5726DC3",
+      "bytes": 20150
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/TransformFromPolar.cs",
+      "blob": "9b2e5a462c541602388b7779ae25f1588465986e",
+      "sha256": "DD7D70BDC21A3392A1FE6A72D225634AACAC084BE4B2D7C42D4C34248488B5E7",
+      "bytes": 13155
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/Transform/TransformToPolar.cs",
+      "blob": "bba962b4ab0f70df6e485893311145bc2ce88bb8",
+      "sha256": "EEA51F483040F1E5966E5DE5A717A5ABAB9203E58E1E2CF3B3BDCD5A7B854AE2",
+      "bytes": 15414
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/YCbCr Filters/YCbCrExtractChannel.cs",
+      "blob": "0cb0d5bb5ea37f35fe953d42a60f7b6e5f1803c2",
+      "sha256": "6FFA59787C95F56E54CF0CCD5F0149AD608D07B6CCFE26E5C1E0E466FEDDD5CA",
+      "bytes": 5248
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/YCbCr Filters/YCbCrFiltering.cs",
+      "blob": "2d0f97d78da1f0dd9ab6163bc7186d572cd38aa8",
+      "sha256": "55F62AE41ABB4E605D5BA09F346222978A1B422979A29105E1CA6DF584307FE8",
+      "bytes": 9708
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/YCbCr Filters/YCbCrLinear.cs",
+      "blob": "7b9536fb3930ae752578cd90eb51d9b02f871fa2",
+      "sha256": "11217CDD36A6C7D156CBD1BD997E3E1A74B748FD40F4105F71ED6F7C3445F7E4",
+      "bytes": 7926
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Filters/YCbCr Filters/YCbCrReplaceChannel.cs",
+      "blob": "182032b0028da47464c2d193f220587fe0ca8a76",
+      "sha256": "6D81249FE2E78ADA18487493F9E2C04D15FCDEF405C6BFA2A6FF01E6AE4E00BC",
+      "bytes": 11661
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Formats/FITSCodec.cs",
+      "blob": "19b0fee40ddec6762e63ce8379be11b8483840d9",
+      "sha256": "DF2B1FCFB4526375FEB2CEFEAB71C1A71361917362531311437AC6A83D0E12BE",
+      "bytes": 27586
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Formats/IImageDecoder.cs",
+      "blob": "3abdc16c1a3c02e5980469aa5e8bfe45bbd40efe",
+      "sha256": "2FB9CB660429030F39999CBC2F131BB85EBEFA2C16E68025297E06CD6FEF432A",
+      "bytes": 7991
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Formats/ImageDecoder.cs",
+      "blob": "b76bb4ca2cc775db7ee87ebed98d3e01883b7a27",
+      "sha256": "53D5E5F882FBCBA6C9B12ABDAE776A1C17D5F87452147B34ABBD5DA04B8BA396",
+      "bytes": 6981
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Formats/PNMCodec.cs",
+      "blob": "bf946fd805b388a5a43df502e673422db3d3edb6",
+      "sha256": "FC327C6AD2EDBEC182DC7C0EC843DD07CBA2C156A1336754D0D9D68C5745A737",
+      "bytes": 18242
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Formats/PNMImageInfo.cs",
+      "blob": "3cbae4de05b0349194d51abceb25b1da26b3a82b",
+      "sha256": "904377EDD97E899D7E54412320C6E750A24FABC423FE5F63B3E76C09C94D8AC7",
+      "bytes": 2583
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Formats/Tools.cs",
+      "blob": "8582db38585dc3c040a5d38372289c3fd056b7f8",
+      "sha256": "1B90EF214148406ABCFD8A84702B9AD7214852CEBCAF07B0B6FDED306A061683",
+      "bytes": 3075
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/HorizontalIntensityStatistics.cs",
+      "blob": "7b2576439a870bcc7fc37cf958bba48deef1a3aa",
+      "sha256": "FE5876E82F9C80F19177ECBDD30492FBEFC29B9059A8D20D9A047F482D1CF064",
+      "bytes": 12480
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/HoughCircleTransformation.cs",
+      "blob": "f5ff6f05f709e7da7bb6ef4f991a830b99c7254e",
+      "sha256": "F4FF5C38A517D8BD1EBE389DA6728BE455145ECA6C96289C4326CF30AC71B19C",
+      "bytes": 17984
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/HoughLineTransformation.cs",
+      "blob": "5f8754695ba15967b60a358ac89e3868af4254c7",
+      "sha256": "EC37C58477C07FAA3926466F08822CA963DAA5D8F6DF1F53828B5CFA23BF6EBD",
+      "bytes": 28803
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/IBlockMatching.cs",
+      "blob": "6f639e44997f7913ce0314f9e35c9e5befade357",
+      "sha256": "34C2AE5EEB8028B4CCEF7CAB06FF7BD19F90073B8D8660C1F7F026BFBA5125C8",
+      "bytes": 3100
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/ICornersDetector.cs",
+      "blob": "5896faf994b337b5df1d1a0e57ace274254e1d25",
+      "sha256": "9ED283DC966CE50DE3CEEA5EDAD4346477FAF0DCB3C363AF6869FC7F22A14A68",
+      "bytes": 2238
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/ITemplateMatching.cs",
+      "blob": "0ac25a327e1e8d333f7aec0017b123aa8e457498",
+      "sha256": "7F3FB511170903A6203B985B786C1FA6BCA7717BA885CDAD1E17C65B2C63EB6F",
+      "bytes": 2390
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Image.cs",
+      "blob": "f421268f8f2999896fe89fc613d6ced1ad56c0c1",
+      "sha256": "D58340BE5EFA8B80B1715004AF36529DC0FC636D66DF54690491FF02DB387612",
+      "bytes": 28938
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/ImageStatistics.cs",
+      "blob": "5184f9e38be33790d78cd8f27d56d1e72c5c83d4",
+      "sha256": "88C203DCEA930FBF1894B00DB4FB6F99CEFE68DC9419CD57963518A5143AA530",
+      "bytes": 23279
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/ImageStatisticsHSL.cs",
+      "blob": "69d25a979b067bd65b0e1170481bfaee4bf8781b",
+      "sha256": "98054D65B39B9727A0173A7EB499647D9B126719A52AB62FE4D67BE849D9FBEC",
+      "bytes": 16311
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/ImageStatisticsYCbCr.cs",
+      "blob": "d0d2d5a808b12ca5c903600206c32f6ce5a5365f",
+      "sha256": "4B0F868F9413918D9043618E19B4C2C92D39AC0F5B4F4528FC09801F3B7C7D80",
+      "bytes": 17668
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/IntegralImage.cs",
+      "blob": "cca8c3c946ca64a7ea27e3610cd07f7379355ea4",
+      "sha256": "E80B1DFEB4F90A1D5BE2A774A758F8DA09C8CF702682D93A8ADC568CEBF2183C",
+      "bytes": 21583
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/Interpolation.cs",
+      "blob": "a66f4bf5a86bb8db233fa00d74fd461508d7ee5d",
+      "sha256": "AC0287507A2BADAA4F4101E9CBE241BC4CC4C6FF2589F434ED1E119FBC549B7C",
+      "bytes": 1294
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/MemoryManager.cs",
+      "blob": "cd5274d501703e1346f7352465af2f8a74e60e74",
+      "sha256": "3FEE456AE8B77D94A7E9D2EA7FE74B7678FB300D70D6673FA71ECE755E8B5DFD",
+      "bytes": 9713
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/MoravecCornersDetector.cs",
+      "blob": "4804afb674b756d5edf9d3432e47a4e18f1c3ea5",
+      "sha256": "3BBB07DA8FB8FFA487A8F670D90CD709FAE91E53368FA3BB6518F006948EC8D2",
+      "bytes": 11011
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/QuadrilateralFinder.cs",
+      "blob": "620663910efb812616085a94fb1badaece2b9dc3",
+      "sha256": "68EE0F667CB2E60C598BB6129ED706E070CB89ACAC47CDA8E2579723BA801F16",
+      "bytes": 9385
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/SusanCornersDetector.cs",
+      "blob": "e292d0ca4e8ba1bea2b2078b47465b7f66c5b03e",
+      "sha256": "3D9BE834F88105B1FD0E0536B1BD2AE238016ABE0635A29C5C7A7A7EEB65BDA1",
+      "bytes": 11628
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/TemplateMatch.cs",
+      "blob": "3228b2d41d8a69a372e94ff232c977d8fca2049f",
+      "sha256": "C529C0DB95DAADA78AFB6976F6D73D0EF7540F9B76ED4EFD54E3E3822D71CF92",
+      "bytes": 1464
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/UnmanagedImage.cs",
+      "blob": "18128ffa804533cf5b7758ff33f7179e50479ec7",
+      "sha256": "FEA6923F9781A5B9D78B15712676C0063A2F3B54835166BCA16B656F7F68E667",
+      "bytes": 53079
+    },
+    {
+      "path": "Accord.Imaging/AForge.Imaging/VerticalIntensityStatistics.cs",
+      "blob": "8d326d8510fe70af0b2f808e0503593aa4548e72",
+      "sha256": "E9B02152A31651EB94B18DEF75C5DCDF161693C8888FD6847282EEF09D480FCD",
+      "bytes": 13231
+    },
+    {
+      "path": "Accord.Imaging/Accord - Backup.Imaging (NETStandard).csproj",
+      "blob": "cf5257ea07b800831b3475120d05aa2ff4aa70ca",
+      "sha256": "F21ADF9D3BB60DE5E7EAA4EE36CACF1BB03C63C19E5787AC3FB19D06E2B3A1B0",
+      "bytes": 588
+    },
+    {
+      "path": "Accord.Imaging/Accord.DataSets/TestImages.cs",
+      "blob": "31c889fbbdf8c0a029f936dba9ef0f5450ff6275",
+      "sha256": "E413EDF6809DF007ED64A6B2E9CCBCC2AEA8DB9DA91822A996558BF0509F4F72",
+      "bytes": 9170
+    },
+    {
+      "path": "Accord.Imaging/Accord.Imaging (NETStandard).csproj",
+      "blob": "f9a0647183e3d25c26c545e6179a9301b7cabf8a",
+      "sha256": "BEDC69A6BE5980ECB3DB400B6E263DB9702A354806ED73C3AB2B8A30FA81443A",
+      "bytes": 1705
+    },
+    {
+      "path": "Accord.Imaging/Accord.Imaging.cd",
+      "blob": "a9b362c0811249e8d90e50d8b59f1704fdf970fb",
+      "sha256": "5196910D4CEA016742CCD88675352F8BE0A6218F3D6E3A749DCD334727BCFF3D",
+      "bytes": 26130
+    },
+    {
+      "path": "Accord.Imaging/Accord.Imaging.csproj",
+      "blob": "fcb173ee620e271ee1029930da81d3d96ccdbb1e",
+      "sha256": "055815DE2B1E52A63B8C47657FB420FBA6DB85CB1607209C6843E981F97B3AF8",
+      "bytes": 25080
+    },
+    {
+      "path": "Accord.Imaging/Accord.snk",
+      "blob": "ed97b4edd42222079dcc1da64199cddff2ced3af",
+      "sha256": "F0523798B93C596EB5231079EC5D9A9DEB8E85412828E2AD69B4F05F719B2E4B",
+      "bytes": 596
+    },
+    {
+      "path": "Accord.Imaging/Blob Processing/Blob.cs",
+      "blob": "bb844c7fe0b6685af40123eff8c5a66d59e79a05",
+      "sha256": "91E6FEDD85D788D38B3DD6EFDA750FAD2ADF2734F44ED02EC9C1EC4E24028C7C",
+      "bytes": 9023
+    },
+    {
+      "path": "Accord.Imaging/Blob Processing/BlobCounter.cs",
+      "blob": "5fe7fec720e35a4248f6c8824424e1b3e59ce954",
+      "sha256": "E1E980510BDDF66633E2B30C521772F22741D200174B3273C117028940ABE5E3",
+      "bytes": 29652
+    },
+    {
+      "path": "Accord.Imaging/Blob Processing/BlobCounterBase.cs",
+      "blob": "0b10bc604a145fa737497e5810023aec1b3dac48",
+      "sha256": "0D37DFFD44103C09AED553A23FED598F87CFA40506329937EC478BE50918143E",
+      "bytes": 54597
+    },
+    {
+      "path": "Accord.Imaging/Blob Processing/IBlobsFilter.cs",
+      "blob": "5826da849f810681971d0331ccec8d3e794b48ed",
+      "sha256": "B2C57E1DC2FFA45BB37F9AD6300EA40B9DFEEC9E63AB72439996FD9EF46BACDA",
+      "bytes": 2044
+    },
+    {
+      "path": "Accord.Imaging/Blob Processing/RecursiveBlobCounter.cs",
+      "blob": "5bc04726e6167835a32d6e7d75c12b2a0a05cd5e",
+      "sha256": "556355D5CA03892F60EA63051CEFE784E4AF4221EE301D75370B496B990F9534",
+      "bytes": 12737
+    },
+    {
+      "path": "Accord.Imaging/Colors/HSL.cs",
+      "blob": "2a3a3a91c081514f3c7db7259e9e168fc20951b7",
+      "sha256": "97B6FEF9E792FEAE19F8BA39CB798B2670FE1DC34FC5AC7088D68A392F7E841F",
+      "bytes": 8370
+    },
+    {
+      "path": "Accord.Imaging/Colors/RGB.cs",
+      "blob": "415e877f621e4f76b1b766ca485b8c88a6fdfadd",
+      "sha256": "45F3ADA2616FE0FE691A7D81340629F3312AFA9E192426DC15BD771E15BBF486",
+      "bytes": 5810
+    },
+    {
+      "path": "Accord.Imaging/Colors/YCbCr.cs",
+      "blob": "0da25ba0de63195e8de86d5474f21a5401dd6cba",
+      "sha256": "8D34B9B870F71CA4BB4882D6FF21EDB269028241446841A2E30DDBCF305F96C8",
+      "bytes": 6581
+    },
+    {
+      "path": "Accord.Imaging/Contour/BorderFollowing.cs",
+      "blob": "40837d0440460edd413c9c22f75a125e2c772356",
+      "sha256": "B70D8015E41AEBF652A50BC085E1E18B3A010587831EFB9210407E4D007F3939",
+      "bytes": 10780
+    },
+    {
+      "path": "Accord.Imaging/Contour/IContourExtractionAlgorithm.cs",
+      "blob": "fb07bb9222b4e1aa987fc99e0a5696f418173129",
+      "sha256": "CC30C3EA78E6D8E977ED610D532B2C2810B9D8C93E462B8F853CD27B3C37BC55",
+      "bytes": 2280
+    },
+    {
+      "path": "Accord.Imaging/Converters/Accord.Imaging.Converters.cd",
+      "blob": "6fec2d48d59aad82a0c84a9be64f3706b93e3eb8",
+      "sha256": "7F3A6357C96FB9425A48F7B51492FD874915783D8B8E67DB0C82B3531F56BF70",
+      "bytes": 1813
+    },
+    {
+      "path": "Accord.Imaging/Converters/Accord.Imaging.Converters.cs",
+      "blob": "8b45a9a3d714a52acb6360035d34cb2390b7f097",
+      "sha256": "B3FD24CCD978216ACCFE502BAFE88CE00D6C98307EC9BFAC5DC9E0109EDCB419",
+      "bytes": 2077
+    },
+    {
+      "path": "Accord.Imaging/Converters/ArrayToImage.cs",
+      "blob": "34129e40937bf0db8fc21e305da050cf0870ab02",
+      "sha256": "60D321EE26E185E97234C01103AC2058AA9D18B78F7828A9F06549FA29C7944D",
+      "bytes": 19813
+    },
+    {
+      "path": "Accord.Imaging/Converters/Base/IConverter.cs",
+      "blob": "3fe52e0a0de3203958a6a84717c56868a9a59124",
+      "sha256": "BF0660251FBD6187C811CBE18E712ED97E353029CB6A5330DEEC538FDCD6A2AA",
+      "bytes": 1610
+    },
+    {
+      "path": "Accord.Imaging/Converters/ImageToArray.cs",
+      "blob": "ec21496e4eadb24b3a3428f86f4436458e5715d8",
+      "sha256": "CF80ECB8F4D10A4BFCB16404D5BC8B54AD2A95435591E17897F3B4273A8AD52E",
+      "bytes": 19483
+    },
+    {
+      "path": "Accord.Imaging/Converters/ImageToMatrix.cs",
+      "blob": "93a8a540f476c2606408363dee42f3bd28597723",
+      "sha256": "F64A86C17755186A1D7479F2F57C57A324303D09A4FA5E2C7FAAC63D8AB600EE",
+      "bytes": 38334
+    },
+    {
+      "path": "Accord.Imaging/Converters/MatrixToImage.cs",
+      "blob": "d262f7ca98beab3d2625e6a11039c5f4e35dc358",
+      "sha256": "E5868C10D201AE0D2FE822EECEF48E3D63F643C4A29F1B501277639B058DC437",
+      "bytes": 32285
+    },
+    {
+      "path": "Accord.Imaging/DrawingExtensions.cs",
+      "blob": "b52f153fe41168ecf16101cc5c4a0a5dc5ed29cd",
+      "sha256": "CBAB45B8DB03838E0CD6DD16A5D6AF79BD5F8011DC3BA35ED3CD645B04401EDB",
+      "bytes": 2993
+    },
+    {
+      "path": "Accord.Imaging/ExhaustiveBlockMatching.cs",
+      "blob": "86e20ee3749c0a0048b5caab2ca1ae10497503aa",
+      "sha256": "9907CACC4F1A3E4E9A221CD6447995E8F4D59E9D86FB57A3246C066C3882A831",
+      "bytes": 18697
+    },
+    {
+      "path": "Accord.Imaging/ExhaustiveTemplateMatching.cs",
+      "blob": "0ee91fa5b7bd85fc5d61eec12ed5e0116e3135a5",
+      "sha256": "344367D003A095450E982C8E50ACE1FFA52AA228ECBF222BB02B4BCDD42961E0",
+      "bytes": 17880
+    },
+    {
+      "path": "Accord.Imaging/Filters/Accord.Imaging.Filters.cd",
+      "blob": "d57199e1ef5d93d4125698c5df49855f11be484b",
+      "sha256": "4957CC652238923058A2795E10D377642ED8F09C8A19E3D81DD3566A034BBD33",
+      "bytes": 10001
+    },
+    {
+      "path": "Accord.Imaging/Filters/BinaryClosingShape.cs",
+      "blob": "d5b8d042fdc773e4f7907718072226c13a2b3d6b",
+      "sha256": "48A8AE0149046E8214EA35A597664417F0D2717A0A5F69664763E98F4AB0E53F",
+      "bytes": 11156
+    },
+    {
+      "path": "Accord.Imaging/Filters/BinaryWatershed.cs",
+      "blob": "63956a88fa1b9de786513a5eb1defd08bae4e8c0",
+      "sha256": "7C23B71C2F5BFECB1323F97D1D2C1422BC4567E00BB9C20C8125E066BE31C333",
+      "bytes": 39277
+    },
+    {
+      "path": "Accord.Imaging/Filters/Blend.cs",
+      "blob": "e27aa9aeb484f75a93f848390e0691b293ca7b4d",
+      "sha256": "B1E107466AEE8B438743EC82CB01DF30B95E2D24AB2073AC810C2C761ECC46CC",
+      "bytes": 21998
+    },
+    {
+      "path": "Accord.Imaging/Filters/CombineChannel.cs",
+      "blob": "8384f0639ab8825193a1462787e815dc414b5e2b",
+      "sha256": "D4B458CBFEA2156EEA3EDEDCA8CD039241E79EF19C5CABD8D02476F23B03D010",
+      "bytes": 5493
+    },
+    {
+      "path": "Accord.Imaging/Filters/CompassConvolution.cs",
+      "blob": "88be397064f330ae62c75378a77ec8fd8a2e27e8",
+      "sha256": "4752D22501BEDE74E4755EECD43CD19A257B1A755E47890D41E6F7957A4116D5",
+      "bytes": 4620
+    },
+    {
+      "path": "Accord.Imaging/Filters/Concatenate.cs",
+      "blob": "2b312436911978e83e2b9bb5a78c0bfaca8676c2",
+      "sha256": "57F58C32E9A227EB589B7A0C8D72CE2DB04F93596F2A9ADE0E179246ACAD2EF4",
+      "bytes": 5121
+    },
+    {
+      "path": "Accord.Imaging/Filters/DifferenceOfGaussians.cs",
+      "blob": "d5eb250c2d6983139e8301f9b2864d827d3800ad",
+      "sha256": "F1004B1A6B6DAE400CE867C41D7BF21D8C91A725DA18509B138C4728ADE3513B",
+      "bytes": 8245
+    },
+    {
+      "path": "Accord.Imaging/Filters/DistanceTransform.cs",
+      "blob": "768d57a73892a7938be2a86764bfa928e24c014c",
+      "sha256": "16A745AC4D211107620D58F422507ADF7A5A61B69AC05CE942B3A60C1A62A233",
+      "bytes": 14072
+    },
+    {
+      "path": "Accord.Imaging/Filters/Exponential.cs",
+      "blob": "b40a51d774a56f0149976a1812175a159729b5eb",
+      "sha256": "70E424CD745B7DC05A7FF04C441D0786D6FA7C1C41D6665AADC61436E6AA1BD8",
+      "bytes": 4622
+    },
+    {
+      "path": "Accord.Imaging/Filters/FastVariance.cs",
+      "blob": "b956eb56ed5d234ba09ceb41233942f39d27f463",
+      "sha256": "668F69AA6182B06BB554BE312C8FCB364ABA5E821684BB8795D3E88BC95398BF",
+      "bytes": 9610
+    },
+    {
+      "path": "Accord.Imaging/Filters/FeaturesMarker.cs",
+      "blob": "cea915c8690bc17cad07f65ea0722a40f742bab0",
+      "sha256": "CC9D6734C3FB42B65D4885247C7FA2DEA405561CF8D38F61D4CFA203D3D95ED7",
+      "bytes": 6241
+    },
+    {
+      "path": "Accord.Imaging/Filters/GaborFilter.cs",
+      "blob": "641f66683bdf1a93bfe90e913c1363d36254d694",
+      "sha256": "5DA1588F33784931BA02952C36DD56304DBEA905668078D8F79063E55F7EA487",
+      "bytes": 11051
+    },
+    {
+      "path": "Accord.Imaging/Filters/GrayWorld.cs",
+      "blob": "9830fc36205611db7ddf8d8b75c0d286942ce73f",
+      "sha256": "1A0B3722229D810C198F8A2C44132AC974511695210145E24F89C86F0B24EB86",
+      "bytes": 6315
+    },
+    {
+      "path": "Accord.Imaging/Filters/HighBoost.cs",
+      "blob": "a456d2d064759f2aac1594909c671da8c2ccc2cc",
+      "sha256": "4A4356BF8906D677BDE658AEC60DC6DB4333C415E8935DD952B11990CCAD7F79",
+      "bytes": 3723
+    },
+    {
+      "path": "Accord.Imaging/Filters/KirschEdgeDetector.cs",
+      "blob": "99a8c61b55b7bb17131c1013be0b668f551e9ef6",
+      "sha256": "4BB89B25F0B85BCA8A67993725D7461C05BB6CAE8BD41894446ABC2E26A7EE20",
+      "bytes": 6002
+    },
+    {
+      "path": "Accord.Imaging/Filters/Kuwahara.cs",
+      "blob": "2d5640526e73855a4bd35362a9626fd8a5d54892",
+      "sha256": "D89717D43033717FE2AFA730D4B3BC42F2089C92BC66506F76A7A2B4FA699166",
+      "bytes": 6234
+    },
+    {
+      "path": "Accord.Imaging/Filters/LineMarker.cs",
+      "blob": "f696569d417d3f383bcf2defdad438f94664fcef",
+      "sha256": "17BDDE2E74DC0AB7805755DCEEE492FFAA63CBBBA8F368C8C1327EE182798EDA",
+      "bytes": 6068
+    },
+    {
+      "path": "Accord.Imaging/Filters/Logarithm.cs",
+      "blob": "c6028a15fa93a54475436c7318bd801ebed69a13",
+      "sha256": "83DD8406C06711322002D6CE19675234C87ACCF0C44E470FA4366EFF7F7420C5",
+      "bytes": 4620
+    },
+    {
+      "path": "Accord.Imaging/Filters/NiblackThreshold.cs",
+      "blob": "d179ad54393adbc610dceaaddaa2651b30e0f0fd",
+      "sha256": "AAD9CC0AA4BC52BE949A50F1C1B2599CB3BF85021EA3BA1C99549B53A4D82EE8",
+      "bytes": 11717
+    },
+    {
+      "path": "Accord.Imaging/Filters/Other/BlobsFiltering.cs",
+      "blob": "64d6b09948a5f366fcfeb06f7ec15b15240f3dad",
+      "sha256": "0EDC6AA8F0D8F9AF57ED3BDA7E2D695AFC4986B1FF02673815641949A2C649B1",
+      "bytes": 10009
+    },
+    {
+      "path": "Accord.Imaging/Filters/Other/ConnectedComponentsLabeling.cs",
+      "blob": "fe943b8fce01b768ec340ad7fd969ba9a89c8e4f",
+      "sha256": "7ACDBAFF7CAF0EBDA6EB9E4E47B8E1601AE17154982AB59A841D90C74DEDED16",
+      "bytes": 8637
+    },
+    {
+      "path": "Accord.Imaging/Filters/Other/ExtractBiggestBlob.cs",
+      "blob": "b6e19b8de360b2763f738d2b48fcc8d791c92686",
+      "sha256": "5298C0C36883EAD622DC7620A1F5CBBD8E553ED2A4A8800EB553E18EC24D970A",
+      "bytes": 11197
+    },
+    {
+      "path": "Accord.Imaging/Filters/PairsMarker.cs",
+      "blob": "b14d9536dab053933ee27af64d27ac5264ec4dcd",
+      "sha256": "3B2CCD162D8AC18C3D3703B9AC189F2D1F72F194F20A074F0384E557E8B229B7",
+      "bytes": 4191
+    },
+    {
+      "path": "Accord.Imaging/Filters/PointsMarker.cs",
+      "blob": "5d8ae2155f9c6931302951352ad0f57fbcdb35b3",
+      "sha256": "AA62CCF2D606F0D3702F6C5AC732768B261828F2011E13E410AAEE973F389D7F",
+      "bytes": 7708
+    },
+    {
+      "path": "Accord.Imaging/Filters/RGChromacity.cs",
+      "blob": "dd0bee2bde5cbfadd4ae0d72ed91681a71def195",
+      "sha256": "D7706AEBAF498EC10A029E50E5DFF954B9B093ED5B0F823F3282FE7DD71072E3",
+      "bytes": 3589
+    },
+    {
+      "path": "Accord.Imaging/Filters/RectanglesMarker.cs",
+      "blob": "eee44df5890d0bc5aceb4d2a06a62278c33394b8",
+      "sha256": "F16BB785CF919C481C89BE505B3C86257F1156E89086527DF9EC861B972E7BB2",
+      "bytes": 5179
+    },
+    {
+      "path": "Accord.Imaging/Filters/Rectification.cs",
+      "blob": "588a56129194bd62833ce24b7f90a05ec266da7b",
+      "sha256": "2439D0103531D1B92B466F0537AA4D207CE9E0E3132908493CA2A80AEC5CB447",
+      "bytes": 8110
+    },
+    {
+      "path": "Accord.Imaging/Filters/RobinsonEdgeDetector.cs",
+      "blob": "da282e1269efcf131d8647b29fd95536c2c1001f",
+      "sha256": "852E1A76928ACC106E5C892FD7BD0A5E95766E6E4764BDDA89026320D444D401",
+      "bytes": 5640
+    },
+    {
+      "path": "Accord.Imaging/Filters/SauvolaThreshold.cs",
+      "blob": "beb38a9fe520fd92888f9f1d26321fa49e5c9ee8",
+      "sha256": "96477F0174C5916DD8E06BF28AB60FD55C5CD46CDEEB6B2EDE2839B8AF72B954",
+      "bytes": 11725
+    },
+    {
+      "path": "Accord.Imaging/Filters/Transform/RotateNearestNeighbor.cs",
+      "blob": "341be23f199b7f52498529a48b9d37d24f64b1ac",
+      "sha256": "6DD3A4D45AD68631A08B9C65E23F411427D44008E8E8DC5BA7644E96CAAFC290",
+      "bytes": 15904
+    },
+    {
+      "path": "Accord.Imaging/Filters/Variance.cs",
+      "blob": "cc01ced477f252f28ebd01f882bb4624ce1663e6",
+      "sha256": "ADAAA04E686949BAB3E569EC5B042F3E8DAB334B5BCDD1392D4F099FF925882B",
+      "bytes": 11273
+    },
+    {
+      "path": "Accord.Imaging/Filters/WaveletTransform.cs",
+      "blob": "7a76414890dcc8c8525e4694e1c61a54def0db5a",
+      "sha256": "6CC02821BA588E904A43278BF2AE5493E0DC6AC69DC758B76122CE5159BD5C9F",
+      "bytes": 8185
+    },
+    {
+      "path": "Accord.Imaging/Filters/WhitePatch.cs",
+      "blob": "ca03d2da7885b1fb7df0e66918a6dca003413662",
+      "sha256": "B8DA9CF7827DC705BADF46CB33E4C70DB8D5BF8F0E571CFB6CC78AE4828835E7",
+      "bytes": 5208
+    },
+    {
+      "path": "Accord.Imaging/Filters/WolfJolionThreshold.cs",
+      "blob": "cbabd09a99fa2d3f001dcabf17e40b77b0c33f78",
+      "sha256": "F993EA1D084B1CF07FE421FFF1561CECC2B25FF78C75C3F9D8FEC2A4E9F660DB",
+      "bytes": 7858
+    },
+    {
+      "path": "Accord.Imaging/GlobalSuppressions.cs",
+      "blob": "8b753d2f92fa18e4bc5c452e20d66ae8c2234330",
+      "sha256": "6148F8A41E42DFDE5D182D4CF28A78370C4407A854D0804C3F9B07A232E702E3",
+      "bytes": 9685
+    },
+    {
+      "path": "Accord.Imaging/GrayLevelCooccurrenceMatrix.cs",
+      "blob": "d2724075115c3cb4d29374b52b9efd73b928a449",
+      "sha256": "49EF5A8F31500DE5CD8C46044E854414131C8E23CEEFA32F0D46EA8A8F6A0ECC",
+      "bytes": 15121
+    },
+    {
+      "path": "Accord.Imaging/GrayLevelDifferenceMethod.cs",
+      "blob": "8421e3d570450a1a8f4bd47284cb36b962ef10f9",
+      "sha256": "19F39A950934146576799D61ABFB618241B1D5AFE21F26F59BCA8C81B4635F11",
+      "bytes": 6804
+    },
+    {
+      "path": "Accord.Imaging/GrayLevelRunLength.cs",
+      "blob": "d93954d33fc0d770de24daedf11580ece521a346",
+      "sha256": "F646A318E7414DA4B9FC61A32D54E81EAB7EE9D9DDFC4913A296065A9530567A",
+      "bytes": 11598
+    },
+    {
+      "path": "Accord.Imaging/IntegralImage2.cs",
+      "blob": "3498558a1ad72cccf3a045ab35cbae9cbe1f5581",
+      "sha256": "7241406CD6D4E6E96B5CE678A2998B1C815B54D19103393AE91202D338D10FE9",
+      "bytes": 25058
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/Base/BaseCornersDetector.cs",
+      "blob": "196c7619fcad3e3ef16e3275fa1f7b4b9db7f28e",
+      "sha256": "84E63DB50FEBB6044C4F6DE8023DCA4B543622058369091F7E0A607C89E46EF8",
+      "bytes": 4940
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/Base/BaseFeatureExtractor.cs",
+      "blob": "7e5a44d840516f1e7433e3c1a7e7f21581269335",
+      "sha256": "5B4ADD2008E71EC7ED5901E9AC05A47DC57160E1608D4FCA34FEE439D9BB3C4A",
+      "bytes": 11699
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/Base/BaseSparseFeatureExtractor.cs",
+      "blob": "1d0437e207aac1a94392eaf027812505c86ef36d",
+      "sha256": "8842F8B7C1EF0E9EB1AA2BD20A161F101F2B51B0C2266140965B6D71F1F4FF39",
+      "bytes": 3470
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/Base/IFeaturePoint.cs",
+      "blob": "542d0974e8289dae9f9f567522ab2f2a81d5a45d",
+      "sha256": "7528E2E5CB54BECDC316D0270BE3985242B54944E75B9CEE9465E584449C41CA",
+      "bytes": 1581
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/Base/IImageFeatureExtractor.cs",
+      "blob": "b85624dc4a2cccb188df890973bbef1b0dfe80af",
+      "sha256": "C8FAEB248D7D8D30E6E36A0C003D68EA61B99643403C2DAD533107E01F4FD697",
+      "bytes": 3167
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/CornerFeaturePoint.cs",
+      "blob": "4631a5126e9e742ed6ec04ed9b32f5661e1eafbb",
+      "sha256": "827EAF0645C073F770BDCEC70A2E721CE96EC1BBA5BCA7AC74018C825CA97106",
+      "bytes": 1978
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/CornerFeaturesDetector.cs",
+      "blob": "ec37eabf255949acc80e7be605c47cb9fe6c8d84",
+      "sha256": "6D478AA8EB3003C52A6FE01632B3D7A14B87CB072056451CD99B3AD8BA16A7C8",
+      "bytes": 3921
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/FREAK/FastRetinaKeypoint.cs",
+      "blob": "76525d792dfc974bf06191999fd04c1dbdfd0a29",
+      "sha256": "95718EA24718DF99EE0B433D130497C4FF253B40662542ED97D5579763FE9265",
+      "bytes": 7498
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/FREAK/FastRetinaKeypointDescriptor.cs",
+      "blob": "a436d215de0085f6ce07d0f3bdeb1afd343906e9",
+      "sha256": "05363E6A107C1248156709CE41529B5F37192B00C335CC8B9735FBF4652C70F8",
+      "bytes": 14977
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/FREAK/FastRetinaKeypointDetector.cs",
+      "blob": "e4480a68c8e23cb7d617000010bf4626df8d02f8",
+      "sha256": "19A43FD0F2CED816349219B517A812C6EA14EB9F7D8F5BFD31823F2356C15623",
+      "bytes": 11050
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/FREAK/FastRetinaKeypointPattern.cs",
+      "blob": "f646019a71a14fed839d3796a6efb6516fb3f91d",
+      "sha256": "11DA17D3FEF57F4BBF1F4200B99AD9A3230BFADAE460C5F69480E27BBE7FC287",
+      "bytes": 14264
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/FastCornersDetector.cs",
+      "blob": "e2277c873108d74191ec42cdb4628a7184c9ff75",
+      "sha256": "FC79B9F55591184F50EE626D92B8A69300BC8491B0AD5F089A919B431E19CB17",
+      "bytes": 310776
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/FeatureDescriptor.cs",
+      "blob": "54c90f8055ad8bc0d22821836bb0cdc87c57d04a",
+      "sha256": "1371F3FFAD916B93AF3246DA50131C0FC8E5631ED02E580178FBFE6D63F237B7",
+      "bytes": 8694
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/Haralick/Haralick.cs",
+      "blob": "dcf5b70d3bb6ecc4fd3c0e72566ed813d3cba6be",
+      "sha256": "46B389A11CF5B9E5AE00E87B037B0C59F54A9761F01D20695411C80A2C2936DD",
+      "bytes": 16679
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/Haralick/HaralickDescriptor.cs",
+      "blob": "d6ea32f719d20287dfb1a953a5878b001406e5ce",
+      "sha256": "6C99D6193DF007681064B8BFCC9402A3BED50893A949549C0DF947070F7AA786",
+      "bytes": 29976
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/Haralick/HaralickDescriptorDictionary.cs",
+      "blob": "df9d93475c9fcd2ef32c17c33d9f88037d576cdc",
+      "sha256": "9FB3B8575519503CBA8B2EBA46098D46476228BEEB2145C245EEB26B7575C75E",
+      "bytes": 9121
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/HarrisCornersDetector.cs",
+      "blob": "06fb56113ea42526ab419ee7874d073bb4809521",
+      "sha256": "5722236246786B8783C61AF2DF733C05A4024348FDE1BA50B3092A2A37DA2D48",
+      "bytes": 17411
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/HistogramsOfOrientedGradients.cs",
+      "blob": "67ce56f473782e0073f9ff8ffe09e1bf266ce6ad",
+      "sha256": "7FF21C180C19DC13ADD7B451750E8326CBA38B87885EE0475BC2C04B7FACCF5C",
+      "bytes": 14053
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/LocalBinaryPattern.cs",
+      "blob": "b419d04a3d4d85363e9fceb072ed21968ba91ff4",
+      "sha256": "0CC6F20C659740438B3033732C43A178E1076558E810B541A451D71BEF156ABD",
+      "bytes": 13781
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/Matching/CorrelationMatching.cs",
+      "blob": "014aee788c627f2e4270339fe4ed51621677df21",
+      "sha256": "7F6F63EA65665CB0D5FDF85545018FAFE883A3D0B9B92812D57D5A79E30398BB",
+      "bytes": 15744
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/SURF/ResponseLayer.cs",
+      "blob": "9d071b81cd6595aea29fdd94fdf8cf2e11e2b33b",
+      "sha256": "EB5C259CA8E4C3CC6B694F7FE1B766D2777B6CF70C90DE20475816C93303A77B",
+      "bytes": 11694
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/SURF/SpeededUpRobustFeaturePoint.cs",
+      "blob": "f2fef219488470778d10b481dfa05f400639d9fa",
+      "sha256": "B678A1D1922C4F8EC4D92610C2C17776A463043D0EBD8DDC25EB00FEC1869836",
+      "bytes": 8073
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/SURF/SpeededUpRobustFeaturesDescriptor.cs",
+      "blob": "0de1daeff3b69b60a6fe81943d95eb4a4713550d",
+      "sha256": "B2E88C6BFA184F55DA0336A8049DA701A966339D6DF680A166C1A1C736249E01",
+      "bytes": 17009
+    },
+    {
+      "path": "Accord.Imaging/Interest Points/SURF/SpeededUpRobustFeaturesDetector.cs",
+      "blob": "47aae427ec064ccc1ce26e41cd2e2f47ce88b843",
+      "sha256": "B9FD6550F739D900748A26305694B4B7E5B5BD9211E3B87BB1CB0E547020B4FB",
+      "bytes": 18236
+    },
+    {
+      "path": "Accord.Imaging/MatrixH.cs",
+      "blob": "9875bbbf9d3350f9596e6a27edf1ee31d8284ebd",
+      "sha256": "05D2E9E236BECB6A65D4FFAFC18BBCC690AAC08800040D8960C69C2B61317992",
+      "bytes": 13462
+    },
+    {
+      "path": "Accord.Imaging/Moments/Base/IMoments.cs",
+      "blob": "613674628a90f3053b0da480597baf3b48106774",
+      "sha256": "2A3AF3112FF6FA100D752411302E9A3F6FE135CBF709567A8944743F7143A072",
+      "bytes": 1916
+    },
+    {
+      "path": "Accord.Imaging/Moments/Base/MomentsBase.cs",
+      "blob": "48a21f8f662c0aa1ebabaea75e9341cf912c717d",
+      "sha256": "147F67133598815040176626FDF4A24903120B55B95E2C9C43AAB81D2E7F596C",
+      "bytes": 7893
+    },
+    {
+      "path": "Accord.Imaging/Moments/CentralMoments.cs",
+      "blob": "0d81f49e47b81f63ddf14d7632fb4cdb2ec00f95",
+      "sha256": "A4587981FA0E87C970FDAF0136578AE2D1708DEC7BED720EDF1CB2A398F5FC43",
+      "bytes": 12372
+    },
+    {
+      "path": "Accord.Imaging/Moments/HuMoments.cs",
+      "blob": "24552193460f730fdeab1f5c2c0469e887a8a177",
+      "sha256": "0CC8FC4673E02ADB7BB8AE6451C90727CA00B4D126540883D5A198812FDFF096",
+      "bytes": 8972
+    },
+    {
+      "path": "Accord.Imaging/Moments/RawMoments.cs",
+      "blob": "2e8f85365b33b8a0cfbaea4821d03217b9f087f0",
+      "sha256": "DD4491EE69B0A76BFBCB9E42352A84C551FF40C0203D261C882B52BDB098838D",
+      "bytes": 14426
+    },
+    {
+      "path": "Accord.Imaging/ObjectiveFidelity.cs",
+      "blob": "e3e49f8f59f87ee4fb4802e3aa08d6876132d5fe",
+      "sha256": "9F61C22FA784887E06F2BDF2F80A84542ED2FEBDC30CC5BBA43EA88F4DA09BBC",
+      "bytes": 11410
+    },
+    {
+      "path": "Accord.Imaging/PointH.cs",
+      "blob": "78f59919c5948dcbf6562465478b60bcdfdc434f",
+      "sha256": "0E2F85D8871CF4A9A92AD1CD815225F2D4C34C528BE21ECBE1F3E5E49596041C",
+      "bytes": 9962
+    },
+    {
+      "path": "Accord.Imaging/Properties/AssemblyInfo.cs",
+      "blob": "de0a67b89b9f29043fcdedbb17dd49f9442ea636",
+      "sha256": "696D014D05080E7DCECE3C94065F5A16D058897BAFED72DA9485E5D494B5C8EF",
+      "bytes": 978
+    },
+    {
+      "path": "Accord.Imaging/Properties/CustomDictionary.xml",
+      "blob": "fa49d23879ab231e5d71ffc13e9664819c6c2e17",
+      "sha256": "9F412DF1A137802756CCDF8E16825F50A28688B9D096AC0205605FDF6A289E13",
+      "bytes": 642
+    },
+    {
+      "path": "Accord.Imaging/Textures/Base/BaseTextureGenerator.cs",
+      "blob": "9ec0981be4232b7e758a26d4ddfe336932fd6aa5",
+      "sha256": "7A7950993F9260498956832471018236EFE62485CEA6E50896F5BF77F807B606",
+      "bytes": 2908
+    },
+    {
+      "path": "Accord.Imaging/Textures/Base/ITextureGenerator.cs",
+      "blob": "0571cf9360d3e3d9c9a984b949a50466c6e99952",
+      "sha256": "43D28DAB9EF3E65E4B23F00E99065601E6AA188C4D76DD1F6EB4714F4BFE1ADC",
+      "bytes": 2339
+    },
+    {
+      "path": "Accord.Imaging/Textures/CloudsTexture.cs",
+      "blob": "fa31e5f4ab03ab3fc0e4a17d33db4bca3517b557",
+      "sha256": "60B8F0F915ECCCCDABA862B769C8D8697E7C2ACD571BDB30290799E1F04870E6",
+      "bytes": 3376
+    },
+    {
+      "path": "Accord.Imaging/Textures/LabyrinthTexture.cs",
+      "blob": "6aabb12be50877d518536deb2e18f0ca37f4f080",
+      "sha256": "E4DC7BFF1BC8A3574533DB77A02FE1E188BB404DDB8CD047316446E3CB429C3F",
+      "bytes": 3374
+    },
+    {
+      "path": "Accord.Imaging/Textures/MarbleTexture.cs",
+      "blob": "b13930dde800d28e79f8f94af6b1ab2618cd1a79",
+      "sha256": "0248FA8D0EC8AD1DD699F1C660C3B210C4E43575A330FC817EAF62C5193BAAF2",
+      "bytes": 5117
+    },
+    {
+      "path": "Accord.Imaging/Textures/TextileTexture.cs",
+      "blob": "3106daab40b3277a06e9e36eda88b53eecf03349",
+      "sha256": "6B219EA9E6DE25AB1E9378A52A5515CBBFAC15C599B8D613CD1F0B9E01F07ED2",
+      "bytes": 3481
+    },
+    {
+      "path": "Accord.Imaging/Textures/TextureTools.cs",
+      "blob": "f562fd1130f1156da496ed7cfdab22c7e537e363",
+      "sha256": "223108F5AA3CB56EA07FEF43D5364E0D679663A92E4E5F65F5E4B18C4791250A",
+      "bytes": 4363
+    },
+    {
+      "path": "Accord.Imaging/Textures/WoodTexture.cs",
+      "blob": "4292e7fe1128e768e93d3faabe13053fd3da8ac9",
+      "sha256": "45325CDC3A45BFB3AC777E2AC6F9900FDFA3CC64016E9A95D8CFD167B5B347DD",
+      "bytes": 4724
+    },
+    {
+      "path": "Accord.Imaging/Tools.cs",
+      "blob": "ebf581d88140e2f361e95747110b57a70d942672",
+      "sha256": "6D95A932D960C3F7F5E30DAE44B9E1DBBE946CA65F0AD47E572CF3B9E9F840F8",
+      "bytes": 77339
+    },
+    {
+      "path": "Accord.Imaging/UnsafeTools.cs",
+      "blob": "3f4bf767ab331b12c459595c9daf52eda54c31e5",
+      "sha256": "A761F364D813447705208E3A750A85A4214AD336DA66838742498D50A29AFF44",
+      "bytes": 4279
+    }
+  ],
+  "additionalInputs": [
+    {
+      "path": ".editorconfig",
+      "blob": "98d899f7dd99de8f8115017808c5b9315dd1521d",
+      "sha256": "C9ECF96BA93AE164A4A2F17A8D4F4FC6FEDEEB9E4E6A9742E62EA7D9CC680870",
+      "bytes": 10108
+    },
+    {
+      "path": "Directory.Build.props",
+      "blob": "cb5048a39a25e6b66d953958c5d626b84640df1b",
+      "sha256": "9ED19ADC3920BDFDF3282E3DD8F3A22652DD0C08551127630A9781417B95D3BD",
+      "bytes": 248
+    },
+    {
+      "path": "NINA/3rd-party-licenses.txt",
+      "blob": "51103f166f2bd4a55453c2f1ec285cb116a491ab",
+      "sha256": "7A8591E2F3065A573A01BF83AFB2DD0882F35FAF7E3F0F1D29F8A493C57490B4",
+      "bytes": 86471
+    }
+  ],
+  "companions": [
+    {
+      "sha256": "92DF54FE440B4516E0A6E087261CAAC7F66885492ADEAD7D68633C905A961078",
+      "name": "Accord.dll"
+    },
+    {
+      "sha256": "36A82280CB381B163F5909B031F1926CE6D8E7F37A7C4FD3F8B87372ECDF7A91",
+      "name": "Accord.Math.dll"
+    },
+    {
+      "sha256": "491767C40CC71AC7973C3279EFECACD247280CD55BC0EE6BDB86CED5B8465258",
+      "name": "Accord.Math.Core.dll"
+    },
+    {
+      "sha256": "78F7FBD3FCCF10E5A4BFC116F7D292DA3A09A96F4298ED7BF5C98CFCCD2A8F41",
+      "name": "Accord.Statistics.dll"
+    }
+  ],
+  "targetFramework": "netstandard2.0",
+  "languageVersion": "7.3",
+  "configuration": "Debug",
+  "symbols": "TRACE,DEBUG,NETSTANDARD,NETSTANDARD2_0,NETSTANDARD1_0_OR_GREATER,NETSTANDARD1_1_OR_GREATER,NETSTANDARD1_2_OR_GREATER,NETSTANDARD1_3_OR_GREATER,NETSTANDARD1_4_OR_GREATER,NETSTANDARD1_5_OR_GREATER,NETSTANDARD1_6_OR_GREATER,NETSTANDARD2_0_OR_GREATER"
+}

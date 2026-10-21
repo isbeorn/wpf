@@ -40,11 +40,12 @@ deferred. Detailed evidence and remaining gates follow.
 The original NINA App/MainWindow has run visibly on GNOME/XWayland through the
 qualified portable SDK/runtime packages. Native sequence editing, completion,
 cancellation, reset, restart and palette drag/drop/Escape pass in that packaged
-application. Floating caption/redocking remains under diagnosis. The current
-image workflow stops in `StarDetection.Detect` because its async state machine
-still references `System.Private.Windows.GdiPlus`. Actual FITS saving and UI
-readback have not passed in this publication. Earlier capture and Framing passes
-retain their own runtime scope; they do not clear this new package boundary.
+application. Floating caption/redocking remains under diagnosis. The last actual
+image workflow stopped at `System.Private.Windows.GdiPlus` dependencies. The
+Image/Accord repairs now pass the component package graph's complete image
+regression without GdiPlus. Actual FITS saving and UI readback still need a fresh
+whole-application replay. Earlier capture and Framing passes retain their own
+runtime scope; they do not replace that replay.
 
 The targetless sequence ContextMenu opening is repaired in commit `0b12eb772`. The original null
 PlacementTarget remains unchanged; an eligible active keyboard source supplies
@@ -173,15 +174,17 @@ median and pixel-size methods before requesting GdiPlus. The candidate Image is
 `0394CC2D08577FD2117C38793FE1FA35881CA1F8E3CF0CD74D03D99147681935`.
 Its component compile references use the retained coherent 120-file family,
 while package execution uses the unchanged current 306-file graph. A bounded
-Accord metadata-query source adaptation is under design review. No scientific
-kernel change or GdiPlus deployment is authorized by this helper repair, and
-the next actual App retry remains unreleased.
+Accord metadata-query source adaptation is now qualified separately below. This
+Image-only intermediate was not released to the actual App.
 
 The user approved the focused design below on 21 October 2026. It promotes the existing
 `Accord.Imaging` dependency to an explicitly source-adapted component. It retains
 the pinned NINA source revision, original netstandard2.0 target, C# 7.3 settings,
-assembly identity and public API. The change is seven metadata expressions in
-six files, with numerical loops untouched:
+assembly identity and public API. The initial proposal listed seven metadata
+expressions in six files. The unchanged Canny path then exposed one more
+pixel-size query in `Drawing.Line`; it uses the same metadata ownership rule.
+The implementation changes eight expressions in seven files, with numerical
+loops untouched:
 
 | Existing source | Proposed change |
 | --- | --- |
@@ -191,6 +194,7 @@ six files, with numerical loops untouched:
 | `AForge.Imaging/Filters/Smooting/Median.cs` | Route its reached metadata query through that same owner. |
 | `Blob Processing/BlobCounter.cs` | Route the query in the reached `BuildObjectsMap` method through that owner. |
 | `Blob Processing/BlobCounterBase.cs` | Route the query in the reached `CollectObjectsInfo` method through that owner. |
+| `AForge.Imaging/Drawing.cs` | Route the reached `Line(UnmanagedImage, ...)` pixel-size query through the same owner; preserve its format checks, clipping and pointer drawing. |
 
 The actual packaged System.Drawing method's IL establishes the formula above.
 Stock Accord's Convolution and Median call that Windows type directly, despite
@@ -213,10 +217,24 @@ flag-only and sub-byte PixelFormat values, complete exported API comparison,
 exact existing scientific pixels/results, package27, science25, annotation5,
 FITS13 and legacy1. Package operations must succeed without deploying or loading
 GdiPlus. Existing borrowed-buffer tests cover stride, padding and source
-ownership. Keep the combined local/guest preparation below 96 MiB. Only after
-these checks and independent reviews pass may a fresh whole NINA publication
-retry the original snapshot, file save and UI readback. Implementation is
-released within this scope.
+ownership. Keep the combined local/guest preparation below 96 MiB.
+
+The final component passes those checks with the reviewed Image `0394CC2D`
+and Accord `B2867867F025A5AE85A0B094AB4C6783AC38A538B5830BA05CB1D01FC1A749E1`.
+Windows passes metadata/API6, science25, annotation5 and legacy1. Linux passes
+package metadata6, package science27, full-reference science25, annotation5,
+FITS13 and legacy1. Every process exits zero with empty stderr. The package
+profiles select the exact new Accord PE against the unchanged 306-file graph,
+without GdiPlus; the full-reference reflection profile has its separate declared
+closure. Original failures and intermediate producers remain retained.
+
+Both independent reviews are clear. Root verified all eight recipe/test source
+pins and all 290 producing PDB source documents, with matching PE/PDB identity.
+The explicit final source descriptor is
+`current/nina/star-detection-package-20261021-1/accord-source-freeze-v3.json`,
+SHA-256 `763EB2B8D04BEF6C3F14D307F25855F3374B2915040894E6F9BAB4D39CADC9D6`.
+The corresponding source/license distribution rows are being sealed. The next
+whole NINA publication and actual snapshot, save and readback remain unreleased.
 
 Separately, the corrected private caption diagnostic passes all 11 checks on
 the current 306-file runtime. Independent native client origin and WPF screen

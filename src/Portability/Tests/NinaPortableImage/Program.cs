@@ -13,9 +13,10 @@ internal static partial class Program {
 
     [STAThread]
     private static int Main(string[] args) {
-        if (args.Length != 5 && args.Length != 7) throw new ArgumentException("Expected report, Image DLL, Core DLL, stock directory, framework directory and optional qualification mode/work directory.");
+        if (args.Length != 5 && args.Length != 7 && args.Length != 8) throw new ArgumentException("Expected report, Image DLL, Core DLL, stock directory, framework directory, optional qualification mode/work directory and optional Accord DLL.");
+        if (args.Length == 8 && AssemblyName.GetAssemblyName(args[7]).FullName != "Accord.Imaging, Version=3.5.3.0, Culture=neutral, PublicKeyToken=null") throw new ArgumentException("The selected Accord assembly identity differs from NINA's dependency.");
         AssemblyLoadContext.Default.Resolving += (_, name) => {
-            string? candidate = name.Name == "NINA.Image" ? args[1] : name.Name == "NINA.Core" ? args[2] : null;
+            string? candidate = name.Name == "NINA.Image" ? args[1] : name.Name == "NINA.Core" ? args[2] : name.Name == "Accord.Imaging" && args.Length == 8 ? args[7] : null;
             if (candidate != null) return AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.GetFullPath(candidate));
             foreach (var directory in new[] { args[4], args[3] }) {
                 var path = Path.Combine(directory, name.Name + ".dll");
@@ -24,12 +25,14 @@ internal static partial class Program {
             return null;
         };
         if (args.Length == 5) RunAnnotationCases();
+        else if (args[5] == "annotation") RunAnnotationCases();
         else if (args[5] == "fits") RunFitsCases(args[6]);
         else if (args[5] == "fits-legacy-reference" || args[5] == "fits-legacy-compare") RunLegacyFitsCase(args[6], args[5] == "fits-legacy-reference");
+        else if (args[5].StartsWith("accord-", StringComparison.Ordinal)) RunAccordCases(args[6], args[5] == "accord-reference", args[5] == "accord-package-compare");
         else RunProcessingCases(args[6], args[5] == "science-reference", args[5] == "science-package-compare");
         var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
             .Select(a => new { name = a.GetName().Name, path = a.Location, sha256 = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(a.Location))) });
-        var nativeLibraries = args.Length == 7 && args[5] == "fits" ? FitsNativeLibraries() : [];
+        var nativeLibraries = args.Length >= 7 && args[5] == "fits" ? FitsNativeLibraries() : [];
         File.WriteAllText(args[0], JsonSerializer.Serialize(new { status = failures == 0 ? "pass" : "fail", scope = "NINA.Image focused component; no application or acquisition qualification", cases, assemblies, nativeLibraries }, new JsonSerializerOptions { WriteIndented = true }));
         return failures == 0 ? 0 : 1;
     }

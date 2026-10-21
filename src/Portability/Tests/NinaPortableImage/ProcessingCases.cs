@@ -196,13 +196,13 @@ internal static partial class Program {
         Require(raw.SequenceEqual(before), "Odd-width color processing modified raw samples.");
     }
 
-    private static void PublicContract(string directory, bool write) {
-        var api = typeof(StarAnnotator).Assembly.GetExportedTypes().OrderBy(type => type.FullName, StringComparer.Ordinal).Select(type => new {
+    private static void PublicContract(string directory, bool write, System.Reflection.Assembly? assembly = null, string fileName = "public-contract.json") {
+        var api = (assembly ?? typeof(StarAnnotator).Assembly).GetExportedTypes().OrderBy(type => type.FullName, StringComparer.Ordinal).Select(type => new {
             type = type.FullName,
             members = type.GetMembers(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.DeclaredOnly)
                 .Select(member => member.ToString()).OrderBy(member => member, StringComparer.Ordinal).ToArray()
         });
-        Reference(Path.Combine(directory, "public-contract.json"), JsonSerializer.Serialize(api, scienceJson), write);
+        Reference(Path.Combine(directory, fileName), JsonSerializer.Serialize(api, scienceJson), write);
     }
 
     private static ushort[] SensorFixture(string name, int width, int height) {
