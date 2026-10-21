@@ -1,9 +1,132 @@
 # Windows host incident, 21 October 2026
 
-Status: Windows usability was restored according to the user after System
-Restore. The exact cause of the failure is still unproven. NINA implementation,
-builds and qualification remain paused. Do not resume them on the basis of this
-report alone. All future execution belongs in Ubuntu under the root AGENTS.md.
+Status: Windows usability was restored after System Restore. The later registry
+snapshot and command comparison identifies our repeated .NET SDK first-run PATH
+additions as the strongly supported cause of the startup failures. The approved
+cleanup is complete and verified. The user subsequently authorized resuming NINA
+work and Windows testing with the safeguards below. Everything remains local.
+
+## Cause and responsibility
+
+Our Windows build lanes used separate `DOTNET_CLI_HOME` directories. The SDK's
+first-run setup appended each home's `.dotnet\tools` directory to persistent
+`HKCU\Environment\Path`. We did not disable that behavior. Setting environment
+variables only in a child process and restoring its PATH afterward did not undo
+the SDK's writes to the user registry. This was a toolchain side effect caused
+by our test setup, missed by the initial command audit.
+
+The machine PATH was unchanged. The failed user's PATH, combined with the
+expanded machine PATH, exceeded Windows' 32,767-character per-variable limit.
+This is the limit on an individual variable, not a claimed limit on the total
+Unicode environment block.
+
+| Registry state | User PATH characters | Entries | WPF tool-path entries | Reconstructed expanded combined PATH characters |
+| --- | ---: | ---: | ---: | ---: |
+| Restore checkpoint, snapshot 2 | 24,552 | 246 | 218 | 26,540 |
+| Failed state, snapshot 4 | 32,174 | 313 | 283 | 34,162 |
+| Working after restore, snapshot 6 | 24,552 | 246 | 218 | 26,540 |
+| After approved cleanup | 1,644 | 28 | 0 | Not used as incident evidence |
+
+Snapshot 4's user PATH is exactly the checkpoint string followed by 67 appended
+entries. Entry 56 of those additions is the first that crosses the limit:
+
+`E:/Projects/wpf/artifacts/portability/current/linear-gradient-rendering-20261021-1/cli-home-windows\.dotnet\tools`
+
+At that point the raw user PATH was 30,892 characters and the reconstructed
+expanded combined PATH was 32,880. The preceding entry left the combined value
+just below the limit. The reconstruction uses the unchanged machine PATH,
+USERPROFILE and SystemRoot values; it is not a captured environment block from
+the failed Task Manager process.
+
+The machine PATH is identical in snapshots 2, 4 and 6: 1,996 raw characters,
+last written on 14 October at 22:32:04.776 UTC. The user Environment key in the
+failed snapshot was last written on 21 October at 15:04:06.854 UTC. Snapshot 4's
+NTUSER hive has unequal header sequences, 432647/432646. It was read directly
+without replaying transaction logs, so it is not presented as a fully recovered
+registry image. The checkpoint and working hives have matching sequences and
+their user PATH values match byte for byte.
+
+### Recorded trigger and reboot behavior
+
+At 08:08:13.234 on 21 October, request
+`call_97bcf5350e594b67984e4ceefff5ac10` launched the linear-gradient lane's
+`Build-Stock.ps1` and `Build-Red-Windows.ps1 RenderingIntegration`. The retained
+scripts select `cli-home` and `cli-home-windows` respectively and invoke the
+SDK without the global-tools PATH opt-out. Their SDK 10.0.401 tool-path
+sentinels were created at 08:08:14.229 and 08:08:14.395. The second home's tools
+directory is the first limit-crossing entry above.
+
+The first retained memory-related service error follows at 08:08:50.427
+(CaptureService, System record 445626). Task Manager then fails with
+`0xc0000017` at 08:09:31.935 (System record 445635). This connects the retained
+SDK commands, their first-run artifacts, the persistent PATH growth and the
+first observed failures. The earlier focus on completed rendering probes missed
+this preceding SDK setup side effect.
+
+A reboot removed the test processes but reread the oversized persistent PATH.
+The failed full boot at 20:38:44 again shows memory-related per-user service
+failures from 20:38:58 and Task Manager failing at 20:39:43, without a newly
+recorded test launch before them. Shell-Core records repeated taskbar startup
+attempts. After System Restore, the 21:19 boot reaches completed taskbar startup
+in about 0.4 seconds and Start menu initialization completes. The same memory
+and Task Manager errors are absent in the inspected working boot windows,
+including the later 21:51 boot.
+
+System Restore restored the earlier user PATH exactly. It also restored other
+state, so that observation alone would not isolate the cause. The registry
+comparison and matching SDK first-run timeline provide the additional evidence.
+There is no failure-time allocation trace or controlled reproduction, and we
+will not reproduce the oversized-PATH failure on this host. This conclusion
+does not attribute every historical network-port warning or unrelated error to
+PATH exhaustion.
+
+Windows documents the per-variable limit in
+[Environment Variables](https://learn.microsoft.com/en-us/windows/win32/procthread/environment-variables).
+The SDK documents its automatic PATH behavior and opt-out in
+[DOTNET_ADD_GLOBAL_TOOLS_TO_PATH](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-environment-variables#dotnet_add_global_tools_to_path).
+[SDK issue 56512](https://github.com/dotnet/sdk/issues/56512) independently reports
+the same CLI-home accumulation mechanism and Windows shell/Task Manager
+symptoms. That report supports the mechanism; it is not a substitute for the
+local evidence or a maintainer-confirmed diagnosis of this machine.
+
+## Approved cleanup and prevention
+
+Before mutation, the raw user and machine PATH values, registry value kinds,
+hashes and exact removal manifest were backed up under
+`artifacts/windows-recovery-20261021-1/path-cleanup-20261021-1/backup.json`.
+The original global instructions were backed up beside it as `AGENTS.md.before`.
+
+The authorized cleanup removed exactly 218 known WPF-generated tool-path
+entries from the restored user PATH. It preserved all 28 retained entries in
+their original order and spelling, including existing global tools and nine
+older NINA entries whose ownership was not established. The user PATH remains
+`REG_EXPAND_SZ`. Machine PATH and all other user and machine environment values
+were verified unchanged. Only the approved host-safety section was appended to
+the global instructions. No SDK, test or NINA application was launched during
+cleanup.
+
+The verification receipt is
+`artifacts/windows-recovery-20261021-1/path-cleanup-20261021-1/verification.json`,
+completed at 20:45:08.641 UTC on 21 October. SHA-256 values below hash the raw
+PATH strings as UTF-16LE:
+
+| Value | SHA-256 |
+| --- | --- |
+| User PATH before cleanup | `58A2A2AAA852D957B6FC157A12DBF4A3F676BA1550B73A5AFD5D71FAEE6D409B` |
+| User PATH after cleanup | `DF896C2617E7A08D187E0BD0FB771C4658B4A016821EA45750E2E1200221BA62` |
+| Unchanged machine PATH | `ABFD5CC845DCF50E28A5693D18A66BEFE92BBDDB4C0F40485154ED0DD8DE1EE3` |
+
+Future SDK invocations must set `DOTNET_ADD_GLOBAL_TOOLS_TO_PATH=false` and
+`DOTNET_GENERATE_ASPNET_CERTIFICATE=false` in the invocation's process
+environment, inherited by children. Do not persist these settings. Windows
+toolchain batches must capture raw user and machine PATH before and after and
+stop on unexpected changes. Shared and generated portability entry points must
+enforce these rules before qualification resumes. A CLI home, private desktop
+or temporary directory must never be treated as a host isolation boundary.
+
+The user's subsequent instruction explicitly permits Windows testing again.
+It does not authorize installing or changing shared SDKs/runtimes or other host
+configuration. The root AGENTS.md records this exception and the safeguards.
 
 ## What the history establishes
 
@@ -89,18 +212,18 @@ retained files. Its successful result names that same directory. This is
 evidence for that cleanup's scope, not proof about every historical deletion.
 
 The command scan found no recorded direct system .NET installer invocation,
-shared-runtime replacement, persistent User/Machine environment mutation, boot
+shared-runtime replacement, explicit persistent User/Machine environment write, boot
 change, service installation, global ACL change or registry repair by this chat
 or its linked agents. Searches include explicit Windows command routes, managed
 registry APIs, symbolic links, encoded-command routes and system paths. Keyword
 hits are leads to inspect, not proof of an action. For example, csc.exe matched
 the sc.exe search but is not a service-control command.
 
-This finding does not establish that executing builds, native libraries or
-applications had no indirect effect. Commands can invoke scripts or code with
-their own behavior. Not every historical script body has an immutable executed
-copy. There is no complete before-and-after system snapshot or incident dump
-that identifies the failing allocation.
+The SDK's indirect persistent user PATH writes, established above, correct the
+initial audit's incomplete conclusion. Searching only for explicit environment
+mutation commands was insufficient. Not every historical script body has an
+immutable executed copy, and there is no incident dump identifying the failing
+allocation. Those limits do not erase the retained PATH and first-run evidence.
 
 ## Confirmed isolation failure
 
@@ -139,12 +262,13 @@ artifacts/windows-recovery-20261021-1/history-audit:
 - coverage-limitations.json records a canceled raw-text fallback search. That
   fallback and the unexecuted process-creation query are not counted as proof.
 
-The successful System Restore changed more than a single runtime. It therefore
-does not identify which reverted file or setting restored normal operation.
-The history does not currently prove that our work replaced the system .NET
-runtime or establish another specific action as the cause. Do not manufacture a
-causal conclusion from timing alone and do not reproduce the failure on the
-user's Windows host. NINA stays paused until the user accepts a further course
-of action.
+The later read-only snapshot comparison found the checked Explorer, Task
+Manager, Start menu and core Windows binaries identical before and after the
+failure. The checked .NET 10.0.13 runtime binaries were present in both failed
+and working post-restore snapshots. The Visual Studio update ledger identifies
+`VSUpdateHelper.exe`, but retained process-creation evidence does not establish
+its parent or who triggered it. These updates are not established as the cause.
 
-Proposed PR title: Restrict execution to Ubuntu and record the Windows incident audit.
+The SDK first-run PATH side effect is the supported incident cause. The
+approved cleanup and safeguards address that mechanism. NINA work resumes only
+under the user's explicit renewed authorization and the updated root AGENTS.md.
