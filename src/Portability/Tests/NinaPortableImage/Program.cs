@@ -26,7 +26,7 @@ internal static partial class Program {
         if (args.Length == 5) RunAnnotationCases();
         else if (args[5] == "fits") RunFitsCases(args[6]);
         else if (args[5] == "fits-legacy-reference" || args[5] == "fits-legacy-compare") RunLegacyFitsCase(args[6], args[5] == "fits-legacy-reference");
-        else RunProcessingCases(args[6], args[5] == "science-reference");
+        else RunProcessingCases(args[6], args[5] == "science-reference", args[5] == "science-package-compare");
         var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
             .Select(a => new { name = a.GetName().Name, path = a.Location, sha256 = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(a.Location))) });
         var nativeLibraries = args.Length == 7 && args[5] == "fits" ? FitsNativeLibraries() : [];

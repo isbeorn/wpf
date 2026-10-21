@@ -14,7 +14,7 @@ internal static partial class Program {
     private static readonly JsonSerializerOptions scienceJson = new() { NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals, IncludeFields = true, WriteIndented = true };
 
     [MethodImpl(MethodImplOptions.NoInlining)]
-    private static void RunProcessingCases(string referenceDirectory, bool writeReference) {
+    private static void RunProcessingCases(string referenceDirectory, bool writeReference, bool packageRuntime = false) {
         if (writeReference && !OperatingSystem.IsWindows()) throw new InvalidOperationException("Only the original Windows implementation supplies references.");
         Directory.CreateDirectory(referenceDirectory);
         var state = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(referenceDirectory))!, "science-state-" + (writeReference ? "stock" : "portable"));
@@ -33,9 +33,39 @@ internal static partial class Program {
         Check("real-Detect-cancel-at-structures-preserves-partial-result-and-recovers", () => DetectionCancellation(referenceDirectory));
         Check("odd-width-stretch-processes-every-real-sample", () => OddWidthStretch(OperatingSystem.IsWindows()));
         Check("odd-width-Rgb48-linked-and-unlinked-process-every-sample", () => OddWidthColorStretch(OperatingSystem.IsWindows()));
-        Check("public-contract-matches-original", () => PublicContract(referenceDirectory, writeReference));
+        if (packageRuntime) {
+            Check("package-public-Detect-Gray16-default-High-Highest", () => PackageDetection(referenceDirectory, false));
+            Check("package-public-Detect-Rgb48-default-High-Highest", () => PackageDetection(referenceDirectory, true));
+        } else {
+            Check("public-contract-matches-original", () => PublicContract(referenceDirectory, writeReference));
+        }
         Check("original-analytic-circular-measurement", () => AnalyticMeasurement(false));
         Check("original-analytic-elliptical-measurement", () => AnalyticMeasurement(true));
+        if (packageRuntime) Check("package-runtime-does-not-load-Windows-GDI-contracts", () => {
+            var names = AppDomain.CurrentDomain.GetAssemblies().Select(assembly => assembly.GetName().Name);
+            Require(!names.Contains("System.Private.Windows.GdiPlus"), "Windows GDI was loaded by package image processing.");
+        });
+    }
+
+    private static void PackageDetection(string directory, bool color) {
+        const int width = 640, height = 480;
+        var raw = new ushort[width * height];
+        Buffer.BlockCopy(File.ReadAllBytes(Path.Combine(directory, "catalog.raw")), 0, raw, 0, raw.Length * 2);
+        var before = raw.ToArray();
+        var detection = new StarDetection();
+        var data = new BaseImageData(raw, width, height, 16, color, new ImageMetaData(), null!, detection, null!);
+        var rendered = data.RenderImage();
+        if (color) rendered = rendered.Debayer(true, true, SensorType.RGGB);
+        var image = rendered.Stretch(0.2, -2.8, color).GetAwaiter().GetResult();
+        var pixelsBefore = Words(image.Image);
+        foreach (var parameters in new[] { new StarDetectionParams(), new StarDetectionParams { Sensitivity = StarSensitivityEnum.High }, new StarDetectionParams { Sensitivity = StarSensitivityEnum.Highest } }) {
+            var statuses = new List<string>();
+            var progress = new SynchronousProgress(status => statuses.Add(status.Status));
+            var result = detection.Detect(image, image.Image.Format, parameters, progress, CancellationToken.None).GetAwaiter().GetResult();
+            Require(result.StarList?.Count > 0 && result.DetectedStars > 0 && double.IsFinite(result.AverageHFR) && double.IsFinite(result.AverageFWHM), "Public detection omitted stars or finite measurements.");
+            Require(statuses.Contains("Analyzing stars") && statuses[^1] == string.Empty, "Public detection progress did not complete.");
+            Require(raw.SequenceEqual(before) && data.Data.FlatArray.SequenceEqual(before) && Words(image.Image).SequenceEqual(pixelsBefore), "Public detection changed raw samples or rendered pixels.");
+        }
     }
 
     private static void ScienceImage(string directory, bool write, string name, int width, int height, NoiseReductionEnum noise) {

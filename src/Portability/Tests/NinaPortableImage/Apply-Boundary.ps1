@@ -133,6 +133,11 @@ Edit-Image 'ImageUtility' {
                 if (pf != System.Drawing.Imaging.PixelFormat.Format16bppGrayScale) throw new NotSupportedException();
                 return DebayerPortable(source, saveColorChannels, saveLumChannel, bayerPattern);
             }
+            return DebayerWindows(source, pf, saveColorChannels, saveLumChannel, bayerPattern);
+        }
+
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+        private static DebayeredImageData DebayerWindows(BitmapSource source, System.Drawing.Imaging.PixelFormat pf, bool saveColorChannels, bool saveLumChannel, SensorType bayerPattern) {
 '@
     $text = Replace-Once $text '        public static Task<BitmapSource> Stretch(IRenderedImage image, double factor, double blackClipping) {' "        public static Task<BitmapSource> Stretch(IRenderedImage image, double factor, double blackClipping) {`n            if (!OperatingSystem.IsWindows()) return StretchPortable(image, factor, blackClipping);"
     Replace-Once $text '        public static Task<BitmapSource> StretchUnlinked(IDebayeredImage data, double factor, double blackClipping) {' "        public static Task<BitmapSource> StretchUnlinked(IDebayeredImage data, double factor, double blackClipping) {`n            if (!OperatingSystem.IsWindows()) return StretchUnlinkedPortable(data, factor, blackClipping);"
@@ -147,19 +152,45 @@ Edit-Image 'FastGaussianBlur' {
 }
 Edit-Image 'StarDetection' {
     param($text)
-    $text = Replace-Once $text '            if (pf == PixelFormats.Rgb48) {' @'
+    $text = Replace-Once $text @'
+            if (pf == PixelFormats.Rgb48) {
+                using (var source = ImageUtility.BitmapFromSource(state._originalBitmapSource, System.Drawing.Imaging.PixelFormat.Format48bppRgb)) {
+                    using (var img = new Grayscale(0.2125, 0.7154, 0.0721).Apply(source)) {
+                        state._originalBitmapSource = ImageUtility.ConvertBitmap(img, System.Windows.Media.PixelFormats.Gray16);
+                        state._originalBitmapSource.Freeze();
+                    }
+                }
+            }
+'@ @'
             if (pf == PixelFormats.Rgb48 && !OperatingSystem.IsWindows()) {
                 using (var gray = PortableImageBuffer.Grayscale(state._originalBitmapSource)) state._originalBitmapSource = gray.ToSource();
             } else if (pf == PixelFormats.Rgb48) {
+                state._originalBitmapSource = ConvertColorToGrayWindows(state._originalBitmapSource);
+            }
 '@
-    $text = Replace-Once $text '        public async Task<StarDetectionResult> Detect(' ((Snippet 'StarDetection') + "`n        public async Task<StarDetectionResult> Detect(")
     $start = $text.IndexOf('                    bitmapToAnalyze = ImageUtility.Convert16BppTo8Bpp(', [StringComparison]::Ordinal)
     $endText = '                    result.StarList = IdentifyStars(p, state, blobCounter, bitmapToAnalyze, result, token, out var detectedStars);'
     $end = $text.IndexOf($endText, [StringComparison]::Ordinal)
     if ($start -lt 0 -or $end -le $start) { throw 'Missing original star detection preparation.' }
-    $body = $text.Substring($start, $end + $endText.Length - $start).Replace('blobCounter, bitmapToAnalyze, result, token, out var detectedStars', 'blobCounter, new Size(bitmapToAnalyze.Width, bitmapToAnalyze.Height), result, token, out detectedStars')
-    $replacement = "                    int detectedStars;`n                    if (!OperatingSystem.IsWindows()) {`n                        result.StarList = IdentifyStarsPortable(p, state, result, progress, token, out detectedStars);`n                    } else {`n$body`n                    }"
+    $body = $text.Substring($start, $end + $endText.Length - $start).Replace('blobCounter, bitmapToAnalyze, result, token, out var detectedStars', 'blobCounter, new Size(bitmapToAnalyze.Width, bitmapToAnalyze.Height), result, token, out detectedStars').Replace('result.StarList = IdentifyStars(', 'return IdentifyStars(')
+    $body = [regex]::Replace($body, '(?m)^    ', '')
+    $windowsHelper = @"
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+        private static List<DetectedStar> IdentifyStarsWindows(StarDetectionParams p, State state, StarDetectionResult result, IProgress<ApplicationStatus> progress, CancellationToken token, out int detectedStars) {
+            Bitmap bitmapToAnalyze = null;
+            try {
+$body
+            } finally {
+                bitmapToAnalyze?.Dispose();
+            }
+        }
+
+"@
+    $replacement = "                    int detectedStars;`n                    if (!OperatingSystem.IsWindows()) {`n                        result.StarList = IdentifyStarsPortable(p, state, result, progress, token, out detectedStars);`n                    } else {`n                        result.StarList = IdentifyStarsWindows(p, state, result, progress, token, out detectedStars);`n                    }"
     $text = $text.Substring(0, $start) + $replacement + $text.Substring($end + $endText.Length)
+    $text = Replace-Once $text '            Bitmap bitmapToAnalyze = null;' ''
+    $text = Replace-Once $text '                bitmapToAnalyze?.Dispose();' ''
+    $text = Replace-Once $text '        public async Task<StarDetectionResult> Detect(' ((Snippet 'StarDetection') + "`n" + $windowsHelper + "`n        public async Task<StarDetectionResult> Detect(")
     $text = Replace-Once $text 'BlobCounter blobCounter, Bitmap bitmapToAnalyze, StarDetectionResult result' 'BlobCounter blobCounter, Size imageSize, StarDetectionResult result'
     Replace-Once $text 'p.UseROI && !InROI(bitmapToAnalyze, p, blob)' 'p.UseROI && !DetectionUtility.InROI(imageSize, blob.Rectangle, p.OuterCropRatio, p.InnerCropRatio)'
 }

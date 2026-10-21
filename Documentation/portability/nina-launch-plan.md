@@ -129,6 +129,25 @@ and dock layout is
 The absolute Framing cache remains unchanged. Preserve this current state for
 the next coherent Image successor rather than restoring the older seed.
 
+The focused Image helper candidate isolates Windows Bitmap types behind three
+private noninlined methods for detection preparation, RGB48 initialization and
+debayer. Both independent reviews are clear. All 72 producing source documents
+match the candidate PE/PDB. Original and adapted Windows each pass science25,
+annotation5 and deterministic legacy1; Linux passes annotation5 and FITS13.
+The latter required a physical CFITSIO copy at the fixture's declared native
+path after its strict module-path check rejected a symlink. That failed
+orchestration attempt is retained separately.
+
+This is a partial repair, not a released Image successor. The genuine package
+regression improves from 4/27 to 13/27; 14 cases now reach Accord's convolution,
+median and pixel-size methods before requesting GdiPlus. The candidate Image is
+`0394CC2D08577FD2117C38793FE1FA35881CA1F8E3CF0CD74D03D99147681935`.
+Its component compile references use the retained coherent 120-file family,
+while package execution uses the unchanged current 306-file graph. A bounded
+Accord metadata-query source adaptation is under design review. No scientific
+kernel change or GdiPlus deployment is authorized by this helper repair, and
+the next actual App retry remains unreleased.
+
 The preceding 334-file application lifetime had closed normally with exit zero,
 empty stderr and no remaining app or supervisor. All 332 immutable members
 and the absolute Framing cache stayed unchanged. Its final profile is

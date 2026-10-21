@@ -1,3 +1,14 @@
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+        private static BitmapSource ConvertColorToGrayWindows(BitmapSource original) {
+            using (var source = ImageUtility.BitmapFromSource(original, System.Drawing.Imaging.PixelFormat.Format48bppRgb)) {
+                using (var image = new Grayscale(0.2125, 0.7154, 0.0721).Apply(source)) {
+                    var result = ImageUtility.ConvertBitmap(image, System.Windows.Media.PixelFormats.Gray16);
+                    result.Freeze();
+                    return result;
+                }
+            }
+        }
+
         private static List<DetectedStar> IdentifyStarsPortable(StarDetectionParams p, State state, StarDetectionResult result, IProgress<ApplicationStatus> progress, CancellationToken token, out int detectedStars) {
             PortableImageBuffer image = PortableImageBuffer.Gray8(state._originalBitmapSource);
             try {
