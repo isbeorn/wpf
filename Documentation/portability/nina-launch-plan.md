@@ -11,11 +11,37 @@ Everything remains local on `codex/nina-cross-platform`.
 The latest 9A/9D runtime now passes actual hidden-pane save/relaunch and Framing
 rotation, mosaic and overlap changes. The earlier 52E/549D runtime completed
 native simulator capture, cancellation, recovery and clean close/relaunch.
-The application is now closed normally after the original sequence Add button
-exposed the next WPF gap: its programmatic ContextMenu has no PlacementTarget,
-which portable Popup rejects. Preserve that genuine targetless opening behavior;
+The previous application lifetime closed normally after the original sequence
+Add button exposed a WPF gap: its programmatic ContextMenu has no PlacementTarget,
+which portable Popup rejected. Preserve that genuine targetless opening behavior;
 do not patch NINA's template with an invented anchor. Sequence editing/execution
 and actual drag remain pending. The detailed receipts and restart baseline follow.
+
+That targetless opening is repaired in commit `0b12eb772`. The original null
+PlacementTarget remains unchanged; an eligible active keyboard source supplies
+the portable native owner. The genuine WindowsDesktop 10.0.12 reference passes,
+including dismissal and capture release on window close. All 56 affected Linux
+native checks pass at their declared 96/192-DPI settings with empty stderr and
+complete cleanup. Both production reviews and the focused fixture-successor
+review are clear. The initial fixture readiness and cleanup failures remain
+preserved separately; no production change was needed after the first build.
+The released ordinary runtime has 120 files, manifest
+`871EBFBA4E372033847EBD6A1694E3D950DFBD703702853E5245744138671E06`,
+and intake `current/nina-unanchored-context-menu-integration-20261021-1/consumer-intake.json`,
+SHA-256 `D079C0F1B72918D1CA13B8ED89CB75A5F5B15C792FD1A651786997082F446228`.
+Root rehashed all members and 24 nested intake pins. Only PF, NativeHost and the
+Stage wrapper DLL/PDB pairs changed from 9A; Core was reused unchanged.
+The new whole-App composition includes the filename-corrected Core, FITS Image
+and diagnostics-capable entry: 334 files and 685,834,090 bytes. Its manifest is
+`7DB92138CB02618A5B67B893C8D9EC4B07E3C098F780A4B027E9C7302EF88C4A`
+and composition receipt is
+`45F0E2B62BFC277AF52F2FA118E19393F44BB4BADD82CD5537F4F2F30973CD4C`,
+under `current/nina/vm-sequence-fits-ui-20261021-1`. Root rehashed every member.
+The whole guest publication and native linkage verify, and the original App
+has launched once on GNOME/XWayland with diagnostics off and the saved state.
+Its actual Add menu now opens without the former animation/popup exception;
+root inspected startup and menu pixels. Native sequence interaction is still in
+progress. There is no sequence execution, drag or saved-capture claim yet.
 
 The complete original simulator-only application now completes a native
 1-second capture, a 10-second capture cancellation and a subsequent recovery
@@ -414,8 +440,40 @@ flushed stderr listener run after NativeHost initialization and before App.Main.
 Default and Windows startup are unchanged. The existing view fixture links the
 actual entry; enabled and disabled runs pass five checks each, including genuine
 binding/resource errors, recovery and source cleanup. Self-review and independent
-maintainability/test-value review are clear. A final installed App build/replay
-remains pending; the small leaf does not execute App.Main.
+maintainability/test-value review are clear. The App-only producer now passes
+with 469 matching PDB documents and all resource payloads unchanged from the
+previous portable App, including 104 BAML entries and 34 ordered App dictionaries.
+Its intake is
+`current/nina/app-diagnostics-build-20261021-1/application-consumer-intake.json`,
+SHA-256 `665DB9402E5B4AB49881DCE5F20FD7CC7847E8F8E23B0B0AF9669B939FA03EFC`.
+Root rehashed all 448 build-receipt members. No Plugin, control or framework
+rebuild was required. The whole App now launches with diagnostics off. A separate
+diagnostics-enabled installed lifetime remains pending; the small fixture only
+tests the actual entry's diagnostics helper and does not execute App.Main.
+
+## Remaining Phase 5 execution evidence
+
+Final packages, actual Xorg desktop qualification and the sustained original
+simulator session remain open. The current guest session is GNOME Wayland with
+XWayland, not Xorg. The installed login choices include Ubuntu on Xorg; switching
+requires coordinating a normal logout/login with the user after closing NINA.
+Native IME and further Orca work remain explicitly deferred.
+
+The resource ledger still has no accepted shell memory, native-allocation or
+thread-growth budgets. The proposed overnight workload uses the original
+640x480 RANDOM simulator loop and must remain separate from the qualified 6k
+prepared-frame workload and accepted RGB48 timing. No new timing optimization
+is planned. A bounded installed Massif probe could not start the unchanged CLR
+and aborted with Out of memory; it is not an application failure or a pass.
+A separate installed glibc memusage probe passes the real managed legacy FITS
+case without CLR, GC or ISA changes. Its receipt is
+`current/nina/native-allocation-probe-20261021-1/memusage-1/receipt.json`,
+SHA-256 `074127F862DD456C7332D1179278CA95388466037AD72D1DB24D14AA15F7528B`.
+This establishes allocator-observer feasibility only. Cumulative allocation
+traffic, tool-reported peak, process RSS/PSS and end-live bytes are distinct;
+the probe does not establish the latter, an overnight budget or whole-App
+compatibility. The unchanged fixture's small generated-file location exception
+is recorded, with released consumers and pinned inputs unchanged.
 
 The sections below retain earlier attempts and their original limitations.
 
