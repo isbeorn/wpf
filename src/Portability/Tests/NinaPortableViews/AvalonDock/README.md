@@ -122,3 +122,15 @@ transform, unchanged-layout preview identity and a genuine center Into release.
 The programmatic/XML and owner-close neighbors still run. This focused case
 requires the private WM profile and does not qualify the missing-center behavior
 in the full NINA application, other window managers, RTL or monitor DPI changes.
+
+`NINA_DRAG_ANCHOR_ONLY=1` requests a genuine offscreen floating position under
+private Openbox, then requires an accessible original caption with public Top
+still pending and actual native outer bounds constrained by the desktop. Native
+client/root coordinates and measured WM frame extents independently anchor the
+stationary press, held motion in both directions and stationary holds. A separate
+logical-versus-native pointer check retains any stale-coordinate failure. Escape,
+caption reentry and outside release must preserve original content, source/model
+identity and focus while cleaning capture, overlays and scoped input handlers.
+The first-float DragDelta route remains covered by the genuine initial gesture.
+This profile supports fixed 96, 120 and 192 DPI private viewports. It does not
+qualify GNOME jitter, the full App's absent center guide or monitor DPI changes.

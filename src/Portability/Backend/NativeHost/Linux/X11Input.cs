@@ -9,7 +9,7 @@ using WpfPoint = WpfFork::System.Windows.Point;
 namespace Wpf.Portable.NativeHost.Linux;
 
 internal readonly record struct X11KeyInput(int Timestamp, int VirtualKey, bool IsDown, bool IsAltDown);
-internal readonly record struct X11PointerInput(int Timestamp, int X, int Y, int Wheel, RawMouseActions Actions, bool IsLeave);
+internal readonly record struct X11PointerInput(int Timestamp, int ScreenX, int ScreenY, int Wheel, RawMouseActions Actions, bool IsLeave);
 
 internal sealed class X11Input : IDisposable
 {
@@ -225,18 +225,19 @@ internal sealed class X11Input : IDisposable
         finally { if (buttons.Mask != 0) X11Native.XFree(buttons.Mask); }
     }
 
-    internal PortablePointerSnapshot ReadPointerState()
+    internal PortablePointerSnapshot ReadPointerState(WpfPoint? clientScreenOrigin = null)
     {
         Verify();
         XIButtonState buttons = default;
         try
         {
-            if (Xi2Native.XIQueryPointer(_window.Connection.Display, _pointer.Device(this), _window.Handle, out _, out _, out _, out _,
+            if (Xi2Native.XIQueryPointer(_window.Connection.Display, _pointer.Device(this), _window.Handle, out _, out _, out double rootX, out double rootY,
                     out double x, out double y, out buttons, out _, out _) == 0)
                 throw new InvalidOperationException("Cannot query the native master pointer on this screen.");
             if (buttons.MaskLength < 0 || buttons.MaskLength > 4096 || (buttons.MaskLength != 0 && buttons.Mask == 0))
                 throw new InvalidOperationException("XIQueryPointer returned a malformed button bitmap.");
-            return new(new WpfPoint(x, y), State(1), State(3), State(2), State(8), State(9));
+            var position = clientScreenOrigin is { } origin ? new WpfPoint(rootX - origin.X, rootY - origin.Y) : new WpfPoint(x, y);
+            return new(position, State(1), State(3), State(2), State(8), State(9));
 
             MouseButtonState State(int button) => (button >> 3) < buttons.MaskLength &&
                 (Marshal.ReadByte(buttons.Mask, button >> 3) & (1 << (button & 7))) != 0 ? MouseButtonState.Pressed : MouseButtonState.Released;
@@ -491,7 +492,7 @@ internal sealed class X11Input : IDisposable
                 if (!Crossing(input, crossing.Serial, crossing.Mode, crossing.DeviceId)) return;
                 if (input._disposed || !input._window.IsVisible) return;
                 if (crossing.Detail is not (0 or 1 or 3 or 4) || AnyButtonDown(crossing.Buttons)) return;
-                input.PointerInput?.Invoke(new(unchecked((int)(uint)crossing.Time), Coordinate(crossing.EventX), Coordinate(crossing.EventY), 0,
+                input.PointerInput?.Invoke(new(unchecked((int)(uint)crossing.Time), Coordinate(crossing.RootX), Coordinate(crossing.RootY), 0,
                     RawMouseActions.AbsoluteMove, cookie.EventType == Xi2Native.Leave));
                 return;
             }
@@ -522,7 +523,7 @@ internal sealed class X11Input : IDisposable
                 }
                 else if (actions == RawMouseActions.AbsoluteMove) return;
             }
-            recipient.Input.PointerInput?.Invoke(new(unchecked((int)(uint)pointer.Time), Coordinate(pointer.EventX), Coordinate(pointer.EventY), wheel, actions, false));
+            recipient.Input.PointerInput?.Invoke(new(unchecked((int)(uint)pointer.Time), Coordinate(pointer.RootX), Coordinate(pointer.RootY), wheel, actions, false));
         }
 
         private static int Coordinate(double value) => checked((int)Math.Round(value, MidpointRounding.AwayFromZero));

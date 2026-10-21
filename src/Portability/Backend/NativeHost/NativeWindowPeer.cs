@@ -480,7 +480,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
     public PortablePointerSnapshot GetPointerState()
     {
         Verify();
-        return _input.ReadPointerState();
+        return _input.ReadPointerState(_clientScreenOrigin);
     }
     public bool CaptureMouse()
     {
@@ -509,7 +509,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
         _ = _source.Dispatcher.BeginInvoke(WpfFork::System.Windows.Threading.DispatcherPriority.Send, new Action(() =>
         {
             if (!CanNotify || Mouse.PrimaryDevice.ActiveSource != _source || _windows.Values.Any(peer => peer._captured)) return;
-            var position = _input.ReadPointerState().PhysicalClientPosition;
+            var position = _input.ReadPointerState(_clientScreenOrigin).PhysicalClientPosition;
             if (SourceFromScreenPoint(ClientToScreen(new WpfPoint(position.X, position.Y))) != null) return;
             _mouseActive = false;
             ReportMouse(RawMouseActions.Deactivate);
@@ -664,7 +664,7 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
                 RefreshMetrics();
                 if (_clientScreenOrigin != previousOrigin && _mouseActive && IsVisible && IsEnabled)
                 {
-                    var position = _input.ReadPointerState().PhysicalClientPosition;
+                    var position = _input.ReadPointerState(_clientScreenOrigin).PhysicalClientPosition;
                     RawInput?.Invoke(new RawMouseInputReport(InputMode.Foreground, Environment.TickCount, _source,
                         RawMouseActions.AbsoluteMove, checked((int)position.X), checked((int)position.Y), 0, IntPtr.Zero));
                     if (!CanNotify) return;
@@ -712,8 +712,9 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
         var action = pointer.Actions | RawMouseActions.AbsoluteMove;
         if (!_mouseActive) action |= RawMouseActions.Activate;
         MarkMouseActive();
+        var position = ScreenToClient(new WpfPoint(pointer.ScreenX, pointer.ScreenY));
         RawInput?.Invoke(new RawMouseInputReport(InputMode.Foreground, pointer.Timestamp, _source,
-            action, pointer.X, pointer.Y, pointer.Wheel, IntPtr.Zero));
+            action, checked((int)position.X), checked((int)position.Y), pointer.Wheel, IntPtr.Zero));
     }
     internal X11Window CreateNativePopup(bool transparent)
     {

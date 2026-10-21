@@ -99,6 +99,16 @@ namespace System.Windows
             if (!_disposed) _portablePeer?.CancelMoveResize();
         }
 
+        internal Rect PortableGetActualBounds()
+        {
+            VerifyContextAndObjectState();
+            ObjectDisposedException.ThrowIf(_disposed, this);
+            if (_portablePeer == null || _portableSource == null || _portableSource.IsDisposed ||
+                PresentationSource.FromVisual(this) != _portableSource)
+                throw new InvalidOperationException("Actual portable window bounds require an attached source.");
+            return PortableReadBounds();
+        }
+
         private void PortableCreateSource()
         {
             VerifyContextAndObjectState();

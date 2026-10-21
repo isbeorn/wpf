@@ -164,7 +164,7 @@
  			var manager = Model?.Root?.Manager;
  			if (manager == null || !manager.AllowMovingFloatingWindowWithKeyboard)
  			{
-@@ -657,10 +738,136 @@
+@@ -657,10 +738,140 @@
  		private void OnUnloaded(object sender, RoutedEventArgs e)
  		{
  			Unloaded -= OnUnloaded;
@@ -201,9 +201,13 @@
 +			var physical = PointToScreen(Mouse.GetPosition(this));
 +			_portableDragStart = physical;
 +			var logical = this.TransformToDeviceDPI(physical);
-+			_portableDragOffset = _portablePositionAtPointer
-+				? (DragDelta == default ? new Point(3, 3) : DragDelta)
-+				: new Point(logical.X - Left, logical.Y - Top);
++			if (_portablePositionAtPointer)
++				_portableDragOffset = DragDelta == default ? new Point(3, 3) : DragDelta;
++			else
++			{
++				var origin = PortableGetActualBounds().TopLeft;
++				_portableDragOffset = new Point(logical.X - origin.X, logical.Y - origin.Y);
++			}
 +			_dragService = new DragService(this);
 +			InputManager.Current.PreProcessInput += OnPortablePreProcessInput;
 +			SetIsDragging(true);

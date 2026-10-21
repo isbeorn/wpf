@@ -43,6 +43,12 @@ remain unqualified or deferred. Detailed evidence and remaining gates follow.
 
 ## Active checkpoint
 
+Work resumed after the Windows PATH incident audit and approved cleanup.
+The incident and renewed Windows testing authorization are recorded in
+`windows-host-incident-2026-10-21.md`. Local commit `fee8095` guards the tracked
+SDK entry points against automatic persistent PATH changes. Fresh Windows SDK
+first-run and MSBuild checks passed with raw user and machine PATH unchanged.
+
 The original NINA App/MainWindow has run visibly on GNOME/XWayland through the
 qualified portable SDK/runtime packages. Native sequence editing, completion,
 cancellation, reset, restart and palette drag/drop/Escape pass in that packaged
@@ -503,6 +509,74 @@ AvalonDock DLL/PDB pair and retains the original public surface and resources.
 Root verified that whole publication before the fresh VM transfer. These are
 private Xvfb/Openbox results; the recorded full-App missing-center behavior,
 actual desktop redocking and restored desktop layout remain separate checks.
+
+The whole publication subsequently launched on GNOME/XWayland. Loaded module
+paths and hashes match the intended App, Image, WPF and AvalonDock. The original
+floating headers now visibly read Camera and Focuser. The user physically
+dragged Focuser over Filter Wheel; it became a selected tab beside Filter Wheel
+and the old floating native window disappeared. This is a positive content-move
+observation, but docking usability still fails: the user reported jitter and
+no usable center guide. The physical recording contains 2,400 samples and ends
+with no buttons held, healthy App state and unchanged immutable/protected
+files. Its handoff is
+`current/nina/vm-docking-geometry-native-preparation-20261021-1/execution/PHYSICAL-GUIDE-FAILURE-HANDOFF.json`,
+SHA-256 `80CC5D3E90D1487541E6FBDAAC419E63487C387B39F597559F18BD1B87AC9241`.
+Root verified all 32 evidence pins and inspected the final native pixels.
+One-shot guide captures do not establish the later pane group's visibility.
+
+A separate real Openbox caption probe now reproduces a stale starting anchor:
+public/requested Top is 968 while actual outer Top is 722. The original caption
+calculation stores -212 instead of the independently measured outer anchor 34.
+Subsequent held upward moves retain the resulting 246-pixel error. Native
+move/resize stays inactive and managed service/capture remain stable. Both
+causal children exit one with empty stderr and complete cleanup. A reverse
+motion also leaves a processed WPF pointer position inconsistent with the
+stationary native pointer, so fixing the initial anchor alone cannot yet claim
+to resolve all jitter. Evidence is
+`current/nina/docking-drag-anchor-20261021-1/causal-handoff.json`, SHA-256
+`C8CA6FF828D217527D9B3EB475A3FFD82046D4327B4C121697135F9298E62D2B`.
+The accepted narrow repair reuses actual bounds through the existing private
+framework friend boundary and preserves public pending-location semantics.
+That repair removes the initial anchor error. An uninstrumented successor then
+reproduced a second defect during reverse movement: the handler correctly
+requested Top 412, but pointer reconciliation combined a newer native client
+point with an older published window origin. It invented screen Y 356 instead
+of the actual 446 and moved the panel back to Top 322. Cached-only observations
+retain that failure; inline native queries changed the timing and are excluded
+from the final qualification.
+
+The owned X11 adapter now preserves physical root coordinates from pointer
+queries and queued XI2 motion/crossing events. It converts them into the peer's
+published client coordinate space once. The same correction covers pointer
+snapshots and release-capture queries. The button-only chrome query is unchanged.
+There is no extra native query, queue, MouseDevice change, dependency or public
+API. Independent correctness and maintainability reviews have no findings.
+
+Final private Xvfb/Openbox qualification passes 161 check executions across 13
+children. The genuine NINA constrained-anchor and guide profiles each pass 11
+checks at 96, 120 and 192 DPI; full pointer, floating-header and maximized-caption
+profiles pass 19, 13 and 11. Existing native pointer profiles pass eight checks
+at each DPI and the owned-input profile passes 28. All children exit zero with
+empty stderr and complete process, socket, lock and temporary-directory cleanup.
+All 27 raw Windows user/machine PATH batch comparisons are unchanged.
+
+The native fixture's former relative-delta rounding expectation failed by one
+pixel at 120 DPI with the old backend too. Its corrected expectation captures
+the absolute requested DIP coordinates and uses independently read frame
+extents, preserving strict native equality and logical/native pointer checks.
+Final native runs follow this test correction; both focused reviews are clear.
+
+The sealed handoff is
+`current/nina/docking-drag-anchor-resume-20261021-1/HANDOFF.json`, SHA-256
+`61EB72E11F85D15556B2B1110D97E8C060B2DE1482BD81B648D7ED6E00BB7485`.
+Root verified 493 file pins, all 319 consumer members, 12 producer PE/PDB pairs
+and 4,253 compiled source documents, including 359 embedded generated records.
+The candidate accounts for 11 changed members: eight Linux-built framework
+DLLs, the AvalonDock DLL/PDB pair and NativeHost. The other 308 members and the
+historical publication are unchanged. This candidate has not been installed or
+launched in the GNOME VM. Full-App drag smoothness, sustained center-guide
+visibility, actual redocking and restored desktop layout remain open. The next
+desktop step must verify this exact candidate before closing those gates.
 
 ### Actual clipboard and sequence file dialogs
 

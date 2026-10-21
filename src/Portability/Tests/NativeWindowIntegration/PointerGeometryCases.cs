@@ -169,10 +169,17 @@ internal static class PointerGeometryCases
     {
         var previous = native.ClientOrigin(xid);
         var scale = VisualTreeHelper.GetDpi(window);
-        window.Left += delta.X; window.Top += delta.Y;
-        var expected = (X: previous.X + (int)Math.Round(delta.X * scale.DpiScaleX),
-            Y: previous.Y + (int)Math.Round(delta.Y * scale.DpiScaleY));
-        wait(() => native.ClientOrigin(xid) == expected); drain();
+        var frame = native.FrameExtents(xid) ?? (Left: 0, Right: 0, Top: 0, Bottom: 0);
+        var requested = new Point(window.Left + delta.X, window.Top + delta.Y);
+        window.Left = requested.X; window.Top = requested.Y;
+        var expected = (X: (int)Math.Round(requested.X * scale.DpiScaleX, MidpointRounding.AwayFromZero) + frame.Left,
+            Y: (int)Math.Round(requested.Y * scale.DpiScaleY, MidpointRounding.AwayFromZero) + frame.Top);
+        try { wait(() => native.ClientOrigin(xid) == expected); }
+        catch (Exception exception)
+        {
+            throw new InvalidOperationException($"Native source move mismatch: previous={previous}, requested={requested}, dpi={scale.DpiScaleX},{scale.DpiScaleY}, frame={frame}, expected={expected}, actual={native.ClientOrigin(xid)}.", exception);
+        }
+        drain();
         wait(() => Same(window.PointToScreen(new Point()), new Point(expected.X, expected.Y))); drain();
     }
 

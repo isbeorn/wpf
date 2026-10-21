@@ -19,6 +19,11 @@ internal static partial class DockingProgram
         int expectedDpi = int.Parse(Environment.GetEnvironmentVariable("NINA_POINTER_DPI") ?? "96", System.Globalization.CultureInfo.InvariantCulture);
         Require(Math.Abs(dpi.DpiScaleX - expectedDpi / 96.0) < .00001 && owner.Left > 0 && owner.Top > 0,
             "The pointer fixture did not establish its declared DPI and nonzero origin.");
+        if (Environment.GetEnvironmentVariable("NINA_DRAG_ANCHOR_ONLY") == "1")
+        {
+            Check("pointer-desktop-constrained-caption-anchor", () => DragAnchor(native, manager, image));
+            return;
+        }
         if (Environment.GetEnvironmentVariable("NINA_POINTER_CANCELED_CLOSE_ONLY") == "1")
         {
             Check("pointer-canceled-floating-close-and-next-drop", () => CanceledCloseAndRecovery(native, manager, image));
@@ -127,6 +132,129 @@ internal static partial class DockingProgram
             PointerDrop(native, manager, graph, "Right");
         });
         Check("pointer-capture-transfer-and-next-drag", () => CaptureTransferAndRecovery(native, manager, image));
+    }
+
+    private static void DragAnchor(X11Fixture native, DockingManager manager, LayoutAnchorable pane)
+    {
+        LayoutFloatingWindowControl? floating = null;
+        try
+        {
+            floating = BeginPointerFloat(native, manager, pane);
+            native.MovePointer(3, 3); Settle(); native.Button(1, false);
+            PointerWait(() => Mouse.Captured is null && Field(floating, "_dragService") is null,
+                "The initial float retained drag state before the constrained position request.");
+            var xid = NativeHandle(floating);
+            var scale = VisualTreeHelper.GetDpi(floating);
+            var content = pane.Content;
+            var source = PresentationSource.FromVisual(floating);
+            var model = floating.Model;
+            var screen = native.ScreenSize;
+            bool constrained = false;
+            foreach (bool remap in new[] { false, true })
+            {
+                floating.Left = 100; floating.Top = 80; Settle();
+                if (remap) floating.Hide();
+                floating.Top = (screen.Height + 200) / scale.DpiScaleY;
+                if (remap) floating.Show();
+                Pause();
+                Record(remap ? "hidden-request-remap" : "visible-request");
+                var actual = ActualOuter();
+                var press = CaptionPoint();
+                constrained = Math.Abs(floating.Top * scale.DpiScaleY - actual.Y) > 4
+                    && Field(floating, "_portablePendingBounds")!.ToString()!.Contains("Top", StringComparison.Ordinal)
+                    && Field(floating, "_portableBoundsAwaitingAck")!.ToString()!.Contains("Top", StringComparison.Ordinal)
+                    && press.X >= 0 && press.X < screen.Width && press.Y >= 0 && press.Y < screen.Height;
+                if (constrained) break;
+            }
+            Require(constrained, "Openbox did not reproduce an on-screen desktop-constrained pending requested position; no causal drag conclusion is available.");
+            var start = CaptionPoint();
+            native.MovePointer((int)Math.Round(start.X), (int)Math.Round(start.Y)); Settle();
+            var before = native.ClientOrigin(xid);
+            var pointer = native.PointerPosition;
+            var anchor = new Point(pointer.X - before.X, pointer.Y - before.Y);
+            Record("before-caption-press");
+            native.Button(1, true);
+            PointerWait(() => Mouse.Captured == floating && Field(floating, "_dragService") is not null,
+                "The constrained floating caption did not start a genuine captured drag.");
+            Record("caption-press");
+            Require(native.ClientOrigin(xid) == before, "A stationary constrained caption press moved the native window.");
+            var service = Field(floating, "_dragService");
+            var failures = new List<string>();
+            foreach (var delta in new[] { new Point(-80, -350), new Point(40, -400), new Point(-30, -310), new Point(0, -350) })
+            {
+                var target = new Point(start.X + delta.X, start.Y + delta.Y);
+                MoveHeldPointerAndWait(native, floating, target); Pause();
+                Record("held-motion");
+                var origin = native.ClientOrigin(xid); pointer = native.PointerPosition;
+                if (Math.Abs(pointer.X - origin.X - anchor.X) > 1 || Math.Abs(pointer.Y - origin.Y - anchor.Y) > 1)
+                    failures.Add($"Pointer/client anchor changed: expected {anchor}, actual {pointer.X - origin.X},{pointer.Y - origin.Y}.");
+                var held = origin; Pause(); Record("stationary-hold");
+                if (native.ClientOrigin(xid) != held) failures.Add("The stationary held pointer changed native client position.");
+                var logicalScreen = floating.PointToScreen(Mouse.GetPosition(floating));
+                if (Math.Abs(logicalScreen.X - pointer.X) > 1 || Math.Abs(logicalScreen.Y - pointer.Y) > 1)
+                    failures.Add($"Logical pointer {logicalScreen} differs from native pointer {pointer.X},{pointer.Y} after hold.");
+                Require(ReferenceEquals(service, Field(floating, "_dragService")) && Mouse.Captured == floating && DragInputHandlers(floating) == 1,
+                    "Constrained caption movement replaced its drag service or capture owner.");
+            }
+            var canceledPosition = native.ClientOrigin(xid);
+            native.Key((char)0xff1b, true); native.Key((char)0xff1b, false);
+            PointerWait(() => Mouse.Captured is null && Field(floating, "_dragService") is null && !VisibleOverlays().Any(),
+                "Escape retained constrained drag capture, service or overlay.");
+            native.Button(1, false);
+            Require(native.ClientOrigin(xid) == canceledPosition && DragInputHandlers(floating) == 0 && native.CanAcquirePointerGrab(),
+                "Escape changed the constrained floating position or retained input handlers/native capture.");
+            Require(ReferenceEquals(BeginPointerFloat(native, manager, pane, 48), floating),
+                "The post-cancel caption press did not reuse the original floating source.");
+            ReleaseHeaderDrag(native, floating);
+            Require(pane.IsFloating && ReferenceEquals(pane.Content, content) && ReferenceEquals(floating.Model, model)
+                && ReferenceEquals(PresentationSource.FromVisual(floating), source) && NativeHandle(floating) == xid
+                && native.FocusedWindow == xid && DragInputHandlers(floating) == 0,
+                "The constrained drag cancel/reentry/release changed content, source/model identity, focus or handler cleanup.");
+            Require(failures.Count == 0, string.Join(" ", failures));
+
+            void Pause()
+            {
+                var elapsed = System.Diagnostics.Stopwatch.StartNew();
+                PointerWait(() => elapsed.ElapsedMilliseconds >= 300, "The constrained caption observation did not settle.");
+            }
+
+            Point CaptionPoint()
+            {
+                var title = FloatingCaption(floating);
+                var top = title.PointToScreen(new Point());
+                double visibleHeight = (screen.Height - top.Y - 2) / scale.DpiScaleY;
+                return title.PointToScreen(new Point(Math.Min(48, title.ActualWidth / 2), Math.Min(title.ActualHeight / 2, visibleHeight)));
+            }
+
+            Point ActualOuter()
+            {
+                var client = native.ClientOrigin(xid);
+                var frame = native.FrameExtents(xid);
+                var measured = frame ?? throw new InvalidDataException("The native WM did not publish measured frame extents.");
+                return new Point(client.X - measured.Left, client.Y - measured.Top);
+            }
+            void Record(string stage)
+            {
+                var client = native.ClientOrigin(xid);
+                var actual = ActualOuter();
+                var physical = native.PointerPosition;
+                var bounds = (Rect)typeof(Window).GetMethod("PortableReadBounds", BindingFlags.Instance | BindingFlags.NonPublic)!.Invoke(floating, null)!;
+                var peer = Field(PresentationSource.FromVisual(floating)!, "_host")!;
+                var input = Field(peer, "_input")!;
+                var router = Field(input, "_pointer")!;
+                Observations.Add(new { stage = "drag-anchor-" + stage, floating.Left, floating.Top, clientX = client.X, clientY = client.Y,
+                    outerX = actual.X, outerY = actual.Y, actualBounds = bounds.ToString(), pointerX = physical.X, pointerY = physical.Y,
+                    pending = Field(floating, "_portablePendingBounds")?.ToString(), awaiting = Field(floating, "_portableBoundsAwaitingAck")?.ToString(),
+                    requested = Field(floating, "_portableRequestedDesktopPosition")?.ToString(), offset = Field(floating, "_portableDragOffset")?.ToString(),
+                    floating.IsActive, captured = Mouse.Captured == floating, handlers = DragInputHandlers(floating),
+                    servicePresent = Field(floating, "_dragService") is not null,
+                    nativeMoveResizeOwner = Field(router, "_moveResizeOwner") is not null,
+                    nativeCaptureOwnerIsSource = ReferenceEquals(Field(router, "_captureOwner"), input),
+                    attachPending = Field(floating, "_attachDrag"), mouseLocal = Mouse.GetPosition(floating).ToString(),
+                    mouseScreen = floating.PointToScreen(Mouse.GetPosition(floating)).ToString() });
+            }
+        }
+        finally { native.Button(1, false); Mouse.Capture(null); }
     }
 
     private static void GuideGeometry(X11Fixture native, Window owner, DockingManager manager, LayoutAnchorable image, LayoutAnchorable graph)
