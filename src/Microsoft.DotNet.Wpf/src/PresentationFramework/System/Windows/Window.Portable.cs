@@ -359,8 +359,8 @@ namespace System.Windows
             PortableBoundsChanges acknowledged = PortableBoundsChanges.None;
             if (PortablePixelRequestMatches(client.Width * dpi.DpiScaleX, _portableRequestedClientPixels.Width)) acknowledged |= PortableBoundsChanges.Width;
             if (PortablePixelRequestMatches(client.Height * dpi.DpiScaleY, _portableRequestedClientPixels.Height)) acknowledged |= PortableBoundsChanges.Height;
-            if (MS.Internal.DoubleUtil.AreClose(position.X, _portableRequestedDesktopPosition.X)) acknowledged |= PortableBoundsChanges.Left;
-            if (MS.Internal.DoubleUtil.AreClose(position.Y, _portableRequestedDesktopPosition.Y)) acknowledged |= PortableBoundsChanges.Top;
+            if (_isVisible && MS.Internal.DoubleUtil.AreClose(position.X, _portableRequestedDesktopPosition.X)) acknowledged |= PortableBoundsChanges.Left;
+            if (_isVisible && MS.Internal.DoubleUtil.AreClose(position.Y, _portableRequestedDesktopPosition.Y)) acknowledged |= PortableBoundsChanges.Top;
             acknowledged &= _portableBoundsAwaitingAck;
             _portablePendingBounds &= ~acknowledged;
             _portableBoundsAwaitingAck &= ~acknowledged;
@@ -486,8 +486,8 @@ namespace System.Windows
                 Rect restore = _portableRestoreBounds;
                 if ((_portablePendingBounds & PortableBoundsChanges.Width) == 0) restore.Width = actual.Width;
                 if ((_portablePendingBounds & PortableBoundsChanges.Height) == 0) restore.Height = actual.Height;
-                if ((_portablePendingBounds & PortableBoundsChanges.Left) == 0) restore.X = actual.X;
-                if ((_portablePendingBounds & PortableBoundsChanges.Top) == 0) restore.Y = actual.Y;
+                if ((_isVisible || !_portableHasBeenShown) && (_portablePendingBounds & PortableBoundsChanges.Left) == 0) restore.X = actual.X;
+                if ((_isVisible || !_portableHasBeenShown) && (_portablePendingBounds & PortableBoundsChanges.Top) == 0) restore.Y = actual.Y;
                 _portableRestoreBounds = restore;
                 if (_portableHasBeenShown)
                 {
@@ -513,7 +513,7 @@ namespace System.Windows
                 SetValue(HeightProperty, restoreDimensions || (dimensionIntent & PortableBoundsChanges.Height) != 0 ? _portableRestoreBounds.Height : actual.Height);
             }
             finally { _portableUpdatingMetrics = false; }
-            if (!_disposed && _portablePeer != null) PortablePublishLocation(actual.TopLeft, true);
+            if (!_disposed && _portablePeer != null && (_isVisible || !_portableHasBeenShown)) PortablePublishLocation(actual.TopLeft, true);
         }
 
         private void PortableRequestState(WindowState state)

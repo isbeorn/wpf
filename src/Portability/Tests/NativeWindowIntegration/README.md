@@ -14,12 +14,19 @@ maximum hints, invalid requests and unrelated-window recovery. Repeat at 144
 DPI for fractional scaling. The default mode additionally covers the minimum
 pixel DPI round trips. The existing watchdog and private-display rules apply.
 
-`--window-frame-only --chrome-dpi=96` requires Openbox and tests a fully
-acknowledged borderless outer size before adding/removing a real native frame,
-later native user growth/shrink, same-source hide/show and three framed
-save/recreate lifetimes. It records independent client/frame geometry plus
-public dimensions, RestoreBounds and measured DPI. Repeat at 192 DPI for the
-scaled boundary. The mode stops after its first failing case.
+`--window-frame-only --chrome-dpi=96` requires Openbox and first checks framed
+Hide/Show, explicit hidden Left/Top, genuine visible native moves in both
+directions and hidden close/save. It then checks a fully acknowledged borderless
+outer size before adding/removing a real native frame, later native user
+growth/shrink and three framed save/recreate lifetimes. It records native
+client/root/frame geometry and visibility separately from public dimensions,
+RestoreBounds and pending placement. Logical hiding must not publish native
+unmap/reparent coordinates as a new outer location; pre-first-show native
+placement remains eligible. The Openbox control clears frame extents on hide;
+the retained-frame GNOME ordering is recorded separately and modeled by the
+managed lifecycle cases. The mode has three focused cases plus settings and
+completion checks. Repeat at 192 DPI for the scaled boundary. It stops after
+its first failing case.
 
 | Focused mode | Required observable behavior |
 |---|---|

@@ -533,6 +533,72 @@ var thread = new Thread(() =>
         }
         finally { factory.DecorateOnShow = false; }
     });
+    Run("late-frame-hidden-position-observation-save-and-visible-moves", () =>
+    {
+        foreach (bool widthAxis in new[] { false, true })
+        foreach (int sign in new[] { -1, 1 })
+        {
+            var window = new Window { Left = 120, Top = 100, Width = 320, Height = 240 };
+            Point? saved = null;
+            window.Closing += (_, _) => saved = new Point(window.Left, window.Top);
+            try
+            {
+                window.Show(); var peer = factory.Last; Drain();
+                Point accepted = window.RestoreBounds.Location;
+                Size outer = peer.OuterSize;
+                Size frame = new(outer.Width - peer.ClientSize.Width, outer.Height - peer.ClientSize.Height);
+                window.Hide();
+                Point hidden = new(accepted.X + (widthAxis ? sign * frame.Width : 0),
+                    accepted.Y + (widthAxis ? 0 : sign * frame.Height));
+                peer.PublishGeometry(outer, hidden); Drain();
+                Assert(window.RestoreBounds.Location == accepted && new Point(window.Left, window.Top) == accepted,
+                    $"Modeled hidden frame/client observation replaced accepted outer position (hidden={hidden}, public={window.Left},{window.Top}, restore={window.RestoreBounds})");
+                Assert(window.RestoreBounds.Size == outer, "Hidden position observation changed unrelated size");
+                peer.PublishGeometry(outer, accepted); window.Show(); Drain();
+                Assert(new Point(window.Left, window.Top) == accepted, "Show did not retain the accepted restored position");
+                foreach (int direction in new[] { 1, -1 })
+                {
+                    Point moved = new(accepted.X + direction * 24, accepted.Y + direction * 28);
+                    peer.PublishGeometry(outer, moved); Drain();
+                    Assert(window.RestoreBounds.Location == moved && new Point(window.Left, window.Top) == moved,
+                        "Genuine visible native geometry must be adopted in both directions");
+                    accepted = moved;
+                }
+                window.Hide(); peer.PublishGeometry(outer, hidden); Drain(); window.Close();
+                Assert(saved == accepted, "Modeled hidden close/save lost the last visible outer position");
+            }
+            finally { window.Close(); }
+        }
+    });
+    Run("late-frame-hidden-position-explicit-pending-axes", () =>
+    {
+        foreach (int axes in new[] { 1, 2, 3 })
+        foreach (int sign in new[] { -1, 1 })
+        {
+            var window = new Window { Left = 120, Top = 100, Width = 320, Height = 240 };
+            try
+            {
+                window.Show(); var peer = factory.Last; Drain();
+                window.Hide(); peer.DeferBounds = true;
+                Point wanted = new((axes & 1) != 0 ? 120 + sign * 32 : 120, (axes & 2) != 0 ? 100 + sign * 36 : 100);
+                if ((axes & 1) != 0) window.Left = wanted.X;
+                if ((axes & 2) != 0) window.Top = wanted.Y;
+                peer.PublishGeometry(new Size(320, 240), new Point(90, 60)); Drain();
+                Assert(window.RestoreBounds.Location == wanted && new Point(window.Left, window.Top) == wanted,
+                    "Modeled hidden metrics overwrote pending placement or its unrelated retained axis");
+                peer.PublishGeometry(new Size(320, 240), wanted); Drain();
+                peer.PublishGeometry(new Size(320, 240), new Point((axes & 1) != 0 ? 90 : wanted.X,
+                    (axes & 2) != 0 ? 60 : wanted.Y)); Drain();
+                window.Show(); Drain();
+                Assert(window.RestoreBounds.Location == wanted && new Point(window.Left, window.Top) == wanted,
+                    "A matching hidden snapshot must not retire position intent before stale Show metrics");
+                peer.DeferBounds = false; peer.PublishGeometry(new Size(320, 240), wanted); Drain();
+                Assert(window.RestoreBounds.Location == wanted && new Point(window.Left, window.Top) == wanted,
+                    "Explicit hidden position did not acknowledge through Show");
+            }
+            finally { window.Close(); }
+        }
+    });
     Run("late-frame-acknowledged-size-axes-dpi-and-user-resize", () =>
     {
         foreach (double scale in new[] { 1d, 2d })

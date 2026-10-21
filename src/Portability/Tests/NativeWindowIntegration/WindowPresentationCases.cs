@@ -156,6 +156,96 @@ internal static class WindowPresentationCases
         int requestedDpi, Action<object> observe)
     {
         double scale = requestedDpi / 96d;
+        run("native-hidden-framed-position-roundtrip-save-and-pending-intent", () =>
+        {
+            Require(native.HasWindowManager, "Hidden framed position requires a real window manager.");
+            var window = new Window { Title = "Genuine WPF hidden framed position", Left = 120, Top = 100,
+                Width = 320, Height = 240, ShowActivated = false, Background = Brushes.Red };
+            IntPtr xid = IntPtr.Zero;
+            object? peer = null, implementation = null;
+            System.Reflection.EventInfo? peerEvent = null, nativeEvent = null;
+            int hiddenMetrics = 0;
+            Action published = () => { if (!window.IsVisible) hiddenMetrics++; Observe("published-metrics"); };
+            Action raw = () => Observe("native-metrics");
+            Point? saved = null;
+            window.LocationChanged += (_, _) => Observe("location-changed");
+            window.Closing += (_, _) => { saved = new Point(window.Left, window.Top); Observe("closing-save"); };
+            try
+            {
+                window.Show(); xid = native.FindWindow(window.Title);
+                wait(() => native.IsMapped(xid) && native.FrameExtents(xid) is { } frame && frame.Top + frame.Bottom > 0 && MatchesNative());
+                drain();
+                var source = PresentationSource.FromVisual(window)!;
+                peer = OwnedNativeAccess.Peer(source); implementation = OwnedNativeAccess.Window(source);
+                peerEvent = peer.GetType().GetEvent("MetricsChanged")!;
+                nativeEvent = implementation.GetType().GetEvent("MetricsChanged")!;
+                peerEvent.AddEventHandler(peer, published); nativeEvent.AddEventHandler(implementation, raw);
+                foreach (var assembly in new[] { typeof(Window).Assembly, typeof(Visual).Assembly,
+                    typeof(WpfFork::System.Windows.Threading.Dispatcher).Assembly, typeof(Wpf.Portable.NativeHost.NativeWindowHost).Assembly })
+                    observe(new { kind = "hidden-position-loaded-module", name = assembly.GetName().Name, path = assembly.Location,
+                        sha256 = Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(System.IO.File.ReadAllBytes(assembly.Location))),
+                        defaultContext = ReferenceEquals(System.Runtime.Loader.AssemblyLoadContext.GetLoadContext(assembly), System.Runtime.Loader.AssemblyLoadContext.Default) });
+                Point visible = new(window.Left, window.Top);
+                Observe("before-hide");
+                window.Hide(); wait(() => !native.IsMapped(xid) && hiddenMetrics > 0); drain(); Observe("after-hide");
+                Require(new Point(window.Left, window.Top) == visible && window.RestoreBounds.Location == visible,
+                    "Hidden native metrics changed the last acknowledged outer position; see independent client/root/frame and visibility observations.");
+                Require(window.RestoreBounds.Size == new Size(320, 240), "Hiding changed size while testing position independence.");
+                window.Show(); wait(() => native.IsMapped(xid) && MatchesNative()); Observe("shown-again");
+                Require(ReferenceEquals(source, PresentationSource.FromVisual(window)) && new Point(window.Left, window.Top) == visible,
+                    "Hide/Show replaced the source or failed to restore the accepted outer position.");
+                foreach (int sign in new[] { 1, -1 })
+                {
+                    Point next = new(window.Left + sign * 24, window.Top + sign * 28);
+                    native.Move(xid, checked((int)(next.X * scale)), checked((int)(next.Y * scale)));
+                    wait(() => MatchesNative() && new Point(window.Left, window.Top) == next);
+                    Observe("visible-native-move-" + sign);
+                }
+                int previousHidden = hiddenMetrics;
+                window.Hide(); wait(() => !native.IsMapped(xid) && hiddenMetrics > previousHidden); drain();
+                Point requested = new(visible.X + 32, visible.Y + 36);
+                window.Left = requested.X; window.Top = requested.Y; drain(); Observe("hidden-explicit-position");
+                Require(new Point(window.Left, window.Top) == requested && window.RestoreBounds.Location == requested,
+                    "Hidden metrics overwrote explicit pending Left/Top intent.");
+                window.Show(); wait(() => native.IsMapped(xid) && MatchesNative() && new Point(window.Left, window.Top) == requested);
+                Observe("shown-explicit-position");
+                previousHidden = hiddenMetrics;
+                window.Hide(); wait(() => !native.IsMapped(xid) && hiddenMetrics > previousHidden); drain(); Observe("hidden-before-save");
+                window.Close(); drain();
+                Require(saved == requested, "Closing/save observed an offset hidden outer position.");
+            }
+            finally
+            {
+                if (peerEvent != null) peerEvent.RemoveEventHandler(peer, published);
+                if (nativeEvent != null) nativeEvent.RemoveEventHandler(implementation, raw);
+                window.Close(); drain();
+            }
+            Require(PresentationSource.FromVisual(window) == null && !native.IsMapped(xid), "Hidden position fixture retained a source/window.");
+
+            bool MatchesNative()
+            {
+                var origin = native.ClientOrigin(xid); var frame = native.FrameExtents(xid)!.Value;
+                return Math.Abs(window.Left * scale - origin.X + frame.Left) < 0.01 &&
+                    Math.Abs(window.Top * scale - origin.Y + frame.Top) < 0.01 && window.IsMeasureValid && window.IsArrangeValid;
+            }
+            void Observe(string phase)
+            {
+                if (xid == IntPtr.Zero || PresentationSource.FromVisual(window) == null) return;
+                var origin = native.ClientOrigin(xid); var size = native.Size(xid); var frame = native.FrameExtents(xid);
+                observe(new { kind = "hidden-position", phase, xid = xid.ToInt64(), mapped = native.IsMapped(xid),
+                    visible = window.IsVisible, peerVisible = peer == null ? (object?)null : OwnedNativeAccess.Get(peer, "IsVisible"),
+                    nativeVisible = implementation == null ? (object?)null : OwnedNativeAccess.Get(implementation, "IsVisible"),
+                    clientX = origin.X, clientY = origin.Y, clientWidth = size.Width, clientHeight = size.Height,
+                    frameLeft = frame?.Left, frameRight = frame?.Right, frameTop = frame?.Top, frameBottom = frame?.Bottom,
+                    rootAncestor = native.StackingAncestor(xid).ToInt64(),
+                    publishedDesktop = peer == null ? null : OwnedNativeAccess.Get(peer, "DesktopPosition").ToString(),
+                    window.Left, window.Top, window.ActualWidth, window.ActualHeight,
+                    restoreX = window.RestoreBounds.X, restoreY = window.RestoreBounds.Y,
+                    restoreWidth = window.RestoreBounds.Width, restoreHeight = window.RestoreBounds.Height,
+                    pending = OwnedNativeAccess.Get(window, "_portablePendingBounds").ToString(),
+                    awaiting = OwnedNativeAccess.Get(window, "_portableBoundsAwaitingAck").ToString(), hiddenMetrics });
+            }
+        });
         run("native-late-frame-add-remove-retains-outer-size-and-user-resize", () =>
         {
             Require(native.HasWindowManager, "Late frame sizing requires a real window manager.");
