@@ -363,8 +363,8 @@ namespace System.Windows.Media.Imaging
                 throw new ArgumentNullException(nameof(buffer));
             if (bufferSize < 0)
                 throw new ArgumentOutOfRangeException(nameof(bufferSize));
-            if (palette != null)
-                throw new NotSupportedException("Portable in-memory bitmap palettes are not implemented.");
+            if (palette != null && pixelFormat != PixelFormats.Gray8)
+                throw new NotSupportedException("Portable in-memory palette arguments are supported only for non-indexed Gray8 samples.");
             var portable = new PortableBitmapBuffer(pixelWidth, pixelHeight, pixelFormat, mutable: false);
             portable.Write(new Int32Rect(0, 0, pixelWidth, pixelHeight), buffer, (uint)bufferSize, stride, 0, 0);
             InitializePortable(portable, dpiX, dpiY);

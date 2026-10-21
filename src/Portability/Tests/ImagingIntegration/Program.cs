@@ -14,6 +14,7 @@ void Check(string name, Action action)
     try { action(); checks.Add(new { name, status = "pass", detail = "Actual framework APIs and observable pixels passed." }); }
     catch (Exception exception) { failed = true; checks.Add(new { name, status = "fail", detail = exception.ToString() }); }
 }
+PortablePaletteCases.Run(Check);
 Check("actual-scientific-source-precision-and-ownership", () =>
 {
     foreach (PixelFormat format in new[] { PixelFormats.Gray16, PixelFormats.Rgb48 })

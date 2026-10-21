@@ -14,6 +14,23 @@ destination strides and array element offsets. Supported formats are Gray8,
 Gray16, Rgb24, Bgr24, Bgr32, Bgra32, Pbgra32 and Rgb48. `CachedBitmap` source
 copies currently require `OnLoad` with no conversion options.
 
+The offline NINA sky map's `BitmapPalettes.Gray256` is a managed read-only list
+of all 256 opaque `Color.FromRgb(i, i, i)` entries. Gray8 creation accepts its
+palette argument and ignores it, matching stock non-indexed behavior:
+`BitmapSource.Palette` remains null and samples, DPI, clones and display stay
+unchanged. Other predefined palettes, custom native palette handles,
+quantization and indexed pixel storage remain explicitly unsupported.
+
+The focused checks cover worker-first palette access, every immutable color,
+stable cache identity after initialization, the exact worker-created/frozen
+NINA Gray8 image and an odd-width padded ramp through clones and real rendering.
+Stock WindowsDesktop 10.0.12 returned different palette instances during a
+concurrent first access. The original test incorrectly required those instances
+to be identical; that expectation was corrected and existing cache publication
+was left unchanged. Revised stock checks pass all three positive cases. Initial
+and corrected stock/red evidence is retained under
+`artifacts/portability/current/nina-gray-blur-frame-integration-20261021-1`.
+
 `WriteableBitmap` exposes a stable pinned back buffer. The existing dispatcher
 affinity and lock count govern API access; worker code may borrow the pointer
 while the owner keeps the bitmap locked. A nested unlock does not publish.
