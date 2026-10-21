@@ -8,7 +8,7 @@ Everything remains local on `codex/nina-cross-platform`.
 
 ## Active checkpoint
 
-The original NINA App/MainWindow now runs visibly on GNOME/XWayland through the
+The original NINA App/MainWindow has run visibly on GNOME/XWayland through the
 qualified portable SDK/runtime packages. Native sequence editing, completion,
 cancellation, reset, restart and palette drag/drop/Escape pass in that packaged
 application. Floating caption/redocking remains under diagnosis. The current
@@ -104,13 +104,38 @@ there were no application errors at that milestone. The receipt is
 `AC2D966B9324C688424A2FF59BD370246B12CB7C037CC9F08926753374F99A18`.
 Float/redock and actual FITS save/readback remain separate pending workflows.
 
-The failed application lifetime subsequently closed normally with exit zero,
+The current package graph then exposed a missing `System.Private.Windows.GdiPlus`
+dependency in `StarDetection.Detect`. The intended Save-on snapshot click had
+actually invoked LiveView: enabling Save adds a Target row and moves the
+buttons. The unchanged input receipt and a separate correction preserve that
+driver error. The full original exception reaches the real DetectStars pipeline;
+no single Snapshot, saved file or UI reload is claimed. The mapped Image PE is
+the exact selected `9C5EA87B...303FC8A` successor. Its shared async method still
+declares a Windows Bitmap before the Linux branch. Earlier component science
+tests resolved GdiPlus from the fuller historical app graph, which concealed
+this dependency. A fresh regression now uses the current package graph.
+
+LiveView had ended after that fault. The application then closed normally,
+disconnected SimulatorCamera and completed plugin teardown, with exit zero,
+empty stderr and all 304 immutable members unchanged. Root rehashed all 15
+evidence records in
+`current/nina/vm-package-sequence-fits-20261021-1/liveview-first-fault-evidence.json`.
+The fault/close handoff is `LIVEVIEW-FIRST-FAULT.md`, SHA-256
+`ED99C1090954AA0EAE9CEA8A1DAC062ED1C3DBC3CA8AFC1D19F881E9A63DADB5`.
+The next normal-close profile baseline is
+`3C3B32282CC4E1B85CD498E143C67220C1DE42760F031CA9005F4CC11A040926`
+and dock layout is
+`1EE33B4B51E0EF7E2388BB7D4EBCCE1718563A865900ABCE672D22F2C9D1307E`.
+The absolute Framing cache remains unchanged. Preserve this current state for
+the next coherent Image successor rather than restoring the older seed.
+
+The preceding 334-file application lifetime had closed normally with exit zero,
 empty stderr and no remaining app or supervisor. All 332 immutable members
 and the absolute Framing cache stayed unchanged. Its final profile is
 `AB2022699B8D3F6A4C6A69E7B2A8698922A02F83BE6304A014600BFB8E62B4DA`
 and dock layout remains
 `0C565FAC8A94E619BE71A229672AC56B22E2FDB7A3254CDE765E39D83AEA3136`.
-Use that final closed state for the next startup. The normal-close receipt is
+Those values remain that historical family's restart baseline. Its normal-close receipt is
 `current/nina/vm-sequence-fits-ui-20261021-1/POSTCLOSE.md`, SHA-256
 `3EA18FCE98C34B7F96B6E1BF362EFC20FD9F6FB69A61DB359C998D7161227EAE`.
 
