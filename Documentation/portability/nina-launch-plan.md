@@ -353,6 +353,55 @@ local date-cast setup failure occurred before SSH or sampling and remains
 retained with the narrow wrapper correction. Earlier pilot packets remain
 unchanged and unexecuted.
 
+### Further desktop and closed-view observations
+
+A later passive observation at 13:50:29 UTC retains the same App PID and start
+identity. RSS is 519.6 MiB, below the pilot's initial idle median, with 18 threads
+and 327 file descriptors. This weakens an inference of persistent memory growth
+from the short recovery window. It does not measure the intervening trajectory
+or establish overnight stability. The descriptor inventory contains no saved
+FITS handles; without an initial target inventory, the two extra descriptors
+cannot be attributed. The raw observation is
+`current/nina/desktop-gates-20261021-2/passive-before-input-corrected.json`, SHA-256
+`7FA5BDA910D2F4DDD38F099FBBF82708431A3FB01BB9B7A42AB22796914463F9`.
+Its inherited hover-related scope label does not describe this pre-input
+observation; the separate classification preserves that distinction.
+
+A separate private Xvfb check passes all 14 checks across two genuine GuiderGraph
+lifetimes on the final5 publication. Each open Window, view and realized plot
+survives the positive-control collection, then all three collect after actual
+Window.Close while the application dispatcher, original GuiderVM, mediator,
+profile and history remain alive. Content and DataContext are preserved during
+Close, and subsequent original VM/settings/history updates pass. Forced GC is
+confined to this isolated ownership test. There is no extra GC in the actual
+application pilot. This qualifies this view's bounded managed collection, not
+all NINA views, native allocations or endurance.
+
+Root verified all 21 handoff files, 522 frozen inputs, eight actual source/PDB
+documents, entry DLL/PDB hashes, all 14 raw results and the cleanup record. The
+child exits zero with empty stderr and no dependency failures; the private entry,
+Xvfb server, display socket and runtime directory are absent afterward. Evidence
+occupies 2.36 MiB without copying the runtime. The handoff is
+`current/nina/closed-view-collection-20261021-1/handoff.json`, SHA-256
+`C0CEA9DD5107391E7B30C22DE73814BB3C7B2A11442C71FF73BDAD3C616B5118`.
+The original Guider22 fixture and results remain unchanged.
+
+Physical Focuser header dragging now has a user-observed no-crash result. A
+subsequent attempt to redock exposes misplaced guides and remains a failed
+usability gate. A read-only recording of the user's held drag captures an
+overlay moving from native client bounds 159,100/2393x1462 before mapping to
+70,27/2490x1573 with both maximized flags after mapping. Frame extents are absent
+and the measured desktop scale is one. The captured overlay contains four outer
+guides and no center-pane group. This establishes a real geometry transition;
+the source's restore-coordinate assumption and missing center eligibility still
+require causal fixture verification and a repair. Root verified all 22 evidence
+pins and the 2,378 raw samples, including the transition at samples 942 and 943.
+The observer submits no input, exits zero and is absent afterward. Twelve native
+read errors during concurrent window destruction remain visible in the record.
+The handoff is
+`current/nina/desktop-gates-20261021-2/trajectory-1-HANDOFF.json`, SHA-256
+`25B017911DAF74BC1E22C818C2A08FE373CE97A74A86BF463280666C6A976CA4`.
+
 Commit `b6b30ebc6` also includes AvalonDock's existing license and provenance
 receipt in generated NINA build output and normal publication. Disposable SDK
 copy targets verify both files byte-for-byte at both destinations, with all six

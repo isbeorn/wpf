@@ -48,11 +48,21 @@ all 317 immutable installed members remain unchanged. See the
 and [resource results](../../artifacts/portability/current/nina/overnight-preparation-20261021-1/pilot-final5-1/handoff.json).
 
 The pilot's sampled RSS peaks at 646.0 MiB. Recovery ends at 626.7 MiB versus
-the initial 554.4 MiB idle median, with two additional file descriptors.
-Those retained resources require follow-up; this short observation establishes
-neither a leak nor an accepted overnight ceiling. Native allocation observation,
-installed diagnostics, actual caption/redocking, desktop clipboard/picker
-outcomes, Xorg and overnight simulation remain unqualified. Native IME, further
+the initial 554.4 MiB idle median, with two additional file descriptors. A later
+passive observation of the same process measures 519.6 MiB and 18 threads, with
+the descriptor count still 327. This establishes neither a leak nor an accepted
+overnight ceiling. A separate 14-check private fixture verifies that the genuine
+GuiderGraph, its plot and hosting Window collect after Close across two
+lifetimes while their original VM and history remain alive. Other views and
+native allocations retain their separate gates; see the
+[bounded collection evidence](../../artifacts/portability/current/nina/closed-view-collection-20261021-1/handoff.json).
+
+Physical floating-header dragging works without a crash, but the user's redock
+attempt exposes misplaced guides. A read-only held-drag recording captures the
+overlay's native bounds changing on mapping and retains the missing center-guide
+observation. That defect remains under repair. Native allocation observation,
+installed diagnostics, correct redocking, desktop clipboard/picker outcomes,
+Xorg and overnight simulation remain unqualified. Native IME, further
 Orca work and WPF features unused by NINA remain user-deferred. Linux ARM64 and
 macOS remain later phases. No new RGB48 deadline optimization is planned.
 
