@@ -10,6 +10,8 @@ internal static class Program
     [STAThread]
     private static int Main(string[] args)
     {
+        if (args.Length == 1 && args[0] == "--unanchored-context-menu")
+            return UnanchoredContextMenuReference.Run();
         if (args.Length == 1 && args[0] == "--empty-sizing")
             return RunEmptySizing();
         if (args.Length == 2 && args[0] == "--application-run")

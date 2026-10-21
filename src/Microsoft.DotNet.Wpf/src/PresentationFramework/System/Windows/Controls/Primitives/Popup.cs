@@ -1541,6 +1541,9 @@ namespace System.Windows.Controls.Primitives
             {
                 // create the window
                 BuildWindow(targetVisual);
+#if PORTABLE_WPF
+                if (!IsOpen || !_secHelper.IsWindowAlive()) return;
+#endif
                 CreateNewPopupRoot();
             }
 
@@ -3044,10 +3047,26 @@ namespace System.Windows.Controls.Primitives
                 MS.Internal.Portability.Windowing.PortableWindowPlatform.Factory.GetPopupScreenBounds(_owner, targetBounds, targetPoint, useWorkArea);
             internal void BuildWindow(int x, int y, Visual target, bool transparent, HwndSourceHook hook, AutoResizedEventHandler resized, HwndDpiChangedEventHandler dpiChanged, Action ownerDeactivated, Action ownerClosing)
             {
-                _owner = GetPresentationSource(target) ?? throw new PlatformNotSupportedException("A portable Popup requires an attached placement target.");
-                _host = new MS.Internal.Portability.Windowing.PortablePopupHost(_owner, transparent,
+                _owner = null;
+                PresentationSource owner = GetPresentationSource(target);
+                if (target == null) owner = Keyboard.PrimaryDevice.ActiveSource;
+                if (owner == null || owner.IsDisposed || !owner.CheckAccess() ||
+                    (target == null && owner.RootVisual is not UIElement { IsVisible: true, IsEnabled: true }))
+                    throw new PlatformNotSupportedException("A portable Popup requires an attached placement target or an eligible active keyboard source.");
+                var host = new MS.Internal.Portability.Windowing.PortablePopupHost(owner, transparent,
                     size => resized(this, new AutoResizedEventArgs(size)), ownerDeactivated, ownerClosing);
-                _host.Peer.SetDesktopPosition(new Point(x, y));
+                try
+                {
+                    _host = host;
+                    host.Peer.SetDesktopPosition(new Point(x, y));
+                    if (ReferenceEquals(_host, host) && host.IsAlive) _owner = owner;
+                }
+                catch
+                {
+                    if (ReferenceEquals(_host, host)) { _host = null; _owner = null; }
+                    host.Dispose();
+                    throw;
+                }
             }
             internal void DestroyWindow(HwndSourceHook hook, AutoResizedEventHandler resized, HwndDpiChangedEventHandler dpiChanged)
             {

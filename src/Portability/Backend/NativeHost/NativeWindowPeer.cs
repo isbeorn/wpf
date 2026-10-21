@@ -718,6 +718,8 @@ internal sealed class NativeWindowPeer : IPortableWindowPeer, IPortablePopupPeer
     internal X11Window CreateNativePopup(bool transparent)
     {
         Verify();
+        if (!CanNotify || _closing || !IsVisible || !IsEnabled || !_window.IsVisible || _window.Handle == 0)
+            throw new InvalidOperationException("A Popup requires a live visible enabled native owner that is not closing.");
         return new X11Window(_window.Connection, new X11WindowOptions
         { Popup = true, Transparent = transparent, Owner = _window, X = checked((int)_clientScreenOrigin.X), Y = checked((int)_clientScreenOrigin.Y) });
     }

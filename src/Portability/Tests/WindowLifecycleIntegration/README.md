@@ -70,6 +70,15 @@ The delayed-acknowledgement peer also publishes stale Normal geometry between a 
 
 `StockOracle/StockOracle.csproj` uses the installed Microsoft WindowsDesktop WPF, with no fork project references. It records the actual assembly path, native displayed rectangles and RestoreBounds through max/min, both size directions and min/max constraints. Run it on Windows with `dotnet build StockOracle/StockOracle.csproj --artifacts-path <isolated-output>` then run its DLL. The evidence is `artifacts/portability/window-lifecycle/stock-restore-oracle.json`; native displayed bounds remain unchanged during restore edits and constraints apply upon Normal restoration. External native maximize and minimize survive Hide/Show with ShowActivated enabled. The existing WPF ShowActivated=false restriction rejects showing a maximized Window. The oracle also verifies that a stock Window with null Content does not raise Window.ContentRendered, while assigning content does.
 
+The oracle's `--unanchored-context-menu` mode opens the original targetless
+Button Click storyboard, records the actual WindowsDesktop assembly, HWND
+parent/owner, focus/capture and source lifetime across owner close, then closes
+the menu explicitly. It raises a programmatic Click routed event and does not
+claim physical/native mouse input. It shows and activates a real Windows window,
+so run it only during explicitly authorized desktop idle time. The portable
+private-X11 counterpart uses genuine XTest Click, Escape and submenu input in
+NativeWindowIntegration; its transient input owner is documented separately.
+
 Taskbar checks use the genuine public ShowInTaskbar property before source creation, during SourceInitialized, while live and through hide/edit/show. The managed peer records initial/native-Show state and both setter directions; source creation/closure counts, peer identity, actual Owner/OwnedWindows and activation state must remain unchanged. Canceled close retains the same mutable peer. The other preedit fixture peer implements the new internal setter as a no-op because its existing composition-close tests do not model taskbar presentation.
 
 The MessageBox cases use the same isolated friend variant, real Window/controls and public overloads. They cover enum/service validation, all button results/default fallback, owner-only enable restoration, nested/owner close, application resource and lifetime isolation, RTL/RightAlign and failure identity/cleanup. The Classic theme project is referenced so actual button templates are available. Native focus, raw keyboard/button input and blocked-UI offhost sessions remain in NativeWindowIntegration. MessageBox intentionally does not use the ComponentDispatcher modal scope of ordinary ShowDialog. New neutral button resource labels currently fall back to English until translations are supplied.

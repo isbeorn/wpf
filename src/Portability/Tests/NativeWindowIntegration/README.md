@@ -53,6 +53,29 @@ its first failing case.
 
 Popup serial checks construct owned X11 ABI payloads and enter actual core/XI2 handlers. They preserve obsolete/current/newer ordering, both crossing directions and native zero/maximum rollover. Temporary fixture observers count CaptureLost without releasing the independently held real server grab; original callback delegates/router state are restored before ordinary native activity resumes. No production test hook is added.
 
+`--context-menu-only` includes the original NINA Button Click storyboard route,
+which opens a ContextMenu without a PlacementTarget. Native input exercises
+Escape, submenu command, outside dismissal, reopen and canceled/accepted owner
+close. With keyboard focus in A and the pointer over B, ownership remains with
+A while MousePoint placement uses the physical cursor over B. The portable
+native window is transient for the eligible active keyboard source, which may
+itself be a popup; this is an input/lifetime ownership policy, not a claim that
+its native parent matches stock Windows. Targets remain null. An explicit
+detached target still defers and closes, while a truly ownerless popup remains
+unsupported. Hidden, disabled and closing peers must reject native allocation.
+Source disposal, native window removal, focus and pointer-grab cleanup are
+observable requirements. The stock reference in WindowLifecycleIntegration is
+a separate Windows control and does not replace the native Click test.
+The focus-A/pointer-B setup first observes a real native B-to-A focus roundtrip
+and both WPF keyboard sources. Repeating XSetInputFocus on the already focused
+XID need not emit a new focus event after popup input deactivation. Reenable
+uses public Window.Activate and observes native/WPF readiness. Cleanup removes
+the test's held storyboard before assigning IsOpen, retaining primary and
+cleanup exceptions separately.
+Initial, secondary, re-shown and detached-target owner windows must independently
+reach native MapState 2 before raw focus requests; Show returning does not await
+the window manager's map acknowledgement.
+
 Native IME is deferred. IbusTransportChecks.cs is excluded from active compilation and its former mode fails explicitly. Its prior source/evidence cannot qualify composition for this backend. Ordinary native keyboard compose and whole-string commits remain required.
 
 Build from src/Portability with SDK 10.0.401:

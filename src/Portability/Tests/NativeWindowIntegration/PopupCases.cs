@@ -18,6 +18,7 @@ internal static class PopupCases
 
     internal static void ContextMenuLifetime(X11Fixture native, Action<Func<bool>> wait, Action drain, string fontPath)
     {
+        UnanchoredContextMenuCases.Exercise(native, wait, drain, fontPath);
         var owner = new Border { Width = 120, Height = 40, Background = Brushes.Green };
         var window = new Window { Title = "Genuine portable ContextMenu lifetime", Width = 300, Height = 180,
             Content = owner, Background = Brushes.White };
