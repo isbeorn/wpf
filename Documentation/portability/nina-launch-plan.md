@@ -206,15 +206,43 @@ SHA-256 `B5D05919CCF450C689558F0C2C00AB2E5953E9EC8F6E51A9BF254B594520D030`.
 The later hidden-page save retained height 800 but changed Top 553 -> 516.
 This is separate from the successful visible save/relaunch result. Diagnose the
 hidden native-position reconciliation before claiming full placement stability.
-The final closed state is `postclose-rounded-dash-20261021-1` in the guest
+The second lifetime's closed state is `postclose-rounded-dash-20261021-1` in the guest
 publication. Its profile SHA-256 is
 `8C025CDAC9959624006BB15636CC9E62F90428D1EE442389FA44EC1B84117A7D`
 and dock SHA-256 is
 `290D7343F3157CD882ADB004BF2DD9B624E7CF7DE1E0BD8EE19F6053A648942A`.
-Use this final baseline next: Statistics 1370x800 at 1074,516, DetectStars and
+That baseline has Statistics 1370x800 at 1074,516, DetectStars and
 AutoStretch enabled, High/None, 1-second exposure, Loop/Save off and SKYATLAS.
 Saved LastRotationAngle is 330; the failed attempt to return the UI to zero did
 not apply.
+
+A third, diagnostic-only lifetime identified the hidden-position cause. Hiding
+Imaging unmapped the Statistics client and reparented it to the root at the old
+outer position, while GNOME retained a 37-pixel top frame extent. Subtracting
+that stale frame from the hidden client origin changes the logical Top again.
+Re-show restored the prior geometry. A normal close after re-show saved Top 516
+unchanged, so the defect is specifically the hidden save path. This lifetime
+did not connect the camera or capture an image. Exit was zero, stderr was empty
+and all 327 immutable runtime members matched.
+
+The latest restart baseline is now `postclose-top-drift-20261021-1`, with profile
+SHA-256 `8AB144C03FE393E55814CF14A3356BEA70E5EA3CA96D7D55D47EE424C85D555A`
+and dock SHA-256
+`439FBE5E5F49747AFB9995CA5448852824FDD6F804A854EF4CC130226713A3EC`.
+Statistics remains 1370x800 at 1074,516. The sealed diagnosis is
+`current/nina/vm-gray-blur-frame-ui-20261021-1/lifetime3-top-drift/diagnosis-handoff.json`,
+SHA-256 `3E40A68DC6EE81EF5A001AB49747135F3533A32CC7A10E74CE839CB8FCCE39D9`.
+
+Both focused repairs are source-ready and independently reviewed. The position
+repair retains accepted logical coordinates and pending position requests while
+hidden, without changing size or native coordinate reporting. Rounded dashed
+painting and bounds use WPF's canonical cubic contour. The revised focus test
+retains the old-Core precompute failure before filtering the non-hit-testable
+focus visual. Native and candidate Windows focused checks pass 7/7 and Windows
+Geometry passes 689/689. Two exact alpha-1 antialiasing fringe cells are recorded
+as optional raster witnesses; all other occupied cells remain strictly checked.
+Linux and combined-family qualification remain pending. Neither repair has yet
+been replayed in the actual application.
 
 One failed helper returned before keyboard input, but its caller still submitted
 a queued mosaic click. That driver failure is retained without a mosaic claim.
@@ -263,9 +291,21 @@ and exact notices at `current/nina/cfitsio-intake-20261021-1`. Its receipt is
 Upstream `configure --without-fortran` excludes unused Fortran wrappers; the
 ordinary CMake profile does not. The complete archive has additional notices
 and must not be described as uniformly permissive. Runtime selection must retain
-all applicable notices. An isolated C-only, reentrant source-build feasibility
-experiment on Ubuntu 22.04/glibc 2.35 is authorized; no managed adaptation,
-consumer publication or scientific roundtrip is qualified yet.
+all applicable notices.
+
+The isolated C-only, reentrant build now passes on Ubuntu 22.04/glibc 2.35.
+Upstream tests report 54 passes, one coverage-only skip and no failures. The
+selected 1,463,656-byte shared library has SHA-256
+`4558BDC93601DAB4ADCA9FB36502198BC98C926BA9BB7038A417E6A4E17420E8`.
+Its required exports and system dependencies resolve, Fortran wrappers are
+absent and the reentrancy flag is enabled. Build warnings and applicable notices
+are retained. The source is unchanged and temporary guest files were removed.
+The feasibility receipt is `current/nina/cfitsio-feasibility-20261021-1/feasibility-receipt.json`,
+SHA-256 `0F801595ABFF8ECCA945046017832E62A1E901AA3594F465B8C6252BF92D365C`.
+This proves the native library only. Managed marshalling, error ownership,
+concurrency and NINA scientific roundtrips remain unqualified. The next local
+slice adapts the existing Image native boundary and existing qualification
+fixture; it adds no library, native shim, public API or replacement test harness.
 
 Reuse existing image/save fixtures for odd-width ushort legacy-write/original
 reload, alternate writer, selected lossless compression, row reads, metadata,
