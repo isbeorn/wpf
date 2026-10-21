@@ -12,7 +12,7 @@ Earlier checkpoints below retain their original scope.
 ## Current release checkpoint
 
 The original offline, simulator-only NINA App/MainWindow runs through the owned
-Linux WPF backend on Ubuntu 22.04 GNOME/XWayland. There is no Avalonia runtime,
+Linux WPF backend on Ubuntu 22.04 GNOME/X11 and GNOME/XWayland. There is no Avalonia runtime,
 framework, build or source-import dependency. Skia, HarfBuzz and the attributed
 Unicode derivatives remain. Full Phase 5 is not yet qualified.
 
@@ -47,9 +47,24 @@ Actual GNOME compositor scaling `1 -> 1.25 -> 1` and three reversible Framing
 numeric keyboard cycles also pass, with exact display-state restoration and
 normal shutdown. Root verified 197 evidence pins and 24 unchanged PATH pairs in
 the [scoped scale replay](../../artifacts/portability/current/nina/gnome-scale-focus-keyboard-20261022-1/root-verification.json).
-XWayland stayed at 96 DPI, so WPF fractional-DPI qualification remains open.
+XWayland stayed at 96 DPI, so that compositor-only run does not qualify WPF fractional DPI.
 The Camera-tab popup attempts did not establish the actual hit/lock/menu binding
 and are not accepted as popup qualification or a demonstrated production defect.
+
+The subsequent original final7 GNOME/Xorg lifetime completes an actual
+`96 -> 120 -> 96` published-DPI transition with scaled NINA rendering and three
+reversible numeric keyboard cycles. Its original populated Sequence Add menu
+passes submenu navigation, Escape teardown, native focus return and keyboard-only
+Space reopening. GNOME's original unset preference is restored exactly and NINA
+closes normally. Root verified 372 evidence pins and 35 unchanged PATH pairs in
+the [Xorg desktop replay](../../artifacts/portability/current/nina/gnome-xorg-combined-execution-20261022-1/root-verification.json).
+Profile changes are limited to LastUsed and docking XML is byte-identical. The
+transient 1x1 startup-controller assertion is preserved separately; the same
+application mapped successfully without a relaunch. Additional brush-mentor and
+ShowDetails binding warnings retain the limits in the
+[source classification](../../artifacts/portability/current/nina/gnome-xorg-combined-execution-20261022-1/additional-binding-classification.json).
+This short diagnostics-enabled run is separate from resource measurements and
+physical multi-monitor qualification.
 
 Installed diagnostics and the non-interposing native-allocation observer now
 work together in a normally closed original NINA lifetime: 12 allocator samples,
@@ -74,9 +89,9 @@ hardware, layout and mixed-build scope. They do not establish Linux memory
 budgets or exhaustive native allocation behavior.
 
 The eight-hour coordinator has passed its finite regression and mutation
-controls, but the real run has not executed. Remaining gates are actual
-focus/keyboard/scale checks for the single-monitor profile, a distinct Xorg
-desktop and sustained operation with measured resource acceptance. The
+controls, but the real run has not executed. Remaining gates are Linux calibration,
+measured resource acceptance and sustained operation with actual responsiveness,
+cancellation, recovery and relaunch evidence. The
 [active launch checkpoint](nina-launch-plan.md#active-checkpoint)
 records the current evidence and remaining work. Native IME, further
 accessibility, unused WPF, real hardware, ARM64 and macOS remain deferred or

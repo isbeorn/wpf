@@ -12,9 +12,10 @@ and saves a valid FITS image. The focused raw-converter initialization repair
 also passes actual thumbnail reload, annotation on/off processing and recovery
 capture. Native drag/docking and saved-layout replay pass on final7. Original
 clipboard exchange and sequence file-dialog outcomes pass on final5 and retain
-that publication scope. Remaining desktop work is populated-menu keyboard/focus,
-actual fractional WPF DPI and a distinct real Xorg session. Linux resource
-calibration and the eight-hour workload remain open. The launch checkpoint
+that publication scope. The subsequent real GNOME/Xorg run passes actual
+96/120/96-DPI rendering/input transitions, reversible numeric editing and
+populated-menu keyboard/focus restoration on the selected single monitor.
+Linux resource calibration and the eight-hour workload remain open. The launch checkpoint
 records the exact evidence and limitations for each result.
 General WPF features
 unused by NINA, native IME and further accessibility qualification are deferred.

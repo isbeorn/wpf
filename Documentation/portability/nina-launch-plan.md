@@ -44,7 +44,7 @@ remain unqualified or deferred. Detailed evidence and remaining gates follow.
 ## Active checkpoint
 
 Checkpoint: 22 October 2026. Full Phase 5 remains open. The original offline,
-simulator-only NINA shell runs on Ubuntu 22.04 GNOME/XWayland; this is not a
+simulator-only NINA shell runs on Ubuntu 22.04 GNOME/X11 and GNOME/XWayland; this is not a
 full-WPF or production-device qualification. The accepted RGB48 timing exception
 stands and further RGB48 deadline optimization is canceled.
 
@@ -111,11 +111,52 @@ click is not a menu pass or proof of a production defect.
 
 That lifetime closes normally with application, supervisor and restoration guard
 absent. Profile differences are limited to LastUsed; docking XML changes only
-ten activation timestamps. The latest carry has 33 files, SHA-256
+ten activation timestamps. That run's carry has 33 files, SHA-256
 `7306DDE4D9126D66684DDDF7B5849AC788CB614BB0C385EA3C4AED5215703BBD`,
 at `current/nina/gnome-scale-focus-keyboard-20261022-1/closed-state-carry.json`.
-Its scoped result is `root-verification.json` in that lane. Actual fractional
-WPF DPI, populated-menu keyboard/focus and a real Xorg session remain open.
+Its scoped result is `root-verification.json` in that lane. The subsequent Xorg
+replay below supplies the distinct desktop, fractional-DPI and populated-menu
+keyboard/focus evidence.
+
+The original final7 application also completes a real GNOME/Xorg lifetime in
+session 186. The native Xorg server and GNOME window-manager process identities
+are verified. GNOME's normal text-scaling preference publishes `96 -> 120 -> 96`
+DPI through both XSETTINGS and RESOURCE_MANAGER; actual NINA typography, layout
+and native input follow both transitions. The client changes from 2490 x 1573
+at (70, 27) to 2490 x 1566 at (70, 34), then back, as GNOME's panel/workarea
+also changes. Original Framing declination entry completes `0 -> 30 -> 0` with
+Ctrl+A, Tab commit and Shift+Tab return at each of the three stages. The original
+unset preference key, effective/default value 1.0 and empty raw dconf value are
+restored exactly.
+
+In the same process, the original Sequence Add menu opens with populated items.
+Right opens its populated Instructions submenu, Left returns and Escape unmaps
+the menus with native focus on the main window. Space alone reopens the original
+root menu after Escape, followed by final Escape teardown. Nine native
+menu/keyboard/focus checks pass without selecting an instruction. Root inspected
+the actual scaled/restored numeric pixels and populated submenu/reopened menu.
+
+That process closes normally with exit zero. Application, supervisor, preference
+guard and controller are absent; 317 immutable members, 28 protected files and
+33 preserved pre-state copies remain unchanged. Docking XML is byte-identical
+and the profile changes only LastUsed. Root verified 372 evidence pins and 35
+unchanged raw PATH pairs in
+`current/nina/gnome-xorg-combined-execution-20261022-1/root-verification.json`.
+The latest carry has 34 files at `guest-evidence/closed-state-xorg-combined-carry.json`
+in that lane, SHA-256
+`13E945E4DC0F1DFBE54B26A83D83E8FA55FB3FFEE1FD7A1A984C73915DB5F099`.
+
+The startup controller initially rejected a transient 1x1 window before checking
+its mapped state. That driver failure is preserved; independent observation
+confirmed the same original application completed mapping, with no relaunch.
+Diagnostic capture reaches EOF with no dropped bytes, storage failures or cap.
+In addition to the startup warning families below, navigation records a brush
+mentor warning in the original UnitTextBox style and a source-supported
+Sequence root ShowDetails target mismatch. Brush recovery, stock namescope
+behavior and harmlessness are not established by these observations. See
+`additional-binding-classification.json` in the same lane. This short
+diagnostics-enabled lifetime is excluded from resource comparisons and makes no
+physical multi-monitor claim.
 
 A separate original NINA lifetime verifies installed binding diagnostics and
 the non-interposing native-allocation observer together. All 12 allocator samples
@@ -180,11 +221,11 @@ science closure. These scope differences remain explicit in `reference-summary.j
 This completes the reference measurement, not Linux calibration, an accepted
 numerical memory budget or the eight-hour resource gate.
 
-Remaining release work is actual keyboard/focus and changed desktop-scale
-qualification on the selected single-monitor profile, a distinct real Xorg
-session and sustained/resource qualification. Linux calibration and the
-eight-hour workload are not completed resource passes. Fixed-DPI Xvfb results do not
-prove desktop transitions. Native Wayland, native IME, further accessibility,
+Remaining release work is Linux resource calibration, acceptance grounded in the
+measured results and the actual eight-hour workload with responsiveness,
+cancellation, recovery and relaunch evidence. The short Xorg desktop pass does
+not complete those gates. Fixed-DPI Xvfb results do not replace the actual desktop
+proof above. Native Wayland, native IME, further accessibility,
 unused WPF capabilities, real equipment,
 ARM64 and macOS retain their recorded exclusions or deferrals.
 
