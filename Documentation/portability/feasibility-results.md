@@ -9,6 +9,52 @@ document, Markdown and window-placement checkpoint before the subsequent
 empty-window, docking and NINA.Image repairs.
 Earlier checkpoints below retain their original scope.
 
+## Current release checkpoint
+
+The owned Linux backend runs the original simulator-only NINA App/MainWindow
+through ordinary portable SDK/runtime packages on Ubuntu GNOME/XWayland.
+There is no Avalonia runtime, framework, build or source-import dependency.
+The accepted Skia/HarfBuzz bindings and attributed Unicode derivatives remain.
+The current WPF package source is `71e9f0f8f`; subsequent commits record evidence.
+
+The final5 package producer passes its archive audits with no build errors.
+Package-derived execution passes SDK native FDD 14, focus 19, input 28 and popup
+11 checks on private Xvfb/Openbox. These are four scoped groups, not a count of
+unique framework features. The [producer proof](../../artifacts/portability/current/final-distribution-20261021-5-proof/handoff.json)
+and [consumer proof](../../artifacts/portability/current/final-distribution-20261021-5-consumer-proof/handoff.json)
+bind the actual packages, sources and test outputs. Earlier full consumer and
+Windows results retain their own package identities.
+
+The fresh 319-file NINA publication preserves App/BAML, scientific components
+and native astronomy libraries. Its actual desktop lifetime captures and
+displays two 640x480 simulator images, saves FITS and invokes original thumbnail
+reload without a logged error. The subsequent five-minute idle, fifteen-minute
+capture and five-minute recovery pilot completes all 53 samples with exact
+identity and sampler cleanup checks. Original Cancel works, and a later single
+Snapshot displays a fresh image with finite statistics. Both saved files and
+all 317 immutable installed members remain unchanged. See the
+[actual UI handoff](../../artifacts/portability/current/nina/vm-package-final5-20261021-1/PILOT-UI-HANDOFF.json)
+and [resource results](../../artifacts/portability/current/nina/overnight-preparation-20261021-1/pilot-final5-1/handoff.json).
+
+The pilot's sampled RSS peaks at 646.0 MiB. Recovery ends at 626.7 MiB versus
+the initial 554.4 MiB idle median, with two additional file descriptors.
+Those retained resources require follow-up; this short observation establishes
+neither a leak nor an accepted overnight ceiling. Native allocation observation,
+installed diagnostics, actual caption/redocking, desktop clipboard/picker
+outcomes, Xorg and overnight simulation remain unqualified. Native IME, further
+Orca work and WPF features unused by NINA remain user-deferred. Linux ARM64 and
+macOS remain later phases. No new RGB48 deadline optimization is planned.
+
+Phases 0 and 1 passed within their recorded scopes. The complete Phase 2-5
+gates have not passed, despite the substantial component and application
+results. The accepted [plan](../cross-platform-plan.md) and its recorded user
+revisions remain the contract; this checkpoint does not narrow those gates.
+
+## Earlier 21 October application checkpoints
+
+The following paragraphs retain the earlier integration-family results and
+faults. They are not the current final5 publication status above.
+
 The experiments establish a viable open-source Linux x64 path for this fork.
 Actual source-built WPF assemblies, the dispatcher, retained renderer, bounded
 text implementation and native controls run through the owned X11 adapter. The
@@ -54,7 +100,7 @@ checks. The launch plan records the closed state, exact runtime and evidence.
 
 The Phase 0 reference/runtime gate and Phase 1 feasibility gate pass within the scopes recorded below. Phases 2 through 5 have not passed. The accepted [plan](../cross-platform-plan.md) remains the behavior contract. Physical desktop, full application and sustained-workload qualification remain later gates. Component checks, source compilation and managed test peers do not substitute for native WPF control behavior.
 
-## Current owned-backend checkpoint
+## Earlier owned-backend checkpoint
 
 The paragraphs and table in this section preserve the earlier
 `Stage-nina-integration-1` checkpoint. The user subsequently prioritized NINA's
@@ -435,7 +481,11 @@ Independent reviews and failing regressions led to concrete repairs:
 
 Raw negative cases remain alongside the passing results. Local changes and commits have not written to GitHub.
 
-## Phase gates
+## Earlier phase gate snapshot
+
+This table preserves the earlier package and adapter checkpoint. Its open
+issues and results retain that scope; use the current release checkpoint above
+and the NINA launch plan for the selected owned-backend family.
 
 | Gate | Current status | Required evidence |
 | --- | --- | --- |
