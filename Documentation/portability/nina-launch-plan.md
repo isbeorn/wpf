@@ -48,6 +48,11 @@ simulator-only NINA shell runs on Ubuntu 22.04 GNOME/XWayland; this is not a
 full-WPF or production-device qualification. The accepted RGB48 timing exception
 stands and further RGB48 deadline optimization is canceled.
 
+The user approved a single-monitor first Phase 5 profile on 22 October because
+only this Linux VM is available. Physical multi-monitor qualification is deferred
+and remains explicitly unqualified. Other Phase 5 requirements and existing
+deferrals remain unchanged; this is not a multi-monitor compatibility claim.
+
 The package family produced from `87e4b29bc` passes all 488 checks: 250 standard
 consumer checks, 10 diagnostics enabled/disabled checks, 55 package-derived
 imaging checks, 161 affected native checks and 12 compiler/managed checks on the
@@ -116,8 +121,8 @@ recovery and relaunch are still pending. Numerical memory/allocation acceptance
 must be grounded in workload measurements before a performance pass is claimed.
 
 Remaining release work is actual keyboard/focus and changed desktop-scale
-qualification, monitor transitions, a distinct real Xorg session and
-sustained/resource qualification. The matched Windows resource reference is
+qualification on the selected single-monitor profile, a distinct real Xorg
+session and sustained/resource qualification. The matched Windows resource reference is
 running after an error-free isolated smoke; neither calibration nor the
 eight-hour workload is a completed resource pass. Fixed-DPI Xvfb results do not
 prove desktop transitions. Native Wayland, native IME, further accessibility,

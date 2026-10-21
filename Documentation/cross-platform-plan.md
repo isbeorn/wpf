@@ -280,6 +280,13 @@ Keep the application adaptation workstream separate but integrate its required s
 
 ### Phase 5 Release the Linux x64 compatibility profile
 
+On 22 October 2026, the user approved qualifying the first profile on one monitor
+because only the current Linux VM is available. Physical multi-monitor
+qualification is deferred and must remain explicitly unqualified in release
+claims. All other Phase 5 gates retain their accepted scope and recorded
+deferrals. This decision changes the initial qualification matrix, not the
+framework's long-term monitor requirements or evidence for unexecuted cases.
+
 Qualify supported distributions and desktop sessions, publish dependency/font requirements and produce a redistributable app-local package and SDK. Include clean-machine restore/build/publish/install/run checks and usable crash/assembly/binding diagnostics. Test packaged artifacts, not only development outputs.
 
 Require native keyboard and pointer input, clipboard, file dialogs, focus, window ownership, text composition, desktop scaling and accessibility for the selected profile. Include keyboard-only use and a real screen-reader check for the core workflows. Software rendering must remain a tested fallback; qualify the selected acceleration path on representative hardware.
@@ -367,6 +374,10 @@ Start with a small process-isolated C# integration host and reuse test result fo
 Always verify paired operations: open/close, subscribe/unsubscribe, attach/detach, enable/disable, focus gain/loss, capture acquire/release, dock/undock, theme change/restore and image lock/unlock. Exercise cancellation before scheduling, while pending and after completion, plus closing/shutdown during a modal frame.
 
 Image cases include odd widths, padded stride, minimum dimensions, edge dirty regions, invalid rectangles, overflow/truncated buffers, nested locks, freeze behavior and worker-to-dispatcher handoff. Preserve scientific source data while testing the separate display conversion. Text cases include fallback, non-Latin input, combining characters, dead keys, bidi, IME commit/cancel and selection/caret placement. Scale and layout cases run in both directions, including fractional DPI and moving windows between monitors.
+
+The approved initial single-monitor profile defers the physical multi-monitor
+cases above. It still requires actual desktop scaling in both directions;
+compositor scaling alone does not prove that WPF observed a fractional DPI.
 
 Measure Windows references and Linux results on comparable declared hardware with fixed image sizes, plot histories and update rates. Phase 0 records the workloads; Phase 2 sets numerical latency, memory and allocation budgets from those measurements before the shell gate. Label CPU rasterization, GPU paths and warm/cold runs. Avoid invented performance targets or silently treating a growing cache as a leak.
 

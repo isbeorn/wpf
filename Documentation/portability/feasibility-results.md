@@ -16,6 +16,10 @@ Linux WPF backend on Ubuntu 22.04 GNOME/XWayland. There is no Avalonia runtime,
 framework, build or source-import dependency. Skia, HarfBuzz and the attributed
 Unicode derivatives remain. Full Phase 5 is not yet qualified.
 
+The first Phase 5 profile is single-monitor, as explicitly approved by the user
+on 22 October 2026. Physical multi-monitor qualification is deferred and remains
+unqualified. All other accepted gates and earlier deferrals remain in force.
+
 The package family from `87e4b29bc` passes all 488 checks: 250 standard consumer,
 10 diagnostics enabled/disabled, 55 package-derived imaging, 161 affected native
 and 12 actual Ubuntu 22.04 compiler/managed checks. Root independently verified
@@ -49,8 +53,8 @@ exhaustive native allocations or a resource ceiling. See the
 
 The eight-hour coordinator has passed its finite regression and mutation
 controls, but the real run has not executed. Remaining gates are actual
-focus/keyboard/scale and monitor-transition checks, a distinct Xorg desktop and
-sustained operation with measured resource acceptance. The
+focus/keyboard/scale checks for the single-monitor profile, a distinct Xorg
+desktop and sustained operation with measured resource acceptance. The
 [active launch checkpoint](nina-launch-plan.md#active-checkpoint)
 records the current evidence and remaining work. Native IME, further
 accessibility, unused WPF, real hardware, ARM64 and macOS remain deferred or
