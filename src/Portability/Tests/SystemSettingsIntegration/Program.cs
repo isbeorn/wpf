@@ -20,6 +20,8 @@ internal static partial class Program
     [STAThread]
     private static int Main(string[] args)
     {
+        if (args.SequenceEqual(new[] { "--menu-animation-only" }, StringComparer.Ordinal))
+            return RunMenuAnimationSettings();
         if (args.SequenceEqual(new[] { "--primary-screen-unavailable" }, StringComparer.Ordinal))
             return PrimaryScreenChecks.RunUnavailable();
         if (args.SequenceEqual(new[] { "--primary-screen-constructor" }, StringComparer.Ordinal))

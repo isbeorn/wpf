@@ -16,6 +16,68 @@ internal static class PopupCases
 {
     internal static readonly List<object> Observations = [];
 
+    internal static void ContextMenuLifetime(X11Fixture native, Action<Func<bool>> wait, Action drain, string fontPath)
+    {
+        var owner = new Border { Width = 120, Height = 40, Background = Brushes.Green };
+        var window = new Window { Title = "Genuine portable ContextMenu lifetime", Width = 300, Height = 180,
+            Content = owner, Background = Brushes.White };
+        var menu = new ContextMenu { PlacementTarget = owner,
+            FontFamily = new FontFamily(new Uri(Path.GetFullPath(fontPath)), "DejaVu Sans"), FontSize = 12 };
+        var submenu = new MenuItem { Header = "Instructions" };
+        var instruction = new MenuItem { Header = "Utility" };
+        submenu.Items.Add(instruction);
+        menu.Items.Add(submenu);
+        int opened = 0, closed = 0;
+        menu.Opened += (_, _) => opened++;
+        menu.Closed += (_, _) => closed++;
+        PresentationSource? previousSource = null;
+        try
+        {
+            window.Show();
+            wait(() => owner.IsLoaded && owner.ActualWidth > 0);
+            drain();
+            var ownerSource = PresentationSource.FromVisual(window)!;
+            for (int cycle = 1; cycle <= 2; cycle++)
+            {
+                native.MovePointer(PopupHandle(ownerSource), 70, 55);
+                drain();
+                menu.IsOpen = true;
+                wait(() => opened == cycle && PresentationSource.FromVisual(menu) is { IsDisposed: false });
+                drain();
+                var source = PresentationSource.FromVisual(menu)!;
+                IntPtr xid = PopupHandle(source);
+                Require(LogicalTreeHelper.GetParent(menu) is Popup { PopupAnimation: PopupAnimation.None, IsOpen: true } &&
+                    menu.Placement == PlacementMode.MousePoint && menu.Template is not null && menu.IsMeasureValid && menu.IsArrangeValid &&
+                    source != ownerSource && source != previousSource && native.IsMapped(xid),
+                    "The genuine ContextMenu did not retain default placement, disabled animation and a fresh mapped Popup source.");
+                Require(!submenu.IsSubmenuOpen && submenu.ActualWidth > 0 && submenu.ActualHeight > 0,
+                    "The submenu must be closed and laid out before native pointer hover.");
+                var headerPoint = submenu.TransformToAncestor(source.RootVisual).Transform(
+                    new WpfFork::System.Windows.Point(submenu.ActualWidth / 2, submenu.ActualHeight / 2));
+                headerPoint = source.CompositionTarget.TransformToDevice.Transform(headerPoint);
+                native.MovePointer(xid, (int)Math.Round(headerPoint.X), (int)Math.Round(headerPoint.Y));
+                wait(() => submenu.IsMouseOver && submenu.IsSubmenuOpen &&
+                    PresentationSource.FromVisual(instruction) is { IsDisposed: false });
+                drain();
+                var submenuSource = PresentationSource.FromVisual(instruction)!;
+                IntPtr submenuXid = PopupHandle(submenuSource);
+                Require(submenu.Role == MenuItemRole.SubmenuHeader && submenuSource != source && native.IsMapped(submenuXid),
+                    "A real native pointer hover did not open the submenu through its normal timer and separate mapped Popup source.");
+                menu.IsOpen = false;
+                wait(() => closed == cycle && source.IsDisposed && submenuSource.IsDisposed);
+                drain();
+                Require(!menu.IsOpen && !submenu.IsSubmenuOpen && !native.RootChildren.Contains(xid) &&
+                    !native.RootChildren.Contains(submenuXid) && Mouse.Captured is null && native.CanAcquirePointerGrab(),
+                    "Closing the genuine ContextMenu retained its parent/submenu source, native window or pointer capture.");
+                Observations.Add(new { kind = "genuine-context-menu-open-close", cycle, opened, closed,
+                    xid = xid.ToInt64().ToString("x"), source.IsDisposed, submenuXid = submenuXid.ToInt64().ToString("x"),
+                    submenuDisposed = submenuSource.IsDisposed, openedByNativeHover = true, animation = "None", placement = menu.Placement.ToString() });
+                previousSource = source;
+            }
+        }
+        finally { menu.IsOpen = false; window.Close(); drain(); }
+    }
+
     internal static void VerifyToolTipAnimationResources()
     {
         foreach (var setting in new (ResourceKey Key, Func<bool> Read)[]

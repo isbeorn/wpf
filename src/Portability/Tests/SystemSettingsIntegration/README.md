@@ -47,6 +47,20 @@ Primary-screen width and height are an optional immutable pair of positive finit
 
 The initial portable Classic animation policy is `ComboBoxAnimation=false`, so the unchanged `ComboBoxPopupAnimation` getter resolves `None`. Both original resource keys retain independent override/removal semantics. This policy does not observe desktop animation preferences or qualify opening a native popup.
 
+The same disabled animation policy supplies `MenuAnimation=false` and
+`MenuFade=false`, so the unchanged `MenuPopupAnimation` getter resolves `None`.
+`MenuShowDelay` is fixed at 400 ms for portable Classic menus, matching the current
+Windows reference profile. This is a declared product policy, not an observation
+of Linux desktop preferences. `--menu-animation-only` checks these four public
+getters and original resource keys, including independent override/removal, plus the retained ComboBox and
+tooltip policy. This avoids a Windows menu-animation query when the genuine
+ContextMenu connects its parent Popup. It does not observe desktop animation
+preferences or change UIEffects. The native fixture's `--context-menu-only`
+route opens, closes and reopens a genuine default ContextMenu, checking its
+disabled Popup animation, a submenu opened by the actual pointer-hover timer,
+fresh mapped sources and cleanup. Green qualification
+for these new routes is pending the joint family build.
+
 The portable Classic repeat policy fixes `KeyboardDelay=1` and `KeyboardSpeed=31`. The unchanged RepeatButton calculations therefore supply 500 ms Delay and 33 ms Interval. These are declared product defaults, not observed desktop keyboard preferences. The fixture constructs and lays out the genuine Classic RepeatButton, verifies both original resource keys with independent override/removal and checks local Delay/Interval removal restores those metadata defaults. It does not time an OS keyboard repeat engine or alter RepeatButton's timer.
 
 Virtual-screen left, top, width and height use an optional immutable DIP rectangle

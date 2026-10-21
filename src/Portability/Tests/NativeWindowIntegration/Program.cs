@@ -139,6 +139,12 @@ try
                     MousePopupCases.Exercise(native, Run, Wait, Drain, fontPath!, chromeRequestedDpi);
                     completed = true;
                 }
+                else if (args.Contains("--context-menu-only", StringComparer.Ordinal))
+                {
+                    Require(fontPath is not null && File.Exists(fontPath), "Pass the pinned font path.");
+                    Run("genuine-ContextMenu-open-close-reopen", () => PopupCases.ContextMenuLifetime(native, Wait, Drain, fontPath!));
+                    completed = true;
+                }
                 else if (args.Contains("--tooltip-only", StringComparer.Ordinal))
                 {
                     Require(fontPath is not null && File.Exists(fontPath), "Pass the pinned font path.");

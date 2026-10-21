@@ -1067,6 +1067,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return false;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MenuFade])
@@ -1085,6 +1088,7 @@ namespace System.Windows
                 }
 
                 return _menuFade;
+#endif
             }
         }
 
@@ -1096,6 +1100,9 @@ namespace System.Windows
 
             get
             {
+#if PORTABLE_WPF
+                return 400;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MenuShowDelay])
@@ -1114,6 +1121,7 @@ namespace System.Windows
                 }
 
                 return _menuShowDelay;
+#endif
             }
         }
 
@@ -1402,6 +1410,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return false;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MenuAnimation])
@@ -1420,6 +1431,7 @@ namespace System.Windows
                 }
 
                 return _menuAnimation;
+#endif
             }
         }
 
