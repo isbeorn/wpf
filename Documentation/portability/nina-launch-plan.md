@@ -69,9 +69,27 @@ processes exit zero with empty stderr. Both independent reviews are clear.
 The sealed successor is
 `current/nina-weak-event-wait-integration-20261021-1/handoff.json`, SHA-256
 `4053C6AEBE25E14478693A4FE39720B50528C194475BBA1BF6193EE88907141B`.
-Root rehashed its 24 receipt pins and both producer DLL/PDB pairs. The actual
-NINA restart still needs replay on a fresh whole publication; these are targeted
-WindowsBase results, not a repaired full-App claim.
+Root rehashed its 24 receipt pins and both producer DLL/PDB pairs. These remain
+targeted WindowsBase results; the separately observed actual application replay
+follows.
+
+The fresh package-built application now passes the original native sequence
+workflow on GNOME/XWayland. Its Add menus inserted a Sequential Instruction Set,
+two annotations and Wait1. Editing, spare duplicate/remove and paired move
+down/up worked. The first run completed all three items in order. A RUNNING
+60-second wait was stopped, with a positive cancellation line and no trailing
+annotation in that invocation. Resetting to Wait1 and restarting completed all
+three items again, without the former kernel32 exception. Individual statuses,
+the original log's nested Items[FINISHED]:3 and captured pixels agree. Ordinary
+stderr is empty and all 304 immutable members remain exact. No camera capture
+or saving occurred during this milestone.
+
+The actual replay uses the 306-file package publication described below. Its
+receipt is `current/nina/vm-package-sequence-fits-20261021-1/SEQUENCE-GREEN.md`,
+SHA-256 `A70C474624D0CC2E6270F4460361EA94262DB62DB0AFD507AE3182B0F9C6A7F5`.
+Root rehashed all 14 evidence pins and inspected the unfiltered log's separate
+completion, cancellation and restart ranges. Genuine palette drag/drop/Escape,
+float/redock and actual FITS save/readback remain separate pending workflows.
 
 The failed application lifetime subsequently closed normally with exit zero,
 empty stderr and no remaining app or supervisor. All 332 immutable members
@@ -194,7 +212,7 @@ The current behavior checklist is:
 - [x] Preserve floating-window position after hiding its page and saving.
 - [x] Operate the actual offline Framing map and its input controls.
 - [x] Open the original unanchored sequence ContextMenu through its Click animation.
-- [ ] Add and edit sequence instructions, complete a sequence, cancel a running
+- [x] Add and edit sequence instructions, complete a sequence, cancel a running
   sequence and complete it again after reset.
 - [ ] Complete and cancel the original sequence drag operation with its blur.
 - [ ] Complete final package and sustained NINA workload gates.

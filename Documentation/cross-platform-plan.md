@@ -6,8 +6,9 @@ Current execution follows the user's NINA-first priority in the
 [launch checkpoint](portability/nina-launch-plan.md). The original simulator-only
 NINA App/MainWindow has run on GNOME/XWayland with capture, cancellation, recovery,
 layout restoration and sequence execution. A contended weak-event wait found
-during sequence restart is repaired and qualified at component and package
-boundaries; its full application replay remains pending. General WPF features
+during sequence restart is repaired and qualified at component, package and actual
+application boundaries. Native drag/docking, saving and sustained-workload gates
+remain open. General WPF features
 unused by NINA, native IME and further accessibility qualification are deferred.
 The historical implementation notes at the end retain their original scope.
 
