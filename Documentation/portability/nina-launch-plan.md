@@ -10,8 +10,8 @@ Everything remains local on `codex/nina-cross-platform`.
 
 The complete original simulator-only application now completes a native
 1-second capture, a 10-second capture cancellation and a subsequent recovery
-capture on GNOME/XWayland. AutoStretch and DetectStars retain the persisted
-defaults. The completed images have finite statistics and histogram data.
+capture on GNOME/XWayland. AutoStretch and DetectStars were enabled for that
+first lifetime. The completed images have finite statistics and histogram data.
 Ordinary close exits zero, saves the initialized original layout, disconnects
 SimulatorCamera and completes the original plugin teardown. A second lifetime
 restores that layout without the earlier fallback. The official-template plugin
@@ -23,31 +23,40 @@ The actual publication is the complete 329-file consumer at
 Its whole framework manifest is `4E804208D2420743C7DF47DEC3DFC44967C6A9558EC82F6CE089ED25006E997A`.
 The guest directory is
 `/home/stefan/wpf-portability-local/phase5/nina-shell-brush-20261021-1`.
-The passive second lifetime was PID 1884015, start ticks 2540746; refresh its
-identity and desktop authorization before any further action. Native capture,
+The second lifetime was PID 1884015, start ticks 2540746. It has now exited zero
+after the original error dialog's observed No button was clicked. No NINA
+process remains in that guest directory. Native capture,
 cancellation, close and relaunch evidence is
 `current/nina/vm-brush-ui-20261021-1/capture-lifecycle-handoff.json`, SHA-256
 `6FD2CF31F0E3BC3862E2EAEE76D61C6C2F888D1C43B6ACF707BB127C779A6776`.
 
-Three focused NINA requirements are being repaired in the existing owners:
+Four focused NINA repairs are now committed and qualified as one framework
+family. Their actual application replay is next:
 
-- Floating Statistics saves outer height 726 as 763 after the caption arrives
-  late, then restores that enlarged value. Reconcile the affected size axes in
-  `Window.Portable.cs` before acknowledging old client geometry. Preserve outer
+- Floating Statistics previously saved outer height 726 as 763 after the caption
+  arrived late, then restored that enlarged value. The affected size axes in
+  `Window.Portable.cs` are now reconciled before acknowledging old client geometry.
+  Preserve outer
   dimensions through frame addition/removal, DPI and save/recreate while still
   accepting later native user resizing. Do not adjust AvalonDock serialization.
 - Original Offline Sky Map creation evaluates `BitmapPalettes.Gray256` before
-  creating its non-indexed Gray8 background. That palette still calls the
-  Windows MIL factory. Supply its 256 immutable opaque grayscale entries and
-  accept/ignore the Gray8 palette as native WPF does. Preserve source bytes,
+  creating its non-indexed Gray8 background. The managed palette now supplies
+  its 256 immutable opaque grayscale entries and the buffer accepts/ignores
+  the Gray8 palette as native WPF does. Preserve source bytes,
   freezing, cloning, rendering and null Gray8.Palette; indexed images and unused
   palette types remain outside this repair.
 - Original sequence dragging uses a zero-duration Radius 0 -> 10 BlurEffect
-  animation on the source subtree. Extend the retained walker with a transient
+  animation on the source subtree. The retained walker now provides a transient
   Gaussian layer for the default Performance profile and axis-aligned
   transforms. Preserve native radius truncation, minimum scale and device cap,
   clip/effect/opacity ordering, retained invalidation and restoration on drop or
   Escape. Other effects, kernels, bias profiles and skew stay explicit unsupported.
+- The original sequence add menu reaches `MenuAnimation` through
+  `MenuPopupAnimation`; its nested hover route also reads `MenuShowDelay`.
+  The portable disabled-animation policy now extends to these menus, with a 400 ms
+  Classic hover delay. This is framework policy, matching the current Windows
+  reference profile value, not an observed Linux desktop preference. Preserve
+  original menu resources, timers and native pointer operation.
 
 Each repair uses existing tests and native/reference tooling, with a failing
 reproduction before its production change. No new dependency, public API or
@@ -65,6 +74,96 @@ private Xvfb replay pass all 21 checks on the current shared consumer, with
 `current/nina/framing-tracked-replay-20261021-1/framing21-handoff-corrected.json`,
 SHA-256 `80B37BDEF8972E36AEEC8A54C7787F8038521818DD0D7F82D07B912FC70E2D27`.
 This is managed view/VM/cache coverage, not actual native Offline Sky Map input.
+
+Actual theme and language changes also pass in the second lifetime. The original
+eye button changes Persian Faint/Dark and restores it. The original Language
+list changes en-GB -> de-DE -> en-GB without restart. The full saved profile
+returns to its original bytes. The receipt is
+`current/nina/vm-brush-ui-20261021-1/lifetime2/appearance-roundtrip-handoff.json`,
+SHA-256 `49FF8C1873EB9B50C87247D68BA754C1138E50A3318981E90E089C70CA93F8A9`.
+
+The subsequent original sequence root add menu stopped at the menu-animation
+fault before any item was added or sequence was executed. Its error dialog
+clipped the button labels; a pointer click on the observed No-button strip did
+execute the original shutdown path, including layout save, camera disconnect
+and plugin teardown. Button visibility remains a separate sizing observation
+for candidate verification. The normal error-route close receipt is
+`current/nina/vm-brush-ui-20261021-1/lifetime2/sequence-first-fault-close-handoff.json`,
+SHA-256 `09E79D1D47012AEF322FD92077A2FB7890566DDFCFA41B86E333AB9E9837176B`.
+This proves the actual No-button outcome, unlike the earlier unobserved Alt+N
+handler attempt. There is no native sequencer run/cancel claim yet.
+
+The final closed application's Statistics floating window is saved at outer
+1370x800, left 1074 and top 553. Use this final value for the next restart check,
+not the historical 726 or 763 heights. The final saved profile has AutoStretch
+enabled but DetectStars disabled, SHA-256
+`74F993927416440399CC9A51002923F8F4EDEA0FDBE9AB9A990204E057FBED6D`.
+The cause of that later toggle is not established. Restore DetectStars through
+the original UI before testing the declared processing defaults.
+
+Preserve the configured cache directory at its existing absolute path:
+`/home/stefan/wpf-portability-local/phase5/nina-shell-tooltip-20261020-1/app/QualificationState/FramingAssistantCache`.
+It contains only `CacheInfo.xml`, 60 bytes, SHA-256
+`7E8BB328C35AB7C7BFF8DDC2315FA67B3826730542B240252F89BC1736BD433D`.
+The original settings loader resets a missing directory. Obsolete runtime
+files around this state directory do not need to be retained.
+
+The current behavior checklist is:
+
+- [x] Capture, cancel, recover and close the original application normally.
+- [x] Restore the original layout, plugin pane, theme and language.
+- [x] Qualify the combined palette, blur, menu and frame repairs on both OSes
+  and through the existing native window tests.
+- [ ] Publish one complete framework family with the unchanged NINA components.
+- [ ] Preserve Statistics outer height 800 across native close and relaunch.
+- [ ] Operate the actual offline Framing map and its input controls.
+- [ ] Add and edit sequence instructions, complete a sequence, cancel a running
+  sequence and complete it again after reset.
+- [ ] Complete and cancel the original sequence drag operation with its blur.
+- [ ] Complete final package and sustained NINA workload gates.
+
+The combined family passes 321 managed checks on each OS:
+Rendering 75, Imaging 52, SystemSettings 126, VisualBrush 61 and the seven
+focused blur checks. These include repeated coverage, not 321 distinct new
+tests. Both ordinary Core and PresentationFramework builds succeeded. The
+isolated friend lifecycle runs pass 100 checks per OS: full 87, focused 12 and
+empty-window 1. The focused run includes five frame cases and seven existing
+Application.Run child checks. Its first
+attempt failed autosizing; the retained failure led to invalidating Window's
+cached measure when the native frame changes. Friend assemblies are separate
+from the production publication.
+
+The released production family is the 120-member Stage in
+`current/nina-gray-blur-frame-integration-20261021-1`, manifest SHA-256
+`52E93D1C3479F4E901CE9A9F30E02486AA9136835F24E195DE0CE52AE80EFD4F`.
+Root independently rehashed every member: 591,034,968 bytes and no mismatch.
+The six changes from the previous family are Core/PF and the Stage wrapper's
+DLL/PDB pairs. All 109 native checks pass across 14 private processes, including
+frame addition/removal at 96/192 DPI, genuine submenu hover and the long-text
+MessageBox's full button containment and No action. Every process exits zero
+with empty stderr and complete native cleanup. The ordinary runtime has two
+changed producers and 14 unchanged producers, including NativeHost.
+
+The final intake is
+`current/nina-gray-blur-frame-integration-20261021-1/consumer-intake.json`,
+SHA-256 `167661832466F962B22FFCD7768A95C407400DB474C4F6628582716170AC4A7A`.
+Root also verified all 40 nested artifact pins. The producer retained 25 source
+snapshots and producing documentation; its 759 protected records are unchanged.
+Retained logical size is 11,012,810,700 bytes before the final receipt, below
+the declared 11 GiB cap. The source commits are `1923fe2d0` (palette),
+`6866ac92e` (blur), `3c84dd950` (frame sizing) and `425a842a4` (menus).
+
+All 12 blur captures match exactly between the two portable OSes. NINA's Radius
+10 fixture differs from native by at most 4/255 at both DPI settings; Radius 3
+differs by up to 18/255. Quantization, device cap, clipping, scaling, reflection
+and sibling isolation hold. The measured scope is recorded in
+`current/nina-blur-proposal-20261021-1/quantitative-comparison-1/REPORT.md`.
+The tracked Rendering README received these results after producing snapshots
+were retained; no compiled source changed after verification.
+
+One fresh complete NINA publication and the actual guest replay are released.
+Until their own receipt is recorded, the closed 4E/70D6 family above remains
+the latest actual application evidence. This is no Phase 2-5 completion claim.
 
 The sections below retain earlier attempts and their original limitations.
 

@@ -21,15 +21,32 @@ shape fills clear the previous faults. The official-template plugin pane and
 Installed/offline-catalog view also work. The current runtime and native receipts
 are recorded in the launch plan.
 
-Three required paths remain under repair: floating-window height grows by the
-caption size after restart, Offline Sky Map creation still invokes the Windows
-grayscale-palette factory and sequence dragging requires a retained Gaussian
-blur layer. The sky-map/cache component passes 42 checks on Windows and Linux
+Four required paths have framework repairs awaiting actual application replay:
+floating-window height growth after restart, Offline Sky Map's grayscale
+palette, sequence-drag Gaussian blur and nested-menu animation/delay settings.
+Actual theme and locale
+changes restore successfully, including byte-exact saved profile recovery.
+The menu fault's original No button also completes normal shutdown. Its clipped
+button labels remain a separate sizing observation. The sky-map/cache component
+passes 42 checks on Windows and Linux
 and the now-tracked original Framing/cache recipe passes 21 checks on the current
 Linux runtime. These component results do not qualify the failed native Offline
 Sky Map route. Remaining full application, desktop, final package and sustained
 workload gates are open; unused WPF capabilities, native IME and further
 accessibility work remain deferred at the user's request.
+
+The combined released repair family passes 321 managed checks on each OS, including
+the seven focused blur checks and full Rendering 75, Imaging 52,
+SystemSettings 126 and VisualBrush 61 scopes. Its isolated frame lifecycle
+matrix passes 100 checks per OS, including the focused 12, full 87 and
+empty-window 1. All 109 native checks across 14 private processes pass, including
+real submenu hover and captioned MessageBox button containment. The 12 blur
+captures match between Windows and Linux;
+against stock WPF, NINA's Radius 10 fixture differs by at most 4/255 while
+preserving the measured geometry and clipping semantics. These are bounded
+fixture measurements, not universal pixel tolerances. The actual NINA replay
+of these repairs is next. The launch plan records the released family and the
+exact restart baseline.
 
 The Phase 0 reference/runtime gate and Phase 1 feasibility gate pass within the scopes recorded below. Phases 2 through 5 have not passed. The accepted [plan](../cross-platform-plan.md) remains the behavior contract. Physical desktop, full application and sustained-workload qualification remain later gates. Component checks, source compilation and managed test peers do not substitute for native WPF control behavior.
 
