@@ -8,16 +8,16 @@ Everything remains local on `codex/nina-cross-platform`.
 
 ## Active checkpoint
 
-The latest 9A/9D runtime now passes actual hidden-pane save/relaunch and Framing
-rotation, mosaic and overlap changes. The earlier 52E/549D runtime completed
-native simulator capture, cancellation, recovery and clean close/relaunch.
-The previous application lifetime closed normally after the original sequence
-Add button exposed a WPF gap: its programmatic ContextMenu has no PlacementTarget,
-which portable Popup rejected. Preserve that genuine targetless opening behavior;
-do not patch NINA's template with an invented anchor. Sequence editing/execution
-and actual drag remain pending. The detailed receipts and restart baseline follow.
+The original NINA App/MainWindow now runs visibly on GNOME/XWayland through the
+qualified portable SDK/runtime packages. Native sequence editing, completion,
+cancellation, reset, restart and palette drag/drop/Escape pass in that packaged
+application. Floating caption/redocking remains under diagnosis. The current
+image workflow stops in `StarDetection.Detect` because its async state machine
+still references `System.Private.Windows.GdiPlus`. Actual FITS saving and UI
+readback have not passed in this publication. Earlier capture and Framing passes
+retain their own runtime scope; they do not clear this new package boundary.
 
-That targetless opening is repaired in commit `0b12eb772`. The original null
+The targetless sequence ContextMenu opening is repaired in commit `0b12eb772`. The original null
 PlacementTarget remains unchanged; an eligible active keyboard source supplies
 the portable native owner. The genuine WindowsDesktop 10.0.12 reference passes,
 including dismissal and capture release on window close. All 56 affected Linux
@@ -88,8 +88,21 @@ The actual replay uses the 306-file package publication described below. Its
 receipt is `current/nina/vm-package-sequence-fits-20261021-1/SEQUENCE-GREEN.md`,
 SHA-256 `A70C474624D0CC2E6270F4460361EA94262DB62DB0AFD507AE3182B0F9C6A7F5`.
 Root rehashed all 14 evidence pins and inspected the unfiltered log's separate
-completion, cancellation and restart ranges. Genuine palette drag/drop/Escape,
-float/redock and actual FITS save/readback remain separate pending workflows.
+completion, cancellation and restart ranges.
+
+The same lifetime then passed the original palette drag and Escape paths. A
+drop into the last instruction's lower insertion band displayed the original
+adorner and inserted a fourth Annotation. A second held drag followed by native
+Escape cleared the clone and Radius10 blur without adding another item. The
+blank inserted item was removed through the original Detach command. The first
+attempt had targeted blank space below the insertion band; its clean rejection
+is retained as a driver correction, not a successful drop or product failure.
+Root inspected the held/drop/Escape screenshots, input receipts and health
+receipt. All 304 immutable members remained unchanged, stderr was empty and
+there were no application errors at that milestone. The receipt is
+`current/nina/vm-package-sequence-fits-20261021-1/PALETTE-GREEN.md`, SHA-256
+`AC2D966B9324C688424A2FF59BD370246B12CB7C037CC9F08926753374F99A18`.
+Float/redock and actual FITS save/readback remain separate pending workflows.
 
 The failed application lifetime subsequently closed normally with exit zero,
 empty stderr and no remaining app or supervisor. All 332 immutable members
@@ -214,7 +227,7 @@ The current behavior checklist is:
 - [x] Open the original unanchored sequence ContextMenu through its Click animation.
 - [x] Add and edit sequence instructions, complete a sequence, cancel a running
   sequence and complete it again after reset.
-- [ ] Complete and cancel the original sequence drag operation with its blur.
+- [x] Complete and cancel the original sequence drag operation with its blur.
 - [ ] Complete final package and sustained NINA workload gates.
 
 The combined family passes 321 managed checks on each OS:
