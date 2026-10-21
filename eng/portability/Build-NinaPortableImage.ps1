@@ -8,6 +8,9 @@ param(
     [Parameter(Mandatory)][string] $OriginalManagedClosure,
     [Parameter(Mandatory)][string] $NinaCorePath,
     [Parameter(Mandatory)][ValidatePattern('^[A-Fa-f0-9]{64}$')][string] $ExpectedNinaCoreSha256,
+    [Parameter(Mandatory)][string] $CfitsioLibraryPath,
+    [Parameter(Mandatory)][ValidatePattern('^[A-Fa-f0-9]{64}$')][string] $ExpectedCfitsioLibrarySha256,
+    [Parameter(Mandatory)][string] $CfitsioNoticesDirectory,
     [Parameter(Mandatory)][string] $OutputDirectory,
     [string] $DotnetPath = 'dotnet'
 )
@@ -31,7 +34,7 @@ function Element($Document, $Parent, [string] $Name, [hashtable] $Attributes) {
     $null = $Parent.AppendChild($node)
     $node
 }
-foreach ($inputPath in @($NinaSourceDirectory, $FrameworkRuntimeDirectory, (Split-Path $OriginalManagedClosure -Parent), (Split-Path $NinaCorePath -Parent), $fixture)) {
+foreach ($inputPath in @($NinaSourceDirectory, $FrameworkRuntimeDirectory, (Split-Path $OriginalManagedClosure -Parent), (Split-Path $NinaCorePath -Parent), (Split-Path $CfitsioLibraryPath -Parent), $CfitsioNoticesDirectory, $fixture)) {
     $full = [IO.Path]::GetFullPath($inputPath).TrimEnd('\', '/')
     if ($output -eq $full -or $output.StartsWith($full + [IO.Path]::DirectorySeparatorChar, [StringComparison]::OrdinalIgnoreCase)) { throw 'Image output must be outside input directories.' }
 }
@@ -47,6 +50,8 @@ foreach ($file in $closure.files) {
     Assert-Hash "$closureDirectory/$group/$($file.outputPath)" $file.sha256
 }
 Assert-Hash $NinaCorePath $ExpectedNinaCoreSha256
+Assert-Hash $CfitsioLibraryPath $ExpectedCfitsioLibrarySha256
+if (!(Test-Path -LiteralPath "$CfitsioNoticesDirectory/License.txt") -or !(Test-Path -LiteralPath "$CfitsioNoticesDirectory/release-notice-excerpts.json")) { throw 'The exact CFITSIO release license and embedded notices are required.' }
 Assert-Hash $FrameworkRuntimeManifest $ExpectedFrameworkRuntimeManifestSha256
 $family = @(Get-Content $FrameworkRuntimeManifest -Raw | ConvertFrom-Json | Where-Object os -CEQ 'Unix')
 if ($family.Count -ne 1 -or $family[0].configuration -cne 'Release' -or $family[0].files.Count -ne $ExpectedFrameworkRuntimeFileCount) { throw 'Expected one complete pinned Unix Release family.' }
@@ -80,7 +85,7 @@ $changes = @(foreach ($file in $pin.files) {
     $hash = (Get-FileHash "$output/source/$($file.path)").Hash
     if ($hash -cne $file.sha256) { [ordered]@{ path = $file.path; before = $file.sha256; after = $hash } }
 })
-if ($changes.Count -ne 5) { throw 'Expected five adapted upstream Image files.' }
+if ($changes.Count -ne 9) { throw 'Expected nine adapted upstream Image files.' }
 Save "$output/adaptations.json" ($changes | ConvertTo-Json -Depth 4)
 Save "$output/global.json" '{"sdk":{"version":"10.0.401","rollForward":"disable"}}'
 Save "$output/Directory.Build.props" '<Project/>'
@@ -116,8 +121,19 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "Image source build failed. See $output/NINA.Image.build.log" }
 } finally { Pop-Location }
 foreach ($file in $pin.files) { Assert-Hash "$NinaSourceDirectory/$($file.path)" $file.sha256 }
+Assert-Hash $CfitsioLibraryPath $ExpectedCfitsioLibrarySha256
 foreach ($change in $changes) { Assert-Hash "$output/source/$($change.path)" $change.after }
 $dll = "$output/bin/Release/net10.0/NINA.Image.dll"
+$nativeOutput = "$output/native/External/x64/Cfitsio/libcfitsio.so.10"
+[IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($nativeOutput)) | Out-Null
+[IO.File]::Copy([IO.Path]::GetFullPath($CfitsioLibraryPath), $nativeOutput)
+Assert-Hash $nativeOutput $ExpectedCfitsioLibrarySha256
+$nativeNotices = @(Get-ChildItem -LiteralPath $CfitsioNoticesDirectory -File | ForEach-Object {
+    $destination = "$output/native-notices/CFITSIO/$($_.Name)"
+    [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($destination)) | Out-Null
+    [IO.File]::Copy($_.FullName, $destination)
+    [ordered]@{ path = $destination; sha256 = (Get-FileHash -LiteralPath $destination).Hash }
+})
 $pdb = [IO.Path]::ChangeExtension($dll, '.pdb')
 $identity = [Reflection.AssemblyName]::GetAssemblyName($dll).FullName
 if ($identity -cne [Reflection.AssemblyName]::GetAssemblyName("$closureDirectory/managed/NINA.Image.dll").FullName) { throw 'Image assembly identity changed.' }
@@ -188,5 +204,6 @@ Save "$output/image-consumer-intake.json" ([ordered]@{
     ninaCorePath = [IO.Path]::GetFullPath($NinaCorePath); ninaCoreSha256 = $ExpectedNinaCoreSha256
     frameworkRuntimeDirectory = $frameworkRoot; frameworkRuntimeManifest = [IO.Path]::GetFullPath($FrameworkRuntimeManifest)
     frameworkRuntimeManifestSha256 = $ExpectedFrameworkRuntimeManifestSha256; frameworkRuntimeFiles = $ExpectedFrameworkRuntimeFileCount; buildExit = 0
+    cfitsioLibrary = $nativeOutput; cfitsioLibrarySha256 = $ExpectedCfitsioLibrarySha256; cfitsioRelativePath = 'External/x64/Cfitsio/libcfitsio.so.10'; cfitsioNotices = $nativeNotices
 } | ConvertTo-Json -Depth 7)
 Write-Output "Source-built NINA.Image candidate: $output/image-consumer-intake.json"

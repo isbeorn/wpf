@@ -362,10 +362,29 @@ absent and the reentrancy flag is enabled. Build warnings and applicable notices
 are retained. The source is unchanged and temporary guest files were removed.
 The feasibility receipt is `current/nina/cfitsio-feasibility-20261021-1/feasibility-receipt.json`,
 SHA-256 `0F801595ABFF8ECCA945046017832E62A1E901AA3594F465B8C6252BF92D365C`.
-This proves the native library only. Managed marshalling, error ownership,
-concurrency and NINA scientific roundtrips remain unqualified. The next local
-slice adapts the existing Image native boundary and existing qualification
-fixture; it adds no library, native shim, public API or replacement test harness.
+That checkpoint proved the native library only. The managed boundary has now
+passed its focused Linux qualification and independent correctness and
+maintainability/test-value review. It retains original scientific conversion
+loops and Windows branches, supplies correct Linux coordinate/axis widths,
+loads the exact application-local library and closes native handles and
+temporary decompression files on failures. A 3D input retains the original
+first-plane behavior with a complete coordinate vector. The unused unsafe
+float-writer datatype mismatch rejects before native sample access.
+
+The final component is `current/nina/cfitsio-managed-20261021-1/component-successor-1`,
+intake SHA-256 `4D4BCBE9FB5C4B086D1C1CDBABD546DAD665D638C033D4FC78FD6E88E943B2EC`.
+Its Image PE is `9C5EA87B8C44BEA5E7D8AE57E8A884FA06DA5F88732514A5CD6F46F78303FC8A`.
+Linux passes 13 FITS, 25 science/public-contract, one legacy-byte and five
+annotation checks. Original and adapted Windows each pass the latter 31 checks;
+native Windows FITS roundtrips remain unperformed because its binary is absent.
+The source freeze is `147FE96EC01D5746366C0FDB8CD9E264C9F790C79C8EF64210F829F9F60FFE19`.
+Root verified 60 source, snapshot, binary and evidence pins in
+`root-final-verification.json`, SHA-256
+`6CA9ABD5DDC0B7C485C9734CA80C97D6FBD8318677CBF144EF9920769D4FB619`.
+The existing fixture and builder carry the exact native library and four
+upstream notice files. No native shim, public API or new test harness was added.
+Whole-App publication and actual saving/reloading remain pending. Selected
+signed-int writing and wider import types still need their own qualification.
 
 Reuse existing image/save fixtures for odd-width ushort legacy-write/original
 reload, alternate writer, selected lossless compression, row reads, metadata,
