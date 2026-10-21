@@ -45,8 +45,12 @@ captures match between Windows and Linux;
 against stock WPF, NINA's Radius 10 fixture differs by at most 4/255 while
 preserving the measured geometry and clipping semantics. These are bounded
 fixture measurements, not universal pixel tolerances. The actual NINA replay
-of these repairs is next. The launch plan records the released family and the
-exact restart baseline.
+passes capture/cancel/recovery, clean close/relaunch and stable outer size.
+Offline SKYATLAS now loads, zooms and pans. Slider focus after rotation exposes
+a new curved-dashed hit-test bounds rejection. A later hidden-page save also
+changes the floating window's Top by one caption height, while its size stays
+correct. Both are under diagnosis before the remaining Framing and sequence
+checks. The launch plan records the closed state, exact runtime and evidence.
 
 The Phase 0 reference/runtime gate and Phase 1 feasibility gate pass within the scopes recorded below. Phases 2 through 5 have not passed. The accepted [plan](../cross-platform-plan.md) remains the behavior contract. Physical desktop, full application and sustained-workload qualification remain later gates. Component checks, source compilation and managed test peers do not substitute for native WPF control behavior.
 

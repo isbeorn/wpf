@@ -8,6 +8,13 @@ Everything remains local on `codex/nina-cross-platform`.
 
 ## Active checkpoint
 
+The latest 52E/549D runtime has completed native simulator capture, cancellation,
+recovery and clean close/relaunch. Offline Framing loads, zooms and pans. The
+application is now closed after a rounded dashed Slider focus visual exposed a
+new hit-test bounds rejection. A hidden floating pane also changes its saved
+Top by one caption height. Those two WPF repairs precede the remaining Framing
+and sequence checks. The detailed receipts and final restart baseline follow.
+
 The complete original simulator-only application now completes a native
 1-second capture, a 10-second capture cancellation and a subsequent recovery
 capture on GNOME/XWayland. AutoStretch and DetectStars were enabled for that
@@ -17,7 +24,7 @@ SimulatorCamera and completes the original plugin teardown. A second lifetime
 restores that layout without the earlier fallback. The official-template plugin
 pane hides and reopens and its Installed/offline-catalog view works.
 
-The actual publication is the complete 329-file consumer at
+The earlier 4E runtime publication was the complete 329-file consumer at
 `current/nina/shell-vm-brush-20261021-1/consumer`, manifest
 `70D6BBF844298277EC5FF89DCA6D5E62CAA664929D15CA731E5C3A377542AF36`.
 Its whole framework manifest is `4E804208D2420743C7DF47DEC3DFC44967C6A9558EC82F6CE089ED25006E997A`.
@@ -31,7 +38,7 @@ cancellation, close and relaunch evidence is
 `6FD2CF31F0E3BC3862E2EAEE76D61C6C2F888D1C43B6ACF707BB127C779A6776`.
 
 Four focused NINA repairs are now committed and qualified as one framework
-family. Their actual application replay is next:
+family. Their actual application replay is recorded below:
 
 - Floating Statistics previously saved outer height 726 as 763 after the caption
   arrived late, then restored that enlarged value. The affected size axes in
@@ -69,7 +76,7 @@ SHA-256 `4E41355D7D24E128BAEFDE55ED810D76197976F7F8027BBA7A0C8FD427D0E5F1`.
 
 Commit `aeb11e6` preserves the original Framing/cache recipe in
 `src/Portability/Tests/NinaPortableViews/Framing`. A fresh entry-only build and
-private Xvfb replay pass all 21 checks on the current shared consumer, with
+private Xvfb replay passed all 21 checks on the then-current 70D6 consumer, with
 412 unchanged inputs and clean shutdown. Its corrected handoff is
 `current/nina/framing-tracked-replay-20261021-1/framing21-handoff-corrected.json`,
 SHA-256 `80B37BDEF8972E36AEEC8A54C7787F8038521818DD0D7F82D07B912FC70E2D27`.
@@ -93,7 +100,7 @@ SHA-256 `09E79D1D47012AEF322FD92077A2FB7890566DDFCFA41B86E333AB9E9837176B`.
 This proves the actual No-button outcome, unlike the earlier unobserved Alt+N
 handler attempt. There is no native sequencer run/cancel claim yet.
 
-The final closed application's Statistics floating window is saved at outer
+The earlier 4E family's final closed Statistics window was saved at outer
 1370x800, left 1074 and top 553. Use this final value for the next restart check,
 not the historical 726 or 763 heights. The final saved profile has AutoStretch
 enabled but DetectStars disabled, SHA-256
@@ -114,8 +121,9 @@ The current behavior checklist is:
 - [x] Restore the original layout, plugin pane, theme and language.
 - [x] Qualify the combined palette, blur, menu and frame repairs on both OSes
   and through the existing native window tests.
-- [ ] Publish one complete framework family with the unchanged NINA components.
-- [ ] Preserve Statistics outer height 800 across native close and relaunch.
+- [x] Publish one complete framework family with the unchanged NINA components.
+- [x] Preserve Statistics outer height 800 across native close and relaunch.
+- [ ] Preserve floating-window position after hiding its page and saving.
 - [ ] Operate the actual offline Framing map and its input controls.
 - [ ] Add and edit sequence instructions, complete a sequence, cancel a running
   sequence and complete it again after reset.
@@ -161,9 +169,116 @@ and sibling isolation hold. The measured scope is recorded in
 The tracked Rendering README received these results after producing snapshots
 were retained; no compiled source changed after verification.
 
-One fresh complete NINA publication and the actual guest replay are released.
-Until their own receipt is recorded, the closed 4E/70D6 family above remains
-the latest actual application evidence. This is no Phase 2-5 completion claim.
+The fresh complete NINA publication is
+`current/nina/shell-vm-gray-blur-frame-20261021-1/consumer`, 329 files and
+684,233,030 bytes. Its manifest is
+`549D4ECFFD25A054605EC925C280DD7282157038168BAD368301D9EBC8154F4E`
+and composition receipt is
+`3037B2377D9B6F158855C96135A0DB3D0930925AD18426785978F5211EF5CBF8`.
+Root rehashed all 329 members without a mismatch. It contains the whole new
+120-member Stage and 209 unchanged companions; all eight NINA components are
+unchanged. The original App ran on the real desktop in two new lifetimes.
+Simulator connection and original Imaging layout restore work without fallback.
+Root inspected
+`current/nina/vm-gray-blur-frame-ui-20261021-1/imaging-restored.png`.
+The first lifetime completed explicit 1-second capture, active 10-second exposure
+cancellation and 1-second recovery with AutoStretch and DetectStars enabled.
+Original close exited zero and saved Statistics at outer 1370x800 at 1074,553.
+The second lifetime restored exactly that size and position: native client
+1370x763 at 1074,590 plus independently observed 37-pixel caption.
+
+The actual offline SKYATLAS then loaded the local catalog, grid and camera
+rectangle. Zoom 3 -> 2 -> 3 and native drag/inverse changed and restored the
+coordinates. Rotation 30 rendered, but subsequent Tab focus triggered a new
+required WPF fault: `Portable dashed bounds require linear contours` during
+`UIElement.GetHitTestBounds`/`MouseDevice.Synchronize`. The genuine owner is the
+Slider focus rectangle in `NINA.WPF.Base/Resources/Styles/Slider.xaml`: transparent
+fill, corner radii 5, stroke thickness 1 and dash array [4,4]. Camera overlay
+rotation itself rendered successfully. Rotation return, mosaic controls and
+all sequence/menu/drag operations remain unqualified.
+
+The error dialog now fully displays its buttons at 527x127. One genuine No click
+executed the original shutdown with exit zero, empty stderr and all 327 immutable
+runtime members unchanged. No owned NINA process remains. The sealed workflow
+receipt is `current/nina/vm-gray-blur-frame-ui-20261021-1/workflow-handoff.json`,
+SHA-256 `B5D05919CCF450C689558F0C2C00AB2E5953E9EC8F6E51A9BF254B594520D030`.
+
+The later hidden-page save retained height 800 but changed Top 553 -> 516.
+This is separate from the successful visible save/relaunch result. Diagnose the
+hidden native-position reconciliation before claiming full placement stability.
+The final closed state is `postclose-rounded-dash-20261021-1` in the guest
+publication. Its profile SHA-256 is
+`8C025CDAC9959624006BB15636CC9E62F90428D1EE442389FA44EC1B84117A7D`
+and dock SHA-256 is
+`290D7343F3157CD882ADB004BF2DD9B624E7CF7DE1E0BD8EE19F6053A648942A`.
+Use this final baseline next: Statistics 1370x800 at 1074,516, DetectStars and
+AutoStretch enabled, High/None, 1-second exposure, Loop/Save off and SKYATLAS.
+Saved LastRotationAngle is 330; the failed attempt to return the UI to zero did
+not apply.
+
+One failed helper returned before keyboard input, but its caller still submitted
+a queued mosaic click. That driver failure is retained without a mosaic claim.
+The existing helper now throws on nonzero; a disposable local exit-7 stub proved
+that later statements stop, without submitting VM input. The two unmatched
+earlier exposures remain unattributed. The read-only timing audit is
+`current/nina/unmatched-exposure-audit-20261021-1/receipt.json`, SHA-256
+`51042CDF1B53810B1D28DCD631AF19257468CB4A1AA2CDACD25812BB031DA2AD`.
+Neither an automatic capture nor a duplicate-input cause is established.
+
+A fresh entry-only build against this exact shared publication also passes the
+tracked Framing/cache 21 checks on private Xvfb. All 412 inputs remain unchanged,
+the PE/PDB match 13 producing documents and cleanup passes. The sealed receipt is
+`current/nina/framing-gray-blur-replay-20261021-1/framing21-handoff.json`, SHA-256
+`852D6665E04B8585DC70F9C66DB5EC70753F01BA73D658423DB0AF5407ABB0AE`.
+The complete return is below 64 MiB and contains no duplicate runtime. This
+managed result does not establish actual native Framing input.
+
+The 52E/549D family now has its own capture/lifecycle evidence. The next WPF
+repairs address curved dashed hit-test bounds and hidden-window placement before
+resuming Framing and sequence checks. This is no Phase 2-5 completion claim.
+
+## Required application file I/O
+
+The current capture checks intentionally use Save off. Original default FITS
+settings are NONE compression and `FITSUseLegacyWriter=true`; that writer is
+managed. All original FITS loading still calls CFITSIO, which is absent from the
+current publication. Nonlegacy saving also needs it even with compression NONE.
+TIFF encoding and XISF roundtrips are separate, unqualified paths. Changing the
+default format is not a substitute for the original FITS requirement.
+
+Independent source audits recommend retaining upstream CFITSIO and correcting
+the private Linux interop at NINA.Image's existing native boundary. Public method
+signatures, original metadata and scientific conversion algorithms remain the
+contract. Linux needs fixed-width pixel coordinates/dimensions, a by-value
+`size_t` memory delta and an assembly-scoped exact library resolver. Native
+constructor/decompression failure cleanup, datatype/buffer mismatches and
+unsupported dimension handling need explicit tests before qualification.
+
+The official 4.7.0 source tag names commit
+`d6d27653740864a0483e74cff23c53e34e1dceee`. A bounded source/license intake retained
+one archive, SHA-256
+`B99C555309EEE9187615A9D64CB9A7AD84C2F3E94A0241C11BB024CCD5C56DDE`,
+and exact notices at `current/nina/cfitsio-intake-20261021-1`. Its receipt is
+`951E56898760E14E723763E2E4AF3BA367E3E6110161FE867BBB3BCC46BA76AF`.
+Upstream `configure --without-fortran` excludes unused Fortran wrappers; the
+ordinary CMake profile does not. The complete archive has additional notices
+and must not be described as uniformly permissive. Runtime selection must retain
+all applicable notices. An isolated C-only, reentrant source-build feasibility
+experiment on Ubuntu 22.04/glibc 2.35 is authorized; no managed adaptation,
+consumer publication or scientific roundtrip is qualified yet.
+
+Reuse existing image/save fixtures for odd-width ushort legacy-write/original
+reload, alternate writer, selected lossless compression, row reads, metadata,
+source preservation, failures and recovery. Then verify an original App snapshot
+with Save on and Loop off, waiting for the worker's success log and actual file.
+Accepted save work has its own timeout; exposure cancellation does not promise
+to cancel an already queued write or drain it during shutdown.
+
+The unchanged default filename pattern also uses Windows backslashes. Linux's
+platform separators alone do not turn those into nested date/type directories.
+Include this actual default-pattern case rather than hiding the gap with a
+simple temporary pattern. These are required NINA file-I/O gates, separate from
+the already-passing prepared-frame display and capture-only workflows.
 
 The sections below retain earlier attempts and their original limitations.
 
