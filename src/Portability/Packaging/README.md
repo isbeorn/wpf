@@ -14,6 +14,28 @@ The profile has explicit product settings and selects the genuine source-built C
 
 For native Linux X11 windows, call `NativeWindowHost.InitializeForCurrentThread()` in the application entry point before consuming WPF Dispatcher or system settings. The consumer fixture uses an explicit `StartupObject` for that ordering. Its explicit templates retain the native input baseline alongside the separate Classic default-control check. The selected original Extensions DLL qualifies managed XAML access scopes; its Windows-only sound and certificate operations remain unsupported.
 
+## Linux prerequisites and qualification scope
+
+The recorded desktop baseline is Ubuntu 22.04.5 LTS, x86_64, glibc 2.35 and GNOME 42.9 using XWayland. The [current NINA ledger](../../../Documentation/portability/nina-launch-plan.md) records the bounded package and application results. Native Xorg qualification remains pending. This backend does not support native Wayland. Rendering is CPU-based; no accelerated-rendering qualification is claimed. Native IME and further Orca qualification are user-deferred.
+
+For an app-local .NET installation or self-contained application on Ubuntu 22.04, the [official .NET dependency list](https://learn.microsoft.com/en-us/dotnet/core/install/linux-ubuntu-decision#dependencies) requires `ca-certificates`, `libc6`, `libgcc-s1`, `libgssapi-krb5-2`, `libicu70`, `libssl3`, `libstdc++6`, `tzdata` and `zlib1g`. These are OS packages, not files supplied by the WPF bundle.
+
+The WPF runtime additionally uses the system libraries below. SONAMEs describe actual NativeHost imports and retained native linkage; the observed transitive closure is separate from the official .NET package list.
+
+| Use | System SONAMEs |
+| --- | --- |
+| X11 windows, input and cursors | `libX11.so.6`, `libXi.so.6`, `libXfixes.so.3`, `libXcursor.so.1`, `libXrandr.so.2`, `libXrender.so.1`, `libxkbcommon.so.0` |
+| Dispatcher and desktop services | `libglib-2.0.so.0`, `libgio-2.0.so.0`, `libgobject-2.0.so.0` |
+| Skia font discovery and rasterization | `libfontconfig.so.1`, `libfreetype.so.6` |
+| Observed font-library dependency closure | `libexpat.so.1`, `libuuid.so.1`, `libpng16.so.16`, `libz.so.1`, `libbrotlidec.so.1`, `libbrotlicommon.so.1` |
+| Observed glibc linkage | `libc.so.6`, `libpthread.so.0`, `libdl.so.2`, `libm.so.6` and `ld-linux-x86-64.so.2` |
+
+The runtime package supplies its exact `libSkiaSharp.so` from `SkiaSharp.NativeAssets.Linux` 3.119.4 and `libHarfBuzzSharp.so` from `HarfBuzzSharp.NativeAssets.Linux` 8.3.1.5. Use the regular Fontconfig-linked Skia asset, not a NoDependencies substitution. The [retained Ubuntu staging receipt](../../../artifacts/portability/current/nina/vm-package-final5-20261021-1/staging-handoff.json) includes their resolved native linkage. The [NativeHost guide](../Backend/NativeHost/README.md) describes the X11 imports and desktop-service contracts. An authenticated `DISPLAY`, window manager and valid XSETTINGS owner are required. Portal file dialogs additionally require the user's D-Bus session and a FileChooser portal service; an absent accessibility bus does not prevent ordinary startup.
+
+Fontconfig needs readable installed fonts covering the requested characters. On the recorded host, `fonts-dejavu-core` 2.37-2build1 supplies `/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf`; Fontconfig 2.13.1 resolves both `sans-serif` and `Segoe UI` to DejaVu Sans. The [read-only font receipt](../../../artifacts/portability/current/linux-prerequisites-20261021-1/font-environment.json) records the package owner, version and exact font hash. This lookup does not establish which face an application actually rendered or universal glyph coverage. The WPF runtime does not ship a system font collection. The external consumer fixture separately supplies its pinned `DejaVuSans.ttf` and license; that fixture file is not the installed host font receipt.
+
+The recorded framework-dependent qualification uses `Microsoft.NETCore.App` 10.0.12. A Linux x64 self-contained publication supplies its selected .NET runtime and apphost, so the target does not need a separately installed .NET runtime; the system libraries, desktop services and fonts above are still needed. SDK 10.0.401 is required on build machines, not on a machine only running a self-contained application. Package production also uses the existing source-build prerequisites, including Perl. Private verification adds Xvfb, Openbox and XTest (`libXtst.so.6`); these fixture tools are not application runtime requirements.
+
 Behavior gates:
 
 - Produce from the canonical owned build graph and package the exact measured runtime allowlist into a fresh distribution directory.
