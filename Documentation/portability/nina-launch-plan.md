@@ -493,7 +493,7 @@ tests the actual entry's diagnostics helper and does not execute App.Main.
 
 ## Remaining Phase 5 execution evidence
 
-Fresh candidate packages now build through the ordinary producer at source
+The earlier candidate packages build through the ordinary producer at source
 `5967f51cb`. The Runtime package is
 `D164CE8942B6DD96BD841AC29F496DFAC263BA87081984A4934765D4518AACB6`
 and SDK package is
@@ -520,13 +520,40 @@ verification; original source, generated files and producing evidence remain.
 This qualifies the frozen `5967f51cb` packages, not the WindowsBase successor or
 the current Stage-based NINA publication on the final package boundary.
 
-The next delivery uses a normal package producer after the wait-fix commit,
-then an App-only source build through the exact released SDK/runtime pair.
-Preserve the original App/MainWindow, resource closure and current companion
-pins. Use standard SDK-generated dependency metadata instead of the development
-Stage launch metadata and verify the actual graph excludes Stage and
-metadata-only GDI runtime assets before claiming success. Companion producer
-histories remain explicit.
+The repaired successor packages now build through the same ordinary producer at
+source `b71565e01`, including the contended weak-event wait fix. Runtime SHA-256 is
+`8C6BC1E355D1E11DB6DDD0759D3FB439D75CE3148D663707EC1CFDE37C32A5C7`
+and SDK SHA-256 is
+`6473EDC052D8503B6FD20C18D025A14E8638CB448B48A85C6D38AAEA4329FE5A`.
+The producer again exits zero with 27 warnings, no errors and empty stderr.
+All four archive audits and 4,289 source-document checks pass. Its handoff is
+`current/final-distribution-20261021-2-proof/handoff.json`, SHA-256
+`C934DE3908F8DFCAA2CA57CA78A1603557BB9F3264E6F981DDB4D2C0AFDAB39B`.
+
+That exact repaired pair passes the same 250 consumer checks listed above,
+including actual Ubuntu managed/native FDD/SCD and both compiler-origin
+complete-view groups. The sealed consumer handoff is
+`current/final-distribution-20261021-2-consumer-proof/handoff.json`, SHA-256
+`565FBDF92DB3CE7185137AEF46ED3811F07DBF0EF5D2E671A28F15D892354C0E`.
+Root independently rehashed its eight receipt pins, 624 evidence members and all
+199 immutable producer members after execution. The 51 module proofs cover 330
+source-document records and the 18 actual compiler load records match the new
+SDK. Private Xvfb cleanup passes. Original producing sources and publications
+remain retained; only the preauthorized redundant cache and transfer files were
+removed. Combined retained consumer storage stays below its 3 GiB reservation.
+This qualifies the repaired package boundary, not the pending full NINA replay.
+
+An App-only source build through that exact released SDK/runtime pair is now
+underway in `current/nina/package-app-20261021-1`. The original App/MainWindow,
+resource closure and current companion pins are preserved. Ordinary restore
+passes. Initial evaluation found that the SDK's default Page scan re-added three
+resources explicitly removed by NINA's existing project. Disable default Page
+items in the copied consumer project and retain its original explicit item
+graph. The first mismatch is preserved before compilation. Use standard
+SDK-generated dependency metadata instead of the development Stage launch
+metadata and verify the actual graph excludes Stage and metadata-only GDI
+runtime assets before claiming success. Companion producer histories remain
+explicit.
 
 Final package execution, actual Xorg desktop qualification and the sustained
 original simulator session remain open. The current guest session is GNOME Wayland with
