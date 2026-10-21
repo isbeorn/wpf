@@ -34,8 +34,10 @@ workflows. The approved Accord metadata adaptation passes the component image
 regressions and the actual simulator Snapshot saves a valid FITS file. Rendering
 initially stopped at an unsupported ImageBrush. That renderer gap is now fixed,
 passes the affected component tests and is included in newly qualified packages.
-The successor NINA application has opened visibly; its displayed-image and
-readback workflow remains open.
+The successor NINA application has captured and displayed a useful simulator
+image, shown finite statistics and saved a valid FITS file. Original thumbnail
+reload then exposed eager construction of a Windows-only raw converter before
+FITS dispatch. Readback, annotation toggling and sustained operation remain open.
 Native IME, broader rich-text editing/printing, real hardware, ARM64 and macOS
 remain unqualified or deferred. Detailed evidence and remaining gates follow.
 
@@ -54,11 +56,67 @@ package-derived ImageBrush checks. The new coherent 317-file NINA publication
 has opened visibly on GNOME/XWayland. No Snapshot was invoked during its first
 lifetime. The user's subsequent navigation exposed another unsupported brush:
 LinearGradientBrush through DrawRoundedRectangle. The application closed
-normally and the user's final profile/layout are preserved. Reopening waits
-for a coherent package containing the focused gradient repair, which now passes
-its stock and isolated portable checks. Useful displayed image, statistics,
-original UI readback and annotation toggling remain open. Earlier capture and
-Framing passes retain their own runtime scope.
+normally and the user's final profile/layout are preserved. The gradient repair
+is now included in the final4 packages and the next actual NINA lifetime has
+passed capture, useful image display, finite statistics and FITS save. Original
+UI readback and annotation toggling remain open. Earlier capture and Framing
+passes retain their own runtime scope.
+
+### Final4 package and actual imaging checkpoint
+
+Commit `49107f3e` adds the bounded sRGB/Pad linear-gradient fill implementation.
+The ordinary package producer finishes with 27 warnings and no errors. Root
+verified all 18 produced PE/PDB pairs, 3,929 physical source hashes and 360
+embedded source records against their sealed PDB proofs. The released runtime
+and SDK hashes are respectively
+`3E082D4AE88FACD7D67F96ACD949A1DDCE8EE15B6AA17CF96EDE6F9F58202165`
+and `059BB27FAB940EF2801CDF240077D4D516EA9EBEE0C3B022045FCD821BE3695B`.
+The producer handoff is
+`current/final-distribution-20261021-4-proof/handoff.json`, SHA-256
+`0E5035C9C5E704CD54ECB1ECA41C19ED22ED7EAFD8693C454EFA9B92262526A7`.
+
+Affected package consumers pass 200 checks on Windows, 200 on Ubuntu and 14 in
+the ordinary Ubuntu SDK/native framework-dependent application. All actual test
+processes exit zero with empty stderr. This is a targeted 414-check regression;
+it does not repeat the preceding family's full consumer corpus or self-contained
+run. The wrapper's immediate global Xvfb cleanup equality assertion failed and
+its before-list was not retained. A later read-only observation found no Xvfb
+process, but does not establish retrospective equality or the exact owned
+display. That orchestration gap remains recorded without a native retry in
+`current/final-distribution-20261021-4-consumer-proof/handoff.json`, SHA-256
+`24C1FB68F22B60EEFFE1268ADDC5B0E40FFCD42ED7A8695B3278715150A6C2F5`.
+Root verified its 271 evidence members and 91 entry source documents.
+
+The coherent 317-file NINA publication uses that released PresentationCore,
+SHA-256 `77AC91BB6953DD295ECCE9D22334232FB90464738FCC8E2D3EBD920C72CB9747`,
+through ordinary package restore and publish. The existing App/BAML, Image and
+Accord components remain unchanged. Root verified every installed member. Its
+handoff is `current/nina/vm-package-gradient-20261021-1/HANDOFF.md`, SHA-256
+`21DFD845DFD28F5D9B7E77B08B409B7D1E7D8F45ECD13080C29C361C76850C4A`.
+
+With diagnostics off, the actual original Snapshot command captures a one-second
+640x480 RANDOM simulator frame with Save enabled and Loop disabled. NINA displays
+the noise image and reports mean 4999.52, standard deviation 99.89, median 4999
+and range 4494-5440. Its zero-star/HFR 0.00 result is an ordinary no-star state,
+not a quality-metric failure. The original save worker writes a 619,200-byte FITS,
+SHA-256 `9B8639B75BF127130DEC7FA035671C3B2BAF457C3E768BFE2BF130A7A534D6C1`.
+Independent readback of all 307,200 samples confirms those dimensions, range and
+mean, with BITPIX 16 and BZERO 32768. No application error occurs before reload.
+
+Single-clicking the original Image History thumbnail reaches
+`Thumbnail.LoadOriginalImage`, then `ImageDataFactory.CreateFromFile`. That
+factory constructs `LibRawConverter` before `BaseImageData.FromFile` dispatches
+the FITS extension. Its constructor tries to load the absent Windows
+`External/x64/Libraw/libraw_0_22_1.dll` and reload fails. The prior displayed image
+remaining visible does not qualify readback. Annotation, recovery capture and
+the resource pilot have not run. Root verified all 18 files in
+`current/nina/vm-package-gradient-20261021-1/functional-first-fault-evidence.json`;
+the fault receipt is `functional-first-fault.json`, SHA-256
+`08FFDB933107BCBC07FBB72FC7B2B57B68793A7024C29DC8A9273EF9B7819045`.
+The next repair targets converter construction at the existing image boundary,
+with actual factory regression coverage before another application run.
+
+### Earlier targeted repairs and application runs
 
 The targetless sequence ContextMenu opening is repaired in commit `0b12eb772`. The original null
 PlacementTarget remains unchanged; an eligible active keyboard source supplies
