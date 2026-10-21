@@ -43,11 +43,22 @@ movement after 150 ms; they do not establish universal smoothness. Root verified
 Original imaging, FITS reload, sequencer, Framing and desktop-service passes
 below retain their exact earlier publication scopes.
 
+Actual GNOME compositor scaling `1 -> 1.25 -> 1` and three reversible Framing
+numeric keyboard cycles also pass, with exact display-state restoration and
+normal shutdown. Root verified 197 evidence pins and 24 unchanged PATH pairs in
+the [scoped scale replay](../../artifacts/portability/current/nina/gnome-scale-focus-keyboard-20261022-1/root-verification.json).
+XWayland stayed at 96 DPI, so WPF fractional-DPI qualification remains open.
+The Camera-tab popup attempts did not establish the actual hit/lock/menu binding
+and are not accepted as popup qualification or a demonstrated production defect.
+
 Installed diagnostics and the non-interposing native-allocation observer now
 work together in a normally closed original NINA lifetime: 12 allocator samples,
-13 external process samples and 60 seconds of observation. Handled binding
-diagnostics remain visible and unclassified; only the final screenshot is
-retained. This verifies observer compatibility, not sustained acquisition,
+13 external process samples and 60 seconds of observation. Three binding families
+have source-supported original contract mismatches; the null-Uri origin remains
+unidentified. No harmlessness or same-state Windows runtime equivalence follows
+from this [classification](../../artifacts/portability/current/nina/diagnostics-classification-20261022-1/report.json).
+Only the final screenshot is retained. This verifies observer compatibility,
+not sustained acquisition,
 exhaustive native allocations or a resource ceiling. See the
 [actual execution receipt](../../artifacts/portability/current/nina/allocator-diagnostics-resume-20261021-1/EXECUTION-HANDOFF.json).
 

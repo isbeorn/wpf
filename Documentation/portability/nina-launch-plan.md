@@ -94,16 +94,46 @@ or latency guarantee. The first strict timing failure and a stale-coordinate
 redocking-driver failure remain preserved and classified. Root verified 227
 evidence pins and 27 unchanged PATH pairs in
 `current/nina/vm-final7-docking-replay-20261022-1/root-verification.json`.
-The newest normally closed carry is `closed-state-carry-final.json` in that
-lane, SHA-256 `A2768C10F83A9F35840D7C1364436A2D5017EB5722B10C506E21D725867EF27A`.
+The docking replay's normally closed carry is `closed-state-carry-final.json`
+in that lane, SHA-256
+`A2768C10F83A9F35840D7C1364436A2D5017EB5722B10C506E21D725867EF27A`.
+
+A later original NINA lifetime completes actual GNOME compositor scaling
+`1 -> 1.25 -> 1`, with the complete original display state restored except for
+its serial. Native client dimensions change from 2490 x 1573 to 1978 x 1253 and
+back. The original Framing declination field completes three `0 -> 30 -> 0`
+keyboard cycles with Tab commit and Shift+Tab return before, during and after
+the transition. Root verified 197 evidence pins, 24 unchanged PATH pairs and the
+actual scaled/restored text pixels. XWayland publishes 96 DPI throughout, so
+this does not qualify a WPF 120-DPI transition. The attempted Camera-tab menu
+has no established hit/lock/binding state and remains unqualified; a submitted
+click is not a menu pass or proof of a production defect.
+
+That lifetime closes normally with application, supervisor and restoration guard
+absent. Profile differences are limited to LastUsed; docking XML changes only
+ten activation timestamps. The latest carry has 33 files, SHA-256
+`7306DDE4D9126D66684DDDF7B5849AC788CB614BB0C385EA3C4AED5215703BBD`,
+at `current/nina/gnome-scale-focus-keyboard-20261022-1/closed-state-carry.json`.
+Its scoped result is `root-verification.json` in that lane. Actual fractional
+WPF DPI, populated-menu keyboard/focus and a real Xorg session remain open.
 
 A separate original NINA lifetime verifies installed binding diagnostics and
 the non-interposing native-allocation observer together. All 12 allocator samples
 and 13 external process samples complete over 60 seconds; normal close exits zero
 and both application and supervisor are absent. Root verified 20 retained files,
 317 immutable application members and 24 protected prior-state files. Enabled
-diagnostics identify handled URI, FlatWizard, annotation-alignment and GainInput
-binding problems. Their harmlessness or Windows equivalence is not established.
+diagnostics identify URI, FlatWizard, annotation-alignment and GainInput binding
+problems. Read-only classification finds original source-contract mismatches:
+the shared FlatWizard image view writes absent viewport properties, the flat-panel
+view refers to an undeclared GainInput and the altitude-label converter returns
+an OxyPlot enum to a System.Windows enum property. The original and portable OxyPlot
+component is byte-identical and MultiBinding validates converter output directly;
+no missing portable enum conversion was demonstrated. The flat-panel command is
+parameterless, so its unresolved parameter alone does not establish command
+failure. The null-Uri trace lacks a target/path and remains unattributed.
+These observations neither qualify those workflows nor establish harmlessness
+or same-state Windows runtime equivalence. See
+`current/nina/diagnostics-classification-20261022-1/report.json`.
 Only the final native screenshot is retained because the capture helper reused
 its initial filename. See
 `current/nina/allocator-diagnostics-resume-20261021-1/EXECUTION-HANDOFF.json`.
