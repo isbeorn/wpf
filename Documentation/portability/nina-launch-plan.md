@@ -216,9 +216,49 @@ Earlier fixture failures are retained: Windows foreign-source construction
 needed its existing thread to be STA, a witness needed native/source activation
 before calculating its click coordinates and compose selection needed actual
 mouse-release delivery. These are setup corrections, not additional production
-repairs. Ordinary package production, package-derived native checks and the
-actual NINA focus/caption replay remain pending. The separate GNOME/XWayland
-synthetic-input activation observation remains unresolved.
+repairs. The separate GNOME/XWayland synthetic-input activation observation
+remains unresolved; the actual NINA focus/caption replay is still required.
+
+The ordinary final5 producer uses committed source `71e9f0f8f`, finishes with
+27 warnings and no errors and preserves all 10,855 protected records. Runtime
+and SDK hashes are respectively
+`E4D90962B6187FBB42D5CF3EE68D3ED6693EEDE70B8BC843AD7652DB626FACB5`
+and `136A08A838A8C2218EC19A5E128A222092F82F31AE8B45B75BA909AABFF95B6D`.
+Root verified all 199 immutable package files, 18 PE/PDB modules and 4,289 source
+record bindings. Its handoff is
+`current/final-distribution-20261021-5-proof/handoff.json`, SHA-256
+`6A57A12E15310587B8501AC8C9D762614EA8DA78C86F1DB158263CD9841B1746`.
+
+Package-derived execution passes ordinary SDK FDD 14, focus 19, input 28 and
+popup 11 checks, all with zero exit codes, empty test stderr and exact owned
+process/display cleanup. Root verified 85 evidence pins and all 42 consumer
+source documents. Normal package Core is `1E85B20C...75C9A90`; neither author nor
+test-friend Core is promoted. Earlier setup and loader failures remain retained:
+an optional metadata file was absent, Xvfb exposed an abstract socket, the leaf
+runner omitted the RID native search path and its cleanup comparison incorrectly
+treated mutable process context as identity. The corrected runs preserve their
+actual scope without rewriting the failures. Consumer handoff is
+`current/final-distribution-20261021-5-consumer-proof/handoff.json`, SHA-256
+`0A218B256FFCA48765EFB44149FEA86864B946388C13D762F2D02C304C6613F3`.
+
+The fresh NINA publication retains its App/BAML, Image, Accord and native science
+components. Compared with the preceding 317-file publication, it adds two notice
+paths, changes 18 normal WPF/dependency/provenance paths and preserves 299 members
+byte-for-byte. Root verified all 319 files and 20 publication evidence pins.
+Its manifest is `84200BFEE8468FD122C3F78283709A68BBA214920E3A2A51D819D8B922588A68`.
+The whole publication is staged at
+`/home/stefan/wpf-portability-local/phase5/nina-shell-package-final5-20261021-1/app`.
+Native dependencies resolve and the existing App and six protected state/data
+files remain unchanged. Staging handoff is
+`current/nina/vm-package-final5-20261021-1/staging-handoff.json`, SHA-256
+`A19BCCD75BB11D4E95FED95CD857422D21D258D313C72C96B862285E61AD8D4A`.
+No final5 App lifetime or desktop workflow has run. The staged fixture profile
+`72D23CA3...EE729` and SQLite `4DD072` are immutable publication seeds; no dock
+file is included. Historical closed `77EF4D08/4F90777A` and the current live
+profile/layout remain separate. A normal close must define the next state carry.
+The next resource pilot must bind the actual selected final5 lifetime, not reuse
+the unexecuted packet for the preceding App. The pending desktop-idle window is
+still required before activation, input or the pilot starts.
 
 Commit `b6b30ebc6` also includes AvalonDock's existing license and provenance
 receipt in generated NINA build output and normal publication. Disposable SDK

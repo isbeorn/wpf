@@ -10,7 +10,7 @@ during sequence restart is repaired and qualified at component, package and actu
 application boundaries. The latest packaged application also captures, displays
 and saves a valid FITS image. The focused raw-converter initialization repair
 also passes actual thumbnail reload, annotation on/off processing and recovery
-capture. Native drag/docking, focus restoration, desktop service and
+capture. Native drag/docking, actual application focus replay, desktop service and
 sustained-workload gates remain open.
 General WPF features
 unused by NINA, native IME and further accessibility qualification are deferred.
@@ -127,7 +127,9 @@ native-window display or large-frame performance for these modes.
 
 ### Backend selection
 
-Recommend evaluating Avalonia's open-source infrastructure first because it already provides desktop platform integration. This is reuse beneath WPF, with NINA's views remaining WPF. Avalonia is [MIT licensed](https://github.com/AvaloniaUI/Avalonia/blob/main/licence.md) and has an existing [layered platform architecture](https://docs.avaloniaui.net/docs/fundamentals/architecture). XPF code and commercial runtime components are excluded.
+The user-approved [19 October backend decision](portability/backend-decision.md#approved-owned-linux-backend-19-october-2026) supersedes the initial candidate evaluation. The implementation owns its X11/GLib platform services and retains focused SkiaSharp/HarfBuzzSharp graphics and shaping libraries. There is no Avalonia runtime, framework, build or source-import dependency. The 34 attributed Unicode derivatives are directly maintained source, as separately approved.
+
+The following table retains the original Phase 1 candidates for historical context. It is not the current implementation selection; XPF code and commercial runtime components remain excluded.
 
 | Candidate | What to prove | Maintenance cost |
 | --- | --- | --- |
