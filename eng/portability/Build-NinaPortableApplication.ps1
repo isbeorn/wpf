@@ -282,6 +282,9 @@ $null = Add-Element $project $references Reference @{ Include = 'Microsoft.Win32
 $null = Add-Element $project $references Analyzer @{ Include = [IO.Path]::GetFullPath($MvvmGeneratorPath) }
 $null = Add-Element $project $references None @{ Include = "$fixture/upstream.json"; Link = 'ThirdPartyNotices/NINA/upstream.json'; CopyToOutputDirectory = 'PreserveNewest' }
 $null = Add-Element $project $references None @{ Include = "$output/source/NINA/LICENSE.txt"; Link = 'ThirdPartyNotices/NINA/LICENSE.txt'; CopyToOutputDirectory = 'PreserveNewest' }
+foreach ($name in @('LICENSE', 'upstream.json')) {
+    $null = Add-Element $project $references None @{ Include = "$fixture/../../Dependencies/AvalonDock/$name"; Link = "ThirdPartyNotices/AvalonDock/$name"; CopyToOutputDirectory = 'PreserveNewest'; CopyToPublishDirectory = 'PreserveNewest' }
+}
 $null = Add-Element $project $root Import @{ Project = 'Sdk.targets'; Sdk = 'Microsoft.NET.Sdk' }
 $null = Add-Element $project $root Import @{ Project = [IO.Path]::GetFullPath($WinFxTargets) }
 $null = Add-Element $project $root Import @{ Project = [IO.Path]::GetFullPath($PortableReferencesTargets) }
