@@ -267,6 +267,27 @@ The [packaging guide](../../src/Portability/Packaging/README.md#linux-prerequisi
 now records the actual Linux libraries, desktop services, font observations and
 separate .NET prerequisites, including the limits of self-contained deployment.
 
+The same final5 packages also pass a fresh ordinary SDK build, FDD publish and
+all 12 managed consumer checks on the actual Ubuntu 22.04.5 VM's native
+filesystem. The run uses SDK 10.0.401, an empty owned package cache and a
+local-only feed containing the two released WPF packages. Both compiler origins
+and loaded runtime identities match final5. Build and publish exit zero, with
+eight existing CA1416 annotation warnings and no build errors; runtime stderr is
+empty. The SDK's first-use welcome banner is retained separately from runtime
+stderr. No DISPLAY, session bus, native test mode, Xvfb or NINA action is used.
+
+Root verified all 161 evidence files, two entry DLL/PDB pairs and all 17 producing
+source documents, using the recorded SHA1 algorithm for the two XAML documents
+and SHA256 for the other fifteen. The 27 original inputs, two packages and five
+SDK/compiler inputs retain their pre/post hashes. Guest output occupies
+137,805,279 bytes under 160 MiB; local compact evidence stays below 2 MiB.
+The handoff is
+`current/final-distribution-20261021-5-ubuntu22-proof/handoff.json`, SHA-256
+`6EA44DB209E25B08B0319F38BDD45DC7BC639823B8FFCBCED9A5DC13568BC8C7`.
+This supplies the current-pair Ubuntu 22 compiler result. The earlier final5
+self-contained executions remain Ubuntu 24.04.1 evidence and the actual NINA
+installation remains a separate desktop result.
+
 The fresh NINA publication retains its App/BAML, Image, Accord and native science
 components. Compared with the preceding 317-file publication, it adds two notice
 paths, changes 18 normal WPF/dependency/provenance paths and preserves 299 members

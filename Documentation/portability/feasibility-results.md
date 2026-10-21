@@ -36,6 +36,13 @@ The [packaging guide](../../src/Portability/Packaging/README.md#linux-prerequisi
 records the Linux library, service and font requirements for both deployment
 forms. A self-contained application still needs those operating-system services.
 
+Fresh final5 SDK compilation, FDD publication and all 12 managed consumer checks
+also pass on the actual Ubuntu 22.04.5 VM with SDK 10.0.401, an empty package
+cache and the local package feed. Compiler origins, loaded identities and 17
+source documents are verified. This is separate from the Ubuntu 24.04.1
+self-contained result and the installed NINA desktop runs; see the
+[Ubuntu 22 compiler proof](../../artifacts/portability/current/final-distribution-20261021-5-ubuntu22-proof/handoff.json).
+
 The fresh 319-file NINA publication preserves App/BAML, scientific components
 and native astronomy libraries. Its actual desktop lifetime captures and
 displays two 640x480 simulator images, saves FITS and invokes original thumbnail
