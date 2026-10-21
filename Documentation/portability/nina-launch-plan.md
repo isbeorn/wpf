@@ -31,22 +31,23 @@ AvalonDock and AvalonEdit are separate control projects that NINA already uses.
 This is an implementation inventory, not a claim that every API or component
 workflow is qualified. Real NINA has launched and passed native sequence
 workflows. The approved Accord metadata adaptation passes the component image
-regressions; actual snapshot/FITS save/readback replay is in progress. Native
-IME, broader rich-text editing/printing, real hardware, ARM64 and macOS remain unqualified or
-deferred. Detailed evidence and remaining gates follow.
+regressions and the actual simulator Snapshot saves a valid FITS file. Rendering
+then stops at an unsupported ImageBrush; displayed-image readback remains open.
+Native IME, broader rich-text editing/printing, real hardware, ARM64 and macOS
+remain unqualified or deferred. Detailed evidence and remaining gates follow.
 
 ## Active checkpoint
 
 The original NINA App/MainWindow has run visibly on GNOME/XWayland through the
 qualified portable SDK/runtime packages. Native sequence editing, completion,
 cancellation, reset, restart and palette drag/drop/Escape pass in that packaged
-application. Floating caption/redocking remains under diagnosis. The last actual
-image workflow stopped at `System.Private.Windows.GdiPlus` dependencies. The
-Image/Accord repairs now pass the component package graph's complete image
-regression without GdiPlus. A fresh 317-file application has opened visibly on
-GNOME/XWayland with those repairs. Actual FITS saving and UI readback are being
-replayed through its original controls. Earlier capture and Framing passes
-retain their own runtime scope; they do not replace that replay.
+application. Floating caption/redocking remains under diagnosis. The Image/Accord
+repairs pass the component package graph's complete image regression without
+GdiPlus. A fresh 317-file application opened on GNOME/XWayland and saved a valid
+FITS through the original Snapshot and worker path, then stopped at unsupported
+nonempty ImageBrush rendering. It closed normally. Useful displayed image,
+statistics, original UI readback and annotation toggling remain open. Earlier
+capture and Framing passes retain their own runtime scope.
 
 The targetless sequence ContextMenu opening is repaired in commit `0b12eb772`. The original null
 PlacementTarget remains unchanged; an eligible active keyboard source supplies
@@ -254,7 +255,54 @@ are replaced and 11 are added. Ordinary dependency metadata and runtimeconfig
 are byte-identical to the qualified base. The final closed profile/layout are
 carried separately and the absolute Framing cache is unchanged. Whole guest
 transfer and native linkage verify. The original App has mapped successfully
-with diagnostics off; actual snapshot, save and readback remain under test.
+with diagnostics off.
+
+The first actual Snapshot used the observed original "Starts an exposure"
+tooltip and lower aperture button with Save on, Loop off, 1 s, RANDOM 640x480,
+AutoStretch and DetectStars on, High sensitivity and None noise reduction. The
+worker saved the unchanged default legacy FITS pattern into the fresh owned
+output directory. The 619,200-byte file has SHA-256
+`620D18E91042668B61BEDF0DD4BC946FB1D4A76799F381366683464CC072A2A8`.
+Root independently checked its headers, complete 307,200-sample payload and
+block alignment: BITPIX 16, BZERO 32768, minimum 4565, maximum 5492 and mean
+4999.647861328125. Root also rehashed all 16 first-fault evidence pins.
+
+Rendering then threw `NotSupportedException` for `ImageBrush` through
+`SkiaDrawingContextWalker.CreateBrush` and `DrawRectangle`. The original image
+history thumbnail declares a bitmap ImageBrush with UniformToFill, making it a
+source-backed likely owner; the live brush identity was not captured. Main still
+showed the placeholder, so useful display, finite UI statistics, reload and
+annotation checks did not pass. Reviewed Image and Accord were loaded
+from their exact selected paths, with no GdiPlus mapping.
+
+The observed error dialog's No button performed normal original shutdown:
+exit zero, empty stderr, complete teardown and no remaining App or supervisor.
+All 315 immutable members and the absolute Framing cache remain unchanged.
+The final profile is
+`C6BEDB2187551C5C1A4949857AE9B4C717D73193EE2FFC65666D08EE14501C0B`
+and dock layout is
+`C593AF675F5482B62B01E5EC864059D7E33E07367E24837BBCE0DC92D69456B1`.
+Keep that restart state and saved FITS when retiring inactive runtime copies.
+The handoff is `current/nina/vm-package-image-retry-20261021-1/HANDOFF.md`,
+SHA-256 `9D2584C8B82C1ED3705E5FA27B976AA5975E07CDC0483250B54972D486CD7E90`.
+Root rehashed all seven close-handoff pins. Combined local/guest data stays
+below the 400 MiB cap. No current NINA process remains.
+
+The focused renderer continuation reuses the existing private tile mapping and
+DrawImage path for TileMode.None bitmap ImageBrush fills. It adds no public API,
+dependency, persistent cache or application workaround. Its behavior checklist is:
+
+- Render the thumbnail's centered UniformToFill profile through DrawRectangle,
+  plus the existing rounded, ellipse and geometry fill entries.
+- Preserve bitmap DIP dimensions, existing stretch/viewbox/viewport mapping,
+  inherited sampling, source precision, clip, opacity and sibling state.
+- Repaint source replacement, mutation, clear and restoration through retained
+  invalidation without rerecording the drawing.
+- Preserve null-source transparency and named unsupported boundaries for other
+  tile modes, non-bitmap sources, pens and glyph brushes.
+- Reproduce the old failure before editing production code, calibrate windowless
+  scenes against stock WPF and run affected renderer/image regressions before
+  a fresh coherent package and actual NINA Snapshot/save/readback replay.
 
 Separately, the corrected private caption diagnostic passes all 11 checks on
 the current 306-file runtime. Independent native client origin and WPF screen
