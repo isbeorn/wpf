@@ -1,6 +1,6 @@
 # WPF cross platform feasibility results
 
-Checkpoint date: 21 October 2026. Branch: `codex/nina-cross-platform`.
+Checkpoint date: 22 October 2026. Branch: `codex/nina-cross-platform`.
 
 The latest NINA status and resume instructions are in the
 [NINA launch plan](nina-launch-plan.md). The earlier
@@ -10,6 +10,49 @@ empty-window, docking and NINA.Image repairs.
 Earlier checkpoints below retain their original scope.
 
 ## Current release checkpoint
+
+The original offline, simulator-only NINA App/MainWindow runs through the owned
+Linux WPF backend on Ubuntu 22.04 GNOME/XWayland. There is no Avalonia runtime,
+framework, build or source-import dependency. Skia, HarfBuzz and the attributed
+Unicode derivatives remain. Full Phase 5 is not yet qualified.
+
+The package family from `7ef09e47c` passes all 250 standard consumer checks,
+including both BAML origins, Windows, Ubuntu, framework-dependent and
+self-contained execution. Root independently verified raw results, package/module
+identities and producing source records. Windows user and machine PATH remain
+unchanged. The exact evidence is in the
+[producer verification](../../artifacts/portability/current/final-distribution-20261021-6-proof/root-verification.json)
+and [consumer verification](../../artifacts/portability/current/final-distribution-20261021-6-consumer-proof/root-verification.json).
+These packages precede the pending indexed-PNG repair and are not its release
+qualification.
+
+Actual GNOME floating-window movement now has zero measured anchor drift across
+nine moves in both directions and 40 stationary samples. Genuine center docking
+works. Missing inner guide artwork was traced to the decoder rejecting the
+original 8-bit indexed PNGs; all resource files are present. Its focused repair
+is under final verification. Original imaging, FITS reload, sequencer, Framing
+and desktop-service passes below retain their exact earlier publication scopes.
+
+Installed diagnostics and the non-interposing native-allocation observer now
+work together in a normally closed original NINA lifetime: 12 allocator samples,
+13 external process samples and 60 seconds of observation. Handled binding
+diagnostics remain visible and unclassified; only the final screenshot is
+retained. This verifies observer compatibility, not sustained acquisition,
+exhaustive native allocations or a resource ceiling. See the
+[actual execution receipt](../../artifacts/portability/current/nina/allocator-diagnostics-resume-20261021-1/EXECUTION-HANDOFF.json).
+
+The eight-hour coordinator has passed its finite regression and mutation
+controls, but the real run has not executed. Remaining gates are coherent final
+packages and application publication, actual repaired-guide/focus/keyboard/scale
+checks, a distinct Xorg desktop and sustained operation with measured resource
+acceptance. The [active launch checkpoint](nina-launch-plan.md#active-checkpoint)
+records the current evidence and remaining work. Native IME, further
+accessibility, unused WPF, real hardware, ARM64 and macOS remain deferred or
+outside this profile. The accepted RGB48 deadline remains unchanged.
+
+## Earlier final5 release checkpoint
+
+The following checkpoint retains its original package and application scope.
 
 The owned Linux backend runs the original simulator-only NINA App/MainWindow
 through ordinary portable SDK/runtime packages on Ubuntu GNOME/XWayland.

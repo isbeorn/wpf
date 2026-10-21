@@ -43,6 +43,65 @@ remain unqualified or deferred. Detailed evidence and remaining gates follow.
 
 ## Active checkpoint
 
+Checkpoint: 22 October 2026. Full Phase 5 remains open. The original offline,
+simulator-only NINA shell runs on Ubuntu 22.04 GNOME/XWayland; this is not a
+full-WPF or production-device qualification. The accepted RGB48 timing exception
+stands and further RGB48 deadline optimization is canceled.
+
+The package family produced from `7ef09e47c` passes all 250 standard consumer
+checks: Windows 37, Ubuntu managed 62, native framework-dependent 14, native
+self-contained 14, conflicts 8, runtime policy 14, contents 7 and complete-view
+94. Root verified the producer's 18 PE/PDB pairs and 4,289 source-document records,
+then the consumer's 25 raw result groups, 21 modules and 176 source records.
+Raw user and machine PATH are unchanged. See
+`current/final-distribution-20261021-6-proof/root-verification.json` and
+`current/final-distribution-20261021-6-consumer-proof/root-verification.json`.
+This family precedes the pending indexed-PNG repair; it is not the final release.
+
+Actual GNOME dragging of the floating Camera window now preserves its native
+pointer anchor across nine moves in both directions and 40 stationary samples,
+with zero measured drift. Genuine center docking succeeds and the original
+application closes normally, preserving layout. The remaining missing inner
+guide artwork has a separate, reproduced cause: those original assets are 8-bit
+indexed PNGs, which the portable decoder rejects. The resource table contains
+all 23 PNGs, so the earlier missing-resource hypothesis was disproved. A narrow
+decoder repair and original-image regression tests are under final verification.
+Actual final-family guide visibility, usability and saved-layout relaunch remain
+required. The raw desktop evidence is under
+`current/nina/vm-docking-input-repair-20261021-1`.
+
+A separate original NINA lifetime verifies installed binding diagnostics and
+the non-interposing native-allocation observer together. All 12 allocator samples
+and 13 external process samples complete over 60 seconds; normal close exits zero
+and both application and supervisor are absent. Root verified 20 retained files,
+317 immutable application members and 24 protected prior-state files. Enabled
+diagnostics identify handled URI, FlatWizard, annotation-alignment and GainInput
+binding problems. Their harmlessness or Windows equivalence is not established.
+Only the final native screenshot is retained because the capture helper reused
+its initial filename. See
+`current/nina/allocator-diagnostics-resume-20261021-1/EXECUTION-HANDOFF.json`.
+This idle compatibility run is not sustained acquisition or a resource-budget
+pass. The latest closed-state carry is the same receipt's `closedCarry`.
+
+The reviewed eight-hour coordinator now rejects interrupted sampling, stale or
+misbound allocation observations and incomplete normal-close evidence. Its 39
+regression entries, six original controls and six mutation controls pass. The
+coordinator is
+`current/nina/overnight-coordinator-resume-20261021-1/overnight.py`, SHA-256
+`9193B68F6FFA422A98B0996ABFFB26061B422CB8D886C977B3F24EC3B3FE7B70`.
+Actual eight-hour execution, periodic original UI responses, cancellation,
+recovery and relaunch are still pending. Numerical memory/allocation acceptance
+must be grounded in workload measurements before a performance pass is claimed.
+
+Remaining release work is the coherent post-PNG runtime/SDK and NINA publication,
+its relevant package and actual desktop regressions, keyboard/focus and changed
+desktop-scale checks, a distinct real Xorg session and sustained/resource
+qualification. Fixed-DPI Xvfb results do not prove desktop transitions. Native
+Wayland, native IME, further accessibility, unused WPF capabilities, real equipment,
+ARM64 and macOS retain their recorded exclusions or deferrals.
+
+### Earlier post-incident checkpoint
+
 Work resumed after the Windows PATH incident audit and approved cleanup.
 The incident and renewed Windows testing authorization are recorded in
 `windows-host-incident-2026-10-21.md`. Local commit `fee8095` guards the tracked
