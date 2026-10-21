@@ -111,3 +111,14 @@ The existing programmatic/XML and owner-close neighbors still run, for thirteen
 checks in this focused profile. `NINA_POINTER_RECOVERY_ONLY=2` retains its prior
 meaning and behavior. Native tests remain private Xvfb/Openbox evidence rather
 than full NINA or physical-desktop qualification.
+
+`NINA_GUIDE_GEOMETRY_ONLY=1` exercises the original overlay during a private
+Openbox normal/maximized/normal cycle. Expected guide bounds come from the
+owner's native client origin and real pane layout, independently of the overlay.
+It checks manager-edge and pane-center placement, native target selection,
+selected preview geometry and inside/outside alpha pixels at 96, 120 or 192 DPI.
+The same drag also exercises retemplating, a later update to a bound template
+transform, unchanged-layout preview identity and a genuine center Into release.
+The programmatic/XML and owner-close neighbors still run. This focused case
+requires the private WM profile and does not qualify the missing-center behavior
+in the full NINA application, other window managers, RTL or monitor DPI changes.

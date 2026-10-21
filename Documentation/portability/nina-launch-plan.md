@@ -466,6 +466,44 @@ Its immutable manifest is
 App/BAML, scientific components, original satellites and WPF package identities
 remain unchanged.
 
+### Docking guide and preview coordinate repair
+
+The physical recorder found the overlay requested at 159,100 but mapped by
+GNOME at 70,27 in a maximized client. Its public Left/Top retained restore
+coordinates. Original guide positioning subtracted those restore coordinates,
+displacing guides and previews from the actual panes. A causal private native
+fixture reproduces the displacement at 96, 120 and 192 DPI before the repair.
+
+The portable overlay now positions its original guide groups from the actual
+client screen origin. It applies the same origin correction once to the
+original selected preview geometry. Location, state and layout changes refresh
+active geometry only when the origin changes. Retemplating preserves the active
+areas and preview. Existing template transforms and bindings remain untouched.
+No global Window semantics, public API, NativeHost dependency or NINA template
+changes are introduced.
+
+The focused native profile passes 11 checks at each of 96, 120 and 192 DPI.
+Independent native client/pane bounds, target selection and inside/outside alpha
+pixels verify normal, maximized, pointer reentry, restored and retemplated
+states. The same drag verifies a genuine center Into drop, unchanged geometry
+identity during steady layout and later updates to a bound template transform.
+The unchanged full pointer profile passes 19 checks and floating-header profile
+passes 13. All 65 executions exit zero with empty stderr, no native failures and
+complete process/display cleanup. Independent source and final test reviews
+have no supported findings. Root verified all 43 handoff pins, 167 component PDB
+source documents, nine fixture documents and the five raw result/cleanup pairs.
+
+The sealed handoff is
+`current/nina/docking-guide-geometry-20261021-1/native-handoff.json`, SHA-256
+`0ECC72D2214D9ED5E0582DD6B9EFAC48B629CDB9FB2119627F56DB96E29CE8C6`.
+The guarded component DLL is
+`AB92618335F62D3FBEE26B7B103F797CD6FAAC1B1A9C9B9BBB3B7CCD0CF80086`.
+Its ordinary 319-file publication preserves every other final5 file except the
+AvalonDock DLL/PDB pair and retains the original public surface and resources.
+Root verified that whole publication before the fresh VM transfer. These are
+private Xvfb/Openbox results; the recorded full-App missing-center behavior,
+actual desktop redocking and restored desktop layout remain separate checks.
+
 ### Actual clipboard and sequence file dialogs
 
 The installed final5 App passes text exchange in both directions between its

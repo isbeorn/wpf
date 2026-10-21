@@ -39,6 +39,11 @@ internal static partial class DockingProgram
             Check("pointer-original-NINA-floating-tab-current-manager", () => FloatingTabCurrentManager(native, manager, image));
             return;
         }
+        if (Environment.GetEnvironmentVariable("NINA_GUIDE_GEOMETRY_ONLY") == "1")
+        {
+            Check("pointer-overlay-native-relocation-independent-pane-geometry", () => GuideGeometry(native, owner, manager, image, graph));
+            return;
+        }
         var recoveryOnly = Environment.GetEnvironmentVariable("NINA_POINTER_RECOVERY_ONLY");
         if (recoveryOnly is "1" or "2")
         {
@@ -122,6 +127,236 @@ internal static partial class DockingProgram
             PointerDrop(native, manager, graph, "Right");
         });
         Check("pointer-capture-transfer-and-next-drag", () => CaptureTransferAndRecovery(native, manager, image));
+    }
+
+    private static void GuideGeometry(X11Fixture native, Window owner, DockingManager manager, LayoutAnchorable image, LayoutAnchorable graph)
+    {
+        var failures = new List<string>();
+        LayoutFloatingWindowControl? floating = null;
+        var originalView = (NINA.WPF.Base.View.ImageView)image.Content;
+        var reserve = new LayoutAnchorable
+        {
+            ContentId = "guide-geometry-neighbor",
+            Title = "Original neighboring ImageView",
+            Content = new NINA.WPF.Base.View.ImageView { Image = originalView.Image }
+        };
+        manager.Layout.RootPanel.Children.Insert(0, new LayoutAnchorablePane(reserve));
+        Settle();
+        try
+        {
+            floating = BeginPointerFloat(native, manager, image);
+            var pane = VisualDescendants(manager).OfType<LayoutAnchorablePaneControl>().Single(p => ReferenceEquals(p.Model, graph.Parent));
+            var paneRect = ScreenRect(pane, owner);
+            MoveGuidePointer(new Point(paneRect.X + paneRect.Width / 2, paneRect.Y + paneRect.Height / 2));
+            PointerWait(() => VisibleOverlays().Any(), "No genuine overlay was shown over the remaining original pane.");
+            var overlay = VisibleOverlays().Single();
+            Settle();
+            ReenterGraph();
+            var restore = new Rect(overlay.Left, overlay.Top, overlay.Width, overlay.Height);
+            var normalOrigin = native.ClientOrigin(NativeHandle(overlay));
+            var focus = native.FocusedWindow;
+            var logicalFocus = Keyboard.FocusedElement;
+            Require(paneRect.Width < ScreenRect(manager, owner).Width && paneRect.X > ScreenRect(manager, owner).X,
+                "The pane geometry fixture did not establish a strict, independently offset manager subrectangle.");
+            Capture("normal-before");
+            var reserveControl = VisualDescendants(manager).OfType<LayoutAnchorablePaneControl>().Single(p => ReferenceEquals(p.Model, reserve.Parent));
+            var reserveRect = ScreenRect(reserveControl, owner);
+            MoveGuidePointer(new Point(reserveRect.X + reserveRect.Width / 2, reserveRect.Y + reserveRect.Height / 2));
+            PointerWait(() => !Entered(pane) && Entered(reserveControl), "The original graph pane remained entered after the pointer moved into its neighboring pane.");
+            var group = (FrameworkElement)overlay.Template.FindName("PART_AnchorablePaneDropTargets", overlay)!;
+            var reserveGuideRect = ScreenRect(group, overlay);
+            Require(Math.Abs(reserveGuideRect.X - reserveRect.X) <= 1 && Math.Abs(reserveGuideRect.Width - reserveRect.Width) <= 1,
+                "The single pane-guide group did not follow the actually entered neighboring pane.");
+            Observations.Add(new { stage = "independent-neighbor-pane-eligibility", graphEntered = Entered(pane), neighborEntered = Entered(reserveControl), reserveRect, reserveGuideRect });
+            ReenterGraph();
+            native.RequestMaximized(NativeHandle(overlay), true);
+            PointerWait(() => native.State(NativeHandle(overlay)) == "Maximized" && overlay.WindowState == WindowState.Maximized
+                && native.ClientOrigin(NativeHandle(overlay)) != normalOrigin, "The private WM did not relocate the genuine overlay on maximize.");
+            Settle();
+            Require(overlay.Left == restore.Left && overlay.Top == restore.Top, "The causal transition did not retain requested restore position.");
+            Capture("maximized-after-active-areas");
+            MoveGuidePointer(new Point(reserveRect.X + reserveRect.Width / 2, reserveRect.Y + reserveRect.Height / 2));
+            PointerWait(() => !Entered(pane) && Entered(reserveControl), "Maximized pane exit did not follow genuine native motion.");
+            ReenterGraph();
+            Settle();
+            Capture("maximized-reentered-areas");
+            native.RequestMaximized(NativeHandle(overlay), false);
+            PointerWait(() => native.State(NativeHandle(overlay)) == "Normal" && overlay.WindowState == WindowState.Normal
+                && native.ClientOrigin(NativeHandle(overlay)) == normalOrigin, "The private WM did not restore the genuine overlay origin.");
+            Settle();
+            Capture("normal-restored");
+            var template = overlay.Template;
+            var previousPreview = Field(overlay, "_previewBox");
+            var previousCanvas = overlay.Template.FindName("PART_DropTargetsContainer", overlay);
+            overlay.Template = null;
+            Settle();
+            overlay.Template = template;
+            overlay.ApplyTemplate();
+            Settle();
+            var newPreview = (System.Windows.Shapes.Path)Field(overlay, "_previewBox")!;
+            Require(!ReferenceEquals(newPreview, previousPreview)
+                && !ReferenceEquals(overlay.Template.FindName("PART_DropTargetsContainer", overlay), previousCanvas)
+                && newPreview.IsVisible && newPreview.Data is not null,
+                "Retemplating lost the selected preview before any pointer reentry.");
+            Capture("active-retemplate");
+            var canvas = (Canvas)overlay.Template.FindName("PART_DropTargetsContainer", overlay)!;
+            var originalTransform = canvas.ReadLocalValue(UIElement.RenderTransformProperty);
+            var translation = new TranslateTransform();
+            var binding = new System.Windows.Data.Binding { Source = translation };
+            System.Windows.Data.BindingOperations.SetBinding(canvas, UIElement.RenderTransformProperty, binding);
+            var expression = System.Windows.Data.BindingOperations.GetBindingExpression(canvas, UIElement.RenderTransformProperty);
+            var guide = (FrameworkElement)overlay.Template.FindName("PART_AnchorablePaneDropTargetInto", overlay)!;
+            var beforeTranslation = ScreenRect(guide, overlay);
+            translation.X = 2;
+            translation.Y = 3;
+            Settle();
+            var afterTranslation = ScreenRect(guide, overlay);
+            var dpi = VisualTreeHelper.GetDpi(overlay);
+            Require(ReferenceEquals(expression, System.Windows.Data.BindingOperations.GetBindingExpression(canvas, UIElement.RenderTransformProperty))
+                && ReferenceEquals(canvas.RenderTransform, translation)
+                && Math.Abs(afterTranslation.X - beforeTranslation.X - 2 * dpi.DpiScaleX) < .001
+                && Math.Abs(afterTranslation.Y - beforeTranslation.Y - 3 * dpi.DpiScaleY) < .001,
+                "Geometry refresh replaced the existing template transform binding or lost its later update.");
+            System.Windows.Data.BindingOperations.ClearBinding(canvas, UIElement.RenderTransformProperty);
+            if (originalTransform != DependencyProperty.UnsetValue) canvas.SetValue(UIElement.RenderTransformProperty, originalTransform);
+            Settle();
+            Observations.Add(new { stage = "template-transform-binding-update-preserved", sameExpression = true, dpi.DpiScaleX });
+            Require(Mouse.Captured == floating && Mouse.LeftButton == MouseButtonState.Pressed, "Geometry transitions changed held drag capture.");
+            Require(failures.Count == 0, string.Join("; ", failures));
+            paneRect = ScreenRect(pane, owner);
+            MoveGuidePointer(new Point(paneRect.X + paneRect.Width / 2, paneRect.Y + paneRect.Height / 2));
+            PointerWait(() => SelectedType() == "AnchorablePaneDockInside", "The independent pane center did not select its genuine Into target.");
+            var oldContent = image.Content;
+            native.Button(1, false);
+            PointerWait(() => !image.IsFloating && ReferenceEquals(image.Parent, graph.Parent) && Mouse.Captured is null && !VisibleOverlays().Any(),
+                "The actual center release did not dock into the intended original pane and clean up drag state.");
+            Require(ReferenceEquals(oldContent, image.Content) && native.CanAcquirePointerGrab(), "Center docking changed content identity or retained native capture.");
+            Observations.Add(new { stage = "independent-center-native-drop", image.IsFloating, samePane = ReferenceEquals(image.Parent, graph.Parent), captureReleased = Mouse.Captured is null });
+            PointerDrop(native, manager, image, "Right");
+
+            bool Entered(LayoutAnchorablePaneControl control) => ((IEnumerable<IDropArea>)Field(overlay, "_visibleAreas")!)
+                .Any(a => a is DropArea<LayoutAnchorablePaneControl> area && ReferenceEquals(area.AreaElement, control));
+
+            void ReenterGraph()
+            {
+                var bounds = ScreenRect(pane, owner);
+                var center = new Point(bounds.X + bounds.Width / 2, bounds.Y + bounds.Height / 2);
+                MoveGuidePointer(center);
+                PointerWait(() => Entered(pane), "The independent graph center did not enter its original pane area.");
+                Settle();
+                MoveGuidePointer(center);
+                PointerWait(() => SelectedType() == "AnchorablePaneDockInside",
+                    "The independent graph center did not reestablish its original entered area and selected Into target.");
+                Settle();
+            }
+
+            void Capture(string stage)
+            {
+                var scale = VisualTreeHelper.GetDpi(overlay);
+                var origin = native.ClientOrigin(NativeHandle(overlay));
+                var service = Field(floating!, "_dragService")!;
+                var areas = ((IEnumerable<IDropArea>)Field(manager, "_areas")!).ToArray();
+                var entered = ((IEnumerable<IDropArea>)Field(overlay, "_visibleAreas")!).ToArray();
+                var expectedManager = ScreenRect(manager, owner);
+                var expectedPane = ScreenRect(pane, owner);
+                var managerGroup = (FrameworkElement)overlay.Template.FindName("PART_DockingManagerDropTargets", overlay)!;
+                var paneGroup = (FrameworkElement)overlay.Template.FindName("PART_AnchorablePaneDropTargets", overlay)!;
+                var into = (FrameworkElement)overlay.Template.FindName("PART_AnchorablePaneDropTargetInto", overlay)!;
+                var actualManager = ScreenRect(managerGroup, overlay);
+                var actualPane = ScreenRect(paneGroup, overlay);
+                var actualCenter = ScreenRect(into, overlay);
+                var managerError = new Vector(actualManager.X - expectedManager.X, actualManager.Y - expectedManager.Y);
+                var paneError = new Vector(actualPane.X - expectedPane.X, actualPane.Y - expectedPane.Y);
+                var centerError = new Vector(actualCenter.X + actualCenter.Width / 2 - expectedPane.X - expectedPane.Width / 2,
+                    actualCenter.Y + actualCenter.Height / 2 - expectedPane.Y - expectedPane.Height / 2);
+                bool paneEntered = entered.Any(a => a is DropArea<LayoutAnchorablePaneControl> area && ReferenceEquals(area.AreaElement, pane));
+                Observations.Add(new { stage = "independent-guide-geometry/" + stage, overlay.Left, overlay.Top, overlay.WindowState,
+                    nativeOriginX = origin.X, nativeOriginY = origin.Y, expectedManager, expectedPane, actualManager, actualPane, actualCenter,
+                    managerError, paneError, centerError, paneEntered, paneVisible = paneGroup.IsVisible, intoVisible = into.IsVisible,
+                    currentHost = Field(service, "_currentHost")?.GetType().FullName, pointer = native.PointerPosition.ToString(),
+                    areaGeometry = areas.Select(a => new { type = a.Type.ToString(), a.DetectionRect, entered = entered.Contains(a) }).ToArray(),
+                    scale.DpiScaleX, scale.DpiScaleY });
+                if (!paneEntered || !into.IsVisible) failures.Add(stage + ": remaining original pane has no eligible center guide");
+                if (managerError.Length > 1 || paneError.Length > 1 || centerError.Length > 1) failures.Add(stage + ": guides differ from independently native-anchored panes by manager=" + managerError + " pane=" + paneError + " center=" + centerError);
+                var activePreview = (System.Windows.Shapes.Path)Field(overlay, "_previewBox")!;
+                var activeBounds = activePreview.Data?.Bounds ?? Rect.Empty;
+                var activePreviewScreen = activeBounds.IsEmpty ? Rect.Empty : new Rect(origin.X + activeBounds.X * scale.DpiScaleX,
+                    origin.Y + activeBounds.Y * scale.DpiScaleY, activeBounds.Width * scale.DpiScaleX, activeBounds.Height * scale.DpiScaleY);
+                Observations.Add(new { stage = "active-pane-preview-before-motion/" + stage, activePreviewScreen = activePreviewScreen.IsEmpty ? (Rect?)null : activePreviewScreen, expectedPane, selected = SelectedType() });
+                if (SelectedType() != "AnchorablePaneDockInside" || !activePreview.IsVisible || activePreviewScreen.IsEmpty
+                    || Math.Abs(activePreviewScreen.X - expectedPane.X) > 1 || Math.Abs(activePreviewScreen.Y - expectedPane.Y) > 1
+                    || Math.Abs(activePreviewScreen.Width - expectedPane.Width) > 1 || Math.Abs(activePreviewScreen.Height - expectedPane.Height) > 1)
+                    failures.Add(stage + ": existing selected pane preview failed to refresh before pointer motion");
+                var expectedCenter = new Point(expectedPane.X + expectedPane.Width / 2, expectedPane.Y + expectedPane.Height / 2);
+                MoveGuidePointer(expectedCenter);
+                Settle();
+                if (SelectedType() != "AnchorablePaneDockInside") failures.Add(stage + ": independent pane center did not hit the Into target");
+                bool centerInk = Ink(expectedCenter);
+                if (!centerInk) failures.Add(stage + ": independent pane center has no guide pixels");
+                var left = (FrameworkElement)overlay.Template.FindName("PART_DockingManagerDropTargetLeft", overlay)!;
+                var expectedLeft = new Point(expectedManager.X + left.ActualWidth * scale.DpiScaleX / 2, expectedManager.Y + expectedManager.Height / 2);
+                MoveGuidePointer(expectedLeft);
+                Settle();
+                if (SelectedType() != "DockingManagerDockLeft") failures.Add(stage + ": independent manager-left center did not hit the edge target");
+                var previewPart = (System.Windows.Shapes.Path)Field(overlay, "_previewBox")!;
+                var bounds = previewPart.Data?.Bounds ?? Rect.Empty;
+                var previewScreen = bounds.IsEmpty ? Rect.Empty : new Rect(origin.X + bounds.X * scale.DpiScaleX, origin.Y + bounds.Y * scale.DpiScaleY,
+                    bounds.Width * scale.DpiScaleX, bounds.Height * scale.DpiScaleY);
+                bool previewInsideInk = Ink(new Point(expectedManager.X + 8 * scale.DpiScaleX, expectedManager.Y + 8 * scale.DpiScaleY));
+                bool previewOutsideInk = Ink(new Point(expectedManager.Right - 8 * scale.DpiScaleX, expectedManager.Y + 8 * scale.DpiScaleY));
+                var stableGeometry = previewPart.Data;
+                for (int i = 0; i < 8; i++) Settle();
+                Require(ReferenceEquals(previewPart.Data, stableGeometry), "Unchanged layout repeatedly replaced selected preview geometry.");
+                Require(native.FocusedWindow == focus && ReferenceEquals(Keyboard.FocusedElement, logicalFocus)
+                    && Mouse.Captured == floating, "Guide/preview interaction changed focus or drag capture.");
+                Observations.Add(new { stage = "independent-selected-preview/" + stage, expectedCenter, centerInk, expectedLeft,
+                    selected = SelectedType(), previewPart.IsVisible, previewScreen = previewScreen.IsEmpty ? (Rect?)null : previewScreen, expectedManager, previewInsideInk, previewOutsideInk });
+                if (previewScreen.IsEmpty || !previewPart.IsVisible || Math.Abs(previewScreen.X - expectedManager.X) > 1
+                    || Math.Abs(previewScreen.Y - expectedManager.Y) > 1 || Math.Abs(previewScreen.Height - expectedManager.Height) > 1)
+                    failures.Add(stage + ": selected manager-left preview is displaced");
+                if (!previewInsideInk || previewOutsideInk) failures.Add(stage + ": selected manager-left preview pixels do not match its independent inside/outside probes");
+                ReenterGraph();
+
+                bool Ink(Point screen)
+                {
+                    int x = (int)Math.Round(screen.X - origin.X), y = (int)Math.Round(screen.Y - origin.Y);
+                    return (native.Pixel(NativeHandle(overlay), x, y, true) >> 24) != 0;
+                }
+            }
+        }
+        finally
+        {
+            native.Button(1, false);
+            Mouse.Capture(null);
+            if (image.IsFloating) image.Dock();
+            if (reserve.Parent is LayoutAnchorablePane reserveParent) reserveParent.Children.Remove(reserve);
+            manager.Layout.CollectGarbage();
+            Settle();
+        }
+
+        void MoveGuidePointer(Point point)
+        {
+            var current = native.PointerPosition;
+            if (current.X == (int)Math.Round(point.X) && current.Y == (int)Math.Round(point.Y))
+                MoveHeldPointerAndWait(native, floating!, new Point(point.X + 2, point.Y));
+            MoveHeldPointerAndWait(native, floating!, point);
+        }
+
+        string? SelectedType()
+        {
+            var service = Field(floating!, "_dragService");
+            var target = service is null ? null : Field(service, "_currentDropTarget");
+            return target?.GetType().GetProperty("Type")?.GetValue(target)?.ToString();
+        }
+
+        Rect ScreenRect(FrameworkElement element, Window window)
+        {
+            var origin = native.ClientOrigin(NativeHandle(window));
+            var scale = VisualTreeHelper.GetDpi(window);
+            var local = element.TransformToAncestor(window).TransformBounds(new Rect(0, 0, element.ActualWidth, element.ActualHeight));
+            return new Rect(origin.X + local.X * scale.DpiScaleX, origin.Y + local.Y * scale.DpiScaleY,
+                local.Width * scale.DpiScaleX, local.Height * scale.DpiScaleY);
+        }
     }
 
     private static void CanceledCloseAndRecovery(X11Fixture native, DockingManager manager, LayoutAnchorable pane, bool verifyHeaders = false)

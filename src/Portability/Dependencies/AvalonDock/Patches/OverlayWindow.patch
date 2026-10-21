@@ -1,0 +1,167 @@
+--- a/Controls/OverlayWindow.cs
++++ b/Controls/OverlayWindow.cs
+@@ -13,6 +13,9 @@
+ using System.Windows;
+ using System.Windows.Controls;
+ using System.Windows.Shapes;
++#if PORTABLE_AVALONDOCK
++using System.Windows.Media;
++#endif
+ using AvalonDock.Layout;
+ using AvalonDock.Themes;
+ 
+@@ -65,6 +68,12 @@
+ 		private LayoutFloatingWindowControl _floatingWindow = null;
+ 		private readonly List<IDropArea> _visibleAreas = new List<IDropArea>();
+ 
++#if PORTABLE_AVALONDOCK
++		private Point? _portableGeometryOrigin;
++		private Point _portableRestorePosition;
++		private IDropTarget _portablePreviewTarget;
++#endif
++
+ 		static OverlayWindow()
+ 		{
+ 			DefaultStyleKeyProperty.OverrideMetadata(typeof(OverlayWindow), new FrameworkPropertyMetadata(typeof(OverlayWindow)));
+@@ -80,6 +89,12 @@
+ 		{
+ 			_host = host;
+ 			UpdateThemeResources();
++#if PORTABLE_AVALONDOCK
++			LayoutUpdated += OnPortableLayoutUpdated;
++			LocationChanged += OnPortableLayoutUpdated;
++			StateChanged += OnPortableLayoutUpdated;
++			IsVisibleChanged += OnPortableVisibilityChanged;
++#endif
+ 		}
+ 
+ 		/// <summary>Gets whether the window is hosted in a floating window.</summary>
+@@ -91,6 +106,9 @@
+ 		public override void OnApplyTemplate()
+ 		{
+ 			base.OnApplyTemplate();
++#if PORTABLE_AVALONDOCK
++			_portableGeometryOrigin = null;
++#endif
+ 
+ 			_mainCanvasPanel = GetTemplateChild("PART_DropTargetsContainer") as Canvas;
+ 			_gridDockingManagerDropTargets = GetTemplateChild("PART_DockingManagerDropTargets") as Grid;
+@@ -485,6 +503,10 @@
+ 		{
+ 			Visibility = System.Windows.Visibility.Hidden;
+ 			_floatingWindow = null;
++#if PORTABLE_AVALONDOCK
++			_portableGeometryOrigin = null;
++			_portablePreviewTarget = null;
++#endif
+ 		}
+ 
+ 		/// <inheritdoc cref="IOverlayWindow"/>
+@@ -492,10 +514,13 @@
+ 		void IOverlayWindow.DragEnter(IDropArea area)
+ #pragma warning restore CA1502
+ 		{
++			_visibleAreas.Add(area);
++			ShowDropArea(area);
++		}
++
++		private void ShowDropArea(IDropArea area)
++		{
+ 			var floatingWindowManager = _floatingWindow.Model.Root.Manager;
+-
+-			_visibleAreas.Add(area);
+-
+ 			FrameworkElement areaElement;
+ 			switch (area.Type)
+ 			{
+@@ -708,8 +733,12 @@
+ 					break;
+ 			}
+ 
++#if PORTABLE_AVALONDOCK
++			PositionPortableArea(areaElement, area, this.PointToScreenDPI(new Point()));
++#else
+ 			Canvas.SetLeft(areaElement, area.DetectionRect.Left - Left);
+ 			Canvas.SetTop(areaElement, area.DetectionRect.Top - Top);
++#endif
+ 			areaElement.Width = area.DetectionRect.Width;
+ 			areaElement.Height = area.DetectionRect.Height;
+ 			areaElement.Visibility = System.Windows.Visibility.Visible;
+@@ -754,7 +783,13 @@
+ 		/// <inheritdoc cref="IOverlayWindow"/>
+ 		void IOverlayWindow.DragEnter(IDropTarget target)
+ 		{
++#if PORTABLE_AVALONDOCK
++			_portablePreviewTarget = target;
++#endif
+ 			var previewBoxPath = target.GetPreviewPath(this, _floatingWindow.Model as LayoutFloatingWindow);
++#if PORTABLE_AVALONDOCK
++			previewBoxPath = ToPortablePreview(previewBoxPath, this.PointToScreenDPI(new Point()));
++#endif
+ 			if (previewBoxPath != null)
+ 			{
+ 				_previewBox.Data = previewBoxPath;
+@@ -766,7 +801,62 @@
+ 		void IOverlayWindow.DragLeave(IDropTarget target)
+ 		{
+ 			_previewBox.Visibility = System.Windows.Visibility.Hidden;
+-		}
++#if PORTABLE_AVALONDOCK
++			_portablePreviewTarget = null;
++#endif
++		}
++
++#if PORTABLE_AVALONDOCK
++		private void OnPortableVisibilityChanged(object sender, DependencyPropertyChangedEventArgs e)
++		{
++			if (IsVisible) return;
++			_portableGeometryOrigin = null;
++			_portablePreviewTarget = null;
++		}
++
++		private void OnPortableLayoutUpdated(object sender, System.EventArgs e)
++		{
++			if (!IsVisible || _floatingWindow == null || _mainCanvasPanel == null || PresentationSource.FromVisual(this)?.CompositionTarget == null)
++			{
++				_portableGeometryOrigin = null;
++				return;
++			}
++
++			var origin = this.PointToScreenDPI(new Point());
++			var restorePosition = new Point(Left, Top);
++			if (_portableGeometryOrigin == origin && _portableRestorePosition == restorePosition) return;
++			_portableGeometryOrigin = origin;
++			_portableRestorePosition = restorePosition;
++
++			foreach (var area in _visibleAreas.ToArray())
++				ShowDropArea(area);
++
++			if (_portablePreviewTarget != null)
++			{
++				var geometry = ToPortablePreview(_portablePreviewTarget.GetPreviewPath(this, _floatingWindow.Model as LayoutFloatingWindow), origin);
++				_previewBox.Data = geometry;
++				_previewBox.Visibility = geometry == null ? Visibility.Hidden : Visibility.Visible;
++			}
++		}
++
++		private static void PositionPortableArea(FrameworkElement element, IDropArea area, Point origin)
++		{
++			var left = area.DetectionRect.Left - origin.X;
++			var top = area.DetectionRect.Top - origin.Y;
++			if (Canvas.GetLeft(element) != left) Canvas.SetLeft(element, left);
++			if (Canvas.GetTop(element) != top) Canvas.SetTop(element, top);
++		}
++
++		private Geometry ToPortablePreview(Geometry geometry, Point origin)
++		{
++			if (geometry == null || (origin.X == Left && origin.Y == Top)) return geometry;
++			return new GeometryGroup
++			{
++				Children = { geometry },
++				Transform = new TranslateTransform(Left - origin.X, Top - origin.Y)
++			};
++		}
++#endif
+ 
+ 		/// <inheritdoc cref="IOverlayWindow"/>
+ 		void IOverlayWindow.DragDrop(IDropTarget target)
