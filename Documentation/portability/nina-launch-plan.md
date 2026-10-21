@@ -280,11 +280,48 @@ inherited identity-receipt label mentioning annotation is explicitly corrected
 by `identity-scope-correction.json`, SHA-256
 `AF71F69D45D71F24BBC9D13EBBA690CFB14C1342F6C92B8E516C40261421C1F3`.
 
-The fresh resource pilot starts at 09:53:06 UTC with this actual identity and
-Save=false, Loop=false, AutoStretch/DetectStars=true, High sensitivity and no
-noise reduction. Its planned five idle minutes, fifteen active minutes and five
-recovery minutes remain unqualified until all observations and cancellation
-complete. The unexecuted preceding-lifetime packets remain unchanged.
+The actual resource pilot measures five image-loaded idle minutes, fifteen
+minutes of original 640x480 RANDOM one-second Snapshot Loop and five minutes
+after original Cancel/drain. Save stays off, AutoStretch/DetectStars stays on
+and sensitivity/noise reduction stays High/None. All 53 thirty-second samples,
+three terminal records, 106 identity checks and 53 smaps reads pass. All three
+owned samplers exit zero with empty stderr and are reaped and absent. Root
+independently checked every raw row and all 71 handoff evidence pins.
+
+| Sampled measure | Initial idle | Active capture | End of recovery |
+| --- | --- | --- | --- |
+| RSS | 554.4 MiB median | 557.3-646.0 MiB range | 626.7 MiB |
+| Threads | 18 | 21-24 | 19 |
+| File descriptors | 325 | 325-327 | 327 |
+
+The five three-minute active RSS medians cycle rather than rise monotonically.
+Recovery ends 75,821,056 bytes above the initial idle median and rises 1,396,736
+bytes during recovery itself. The retained memory and two additional file
+descriptors remain unexplained follow-up observations. This establishes neither
+a leak nor an acceptable overnight ceiling. The sampler does not attribute
+allocations or inventory descriptor targets, and no extra GC was injected.
+
+Actual midpoint and end images have changing finite statistics, with no logged
+ERROR/FATAL or stderr. After the full recovery measurement, one original
+Save-off/Loop-off Snapshot displays a new image with mean 4999.41 and standard
+deviation 100.14. Both original FITS hashes and all 317 immutable installed
+members remain unchanged. All UI/guest observation ends around 10:20:36 UTC,
+inside the released window, with NINA left passive. Root inspected the images
+and verified all 34 UI evidence files. This does not qualify histogram refresh,
+caption/redocking, overnight operation, native allocation totals or 24MP App
+throughput. The visible histogram placeholder remains under investigation.
+
+Sampler handoff is
+`current/nina/overnight-preparation-20261021-1/pilot-final5-1/handoff.json`, SHA-256
+`ED0AC599844589B759F33BB2B9EC2D42FD2038C986BDAFDD60B8F822F27C3A2E`.
+The separate UI handoff is
+`current/nina/vm-package-final5-20261021-1/PILOT-UI-HANDOFF.json`, SHA-256
+`A847A2D5B757913ED6DD9B35BE1E17B6E39B31F7C7A047CFE35DFD604015C519`.
+Combined App/publication evidence occupies 400,321,832 bytes, below its 400 MiB
+cap; sampler reports stay below their separate 8 MiB combined cap. The first
+local date-cast setup failure occurred before SSH or sampling and remains
+retained with the narrow wrapper correction. Earlier pilot packets remain
+unchanged and unexecuted.
 
 Commit `b6b30ebc6` also includes AvalonDock's existing license and provenance
 receipt in generated NINA build output and normal publication. Disposable SDK
@@ -1260,6 +1297,21 @@ stderr and no app signals or input. The sealed packet is
 `0A8FE915E41FD30EED7BC3F99E296586D7B3DFBF8EA58E42F67C2FE86CEB4D4A`.
 This qualifies the sampler only. Its samples overlap sequence interaction and
 are neither idle baseline nor sustained-workload measurements.
+
+The later whole-App allocator observer is prepared separately from the resource
+pilot. Its final review packet is
+`current/nina/overnight-preparation-20261021-1/memusage-app-summary-3/handoff.json`,
+SHA-256 `D69692CC6D3C1F18D88AB4EE5C263C0B150AAFFCCCD30C6AF8C02A693AED33FF`.
+Root verified its 22 file pins. Nine disposable local process checks cover normal
+exit propagation, wrapper-only launch failure, surviving owned group members,
+interrupted exits and exclusion of unrelated groups. Independent review closed
+the supported cleanup and exit-classification findings. The observer retains
+the direct wrapper until group cleanup completes and reports an App exit only
+after actual App discovery without observer interruption. The installed App and
+profiler have not run through this observer. It requires a separately released,
+normally closed prior lifetime, exact state carry and refreshed guest/tool
+facts. Its summary-only output cannot establish end-live allocation bytes,
+native-memory totals or overnight stability.
 
 The sections below retain earlier attempts and their original limitations.
 
