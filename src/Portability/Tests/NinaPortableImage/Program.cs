@@ -27,12 +27,13 @@ internal static partial class Program {
         if (args.Length == 5) RunAnnotationCases();
         else if (args[5] == "annotation") RunAnnotationCases();
         else if (args[5] == "fits") RunFitsCases(args[6]);
+        else if (args[5] == "factory") RunFactoryCases(args[6]);
         else if (args[5] == "fits-legacy-reference" || args[5] == "fits-legacy-compare") RunLegacyFitsCase(args[6], args[5] == "fits-legacy-reference");
         else if (args[5].StartsWith("accord-", StringComparison.Ordinal)) RunAccordCases(args[6], args[5] == "accord-reference", args[5] == "accord-package-compare");
         else RunProcessingCases(args[6], args[5] == "science-reference", args[5] == "science-package-compare");
         var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(a => !a.IsDynamic && !string.IsNullOrEmpty(a.Location))
             .Select(a => new { name = a.GetName().Name, path = a.Location, sha256 = Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(a.Location))) });
-        var nativeLibraries = args.Length >= 7 && args[5] == "fits" ? FitsNativeLibraries() : [];
+        var nativeLibraries = args.Length >= 7 && (args[5] == "fits" || args[5] == "factory") ? FitsNativeLibraries() : [];
         File.WriteAllText(args[0], JsonSerializer.Serialize(new { status = failures == 0 ? "pass" : "fail", scope = "NINA.Image focused component; no application or acquisition qualification", cases, assemblies, nativeLibraries }, new JsonSerializerOptions { WriteIndented = true }));
         return failures == 0 ? 0 : 1;
     }

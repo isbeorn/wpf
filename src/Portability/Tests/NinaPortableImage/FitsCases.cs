@@ -2,6 +2,7 @@ using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using System.Security.Cryptography;
 using NINA.Core.Enum;
+using NINA.Core.Interfaces;
 using NINA.Core.Utility;
 using NINA.Image.FileFormat;
 using NINA.Image.FileFormat.FITS;
@@ -10,6 +11,67 @@ using NINA.Image.ImageAnalysis;
 using NINA.Image.Interfaces;
 
 internal static partial class Program {
+    [MethodImpl(MethodImplOptions.NoInlining)]
+    private static void RunFactoryCases(string directory) {
+        Directory.CreateDirectory(directory);
+        CoreUtil.APPLICATIONTEMPPATH = directory;
+        var factory = new ImageDataFactory(null!, new FactoryBehavior<IStarDetection>(new StarDetection()), new FactoryBehavior<IStarAnnotator>(null!));
+        foreach (var format in new[] { FileTypeEnum.FITS, FileTypeEnum.XISF }) {
+            Check("actual-factory-" + format + "-reload-without-raw-conversion", () => {
+                ushort[] raw = FitsSamples3x5(), before = raw.ToArray();
+                var source = FitsImage(raw, 3, 5, FitsMetadata());
+                string path = source.SaveToDisk(new FileSaveInfo { FilePath = directory, FilePattern = "factory-" + format, FileType = format }, CancellationToken.None).GetAwaiter().GetResult();
+                byte[] bytes = File.ReadAllBytes(path);
+                if (OperatingSystem.IsWindows() && format == FileTypeEnum.FITS) {
+                    bool missing = false;
+                    try { factory.CreateFromFile(path, 16, false).GetAwaiter().GetResult(); }
+                    catch (DllNotFoundException error) when (error.ToString().Contains("cfitsionative.dll", StringComparison.Ordinal)) { missing = true; }
+                    Require(missing && raw.SequenceEqual(before) && File.ReadAllBytes(path).SequenceEqual(bytes), "The unqualified Windows CFITSIO dependency changed or modified its input.");
+                    return;
+                }
+                var loaded = factory.CreateFromFile(path, 16, false).GetAwaiter().GetResult();
+                Require(loaded.Properties.Width == 3 && loaded.Properties.Height == 5 && loaded.Data.FlatArray.SequenceEqual(before), "Factory reload changed dimensions, samples or row order.");
+                Require(loaded.MetaData.Target.Name == "FITS boundary" && loaded.MetaData.Image.ExposureTime == 1.25 && loaded.MetaData.Camera.Gain == 139, "Factory reload changed metadata.");
+                Require(raw.SequenceEqual(before) && source.Data.FlatArray.SequenceEqual(before) && File.ReadAllBytes(path).SequenceEqual(bytes), "Factory reload changed its source samples or file.");
+                Require(OpenFitsDescriptors(path) == 0, "Factory reload retained its input descriptor.");
+            });
+        }
+        Check("actual-factory-raw-missing-dependency-and-nonraw-recovery", () => {
+            string path = Path.Combine(directory, "missing-native.cr2");
+            byte[] bytes = [0, 1, 255, 254];
+            File.WriteAllBytes(path, bytes);
+            for (int attempt = 0; attempt < 2; attempt++) AssertMissingRaw(() => factory.CreateFromFile(path, 16, false).GetAwaiter().GetResult());
+            Require(File.ReadAllBytes(path).SequenceEqual(bytes) && OpenFitsDescriptors(path) == 0, "Failed raw conversion changed or retained its source.");
+            if (!OperatingSystem.IsWindows()) {
+                var recovered = factory.CreateFromFile(Path.Combine(directory, "factory-XISF.xisf"), 16, false).GetAwaiter().GetResult();
+                Require(recovered.Data.FlatArray.SequenceEqual(FitsSamples3x5()), "Failed native activation poisoned nonraw recovery.");
+            }
+        });
+        Check("actual-factory-canceled-raw-preserves-platform-loading-order", () => {
+            using var canceled = new CancellationTokenSource(); canceled.Cancel();
+            string path = Path.Combine(directory, "missing-native.cr2");
+            bool observed = false;
+            try { factory.CreateFromFile(path, 16, false, canceled.Token).GetAwaiter().GetResult(); }
+            catch (OperationCanceledException) { observed = true; }
+            Require(observed, "Canceled raw conversion attempted native conversion.");
+        });
+    }
+
+    private static void AssertMissingRaw(Action action) {
+        try { action(); }
+        catch (DllNotFoundException error) when (error.ToString().Contains("libraw_0_22_1.dll", StringComparison.Ordinal)) { return; }
+        throw new InvalidOperationException("The actual raw converter did not report its missing native dependency.");
+    }
+
+    private sealed class FactoryBehavior<T>(T behavior) : IPluggableBehaviorSelector<T> {
+        public T GetBehavior() => SelectedBehavior;
+        public Type GetInterfaceType() => typeof(T);
+        public void AddBehavior(object value) => Behaviors.Add((T)value);
+        public AsyncObservableCollection<T> Behaviors { get; set; } = new();
+        public T SelectedBehavior { get; set; } = behavior;
+        public event EventHandler SelectedBehaviorChanged { add { } remove { } }
+    }
+
     [MethodImpl(MethodImplOptions.NoInlining)]
     private static void RunFitsCases(string directory) {
         Directory.CreateDirectory(directory);

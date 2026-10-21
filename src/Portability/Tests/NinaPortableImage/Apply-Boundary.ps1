@@ -5,6 +5,14 @@ function Replace-Once([string] $Text, [string] $Before, [string] $After) {
     if ($Text.IndexOf($Before, [StringComparison]::Ordinal) -lt 0 -or $Text.IndexOf($Before, [StringComparison]::Ordinal) -ne $Text.LastIndexOf($Before, [StringComparison]::Ordinal)) { throw "Expected exactly one image boundary: $Before" }
     $Text.Replace($Before, $After)
 }
+$path = Join-Path $Source 'NINA.Image/RawConverter/LibRawConverter.cs'
+$encoding = [Text.Encoding]::Latin1
+$text = [IO.File]::ReadAllText($path, $encoding)
+$newline = if ($text.Contains("`r`n")) { "`r`n" } else { "`n" }
+$text = Replace-Once $text '            EnsureDllLoaded();' '            if (OperatingSystem.IsWindows()) EnsureDllLoaded();'
+$text = Replace-Once $text '                    var rawBytes = s.ToArray();' ("                    if (!OperatingSystem.IsWindows()) EnsureDllLoaded();$newline$newline" + '                    var rawBytes = s.ToArray();')
+[IO.File]::WriteAllText($path, $text, $encoding)
+
 $path = Join-Path $Source 'NINA.Image/ImageAnalysis/StarAnnotator.cs'
 $text = [IO.File]::ReadAllText($path).Replace("`r`n", "`n")
 $start = $text.IndexOf('        private static Pen ELLIPSEPEN', [StringComparison]::Ordinal)

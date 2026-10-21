@@ -113,8 +113,35 @@ the resource pilot have not run. Root verified all 18 files in
 `current/nina/vm-package-gradient-20261021-1/functional-first-fault-evidence.json`;
 the fault receipt is `functional-first-fault.json`, SHA-256
 `08FFDB933107BCBC07FBB72FC7B2B57B68793A7024C29DC8A9273EF9B7819045`.
-The next repair targets converter construction at the existing image boundary,
-with actual factory regression coverage before another application run.
+The panes were restored through their original Info toggles and the application
+closed normally with exit zero and empty stderr. Tab order followed the original
+hide/show operations, so an exact layout-byte roundtrip is not claimed. The next
+restart state is profile `77EF4D08...43DDC37` and dock `4F90777A...9E280FA`,
+preserved by the same lane's `CLOSE-HANDOFF.md`.
+
+The focused repair now keeps the original Windows constructor preload and moves
+non-Windows native loading into `LibRawConverter.Convert`, after cancellation
+and before copying or pinning the raw bytes. No factory/public API, format
+dispatch or scientific algorithm changes. The four genuine factory tests fail
+with the old Linux Image component and pass with the repair. Final Linux checks
+also pass package science 27, annotation 5, FITS 13, legacy 1 and full-reference
+science 25. Windows original/candidate science 25, annotation 5 and legacy 1 pass;
+the corrected factory 4 passes with both the previous source-built component and
+the candidate. Its Windows FITS case observes dispatch to missing CFITSIO, not a
+successful native readback. Initial Windows fixture assumptions about failed
+preload throwing were corrected against the original loader and their failed
+reports remain retained.
+
+The new Image DLL is
+`F24F144FA5DD3CF20B3B9A57B14472B4BD7B5492A4A158A15AA0F0B9E766DF03`,
+PDB `19C2EB077D18198A85A1616AA6CCEE5CAB0BD3DE5FBC809DBE153C30ADBF1EC7`.
+Root verified all 72 resolved source-document hashes, the final five-file freeze,
+11 handoff pins and eight Windows result reports. All other 73 original source
+members match the preceding component and the 74 upstream inputs remain pinned.
+The handoff is `current/nina/fits-factory-reload-20261021-1/final-handoff.json`,
+SHA-256 `828FA3859B7816BC666EDD48E460142ED87F5535ECBB6FDCE7F9EA2775FCEA4C`.
+Actual NINA replay remains pending a coherent successor publication. Successful
+raw decoding and native Windows CFITSIO are outside this repair's qualification.
 
 ### Earlier targeted repairs and application runs
 
