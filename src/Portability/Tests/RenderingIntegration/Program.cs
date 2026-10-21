@@ -12,6 +12,24 @@ using SkiaSharp;
 
 var checks = new List<object>();
 var failed = false;
+if (args.Contains("--blur-only") || args.Length == 0)
+{
+    Run("blur-gaussian-zero-ten-and-dpi", BlurEffectCases.Gaussian);
+    Run("blur-retained-radius-child-mutation-and-previous-effect", () => BlurEffectCases.Retained(Drain));
+    Run("blur-genuine-zero-duration-animation-and-removal", () => BlurEffectCases.Animated(Drain));
+    Run("blur-group-visibility-opacity-and-sibling-isolation", () => BlurEffectCases.VisibilityAndIsolation(Drain));
+    Run("blur-own-and-ancestor-clip-restoration", () => BlurEffectCases.Clipping(Drain));
+    Run("blur-native-radius-transform-bounds-and-unsupported-profiles", BlurEffectCases.TransformsAndBounds);
+    Run("blur-gray16-source-and-pre-effect-clone-preservation", BlurEffectCases.SourceAndClone);
+}
+if (args.Contains("--blur-only"))
+{
+    string? capture = args.FirstOrDefault(argument => argument.StartsWith("--capture-blur=", StringComparison.Ordinal));
+    if (!failed && capture != null)
+        File.WriteAllText(capture["--capture-blur=".Length..], JsonSerializer.Serialize(BlurEffectCases.CaptureCalibration(), new JsonSerializerOptions { WriteIndented = true }));
+    Console.WriteLine(JsonSerializer.Serialize(new { probe = "gaussian-blur-rendering", corePath = typeof(DrawingVisual).Assembly.Location, checks }, new JsonSerializerOptions { WriteIndented = true }));
+    return failed ? 1 : 0;
+}
 if (args.Contains("--drawing-brush-only") || args.Length == 0)
 {
     Run("drawing-brush-classic-absolute-tile-and-freeze", DrawingBrushCases.ClassicTile);
@@ -252,7 +270,7 @@ Run("derived-container-retains-children-state-and-invalidation", () =>
     container.Children.Add(child);
     Drain();
     using (var pixels = target.Snapshot()) Pixel(pixels, 6, 7, SKColors.Green);
-    container.Effect = new System.Windows.Media.Effects.BlurEffect();
+    container.Effect = new System.Windows.Media.Effects.DropShadowEffect();
     var exception = Expect<NotSupportedException>(target.Render);
     Require(exception.Message.Contains("effects", StringComparison.OrdinalIgnoreCase), "Derived container effects were silently dropped.");
     container.Effect = null;

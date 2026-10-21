@@ -213,6 +213,32 @@ namespace MS.Internal.Portability.Rendering
                 Canvas.SaveLayer(paint);
         }
 
+        internal void PushBlur(BlurEffect blur)
+        {
+            if (blur.KernelType != KernelType.Gaussian || blur.RenderingBias != RenderingBias.Performance)
+                throw Unsupported("BlurEffect profiles other than Gaussian/Performance");
+            double radius = blur.Radius;
+            if (!double.IsFinite(radius)) throw Unsupported("non-finite BlurEffect radii");
+            SKMatrix matrix = Canvas.TotalMatrix;
+            if (!float.IsFinite(matrix.ScaleX) || !float.IsFinite(matrix.ScaleY) ||
+                !float.IsFinite(matrix.TransX) || !float.IsFinite(matrix.TransY) ||
+                matrix.SkewX != 0 || matrix.SkewY != 0 || matrix.Persp0 != 0 || matrix.Persp1 != 0 || matrix.Persp2 != 1)
+                throw Unsupported("BlurEffect transforms outside the finite axis-aligned profile");
+            float scale = Math.Min(Math.Abs(matrix.ScaleX), Math.Abs(matrix.ScaleY));
+            float localRadius = (float)Math.Truncate(Math.Max(radius, 0));
+            if (localRadius == 0 || scale == 0) return;
+            // MIL truncates before scaling, multiplies in float, truncates again then caps the device radius.
+            float deviceRadius = Math.Min(100, MathF.Truncate(localRadius * scale));
+            if (deviceRadius == 0) return;
+            using SKImageFilter filter = SKImageFilter.CreateBlur(deviceRadius / 3, deviceRadius / 3, SKShaderTileMode.Decal)
+                ?? throw new InvalidOperationException("The portable Gaussian blur filter could not be allocated.");
+            using var paint = new SKPaint { ImageFilter = filter };
+            _guidelineStates.Push(_guidelines);
+            Canvas.ResetMatrix();
+            try { Canvas.SaveLayer(paint); }
+            finally { Canvas.SetMatrix(matrix); }
+        }
+
         public override void Pop()
         {
             Canvas.Restore();

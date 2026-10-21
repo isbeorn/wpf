@@ -80,7 +80,42 @@ it does not establish which retained brush instance caused it. The Classic
 ResizeGrip tile and NINA camera_shutter/Observatory Uniform resources are known
 source profiles, not identified live owners.
 
-The final joint family passes all six focused cases and all 68 rendering cases
+Use `--blur-only` for seven focused Gaussian BlurEffect checks. The selected
+profile is NINA's default Gaussian kernel and Performance rendering bias under
+finite axis-aligned transforms. The display layer uses the current
+animated Radius, truncates the local radius, multiplies by the smaller basis
+scale using float arithmetic, truncates again and caps the device radius at 100.
+The Gaussian sigma is one third of that device radius. Radius zero preserves the
+unfiltered pixels exactly. Other kernels, biases, effects and skewed transforms
+remain explicitly unsupported; this is not general Effects compatibility.
+
+The checks cover radius and child mutation, removal and restoration of the
+previous effect, genuine zero-duration 0 -> 10 -> 0 animation, grouped descendants,
+visibility, opacity, own/ancestor clipping, failure recovery, transforms and DPI.
+They also retain unchanged Gray16 source samples and the clone captured before
+blur is enabled. Portable retained checks observe the registered target after
+dispatcher processing without manually rendering each mutation. The shared
+stock reference uses fresh public RenderTargetBitmap captures and a public
+CompositionTarget.Rendering subscription to advance its windowless animation
+clock. Native alpha profiles and raw display pixels are retained separately;
+Skia and Windows Gaussian raster bytes are not asserted equal. After the seven
+focused checks pass, `--blur-only --capture-blur=<absolute JSON path>` records the
+same twelve raw display profiles for a measured comparison with the native
+reference. No universal raster tolerance or complete Effects compatibility is
+claimed. The combined family passes all seven focused checks and all 75 rendering
+checks on both OSes. The twelve raw Windows and Linux captures are identical.
+Against stock WPF, the Radius 10 fixture differs by at most 4/255 at 96 and
+192 DPI; its omitted halo pixels all have native alpha 1. Radius 3 and 3.9
+differ by up to 18/255, the nonuniform-scale fixture by 11/255 and the capped
+100/200 fixtures by 1/255. Both clips exactly match their full-image crops within
+each backend and the measured half-coverage geometry agrees. These measurements
+apply to the declared 96x80 and 192x160 fixtures, not arbitrary content. Actual
+NINA drag, mouse-up and Escape restoration remain a separate application gate.
+Existing
+unsupported-effect controls use DropShadowEffect at the derived container,
+visibility helper and VisualBrush source boundaries.
+
+The earlier DrawingBrush joint family passed all six focused cases and all 68 rendering cases
 on Windows and Linux. Picture shaders normalize their tile origin, so the shader
 matrix restores the viewport origin before the brush transform and outer device
 transform. A negative viewport with scaling and translation checks that order

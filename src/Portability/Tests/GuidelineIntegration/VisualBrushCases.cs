@@ -204,7 +204,7 @@ internal static class VisualBrushCases
             Unsupported(() => render(Drawing(dc => dc.DrawGlyphRun(new VisualBrush(Source()), run)), new DpiScale(1, 1), 32, 24), "brush type");
             DrawingVisual masked = Source(); masked.OpacityMask = Brushes.White;
             Unsupported(() => Paint(new VisualBrush(masked)), "opacity mask");
-            DrawingVisual effect = Source(); effect.Effect = new BlurEffect();
+            DrawingVisual effect = Source(); effect.Effect = new DropShadowEffect();
             Unsupported(() => Paint(new VisualBrush(effect)), "effects");
         });
         foreach (PixelFormat format in new[] { PixelFormats.Gray16, PixelFormats.Rgb48 })

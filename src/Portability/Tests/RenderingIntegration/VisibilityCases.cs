@@ -160,14 +160,14 @@ internal static class VisibilityCases
     private static Probe UnsupportedElement(string content)
     {
         var element = Element(content == "image-brush" ? Image() : Brushes.Red);
-        if (content == "effect") element.Effect = new BlurEffect { Radius = 1 };
+        if (content == "effect") element.Effect = new DropShadowEffect();
         if (content == "opacity-mask") element.OpacityMask = Brushes.White;
         return element;
     }
     private static DrawingVisual UnsupportedDrawing(string content)
     {
         var visual = Drawing(content == "image-brush" ? Image() : Brushes.Red);
-        if (content == "effect") visual.Effect = new BlurEffect { Radius = 1 };
+        if (content == "effect") visual.Effect = new DropShadowEffect();
         if (content == "opacity-mask") visual.OpacityMask = Brushes.White;
         return visual;
     }

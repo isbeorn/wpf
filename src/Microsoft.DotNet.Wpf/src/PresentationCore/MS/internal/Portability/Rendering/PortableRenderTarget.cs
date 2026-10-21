@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Effects;
 using SkiaSharp;
 
 namespace MS.Internal.Portability.Rendering
@@ -172,7 +173,8 @@ namespace MS.Internal.Portability.Rendering
             int saved = walker.Canvas.Save();
             try
             {
-                if (visual.VisualEffect != null || visual.VisualBitmapEffect != null)
+                Effect effect = visual.VisualEffect;
+                if ((effect != null && !(effect is BlurEffect)) || visual.VisualBitmapEffect != null)
                     throw new NotSupportedException("Portable rendering does not support visual effects.");
                 if (visual.VisualOpacityMask != null)
                     throw new NotSupportedException("Portable rendering does not support a visual opacity mask.");
@@ -182,6 +184,8 @@ namespace MS.Internal.Portability.Rendering
                     walker.PushTransform(visual.VisualTransform);
                 if (visual.VisualClip != null)
                     walker.PushClip(visual.VisualClip);
+                if (effect is BlurEffect blur)
+                    walker.PushBlur(blur);
                 if (visual.VisualOpacity != 1)
                     walker.PushOpacity(visual.VisualOpacity);
                 walker.SetVisualGuidelines(visual);
