@@ -2,6 +2,15 @@
 
 Status: accepted design, 18 October 2026. Phases 0 through 5 are authorized for local implementation, with a feasibility report before proceeding beyond the early experiments. Local branches and logical commits are authorized; GitHub writes require separate explicit human confirmation.
 
+Current execution follows the user's NINA-first priority in the
+[launch checkpoint](portability/nina-launch-plan.md). The original simulator-only
+NINA App/MainWindow has run on GNOME/XWayland with capture, cancellation, recovery,
+layout restoration and sequence execution. A contended weak-event wait found
+during sequence restart is repaired and qualified at component and package
+boundaries; its full application replay remains pending. General WPF features
+unused by NINA, native IME and further accessibility qualification are deferred.
+The historical implementation notes at the end retain their original scope.
+
 Build an open-source WPF implementation that runs NINA's existing WPF views and control libraries on Linux, then extend the same architecture to Linux ARM64 and macOS. Keep WPF's programming model, XAML and managed framework behavior. Use NINA to choose implementation priorities and demonstrate compatibility through real application views.
 
 The first release target is Linux x64 using X11, with XWayland qualified separately. Linux ARM64 follows, then macOS. Native Wayland is a separate backend qualification, not an automatic consequence of running under XWayland.
@@ -377,7 +386,9 @@ The design review should confirm these recommendations before implementation:
 
 Current implementation evidence and phase gate status are recorded in the [feasibility results](portability/feasibility-results.md). The gates described here are acceptance requirements, not claims that those phases have passed.
 
-Current implementation snapshot: `c5c0fe874` integrates Grid bounds and Popup cleanup,
+## Historical implementation checkpoints
+
+The earlier implementation snapshot at `c5c0fe874` integrates Grid bounds and Popup cleanup,
 with 3,764 checks in the genuine combined Debug graph and a passing ordinary
 Windows PresentationFramework compile. Commit `fb38f5f45` adds transparent empty
 ImageBrush sources; the coherent ordinary Release family passes Rendering 49

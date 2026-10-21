@@ -543,17 +543,50 @@ remain retained; only the preauthorized redundant cache and transfer files were
 removed. Combined retained consumer storage stays below its 3 GiB reservation.
 This qualifies the repaired package boundary, not the pending full NINA replay.
 
-An App-only source build through that exact released SDK/runtime pair is now
-underway in `current/nina/package-app-20261021-1`. The original App/MainWindow,
-resource closure and current companion pins are preserved. Ordinary restore
-passes. Initial evaluation found that the SDK's default Page scan re-added three
-resources explicitly removed by NINA's existing project. Disable default Page
-items in the copied consumer project and retain its original explicit item
-graph. The first mismatch is preserved before compilation. Use standard
-SDK-generated dependency metadata instead of the development Stage launch
-metadata and verify the actual graph excludes Stage and metadata-only GDI
-runtime assets before claiming success. Companion producer histories remain
-explicit.
+The App-only source build and ordinary Linux FDD publish through that exact
+released SDK/runtime pair now pass in `current/nina/package-app-20261021-1`.
+The final handoff is `package-app-build-handoff.json`, SHA-256
+`439BE6156EEAB5FDED1DDDD03E3AB7BFB5E4D338DBB5CF0BF7B389F8CA7B1968`.
+The publish has 289 files and 101,489,546 bytes. Its new App DLL is
+`3668564ED3DB26E2E4FAF1AE1567FFE3C5F16F6ECEE803E4920AB7104150C45F`
+and PDB is
+`BB08BC4A8E7C87129CAE500C64A817A2CB2514590BE3609641F44699B901403C`.
+All 469 PDB documents verify, including 401 physical files and 68 embedded
+generator sources. All 104 BAML entries, 115 resource keys and 34 ordered App
+dictionaries are preserved, with zero resource payload differences from the
+predecessor. All 159 reused companion assemblies match their selected pins.
+The ordinary build has the existing 320 obsolete-API warnings, no errors and
+empty stderr; publish also exits zero with empty stderr.
+
+Two consumer configuration corrections preserve the original item graph and
+companion selection. Disable default Page items because NINA already explicitly
+includes its pages and excludes three resources. Point only NINA.Core's existing
+HintPath at a small verified directory containing the same Core DLL/PDB and 35
+original satellites. Normal reference resolution otherwise chooses newly built
+adjacent satellites. Those have identical identities and resource payloads but
+different provenance. Both initial mismatches and the first App pair, generated
+sources and output manifests remain retained. Redundant failed bin/publish
+copies were removed after guarded checks. The final lane stays below 512 MiB.
+The independent correctness finding is closed and maintenance review has no
+additional finding.
+
+The final dependency metadata is SDK-generated. All 32 managed and two native
+package runtime assets and 53 runtime notices match the package. Stage and
+metadata-only GDI contracts are absent from the runtime graph and publish.
+GdiPlus remains a compile-only reference with Private and CopyLocal false.
+The unselected adjacent NINA.Core.dll.config is absent, as it was in the earlier
+qualified application; the original App config remains. Companion producer
+histories retain their original compile-reference origins.
+
+The fresh whole application is
+`current/nina/vm-package-sequence-fits-20261021-1/consumer`: all 289 normal publish
+members plus 17 qualified application native/data/plugin/state/notice files,
+306 files and 126,826,014 bytes in total. Its manifest SHA-256 is
+`339A743250EAEED5C609EC6A22902A60686932047B087E1F266A4C86102A888F`.
+Root rehashed all 306 members, all 401 physical source documents and the 33 final
+evidence pins. The fresh VM transfer and native replay are released, using the final
+closed profile/layout above, diagnostics off and ordinary dependency metadata.
+No full application result follows from these build and composition checks.
 
 Final package execution, actual Xorg desktop qualification and the sustained
 original simulator session remain open. The current guest session is GNOME Wayland with
