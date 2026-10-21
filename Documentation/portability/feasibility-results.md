@@ -62,6 +62,17 @@ not sustained acquisition,
 exhaustive native allocations or a resource ceiling. See the
 [actual execution receipt](../../artifacts/portability/current/nina/allocator-diagnostics-resume-20261021-1/EXECUTION-HANDOFF.json).
 
+The matched 35-minute Windows reference now completes all four measurement
+blocks, the final recovery Snapshot and normal shutdown: 1,462 captures,
+1,461 frame changes and no timeout or forced termination. Root recomputed the
+sampled distributions and verified 23 pinned evidence files, identical 3,673
+protected file records and unchanged raw user/machine PATH. Stderr is empty and
+no binding or ERROR/FATAL entries occur. See the
+[completed reference verification](../../artifacts/portability/current/nina/windows-resource-reference-resume-20261022-1/isolated-runs/20261021T223523-acbb5a75107149778e16b1cddc8f841e/root-verification.json).
+Windows working set/private commit and approximate managed counters retain their
+hardware, layout and mixed-build scope. They do not establish Linux memory
+budgets or exhaustive native allocation behavior.
+
 The eight-hour coordinator has passed its finite regression and mutation
 controls, but the real run has not executed. Remaining gates are actual
 focus/keyboard/scale checks for the single-monitor profile, a distinct Xorg

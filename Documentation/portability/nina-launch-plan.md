@@ -138,7 +138,8 @@ Only the final native screenshot is retained because the capture helper reused
 its initial filename. See
 `current/nina/allocator-diagnostics-resume-20261021-1/EXECUTION-HANDOFF.json`.
 This idle compatibility run is not sustained acquisition or a resource-budget
-pass. The latest closed-state carry is the same receipt's `closedCarry`.
+pass. That lifetime's carry is the same receipt's `closedCarry`; the later
+scale/keyboard carry above supersedes it for the next launch.
 
 The reviewed eight-hour coordinator now rejects interrupted sampling, stale or
 misbound allocation observations and incomplete normal-close evidence. Its 39
@@ -150,11 +151,39 @@ Actual eight-hour execution, periodic original UI responses, cancellation,
 recovery and relaunch are still pending. Numerical memory/allocation acceptance
 must be grounded in workload measurements before a performance pass is claimed.
 
+The matched Windows resource reference has completed five image-loaded idle
+minutes, ten active warmup minutes, fifteen active steady minutes and five
+passive recovery minutes. The original RANDOM simulator uses 640 x 480 Gray16
+frames and one-second exposures. It completes 1,462 captures and 1,461 frame
+changes, including a successful fresh Snapshot after recovery, then closes
+normally with exit zero. There is no timeout or forced termination. Application
+and launcher are absent and the private desktop is released. All 3,673 protected
+file records and raw user/machine PATH are unchanged; stderr is empty, with no
+ERROR/FATAL or binding errors. Root recomputed all process/managed distributions
+and checked 23 pinned evidence files; an independent correctness review found
+no discrepancy. See
+`current/nina/windows-resource-reference-resume-20261022-1/isolated-runs/20261021T223523-acbb5a75107149778e16b1cddc8f841e/root-verification.json`.
+
+| Matched block | Process samples | Median working set, MiB | Median private commit, MiB |
+| --- | ---: | ---: | ---: |
+| Image-loaded idle | 299 | 380.2 | 232.8 |
+| Active warmup | 585 | 358.9 | 206.5 |
+| Active steady state | 877 | 358.0 | 206.3 |
+| Passive recovery | 298 | 356.8 | 212.8 |
+
+These are sampled Windows process counters, not Linux RSS/PSS or exhaustive
+native allocations. Managed heap/allocation counters are approximate and include
+observer overhead. The reference uses stock Windows WPF with software rendering,
+a docked layout and 32 logical processors; the Linux VM has a different layout
+and hardware allocation. Its Release shell/plugin retains the existing Debug
+science closure. These scope differences remain explicit in `reference-summary.json`.
+This completes the reference measurement, not Linux calibration, an accepted
+numerical memory budget or the eight-hour resource gate.
+
 Remaining release work is actual keyboard/focus and changed desktop-scale
 qualification on the selected single-monitor profile, a distinct real Xorg
-session and sustained/resource qualification. The matched Windows resource reference is
-running after an error-free isolated smoke; neither calibration nor the
-eight-hour workload is a completed resource pass. Fixed-DPI Xvfb results do not
+session and sustained/resource qualification. Linux calibration and the
+eight-hour workload are not completed resource passes. Fixed-DPI Xvfb results do not
 prove desktop transitions. Native Wayland, native IME, further accessibility,
 unused WPF capabilities, real equipment,
 ARM64 and macOS retain their recorded exclusions or deferrals.
