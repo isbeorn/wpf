@@ -252,13 +252,39 @@ Native dependencies resolve and the existing App and six protected state/data
 files remain unchanged. Staging handoff is
 `current/nina/vm-package-final5-20261021-1/staging-handoff.json`, SHA-256
 `A19BCCD75BB11D4E95FED95CD857422D21D258D313C72C96B862285E61AD8D4A`.
-No final5 App lifetime or desktop workflow has run. The staged fixture profile
-`72D23CA3...EE729` and SQLite `4DD072` are immutable publication seeds; no dock
-file is included. Historical closed `77EF4D08/4F90777A` and the current live
-profile/layout remain separate. A normal close must define the next state carry.
-The next resource pilot must bind the actual selected final5 lifetime, not reuse
-the unexecuted packet for the preceding App. The pending desktop-idle window is
-still required before activation, input or the pilot starts.
+The staged fixture profile `72D23CA3...EE729` and SQLite `4DD072` remain immutable
+publication seeds; no dock file is included. After the user released a new
+35-minute idle window, the preceding application closed normally at 09:46:31 UTC
+with exit zero and empty stderr. Its exact PID and supervisor were absent before
+copying the closed live profile `3710235A...ACBF6`, dock `0D2EBFEC...D78B2` and
+settings into the final5 installation. Historical `77EF4D08/4F90777A` remains
+separate from this actual carry.
+
+Final5 runs as PID 562971, start ticks 6408255 and supervisor 562969 on the same
+GNOME/XWayland desktop. Its loaded App, Image, Accord and normal package Core
+match the selected publication; all 317 immutable installed members remain
+unchanged. Original one-second Snapshot commands display two useful 640x480
+images and save two 619,200-byte FITS files, `F68D5E35...4962F` and
+`43706851...D3708`. The original thumbnail invokes `LoadOriginalImage` on the
+first saved file without a subsequent logged error. Initial thumbnail clicks
+hit overlapping floating panes; original Info controls uncover the thumbnail
+and restore the panes afterwards. These missed clicks and other driver setup
+failures remain retained separately from application results.
+
+Root verified all 29 files in the native functional evidence manifest and
+inspected both completed image captures. The handoff is
+`current/nina/vm-package-final5-20261021-1/native-functional-handoff.json`, SHA-256
+`F27963FF136A76E31E6B20DE55A8659425C065DA5BCD3BF9EBB67CF5B353A62D`.
+Annotation and caption interaction were not repeated in this lifetime. An
+inherited identity-receipt label mentioning annotation is explicitly corrected
+by `identity-scope-correction.json`, SHA-256
+`AF71F69D45D71F24BBC9D13EBBA690CFB14C1342F6C92B8E516C40261421C1F3`.
+
+The fresh resource pilot starts at 09:53:06 UTC with this actual identity and
+Save=false, Loop=false, AutoStretch/DetectStars=true, High sensitivity and no
+noise reduction. Its planned five idle minutes, fifteen active minutes and five
+recovery minutes remain unqualified until all observations and cancellation
+complete. The unexecuted preceding-lifetime packets remain unchanged.
 
 Commit `b6b30ebc6` also includes AvalonDock's existing license and provenance
 receipt in generated NINA build output and normal publication. Disposable SDK
