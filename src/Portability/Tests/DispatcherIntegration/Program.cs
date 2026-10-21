@@ -18,12 +18,24 @@ using PresentationTraceSources = WpfFork::System.Diagnostics.PresentationTraceSo
 
 var checks = new List<object>();
 var failed = false;
+if (args.Contains("--weak-event-memory-enabled"))
+    AppContext.SetSwitch("Switch.MS.Internal.EnableWeakEventMemoryImprovements", true);
+else if (args.Contains("--weak-event-memory-legacy"))
+    AppContext.SetSwitch("Switch.MS.Internal.EnableWeakEventMemoryImprovements", false);
 checks.Add(new
 {
     name = "fork-assembly-identity",
     status = "pass",
     detail = $"{typeof(Dispatcher).Assembly.FullName}; location={typeof(Dispatcher).Assembly.Location}; MVID={typeof(Dispatcher).Assembly.ManifestModule.ModuleVersionId}"
 });
+Run("weak-event-public-contended-notification", WeakEventWaitCases.PublicNotification);
+Run("weak-event-contended-read-and-write", WeakEventWaitCases.ReadAndWrite);
+Run("weak-event-recursion-and-context-failure-restoration", WeakEventWaitCases.RecursionAndFailure);
+if (args.Contains("--weak-event-waits-only"))
+{
+    WriteResults();
+    return failed ? 1 : 0;
+}
 Run("dependency-object-and-affinity", () =>
 {
     var value = new Fixture();
@@ -310,14 +322,17 @@ Run("immediate-shutdown", () =>
     Require(events.SequenceEqual(["started", "finished"]) && dispatcher.HasShutdownFinished, "Immediate shutdown lifecycle changed.");
 });
 
-Console.WriteLine(JsonSerializer.Serialize(new
+WriteResults();
+return failed ? 1 : 0;
+
+void WriteResults() => Console.WriteLine(JsonSerializer.Serialize(new
 {
     probe = "dispatcher-integration",
     os = RuntimeInformation.OSDescription,
     scope = "fork WindowsBase dependency properties and Dispatcher with managed portable pump; native ETW disabled; no native window/input host",
+    weakEventMemoryImprovements = AppContext.TryGetSwitch("Switch.MS.Internal.EnableWeakEventMemoryImprovements", out bool enabled) ? enabled : (bool?)null,
     checks
 }, new JsonSerializerOptions { WriteIndented = true }));
-return failed ? 1 : 0;
 
 void Run(string name, Action test, bool sta = false)
 {

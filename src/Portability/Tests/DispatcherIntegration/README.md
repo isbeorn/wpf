@@ -9,6 +9,8 @@ Failures produce JSON and exit code 1.
 ## Behavior checklist
 
 - Record the loaded WindowsBase identity, location and module version ID.
+- Deliver a real worker PropertyChangedEventManager notification exactly once after contending with event registration, then remove the subscription.
+- Unblock contended wrapper reads and writes without pumping queued Dispatcher work or calling the parent synchronization context; preserve recursion and restore the parent after acquisition, release and a failed release.
 - Construct a real dependency object, store/read its property and reject foreign-thread mutation.
 - Refresh managed PresentationTraceSources and mutate a property afterward.
 - Reject null, duplicate, late and recursive pump factories without publishing a partial dispatcher.
@@ -86,6 +88,14 @@ Factory tests reach the existing internal backend configuration contract through
 reflection. They use the actual managed pump implementation, then exercise public
 dispatcher construction, queue operations and shutdown. They add no friend assembly,
 fake WPF type or production API for test access.
+
+## Weak-event contention regression
+
+`--weak-event-waits-only` selects the three focused weak-event cases plus assembly identity. Start separate processes with `--weak-event-memory-legacy` and `--weak-event-memory-enabled` to exercise both cached `Switch.MS.Internal.EnableWeakEventMemoryImprovements` modes before first use. The public case uses the actual `PropertyChangedEventManager.AddHandler`, a controlled event-add accessor and a background source notification. It waits for a genuine read waiter before releasing registration, then requires one delivery, working removal and normal dispatcher recovery.
+
+Test-only reflection observes the existing weak table's ReaderWriterLockSlim waiter count and reaches the existing private wrapper for symmetric read/write contention and recursion/release-failure coverage. Actual read/write waiter counts exclude the lock's preliminary SpinWait; thread waiting-state flags are not a portable witness for the native Windows wait. No private production hook or friend access is added. Cleanup/context checks preserve a primary failure. Existing WaitAny/WaitAll, timeout/signal, disabled-queue and Windows STA cases remain the broader wait-semantics checks.
+
+The private non-pumping context retains Win32 waiting on Windows. Only non-Windows `PORTABLE_WPF` uses the CLR `SynchronizationContext.WaitHelper`; the wrapper still installs/restores its existing context and keeps its original recursion policy. A green leaf must load the exact released successor WindowsBase. Compiling tests against new source while executing an old runtime does not qualify the change.
 
 ## Verified evidence
 

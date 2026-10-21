@@ -58,6 +58,31 @@ The restart record is `sequence-restart-observe.json`; its filtered log omits
 some exception frames. The complete `sequence-restart-original.log` is retained,
 SHA-256 `F69710939B3BC0819F9F4D9AC11A4E78DF94CB8BA349244201CE331F193FE074`.
 
+The contended wait now uses the CLR wait helper on non-Windows portable builds.
+The four-line guard leaves the original Windows wait and lock/context ownership
+unchanged. Both fresh weak-event modes reproduce the old failure through real
+PropertyChangedEventManager registration and worker notification. The new
+ordinary WindowsBase builds pass with no warnings or errors. On each OS, both
+focused modes pass four checks; the full dispatcher suite passes 17 on Windows
+and 16 on Linux, with one Windows-STA row not applicable on Linux. All six
+processes exit zero with empty stderr. Both independent reviews are clear.
+The sealed successor is
+`current/nina-weak-event-wait-integration-20261021-1/handoff.json`, SHA-256
+`4053C6AEBE25E14478693A4FE39720B50528C194475BBA1BF6193EE88907141B`.
+Root rehashed its 24 receipt pins and both producer DLL/PDB pairs. The actual
+NINA restart still needs replay on a fresh whole publication; these are targeted
+WindowsBase results, not a repaired full-App claim.
+
+The failed application lifetime subsequently closed normally with exit zero,
+empty stderr and no remaining app or supervisor. All 332 immutable members
+and the absolute Framing cache stayed unchanged. Its final profile is
+`AB2022699B8D3F6A4C6A69E7B2A8698922A02F83BE6304A014600BFB8E62B4DA`
+and dock layout remains
+`0C565FAC8A94E619BE71A229672AC56B22E2FDB7A3254CDE765E39D83AEA3136`.
+Use that final closed state for the next startup. The normal-close receipt is
+`current/nina/vm-sequence-fits-ui-20261021-1/POSTCLOSE.md`, SHA-256
+`3EA18FCE98C34B7F96B6E1BF362EFC20FD9F6FB69A61DB359C998D7161227EAE`.
+
 The complete original simulator-only application now completes a native
 1-second capture, a 10-second capture cancellation and a subsequent recovery
 capture on GNOME/XWayland. AutoStretch and DetectStars were enabled for that
@@ -481,20 +506,39 @@ copies of the earlier Stage. The sealed handoff is
 `FBA8B33D5154D91981EC683C81B73CCBF0DADBEFFF4DB071A0555F496C592B96`.
 Root independently rehashed its 22 receipt pins and all 199 immutable payload
 members. The original producer audit is preserved before consumer execution.
-The Windows consumer passes 37 checks, conflicts pass eight and runtime policy
-passes 14. Clean Linux consumers and both compiler-origin complete-view checks
-remain in progress. The guest's initial readiness check found no Xvfb before
-any restore/build/native run; a bounded official Ubuntu prerequisite extraction
-is being prepared without a system installation or change to the live desktop.
-Package production alone does not pass those gates or qualify the current
-Stage-based NINA publication on the final package boundary. The newly exposed
-weak-event wait defect requires a source successor before a final release claim.
+The frozen candidate now passes Windows consumer 37, actual Ubuntu managed 62,
+native FDD 14 and SCD 14, dependency conflicts eight, runtime policy 14, contents
+seven and both compiler-origin complete-view groups totaling 94. The consumer
+handoff is `current/final-distribution-20261021-1-consumer-proof/handoff.json`,
+SHA-256 `C3FDEFEB115CFD5AB0F4FD4A041EFB4B190511ED2E96C83BA6D32A1A8E406FDB`.
+Root rehashed its seven receipt pins. The guest uses an exact official Ubuntu
+Xvfb package extracted into owned test prerequisites, without a system install
+or live desktop change. Initial missing-prerequisite and transfer failures are
+preserved separately. The 51 consumer PE-module proofs cover 330 source-document
+records. Redundant inactive cache/transfer files were removed after scoped
+verification; original source, generated files and producing evidence remain.
+This qualifies the frozen `5967f51cb` packages, not the WindowsBase successor or
+the current Stage-based NINA publication on the final package boundary.
+
+The next delivery uses a normal package producer after the wait-fix commit,
+then an App-only source build through the exact released SDK/runtime pair.
+Preserve the original App/MainWindow, resource closure and current companion
+pins. Use standard SDK-generated dependency metadata instead of the development
+Stage launch metadata and verify the actual graph excludes Stage and
+metadata-only GDI runtime assets before claiming success. Companion producer
+histories remain explicit.
 
 Final package execution, actual Xorg desktop qualification and the sustained
 original simulator session remain open. The current guest session is GNOME Wayland with
 XWayland, not Xorg. The installed login choices include Ubuntu on Xorg; switching
 requires coordinating a normal logout/login with the user after closing NINA.
 Native IME and further Orca work remain explicitly deferred.
+
+Actual desktop clipboard exchange and exact Open/Save accept/cancel outcomes
+remain separate gates. The retained private fixtures pass clipboard nine and
+portal 31 checks, but historical human picker runs selected different files or
+accepted an intended Cancel. Do not count those as strict outcome passes. Use
+the original NINA sequence Save As/Open paths for the next bounded desktop run.
 
 The resource ledger still has no accepted shell memory, native-allocation or
 thread-growth budgets. The proposed overnight workload uses the original
