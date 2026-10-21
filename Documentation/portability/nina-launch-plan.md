@@ -32,7 +32,10 @@ This is an implementation inventory, not a claim that every API or component
 workflow is qualified. Real NINA has launched and passed native sequence
 workflows. The approved Accord metadata adaptation passes the component image
 regressions and the actual simulator Snapshot saves a valid FITS file. Rendering
-then stops at an unsupported ImageBrush; displayed-image readback remains open.
+initially stopped at an unsupported ImageBrush. That renderer gap is now fixed,
+passes the affected component tests and is included in newly qualified packages.
+The successor NINA application has opened visibly; its displayed-image and
+readback workflow remains open.
 Native IME, broader rich-text editing/printing, real hardware, ARM64 and macOS
 remain unqualified or deferred. Detailed evidence and remaining gates follow.
 
@@ -43,11 +46,18 @@ qualified portable SDK/runtime packages. Native sequence editing, completion,
 cancellation, reset, restart and palette drag/drop/Escape pass in that packaged
 application. Floating caption/redocking remains under diagnosis. The Image/Accord
 repairs pass the component package graph's complete image regression without
-GdiPlus. A fresh 317-file application opened on GNOME/XWayland and saved a valid
-FITS through the original Snapshot and worker path, then stopped at unsupported
-nonempty ImageBrush rendering. It closed normally. Useful displayed image,
-statistics, original UI readback and annotation toggling remain open. Earlier
-capture and Framing passes retain their own runtime scope.
+GdiPlus. The earlier 317-file application saved a valid FITS through the original
+Snapshot and worker path, then exposed unsupported nonempty ImageBrush rendering.
+The fix is committed as `97c1da741` and passes 400 affected component checks.
+Fresh ordinary SDK/runtime packages pass 250 consumer checks plus six
+package-derived ImageBrush checks. The new coherent 317-file NINA publication
+has opened visibly on GNOME/XWayland. No Snapshot was invoked during its first
+lifetime. The user's subsequent navigation exposed another unsupported brush:
+LinearGradientBrush through DrawRoundedRectangle. The application closed
+normally and the user's final profile/layout are preserved. Reopening waits
+for that focused renderer repair. Useful displayed image, statistics,
+original UI readback and annotation toggling remain open. Earlier capture and
+Framing passes retain their own runtime scope.
 
 The targetless sequence ContextMenu opening is repaired in commit `0b12eb772`. The original null
 PlacementTarget remains unchanged; an eligible active keyboard source supplies
@@ -334,7 +344,8 @@ all exit zero with empty stderr and clean builds. All 28 raw rasters are
 pixel-identical across Windows and Linux; JSON file differences are line endings.
 Root independently verified both Core PE/PDB pairs and 2,856 producing documents,
 all six leaf pairs and 72 documents, all 121 protected inputs and all 590 final
-artifact pins. Package and actual App replay remain separate pending gates.
+artifact pins. Those component results precede the package and actual App
+qualification below.
 The final source descriptor is
 `current/image-brush-edge-rendering-20261021-1/root-report-order-1/final-source-freeze.json`,
 SHA-256 `CF953E081620C41A705AB0054B1581F144B70AF1854685917A701CD5D7B1A3C4`.
@@ -344,6 +355,66 @@ and diagnostic leaves in place and reuses both proven Core producers, with a
 retention is 328,287,933 bytes. The sealed handoff is
 `current/nina-image-brush-integration-20261021-2/final-leaves-1/reports/final-handoff.json`,
 SHA-256 `C296886C1F4743C557B2BC2540D6183EF4F0BD0E28374D60BDAC66F3B0829BBE`.
+
+The normal package producer now includes commit `97c1da741` in
+`current/final-distribution-20261021-3`. Its runtime package is SHA-256
+`27AB554BD97AD991FD0E31AEF4E2E12FA762CCAB69C2892C7104E752F1999087`
+and SDK package is
+`6D8398CDC1EE1A77A4C697601F351D4C2AD43BE0531226CF70440A48F5C03B68`.
+The build has zero errors and 27 warnings. All 18 PE/PDB pairs and 4,289 source
+records verify, with all 9,604 protected records unchanged. Root separately
+verified the 199 immutable package/output files, all producing pairs and source
+records. The released Core is
+`7C99BE9C47EF5D33A4532CA89200742C04D1508C4A26DEA4DF05D16B9BFA6978`;
+its producing renderer document matches the reviewed source. Producer evidence
+is `current/final-distribution-20261021-3-proof/handoff.json`, SHA-256
+`39C1C43305628CC39821C4C0C393EBFEC967A44F03ACC7AE13E17A601ED5F675`.
+
+Fresh Windows and Ubuntu consumers pass all 250 ordinary checks, including
+native framework-dependent/self-contained execution and both compiler-origin
+complete-view consumers. The package-derived ImageBrush replay passes six more.
+All 199 producer files remain unchanged. Root verified the 952-row evidence
+manifest; the proof covers 52 module paths and 341 source documents. The handoff
+is `current/final-distribution-20261021-3-consumer-proof/handoff.json`, SHA-256
+`9A8775F0F32FC8855B1729241D79F10C1C02B889B88F4EE6CB2349325C0BA0C3`.
+The raw preflight failures remain retained. An unexpectedly expanded supplemental
+restore cache was retired only after proving it inactive and recoverable from
+the original package archives. This reclaimed 1,017,691,893 bytes without
+deleting sources, publications or proof. Final local/guest consumer retention is
+3,201,014,750 bytes, below the declared 3 GiB cap. All producer and consumer
+writers are released.
+
+The successor App uses a normal restore and publish against that exact package
+pair. It retains the qualified prebuilt App/PDB, original BAML/resources and all
+159 original application companions, without recompiling App or overlaying
+individual WPF assemblies. The 289-file normal publication is combined with
+17 qualified application inputs and the frozen Image/Accord payload to produce
+317 files totaling 130,106,937 bytes. Root verified every member and the generated
+dependency file's package identity. The composition handoff is
+`current/nina/vm-package-imagebrush-20261021-1/composition-handoff.json`, SHA-256
+`0CD62E58D7E6D479AE1A2455041F8A587ABF0FE0EBF4857CF7F2D9AB8ABA79A0`;
+its publication manifest is
+`16EA5AA2D6BF005CD9330EA7C013A488A54C4D56550951F8203B930D5D2A2EFC`.
+The whole publication and native linkage verify in the VM. Startup and original
+Imaging controls are visibly present with diagnostics off. This establishes
+startup only; no new Snapshot, displayed-image or UI reload pass is claimed.
+
+The first lifetime subsequently reached `LinearGradientBrush` through
+`CreateBrush` and `DrawRoundedRectangle`, which remains unsupported in this
+renderer. The stack does not identify its particular NINA resource or control.
+The complete original log is retained as
+`current/nina/vm-package-imagebrush-20261021-1/final-original-unfiltered.log`,
+SHA-256 `D786C57223F549081AF99747AE1BDCE852C41900A4E09DB1E0AA13A71B4236DB`.
+The user confirmed their intervening UI activity; no Snapshot was submitted by
+the driver and there are no new FITS files. App and supervisor are gone after
+normal teardown, exit zero and empty stderr. All 315 immutable publication
+members and the absolute Framing cache remain exact. Preserve the final profile
+`431D8B0FF1B8A1E731FBB1C0741F6E1F7427ACDDBFAAD4D58BF393BAFFE2A54D`
+and dock layout
+`C7C2F56D141568496A7B39A02D2E86B30826654FBB3A526B946248BAB05A39AB`.
+Combined local/guest retention is 390,711,256 bytes, below the 400 MiB cap.
+The next step is a causal gradient regression, the focused brush repair and a
+coherent package successor before resuming actual NINA imaging.
 
 Separately, the corrected private caption diagnostic passes all 11 checks on
 the current 306-file runtime. Independent native client origin and WPF screen
