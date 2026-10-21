@@ -67,9 +67,13 @@ native allocations retain their separate gates; see the
 Physical floating-header dragging works without a crash, but the user's redock
 attempt exposes misplaced guides. A read-only held-drag recording captures the
 overlay's native bounds changing on mapping and retains the missing center-guide
-observation. That defect remains under repair. Native allocation observation,
-installed diagnostics, correct redocking, desktop clipboard/picker outcomes,
-Xorg and overnight simulation remain unqualified. Native IME, further
+observation. That defect remains under repair. Actual NINA ASCII clipboard
+exchange passes both directions with a GTK peer. Its original sequence Save As
+and Open workflows pass acceptance and cancellation through GNOME dialogs, with
+real JSON and filename witnesses; see the
+[desktop services evidence](../../artifacts/portability/current/nina/desktop-gates-20261021-2/SERVICES-HANDOFF.json).
+Native allocation observation, installed diagnostics, correct redocking, Xorg
+and overnight simulation remain unqualified. Native IME, further
 Orca work and WPF features unused by NINA remain user-deferred. Linux ARM64 and
 macOS remain later phases. No new RGB48 deadline optimization is planned.
 

@@ -466,6 +466,36 @@ Its immutable manifest is
 App/BAML, scientific components, original satellites and WPF package identities
 remain unchanged.
 
+### Actual clipboard and sequence file dialogs
+
+The installed final5 App passes text exchange in both directions between its
+original Instructions search box and an owned GTK entry window on the same
+XWayland desktop. Real Copy/Paste delivers the exact ASCII sentinels, the GTK
+peer exits normally and the original empty search is restored. This does not
+qualify other clipboard formats or persistence after process exit.
+
+Original Advanced Sequencer shortcuts pass Save As acceptance, Save As Cancel,
+Open Cancel and Open acceptance through the GNOME portal chooser. The observed
+baseline is the genuine empty Start/Target/End root, separate from the earlier
+two-child editing workflow. Save As writes the actual 4,284-byte JSON file;
+opening a second byte-identical file changes the original sequence title and
+subsequent Save As prefill to that file's stem. Cancellation creates no candidate
+file and preserves the first file's hash. The original sequence title is then
+restored through its TextBox; its normal title-change handler clears SavePath.
+No equipment or sequence execution command is invoked.
+
+The installed profile, dock, backup, two saved FITS files and framing cache
+retain their preflight hashes, and all 317 immutable publication members match.
+There is no logged ERROR/FATAL or App stderr. Root verified all 411 source,
+action, file and pixel evidence pins and inspected the actual paste and filename
+witnesses. Covered-window focus guards, the GTK Location-entry activation and
+the correction of an underlying-window capture mistaken for chooser disposal
+remain explicit driver observations. No automatic chooser activation parity is
+claimed. The handoff is
+`current/nina/desktop-gates-20261021-2/SERVICES-HANDOFF.json`, SHA-256
+`C893155D00F1FA3E4A82AF05EC51D04E73BE75C3D9F6128FED3B650DD1C3D7F3`.
+Combined local/guest desktop evidence remains below its 32 MiB cap.
+
 Commit `b6b30ebc6` also includes AvalonDock's existing license and provenance
 receipt in generated NINA build output and normal publication. Disposable SDK
 copy targets verify both files byte-for-byte at both destinations, with all six
