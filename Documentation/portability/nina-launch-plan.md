@@ -48,27 +48,49 @@ simulator-only NINA shell runs on Ubuntu 22.04 GNOME/XWayland; this is not a
 full-WPF or production-device qualification. The accepted RGB48 timing exception
 stands and further RGB48 deadline optimization is canceled.
 
-The package family produced from `7ef09e47c` passes all 250 standard consumer
-checks: Windows 37, Ubuntu managed 62, native framework-dependent 14, native
-self-contained 14, conflicts 8, runtime policy 14, contents 7 and complete-view
-94. Root verified the producer's 18 PE/PDB pairs and 4,289 source-document records,
-then the consumer's 25 raw result groups, 21 modules and 176 source records.
-Raw user and machine PATH are unchanged. See
-`current/final-distribution-20261021-6-proof/root-verification.json` and
-`current/final-distribution-20261021-6-consumer-proof/root-verification.json`.
-This family precedes the pending indexed-PNG repair; it is not the final release.
+The package family produced from `87e4b29bc` passes all 488 checks: 250 standard
+consumer checks, 10 diagnostics enabled/disabled checks, 55 package-derived
+imaging checks, 161 affected native checks and 12 compiler/managed checks on the
+actual Ubuntu 22.04 VM. The standard groups remain Windows 37, Ubuntu managed
+62, native framework-dependent 14, native self-contained 14, conflicts 8, runtime
+policy 14, contents 7 and complete-view 94. Root verified the producer's 18
+PE/PDB pairs and 4,289 source-document records, the standard consumer's 25 raw
+result groups and 21 modules, then 589 additional evidence pins and every
+supplemental raw check. All 13 private-Xvfb children cleaned up their owned
+processes and display files. Ten raw user/machine PATH pairs are unchanged. See
+`current/final-distribution-20261022-7-proof/root-verification.json` and
+`current/final-distribution-20261022-7-consumer-proof/root-full-verification.json`.
+These package checks do not qualify actual desktop transitions or endurance.
 
-Actual GNOME dragging of the floating Camera window now preserves its native
-pointer anchor across nine moves in both directions and 40 stationary samples,
-with zero measured drift. Genuine center docking succeeds and the original
-application closes normally, preserving layout. The remaining missing inner
-guide artwork has a separate, reproduced cause: those original assets are 8-bit
-indexed PNGs, which the portable decoder rejects. The resource table contains
-all 23 PNGs, so the earlier missing-resource hypothesis was disproved. A narrow
-decoder repair and original-image regression tests are under final verification.
-Actual final-family guide visibility, usability and saved-layout relaunch remain
-required. The raw desktop evidence is under
-`current/nina/vm-docking-input-repair-20261021-1`.
+The ordinary NINA publication uses the selected runtime/SDK packages and contains
+the repaired AvalonDock component, with unchanged original App/BAML and
+scientific binaries.
+Root verified all 319 published files and their selected runtime origins. An
+earlier attempt resolved an older SDK before restore and was rejected by the
+origin guard. The successful attempt uses an explicitly seeded, verified
+NINA-only cache; separate distribution and Ubuntu 22.04 runs prove empty-cache
+restores. See `current/nina/vm-package-final7-20261022-3/root-verification.json`.
+
+The missing guide artwork is repaired by accepting the original 8-bit indexed
+PNG assets and validating their palette/transparency chunks before decoding.
+Original-image regressions cover full pixels, alpha, DPI, ownership, rendering
+and malformed input. Actual final7 GNOME replay shows all five inner and four
+outer guide glyphs without the pane preview. Genuine center hover and release
+dock the floating group; after normal close/relaunch the saved layout has
+byte-identical native pixels. All three lifetimes exit zero, with application
+and supervisor absent, 317 immutable files and 28 prior-state files unchanged.
+
+Caption timing distinguishes transient lag from the former feedback problem.
+The bounded 30/60/150 ms motion profiles contain 189 native samples. Fast motion
+shows up to four pixels of lag; all profiles have zero settled anchor error and
+20 stationary samples with zero movement after a 150 ms settle. No sustained
+reverse-direction feedback was reproduced. This is not a universal smoothness
+or latency guarantee. The first strict timing failure and a stale-coordinate
+redocking-driver failure remain preserved and classified. Root verified 227
+evidence pins and 27 unchanged PATH pairs in
+`current/nina/vm-final7-docking-replay-20261022-1/root-verification.json`.
+The newest normally closed carry is `closed-state-carry-final.json` in that
+lane, SHA-256 `A2768C10F83A9F35840D7C1364436A2D5017EB5722B10C506E21D725867EF27A`.
 
 A separate original NINA lifetime verifies installed binding diagnostics and
 the non-interposing native-allocation observer together. All 12 allocator samples
@@ -93,11 +115,13 @@ Actual eight-hour execution, periodic original UI responses, cancellation,
 recovery and relaunch are still pending. Numerical memory/allocation acceptance
 must be grounded in workload measurements before a performance pass is claimed.
 
-Remaining release work is the coherent post-PNG runtime/SDK and NINA publication,
-its relevant package and actual desktop regressions, keyboard/focus and changed
-desktop-scale checks, a distinct real Xorg session and sustained/resource
-qualification. Fixed-DPI Xvfb results do not prove desktop transitions. Native
-Wayland, native IME, further accessibility, unused WPF capabilities, real equipment,
+Remaining release work is actual keyboard/focus and changed desktop-scale
+qualification, monitor transitions, a distinct real Xorg session and
+sustained/resource qualification. The matched Windows resource reference is
+running after an error-free isolated smoke; neither calibration nor the
+eight-hour workload is a completed resource pass. Fixed-DPI Xvfb results do not
+prove desktop transitions. Native Wayland, native IME, further accessibility,
+unused WPF capabilities, real equipment,
 ARM64 and macOS retain their recorded exclusions or deferrals.
 
 ### Earlier post-incident checkpoint

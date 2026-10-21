@@ -16,22 +16,28 @@ Linux WPF backend on Ubuntu 22.04 GNOME/XWayland. There is no Avalonia runtime,
 framework, build or source-import dependency. Skia, HarfBuzz and the attributed
 Unicode derivatives remain. Full Phase 5 is not yet qualified.
 
-The package family from `7ef09e47c` passes all 250 standard consumer checks,
-including both BAML origins, Windows, Ubuntu, framework-dependent and
-self-contained execution. Root independently verified raw results, package/module
-identities and producing source records. Windows user and machine PATH remain
-unchanged. The exact evidence is in the
-[producer verification](../../artifacts/portability/current/final-distribution-20261021-6-proof/root-verification.json)
-and [consumer verification](../../artifacts/portability/current/final-distribution-20261021-6-consumer-proof/root-verification.json).
-These packages precede the pending indexed-PNG repair and are not its release
-qualification.
+The package family from `87e4b29bc` passes all 488 checks: 250 standard consumer,
+10 diagnostics enabled/disabled, 55 package-derived imaging, 161 affected native
+and 12 actual Ubuntu 22.04 compiler/managed checks. Root independently verified
+raw results, package/module identities, producing source records and owned
+cleanup. Windows user and machine PATH remain unchanged. See the
+[producer verification](../../artifacts/portability/current/final-distribution-20261022-7-proof/root-verification.json)
+and [full consumer verification](../../artifacts/portability/current/final-distribution-20261022-7-consumer-proof/root-full-verification.json).
+The ordinary 319-file NINA publication preserves original App/BAML and scientific
+binaries while selecting the repaired runtime and AvalonDock component; its
+[publication verification](../../artifacts/portability/current/nina/vm-package-final7-20261022-3/root-verification.json)
+records the actual files and origins.
 
-Actual GNOME floating-window movement now has zero measured anchor drift across
-nine moves in both directions and 40 stationary samples. Genuine center docking
-works. Missing inner guide artwork was traced to the decoder rejecting the
-original 8-bit indexed PNGs; all resource files are present. Its focused repair
-is under final verification. Original imaging, FITS reload, sequencer, Framing
-and desktop-service passes below retain their exact earlier publication scopes.
+The original indexed-PNG docking guides now decode and render correctly.
+Actual final7 GNOME replay shows all inner/outer glyphs without the pane preview,
+genuine center docking and byte-identical saved-layout pixels after restart.
+Three application lifetimes close normally. Bounded motion profiles show up to
+four pixels of transient lag at 30/60 ms and zero settled error or stationary
+movement after 150 ms; they do not establish universal smoothness. Root verified
+227 evidence pins and 27 unchanged PATH pairs in the
+[desktop replay](../../artifacts/portability/current/nina/vm-final7-docking-replay-20261022-1/root-verification.json).
+Original imaging, FITS reload, sequencer, Framing and desktop-service passes
+below retain their exact earlier publication scopes.
 
 Installed diagnostics and the non-interposing native-allocation observer now
 work together in a normally closed original NINA lifetime: 12 allocator samples,
@@ -42,10 +48,10 @@ exhaustive native allocations or a resource ceiling. See the
 [actual execution receipt](../../artifacts/portability/current/nina/allocator-diagnostics-resume-20261021-1/EXECUTION-HANDOFF.json).
 
 The eight-hour coordinator has passed its finite regression and mutation
-controls, but the real run has not executed. Remaining gates are coherent final
-packages and application publication, actual repaired-guide/focus/keyboard/scale
-checks, a distinct Xorg desktop and sustained operation with measured resource
-acceptance. The [active launch checkpoint](nina-launch-plan.md#active-checkpoint)
+controls, but the real run has not executed. Remaining gates are actual
+focus/keyboard/scale and monitor-transition checks, a distinct Xorg desktop and
+sustained operation with measured resource acceptance. The
+[active launch checkpoint](nina-launch-plan.md#active-checkpoint)
 records the current evidence and remaining work. Native IME, further
 accessibility, unused WPF, real hardware, ARM64 and macOS remain deferred or
 outside this profile. The accepted RGB48 deadline remains unchanged.
