@@ -18,6 +18,7 @@ param(
     [string] $DotnetPath = 'dotnet'
 )
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Invoke-PortableDotnet.ps1')
 $PSNativeCommandUseErrorActionPreference = $false
 Set-StrictMode -Version Latest
 $fixture = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../src/Portability/Tests/NinaPortableAstronomy'))
@@ -109,7 +110,7 @@ Save "$output/Directory.Build.targets" '<Project/>'
 Save "$output/NuGet.Config" '<configuration><packageSources><clear/></packageSources></configuration>'
 Push-Location $output
 try {
-    if ((& $DotnetPath --version).Trim() -cne '10.0.401') { throw 'Expected SDK 10.0.401.' }
+    if ((Invoke-PortableDotnet $DotnetPath --version).Trim() -cne '10.0.401') { throw 'Expected SDK 10.0.401.' }
     $generated = "$output/source/NINA.Core/Generated"
     New-Item -ItemType Directory -Force $generated | Out-Null
     Assert-Hash "$ProtoIncludeDirectory/google/protobuf/empty.proto" $pin.protobufEmptySha256
@@ -148,7 +149,7 @@ try {
         $null = Element $project $root Import @{ Project = [IO.Path]::GetFullPath($PortableReferencesTargets) }
         $path = "$output/source/$name/$name.Portable.csproj"
         Save $path $project.OuterXml
-        & $DotnetPath build $path -c Release --nologo -m:1 -nr:false --configfile "$output/NuGet.Config" -p:UseSharedCompilation=false -p:NuGetAudit=false "-p:BaseIntermediateOutputPath=$output/obj/$name/" "-p:MSBuildProjectExtensionsPath=$output/obj/$name/" *> "$output/$name.build.log"
+        Invoke-PortableDotnet $DotnetPath build $path -c Release --nologo '-m:1' '-nr:false' --configfile "$output/NuGet.Config" '-p:UseSharedCompilation=false' '-p:NuGetAudit=false' "-p:BaseIntermediateOutputPath=$output/obj/$name/" "-p:MSBuildProjectExtensionsPath=$output/obj/$name/" *> "$output/$name.build.log"
         if ($LASTEXITCODE -ne 0) { throw "Source build failed: $name. See $output/$name.build.log" }
     }
 } finally { Pop-Location }

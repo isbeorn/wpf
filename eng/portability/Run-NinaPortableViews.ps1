@@ -2,6 +2,7 @@
 param([ValidateSet('PrepareOnly', 'Windows', 'StockWindows', 'Linux')][string] $HostProfile = 'PrepareOnly')
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Invoke-PortableDotnet.ps1')
 $PSNativeCommandUseErrorActionPreference = $false
 Set-StrictMode -Version Latest
 $repository = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
@@ -154,7 +155,7 @@ if ($HostProfile -eq 'PrepareOnly') { exit 0 }
 if ($HostProfile -eq 'Linux') {
     $script = @'
 cd REPOSITORY/src/Portability
-export DOTNET_CLI_HOME=OUTPUT/cli/linux NUGET_PACKAGES=OUTPUT/packages/linux MSBUILDDISABLENODEREUSE=1 DOTNET_GENERATE_ASPNET_CERTIFICATE=false DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
+export DOTNET_CLI_HOME=OUTPUT/cli/linux NUGET_PACKAGES=OUTPUT/packages/linux MSBUILDDISABLENODEREUSE=1 DOTNET_ADD_GLOBAL_TOOLS_TO_PATH=false DOTNET_GENERATE_ASPNET_CERTIFICATE=false DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1
 sdk=REPOSITORY/artifacts/portability/dotnet-linux-x64/dotnet
 "$sdk" build Tests/NinaPortableViews/NinaPortableViews.csproj --nologo -m:1 -nr:false -p:UseSharedCompilation=false -p:NuGetAudit=false -p:RestoreConfigFile=OUTPUT/NuGet.linux.Config -p:NinaPortableArtifacts=OUTPUT > OUTPUT/build-linux.log 2>&1 || { tail -n 15 OUTPUT/build-linux.log; exit 2; }
 export NINA_PORTABLE_VIEWS_STATE=OUTPUT/state/linux
@@ -181,12 +182,12 @@ try {
     $label = if ($stock) { 'stock-windows' } else { 'windows' }
     [string[]] $extra = @()
     if ($stock) { $extra = @('-p:NinaStockWindowsReference=true') }
-    & dotnet build $project --nologo -m:1 -nr:false -p:UseSharedCompilation=false -p:NuGetAudit=false "-p:RestoreConfigFile=$output/NuGet.windows.Config" "-p:NinaPortableArtifacts=$output" @extra *> (Join-Path $output "build-$label.log")
+    Invoke-PortableDotnet 'dotnet' build $project --nologo '-m:1' '-nr:false' '-p:UseSharedCompilation=false' '-p:NuGetAudit=false' "-p:RestoreConfigFile=$output/NuGet.windows.Config" "-p:NinaPortableArtifacts=$output" @extra *> (Join-Path $output "build-$label.log")
     if ($LASTEXITCODE -ne 0) { Get-Content (Join-Path $output "build-$label.log") -Tail 15; exit 2 }
     $env:NINA_PORTABLE_VIEWS_STATE = Join-Path $output "state/$label"
     $env:NINA_PORTABLE_VIEWS_STOCK = if ($stock) { '1' } else { '0' }
     $assembly = if ($stock) { 'bin/Windows_NT/stock/Debug/net10.0-windows/NinaPortableViews.dll' } else { 'bin/Windows_NT/Debug/net10.0/NinaPortableViews.dll' }
-    & dotnet (Join-Path $output $assembly) > (Join-Path $output "runtime-$label.json") 2> (Join-Path $output "runtime-$label.stderr.log")
+    Invoke-PortableDotnet 'dotnet' (Join-Path $output $assembly) > (Join-Path $output "runtime-$label.json") 2> (Join-Path $output "runtime-$label.stderr.log")
     $result = $LASTEXITCODE
     @{ processExitCode = $result } | ConvertTo-Json | Set-Content (Join-Path $output "process-$label.json")
     Write-Output "Diagnostic process exit=$result; evidence: $output/runtime-$label.json"

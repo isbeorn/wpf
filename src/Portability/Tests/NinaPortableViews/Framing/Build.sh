@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+export DOTNET_ADD_GLOBAL_TOOLS_TO_PATH=false DOTNET_GENERATE_ASPNET_CERTIFICATE=false
 [[ $# == 5 ]]
 repo=$1;sdk=$2;output=$3;source=$4;packages=$5
 export DOTNET_ROOT="$sdk" DOTNET_MULTILEVEL_LOOKUP=0

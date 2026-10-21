@@ -189,7 +189,7 @@ if ($Action -eq 'Build') {
         $reference.Add([Xml.Linq.XElement]::new([Xml.Linq.XName]::Get('Private'), 'true')); $group.Add($reference)
     }
     [IO.File]::WriteAllText("$OutputDirectory/SourceStageReferences.props", $project.ToString(), $utf8)
-    $names = @('NinaPortableArtifacts', 'NinaFixtureDirectory', 'NinaSourceStageDirectory', 'AssemblySearchPath_UseCandidateAssemblyFiles', 'DOTNET_CLI_HOME', 'DOTNET_CLI_TELEMETRY_OPTOUT', 'DOTNET_GENERATE_ASPNET_CERTIFICATE', 'DOTNET_SKIP_FIRST_TIME_EXPERIENCE', 'DOTNET_NOLOGO', 'TMPDIR', 'WSLENV')
+    $names = @('NinaPortableArtifacts', 'NinaFixtureDirectory', 'NinaSourceStageDirectory', 'AssemblySearchPath_UseCandidateAssemblyFiles', 'DOTNET_CLI_HOME', 'DOTNET_CLI_TELEMETRY_OPTOUT', 'DOTNET_ADD_GLOBAL_TOOLS_TO_PATH', 'DOTNET_GENERATE_ASPNET_CERTIFICATE', 'DOTNET_SKIP_FIRST_TIME_EXPERIENCE', 'DOTNET_NOLOGO', 'TMPDIR', 'WSLENV')
     $saved = @{}; foreach ($name in $names) { $saved[$name] = [Environment]::GetEnvironmentVariable($name) }
     $label = 'nina-imaging-' + [IO.Path]::GetFileName($OutputDirectory)
     if ($label -notmatch '^[A-Za-z0-9][A-Za-z0-9._-]*$' -or (Test-Path "$Workspace/reports/$label.log")) { throw 'Use a new simple proof directory name.' }
@@ -197,8 +197,8 @@ if ($Action -eq 'Build') {
         $env:NinaPortableArtifacts = $OutputDirectory; $env:NinaFixtureDirectory = $pin.originalFixtureDirectory; $env:NinaSourceStageDirectory = $pin.stageDirectory
         $env:AssemblySearchPath_UseCandidateAssemblyFiles = 'false'
         [IO.Directory]::CreateDirectory("$OutputDirectory/tmp") | Out-Null
-        $env:DOTNET_CLI_HOME = "$Workspace/cli/nina-native-imaging"; $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'; $env:DOTNET_GENERATE_ASPNET_CERTIFICATE = 'false'; $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = '1'; $env:DOTNET_NOLOGO = '1'; $env:TMPDIR = "$OutputDirectory/tmp"
-        $env:WSLENV = (@($env:WSLENV, 'NinaPortableArtifacts/p:NinaFixtureDirectory/p:NinaSourceStageDirectory/p:AssemblySearchPath_UseCandidateAssemblyFiles:DOTNET_CLI_HOME/p:TMPDIR/p:DOTNET_CLI_TELEMETRY_OPTOUT:DOTNET_GENERATE_ASPNET_CERTIFICATE:DOTNET_SKIP_FIRST_TIME_EXPERIENCE:DOTNET_NOLOGO') | Where-Object { $_ }) -join ':'
+        $env:DOTNET_CLI_HOME = "$Workspace/cli/nina-native-imaging"; $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'; $env:DOTNET_ADD_GLOBAL_TOOLS_TO_PATH = 'false'; $env:DOTNET_GENERATE_ASPNET_CERTIFICATE = 'false'; $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = '1'; $env:DOTNET_NOLOGO = '1'; $env:TMPDIR = "$OutputDirectory/tmp"
+        $env:WSLENV = (@($env:WSLENV, 'NinaPortableArtifacts/p:NinaFixtureDirectory/p:NinaSourceStageDirectory/p:AssemblySearchPath_UseCandidateAssemblyFiles:DOTNET_CLI_HOME/p:TMPDIR/p:DOTNET_CLI_TELEMETRY_OPTOUT:DOTNET_ADD_GLOBAL_TOOLS_TO_PATH:DOTNET_GENERATE_ASPNET_CERTIFICATE:DOTNET_SKIP_FIRST_TIME_EXPERIENCE:DOTNET_NOLOGO') | Where-Object { $_ }) -join ':'
         Assert-Hash "$Workspace/prereqs/sdk-linux-x64/dotnet" '01D89E0A0191052BFEA616CD4CE624C8FAF13B05BBDDF7F64499C23E2A9D9269'
         & wsl.exe -d $LinuxDistribution --cd (Linux-Path "$repository/src/Portability") -- env "DOTNET_ROOT=$(Linux-Path "$Workspace/prereqs/sdk-linux-x64")" DOTNET_MULTILEVEL_LOOKUP=0 "$((Linux-Path $Workspace))/prereqs/sdk-linux-x64/dotnet" msbuild (Linux-Path "$repository/$fixture/NinaNativeImaging.csproj") -nologo -p:Configuration=Release '-getProperty:Configuration' '-getProperty:Optimize' '-getProperty:AssemblySearchPaths' '-getProperty:AssemblySearchPath_UseCandidateAssemblyFiles' > "$OutputDirectory/evaluated-reference-policy.json"
         if ($LASTEXITCODE -ne 0) { throw 'Consumer property evaluation failed.' }
@@ -347,7 +347,7 @@ trap 'exit 130' INT
 trap 'exit 143' TERM
 mkdir -p "$work/cli" "$work/tmp" "$work/cache" "$work/config" "$work/data" "$work/runtime"
 export DOTNET_ROOT="${sdk%/dotnet}" DOTNET_MULTILEVEL_LOOKUP=0 DOTNET_CLI_HOME="$work/cli"
-export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_GENERATE_ASPNET_CERTIFICATE=false DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1 DOTNET_NOLOGO=1
+export DOTNET_CLI_TELEMETRY_OPTOUT=1 DOTNET_ADD_GLOBAL_TOOLS_TO_PATH=false DOTNET_GENERATE_ASPNET_CERTIFICATE=false DOTNET_SKIP_FIRST_TIME_EXPERIENCE=1 DOTNET_NOLOGO=1
 export TMPDIR="$work/tmp" XDG_CACHE_HOME="$work/cache" XDG_CONFIG_HOME="$work/config" XDG_DATA_HOME="$work/data" XDG_RUNTIME_DIR="$work/runtime"
 export LD_LIBRARY_PATH="$native_root/usr/lib/x86_64-linux-gnu"
 unset DOTNET_STARTUP_HOOKS WAYLAND_DISPLAY WPF_ATSPI_PRIVATE_BUS WPF_ATSPI_OBSERVATIONS WPF_FILE_DIALOG_PRIVATE_BUS DBUS_STARTER_ADDRESS DBUS_STARTER_BUS_TYPE AT_SPI_BUS_ADDRESS

@@ -2,6 +2,7 @@
 param()
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Invoke-PortableDotnet.ps1')
 Set-StrictMode -Version Latest
 $revision = '4742afae0a09c79be772f23fcf163fb5852d2775'
 $repositoryRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
@@ -50,7 +51,7 @@ function Get-GitBlobId([byte[]] $Bytes) {
 }
 
 function Invoke-DotnetLog([string[]] $Arguments, [string] $Log) {
-    & dotnet @Arguments *> (Join-Path $output $Log)
+    Invoke-PortableDotnet 'dotnet' @Arguments *> (Join-Path $output $Log)
     return $LASTEXITCODE
 }
 
@@ -64,7 +65,7 @@ try {
     $env:TEMP = Join-Path $output 'temp'
     $env:TMP = $env:TEMP
     New-Item -ItemType Directory -Path $env:TEMP -Force | Out-Null
-    $sdk = (& dotnet --version).Trim()
+    $sdk = (Invoke-PortableDotnet 'dotnet' --version).Trim()
     if ($LASTEXITCODE -ne 0 -or $sdk -cne '10.0.401') { throw "Expected SDK 10.0.401; found $sdk" }
     $result.compilerOrigin = "Microsoft.NET.Sdk.WindowsDesktop $sdk"
 

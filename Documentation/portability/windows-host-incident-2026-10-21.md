@@ -128,6 +128,36 @@ The user's subsequent instruction explicitly permits Windows testing again.
 It does not authorize installing or changing shared SDKs/runtimes or other host
 configuration. The root AGENTS.md records this exception and the safeguards.
 
+### Safeguard implementation and verification
+
+`eng/portability/Invoke-PortableDotnet.ps1` now applies both opt-outs around
+native SDK calls and records raw user and machine PATH before and after each
+invocation, including failed launches. It preserves value type and existence
+in the comparison, restores the caller's process settings and blocks later
+calls in that batch after detected drift. The tracked portability PowerShell
+callers use it. Copied build instructions carry the helper; the tracked Linux,
+WSL and generated shell routes receive both opt-outs explicitly. Historical
+artifact runners remain evidence and must not be reused without inspection.
+
+Independent correctness and maintainability reviews caught and resolved a
+PowerShell argument-binding regression before any Windows SDK execution:
+unquoted colon options split when passed through a function. Callers now quote
+those options. The retained `Test-PortableDotnetGuard.ps1` compares real native
+argument forwarding and verifies child settings, exit status, error preference,
+separate output streams and failure-path PATH checks. All eight checks pass.
+Ten disposable checks also pass, including simulated content, type and deletion
+drift for both PATH scopes and refusal to launch the next child. They simulate
+the reader's values; they do not modify the real registry.
+
+Root then verified the existing private Windows SDK 10.0.401 with a fresh CLI
+home and both opt-outs enabled. `--version` passed, followed by a real MSBuild
+property query exercising quoted colon options. The query returned net10.0,
+Release and UseSharedCompilation=false as requested. Raw user and machine PATH
+were unchanged for both invocations. The receipts and before/after values are
+under `artifacts/portability/sdk-first-run-smoke-20261021-1`; the retained test's
+root execution evidence is under
+`artifacts/portability/sdk-guard-root-verification-20261021-1`.
+
 ## What the history establishes
 
 The audit reads the original session transcript and 60 linked agent transcripts

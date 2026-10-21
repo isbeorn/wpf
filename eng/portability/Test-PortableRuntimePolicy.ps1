@@ -2,6 +2,7 @@
 param([Parameter(Mandatory)][string] $DistributionDirectory,[string] $Dotnet='dotnet')
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
+. (Join-Path $PSScriptRoot 'Invoke-PortableDotnet.ps1')
 $distribution=[IO.Path]::GetFullPath($DistributionDirectory)
 $root=Join-Path $distribution 'runtime-policy'
 if(Test-Path $root) {throw "Runtime policy verification requires a fresh directory: $root"}
@@ -38,7 +39,7 @@ public static class Bridge
 $checks=[Collections.Generic.List[object]]::new()
 Push-Location $root
 try {
-    & $Dotnet pack Bridge/Bridge.csproj -c Release --disable-build-servers -o $feed *> bridge-pack.log
+    Invoke-PortableDotnet $Dotnet pack Bridge/Bridge.csproj -c Release --disable-build-servers -o $feed *> bridge-pack.log
     if($LASTEXITCODE -ne 0) {throw "Real transitive package fixture failed: $root/bridge-pack.log"}
     foreach($mode in @('direct','transitive')) {
         $directory=Join-Path $root $mode;New-Item -ItemType Directory -Path $directory | Out-Null
@@ -59,9 +60,9 @@ Console.WriteLine(typeof(DependencyObject).Assembly.FullName);
 return 0;
 '@ | Set-Content (Join-Path $directory 'Program.cs')
         $project=Join-Path $directory 'App.csproj'
-        & $Dotnet build $project -c Release --disable-build-servers *> "$mode-build.log"
+        Invoke-PortableDotnet $Dotnet build $project -c Release --disable-build-servers *> "$mode-build.log"
         if($LASTEXITCODE -ne 0) {throw "Allowed $mode runtime-only consumer failed: $root/$mode-build.log"}
-        & $Dotnet (Join-Path $directory 'bin/Release/net10.0/App.dll') > "$mode-run.txt"
+        Invoke-PortableDotnet $Dotnet (Join-Path $directory 'bin/Release/net10.0/App.dll') > "$mode-run.txt"
         if($LASTEXITCODE -ne 0) {throw "Allowed $mode runtime-only consumer could not execute real dependency properties."}
         $checks.Add(@{name="$mode-allowed-empty-rid";status='pass';detail='Ordinary Microsoft.NET.Sdk consumer built and ran real dependency property updates in both directions.'})
         foreach($invalid in @(
@@ -72,7 +73,7 @@ return 0;
             @{name='aot';argument='-p:PublishAot=true';diagnostic='Trimming, NativeAOT and single-file'},
             @{name='single-file';argument='-p:PublishSingleFile=true';diagnostic='Trimming, NativeAOT and single-file'})) {
             $log="$mode-reject-$($invalid.name).log"
-            & $Dotnet build $project -c Release --no-restore --disable-build-servers $invalid.argument *> $log
+            Invoke-PortableDotnet $Dotnet build $project -c Release --no-restore --disable-build-servers $invalid.argument *> $log
             if($LASTEXITCODE -eq 0 -or !(Select-String -Path $log -SimpleMatch -Pattern $invalid.diagnostic)) {throw "Runtime policy did not reject $mode $($invalid.name): $root/$log"}
             $checks.Add(@{name="$mode-reject-$($invalid.name)";status='pass';detail='The real ordinary SDK build failed with the shared portable profile diagnostic.'})
         }

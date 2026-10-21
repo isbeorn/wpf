@@ -7,6 +7,7 @@ param(
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Invoke-PortableDotnet.ps1')
 $repo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $portable = Join-Path $repo 'src/Portability'
 $packaging = Join-Path $portable 'Packaging'
@@ -38,7 +39,7 @@ $buildProperties = @(
     "-p:_PresentationBuildTasksAssembly=$buildRoot/bin/$osName/PresentationBuildTasks/Release/net10.0/PresentationBuildTasks.dll",
     '-p:RestoreLockedMode=true')
 function Invoke-Build([string[]] $Arguments) {
-    & $Dotnet @Arguments
+    Invoke-PortableDotnet $Dotnet @Arguments
     if ($LASTEXITCODE -ne 0) { throw "dotnet failed ($LASTEXITCODE): $($Arguments -join ' ')" }
 }
 $projectPaths = @{}
@@ -48,17 +49,17 @@ function Get-ProjectTargetPath([string] $Project, [switch] $RuntimeProject) {
         $arguments = @('msbuild', $Project, '-p:Configuration=Release', '-getProperty:TargetPath') + $buildProperties
         if ($RuntimeProject) {
             $referenceArguments = @('msbuild', $Project, '-p:Configuration=Release', '-getProperty:IsRidAgnostic,TargetPath', '-p:UseAppHost=false', "-p:PublishDir=$(Join-Path $output 'published')") + $buildProperties
-            $referenceResult = & $Dotnet @referenceArguments
+            $referenceResult = Invoke-PortableDotnet $Dotnet @referenceArguments
             if ($LASTEXITCODE -ne 0) { throw "Project reference evaluation failed: $Project" }
             $reference = ($referenceResult -join [Environment]::NewLine) | ConvertFrom-Json
             if ($reference.Properties.IsRidAgnostic -ne 'false') {
                 $result = $reference.Properties.TargetPath
             } else {
                 $arguments += @("-p:RuntimeIdentifier=$($profile.runtimeIdentifier)", '-p:SelfContained=false', '-p:UseAppHost=false', "-p:PublishDir=$(Join-Path $output 'published')")
-                $result = & $Dotnet @arguments
+                $result = Invoke-PortableDotnet $Dotnet @arguments
             }
         } else {
-            $result = & $Dotnet @arguments
+            $result = Invoke-PortableDotnet $Dotnet @arguments
         }
         if ($LASTEXITCODE -ne 0) { throw "Project TargetPath evaluation failed: $Project" }
         $path = ($result -join [Environment]::NewLine).Trim()
@@ -69,7 +70,7 @@ function Get-ProjectTargetPath([string] $Project, [switch] $RuntimeProject) {
 }
 Push-Location $portable
 try {
-    if ((& $Dotnet --version).Trim() -ne $profile.sdk) { throw "Portable package producer requires SDK $($profile.sdk)." }
+    if ((Invoke-PortableDotnet $Dotnet --version).Trim() -ne $profile.sdk) { throw "Portable package producer requires SDK $($profile.sdk)." }
     Invoke-Build (@('build','Markup/PresentationBuildTasks/PresentationBuildTasks.csproj','-c','Release','--disable-build-servers') + $buildProperties)
     Invoke-Build (@('restore','Packaging/Stage/Stage.csproj','-r',$profile.runtimeIdentifier,
         '-p:SelfContained=true','-p:RuntimeFrameworkVersion=10.0.12','-p:UseAppHost=true') + $buildProperties)

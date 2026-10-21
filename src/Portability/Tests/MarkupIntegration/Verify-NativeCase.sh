@@ -1,5 +1,6 @@
 #!/bin/sh
 set -eu
+export DOTNET_ADD_GLOBAL_TOOLS_TO_PATH=false DOTNET_GENERATE_ASPNET_CERTIFICATE=false
 
 repository=$(CDPATH= cd -- "$(dirname -- "$0")/../../../.." && pwd)
 dotnet_exe=${DOTNET_EXE:-"$repository/artifacts/portability/dotnet-linux-x64/dotnet"}

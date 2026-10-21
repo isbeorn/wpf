@@ -14,7 +14,7 @@ WPF tool-path entries. See
   environment, inherited by all children. Do not persist these variables.
 - Capture raw user and machine PATH before and after Windows toolchain batches.
   Stop further execution and report the exact difference if either changes.
-  Use the guarded portability entry points once available. Apply the same
+  Use the guarded portability entry points. Apply the same
   safeguards to ad hoc commands and generated helper scripts.
 - `DOTNET_CLI_HOME`, a private desktop and temporary directories are not host
   isolation boundaries. Do not rely on `DOTNET_SKIP_FIRST_TIME_EXPERIENCE` to

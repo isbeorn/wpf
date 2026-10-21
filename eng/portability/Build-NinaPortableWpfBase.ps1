@@ -21,6 +21,7 @@ param(
     [string] $DotnetPath = 'dotnet'
 )
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Invoke-PortableDotnet.ps1')
 $PSNativeCommandUseErrorActionPreference = $false
 Set-StrictMode -Version Latest
 $fixture = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../src/Portability/Tests/NinaPortableWpfBase'))
@@ -139,13 +140,13 @@ $projectPath = "$output/source/NINA.WPF.Base/NINA.WPF.Base.Portable.csproj"
 Save $projectPath $project.OuterXml
 Push-Location $output
 try {
-    if ((& $DotnetPath --version).Trim() -cne '10.0.401') { throw 'Expected pinned SDK 10.0.401.' }
-    $evaluated = & $DotnetPath msbuild $projectPath -nologo '-getItem:Compile,Page,ApplicationDefinition,Resource' -p:Configuration=Release "-p:BaseIntermediateOutputPath=$output/obj/" "-p:MSBuildProjectExtensionsPath=$output/obj/"
+    if ((Invoke-PortableDotnet $DotnetPath --version).Trim() -cne '10.0.401') { throw 'Expected pinned SDK 10.0.401.' }
+    $evaluated = Invoke-PortableDotnet $DotnetPath msbuild $projectPath -nologo '-getItem:Compile,Page,ApplicationDefinition,Resource' '-p:Configuration=Release' "-p:BaseIntermediateOutputPath=$output/obj/" "-p:MSBuildProjectExtensionsPath=$output/obj/"
     if ($LASTEXITCODE -ne 0) { throw 'WPF.Base project item evaluation failed.' }
     Save "$output/project-items.json" ([string]::Join([Environment]::NewLine, $evaluated))
     $items = ([string]::Join([Environment]::NewLine, $evaluated) | ConvertFrom-Json).Items
     if ($items.Compile.Count -ne 152 -or $items.Page.Count -ne 37 -or $items.ApplicationDefinition.Count -ne 0 -or $items.Resource.Count -ne 0) { throw 'Complete original WPF.Base source/XAML item closure changed.' }
-    & $DotnetPath build $projectPath -c Release --nologo -m:1 -nr:false --configfile "$output/NuGet.Config" -p:UseSharedCompilation=false -p:NuGetAudit=false "-p:BaseIntermediateOutputPath=$output/obj/" "-p:MSBuildProjectExtensionsPath=$output/obj/" *> "$output/NINA.WPF.Base.build.log"
+    Invoke-PortableDotnet $DotnetPath build $projectPath -c Release --nologo '-m:1' '-nr:false' --configfile "$output/NuGet.Config" '-p:UseSharedCompilation=false' '-p:NuGetAudit=false' "-p:BaseIntermediateOutputPath=$output/obj/" "-p:MSBuildProjectExtensionsPath=$output/obj/" *> "$output/NINA.WPF.Base.build.log"
     if ($LASTEXITCODE -ne 0) { throw "Image source build failed. See $output/NINA.WPF.Base.build.log" }
 } finally { Pop-Location }
 foreach ($file in $pin.files) { Assert-Hash "$NinaSourceDirectory/$($file.path)" $file.sha256 }
@@ -233,6 +234,7 @@ $activeSources = @(Get-ChildItem -LiteralPath $fixture -Recurse -File | ForEach-
     [ordered]@{ path = $preserved; inputPath = $_.FullName; sha256 = (Get-FileHash $preserved).Hash }
 })
 [IO.File]::Copy($PSCommandPath, "$output/wrapper-source/Build-NinaPortableWpfBase.ps1")
+[IO.File]::Copy("$PSScriptRoot/Invoke-PortableDotnet.ps1", "$output/wrapper-source/Invoke-PortableDotnet.ps1")
 Save "$output/wpfbase-consumer-intake.json" ([ordered]@{
     status = 'source-proven-wpfbase-component-behavior-qualification-separate'; scope = 'sky-map-renderer-and-decoded-cache'
     sourceRevision = $pin.revision; assembly = $dll; sha256 = (Get-FileHash $dll).Hash; pdb = $pdb; pdbSha256 = (Get-FileHash $pdb).Hash; identity = $identity
@@ -244,6 +246,7 @@ Save "$output/wpfbase-consumer-intake.json" ([ordered]@{
     originalSourceManifest = "$fixture/upstream.json"; originalSourceManifestSha256 = (Get-FileHash "$fixture/upstream.json").Hash
     originalUpstreamSourceFilesUnchanged = $pin.files.Count; activeSourceFiles = $activeSources
     buildScript = "$output/wrapper-source/Build-NinaPortableWpfBase.ps1"; buildScriptSha256 = (Get-FileHash $PSCommandPath).Hash; generatedProject = $projectPath; generatedProjectSha256 = (Get-FileHash $projectPath).Hash
+    sdkInvocationGuard = "$output/wrapper-source/Invoke-PortableDotnet.ps1"; sdkInvocationGuardSha256 = (Get-FileHash "$PSScriptRoot/Invoke-PortableDotnet.ps1").Hash
     originalClosureManifest = [IO.Path]::GetFullPath($OriginalManagedClosure); originalClosureManifestSha256 = (Get-FileHash $OriginalManagedClosure).Hash
     ninaCorePath = [IO.Path]::GetFullPath($NinaCorePath); ninaCoreSha256 = $ExpectedNinaCoreSha256
     ninaImagePath = [IO.Path]::GetFullPath($NinaImagePath); ninaImageSha256 = $ExpectedNinaImageSha256

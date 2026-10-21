@@ -7,6 +7,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Invoke-PortableDotnet.ps1')
 Set-StrictMode -Version Latest
 $revision = '4742afae0a09c79be772f23fcf163fb5852d2775'
 $output = [IO.Path]::GetFullPath($OutputDirectory)
@@ -292,7 +293,7 @@ try {
         try {
             $restoreArguments = @('restore', 'Controls.csproj', '--configfile', 'NuGet.Config', '--packages', $packageDirectory, '--verbosity', 'minimal')
             if (Test-Path -LiteralPath 'packages.lock.json') { $restoreArguments += '--locked-mode' }
-            $restoreOutput = & $DotnetPath @restoreArguments 2>&1
+            $restoreOutput = Invoke-PortableDotnet $DotnetPath @restoreArguments 2>&1
             $restoreExitCode = $LASTEXITCODE
             $restoreOutput | Set-Content -LiteralPath (Join-Path $output 'restore.log')
             if ($restoreExitCode -ne 0) { throw "NuGet restore failed ($restoreExitCode). See restore.log." }

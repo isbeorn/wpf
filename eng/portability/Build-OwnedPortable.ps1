@@ -18,6 +18,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Invoke-PortableDotnet.ps1')
 $PSNativeCommandUseErrorActionPreference = $false
 if ([Environment]::OSVersion.Platform -ne [PlatformID]::Win32NT) { throw 'Run this driver on Windows; Linux builds use WSL.' }
 $RepositoryRoot = [IO.Path]::GetFullPath($RepositoryRoot).Replace('\', '/')
@@ -89,15 +90,15 @@ Push-Location "$RepositoryRoot/src/Portability"
 try {
     if ($Os -eq 'windows') {
         $hostPath = "$env:ProgramFiles/dotnet/dotnet.exe"
-        if ((& $hostPath --version) -ne '10.0.401') { throw 'SDK10.0.401 is required.' }
+        if ((Invoke-PortableDotnet $hostPath --version) -ne '10.0.401') { throw 'SDK10.0.401 is required.' }
         $env:NUGET_PACKAGES = $PackageCache
         $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
         $env:PATH = "$env:ProgramFiles/Git/usr/bin;" + $env:PATH
         $arguments += @($values.GetEnumerator() | ForEach-Object { "-p:$($_.Key)=$($_.Value)" })
-        & $hostPath @arguments *> $log
+        Invoke-PortableDotnet $hostPath @arguments *> $log
     } else {
         $sdk = LinuxPath "$Workspace/prereqs/sdk-linux-x64"
-        $environment = @("DOTNET_ROOT=$sdk", 'DOTNET_MULTILEVEL_LOOKUP=0', 'DOTNET_CLI_TELEMETRY_OPTOUT=1', "NUGET_PACKAGES=$(LinuxPath $PackageCache)")
+        $environment = @("DOTNET_ROOT=$sdk", 'DOTNET_MULTILEVEL_LOOKUP=0', 'DOTNET_ADD_GLOBAL_TOOLS_TO_PATH=false', 'DOTNET_GENERATE_ASPNET_CERTIFICATE=false', 'DOTNET_CLI_TELEMETRY_OPTOUT=1', "NUGET_PACKAGES=$(LinuxPath $PackageCache)")
         $arguments[1] = LinuxPath $projectPath
         $arguments += @($values.GetEnumerator() | ForEach-Object { "-p:$($_.Key)=$(LinuxPath $_.Value)" })
         $prefix = @('-d', $LinuxDistribution, '--cd', (LinuxPath "$RepositoryRoot/src/Portability"), '--', 'env') + $environment

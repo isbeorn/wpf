@@ -8,6 +8,7 @@ param(
     [Parameter(Mandatory)][string] $DotnetPath
 )
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Invoke-PortableDotnet.ps1')
 $PSNativeCommandUseErrorActionPreference = $false
 Set-StrictMode -Version Latest
 $fixture = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../src/Portability/Tests/NinaPortableImage'))
@@ -82,14 +83,14 @@ Save $projectPath $project.OuterXml
 $globals = @('-p:ImportDirectoryBuildProps=false', '-p:ImportDirectoryBuildTargets=false', '-p:TargetFramework=netstandard2.0', '-p:UseSharedCompilation=false', '-p:NuGetAudit=false', "-p:BaseOutputPath=$output/bin/", "-p:BaseIntermediateOutputPath=$output/obj/", "-p:MSBuildProjectExtensionsPath=$output/obj/")
 Push-Location $output
 try {
-    if ((& $DotnetPath --version).Trim() -cne '10.0.401') { throw 'Expected SDK 10.0.401.' }
-    & $DotnetPath restore $projectPath --configfile "$output/NuGet.Config" --source "$output/feed" --packages $RestorePackageDirectory @globals *> "$output/restore.log"
+    if ((Invoke-PortableDotnet $DotnetPath --version).Trim() -cne '10.0.401') { throw 'Expected SDK 10.0.401.' }
+    Invoke-PortableDotnet $DotnetPath restore $projectPath --configfile "$output/NuGet.Config" --source "$output/feed" --packages $RestorePackageDirectory @globals *> "$output/restore.log"
     if ($LASTEXITCODE) { throw 'Accord offline restore failed.' }
-    & $DotnetPath msbuild $projectPath @globals -nologo '-target:ResolveReferences,GenerateAssemblyInfo,GenerateTargetFrameworkMonikerAttribute' '-getItem:Compile,ReferencePath,EmbeddedResource' '-getProperty:TargetFramework,DefineConstants,LangVersion,AllowUnsafeBlocks,Optimize,Configuration' 1> "$output/evaluated-inputs.json" 2> "$output/evaluated-inputs.stderr"
+    Invoke-PortableDotnet $DotnetPath msbuild $projectPath @globals -nologo '-target:ResolveReferences,GenerateAssemblyInfo,GenerateTargetFrameworkMonikerAttribute' '-getItem:Compile,ReferencePath,EmbeddedResource' '-getProperty:TargetFramework,DefineConstants,LangVersion,AllowUnsafeBlocks,Optimize,Configuration' 1> "$output/evaluated-inputs.json" 2> "$output/evaluated-inputs.stderr"
     if ($LASTEXITCODE) { throw 'Accord input evaluation failed.' }
     $evaluation = Get-Content "$output/evaluated-inputs.json" -Raw | ConvertFrom-Json
     if ($evaluation.Items.Compile.Count -ne 290 -or $evaluation.Items.EmbeddedResource.Count -ne 0 -or $evaluation.Properties.DefineConstants.Replace(';', ',') -cne $pin.symbols) { throw 'Accord compilation items, resources or symbols differ from the original profile.' }
-    & $DotnetPath build $projectPath --no-restore -c Debug --nologo -m:1 -nr:false @globals *> "$output/build.log"
+    Invoke-PortableDotnet $DotnetPath build $projectPath --no-restore -c Debug --nologo '-m:1' '-nr:false' @globals *> "$output/build.log"
     if ($LASTEXITCODE) { throw 'Accord source build failed.' }
 } finally { Pop-Location }
 foreach ($file in @($pin.files) + @($pin.additionalInputs)) { Assert-Hash "$NinaSourceDirectory/$($file.path)" $file.sha256 }
@@ -118,7 +119,7 @@ try {
     $options = @($reader.CustomDebugInformation | ForEach-Object { $reader.GetCustomDebugInformation($_) } | Where-Object { $reader.GetGuid($_.Kind) -eq [Guid]'b5feec05-8cd0-4a83-96da-466284bb4bd8' })
     Save "$output/source-proof.json" ([ordered]@{ pePdbIdentityMatch = $true; documents = $documents; compilationOptions = [Text.Encoding]::UTF8.GetString($reader.GetBlobBytes($options[0].Value)).Split([char]0) } | ConvertTo-Json -Depth 5)
 } finally { $provider.Dispose(); $pdbStream.Dispose(); $pe.Dispose(); $stream.Dispose() }
-foreach ($path in @($PSCommandPath, "$fixture/Apply-AccordMetadata.ps1", "$fixture/Accord.upstream.json", "$fixture/README.md")) {
+foreach ($path in @($PSCommandPath, "$PSScriptRoot/Invoke-PortableDotnet.ps1", "$fixture/Apply-AccordMetadata.ps1", "$fixture/Accord.upstream.json", "$fixture/README.md")) {
     $destination = "$output/build-instructions/$([IO.Path]::GetFileName($path))"
     [IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($destination)) | Out-Null
     [IO.File]::Copy($path, $destination)

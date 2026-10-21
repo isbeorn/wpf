@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+export DOTNET_ADD_GLOBAL_TOOLS_TO_PATH=false DOTNET_GENERATE_ASPNET_CERTIFICATE=false
 if [ "$#" -ne 2 ]; then
     echo 'Usage: Test-CompleteView.sh <prepared-dual-origin-directory> <dotnet10.0.401>' >&2
     exit 2

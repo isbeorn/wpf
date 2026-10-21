@@ -7,6 +7,7 @@ param(
 )
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
+. (Join-Path $PSScriptRoot 'Invoke-PortableDotnet.ps1')
 $repo=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 Import-Module (Join-Path $repo 'src/Portability/Packaging/PackageTools.psm1') -Force
 $distribution=[IO.Path]::GetFullPath($DistributionDirectory)
@@ -37,23 +38,23 @@ $env:DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE='true'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT='1'
 Push-Location $consumer
 try {
-    & $Dotnet build App/App.csproj -c Release --disable-build-servers -v:diag *> build.log
+    Invoke-PortableDotnet $Dotnet build App/App.csproj -c Release --disable-build-servers '-v:diag' *> build.log
     if($LASTEXITCODE -ne 0) { throw "External package consumer build failed: $consumer/build.log" }
     Copy-Item App/obj/Release/net10.0/compiler-origins.xml compiler-origins.xml
     Copy-Item Companion/obj/Release/net10.0/compiler-origins-control.xml compiler-origins-control.xml
-    & $Dotnet App/bin/Release/net10.0/App.dll > bin-results.json
+    Invoke-PortableDotnet $Dotnet App/bin/Release/net10.0/App.dll > bin-results.json
     if($LASTEXITCODE -ne 0) { throw "External package consumer run failed: $consumer/bin-results.json" }
-    & $Dotnet publish App/App.csproj -c Release --self-contained false --disable-build-servers -o publish-fdd *> publish.log
+    Invoke-PortableDotnet $Dotnet publish App/App.csproj -c Release --self-contained false --disable-build-servers -o publish-fdd *> publish.log
     if($LASTEXITCODE -ne 0) { throw "External package consumer publish failed: $consumer/publish.log" }
-    & $Dotnet publish-fdd/App.dll > publish-results.json
+    Invoke-PortableDotnet $Dotnet publish-fdd/App.dll > publish-results.json
     if($LASTEXITCODE -ne 0) { throw "External package consumer published run failed: $consumer/publish-results.json" }
-    & $Dotnet build App/App.csproj -c Release --disable-build-servers "-p:DirectoryBuildPropsPath=$consumer/CustomPaths.props" *> custom-build.log
+    Invoke-PortableDotnet $Dotnet build App/App.csproj -c Release --disable-build-servers "-p:DirectoryBuildPropsPath=$consumer/CustomPaths.props" *> custom-build.log
     if($LASTEXITCODE -ne 0) { throw "External custom-path build failed: $consumer/custom-build.log" }
-    & $Dotnet custom-bin/App/Release/net10.0/App.dll > custom-results.json
+    Invoke-PortableDotnet $Dotnet custom-bin/App/Release/net10.0/App.dll > custom-results.json
     if($LASTEXITCODE -ne 0) { throw "External custom-path run failed: $consumer/custom-results.json" }
     $observed=@(Get-ChildItem custom-obj -Recurse -Filter '*.g.cs') + @(Get-Item custom-bin/App/Release/net10.0/App.dll,custom-bin/Companion/Release/net10.0/Companion.dll)
     $timestamps=@{}; foreach($file in $observed) {$timestamps[$file.FullName]=$file.LastWriteTimeUtc.Ticks}
-    & $Dotnet build App/App.csproj -c Release --disable-build-servers "-p:DirectoryBuildPropsPath=$consumer/CustomPaths.props" -v:diag *> incremental-build.log
+    Invoke-PortableDotnet $Dotnet build App/App.csproj -c Release --disable-build-servers "-p:DirectoryBuildPropsPath=$consumer/CustomPaths.props" '-v:diag' *> incremental-build.log
     if($LASTEXITCODE -ne 0) { throw "External incremental build failed: $consumer/incremental-build.log" }
     foreach($file in $observed) { if((Get-Item $file.FullName).LastWriteTimeUtc.Ticks -ne $timestamps[$file.FullName]) { throw "Unchanged build rewrote $($file.FullName)" } }
     if(!(Select-String -Path incremental-build.log -SimpleMatch -Pattern 'Skipping target "CoreCompile" because all output files')) { throw 'Unchanged package consumer did not skip compilation.' }

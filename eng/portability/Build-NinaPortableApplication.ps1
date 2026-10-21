@@ -20,6 +20,7 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'Invoke-PortableDotnet.ps1')
 $PSNativeCommandUseErrorActionPreference = $false
 Set-StrictMode -Version Latest
 $fixture = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../src/Portability/Tests/NinaPortableApplication'))
@@ -335,22 +336,22 @@ try {
     $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
     $env:DOTNET_NOLOGO = '1'
     $env:MSBUILDDISABLENODEREUSE = '1'
-    $sdk = (& $DotnetPath --version).Trim()
+    $sdk = (Invoke-PortableDotnet $DotnetPath --version).Trim()
     if ($LASTEXITCODE -ne 0 -or $sdk -cne '10.0.401') { throw "Expected SDK 10.0.401; found $sdk" }
     if ($SimulatorQualification) {
-        & $DotnetPath build $pluginProjectPath --configuration Release --nologo -m:1 -nr:false --configfile "$output/NuGet.Config" -p:UseSharedCompilation=false -p:NuGetAudit=false "-p:DirectoryBuildTargetsPath=$output/Directory.Build.targets" "-p:BaseIntermediateOutputPath=$output/plugin-obj/" "-p:MSBuildProjectExtensionsPath=$output/plugin-obj/" *> "$output/plugin-build.log"
+        Invoke-PortableDotnet $DotnetPath build $pluginProjectPath --configuration Release --nologo '-m:1' '-nr:false' --configfile "$output/NuGet.Config" '-p:UseSharedCompilation=false' '-p:NuGetAudit=false' "-p:DirectoryBuildTargetsPath=$output/Directory.Build.targets" "-p:BaseIntermediateOutputPath=$output/plugin-obj/" "-p:MSBuildProjectExtensionsPath=$output/plugin-obj/" *> "$output/plugin-build.log"
         if ($LASTEXITCODE -ne 0) { throw "NINA.Plugin qualification build failed. See $output/plugin-build.log" }
         $pluginAssembly = "$output/plugin-bin/Release/net10.0/NINA.Plugin.dll"
         if ([Reflection.AssemblyName]::GetAssemblyName($pluginAssembly).FullName -cne $pluginPin.assemblyIdentity) { throw 'The original NINA.Plugin assembly identity changed.' }
     }
     $common = @('-p:Configuration=Release' , "-p:DirectoryBuildTargetsPath=$output/Directory.Build.targets", "-p:BaseIntermediateOutputPath=$output/obj/", "-p:MSBuildProjectExtensionsPath=$output/obj/")
-    $items = & $DotnetPath msbuild $projectPath -nologo '-getItem:Compile,Page,ApplicationDefinition,Resource,Content,SplashScreen' @common
+    $items = Invoke-PortableDotnet $DotnetPath msbuild $projectPath -nologo '-getItem:Compile,Page,ApplicationDefinition,Resource,Content,SplashScreen' @common
     if ($LASTEXITCODE -ne 0) { throw 'Project item evaluation failed.' }
     $evaluated = ($items -join "`n") | ConvertFrom-Json
     $expected = @{ Compile = $(if ($SimulatorQualification) { 200 } else { 196 }); Page = 103; ApplicationDefinition = 1; Resource = 10; Content = 17; SplashScreen = 1 }
     foreach ($name in $expected.Keys) { if (@($evaluated.Items.$name).Count -ne $expected[$name]) { throw "Original application item count differs: $name" } }
     Write-Utf8 "$output/evaluated-item-counts.json" ($expected | ConvertTo-Json)
-    & $DotnetPath build $projectPath --configuration Release --nologo -m:1 -nr:false --configfile "$output/NuGet.Config" -p:UseSharedCompilation=false -p:NuGetAudit=false @common *> "$output/build.log"
+    Invoke-PortableDotnet $DotnetPath build $projectPath --configuration Release --nologo '-m:1' '-nr:false' --configfile "$output/NuGet.Config" '-p:UseSharedCompilation=false' '-p:NuGetAudit=false' @common *> "$output/build.log"
     $buildExit = $LASTEXITCODE
     if ($buildExit -ne 0) { throw "NINA portable build failed ($buildExit). See $output/build.log" }
 } finally {

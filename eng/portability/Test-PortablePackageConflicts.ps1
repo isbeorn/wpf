@@ -4,6 +4,7 @@ param([Parameter(Mandatory)][string] $DistributionDirectory,[string] $Dotnet='do
     [ValidatePattern('^$|^[A-Za-z0-9][A-Za-z0-9._-]*$')][string] $OracleName = '')
 Set-StrictMode -Version Latest
 $ErrorActionPreference='Stop'
+. (Join-Path $PSScriptRoot 'Invoke-PortableDotnet.ps1')
 $env:DOTNET_GENERATE_ASPNET_CERTIFICATE='false'
 $env:DOTNET_CLI_WORKLOAD_UPDATE_NOTIFY_DISABLE='true'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT='1'
@@ -43,13 +44,13 @@ foreach($version in @('10.0.13','10.0.12')) {
     $env:NUGET_PACKAGES=Join-Path $consumer '.packages';$env:DOTNET_CLI_HOME=Join-Path $consumer '.cli'
     Push-Location $consumer
     try {
-        & $Dotnet build App/App.csproj -c Release --disable-build-servers *> build.log
+        Invoke-PortableDotnet $Dotnet build App/App.csproj -c Release --disable-build-servers *> build.log
         if($version -eq '10.0.12') {
             if($LASTEXITCODE -eq 0 -or !(Select-String -Path build.log -SimpleMatch -Pattern "Consumer dependency 'System.Windows.Extensions 10.0.12'")) { throw "Unqualified dependency did not fail with the manifest diagnostic: $consumer/build.log" }
             $results.Add(@{name='unqualified-version-rejected';status='pass';detail='Actual NuGet 10.0.12 dependency failed with the named manifest diagnostic.'})
         } else {
             if($LASTEXITCODE -ne 0) { throw "Qualified dependency did not build: $consumer/build.log" }
-            & $Dotnet App/bin/Release/net10.0/App.dll >results.json
+            Invoke-PortableDotnet $Dotnet App/bin/Release/net10.0/App.dll >results.json
             if($LASTEXITCODE -ne 0) { throw "Qualified dependency lost runtime semantics: $consumer/results.json" }
             $results.Add(@{name='qualified-version-one-identity';status='pass';detail='Actual NuGet 10.0.13 duplicate compiled and ran using the manifest-owned implementation.'})
             $invalidProfiles=@(
@@ -60,14 +61,14 @@ foreach($version in @('10.0.13','10.0.12')) {
                 @{name='stock-desktop-injection';argument='-p:UseWPF=true';diagnostic='Remove UseWPF=true'})
             foreach($invalid in $invalidProfiles) {
                 $log="$($invalid.name).log"
-                & $Dotnet build App/App.csproj -c Release --no-restore --disable-build-servers $invalid.argument *> $log
+                Invoke-PortableDotnet $Dotnet build App/App.csproj -c Release --no-restore --disable-build-servers $invalid.argument *> $log
                 if($LASTEXITCODE -eq 0 -or !(Select-String -Path $log -SimpleMatch -Pattern $invalid.diagnostic)) { throw "Unqualified profile did not fail with its SDK diagnostic: $consumer/$log" }
                 $results.Add(@{name="reject-$($invalid.name)";status='pass';detail='The actual build failed with the explicit SDK profile diagnostic.'})
             }
             $nativeGroup=$xml.CreateElement('ItemGroup');$nativeReference=$xml.CreateElement('PackageReference')
             $nativeReference.SetAttribute('Include',$nativePackageId);$nativeReference.SetAttribute('Version',"[$nativePackageVersion]")
             $nativeGroup.AppendChild($nativeReference)|Out-Null;$xml.Project.AppendChild($nativeGroup)|Out-Null;$xml.Save($project)
-            & $Dotnet build App/App.csproj -c Release --disable-build-servers *> unknown-native.log
+            Invoke-PortableDotnet $Dotnet build App/App.csproj -c Release --disable-build-servers *> unknown-native.log
             if($LASTEXITCODE -eq 0 -or !(Select-String -Path unknown-native.log -SimpleMatch -Pattern 'Consumer native asset is outside the qualified Linux x64 runtime manifest')) { throw "Actual unqualified native package did not fail with the runtime manifest diagnostic: $consumer/unknown-native.log" }
             $results.Add(@{name='unqualified-native-asset-rejected';status='pass';detail="Actual $nativePackageId $nativePackageVersion native runtime asset failed with the named manifest diagnostic."})
         }
