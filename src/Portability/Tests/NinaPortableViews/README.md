@@ -86,3 +86,9 @@ directory. `host-source.json` freezes source and evidence hashes for handoff.
 
 App startup's full 34-dictionary closure, real profile interactions, display,
 validation commits and further views remain outside this bounded result.
+
+## Portable entry diagnostics
+
+The existing runner's `--portable-entry-diagnostics` mode compiles the exact pinned NINA `PortableEntry.cs` and invokes its private configuration method through test-only reflection. It does not call NINA `App.Main`. Use `--expect-enabled` only in a fresh Linux process started with `WPF_NINA_PORTABLE_DIAGNOSTICS=1`; otherwise start a separate process with the switch absent. The fixture exercises a real missing-property binding with source/target/property text, valid binding recovery, repeated setup without duplicate output and a genuinely loaded Window's missing-resource key plus add/remove/restore and normal close. It captures the ordinary stderr listener's actual text in its JSON observations.
+
+The native portion requires the existing owned private Xvfb/settings runner. It must not run on a live desktop. Use released references with `Private=false` for a consumer-only build and borrow that runtime's deps/config and its existing Stage additional-deps; do not copy or rebuild a framework graph for this mode. The diagnostic entry link/dispatch is excluded from the stock Windows reference build, which does not reference NativeHost. A previous entry without configuration remains usable as a causal baseline: the test observes a genuine binding `PathError` and fails because diagnostic text is missing. Final installed NINA startup with the same switch remains a separate publication gate.

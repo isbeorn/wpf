@@ -14,6 +14,11 @@ internal static class Program
     [STAThread]
     private static int Main()
     {
+#if NINA_PORTABLE_ENTRY_DIAGNOSTICS
+        if (Environment.GetCommandLineArgs().Contains("--portable-entry-diagnostics", StringComparer.Ordinal))
+            return PortableEntryDiagnosticsCases.Run();
+#endif
+
         var checks = new List<object>();
         var loads = new List<object>();
         var nativeFailures = new List<object>();

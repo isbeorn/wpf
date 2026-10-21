@@ -12,6 +12,10 @@ PortableEntry.cs is one additional internal source file in the NINA assembly. It
 
 The bootstrap hash is recorded separately in upstream.json; all 680 upstream source pins and the existing paired-console transformation remain unchanged. This build product needs a coherent framework family with genuine portable SplashScreen support before complete entry execution can pass. A real desktop must supply XSETTINGS. An isolated Xvfb test needs an external owned settings publisher; production PortableEntry never fabricates desktop settings.
 
+On Linux, set `WPF_NINA_PORTABLE_DIAGNOSTICS=1` before starting NINA to emit WPF binding, resource-dictionary and markup warnings/errors to stderr. Diagnostics are off by default; all other values leave them off. The entry configures the existing `PresentationTraceSources` after NativeHost initialization and before `App.Main`, using one shared standard console listener and automatic flushing. Repeated setup does not duplicate the listener. Windows startup is unchanged.
+
+This is startup configuration, not a live toggle. Changing the environment later does not remove an installed listener. The enabled mode sets process-wide `Trace.AutoFlush=true`; NINA's normal profile log level controls its separate Serilog output. Capture stderr together with stdout, original NINA logs and the installed publication/runtime manifests. A handled application exception may still end with exit zero and empty stderr. Binding messages identify the source path/type and target control/property; resource warnings identify the missing key. Do not assume compiled BAML file/line locations are available.
+
 Required inputs:
 
 - NinaSourceDirectory: root of the pinned, unchanged upstream source tree.
