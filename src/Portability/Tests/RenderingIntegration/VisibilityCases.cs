@@ -115,8 +115,8 @@ internal static class VisibilityCases
             using var target = new LiveTarget(visual);
             target.Render(); Clear(target.Pixels());
             visual.Opacity = 1;
-            try { target.Render(); throw new InvalidOperationException("Visible ImageBrush was silently accepted."); }
-            catch (NotSupportedException exception) when (exception.Message.Contains("ImageBrush", StringComparison.Ordinal)) { }
+            try { target.Render(); throw new InvalidOperationException("Visible ImageBrush FlipXY was silently accepted."); }
+            catch (NotSupportedException exception) when (exception.Message.Contains("ImageBrush tile mode FlipXY", StringComparison.Ordinal)) { }
             using (DrawingContext dc = visual.RenderOpen()) dc.DrawRectangle(Brushes.Red, null, new Rect(0, 0, 16, 16));
             target.Render(); Red(target.Pixels());
             visual.Opacity = 0;
@@ -177,7 +177,7 @@ internal static class VisibilityCases
         using (DrawingContext dc = visual.RenderOpen()) dc.DrawRoundedRectangle(fill, null, new Rect(0, 0, 16, 16), 0, 0);
         return visual;
     }
-    private static ImageBrush Image() => new(BitmapSource.Create(1, 1, 96, 96, PixelFormats.Bgra32, null, new byte[] { 0, 0, 255, 255 }, 4));
+    private static ImageBrush Image() => new(BitmapSource.Create(1, 1, 96, 96, PixelFormats.Bgra32, null, new byte[] { 0, 0, 255, 255 }, 4)) { TileMode = TileMode.FlipXY };
     private static void Arrange(UIElement element) { element.Measure(new Size(16, 16)); element.Arrange(new Rect(0, 0, 16, 16)); element.UpdateLayout(); }
     private static void Clear(byte[] pixels) => Require(pixels.Length == 32 * 24 * 4 && pixels.All(value => value == 0), "An invisible subtree contributed pixels.");
     private static void Red(byte[] pixels) => ColorAt(pixels, Colors.Red);

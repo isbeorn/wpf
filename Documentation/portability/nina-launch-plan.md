@@ -304,6 +304,47 @@ dependency, persistent cache or application workaround. Its behavior checklist i
   scenes against stock WPF and run affected renderer/image regressions before
   a fresh coherent package and actual NINA Snapshot/save/readback replay.
 
+The first provisional Core integration passed the functional matrix but raw
+stock/portable comparison found repeated antialias coverage at fractional
+ImageBrush edges: native alpha 255 became 80 at a 96-DPI corner and 16 at a
+192-DPI corner. The viewport clip and content rectangle attenuated the same
+edge repeatedly. The correction combines shape, viewport and content coverage
+before painting once through the existing bitmap conversion and sampler. It
+keeps VisualBrush behavior unchanged and adds full-edge regressions to the
+existing cases. The old candidate fails the new guided and unguided controls.
+The corrected rectangular and guided profiles have exact brush/control alpha.
+Diagnosis is retained in
+`current/image-brush-rendering-20261021-1/reports/edge-coverage-diagnosis.json`,
+SHA-256 `D4487EBB40F806677B2C53FC50B79908046DA687896E843461CCC20E1B0BA684`.
+
+Full captures also isolated Skia bitmap-shader versus solid-color rounding:
+rounded and ellipse controls at 192 DPI differ at 12 and 23 alpha cells by one
+unit. Only those two portable fixture comparisons allow that measured delta;
+occupied support and every other alpha comparison remain exact. Independent
+shader probes reproduce it without any path intersection, so no production
+shortcut or custom sampler was added. Separate cross-native curve differences
+also exist in the unchanged solid controls and are documented in the rendering
+README; earlier 17/32 corpus measurements are not universal bounds. The
+NearestNeighbor texel-boundary differences likewise occur in direct DrawImage.
+Stock passes the final six cases and 28 captured profiles. Both production
+reviews are clear, including the final test expectation and diagnostic-report
+ordering repairs. The final portable matrix passes ImageBrush6, Rendering81,
+Imaging52 and VisualBrush61 on each OS: 400 checks across eight processes,
+all exit zero with empty stderr and clean builds. All 28 raw rasters are
+pixel-identical across Windows and Linux; JSON file differences are line endings.
+Root independently verified both Core PE/PDB pairs and 2,856 producing documents,
+all six leaf pairs and 72 documents, all 121 protected inputs and all 590 final
+artifact pins. Package and actual App replay remain separate pending gates.
+The final source descriptor is
+`current/image-brush-edge-rendering-20261021-1/root-report-order-1/final-source-freeze.json`,
+SHA-256 `CF953E081620C41A705AB0054B1581F144B70AF1854685917A701CD5D7B1A3C4`.
+The first integration lane remains immutable. Its successor retains the failed
+and diagnostic leaves in place and reuses both proven Core producers, with a
+384 MiB combined local/WSL cap for the final leaves and raw evidence. Actual
+retention is 328,287,933 bytes. The sealed handoff is
+`current/nina-image-brush-integration-20261021-2/final-leaves-1/reports/final-handoff.json`,
+SHA-256 `C296886C1F4743C557B2BC2540D6183EF4F0BD0E28374D60BDAC66F3B0829BBE`.
+
 Separately, the corrected private caption diagnostic passes all 11 checks on
 the current 306-file runtime. Independent native client origin and WPF screen
 origin agree; both the selected caption midpoint and client50,10 are valid

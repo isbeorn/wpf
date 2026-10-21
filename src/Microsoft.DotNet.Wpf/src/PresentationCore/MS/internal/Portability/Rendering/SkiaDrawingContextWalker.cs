@@ -59,11 +59,11 @@ namespace MS.Internal.Portability.Rendering
         public override void DrawRectangle(Brush brush, Pen pen, Rect rectangle)
         {
             if (rectangle.IsEmpty) return;
-            if (brush is VisualBrush visualBrush)
+            if (brush is VisualBrush || brush is ImageBrush)
             {
                 using var fill = new SKPath();
                 fill.AddRect(ToRect(rectangle));
-                DrawVisualBrush(visualBrush, fill, rectangle);
+                DrawTileBrushFill((TileBrush)brush, fill, rectangle);
                 brush = null;
             }
             if (!_guidelines.IsEmpty)
@@ -78,14 +78,14 @@ namespace MS.Internal.Portability.Rendering
         public override void DrawRoundedRectangle(Brush brush, Pen pen, Rect rectangle, double radiusX, double radiusY)
         {
             if (rectangle.IsEmpty) return;
-            if (brush is VisualBrush visualBrush)
+            if (brush is VisualBrush || brush is ImageBrush)
             {
                 using var fill = !_guidelines.IsSimple
                     ? SkiaGeometry.Create(new RectangleGeometry(rectangle, radiusX, radiusY).GetAsPathGeometry(), false)
                     : new SKPath();
                 if (_guidelines.IsSimple)
                     fill.AddRoundRect(ToRect(rectangle), (float)Math.Min(Math.Abs(radiusX), rectangle.Width / 2), (float)Math.Min(Math.Abs(radiusY), rectangle.Height / 2));
-                DrawVisualBrush(visualBrush, fill, rectangle);
+                DrawTileBrushFill((TileBrush)brush, fill, rectangle);
                 brush = null;
             }
             if (!_guidelines.IsSimple && brush != null)
@@ -115,10 +115,10 @@ namespace MS.Internal.Portability.Rendering
             var rectangle = new SKRect((float)(center.X - Math.Abs(radiusX)), (float)(center.Y - Math.Abs(radiusY)),
                 (float)(center.X + Math.Abs(radiusX)), (float)(center.Y + Math.Abs(radiusY)));
             var bounds = new Rect(rectangle.Left, rectangle.Top, rectangle.Width, rectangle.Height);
-            if (brush is VisualBrush visualBrush)
+            if (brush is VisualBrush || brush is ImageBrush)
             {
                 using var fill = new SKPath(); fill.AddOval(rectangle);
-                DrawVisualBrush(visualBrush, fill, bounds);
+                DrawTileBrushFill((TileBrush)brush, fill, bounds);
                 brush = null;
             }
             if (!_guidelines.IsEmpty)
@@ -137,8 +137,8 @@ namespace MS.Internal.Portability.Rendering
                 ? rectangle.GetAsPathGeometry() : geometry;
             using (SKPath fill = SkiaGeometry.Create(fillGeometry, false))
             {
-                if (brush is VisualBrush visualBrush)
-                    DrawVisualBrush(visualBrush, fill, geometry.Bounds);
+                if (brush is VisualBrush || brush is ImageBrush)
+                    DrawTileBrushFill((TileBrush)brush, fill, geometry.Bounds);
                 else if (brush != null)
                     using (SKPaint paint = CreateBrush(brush, brush is DrawingBrush ? geometry.Bounds : Rect.Empty)) DrawSnappedPath(fill, paint);
             }
@@ -303,6 +303,12 @@ namespace MS.Internal.Portability.Rendering
             }
             if (!(imageSource is System.Windows.Media.Imaging.BitmapSource bitmap) || bitmap.PortableBuffer == null)
                 throw Unsupported("image sources without portable bitmap storage");
+            DrawBitmapImage(bitmap, rectangle);
+            GC.KeepAlive(imageSource);
+        }
+
+        private void DrawBitmapImage(System.Windows.Media.Imaging.BitmapSource bitmap, Rect rectangle, SKPath deviceCoverage = null)
+        {
             SKSamplingOptions options = _bitmapScalingMode switch
             {
                 BitmapScalingMode.Linear => new SKSamplingOptions(SKFilterMode.Linear),
@@ -321,17 +327,26 @@ namespace MS.Internal.Portability.Rendering
                 SKMatrix sampling = new SKMatrix(
                     (float)(rectangle.Width / pixels.Width), 0, (float)rectangle.Left,
                     0, (float)(rectangle.Height / pixels.Height), (float)rectangle.Top, 0, 0, 1);
-                if (!_guidelines.IsEmpty) sampling = SKMatrix.Concat(Canvas.TotalMatrix, sampling);
+                if (deviceCoverage != null || !_guidelines.IsEmpty) sampling = SKMatrix.Concat(Canvas.TotalMatrix, sampling);
                 using SKShader shader = highQuality
                     ? image.ToShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, options, sampling)
                     : pixels.ToShader(SKShaderTileMode.Clamp, SKShaderTileMode.Clamp, options, sampling);
                 using SKShader precise = options.Filter == SKFilterMode.Linear ? shader.WithColorFilter(_linearSamplingPrecision) : null;
                 using var paint = new SKPaint { Shader = precise ?? shader, IsAntialias = true };
-                using var path = new SKPath();
-                path.AddRect(ToRect(rectangle));
-                DrawSnappedPath(path, paint);
+                if (deviceCoverage == null)
+                {
+                    using var path = new SKPath();
+                    path.AddRect(ToRect(rectangle));
+                    DrawSnappedPath(path, paint);
+                }
+                else
+                {
+                    int saved = Canvas.Save();
+                    try { Canvas.ResetMatrix(); Canvas.DrawPath(deviceCoverage, paint); }
+                    finally { Canvas.RestoreToCount(saved); }
+                }
             }
-            GC.KeepAlive(imageSource);
+            GC.KeepAlive(bitmap);
         }
         public override void DrawImage(ImageSource imageSource, Rect rectangle, AnimationClock rectangleAnimations)
         {
@@ -383,15 +398,35 @@ namespace MS.Internal.Portability.Rendering
             finally { Canvas.RestoreToCount(saved); }
         }
 
-        private void DrawVisualBrush(VisualBrush brush, SKPath shape, Rect bounds)
+        private void DrawTileBrushFill(TileBrush brush, SKPath shape, Rect bounds)
         {
-            if (brush.TileMode != TileMode.None) throw Unsupported($"VisualBrush tile mode {brush.TileMode}");
-            Visual source = brush.Visual;
-            if (source == null || bounds.IsEmpty || bounds.Width <= 0 || bounds.Height <= 0) return;
-            if (_target == null) throw Unsupported("VisualBrush content without a portable render target");
-            _target.RegisterBrushSource(source);
-            Rect content = source.CalculateSubgraphBoundsOuterSpace();
+            Visual source = null;
+            System.Windows.Media.Imaging.BitmapSource image = null;
+            Rect content;
+            if (brush is ImageBrush imageBrush)
+            {
+                if (imageBrush.ImageSource == null) return;
+                if (brush.TileMode != TileMode.None) throw Unsupported($"ImageBrush tile mode {brush.TileMode}");
+                image = imageBrush.ImageSource as System.Windows.Media.Imaging.BitmapSource;
+                if (image?.PortableBuffer == null) throw Unsupported("ImageBrush sources without portable bitmap storage");
+                if (!UsableRectangle(bounds)) return;
+                content = new Rect(0, 0, image.Width, image.Height);
+            }
+            else
+            {
+                if (brush.TileMode != TileMode.None) throw Unsupported($"VisualBrush tile mode {brush.TileMode}");
+                source = ((VisualBrush)brush).Visual;
+                if (source == null || bounds.IsEmpty || bounds.Width <= 0 || bounds.Height <= 0) return;
+                if (_target == null) throw Unsupported("VisualBrush content without a portable render target");
+                _target.RegisterBrushSource(source);
+                content = source.CalculateSubgraphBoundsOuterSpace();
+            }
             if (!TryGetTileBrushMapping(brush, content, bounds, out Rect viewport, out Matrix mapping, out Matrix brushTransform)) return;
+            if (image != null)
+            {
+                DrawImageBrushFill(brush, image, shape, content, viewport, mapping, brushTransform);
+                return;
+            }
 
             int saved = Canvas.Save();
             var guidelines = CaptureGuidelines();
@@ -420,6 +455,40 @@ namespace MS.Internal.Portability.Rendering
                 Canvas.RestoreToCount(saved);
                 RestoreGuidelines(guidelines);
                 _bitmapScalingMode = mode;
+            }
+        }
+
+        private void DrawImageBrushFill(TileBrush brush, System.Windows.Media.Imaging.BitmapSource image,
+            SKPath shape, Rect content, Rect viewport, Matrix mapping, Matrix brushTransform)
+        {
+            SKMatrix brushMatrix = SKMatrix.Concat(Canvas.TotalMatrix, ToMatrix(brushTransform));
+            SKMatrix contentMatrix = SKMatrix.Concat(brushMatrix, ToMatrix(mapping));
+            using SKPath shapeDevice = _guidelines.SnapPath(shape, Canvas.TotalMatrix);
+            using var viewportPath = new SKPath();
+            viewportPath.AddRect(ToRect(viewport));
+            using SKPath viewportDevice = _guidelines.SnapPath(viewportPath, brushMatrix);
+            using var contentPath = new SKPath();
+            contentPath.AddRect(ToRect(content));
+            using SKPath contentDevice = _guidelines.SnapPath(contentPath, contentMatrix);
+            // Intersect geometry before rasterization so coincident edges receive antialias coverage once.
+            using SKPath clippedShape = shapeDevice.Op(viewportDevice, SKPathOp.Intersect)
+                ?? throw new InvalidOperationException("The ImageBrush viewport intersection could not be created.");
+            using SKPath coverage = clippedShape.Op(contentDevice, SKPathOp.Intersect)
+                ?? throw new InvalidOperationException("The ImageBrush content intersection could not be created.");
+            if (coverage.IsEmpty) return;
+
+            int saved = Canvas.Save();
+            var guidelines = CaptureGuidelines();
+            try
+            {
+                Canvas.SetMatrix(contentMatrix);
+                if (brush.Opacity != 1) PushOpacity(brush.Opacity);
+                DrawBitmapImage(image, content, coverage);
+            }
+            finally
+            {
+                Canvas.RestoreToCount(saved);
+                RestoreGuidelines(guidelines);
             }
         }
 

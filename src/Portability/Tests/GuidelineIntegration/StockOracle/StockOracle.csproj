@@ -8,6 +8,7 @@
   <ItemGroup>
     <Compile Include="../Program.cs" Link="Program.cs" />
     <Compile Include="../../RenderingIntegration/VisibilityCases.cs" Link="VisibilityCases.cs" />
+    <Compile Include="../../RenderingIntegration/ImageBrushCases.cs" Link="ImageBrushCases.cs" />
     <Compile Include="../BitmapSamplingCases.cs" Link="BitmapSamplingCases.cs" />
     <Compile Include="../BitmapSamplingMath.cs" Link="BitmapSamplingMath.cs" />
     <Compile Include="../BitmapSamplingCorpus.cs" Link="BitmapSamplingCorpus.cs" />

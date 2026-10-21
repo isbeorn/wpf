@@ -21,6 +21,21 @@ using var reference = JsonDocument.Parse(File.ReadAllText(Path.Combine(AppContex
 var thread = new Thread(() =>
 {
     CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+#if STOCK
+    if (args.Contains("--image-brush-only"))
+    {
+        ImageBrushCases.Run((name, test) =>
+        {
+            try { test(); results.Add(new { name, passed = true }); }
+            catch (Exception exception) { failed = true; results.Add(new { name, passed = false, detail = exception.ToString() }); }
+        }, () => { });
+        string? capture = args.FirstOrDefault(argument => argument.StartsWith("--capture-image-brush=", StringComparison.Ordinal));
+        if (!failed && capture != null)
+            File.WriteAllText(capture["--capture-image-brush=".Length..], JsonSerializer.Serialize(ImageBrushCases.CaptureCalibration(), new JsonSerializerOptions { WriteIndented = true }));
+        Dispatcher.CurrentDispatcher.InvokeShutdown();
+        return;
+    }
+#endif
     if (!args.Contains("--visibility-only") && !args.Contains("--visual-brush-only") && !args.Contains("--dashes-only"))
     {
         var cubicFills = NativeCubicFillCases.Run(Render);

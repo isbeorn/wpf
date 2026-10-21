@@ -12,6 +12,16 @@ using SkiaSharp;
 
 var checks = new List<object>();
 var failed = false;
+if (args.Contains("--image-brush-only") || args.Length == 0)
+    ImageBrushCases.Run(Run, Drain);
+if (args.Contains("--image-brush-only"))
+{
+    Console.WriteLine(JsonSerializer.Serialize(new { probe = "image-brush-rendering", corePath = typeof(DrawingVisual).Assembly.Location, checks }, new JsonSerializerOptions { WriteIndented = true }));
+    string? capture = args.FirstOrDefault(argument => argument.StartsWith("--capture-image-brush=", StringComparison.Ordinal));
+    if (capture != null && (!failed || args.Contains("--capture-image-brush-on-failure")))
+        File.WriteAllText(capture["--capture-image-brush=".Length..], JsonSerializer.Serialize(ImageBrushCases.CaptureCalibration(), new JsonSerializerOptions { WriteIndented = true }));
+    return failed ? 1 : 0;
+}
 if (args.Contains("--blur-only") || args.Length == 0)
 {
     Run("blur-gaussian-zero-ten-and-dpi", BlurEffectCases.Gaussian);
@@ -127,11 +137,11 @@ Run("empty-image-brush-rounded-fill-and-pen-leave-sibling-pixels", () =>
             Require(pixels.GetPixel(x, y) == (x >= 48 && x < 60 && y >= 4 && y < 16 ? SKColors.Green : SKColors.Blue),
                 $"Empty ImageBrush changed background or sibling pixel ({x},{y}).");
 });
-Run("image-brush-source-reject-clear-and-retained-recovery", () =>
+Run("image-brush-flip-source-reject-clear-and-retained-recovery", () =>
 {
     BitmapSource image = BitmapSource.Create(1, 1, 96, 96, PixelFormats.Bgra32, null,
         new byte[] { 0, 0, 255, 255 }, 4);
-    var brush = new ImageBrush(image);
+    var brush = new ImageBrush(image) { TileMode = TileMode.FlipXY };
     var root = new DrawingVisual();
     using (DrawingContext drawing = root.RenderOpen())
     {
@@ -142,7 +152,7 @@ Run("image-brush-source-reject-clear-and-retained-recovery", () =>
     int frames = 0;
     target.FrameRendered += () => frames++;
     NotSupportedException rejection = Expect<NotSupportedException>(target.Render);
-    Require(rejection.Message.Contains(typeof(ImageBrush).FullName!), "Nonempty ImageBrush rejection lost its named diagnostic.");
+    Require(rejection.Message.Contains("ImageBrush tile mode FlipXY"), "Nonempty ImageBrush FlipXY rejection lost its named diagnostic.");
     Require(frames == 0, "Unsupported ImageBrush completed a frame.");
     brush.ImageSource = null;
     Drain();
@@ -155,7 +165,7 @@ Run("image-brush-source-reject-clear-and-retained-recovery", () =>
     int completed = frames;
     brush.ImageSource = image;
     rejection = Expect<NotSupportedException>(target.Render);
-    Require(rejection.Message.Contains(typeof(ImageBrush).FullName!) && frames == completed,
+    Require(rejection.Message.Contains("ImageBrush tile mode FlipXY") && frames == completed,
         "Restoring ImageSource did not preserve unsupported-frame semantics.");
     brush.ImageSource = null;
     Drain();

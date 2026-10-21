@@ -123,3 +123,69 @@ against stock WPF. Tested guidelines belong to outer placement; the existing
 walker does not apply DrawingGroup.GuidelineSet inside the source drawing. None
 of the four inspected NINA/Classic brush declarations uses that property and
 general source-guideline parity remains unqualified.
+
+`--image-brush-only` runs six ImageBrush fill checks. The supported profile is
+TileMode.None with a BitmapSource backed by portable bitmap storage. Rectangle,
+rounded rectangle, ellipse and geometry fills share the existing TileBrush
+viewbox/viewport mapping and DrawImage conversion and inherited sampling path.
+Bitmap content bounds use Width and Height in DIPs, including source DPI. The
+outer shape, viewport and mapped content bounds are intersected in device space
+after guideline placement. That single coverage path is painted once through
+the existing bitmap shader and sampling code, avoiding repeated antialias
+attenuation where their edges coincide. The previous walker state is restored.
+Brush-local BitmapScalingMode does not override the visual or ancestor mode.
+Null ImageSource is transparent even when its unused tile mode is Tile or Flip.
+Nonempty Tile/Flip, non-bitmap sources, ImageBrush pens and glyph brushes retain
+named unsupported diagnostics. This does not qualify general TileBrush support.
+
+The shared windowless stock oracle runs the same public fill scenes with
+`--image-brush-only`. It checks UniformToFill thumbnail cropping, other stretches,
+alignment, absolute viewbox/viewport with translation, 384/768 source DPI,
+shape bounds, clips, opacity, siblings and caller state. Four-pixel color bands
+provide flat interiors under both backends without asserting identical filter
+bytes at color boundaries. Their 16x8 pixels retain a 4x2 DIP extent at 384 DPI
+and a 2x1 DIP extent at 768 DPI. Sampling scenes compare ImageBrush with DrawImage at
+interior crops including transitions under inherited NearestNeighbor and Linear
+at 96/192 target DPI. Real UIElement parent/child scenes exercise the public
+RenderOptions metadata callback. Both backends require the two modes to differ
+within that crop, child override/clear to restore the ancestor mode and ancestor
+clear/restore to restore default Linear and the original mode respectively.
+Full-image alpha equality against DrawImage catches fractional guided edges at
+both target DPIs. Five additional profiles compare fractional unguided Fill,
+Uniform letterboxing, an inset absolute viewport, rounded rectangles and
+ellipses against public image or solid-fill controls. All five profiles have
+exact brush/control alpha equality in the windowless native reference at both
+DPIs. On Skia, rounded and ellipse profiles at 192 DPI differ from their
+independent solid controls at 12 and 23 alpha cells respectively, each by one
+unit. A disposable shader/path probe reproduces that rounding with and without
+path intersections. Only those two portable profiles allow that measured
+one-unit difference; occupied-cell support and all other whole-alpha checks
+remain exact. This is separate from pre-existing cross-native curve raster
+differences: the solid rounded profiles differ by up to 44/60 alpha units at
+96/192 DPI and solid ellipses by 55/76, while ImageBrush differs by 44/59 and
+55/76 respectively. These are measurements of these fixtures, not an extension
+of an earlier corpus's 17/32 measurements or a universal bound.
+`--capture-image-brush=<absolute JSON path>` retains all 28 raw
+control/brush images for measured comparison. There is no universal pixel
+tolerance claim. The separate NearestNeighbor 192 DPI texel-boundary color
+difference shared by direct DrawImage and ImageBrush remains distinct from the
+brush-only edge-coverage regression.
+The explicit `--capture-image-brush-on-failure` diagnostic option permits those
+captures after a failed focused check; it preserves every check and the failing
+exit code.
+Portable retained checks observe the registered target after dispatcher work
+without manually rendering changes. Stock takes fresh public RenderTargetBitmap
+snapshots. Both exercise source A/B/null/A, WriteableBitmap pixel mutation and
+restoration plus unchanged Gray16 and RGB48 source bytes with nontrivial low
+bytes. Unsupported diagnostics are
+portable-only checks because stock supports additional brush profiles.
+The older retained source-clear/recovery and visibility rejection controls use
+nonempty FlipXY so they continue to exercise unsupported content after basic
+bitmap fills become supported. Their clear, restore and hidden/visible pairs
+remain active.
+
+The causal old-family red uses DrawingVisual.DrawRectangle with the original
+NINA thumbnail's UniformToFill profile. The successor uses the same DIP-sized
+source with wider flat color bands after stock calibration. The actual bound
+NINA Grid.Background and complete application workflow remain separate replay
+gates; these component scenes do not establish their completion.
