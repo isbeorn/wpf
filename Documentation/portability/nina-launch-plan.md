@@ -148,6 +148,61 @@ Accord metadata-query source adaptation is under design review. No scientific
 kernel change or GdiPlus deployment is authorized by this helper repair, and
 the next actual App retry remains unreleased.
 
+The next design proposal, awaiting the user's decision, promotes the existing
+`Accord.Imaging` dependency to an explicitly source-adapted component. It retains
+the pinned NINA source revision, original netstandard2.0 target, C# 7.3 settings,
+assembly identity and public API. The change is seven metadata expressions in
+six files, with numerical loops untouched:
+
+| Existing source | Proposed change |
+| --- | --- |
+| `AForge.Imaging/Image.cs` | Implement its existing PixelFormat bit-size helper as `((int)format >> 8) & 255`; have its byte-size helper divide that result by 8. |
+| `AForge.Imaging/UnmanagedImage.cs` | Route `PixelSize` through the existing byte-size helper. |
+| `AForge.Imaging/Filters/Convolution/Convolution.cs` | Route its reached metadata query explicitly through `Accord.Imaging.Image`. |
+| `AForge.Imaging/Filters/Smooting/Median.cs` | Route its reached metadata query through that same owner. |
+| `Blob Processing/BlobCounter.cs` | Route the query in the reached `BuildObjectsMap` method through that owner. |
+| `Blob Processing/BlobCounterBase.cs` | Route the query in the reached `CollectObjectsInfo` method through that owner. |
+
+The actual packaged System.Drawing method's IL establishes the formula above.
+Stock Accord's Convolution and Median call that Windows type directly, despite
+the similar existing Accord helper name. The two blob methods retain the same
+dependency in their color branches even when processing Gray8. Other methods
+and their platform limits stay outside this proposal.
+
+The original Accord PE is `BE51CE9A...A018F`, version 3.5.3.0, with no public key
+or manifest resources. Its matching PDB verifies all 288 pinned C# sources and
+two generated documents. The proposed offline SDK 10.0.401 build preserves its
+evaluated source membership, original compilation symbols and four Accord
+companion PEs. It reuses the original System.Drawing compile contract and the
+already available NETStandard.Library 2.0.3 reference package. Its intake must
+record exact sources, changes, compiler references and matching PE/PDB checksums.
+Preserve applicable LGPL notices, mark modified files and retain corresponding
+source plus build instructions with any distributable successor.
+
+Acceptance requires stock Windows calibration of named, undefined, negative,
+flag-only and sub-byte PixelFormat values, complete exported API comparison,
+exact existing scientific pixels/results, package27, science25, annotation5,
+FITS13 and legacy1. Package operations must succeed without deploying or loading
+GdiPlus. Existing borrowed-buffer tests cover stride, padding and source
+ownership. Keep the combined local/guest preparation below 96 MiB. Only after
+these checks and independent reviews pass may a fresh whole NINA publication
+retry the original snapshot, file save and UI readback. No Accord source edit
+or build has started.
+
+Separately, the corrected private caption diagnostic passes all 11 checks on
+the current 306-file runtime. Independent native client origin and WPF screen
+origin agree; both the selected caption midpoint and client50,10 are valid
+caption hits in that fixture. Capture, original drag service and both tab drops
+pass. This rejects the guessed invalid-caption hypothesis for that profile,
+but does not reproduce the full App's Camera/Focuser behavior. The real restored
+profile, content and GNOME frame remain different. Root rehashed its six
+evidence pins. The sealed handoff is
+`current/docking-qualification/caption-current306-observation/origin-native-handoff.json`,
+SHA-256 `9F7D3BFFA29C5CDC04B45AB97A0A4E0AFAA479CFB4DBF83A18E435689E5F3D9C`.
+Its earlier parent-relative-origin observation remains explicitly invalid for
+hypothetical root-hit inference. Trace-only sources stay ignored; no production
+docking change or new tracked test was made.
+
 The preceding 334-file application lifetime had closed normally with exit zero,
 empty stderr and no remaining app or supervisor. All 332 immutable members
 and the absolute Framing cache stayed unchanged. Its final profile is
