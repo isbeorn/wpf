@@ -33,6 +33,7 @@ Check("actual-scientific-source-precision-and-ownership", () =>
 });
 PortablePngCases.Run(Check);
 PortableDecoderCases.Run(Check);
+PortableIndexedPngCases.Run(Check);
 PortablePngEncodeCases.Run(Check);
 PortableCacheCases.Run(Check);
 RenderTargetBitmapCases.Run(Check);

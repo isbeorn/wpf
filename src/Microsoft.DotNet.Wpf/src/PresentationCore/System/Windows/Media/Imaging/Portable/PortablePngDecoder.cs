@@ -36,8 +36,9 @@ namespace System.Windows.Media.Imaging
         {
             if (bytes.Length < 8 || !bytes.Slice(0, 8).SequenceEqual(new byte[] { 137, 80, 78, 71, 13, 10, 26, 10 }))
                 throw new FileFormatException("Invalid portable PNG signature.");
-            int width = 0, height = 0;
+            int width = 0, height = 0, colorType = 0, paletteEntries = 0;
             bool alpha = false;
+            bool transparency = false;
             double dpiX = 96, dpiY = 96;
             bool pixels = false, complete = false;
             for (int offset = 8; offset <= bytes.Length - 12;)
@@ -61,9 +62,27 @@ namespace System.Windows.Media.Imaging
                         uint h = BinaryPrimitives.ReadUInt32BigEndian(chunk.Slice(4, 4));
                         if (w == 0 || h == 0 || w > int.MaxValue || h > int.MaxValue)
                             throw new FileFormatException("Invalid portable PNG dimensions.");
-                        if (chunk[8] != 8 || (chunk[9] != 2 && chunk[9] != 6))
-                            throw UnsupportedPortableImage("PNG formats other than 8-bit RGB or RGBA");
+                        if (chunk[8] != 8 || (chunk[9] != 2 && chunk[9] != 3 && chunk[9] != 6))
+                            throw UnsupportedPortableImage("PNG formats other than 8-bit RGB, RGBA or indexed color");
+                        colorType = chunk[9];
                         width = (int)w; height = (int)h; alpha = chunk[9] == 6;
+                        break;
+                    case 0x504C5445: // PLTE
+                        if (colorType == 3)
+                        {
+                            if (paletteEntries != 0 || pixels || length == 0 || length > 768 || length % 3 != 0)
+                                throw new FileFormatException("Invalid portable PNG palette.");
+                            paletteEntries = (int)length / 3;
+                        }
+                        break;
+                    case 0x74524E53: // tRNS
+                        if (colorType == 3)
+                        {
+                            if (transparency || pixels || paletteEntries == 0 || length == 0 || length > paletteEntries)
+                                throw new FileFormatException("Invalid portable PNG palette transparency.");
+                            transparency = true;
+                            foreach (byte value in chunk) alpha |= value != 255;
+                        }
                         break;
                     case 0x70485973: // pHYs
                         if (length != 9)
@@ -79,6 +98,8 @@ namespace System.Windows.Media.Imaging
                     case 0x6163544C: // acTL
                         throw UnsupportedPortableImage("animated PNG");
                     case 0x49444154: // IDAT
+                        if (colorType == 3 && paletteEntries == 0)
+                            throw new FileFormatException("Portable indexed PNG requires a palette before pixels.");
                         pixels = true;
                         break;
                     case 0x49454E44: // IEND

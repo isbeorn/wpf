@@ -12,6 +12,15 @@ and `DockBottom.PNG` payloads from revision
 `AvalonDock-LICENSE.txt`. Full upstream pins and the source manifest are in
 `src/Portability/Dependencies/AvalonDock/upstream.json`.
 
+`DockPaneEmpty.png`, the five `InnerDockPane*.png` files and the four
+`InnerDockDocPane*.png` files are unchanged payloads from the same AvalonDock
+revision and image directory. These original 8-bit indexed PNGs exercise the
+center docking artwork, including the transparent pane background. Expected
+32-bit pixel hashes were calculated by expanding the original PLTE indices and
+tRNS entries after PNG scanline filtering, independently of the WPF decoder.
+The retained calculation and original byte hashes are under
+`artifacts/portability/current/nina/indexed-guide-png-20261021-1/`.
+
 `rgb-trns.png` adds a valid PNG tRNS chunk for the existing RGB fixture's single
 sample to exercise transparent RGB without changing its color bytes. Installed
 WindowsDesktop 10.0.12 and Skia 3.119.4 agree on Bgra32 and exact CopyPixels.

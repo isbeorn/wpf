@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using AvalonDock;
 using AvalonDock.Controls;
 using AvalonDock.Layout;
@@ -416,6 +417,17 @@ internal static partial class DockingProgram
                     || Math.Abs(activePreviewScreen.Width - expectedPane.Width) > 1 || Math.Abs(activePreviewScreen.Height - expectedPane.Height) > 1)
                     failures.Add(stage + ": existing selected pane preview failed to refresh before pointer motion");
                 var expectedCenter = new Point(expectedPane.X + expectedPane.Width / 2, expectedPane.Y + expectedPane.Height / 2);
+                Require(into is Border { Child: Image { Source: BitmapSource { PixelWidth: 25, PixelHeight: 25 } } centerImage }
+                    && centerImage.ActualWidth > 0 && centerImage.ActualHeight > 0,
+                    "The original indexed Into guide image was not decoded and arranged.");
+                Require(overlay.Template.FindName("PART_DockingManagerDropTargetLeft", overlay) is Image
+                    { Source: BitmapSource { PixelWidth: 32, PixelHeight: 29 } },
+                    "The paired original RGB manager guide image was not decoded.");
+                MoveGuidePointer(new Point(expectedPane.X + 4 * scale.DpiScaleX, expectedPane.Y + expectedPane.Height / 3));
+                Settle();
+                Require(SelectedType() == null && !activePreview.IsVisible,
+                    "The guide artwork probe must be outside drop targets with no selected preview.");
+                if (!Ink(expectedCenter)) failures.Add(stage + ": pane center has no guide artwork without a preview");
                 MoveGuidePointer(expectedCenter);
                 Settle();
                 if (SelectedType() != "AnchorablePaneDockInside") failures.Add(stage + ": independent pane center did not hit the Into target");

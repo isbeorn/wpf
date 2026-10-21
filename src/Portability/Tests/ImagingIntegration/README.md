@@ -21,6 +21,15 @@ palette argument and ignores it, matching stock non-indexed behavior:
 unchanged. Other predefined palettes, custom native palette handles,
 quantization and indexed pixel storage remain explicitly unsupported.
 
+The PNG decoder also accepts the original docking guides' 8-bit indexed PNG
+input. It expands PLTE/tRNS samples through the existing Skia decoder into owned
+Bgr32 or Bgra32 storage, preserving density and alpha without exposing indexed
+bitmap storage or palette objects. Tests cover the ten original pane guide
+assets, opaque and partial alpha input, malformed palette/transparency chunks
+and recovery. Indexed PNG depths 1, 2 and 4 remain outside this profile.
+The existing Skia format selection returns Bgra32 when tRNS is present even if
+every transparency entry is 255; the expanded samples remain fully opaque.
+
 The focused checks cover worker-first palette access, every immutable color,
 stable cache identity after initialization, the exact worker-created/frozen
 NINA Gray8 image and an odd-width padded ramp through clones and real rendering.
