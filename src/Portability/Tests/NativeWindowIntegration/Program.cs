@@ -120,6 +120,14 @@ try
                     WindowPresentationCases.ExerciseEmptySizes(native, Run, Wait, Drain, chromeRequestedDpi, windowManagerTrace.Enqueue);
                     completed = true;
                 }
+                else if (args.Contains("--window-frame-only", StringComparer.Ordinal))
+                {
+                    WindowPresentationCases.ExerciseFrameBounds(native, (name, action) =>
+                    {
+                        if (!checks.Any(check => check.status == "fail")) Run(name, action);
+                    }, Wait, Drain, chromeRequestedDpi, windowManagerTrace.Enqueue);
+                    completed = true;
+                }
                 else if (args.Contains("--window-presentation-only", StringComparer.Ordinal))
                 {
                     WindowPresentationCases.Exercise(native, Run, Wait, Drain);

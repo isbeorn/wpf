@@ -458,8 +458,24 @@ namespace System.Windows
                 Size frame = PortableFrameSize;
                 if (frame != _portableNormalFrameSize)
                 {
+                    DpiScale dpi = _portablePeer.DpiScale;
+                    Size client = _portablePeer.ClientSize;
+                    PortableBoundsChanges changes = PortableBoundsChanges.None;
+                    if (frame.Width != _portableNormalFrameSize.Width &&
+                        ((_portablePendingBounds & PortableBoundsChanges.Width) != 0 ||
+                        ((SizeToContent == SizeToContent.Manual || SizeToContent == SizeToContent.Height) &&
+                        PortablePixelRequestMatches(client.Width * dpi.DpiScaleX,
+                            Math.Max(0, _portableRestoreBounds.Width - _portableNormalFrameSize.Width) * dpi.DpiScaleX))))
+                        changes |= PortableBoundsChanges.Width;
+                    if (frame.Height != _portableNormalFrameSize.Height &&
+                        ((_portablePendingBounds & PortableBoundsChanges.Height) != 0 ||
+                        ((SizeToContent == SizeToContent.Manual || SizeToContent == SizeToContent.Width) &&
+                        PortablePixelRequestMatches(client.Height * dpi.DpiScaleY,
+                            Math.Max(0, _portableRestoreBounds.Height - _portableNormalFrameSize.Height) * dpi.DpiScaleY))))
+                        changes |= PortableBoundsChanges.Height;
+                    PortableQueueBounds(changes);
                     _portableNormalFrameSize = frame;
-                    _portableBoundsAwaitingAck &= ~(PortableBoundsChanges.Width | PortableBoundsChanges.Height);
+                    InvalidateMeasure();
                     PortableUpdateConstraints();
                 }
                 if (_portableBoundsAwaitingAck != PortableBoundsChanges.None && !_portableRequestedBoundsDpi.Equals(_portablePeer.DpiScale))

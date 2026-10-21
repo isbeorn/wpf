@@ -14,6 +14,13 @@ maximum hints, invalid requests and unrelated-window recovery. Repeat at 144
 DPI for fractional scaling. The default mode additionally covers the minimum
 pixel DPI round trips. The existing watchdog and private-display rules apply.
 
+`--window-frame-only --chrome-dpi=96` requires Openbox and tests a fully
+acknowledged borderless outer size before adding/removing a real native frame,
+later native user growth/shrink, same-source hide/show and three framed
+save/recreate lifetimes. It records independent client/frame geometry plus
+public dimensions, RestoreBounds and measured DPI. Repeat at 192 DPI for the
+scaled boundary. The mode stops after its first failing case.
+
 | Focused mode | Required observable behavior |
 |---|---|
 | `--wm-only` | Real EWMH state/restore in both directions, pending geometry, state/DPI callback close and unrelated subsequent frames. Requires a real WM. |

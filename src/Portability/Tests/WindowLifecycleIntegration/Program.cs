@@ -18,6 +18,7 @@ if (args.Length == 2 && args[0] == "--application-run")
 
 var checks = new List<Check>();
 bool emptyWindowOnly = args.SequenceEqual(new[] { "--empty-window-only" });
+bool lateFrameOnly = args.SequenceEqual(new[] { "--late-frame-only" });
 var thread = new Thread(() =>
 {
     PortableSystemSettingsProvider.Register(PortableSystemSettings.CreateInitialLightProfile(
@@ -25,6 +26,7 @@ var thread = new Thread(() =>
     void Run(string name, Action body)
     {
         if (emptyWindowOnly && name != "size-to-content-zero-and-one-pixel-acks-stale-growth-and-settlement") return;
+        if (lateFrameOnly && !name.StartsWith("late-frame-", StringComparison.Ordinal)) return;
         try { body(); checks.Add(new(name, "pass", "Observed real Window with managed peer.")); }
         catch (Exception exception) { checks.Add(new(name, "fail", exception.ToString())); }
     }
@@ -530,6 +532,149 @@ var thread = new Thread(() =>
             zero.Close();
         }
         finally { factory.DecorateOnShow = false; }
+    });
+    Run("late-frame-acknowledged-size-axes-dpi-and-user-resize", () =>
+    {
+        foreach (double scale in new[] { 1d, 2d })
+        foreach (Size frame in new[] { new Size(16, 0), new Size(0, 40), new Size(16, 40) })
+        {
+            factory.InitialFrameSize = new Size(); factory.InitialDpi = new DpiScale(scale, scale);
+            var window = new Window { Width = 320, Height = 240 };
+            try
+            {
+                window.Show(); var peer = factory.Last; Drain();
+                Size expected = new(320, 240);
+                foreach (Size next in new[] { frame, new Size() })
+                {
+                    peer.PublishFrame(next); Drain();
+                    Assert(peer.OuterSize == expected && window.RestoreBounds.Size == expected && window.ActualWidth == 320 && window.ActualHeight == 240,
+                        $"Acknowledged outer size survives frame {next} at {scale}x DPI");
+                    int requests = peer.ClientSizeRequests;
+                    peer.PublishFrame(next); Drain();
+                    Assert(peer.ClientSizeRequests == requests, "Duplicate frame metrics settle without another size request");
+                }
+                foreach (Size next in new[] { new Size(360, 280), new Size(300, 220) })
+                {
+                    peer.PublishGeometry(next, peer.DesktopPosition); Drain();
+                    Assert(window.RestoreBounds.Size == next && window.ActualWidth == next.Width && window.ActualHeight == next.Height,
+                        "Later genuine native growth and shrink are adopted");
+                }
+            }
+            finally { window.Close(); factory.InitialFrameSize = null; factory.InitialDpi = new DpiScale(1, 1); }
+        }
+    });
+    Run("late-frame-coalesced-client-and-unrelated-axis", () =>
+    {
+        foreach (bool width in new[] { true, false })
+        foreach (bool compensated in new[] { true, false })
+        foreach (bool removing in new[] { false, true })
+        {
+            Size decorated = width ? new Size(16, 0) : new Size(0, 40);
+            factory.InitialFrameSize = removing ? decorated : new Size();
+            var window = new Window { Width = 320, Height = 240 };
+            try
+            {
+                window.Show(); var peer = factory.Last; Drain();
+                Size frame = removing ? new Size() : decorated;
+                Size client = compensated ? new Size(320 - frame.Width, 240 - frame.Height) : new Size(350, 270);
+                Size expected = new(client.Width + frame.Width, client.Height + frame.Height);
+                int requests = peer.ClientSizeRequests;
+                peer.PublishFrame(frame, client); Drain();
+                Assert(peer.ClientSizeRequests == requests && window.RestoreBounds.Size == expected && peer.OuterSize == expected,
+                    "Compensated geometry or a coalesced genuine client resize is adopted without resubmission");
+            }
+            finally { window.Close(); factory.InitialFrameSize = null; }
+        }
+        foreach (bool width in new[] { true, false })
+        {
+            factory.InitialFrameSize = new Size();
+            var mixed = new Window { Width = 320, Height = 240 };
+            try
+            {
+                mixed.Show(); var peer = factory.Last; Drain();
+                Size expected = width ? new Size(320, 280) : new Size(360, 240);
+                peer.PublishFrame(width ? new Size(16, 0) : new Size(0, 40), expected); Drain();
+                Assert(peer.OuterSize == expected && mixed.RestoreBounds.Size == expected,
+                    "Frame compensation on one axis adopts the unrelated native axis resize");
+            }
+            finally { mixed.Close(); factory.InitialFrameSize = null; }
+        }
+    });
+    Run("late-frame-pending-intent-and-frame-first", () =>
+    {
+        foreach (int axes in new[] { 1, 2, 3 })
+        foreach (bool frameFirst in new[] { false, true })
+        {
+            factory.InitialFrameSize = new Size();
+            var window = new Window { Width = 320, Height = 240 };
+            try
+            {
+                window.Show(); var peer = factory.Last; Drain(); peer.DeferBounds = true;
+                if (frameFirst) peer.PublishFrame(new Size(16, 40));
+                if ((axes & 1) != 0) window.Width = 380;
+                if ((axes & 2) != 0) window.Height = 300;
+                if (!frameFirst) peer.PublishFrame(new Size(16, 40), new Size(350, 270));
+                Assert(window.RestoreBounds.Width == ((axes & 1) != 0 ? 380 : frameFirst ? 320 : 366) &&
+                    window.RestoreBounds.Height == ((axes & 2) != 0 ? 300 : frameFirst ? 240 : 310),
+                    "Pending axes retain explicit intent while other axes adopt coalesced native geometry");
+                Size expected = window.RestoreBounds.Size;
+                peer.DeferBounds = false; peer.PublishGeometry(expected, peer.DesktopPosition); Drain();
+                Assert(window.ActualWidth == expected.Width && window.ActualHeight == expected.Height,
+                    "Frame-first and client-first requests acknowledge the final outer dimensions");
+            }
+            finally { window.Close(); factory.InitialFrameSize = null; }
+        }
+    });
+    Run("late-frame-autosize-preserves-content-on-selected-axes", () =>
+    {
+        foreach (SizeToContent mode in new[] { SizeToContent.Width, SizeToContent.Height, SizeToContent.WidthAndHeight })
+        {
+            factory.InitialFrameSize = new Size();
+            var element = new SizingElement();
+            var window = new Window { Width = 320, Height = 240, Content = element, SizeToContent = mode };
+            try
+            {
+                window.Show(); var peer = factory.Last; Drain();
+                foreach (Size frame in new[] { new Size(16, 40), new Size() })
+                {
+                    peer.PublishFrame(frame); window.UpdateLayout(); Drain();
+                    double width = mode == SizeToContent.Height ? 320 : 160 + frame.Width;
+                    double height = mode == SizeToContent.Width ? 240 : 120 + frame.Height;
+                    Assert(peer.OuterSize == new Size(width, height) && window.ActualWidth == width && window.ActualHeight == height,
+                        $"Frame change preserves content sizing on {mode} and outer sizing on the other axis");
+                    Assert(element.ActualWidth >= 160 && element.ActualHeight >= 120, "Frame addition does not shrink autosized content");
+                }
+                peer.DeferBounds = true;
+                element.SetDesired(new Size(200, 160)); window.UpdateLayout(); Drain();
+                peer.PublishFrame(new Size(16, 40)); window.UpdateLayout(); Drain();
+                Size pending = new(mode == SizeToContent.Height ? 320 : 216, mode == SizeToContent.Width ? 240 : 200);
+                Assert(window.RestoreBounds.Size == pending && peer.LastClientRequest == new Size(pending.Width - 16, pending.Height - 40),
+                    "Pending automatic growth is recalculated by layout with the newly observed frame");
+                peer.DeferBounds = false; peer.PublishGeometry(pending, peer.DesktopPosition); Drain();
+                Assert(peer.OuterSize == pending && element.ActualWidth >= 200 && element.ActualHeight >= 160,
+                    "Acknowledged automatic growth retains content after a late frame");
+            }
+            finally { window.Close(); factory.InitialFrameSize = null; }
+        }
+    });
+    Run("late-frame-maximize-restore-both-orders", () =>
+    {
+        foreach (bool geometryFirst in new[] { false, true })
+        {
+            factory.InitialFrameSize = new Size(); factory.GeometryFirst = geometryFirst;
+            var window = new Window { Width = 320, Height = 240 };
+            try
+            {
+                window.Show(); var peer = factory.Last; Drain();
+                peer.PublishFrame(new Size(16, 40)); Drain();
+                window.WindowState = WindowState.Maximized; Drain();
+                Assert(window.RestoreBounds.Size == new Size(320, 240), "Maximizing retains compensated normal outer bounds");
+                window.WindowState = WindowState.Normal; Drain();
+                Assert(peer.OuterSize == new Size(320, 240) && window.RestoreBounds.Size == peer.OuterSize,
+                    "Restoring retains outer size in either state/geometry callback order");
+            }
+            finally { window.Close(); factory.InitialFrameSize = null; factory.GeometryFirst = false; }
+        }
     });
     Run("restore-size-partial-axes-both-states-orders-directions", () =>
     {
@@ -1193,6 +1338,7 @@ sealed class ManagedFactory : IPortableWindowFactory
     public bool FailNextShow { get; set; }
     public bool GeometryFirst { get; set; }
     public bool DecorateOnShow { get; set; }
+    public Size? InitialFrameSize { get; set; }
     public bool ReportMetricsOnShow { get; set; } = true;
     public DpiScale InitialDpi { get; set; } = new(1, 1);
     public Rect StartupWorkArea { get; set; } = new(0, 0, 1600, 1000);
@@ -1217,6 +1363,7 @@ sealed class ManagedPeer : IPortableWindowPeer
         ShowInTaskbar = options.ShowInTaskbar;
         _initialState = options.WindowState; DpiScale = factory.InitialDpi;
         if (factory.DecorateOnShow) _frameSize = new Size();
+        if (factory.InitialFrameSize is Size frame) _frameSize = frame;
         if (options.DesktopPosition is Point position) { DesktopPosition = position; _positionRequested = true; }
     }
     private readonly WindowState _initialState;
@@ -1297,6 +1444,13 @@ sealed class ManagedPeer : IPortableWindowPeer
         ClientSize = new Size(size.Width - _frameSize.Width, size.Height - _frameSize.Height);
         DesktopPosition = position;
         if (State == WindowState.Normal) { _normalClientSize = ClientSize; _normalPosition = DesktopPosition; }
+        MetricsChanged?.Invoke();
+    }
+    public void PublishFrame(Size frame, Size? client = null)
+    {
+        _frameSize = frame;
+        if (client is Size size) ClientSize = size;
+        if (State == WindowState.Normal) _normalClientSize = ClientSize;
         MetricsChanged?.Invoke();
     }
     public void SetClientSizeConstraints(Size minimum, Size maximum) { Minimum = minimum; Maximum = maximum; }

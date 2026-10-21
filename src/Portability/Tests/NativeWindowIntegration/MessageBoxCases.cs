@@ -20,6 +20,68 @@ internal static class MessageBoxNativeCases
                 Math.Abs(dpi.DpiScaleY - requestedDpi / 96d) < 0.0001,
                 $"The genuine MessageBox {role} DPI does not match requested {requestedDpi}: {96 * dpi.DpiScaleX},{96 * dpi.DpiScaleY}.");
         }
+        if (native.HasWindowManager)
+        run("native-MessageBox-captioned-wrapped-body-buttons-inside-client", () =>
+        {
+            const string text = "The application ran into an unhandled exception and most likely has to shut down.\n" +
+                "The error has been logged to \"%localappdata%\\NINA\\Logs\".\n" +
+                "Should the application try to recover from the error? (Can lead to unexpected behavior)";
+            Window? observedDialog = null;
+            IntPtr handle = IntPtr.Zero;
+            MessageBoxResult result = Show(native, "MessageBox native captioned NINA error", dialog =>
+            {
+                observedDialog = dialog; handle = native.FindWindow(dialog.Title);
+                bool buttonsInsideClient = false;
+                try
+                {
+                    wait(() =>
+                    {
+                        if (!native.IsMapped(handle) || native.FrameExtents(handle) is not { } frame || frame.Top + frame.Bottom == 0)
+                            return false;
+                        var client = native.Size(handle); var dpi = VisualTreeHelper.GetDpi(dialog);
+                        return dialog.IsMeasureValid && dialog.IsArrangeValid &&
+                            Math.Abs(dialog.ActualWidth * dpi.DpiScaleX - client.Width - frame.Left - frame.Right) < 1 &&
+                            Math.Abs(dialog.ActualHeight * dpi.DpiScaleY - client.Height - frame.Top - frame.Bottom) < 1;
+                    });
+                    drain(); VerifyDpi(dialog, "captioned wrapped dialog");
+                }
+                finally
+                {
+                    var client = native.Size(handle); var origin = native.ClientOrigin(handle);
+                    var frame = native.FrameExtents(handle);
+                    var grid = (Grid)dialog.Content;
+                    var body = grid.Children.OfType<DockPanel>().Single();
+                    var message = (TextBlock)body.Children.OfType<ScrollViewer>().Single().Content;
+                    var actions = grid.Children.OfType<StackPanel>().Single();
+                    Rect Bounds(FrameworkElement element)
+                    {
+                        Point first = element.PointToScreen(new Point());
+                        Point last = element.PointToScreen(new Point(element.ActualWidth, element.ActualHeight));
+                        return new Rect(new Point(first.X - origin.X, first.Y - origin.Y),
+                            new Point(last.X - origin.X, last.Y - origin.Y));
+                    }
+                    var buttons = Buttons(dialog).Select(button => new { label = button.Content.ToString(), bounds = Bounds(button) }).ToArray();
+                    observe(new { kind = "native-MessageBox-captioned-wrapped-layout", xid = handle.ToInt64(),
+                        clientWidth = client.Width, clientHeight = client.Height, clientX = origin.X, clientY = origin.Y,
+                        frameLeft = frame?.Left, frameRight = frame?.Right, frameTop = frame?.Top, frameBottom = frame?.Bottom,
+                        outerWidth = dialog.ActualWidth, outerHeight = dialog.ActualHeight,
+                        desiredWidth = dialog.DesiredSize.Width, desiredHeight = dialog.DesiredSize.Height,
+                        bodyDesiredWidth = message.DesiredSize.Width, bodyDesiredHeight = message.DesiredSize.Height,
+                        bodyWidth = message.ActualWidth, bodyHeight = message.ActualHeight,
+                        actionsY = Bounds(actions).Y, actionsHeight = Bounds(actions).Height,
+                        buttons = buttons.Select(button => new { button.label, x = button.bounds.X, y = button.bounds.Y,
+                            width = button.bounds.Width, height = button.bounds.Height }).ToArray() });
+                    buttonsInsideClient = buttons.Length == 2 && buttons.All(button => button.bounds.Width > 0 && button.bounds.Height > 0 &&
+                        button.bounds.Left >= -0.01 && button.bounds.Top >= -0.01 &&
+                        button.bounds.Right <= client.Width + 0.01 && button.bounds.Bottom <= client.Height + 0.01);
+                }
+                Require(buttonsInsideClient, "The captioned wrapped MessageBox has a button outside the independently observed native client; see retained layout bounds.");
+                Click(native, dialog, "No");
+            }, caption => MessageBox.Show(text, caption, MessageBoxButton.YesNo, MessageBoxImage.Error, MessageBoxResult.No));
+            drain();
+            Require(result == MessageBoxResult.No && observedDialog != null && PresentationSource.FromVisual(observedDialog) == null && !native.IsMapped(handle),
+                "The fully visible native No click did not return No or clean up its actual source/window.");
+        });
         run("native-MessageBox-owner-only-default-keyboard", () =>
         {
             var owner = new Window { Title = "MessageBox owner", Width = 200, Height = 120, Content = new TextBox { Text = "focus" } };

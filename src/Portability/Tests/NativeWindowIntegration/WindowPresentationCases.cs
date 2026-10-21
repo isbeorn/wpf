@@ -152,6 +152,108 @@ internal static class WindowPresentationCases
         });
     }
 
+    internal static void ExerciseFrameBounds(X11Fixture native, Action<string, Action> run, Action<Func<bool>> wait, Action drain,
+        int requestedDpi, Action<object> observe)
+    {
+        double scale = requestedDpi / 96d;
+        run("native-late-frame-add-remove-retains-outer-size-and-user-resize", () =>
+        {
+            Require(native.HasWindowManager, "Late frame sizing requires a real window manager.");
+            var window = new Window { Title = "Genuine WPF late frame sizing", Left = 120, Top = 80,
+                Width = 320, Height = 240, WindowStyle = WindowStyle.None, ShowActivated = false, Background = Brushes.Red };
+            IntPtr xid = IntPtr.Zero;
+            Size expected = new(320, 240);
+            try
+            {
+                window.Show(); xid = native.FindWindow(window.Title);
+                wait(() => native.IsMapped(xid) && HasOuter(window, xid, expected) && SizeAcknowledged(window));
+                var source = PresentationSource.FromVisual(window);
+                Observe("zero-frame-size-acknowledged", window, xid, expected);
+                window.WindowStyle = WindowStyle.SingleBorderWindow;
+                wait(() => HasFrame(xid, true));
+                try { wait(() => HasOuter(window, xid, expected)); }
+                finally { Observe("late-frame-added", window, xid, expected); }
+                foreach (Size next in new[] { new Size(360, 272), new Size(300, 224) })
+                {
+                    var frame = native.FrameExtents(xid)!.Value;
+                    native.Resize(xid, checked((uint)(next.Width * scale - frame.Left - frame.Right)),
+                        checked((uint)(next.Height * scale - frame.Top - frame.Bottom)));
+                    wait(() => HasOuter(window, xid, next));
+                    expected = next;
+                    Observe("later-native-user-size", window, xid, expected);
+                }
+                window.WindowStyle = WindowStyle.None;
+                wait(() => HasFrame(xid, false));
+                try { wait(() => HasOuter(window, xid, expected)); }
+                finally { Observe("late-frame-removed", window, xid, expected); }
+                window.Hide(); wait(() => !native.IsMapped(xid)); window.Show();
+                wait(() => native.IsMapped(xid) && HasOuter(window, xid, expected));
+                Require(ReferenceEquals(source, PresentationSource.FromVisual(window)), "Frame changes or hide/show replaced the native presentation source.");
+            }
+            finally { window.Close(); drain(); }
+            Require(PresentationSource.FromVisual(window) is null && !native.IsMapped(xid), "Late frame sizing retained a closed source or native window.");
+        });
+        run("native-framed-outer-size-save-recreate-three-lifetimes", () =>
+        {
+            Require(native.HasWindowManager, "Framed lifetime sizing requires a real window manager.");
+            Size persisted = new(320, 240);
+            for (int lifetime = 0; lifetime < 3; lifetime++)
+            {
+                Size requested = persisted;
+                var window = new Window { Title = "Genuine WPF framed lifetime " + lifetime, Left = 120, Top = 80,
+                    Width = requested.Width, Height = requested.Height, ShowActivated = false, Background = Brushes.Blue };
+                IntPtr xid = IntPtr.Zero;
+                try
+                {
+                    window.Show(); xid = native.FindWindow(window.Title);
+                    wait(() => native.IsMapped(xid) && HasFrame(xid, true));
+                    try { wait(() => HasOuter(window, xid, requested)); }
+                    finally { Observe("framed-lifetime-" + lifetime, window, xid, requested); }
+                    persisted = new Size(window.ActualWidth, window.ActualHeight);
+                }
+                finally { window.Close(); drain(); }
+                Require(PresentationSource.FromVisual(window) is null && !native.IsMapped(xid), "A saved lifetime retained its old source or native window.");
+                Require(persisted == new Size(320, 240), "Saving actual outer dimensions accumulated a native frame across lifetimes.");
+            }
+        });
+
+        bool HasFrame(IntPtr xid, bool decorated)
+        {
+            var frame = native.FrameExtents(xid);
+            return frame is { } value && (value.Left + value.Right + value.Top + value.Bottom > 0) == decorated;
+        }
+        static bool SizeAcknowledged(Window window) =>
+            (Convert.ToInt32(OwnedNativeAccess.Get(window, "_portablePendingBounds")) & 3) == 0
+            && (Convert.ToInt32(OwnedNativeAccess.Get(window, "_portableBoundsAwaitingAck")) & 3) == 0;
+        bool HasOuter(Window window, IntPtr xid, Size expected)
+        {
+            var dpi = VisualTreeHelper.GetDpi(window);
+            var size = native.Size(xid);
+            var frame = native.FrameExtents(xid) ?? default;
+            return Equal(dpi.DpiScaleX, scale) && Equal(dpi.DpiScaleY, scale)
+                && Equal(window.Width, expected.Width) && Equal(window.Height, expected.Height)
+                && Equal(window.ActualWidth, expected.Width) && Equal(window.ActualHeight, expected.Height)
+                && Equal(window.RestoreBounds.Width, expected.Width) && Equal(window.RestoreBounds.Height, expected.Height)
+                && Equal(size.Width + frame.Left + frame.Right, expected.Width * scale)
+                && Equal(size.Height + frame.Top + frame.Bottom, expected.Height * scale);
+        }
+        void Observe(string stage, Window window, IntPtr xid, Size expected)
+        {
+            var size = native.Size(xid);
+            var frame = native.FrameExtents(xid) ?? default;
+            var origin = native.ClientOrigin(xid);
+            var dpi = VisualTreeHelper.GetDpi(window);
+            observe(new { kind = "normal-frame-outer-size", stage, requestedDpi, xid = xid.ToInt64(),
+                expectedWidth = expected.Width, expectedHeight = expected.Height,
+                window.Width, window.Height, window.ActualWidth, window.ActualHeight,
+                restoreWidth = window.RestoreBounds.Width, restoreHeight = window.RestoreBounds.Height,
+                clientWidth = size.Width, clientHeight = size.Height, clientX = origin.X, clientY = origin.Y,
+                frame.Left, frame.Right, frame.Top, frame.Bottom, dpiX = dpi.DpiScaleX, dpiY = dpi.DpiScaleY,
+                pending = OwnedNativeAccess.Get(window, "_portablePendingBounds").ToString(),
+                awaitingAck = OwnedNativeAccess.Get(window, "_portableBoundsAwaitingAck").ToString() });
+        }
+    }
+
     internal static void Exercise(X11Fixture native, Action<string, Action> run, Action<Func<bool>> wait, Action drain)
     {
         run("native-Window-startup-centering-and-hide-show", () =>
