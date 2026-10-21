@@ -25,6 +25,17 @@ and [consumer proof](../../artifacts/portability/current/final-distribution-2026
 bind the actual packages, sources and test outputs. Earlier full consumer and
 Windows results retain their own package identities.
 
+The same final5 pair also passes fresh Linux x64 self-contained publication,
+12 managed apphost checks, 14 native apphost checks and seven content audits.
+Both executions use the published .NET runtime with `DOTNET_ROOT` and
+`DOTNET_ROOT_X64` unset. Source/PDB, compiler origins, exact publication contents
+and owned test cleanup pass; see the
+[self-contained proof](../../artifacts/portability/current/final-distribution-20261021-5-scd-proof/handoff.json).
+These are private Xvfb results, separate from actual desktop qualification.
+The [packaging guide](../../src/Portability/Packaging/README.md#linux-prerequisites-and-qualification-scope)
+records the Linux library, service and font requirements for both deployment
+forms. A self-contained application still needs those operating-system services.
+
 The fresh 319-file NINA publication preserves App/BAML, scientific components
 and native astronomy libraries. Its actual desktop lifetime captures and
 displays two 640x480 simulator images, saves FITS and invokes original thumbnail

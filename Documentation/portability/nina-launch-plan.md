@@ -241,6 +241,32 @@ actual scope without rewriting the failures. Consumer handoff is
 `current/final-distribution-20261021-5-consumer-proof/handoff.json`, SHA-256
 `0A218B256FFCA48765EFB44149FEA86864B946388C13D762F2D02C304C6613F3`.
 
+The same final5 pair now also passes a fresh ordinary Linux x64 self-contained
+publish and actual apphost execution: 12 managed checks, 14 native checks and
+seven existing content audits. Both executions exit zero with empty test stderr,
+with `DOTNET_ROOT` and `DOTNET_ROOT_X64` unset. CoreLib and CoreCLR load from the
+286-file publication and no shared framework is selected. Root independently
+verifies both PE/PDB identities, all 17 entry source documents, 38 WPF/.NET asset
+copies and origins, both passive compiler receipts and 54 handoff file pins.
+All 832 protected input files and the new 286-file publication remain unchanged.
+Owned children are reaped and the selected private X display sockets, locks and
+work directories are absent. This is private Xvfb protocol evidence, not a new
+GNOME run or a repeat of the earlier family's complete consumer corpus.
+
+The first publish fails the compiler-origin path check without capturing the
+failing in-process location. A diagnostic successor records the correct packaged
+CodeDom assembly at the physical symlink destination instead of the expected
+cache alias. Normal extraction of only the two WPF packages resolves that setup
+mismatch with the original passive observer byte-for-byte unchanged. Both
+failures remain retained without retroactively asserting the first cause.
+No framework source or package changed, no package was downloaded and
+new retained work stays below 384 MiB. All writers are released. The handoff is
+`current/final-distribution-20261021-5-scd-proof/handoff.json`, SHA-256
+`D9487DB3DACF539D66A20318B1D792A6A218E0E38659DA56A318A4E4881AF0F2`.
+The [packaging guide](../../src/Portability/Packaging/README.md#linux-prerequisites-and-qualification-scope)
+now records the actual Linux libraries, desktop services, font observations and
+separate .NET prerequisites, including the limits of self-contained deployment.
+
 The fresh NINA publication retains its App/BAML, Image, Accord and native science
 components. Compared with the preceding 317-file publication, it adds two notice
 paths, changes 18 normal WPF/dependency/provenance paths and preserves 299 members
