@@ -182,7 +182,7 @@ This idle compatibility run is not sustained acquisition or a resource-budget
 pass. That lifetime's carry is the same receipt's `closedCarry`; the later
 scale/keyboard carry above supersedes it for the next launch.
 
-The reviewed eight-hour coordinator now rejects interrupted sampling, stale or
+The initial reviewed eight-hour coordinator rejects interrupted sampling, stale or
 misbound allocation observations and incomplete normal-close evidence. Its 39
 regression entries, six original controls and six mutation controls pass. The
 coordinator is
@@ -191,6 +191,22 @@ coordinator is
 Actual eight-hour execution, periodic original UI responses, cancellation,
 recovery and relaunch are still pending. Numerical memory/allocation acceptance
 must be grounded in workload measurements before a performance pass is claimed.
+
+The actual Ubuntu 22.04 desktop exposed two collector compatibility defects
+before timed measurement: Python 3.10 rejected .NET's seven-digit UTC fractions
+and storage accounting rejected declared output directories that did not exist
+yet. The successor preserves raw timestamps, monotonic timing, measurement
+durations and rejection of unreadable evidence. UTC normalization is limited to
+datetime comparisons and absent roots count as zero until created. All 132 Ubuntu Python 3.10
+controls pass, including the original regressions, seven-digit timestamps,
+directory growth, protocol failures and fixed calibration blocks. Independent
+review found no remaining issue. The current coordinator is SHA-256
+`A74BB5ACA040D7492C3ADD82A484112951AD4D5F742E593EDBAE5D630BFA11E0`,
+at `current/nina/collector-timestamp-compatibility-20261022-1/growth-successor/overnight.py`.
+The failed parsing and absent-root binding attempts remain preserved; neither
+produced a timed resource result. A later owner-receipt timeout also preceded
+sampling. Owner receipts now publish directly, with semantic review afterward.
+These collector checks do not complete Linux calibration or the eight-hour gate.
 
 The matched Windows resource reference has completed five image-loaded idle
 minutes, ten active warmup minutes, fifteen active steady minutes and five
