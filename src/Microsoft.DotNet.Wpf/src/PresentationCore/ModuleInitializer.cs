@@ -20,6 +20,7 @@ internal static class ModuleInitializer
     [ModuleInitializer]
     public static void Initialize()
     {
+#if !PORTABLE_WPF
         IsProcessDpiAware();
 
         DWriteLoader.LoadDWrite();
@@ -30,6 +31,7 @@ internal static class ModuleInitializer
         };
 
         MS.Internal.NativeWPFDLLLoader.LoadDwrite();
+#endif
     }
 #pragma warning restore CA2255
 

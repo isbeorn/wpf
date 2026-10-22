@@ -1,0 +1,50 @@
+{
+  "skiaSharp": {
+    "version": "3.119.4",
+    "repository": "https://github.com/mono/SkiaSharp",
+    "revision": "f568ac94dd768ef9a2f593537cfde2dd0d348ef5"
+  },
+  "skia": {
+    "selection": "SkiaSharp externals/skia gitlink",
+    "repository": "https://github.com/mono/skia",
+    "revision": "7dbfc07dd33181f84e0958afb7ee805c6c769f0b"
+  },
+  "harfBuzz": {
+    "engineVersion": "8.3.1",
+    "selection": "Skia DEPS third_party/externals/harfbuzz",
+    "bindingVersion": "8.3.1.5",
+    "repository": "https://github.com/harfbuzz/harfbuzz",
+    "revision": "2b3631a866b3077d9d675caa4ec9010b342b5a7c"
+  },
+  "wuffs": {
+    "repository": "https://github.com/google/wuffs-mirror-release-c",
+    "upstreamNoticeFile": "No root NOTICE exists at this revision; Credits.txt records the generated source copyright.",
+    "version": "0.3.3",
+    "revision": "e3f919ccfe3ef542cfc983a82146070258fb57f8",
+    "selection": "Skia DEPS third_party/externals/wuffs and third_party/wuffs/BUILD.gn",
+    "copyrightSource": "https://raw.githubusercontent.com/google/wuffs-mirror-release-c/e3f919ccfe3ef542cfc983a82146070258fb57f8/release/c/wuffs-v0.3.c",
+    "copyrightHeaderLines": "36-48"
+  },
+  "licenseFiles": [
+    {
+      "path": "HarfBuzz-COPYING.txt",
+      "source": "https://raw.githubusercontent.com/harfbuzz/harfbuzz/2b3631a866b3077d9d675caa4ec9010b342b5a7c/COPYING",
+      "sha256": "BA8F810F2455C2F08E2D56BB49B72F37FCF68F1F4FADE38977CFD7372050AD64"
+    },
+    {
+      "path": "Wuffs-APACHE-2.0.txt",
+      "source": "https://raw.githubusercontent.com/google/wuffs-mirror-release-c/e3f919ccfe3ef542cfc983a82146070258fb57f8/LICENSE",
+      "sha256": "CFC7749B96F63BD31C3C42B5C471BF756814053E847C10F3EB003417BC523D30"
+    },
+    {
+      "path": "Skia-Wuffs-BSD.txt",
+      "source": "https://raw.githubusercontent.com/mono/skia/7dbfc07dd33181f84e0958afb7ee805c6c769f0b/third_party/wuffs/LICENSE",
+      "sha256": "E59BB5C5C6BA426A9AC4BA9FE667AD14C5166B12AA25BE8AF1D122B14FBE2E36"
+    }
+  ],
+  "originalPackageNotices": {
+    "policy": "Retain original selected package notice files byte-for-byte; this directory supplements them.",
+    "licenseSha256": "89101E35A8C66FD4D6DFFC1763259161D35CB564C169714EC227A768C89F2938",
+    "thirdPartyNoticesSha256": "21504C46C4C58AA64C1055BD2DCBC5F9A136B4B8C412ED3CC6740E22C5B127F5"
+  }
+}

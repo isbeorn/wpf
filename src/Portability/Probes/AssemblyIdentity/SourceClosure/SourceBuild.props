@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RepoRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../../../../..'))</RepoRoot>
+    <WpfSourceDir>$(RepoRoot)src/Microsoft.DotNet.Wpf/src/</WpfSourceDir>
+    <WpfSharedDir>$(WpfSourceDir)Shared/</WpfSharedDir>
+    <WpfCommonDir>$(WpfSourceDir)Common/</WpfCommonDir>
+    <BaseIntermediateOutputPath>$(RepoRoot)artifacts/portability/source-closure/$(MSBuildProjectName)/obj/</BaseIntermediateOutputPath>
+    <BaseOutputPath>$(RepoRoot)artifacts/portability/source-closure/$(MSBuildProjectName)/bin/</BaseOutputPath>
+    <SystemSecurityPermissionsPackageVersion>10.0.0</SystemSecurityPermissionsPackageVersion>
+    <SystemWindowsExtensionsPackageVersion>10.0.0</SystemWindowsExtensionsPackageVersion>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+</Project>

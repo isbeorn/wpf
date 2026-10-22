@@ -1,0 +1,9 @@
+<Project>
+  <Import Project="../../Directory.Build.props" />
+  <PropertyGroup>
+    <RepoRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../../../..'))</RepoRoot>
+    <BaseOutputPath>$(RepoRoot)artifacts/portability/system-xaml/bin/$(OS)/$(MSBuildProjectName)/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(RepoRoot)artifacts/portability/system-xaml/obj/$(OS)/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+</Project>

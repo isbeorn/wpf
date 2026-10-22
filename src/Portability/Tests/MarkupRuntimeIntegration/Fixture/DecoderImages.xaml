@@ -1,0 +1,8 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <Image x:Key="NinaIcon" Source="Assets/nina.ico" />
+  <Image x:Key="DockLeft" Source="Assets/dockleft.png" />
+  <Image x:Key="DockRight" Source="Assets/dockright.png" />
+  <Image x:Key="DockTop" Source="Assets/docktop.png" />
+  <Image x:Key="DockBottom" Source="Assets/dockbottom.png" />
+</ResourceDictionary>

@@ -1,0 +1,9 @@
+<RunSettings>
+  <RunConfiguration>
+    <TargetPlatform>x64</TargetPlatform>
+    <TestSessionTimeout>60000</TestSessionTimeout>
+  </RunConfiguration>
+  <NUnit>
+    <NumberOfTestWorkers>0</NumberOfTestWorkers>
+  </NUnit>
+</RunSettings>

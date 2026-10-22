@@ -18,7 +18,7 @@ namespace System.Windows.Shell
 namespace Microsoft.Windows.Shell
 #endif
 {
-    internal class WindowChromeWorker : DependencyObject
+    internal partial class WindowChromeWorker : DependencyObject
     {
         // Delegate signature used for Dispatcher.BeginInvoke.
         private delegate void _Action();
@@ -86,12 +86,20 @@ namespace Microsoft.Windows.Shell
             _chromeInfo = newChrome;
             _chromeInfo?.PropertyChangedThatRequiresRepaint += _OnChromePropertyChangedThatRequiresRepaint;
 
+#if PORTABLE_WPF
+            PortableApplyChrome();
+#else
             _ApplyNewCustomChrome();
+#endif
         }
 
         private void _OnChromePropertyChangedThatRequiresRepaint(object sender, EventArgs e)
         {
+#if PORTABLE_WPF
+            PortableApplyChrome();
+#else
             _UpdateFrameState(true);
+#endif
         }
 
         public static readonly DependencyProperty WindowChromeWorkerProperty = DependencyProperty.RegisterAttached(
@@ -115,6 +123,9 @@ namespace Microsoft.Windows.Shell
 
         private void _SetWindow(Window window)
         {
+#if PORTABLE_WPF
+            PortableSetWindow(window);
+#else
             Assert.IsNull(_window);
             Assert.IsNotNull(window);
 
@@ -153,6 +164,7 @@ namespace Microsoft.Windows.Shell
             {
                 _window.SourceInitialized += _WindowSourceInitialized;
             }
+#endif
         }
 
         private void _WindowSourceInitialized(object sender, EventArgs e)

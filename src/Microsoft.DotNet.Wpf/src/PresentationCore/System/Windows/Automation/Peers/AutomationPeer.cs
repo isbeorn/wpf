@@ -245,11 +245,13 @@ namespace System.Windows.Automation.Peers
         ///
         static AutomationPeer()
         {
+#if !PORTABLE_WPF
             // Disable message processing to avoid re-entrancy (WM_GETOBJECT)
             using (Dispatcher.CurrentDispatcher.DisableProcessing())
             {
                 Initialize();
             }
+#endif
         }
 
 #if ENABLE_AUTOMATIONPEER_LOGGING
@@ -1794,6 +1796,9 @@ namespace System.Windows.Automation.Peers
         ///</Summary>
         protected internal IRawElementProviderSimple ProviderFromPeer(AutomationPeer peer)
         {
+#if PORTABLE_WPF
+            throw new PlatformNotSupportedException("Portable native automation provider export is not implemented.");
+#else
             AutomationPeer referencePeer = this;
 
             //replace itself with EventsSource if we are aggregated and hidden from the UIA
@@ -1804,6 +1809,7 @@ namespace System.Windows.Automation.Peers
             }
 
             return ElementProxy.StaticWrap(peer, referencePeer);
+#endif
         }
 
         private IRawElementProviderSimple ProviderFromPeerNoDelegation(AutomationPeer peer)

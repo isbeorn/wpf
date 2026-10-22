@@ -5,6 +5,9 @@ using System.Collections;
 using System.Windows.Media;
 using MS.Win32;
 using UISettingsRCW = MS.Internal.WindowsRuntime.Windows.UI.ViewManagement.UISettingsRCW;
+#if PORTABLE_WPF
+using MS.Internal.Portability.Settings;
+#endif
 
 namespace System.Windows
 {
@@ -2240,11 +2243,15 @@ namespace System.Windows
                 {
                     _colorCacheValid[(int)slot] = true;
 
+#if PORTABLE_WPF
+                    color = GetPortableColor((PortableSystemColor)SlotToFlag(slot));
+#else
                     uint argb;
                     int sysColor = SafeNativeMethods.GetSysColor(SlotToFlag(slot));
 
                     argb = (uint)FromWin32Value(sysColor);
                     color = Color.FromArgb((byte)((argb & 0xff000000) >>24), (byte)((argb & 0x00ff0000) >>16), (byte)((argb & 0x0000ff00) >>8), (byte)(argb & 0x000000ff));
+#endif
 
                     _colorCache[(int)slot] = color;
                 }
@@ -2265,6 +2272,19 @@ namespace System.Windows
                 {
                     _colorCacheValid[(int)slot] = true;
 
+#if PORTABLE_WPF
+                    color = GetPortableColor(slot switch
+                    {
+                        CacheSlot.AccentColor => PortableSystemColor.Accent,
+                        CacheSlot.AccentColorLight1 => PortableSystemColor.AccentLight1,
+                        CacheSlot.AccentColorLight2 => PortableSystemColor.AccentLight2,
+                        CacheSlot.AccentColorLight3 => PortableSystemColor.AccentLight3,
+                        CacheSlot.AccentColorDark1 => PortableSystemColor.AccentDark1,
+                        CacheSlot.AccentColorDark2 => PortableSystemColor.AccentDark2,
+                        CacheSlot.AccentColorDark3 => PortableSystemColor.AccentDark3,
+                        _ => throw new ArgumentOutOfRangeException(nameof(slot))
+                    });
+#else
                     switch(slot)
                     {
                         case CacheSlot.AccentColor:
@@ -2292,6 +2312,7 @@ namespace System.Windows
                             color = Colors.Transparent;
                             break;
                     }
+#endif
 
                     _colorCache[(int)slot] = color;
                 }
@@ -2301,6 +2322,14 @@ namespace System.Windows
 
             return color;
         }
+
+#if PORTABLE_WPF
+        private static Color GetPortableColor(PortableSystemColor role)
+        {
+            uint argb = PortableSystemSettingsProvider.Current.GetColor(role);
+            return Color.FromArgb((byte)(argb >> 24), (byte)(argb >> 16), (byte)(argb >> 8), (byte)argb);
+        }
+#endif
 
         private static SolidColorBrush MakeBrush(CacheSlot slot)
         {
@@ -2415,7 +2444,11 @@ namespace System.Windows
                     return (int)NativeMethods.Win32SystemColors.WindowText;
             }
 
+#if PORTABLE_WPF
+            throw new ArgumentOutOfRangeException(nameof(slot), slot, "No portable system color role is mapped.");
+#else
             return 0;
+#endif
         }
 
         private enum CacheSlot : int

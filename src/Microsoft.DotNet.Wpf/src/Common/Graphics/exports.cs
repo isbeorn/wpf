@@ -54,12 +54,19 @@ namespace System.Windows.Media.Composition
     /// </remark>
     internal struct CompositionEngineLock : IDisposable
     {
+#if PORTABLE_WPF
+        private static readonly object s_portableLock = new object();
+#endif
         /// <summary>
         /// Aquires the composition engine lock.
         /// </summary>
         internal static CompositionEngineLock Acquire()
         {
+#if PORTABLE_WPF
+            System.Threading.Monitor.Enter(s_portableLock);
+#else
             UnsafeNativeMethods.MilCoreApi.EnterCompositionEngineLock();
+#endif
 
             return new CompositionEngineLock();
         }
@@ -69,7 +76,11 @@ namespace System.Windows.Media.Composition
         /// </summary>
         public void Dispose()
         {
+#if PORTABLE_WPF
+            System.Threading.Monitor.Exit(s_portableLock);
+#else
             UnsafeNativeMethods.MilCoreApi.ExitCompositionEngineLock();
+#endif
         }
     }
 

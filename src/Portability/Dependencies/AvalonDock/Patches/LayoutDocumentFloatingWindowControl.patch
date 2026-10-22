@@ -1,0 +1,11 @@
+--- a/Controls/LayoutDocumentFloatingWindowControl.cs
++++ b/Controls/LayoutDocumentFloatingWindowControl.cs
+@@ -279,7 +279,7 @@
+ 				}
+ 			}
+ 
+-			var rootVisual = ((FloatingWindowContentHost)Content).RootVisual;
++			var rootVisual = ContentRootVisual;
+ 
+ 			foreach (var areaHost in rootVisual.FindVisualChildren<LayoutAnchorablePaneControl>())
+ 				_dropAreas.Add(new DropArea<LayoutAnchorablePaneControl>(areaHost, DropAreaType.AnchorablePane));

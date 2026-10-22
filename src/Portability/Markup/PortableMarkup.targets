@@ -1,0 +1,16 @@
+<Project>
+  <PropertyGroup>
+    <PortableMarkupCompilerRoot>$(MSBuildThisFileDirectory)</PortableMarkupCompilerRoot>
+    <PortableMarkupRepositoryRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../../..'))</PortableMarkupRepositoryRoot>
+    <_PresentationBuildTasksAssembly>$(PortableMarkupRepositoryRoot)artifacts/portability/markup/bin/$(OS)/PresentationBuildTasks/$(Configuration)/net10.0/PresentationBuildTasks.dll</_PresentationBuildTasksAssembly>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- The compiler runs inside this SDK; consumer output and runtime settings must not relocate or retarget it. -->
+    <ProjectReference Include="$(MSBuildThisFileDirectory)PresentationBuildTasks/PresentationBuildTasks.csproj"
+                      ReferenceOutputAssembly="false"
+                      GlobalPropertiesToRemove="OutputPath;OutDir;BaseOutputPath;BaseIntermediateOutputPath;IntermediateOutputPath;MSBuildProjectExtensionsPath;ArtifactsPath;UseArtifactsOutput;ArtifactsPivots;AppendTargetFrameworkToOutputPath;AppendRuntimeIdentifierToOutputPath;TargetFramework;TargetFrameworks;RuntimeIdentifier;RuntimeIdentifiers;SelfContained;PublishSelfContained;Platform;PlatformTarget;OutputType;AssemblyName;RootNamespace;UseWPF;UseWindowsForms"
+                      AdditionalProperties="TargetFramework=net10.0;Platform=AnyCPU;PlatformTarget=AnyCPU;OutputType=Library;UseWPF=false;UseWindowsForms=false;SelfContained=false"
+                      SkipGetTargetFrameworkProperties="true" />
+  </ItemGroup>
+  <Import Project="$(PortableMarkupRepositoryRoot)src/Microsoft.DotNet.Wpf/src/PresentationBuildTasks/Microsoft.WinFX.targets" />
+</Project>

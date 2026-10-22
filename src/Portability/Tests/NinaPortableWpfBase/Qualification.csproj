@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
+    <RollForward>Disable</RollForward>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs;RendererCases.cs;CacheCases.cs" />
+    <Reference Include="$(OriginalManagedDirectory)/*.dll" Exclude="$(OriginalManagedDirectory)/NINA.WPF.Base.dll;$(OriginalManagedDirectory)/NINA.Core.dll;$(OriginalManagedDirectory)/NINA.Image.dll;$(OriginalManagedDirectory)/NINA.Astrometry.dll" Private="false" />
+    <Reference Include="$(NinaWpfBasePath);$(NinaCorePath);$(NinaImagePath);$(NinaAstrometryPath)" Private="false" />
+    <Reference Include="$(FrameworkRuntimeDirectory)/*.dll" Private="false" Condition="'$(WpfBaseProfile)' != 'stock'" />
+    <Reference Include="WindowsBase" HintPath="$(FrameworkRuntimeDirectory)/WindowsBase.dll" Private="true" Condition="'$(WpfBaseProfile)' != 'stock'" />
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" Condition="'$(WpfBaseProfile)' == 'stock'" />
+  </ItemGroup>
+</Project>

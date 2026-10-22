@@ -1,0 +1,21 @@
+{
+  "vmrRepository": "https://github.com/dotnet/dotnet",
+  "vmrCommit": "4099f83977f4d29604a9aeb971fb0a7bc1d5f699",
+  "vmrSubtree": "4c14b7596637357025a4d8867b0c79f6df1e3a2e",
+  "vmrPath": "src/winforms/src/System.Private.Windows.Core/src",
+  "sourceRepository": "https://github.com/dotnet/winforms",
+  "sourceCommit": "3c92f9f1cc1dcc74779795d518c67aa80f472df7",
+  "sourcePath": "src/System.Private.Windows.Core/src",
+  "archiveUrl": "https://codeload.github.com/dotnet/winforms/zip/3c92f9f1cc1dcc74779795d518c67aa80f472df7",
+  "archiveSha256": "6964320B93BBE473A5775F20D187159981F47BA2C5FA034EE7996ACC72B3A24E",
+  "manifest": "SourceManifest.props",
+  "fileCount": 261,
+  "csharpFileCount": 256,
+  "csharpSourceBytes": 796171,
+  "license": "MIT",
+  "licenseSha256": "AE48DF11A335DC1A615F4F938B69CBA73BCF4485C4F97AF49B38EFB0F216353B",
+  "sourceChanges": [],
+  "resourceGeneration": "SDK GenerateResource strongly typed accessors and original manifest resource name",
+  "generatorVersion": "Microsoft.Windows.CsWin32 0.3.151",
+  "runtimeDependency": "System.Formats.Nrbf 10.0.13"
+}

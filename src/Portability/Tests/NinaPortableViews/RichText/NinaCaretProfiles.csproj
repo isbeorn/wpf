@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>AvalonEditCaretProfiles</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Profiles/Program.cs;Profiles/EditorControlCases.cs" />
+  </ItemGroup>
+</Project>

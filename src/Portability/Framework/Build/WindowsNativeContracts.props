@@ -1,0 +1,9 @@
+<Project>
+  <ItemGroup>
+    <PackageDownload Include="Microsoft.WindowsDesktop.App.Runtime.win-x64" Version="[10.0.13]" />
+    <ProjectReference Include="$(MSBuildThisFileDirectory)../System.Private.Windows.Core/System.Private.Windows.Core.csproj" />
+    <Reference Include="Accessibility">
+      <HintPath>$(NuGetPackageRoot)/microsoft.windowsdesktop.app.runtime.win-x64/10.0.13/runtimes/win-x64/lib/net10.0/Accessibility.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

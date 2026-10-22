@@ -248,6 +248,10 @@ namespace System.Windows
                     }
                 }
 
+#if PORTABLE_WPF
+                if (newThemeStyle == null && ReferenceEquals(themeStyleKey, typeof(Window)))
+                    newThemeStyle = Window.PortableDefaultStyle;
+#endif
             }
 
             // Propagate change notification

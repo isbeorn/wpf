@@ -1,0 +1,23 @@
+        private void ClosePortableAfterFailure() {
+            var pointer = filePtr;
+            filePtr = IntPtr.Zero;
+            if (pointer != IntPtr.Zero) {
+                int status = 0;
+                CfitsioNative.fits_close_file(pointer, out status);
+            }
+        }
+
+        private void ClosePortable() {
+            var pointer = filePtr;
+            filePtr = IntPtr.Zero;
+            if (pointer == IntPtr.Zero) return;
+            int status = 0;
+            try {
+                CfitsioNative.fits_write_chksum(pointer, out status);
+                LogErrorStatus("fits_write_chksum", status);
+            } finally {
+                status = 0;
+                CfitsioNative.fits_close_file(pointer, out status);
+                CheckStatus("fits_close_file", status);
+            }
+        }

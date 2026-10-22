@@ -1,0 +1,62 @@
+<Project>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <AssemblyName>PresentationUI</AssemblyName>
+    <DefineConstants>$(DefineConstants);PRESENTATIONUI</DefineConstants>
+    <WpfSourceProject>$(WpfSourceDir)PresentationUI/PresentationUI.csproj</WpfSourceProject>
+    <WpfResourceFile>$(WpfSourceDir)PresentationUI/Resources/Strings.resx</WpfResourceFile>
+    <WpfResourceNamespace>System.Windows.TrustUI</WpfResourceNamespace>
+    <WpfResourceManifestName>FxResources.PresentationUI.SR</WpfResourceManifestName>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <InternalMarkupCompilation>true</InternalMarkupCompilation>
+    <NoInternalTypeHelper>true</NoInternalTypeHelper>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>None</ResolveAssemblyWarnOrErrorOnTargetArchitectureMismatch>
+  </PropertyGroup>
+  <ItemGroup>
+    <Page Include="$(WpfSourceDir)PresentationUI/InstallationError.xaml" Link="InstallationError.xaml" />
+    <Page Include="$(WpfSourceDir)PresentationUI/TenFeetInstallationError.xaml" Link="TenFeetInstallationError.xaml" />
+    <Page Include="$(WpfSourceDir)PresentationUI/TenFeetInstallationProgress.xaml" Link="TenFeetInstallationProgress.xaml" />
+    <Page Include="$(WpfSourceDir)PresentationUI/MS/Internal/Documents/FindToolBar.xaml" Link="MS/Internal/Documents/FindToolBar.xaml" />
+    <Page Include="$(WpfSourceDir)PresentationUI/Themes/MediaCenterTheme.xaml" Link="Themes/MediaCenterTheme.xaml" />
+    <Page Include="$(WpfSourceDir)PresentationUI/Themes/Aero.NormalColor.xaml" Link="Themes/Aero.NormalColor.xaml" />
+    <Page Include="$(WpfSourceDir)PresentationUI/Themes/Aero2.NormalColor.xaml" Link="Themes/Aero2.NormalColor.xaml" />
+    <Page Include="$(WpfSourceDir)PresentationUI/Themes/AeroLite.NormalColor.xaml" Link="Themes/AeroLite.NormalColor.xaml" />
+    <Page Include="$(WpfSourceDir)PresentationUI/Themes/Classic.xaml" Link="Themes/Classic.xaml" />
+    <Page Include="$(WpfSourceDir)PresentationUI/Themes/Generic.xaml" Link="Themes/Generic.xaml" />
+    <Page Include="$(WpfSourceDir)PresentationUI/Themes/Luna.HomeStead.xaml" Link="Themes/Luna.Homestead.xaml" />
+    <Page Include="$(WpfSourceDir)PresentationUI/Themes/Luna.Metallic.xaml" Link="Themes/Luna.Metallic.xaml" />
+    <Page Include="$(WpfSourceDir)PresentationUI/Themes/Luna.NormalColor.xaml" Link="Themes/Luna.NormalColor.xaml" />
+    <EmbeddedResource Include="$(WpfResourceFile)" LogicalName="$(WpfResourceManifestName).resources" />
+    <EmbeddedResource Include="$(WpfSourceDir)PresentationUI/Resources/Documents.resx">
+      <GenerateSource>false</GenerateSource>
+      <StronglyTypedClassName>Resources</StronglyTypedClassName>
+      <StronglyTypedFileName>$(IntermediateOutputPath)MS.Internal.Documents.Resources.cs</StronglyTypedFileName>
+      <StronglyTypedNamespace>MS.Internal.Documents</StronglyTypedNamespace>
+      <StronglyTypedLanguage>CSharp</StronglyTypedLanguage>
+      <ManifestResourceName>MS.Internal.Documents.Resources</ManifestResourceName>
+    </EmbeddedResource>
+    <ProjectReference Include="../System.Xaml/System.Xaml.csproj" />
+    <ProjectReference Include="../PresentationFramework/PresentationFramework.csproj" />
+    <ProjectReference Include="../WindowsBase/WindowsBase.csproj" />
+    <ProjectReference Include="../PresentationCore/PresentationCore.csproj" />
+    <ProjectReference Include="../UIAutomationProvider/UIAutomationProvider.csproj" />
+    <ProjectReference Include="../UIAutomationTypes/UIAutomationTypes.csproj" />
+    <PackageReference Include="System.Windows.Extensions" Version="10.0.13" />
+    <PackageReference Include="System.IO.Packaging" Version="10.0.13" />
+    <PackageDownload Include="Microsoft.WindowsDesktop.App.Runtime.win-x64" Version="[10.0.13]" />
+    <Reference Include="ReachFramework;System.Printing;System.Windows.Forms;System.Windows.Forms.Primitives;System.Resources.Extensions;System.Drawing.Common;System.DirectoryServices">
+      <HintPath>$(NuGetPackageRoot)/microsoft.windowsdesktop.app.runtime.win-x64/10.0.13/runtimes/win-x64/lib/net10.0/%(Identity).dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="../Build/SourceManifest.targets" />
+  <Import Project="../Build/SourceResources.targets" />
+  <Import Project="../Build/PublicSigning.targets" />
+  <Import Project="../Build/PortableWpfReferences.targets" />
+  <Import Project="../../Markup/PortableMarkup.targets" />
+  <Import Project="$(RepoRoot)eng/WpfArcadeSdk/tools/NoInternalTypeHelper.targets" />
+  <Target Name="PreparePortablePresentationUIMarkupInputs" BeforeTargets="MarkupCompilePass1"
+          DependsOnTargets="ImportPortableSourceManifest;GeneratePortableResources;PrepareWpfPublicSigningKey;PrepareResourceNames;ResGen" />
+</Project>

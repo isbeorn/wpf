@@ -17,7 +17,7 @@ namespace System.Windows
     ///       user.
     ///    </para>
     /// </devdoc>
-    public sealed class MessageBox
+    public sealed partial class MessageBox
     {
 #if NEVER
         class WindowWin32Window : IWin32Window
@@ -255,7 +255,11 @@ namespace System.Windows
             MessageBoxImage icon, MessageBoxResult defaultResult,
             MessageBoxOptions options)
         {
+#if PORTABLE_WPF
+            return ShowPortable(owner, messageBoxText, caption, button, icon, defaultResult, options);
+#else
             return ShowCore((new WindowInteropHelper(owner)).Handle, messageBoxText, caption, button, icon, defaultResult, options);
+#endif
         }
 
         /// <devdoc>
@@ -271,7 +275,11 @@ namespace System.Windows
             MessageBoxImage icon,
             MessageBoxResult defaultResult)
         {
+#if PORTABLE_WPF
+            return ShowPortable(owner, messageBoxText, caption, button, icon, defaultResult, 0);
+#else
             return ShowCore((new WindowInteropHelper (owner)).Handle, messageBoxText, caption, button, icon, defaultResult, 0);
+#endif
         }
 
         /// <devdoc>
@@ -286,7 +294,11 @@ namespace System.Windows
             MessageBoxButton button,
             MessageBoxImage icon)
         {
+#if PORTABLE_WPF
+            return ShowPortable(owner, messageBoxText, caption, button, icon, 0, 0);
+#else
             return ShowCore((new WindowInteropHelper (owner)).Handle, messageBoxText, caption, button, icon, 0, 0);
+#endif
         }
 
         /// <devdoc>
@@ -300,7 +312,11 @@ namespace System.Windows
             string caption,
             MessageBoxButton button)
         {
+#if PORTABLE_WPF
+            return ShowPortable(owner, messageBoxText, caption, button, MessageBoxImage.None, 0, 0);
+#else
             return ShowCore((new WindowInteropHelper (owner)).Handle, messageBoxText, caption, button, MessageBoxImage.None, 0, 0);
+#endif
         }
 
         /// <devdoc>
@@ -310,7 +326,11 @@ namespace System.Windows
         /// </devdoc>
         public static MessageBoxResult Show(Window owner, string messageBoxText, string caption)
         {
+#if PORTABLE_WPF
+            return ShowPortable(owner, messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.None, 0, 0);
+#else
             return ShowCore((new WindowInteropHelper (owner)).Handle, messageBoxText, caption, MessageBoxButton.OK, MessageBoxImage.None, 0, 0);
+#endif
         }
 
         /// <devdoc>
@@ -320,7 +340,11 @@ namespace System.Windows
         /// </devdoc>
         public static MessageBoxResult Show(Window owner, string messageBoxText)
         {
+#if PORTABLE_WPF
+            return ShowPortable(owner, messageBoxText, String.Empty, MessageBoxButton.OK, MessageBoxImage.None, 0, 0);
+#else
             return ShowCore((new WindowInteropHelper (owner)).Handle, messageBoxText, String.Empty, MessageBoxButton.OK, MessageBoxImage.None, 0, 0);
+#endif
         }
         #endregion
 
@@ -367,23 +391,16 @@ namespace System.Windows
             MessageBoxResult defaultResult,
             MessageBoxOptions options)
         {
-            if (!IsValidMessageBoxButton(button))
+            ValidateArguments(button, icon, defaultResult, options);
+#if PORTABLE_WPF
+            if (owner != IntPtr.Zero)
             {
-                throw new InvalidEnumArgumentException ("button", (int)button, typeof(MessageBoxButton));
+                if ((options & (MessageBoxOptions.ServiceNotification | MessageBoxOptions.DefaultDesktopOnly)) != 0)
+                    throw new ArgumentException(SR.CantShowMBServiceWithOwner);
+                throw new PlatformNotSupportedException("Portable MessageBox owners must be managed Windows, not Win32 handles.");
             }
-            if (!IsValidMessageBoxImage(icon))
-            {
-                throw new InvalidEnumArgumentException ("icon", (int)icon, typeof(MessageBoxImage));
-            }
-            if (!IsValidMessageBoxResult(defaultResult))
-            {
-                throw new InvalidEnumArgumentException ("defaultResult", (int)defaultResult, typeof(MessageBoxResult));
-            }
-            if (!IsValidMessageBoxOptions(options))
-            {
-                throw new InvalidEnumArgumentException("options", (int)options, typeof(MessageBoxOptions));
-            }
-
+            return ShowPortableValidated(null, messageBoxText, caption, button, icon, defaultResult, options);
+#else
             // UserInteractive??
             //
             /*if (!SystemInformation.UserInteractive && (options & (MessageBoxOptions.ServiceNotification | MessageBoxOptions.DefaultDesktopOnly)) == 0) {
@@ -417,6 +434,28 @@ namespace System.Windows
             //Application.EndModalMessageLoop();
 
             return result;
+#endif
+        }
+
+        private static void ValidateArguments(MessageBoxButton button, MessageBoxImage icon, MessageBoxResult defaultResult, MessageBoxOptions options)
+        {
+            if (!IsValidMessageBoxButton(button))
+            {
+                throw new InvalidEnumArgumentException ("button", (int)button, typeof(MessageBoxButton));
+            }
+            if (!IsValidMessageBoxImage(icon))
+            {
+                throw new InvalidEnumArgumentException ("icon", (int)icon, typeof(MessageBoxImage));
+            }
+            if (!IsValidMessageBoxResult(defaultResult))
+            {
+                throw new InvalidEnumArgumentException ("defaultResult", (int)defaultResult, typeof(MessageBoxResult));
+            }
+            if (!IsValidMessageBoxOptions(options))
+            {
+                throw new InvalidEnumArgumentException("options", (int)options, typeof(MessageBoxOptions));
+            }
+
         }
 
         private static bool IsValidMessageBoxButton(MessageBoxButton value)

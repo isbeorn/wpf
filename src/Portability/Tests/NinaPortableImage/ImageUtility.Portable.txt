@@ -1,0 +1,47 @@
+        private static Task<BitmapSource> StretchPortable(IRenderedImage image, double factor, double blackClipping) {
+            return Task.Run(async () => {
+                var statistics = await image.RawImageData.Statistics.Task;
+                using (var buffer = PortableImageBuffer.FromSource(image.OriginalImage)) {
+                    var filter = GetColorRemappingFilter(statistics, factor, blackClipping, image.OriginalImage.Format);
+                    using (var view = buffer.Borrow()) filter.ApplyInPlace(view);
+                    return buffer.ToSource();
+                }
+            });
+        }
+
+        private static Task<BitmapSource> StretchUnlinkedPortable(IDebayeredImage image, double factor, double blackClipping) {
+            return Task.Run(async () => {
+                if (image.OriginalImage.Format != PixelFormats.Rgb48) throw new NotSupportedException();
+                var red = Task.Run(() => ImageData.ImageStatistics.Create(image.RawImageData.Properties, image.DebayeredData.Red));
+                var green = Task.Run(() => ImageData.ImageStatistics.Create(image.RawImageData.Properties, image.DebayeredData.Green));
+                var blue = Task.Run(() => ImageData.ImageStatistics.Create(image.RawImageData.Properties, image.DebayeredData.Blue));
+                await Task.WhenAll(red, green, blue);
+                using (var buffer = PortableImageBuffer.FromSource(image.OriginalImage)) {
+                    var filter = GetColorRemappingFilterUnlinked(blue.Result, green.Result, red.Result, factor, blackClipping, image.OriginalImage.Format);
+                    using (var view = buffer.Borrow()) filter.ApplyInPlace(view);
+                    return buffer.ToSource();
+                }
+            });
+        }
+
+        private static DebayeredImageData DebayerPortable(BitmapSource source, bool saveColorChannels, bool saveLumChannel, SensorType bayerPattern) {
+            using (var input = PortableImageBuffer.FromSource(source)) {
+                if (input.Format != System.Drawing.Imaging.PixelFormat.Format16bppGrayScale) throw new NotSupportedException();
+                var filter = new BayerFilter16bpp { SaveColorChannels = saveColorChannels, SaveLumChannel = saveLumChannel };
+                switch (bayerPattern) {
+                    case SensorType.RGGB: filter.BayerPattern = new int[,] { { RGB.B, RGB.G }, { RGB.G, RGB.R } }; break;
+                    case SensorType.RGBG: filter.BayerPattern = new int[,] { { RGB.G, RGB.B }, { RGB.G, RGB.R } }; break;
+                    case SensorType.GRGB: filter.BayerPattern = new int[,] { { RGB.B, RGB.G }, { RGB.R, RGB.G } }; break;
+                    case SensorType.GRBG: filter.BayerPattern = new int[,] { { RGB.G, RGB.B }, { RGB.R, RGB.G } }; break;
+                    case SensorType.GBGR: filter.BayerPattern = new int[,] { { RGB.R, RGB.G }, { RGB.B, RGB.G } }; break;
+                    case SensorType.GBRG: filter.BayerPattern = new int[,] { { RGB.G, RGB.R }, { RGB.B, RGB.G } }; break;
+                    case SensorType.BGRG: filter.BayerPattern = new int[,] { { RGB.G, RGB.R }, { RGB.G, RGB.B } }; break;
+                    case SensorType.BGGR: filter.BayerPattern = new int[,] { { RGB.R, RGB.G }, { RGB.G, RGB.B } }; break;
+                    default: throw new InvalidImagePropertiesException(string.Format(Loc.Instance["LblUnsupportedCfaPattern"], bayerPattern));
+                }
+                using (var output = new PortableImageBuffer(input.Width, input.Height, System.Drawing.Imaging.PixelFormat.Format48bppRgb)) {
+                    using (var src = input.Borrow()) using (var dst = output.Borrow()) filter.Apply(src, dst);
+                    return new DebayeredImageData { ImageSource = output.ToSource(), Data = filter.LRGBArrays };
+                }
+            }
+        }

@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 //
@@ -21,7 +21,7 @@ namespace MS.Internal.PtsHost
     //-----------------------------------------------------------------------
     // DocumentPage representing bottomless or finite page of a PTS host.
     //-----------------------------------------------------------------------
-    internal sealed class FlowDocumentPage : DocumentPage, IServiceProvider, IDisposable, IContentHost
+    internal sealed partial class FlowDocumentPage : DocumentPage, IServiceProvider, IDisposable, IContentHost
     {
         //-------------------------------------------------------------------
         //
@@ -39,7 +39,9 @@ namespace MS.Internal.PtsHost
         internal FlowDocumentPage(StructuralCache structuralCache) : base(null)
         {
             _structuralCache = structuralCache;
+#if !PORTABLE_WPF
             _ptsPage = new PtsPage(structuralCache.Section);
+#endif
         }
 
         // ------------------------------------------------------------------
@@ -114,6 +116,9 @@ namespace MS.Internal.PtsHost
         //-------------------------------------------------------------------
         internal void FormatBottomless(Size pageSize, Thickness pageMargin)
         {
+#if PORTABLE_WPF
+            FormatPortable(pageSize, pageMargin);
+#else
             Invariant.Assert(!IsDisposed);
 
             // Every time full format is done reset formatted lines count to 0.
@@ -161,6 +166,7 @@ namespace MS.Internal.PtsHost
 
                 _structuralCache.DetectInvalidOperation();
             }
+        #endif
         }
 
         //-------------------------------------------------------------------
@@ -174,6 +180,9 @@ namespace MS.Internal.PtsHost
         //-------------------------------------------------------------------
         internal PageBreakRecord FormatFinite(Size pageSize, Thickness pageMargin, PageBreakRecord breakRecord)
         {
+#if PORTABLE_WPF
+            throw new PlatformNotSupportedException("Portable FlowDocument pagination is not supported.");
+#else
             Invariant.Assert(!IsDisposed);
 
             // Every time full format is done reset formatted lines count to 0.
@@ -217,6 +226,7 @@ namespace MS.Internal.PtsHost
             }
 
             return _ptsPage.BreakRecord;
+        #endif
         }
 
         //-------------------------------------------------------------------
@@ -224,6 +234,9 @@ namespace MS.Internal.PtsHost
         //-------------------------------------------------------------------
         internal void Arrange(Size partitionSize)
         {
+#if PORTABLE_WPF
+            ArrangePortable(partitionSize);
+#else
             Invariant.Assert(!IsDisposed);
 
             _partitionSize = partitionSize;
@@ -235,6 +248,7 @@ namespace MS.Internal.PtsHost
             }
 
             ValidateTextView();
+        #endif
         }
 
         //-------------------------------------------------------------------
@@ -245,11 +259,15 @@ namespace MS.Internal.PtsHost
         //-------------------------------------------------------------------
         internal void ForceReformat()
         {
+#if PORTABLE_WPF
+            _structuralCache.ForceReformat = true;
+#else
             Invariant.Assert(!IsDisposed);
             // Clear update info for PTS page.
             _ptsPage.ClearUpdateInfo();
             // Force reformat
             _structuralCache.ForceReformat = true;
+        #endif
         }
 
         //-------------------------------------------------------------------
@@ -262,6 +280,11 @@ namespace MS.Internal.PtsHost
         //-------------------------------------------------------------------
         internal IInputElement InputHitTestCore(Point point)
         {
+#if PORTABLE_WPF
+            if (!IsLayoutDataValid) return null;
+            TextPointer position = PortableLayout.HitTest(point, false);
+            return position?.Parent as IInputElement ?? _structuralCache.FormattingOwner;
+#else
             Invariant.Assert(!IsDisposed);
 
             // Core services require that the IInputElement returned from hittesting
@@ -292,6 +315,7 @@ namespace MS.Internal.PtsHost
                 }
             }
             return ie ?? _structuralCache.FormattingOwner as IInputElement;
+        #endif
         }
 
         /// <summary>
@@ -307,6 +331,10 @@ namespace MS.Internal.PtsHost
         /// </param>
         internal ReadOnlyCollection<Rect> GetRectanglesCore(ContentElement child, bool isLimitedToTextView)
         {
+#if PORTABLE_WPF
+            if (!IsLayoutDataValid || child is not TextElement element) return ReadOnlyCollection<Rect>.Empty;
+            return PortableLayout.GetRectangles(element.ElementStart, element.ElementEnd).AsReadOnly();
+#else
             Invariant.Assert(!IsDisposed);
 
             List<Rect> rectangles = new List<Rect>();
@@ -347,6 +375,7 @@ namespace MS.Internal.PtsHost
             Invariant.Assert(rectangles != null);
 
             return new ReadOnlyCollection<Rect>(rectangles);
+        #endif
         }
 
         /// <summary>
@@ -615,6 +644,10 @@ namespace MS.Internal.PtsHost
         //-------------------------------------------------------------------
         internal void UpdateViewport(ref PTS.FSRECT viewport, bool drawBackground)
         {
+#if PORTABLE_WPF
+            if (drawBackground) PageVisual.DrawBackground((Brush)_structuralCache.PropertyOwner.GetValue(FlowDocument.BackgroundProperty), viewport.FromTextDpi());
+            ValidateTextView();
+#else
             Rect contentViewport;
 
             // Transform point to PtsPage coordinate system.
@@ -646,6 +679,7 @@ namespace MS.Internal.PtsHost
 
                 ValidateTextView();
             }
+        #endif
         }
 
         #endregion Internal methods
@@ -676,7 +710,11 @@ namespace MS.Internal.PtsHost
         //-------------------------------------------------------------------
         // Is this page already disposed?
         //-------------------------------------------------------------------
+#if PORTABLE_WPF
+        internal bool IsDisposed => _disposed;
+#else
         internal bool IsDisposed { get { return _disposed || _structuralCache.PtsContext.Disposed; } }
+#endif
 
         //-------------------------------------------------------------------
         // Size of content on page.
@@ -685,17 +723,25 @@ namespace MS.Internal.PtsHost
         {
             get
             {
+#if PORTABLE_WPF
+                return _pendingLayout?.Size ?? _portableLayout?.Size ?? new Size();
+#else
                 Size size = _ptsPage.ContentSize;
                 size.Width += _pageMargin.Left + _pageMargin.Right;
                 size.Height += _pageMargin.Top + _pageMargin.Bottom;
                 return size;
+#endif
             }
         }
 
         //-------------------------------------------------------------------
         // Is it finite page or bottomless?
         //-------------------------------------------------------------------
+#if PORTABLE_WPF
+        internal bool FinitePage => false;
+#else
         internal bool FinitePage { get { return _ptsPage.FinitePage; } }
+#endif
 
         //-------------------------------------------------------------------
         // Page context
@@ -815,6 +861,11 @@ namespace MS.Internal.PtsHost
                         this.PageVisual.ClearDrawingContext();
                     }
 
+#if PORTABLE_WPF
+                    _pendingLayout?.Dispose();
+                    _portableLayout?.Dispose();
+                    _pendingLayout = _portableLayout = null;
+#endif
                     // Dispose PTS page
                     _ptsPage?.Dispose();
                 }
@@ -841,6 +892,16 @@ namespace MS.Internal.PtsHost
         //-------------------------------------------------------------------
         private void UpdateVisual()
         {
+#if PORTABLE_WPF
+            if (PageVisual == null) SetVisual(new PageVisual(this));
+            if (_portableLayout != null && _visualNeedsUpdate)
+            {
+                PageVisual.DrawBackground((Brush)_structuralCache.PropertyOwner.GetValue(FlowDocument.BackgroundProperty), new Rect(_partitionSize));
+                PageVisual.Children.Clear();
+                PageVisual.Child = _portableLayout.Visual;
+                _visualNeedsUpdate = false;
+            }
+#else
             if (this.PageVisual == null)
             {
                 SetVisual(new PageVisual(this));
@@ -873,6 +934,7 @@ namespace MS.Internal.PtsHost
                 }
                 _visualNeedsUpdate = false;
             }
+        #endif
         }
 
         //-------------------------------------------------------------------
@@ -1112,7 +1174,9 @@ namespace MS.Internal.PtsHost
         //-------------------------------------------------------------------
         // Width of page during last format
         //-------------------------------------------------------------------
+#if !PORTABLE_WPF
         private double _lastFormatWidth;
+#endif
 
         #endregion Private Fields
 

@@ -1,0 +1,10 @@
+<Project>
+  <Import Project="Sources.props" />
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)Licenses/*.txt;$(MSBuildThisFileDirectory)Original/licence.md;$(MSBuildThisFileDirectory)Original/NOTICE.md;$(MSBuildThisFileDirectory)LocalCorrections.md;$(MSBuildThisFileDirectory)manifest.json;$(MSBuildThisFileDirectory)maintained-sources.json;$(MSBuildThisFileDirectory)README.md">
+      <Link>ThirdPartyNotices/TextUnicode/%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+</Project>

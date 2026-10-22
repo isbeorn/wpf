@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <StartupObject>DockingProgram</StartupObject>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <AllowUnsafeBlocks Condition="'$(NinaStockWindowsReference)' != 'true'">true</AllowUnsafeBlocks>
+    <NinaFixtureDirectory Condition="'$(NinaFixtureDirectory)' == ''">$(NinaPortableArtifacts)/fixture</NinaFixtureDirectory>
+    <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
+    <RollForward>Disable</RollForward>
+    <TargetFramework Condition="'$(NinaStockWindowsReference)' == 'true'">net10.0-windows</TargetFramework>
+    <DefineConstants Condition="'$(NinaStockWindowsReference)' == 'true'">$(DefineConstants);NINA_STOCK_REFERENCE</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="DockingProgram.cs;GraphSimulation.cs;ShowReadinessCases.cs;ThemeWindowCases.cs;PointerDockingCases.cs" />
+    <None Include="$(NinaFixtureDirectory)/Closure.json" Link="Closure.json" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="ResourceSources.json" CopyToOutputDirectory="PreserveNewest" />
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" Condition="'$(NinaStockWindowsReference)' == 'true'" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(NinaStockWindowsReference)' != 'true'">
+    <Compile Include="../../NativeWindowIntegration/X11Fixture.cs" Link="X11Fixture.cs" />
+    <Reference Include="$(NinaSourceStageDirectory)/*.dll" />
+    <None Include="$(NinaSourceStageDirectory)/**/*" Link="%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="[3.119.4]" />
+    <PackageReference Include="HarfBuzzSharp.NativeAssets.Linux" Version="[8.3.1.5]" />
+  </ItemGroup>
+  <Import Project="$(NinaFixtureDirectory)/References.props" Condition="Exists('$(NinaFixtureDirectory)/References.props')" />
+  <ItemGroup Condition="'$(AvalonDockComponentPath)' != ''">
+    <Reference Update="AvalonDock" HintPath="$(AvalonDockComponentPath)" />
+  </ItemGroup>
+  <Import Project="../../../Framework/Build/PortableWpfReferences.targets" Condition="'$(NinaStockWindowsReference)' != 'true'" />
+  <Target Name="RequirePreparedAvalonDockClosure" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(NinaFixtureDirectory)/References.props')" Text="Prepare and hash-verify the complete pinned original NINA closure before this fixture." />
+    <Error Condition="'$(NinaStockWindowsReference)' != 'true' and !Exists('$(NinaSourceStageDirectory)/Wpf.Portable.NativeHost.dll')" Text="Select one complete root-released source stage with NinaSourceStageDirectory; do not overlay individual framework DLLs." />
+  </Target>
+</Project>

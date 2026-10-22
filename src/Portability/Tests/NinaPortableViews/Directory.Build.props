@@ -1,0 +1,12 @@
+<Project>
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <NinaPortableArtifacts Condition="'$(NinaPortableArtifacts)' == ''">$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../../../../artifacts/portability/nina-portable-views'))</NinaPortableArtifacts>
+    <NinaHostOutputSuffix Condition="'$(NinaStockWindowsReference)' == 'true'">stock/</NinaHostOutputSuffix>
+    <BaseOutputPath>$(NinaPortableArtifacts)/bin/$(OS)/$(NinaHostOutputSuffix)</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(NinaPortableArtifacts)/obj/$(OS)/$(NinaHostOutputSuffix)</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+</Project>

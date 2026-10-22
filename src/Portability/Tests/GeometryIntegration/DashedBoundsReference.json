@@ -1,0 +1,602 @@
+{
+  "focus-rectangle-0": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "focus-path-0": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "focus-retained-0": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "focus-rectangle-0.5": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "focus-path-0.5": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "focus-retained-0.5": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "focus-rectangle--0.5": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "focus-path--0.5": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "focus-retained--0.5": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "focus-rectangle-3.5": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "focus-path-3.5": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "focus-retained-3.5": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "focus-rectangle--3.5": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "focus-path--3.5": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "focus-retained--3.5": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "sparse-line-Flat-0": [
+    10,
+    9,
+    10,
+    2
+  ],
+  "sparse-line-Flat-2": [
+    10,
+    10,
+    10,
+    0
+  ],
+  "sparse-line-Flat--2": [
+    10,
+    9,
+    10,
+    2
+  ],
+  "sparse-line-Flat-11": [
+    10,
+    10,
+    10,
+    0
+  ],
+  "sparse-line-Flat--11": [
+    10,
+    9,
+    10,
+    2
+  ],
+  "sparse-line-Round-0": [
+    9,
+    9,
+    11,
+    2
+  ],
+  "sparse-line-Round-2": [
+    10,
+    10,
+    10,
+    0
+  ],
+  "sparse-line-Round--2": [
+    10,
+    9,
+    10,
+    2
+  ],
+  "sparse-line-Round-11": [
+    10,
+    10,
+    10,
+    0
+  ],
+  "sparse-line-Round--11": [
+    10,
+    9,
+    10,
+    2
+  ],
+  "sparse-line-Square-0": [
+    9,
+    9,
+    11,
+    2
+  ],
+  "sparse-line-Square-2": [
+    10,
+    10,
+    10,
+    0
+  ],
+  "sparse-line-Square--2": [
+    10,
+    9,
+    10,
+    2
+  ],
+  "sparse-line-Square-11": [
+    10,
+    10,
+    10,
+    0
+  ],
+  "sparse-line-Square--11": [
+    10,
+    9,
+    10,
+    2
+  ],
+  "odd": [
+    -0.5,
+    -0.5,
+    179,
+    14.96875
+  ],
+  "even": [
+    -0.5,
+    -0.5,
+    179,
+    14.96875
+  ],
+  "negative": [
+    -0.5,
+    -0.5,
+    179,
+    14.96875
+  ],
+  "zero-off": [
+    -0.5,
+    -0.5,
+    179,
+    14.96875
+  ],
+  "zero-on": [
+    -0.5,
+    -0.5,
+    179,
+    14.96875
+  ],
+  "geometry-scale": [
+    7.5,
+    -10,
+    355,
+    39.90625
+  ],
+  "world-scale": [
+    7,
+    -11,
+    356,
+    41.90625
+  ],
+  "geometry-skew": [
+    7.646549224853516,
+    -9.954322814941406,
+    361.69128036499023,
+    84.31489562988281
+  ],
+  "world-skew": [
+    7.734375,
+    -10.875,
+    362,
+    85.65625
+  ],
+  "geometry-reflection": [
+    44.5,
+    5.25,
+    355,
+    20.453125
+  ],
+  "world-reflection": [
+    44,
+    5,
+    356,
+    20.953125
+  ],
+  "tolerance-0": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "tolerance-0.01": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "tolerance-0.25": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "tolerance-1000": [
+    0.5,
+    0.5,
+    177,
+    12.96875
+  ],
+  "relative-tolerance": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "zero-width": [
+    0.5,
+    0.5,
+    177,
+    12.96875
+  ],
+  "width-skips-invalid-cycle": [
+    0.5,
+    0.5,
+    177,
+    12.96875
+  ],
+  "tolerance-skips-invalid-cycle": [
+    0.5,
+    0.5,
+    177,
+    12.96875
+  ],
+  "rectangle-null-brush": [
+    0.5,
+    0.5,
+    177,
+    12.96875
+  ],
+  "path-null-brush": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "filled-open-path": [
+    10,
+    9,
+    10,
+    2
+  ],
+  "stream": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "retained-line": [
+    9,
+    9,
+    11,
+    2
+  ],
+  "retained-path": [
+    0,
+    0,
+    178,
+    13.96875
+  ],
+  "sparse-solid-control": [
+    9,
+    9,
+    12,
+    2
+  ],
+  "hollow-oxyplot-longdash-polyline": [
+    0,
+    0,
+    90,
+    20.5
+  ],
+  "hollow-oxyplot-longdash-retained": [
+    0,
+    0,
+    90,
+    20.5
+  ],
+  "hollow-oxyplot-longdash-path-layout": [
+    0,
+    0,
+    90,
+    20.5
+  ],
+  "hollow-path-open-Flat": [
+    0,
+    0,
+    31,
+    22
+  ],
+  "hollow-path-open-Flat-retained": [
+    0,
+    0,
+    31,
+    22
+  ],
+  "hollow-path-open-Round": [
+    0,
+    0,
+    31,
+    23
+  ],
+  "hollow-path-open-Round-retained": [
+    0,
+    0,
+    31,
+    23
+  ],
+  "hollow-path-open-Square": [
+    0,
+    0,
+    31,
+    23
+  ],
+  "hollow-path-open-Square-retained": [
+    0,
+    0,
+    31,
+    23
+  ],
+  "hollow-path-closed-Flat": [
+    0,
+    0,
+    31,
+    25.200000762939453
+  ],
+  "hollow-path-closed-Flat-retained": [
+    0,
+    0,
+    31,
+    25.200000762939453
+  ],
+  "hollow-path-closed-Round": [
+    0,
+    0,
+    31,
+    25.40005874633789
+  ],
+  "hollow-path-closed-Round-retained": [
+    0,
+    0,
+    31,
+    25.40005874633789
+  ],
+  "hollow-path-closed-Square": [
+    0,
+    0,
+    31,
+    25.799999237060547
+  ],
+  "hollow-path-closed-Square-retained": [
+    0,
+    0,
+    31,
+    25.799999237060547
+  ],
+  "hollow-stream-open-Flat": [
+    0,
+    0,
+    31,
+    22
+  ],
+  "hollow-stream-open-Flat-retained": [
+    0,
+    0,
+    31,
+    22
+  ],
+  "hollow-stream-open-Round": [
+    0,
+    0,
+    31,
+    23
+  ],
+  "hollow-stream-open-Round-retained": [
+    0,
+    0,
+    31,
+    23
+  ],
+  "hollow-stream-open-Square": [
+    0,
+    0,
+    31,
+    23
+  ],
+  "hollow-stream-open-Square-retained": [
+    0,
+    0,
+    31,
+    23
+  ],
+  "hollow-stream-closed-Flat": [
+    0,
+    0,
+    31,
+    25.200000762939453
+  ],
+  "hollow-stream-closed-Flat-retained": [
+    0,
+    0,
+    31,
+    25.200000762939453
+  ],
+  "hollow-stream-closed-Round": [
+    0,
+    0,
+    31,
+    25.40005874633789
+  ],
+  "hollow-stream-closed-Round-retained": [
+    0,
+    0,
+    31,
+    25.40005874633789
+  ],
+  "hollow-stream-closed-Square": [
+    0,
+    0,
+    31,
+    25.799999237060547
+  ],
+  "hollow-stream-closed-Square-retained": [
+    0,
+    0,
+    31,
+    25.799999237060547
+  ],
+  "hollow-phase-0.5": [
+    0,
+    0,
+    31,
+    25
+  ],
+  "hollow-phase--0.5": [
+    0,
+    0,
+    31,
+    23
+  ],
+  "hollow-phase-3.5": [
+    0,
+    0,
+    31,
+    25
+  ],
+  "hollow-phase--3.5": [
+    0,
+    0,
+    31,
+    23
+  ],
+  "hollow-geometry-translation": [
+    0,
+    0,
+    71,
+    52
+  ],
+  "hollow-world-translation": [
+    0,
+    0,
+    71,
+    52
+  ],
+  "hollow-geometry-scale": [
+    0,
+    0,
+    68,
+    84
+  ],
+  "hollow-world-scale": [
+    0,
+    0,
+    69,
+    75
+  ],
+  "hollow-geometry-reflection": [
+    0,
+    0,
+    100,
+    42
+  ],
+  "hollow-world-reflection": [
+    0,
+    0,
+    100,
+    38
+  ],
+  "hollow-zero-width": [
+    0,
+    0,
+    10,
+    10
+  ],
+  "hollow-skipped-pen": [
+    0,
+    0,
+    10,
+    10
+  ],
+  "hollow-world-skipped-pen": [
+    0,
+    0,
+    10,
+    10
+  ],
+  "hollow-all-ink-skipped": [
+    0,
+    0,
+    10,
+    10
+  ],
+  "hollow-multiple-figures": [
+    0,
+    0,
+    68,
+    41
+  ],
+  "hollow-mixed-filled-figures": [
+    10,
+    9,
+    61,
+    41
+  ],
+  "hollow-simple-open-line": [
+    0,
+    0,
+    20,
+    10.5
+  ]
+}

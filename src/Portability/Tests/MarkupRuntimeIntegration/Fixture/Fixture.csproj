@@ -1,0 +1,34 @@
+<Project>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <AssemblyName>Portability.MarkupIntegration.Fixture</AssemblyName>
+    <RootNamespace>Portability.MarkupIntegration.Fixture</RootNamespace>
+    <OutputType>Library</OutputType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../Framework/PresentationFramework/PresentationFramework.csproj" />
+    <Compile Include="../../MarkupIntegration/Fixture/ProbeView.cs" />
+    <Compile Include="NamespaceFixtureTypes.cs" />
+    <Page Include="../../MarkupIntegration/Fixture/Views/Orbit View Ω.xaml" Link="Views/Orbit View Ω.xaml" />
+    <Page Include="../../MarkupIntegration/Fixture/Dictionaries/Palette.xaml" Link="Dictionaries/Palette.xaml" />
+    <Page Include="NamespaceValidation.xaml" />
+    <Page Include="DecoderImages.xaml" />
+    <Resource Include="../../ImagingIntegration/Assets/nina.ico" Link="Assets/nina.ico" />
+    <Resource Include="../../ImagingIntegration/Assets/dock*.png" Link="Assets/%(Filename)%(Extension)" />
+    <Resource Include="../../MarkupIntegration/Fixture/Assets/CaseSensitive Ω.txt" Link="Assets/CaseSensitive Ω.txt" />
+    <Resource Include="Assets/Opaque Payload Ω.fixtureopaque" />
+    <Resource Include="Assets/Opaque Payload Ω.fixtureopaque" Link="Assets/NoExtension Ω" />
+    <Resource Include="../../ImagingIntegration/Assets/rgba8-dpi.png" Link="Assets/Png Sample Ω.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Controls.Ribbon">
+      <HintPath>$(NuGetPackageRoot)/microsoft.windowsdesktop.app.runtime.win-x64/10.0.13/runtimes/win-x64/lib/net10.0/System.Windows.Controls.Ribbon.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <Import Project="../../../Framework/Build/PortableWpfReferences.targets" />
+  <Import Project="../../../Markup/PortableMarkup.targets" />
+  <Import Project="../../MarkupIntegration/PassEvidence.targets" />
+</Project>

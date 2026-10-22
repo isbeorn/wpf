@@ -1,0 +1,97 @@
+{
+  "framework": "PresentationCore, Version=10.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+  "frameworkFileVersion": "10.0.1226.42308",
+  "fontSha256": "35226AC1E50D1B60AF2FF7DA5878D8EDE0C83BC00FE84713F265CB6DED8F5F9F",
+  "source": "Actual stock Windows WPF GlyphRun.TryCreate and BuildGeometry; see StockOracle project and OracleCases.cs",
+  "toleranceDip": 0.03,
+  "positionCases": [
+    {
+      "level": 0,
+      "mode": "Ideal",
+      "dpi": 1,
+      "geometry": {
+        "X": 102.0234375,
+        "Y": 19.0078125,
+        "Width": 32.7578125,
+        "Height": 26.6484375
+      }
+    },
+    {
+      "level": 0,
+      "mode": "Ideal",
+      "dpi": 1.5,
+      "geometry": {
+        "X": 102.0234375,
+        "Y": 19.0078125,
+        "Width": 32.7578125,
+        "Height": 26.6484375
+      }
+    },
+    {
+      "level": 0,
+      "mode": "Display",
+      "dpi": 1,
+      "geometry": {
+        "X": 102.0234375,
+        "Y": 19.0078125,
+        "Width": 32.5078125,
+        "Height": 26.6484375
+      }
+    },
+    {
+      "level": 0,
+      "mode": "Display",
+      "dpi": 1.5,
+      "geometry": {
+        "X": 102.0234375,
+        "Y": 19.0078125,
+        "Width": 32.841156005859375,
+        "Height": 26.6484375
+      }
+    },
+    {
+      "level": 1,
+      "mode": "Ideal",
+      "dpi": 1,
+      "geometry": {
+        "X": 64.74981689453125,
+        "Y": 19.0078125,
+        "Width": 32.75799560546875,
+        "Height": 26.6484375
+      }
+    },
+    {
+      "level": 1,
+      "mode": "Ideal",
+      "dpi": 1.5,
+      "geometry": {
+        "X": 64.74981689453125,
+        "Y": 19.0078125,
+        "Width": 32.75799560546875,
+        "Height": 26.6484375
+      }
+    },
+    {
+      "level": 1,
+      "mode": "Display",
+      "dpi": 1,
+      "geometry": {
+        "X": 65.43731689453125,
+        "Y": 19.0078125,
+        "Width": 32.36737060546875,
+        "Height": 26.6484375
+      }
+    },
+    {
+      "level": 1,
+      "mode": "Display",
+      "dpi": 1.5,
+      "geometry": {
+        "X": 64.77064514160156,
+        "Y": 19.0078125,
+        "Width": 32.700706481933594,
+        "Height": 26.6484375
+      }
+    }
+  ]
+}

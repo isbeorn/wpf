@@ -4020,4 +4020,14 @@ Do you want to replace it?</value>
   <data name="Visual_ArgumentOutOfRange" xml:space="preserve">
     <value>Specified index is out of range or child at index is null. Do not call this method if VisualChildrenCount returns zero, indicating that the Visual has no children.</value>
   </data>
+  <data name="PortableMessageBoxOK" xml:space="preserve"><value>_OK</value></data>
+  <data name="PortableMessageBoxCancel" xml:space="preserve"><value>_Cancel</value></data>
+  <data name="PortableMessageBoxAbort" xml:space="preserve"><value>_Abort</value></data>
+  <data name="PortableMessageBoxRetry" xml:space="preserve"><value>_Retry</value></data>
+  <data name="PortableMessageBoxIgnore" xml:space="preserve"><value>_Ignore</value></data>
+  <data name="PortableMessageBoxYes" xml:space="preserve"><value>_Yes</value></data>
+  <data name="PortableMessageBoxNo" xml:space="preserve"><value>_No</value></data>
+  <data name="PortableMessageBoxTryAgain" xml:space="preserve"><value>Try _Again</value></data>
+  <data name="PortableMessageBoxContinue" xml:space="preserve"><value>_Continue</value></data>
+  <data name="PortableMessageBoxDefaultCaption" xml:space="preserve"><value>Error</value></data>
 </root>

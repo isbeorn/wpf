@@ -13,6 +13,13 @@ using MS.Win32;
 
 namespace System.Windows.Media
 {
+#if PORTABLE_WPF
+    internal interface IPortableRenderTarget
+    {
+        Visual RootVisual { get; }
+        void Render();
+    }
+#endif
     /// <summary>
     /// The MediaContext class controls the media layer.
     /// </summary>
@@ -30,11 +37,15 @@ namespace System.Windows.Media
         {
             long qpcCurrentTime;
 
+#if PORTABLE_WPF
+            _perfCounterFreq = Stopwatch.Frequency;
+#else
             SafeNativeMethods.QueryPerformanceFrequency(out _perfCounterFreq);
+#endif
 
             if (IsClockSupported)
             {
-                SafeNativeMethods.QueryPerformanceCounter(out qpcCurrentTime);
+                QueryPerformanceCounter(out qpcCurrentTime);
             }
             else
             {
@@ -42,6 +53,15 @@ namespace System.Windows.Media
             }
 
             EventTrace.EasyTraceEvent(EventTrace.Keyword.KeywordGraphics, EventTrace.Event.WClientQPCFrequency, _perfCounterFreq, qpcCurrentTime);
+        }
+
+        private static void QueryPerformanceCounter(out long counts)
+        {
+#if PORTABLE_WPF
+            counts = Stopwatch.GetTimestamp();
+#else
+            SafeNativeMethods.QueryPerformanceCounter(out counts);
+#endif
         }
 
         /// <summary>
@@ -190,7 +210,7 @@ namespace System.Windows.Media
             // Initialize frame time information
             if (IsClockSupported)
             {
-                SafeNativeMethods.QueryPerformanceCounter(out _lastPresentationTime);
+                QueryPerformanceCounter(out _lastPresentationTime);
                 _estimatedNextPresentationTime = TimeSpan.FromTicks(CountsToTicks(_lastPresentationTime));
             }
 
@@ -203,6 +223,9 @@ namespace System.Windows.Media
 
             _renderModeMessage = new DispatcherOperationCallback(InvalidateRenderMode);
 
+#if PORTABLE_WPF
+            _notificationWindow = null;
+#else
             // Create a notification window to listen for broadcast window messages
             _notificationWindow = new MediaContextNotificationWindow(this);
 
@@ -211,6 +234,7 @@ namespace System.Windows.Media
             {
                 _isConnected = MediaSystem.ConnectChannels(this);
             }
+#endif
 
             // Subscribe to the OnDestroyContext event so that we can cleanup our state.
             _destroyHandler = new EventHandler(this.OnDestroyContext);
@@ -246,6 +270,14 @@ namespace System.Windows.Media
             _promoteRenderOpToRender.Tick += new EventHandler(PromoteRenderOpToRender);
             _estimatedNextVSyncTimer = new DispatcherTimer(DispatcherPriority.Render);
             _estimatedNextVSyncTimer.Tick += new EventHandler(EstimatedNextVSyncTimeExpired);
+#if PORTABLE_WPF
+            _portableTickTimer = new DispatcherTimer(DispatcherPriority.Render);
+            _portableTickTimer.Tick += (sender, args) =>
+            {
+                _portableTickTimer.Stop();
+                PostRender();
+            };
+#endif
 
             _commitPendingAfterRender = false;
         }
@@ -883,7 +915,7 @@ namespace System.Windows.Media
             get
             {
                 long counts;
-                SafeNativeMethods.QueryPerformanceCounter(out counts);
+                QueryPerformanceCounter(out counts);
                 return CountsToTicks(counts);
             }
         }
@@ -1077,7 +1109,7 @@ namespace System.Windows.Media
                 Debug.Assert(IsClockSupported, "MediaContext.CurrentTime called when QueryPerformaceCounter is not supported");
 
                 long counts;
-                SafeNativeMethods.QueryPerformanceCounter(out counts);
+                QueryPerformanceCounter(out counts);
 
                 long countsTicks = CountsToTicks(counts);
 
@@ -1423,8 +1455,10 @@ namespace System.Windows.Media
                 }
                 _registeredICompositionTargets = null;
 
+#if !PORTABLE_WPF
                 // Dispose the notification window
                 _notificationWindow.Dispose();
+#endif
 
                 // Unhook the context destroy event handler -------------------
                 Dispatcher.ShutdownFinished -= _destroyHandler;
@@ -1438,7 +1472,18 @@ namespace System.Windows.Media
                 // From now on we are disposed -------------------------------
                 _isDisposed = true;
 
+#if PORTABLE_WPF
+                _portableTickTimer.Stop();
+                _currentRenderOp?.Abort();
+                _currentRenderOp = null;
+                foreach (Visual root in _portableVisualRoots.Keys)
+                    root.SetFlags(false, VisualFlags.ShouldPostRender);
+                _portableVisualRoots.Clear();
+                _portableBrushSources.Clear();
+                _portableRenderTargets.Clear();
+#else
                 RemoveChannels();
+#endif
 
                 // if we set the Dispatcher.Reserved0 field to null, we end
                 // creating another media context on the shutdown pass when the
@@ -1446,7 +1491,9 @@ namespace System.Windows.Media
                 // state this attempts to re open the transport.
 
                 // Disconnect from MediaSystem -------------------------------
+#if !PORTABLE_WPF
                 MediaSystem.Shutdown(this);
+#endif
                 _timeManager = null;
 
                 GC.SuppressFinalize(this);
@@ -1647,6 +1694,13 @@ namespace System.Windows.Media
             }
             Debug.Assert(CheckAccess());
 
+#if PORTABLE_WPF
+            _portableRenderRequested = true;
+            if (!_isRendering && _currentRenderOp == null)
+            {
+                _currentRenderOp = Dispatcher.BeginInvoke(DispatcherPriority.Render, _renderMessage, null);
+            }
+#else
 
             if (!_isRendering)
             {
@@ -1669,6 +1723,7 @@ namespace System.Windows.Media
                 _promoteRenderOpToInput.Stop();
                 _promoteRenderOpToRender.Stop();
             }
+#endif
         }
 
         /// <summary>
@@ -1760,6 +1815,9 @@ namespace System.Windows.Media
             object resizedCompositionTarget /* can be null if we are not resizing*/
             )
         {
+#if PORTABLE_WPF
+            RenderPortable();
+#else
             // if the media system is disconnected bail.
             if (Channel == null)
             {
@@ -1897,7 +1955,133 @@ namespace System.Windows.Media
 
                 _isRendering = false;
             }
+#endif
         }
+
+#if PORTABLE_WPF
+        internal void RegisterPortableRenderTarget(IPortableRenderTarget target)
+        {
+            VerifyAccess();
+            ArgumentNullException.ThrowIfNull(target);
+            if (_isDisposed) throw new ObjectDisposedException(nameof(MediaContext));
+            if (target.RootVisual.Dispatcher != Dispatcher)
+                throw new ArgumentException("The render target must belong to this dispatcher.", nameof(target));
+            if (_portableRenderTargets.Add(target))
+            {
+                RegisterPortableVisualRoot(target.RootVisual);
+                PostRender();
+            }
+        }
+
+        internal void UnregisterPortableRenderTarget(IPortableRenderTarget target)
+        {
+            VerifyAccess();
+            if (_portableRenderTargets.Remove(target))
+            {
+                UnregisterPortableVisualRoot(target.RootVisual);
+            }
+        }
+
+        internal void RegisterPortableVisualRoot(Visual visual)
+        {
+            VerifyAccess();
+            _portableVisualRoots.TryGetValue(visual, out int references);
+            _portableVisualRoots[visual] = checked(references + 1);
+            visual.SetFlags(true, VisualFlags.ShouldPostRender);
+        }
+
+        internal void UnregisterPortableVisualRoot(Visual visual)
+        {
+            VerifyAccess();
+            if (!_portableVisualRoots.TryGetValue(visual, out int references)) return;
+            if (references == 1)
+            {
+                _portableVisualRoots.Remove(visual);
+                visual.SetFlags(false, VisualFlags.ShouldPostRender);
+            }
+            else _portableVisualRoots[visual] = references - 1;
+        }
+
+        internal bool IsPortableBrushSource(Visual visual) => _portableBrushSources.ContainsKey(visual);
+
+        internal void RegisterPortableBrushSource(Visual visual)
+        {
+            VerifyAccess();
+            _portableBrushSources.TryGetValue(visual, out int references);
+            _portableBrushSources[visual] = checked(references + 1);
+        }
+
+        internal void UnregisterPortableBrushSource(Visual visual)
+        {
+            VerifyAccess();
+            if (!_portableBrushSources.TryGetValue(visual, out int references)) return;
+            if (references == 1) _portableBrushSources.Remove(visual);
+            else _portableBrushSources[visual] = references - 1;
+        }
+
+        private void RenderPortable()
+        {
+            VerifyAccess();
+            _currentRenderOp = null;
+            if (_isDisposed) return;
+            _portableRenderRequested = false;
+            _isRendering = true;
+            try
+            {
+                int tickLoopCount = 0;
+                do
+                {
+                    if (++tickLoopCount > 153)
+                        throw new InvalidOperationException(SR.MediaContext_InfiniteTickLoop);
+                    bool renderRequestedBeforeTick = _portableRenderRequested;
+                    _timeManager.Tick();
+                    // Tick invalidations are included in this frame; earlier callback requests still need a follow-up.
+                    _portableRenderRequested = renderRequestedBeforeTick;
+                    if (_isDisposed) return;
+                    _timeManager.LockTickTime();
+                    FireInvokeOnRenderCallbacks();
+                    if (tickLoopCount == 1)
+                    {
+                        Rendering?.Invoke(Dispatcher, new RenderingEventArgs(_timeManager.LastTickTime));
+                        if (_isDisposed) return;
+                        FireInvokeOnRenderCallbacks();
+                    }
+                }
+                while (_timeManager.IsDirty);
+                _timeManager.UnlockTickTime();
+
+                var targets = new IPortableRenderTarget[_portableRenderTargets.Count];
+                _portableRenderTargets.CopyTo(targets);
+                foreach (IPortableRenderTarget target in targets)
+                {
+                    if (_portableRenderTargets.Contains(target)) target.Render();
+                    if (_isDisposed) return;
+                }
+            }
+            finally
+            {
+                _timeManager?.UnlockTickTime();
+                _isRendering = false;
+                if (_portableRenderRequested && !_isDisposed) PostRender();
+            }
+
+            TimeSpan nextTick = _timeManager.GetNextTickNeeded();
+            if (nextTick >= TimeSpan.Zero || Rendering != null)
+            {
+                TimeSpan frameInterval = TimeSpan.FromMilliseconds(16);
+                TimeSpan maximumInterval = TimeSpan.FromMilliseconds(int.MaxValue);
+                _portableTickTimer.Interval = Rendering != null || nextTick < frameInterval
+                    ? frameInterval : nextTick > maximumInterval ? maximumInterval : nextTick;
+                _portableTickTimer.Start();
+            }
+        }
+
+        private readonly Dictionary<Visual, int> _portableBrushSources = new Dictionary<Visual, int>();
+        private readonly Dictionary<Visual, int> _portableVisualRoots = new Dictionary<Visual, int>();
+        private readonly HashSet<IPortableRenderTarget> _portableRenderTargets = new HashSet<IPortableRenderTarget>();
+        private bool _portableRenderRequested;
+        private DispatcherTimer _portableTickTimer;
+#endif
 
         private int InvokeOnRenderCallbacksCount
         {

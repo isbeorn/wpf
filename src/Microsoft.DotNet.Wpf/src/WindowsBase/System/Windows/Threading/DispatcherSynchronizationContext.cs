@@ -81,7 +81,11 @@ namespace System.Windows.Threading
         /// </summary>
         public override int Wait(IntPtr[] waitHandles, bool waitAll, int millisecondsTimeout)
         {
-            if(_dispatcher._disableProcessingCount > 0)
+            if(_dispatcher._disableProcessingCount > 0
+#if PORTABLE_WPF
+                && OperatingSystem.IsWindows()
+#endif
+                )
             {
                 // Call into native code directly in order to avoid the default
                 // CLR locking behavior which pumps messages under contention.

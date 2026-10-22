@@ -29,6 +29,9 @@ using MS.Internal.PresentationFramework;                   // SafeSecurityHelper
 using System.Windows.Baml2006;
 using System.Xaml.Permissions;
 using System.Runtime.CompilerServices;
+#if PORTABLE_WPF
+using MS.Internal.Portability.Settings;
+#endif
 
 namespace System.Windows
 {
@@ -1018,6 +1021,10 @@ namespace System.Windows
         /// </summary>
         private static void EnsureResourceChangeListener()
         {
+#if PORTABLE_WPF
+            // The startup snapshot is immutable; it has no Win32 appearance-change listener.
+            _ = PortableSystemSettingsProvider.Current;
+#else
             // Create a new notify window if we haven't already created any corresponding to ProcessDpiAwarenessContextValue for this thread.
             if (_hwndNotify == null ||
                 _hwndNotifyHook == null ||
@@ -1031,6 +1038,7 @@ namespace System.Windows
                 var hwndDpiInfo = CreateResourceChangeListenerWindow(ProcessDpiAwarenessContextValue);
                 _dpiAwarenessContextAndDpis.Add(hwndDpiInfo);
             }
+#endif
         }
 
         /// <summary>
@@ -1541,6 +1549,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                throw new PlatformNotSupportedException("The portable resource settings profile does not create a Win32 notification window.");
+#else
                 EnsureResourceChangeListener();
 
                 var hwndDpiInfo = _hwndNotify.Keys.FirstOrDefault((hwndDpiContext) => hwndDpiContext.DpiAwarenessContextValue == ProcessDpiAwarenessContextValue);
@@ -1548,6 +1559,7 @@ namespace System.Windows
 
                 // will throw when a match is not found, which should never happen because we just called Ensure...()
                 return _hwndNotify[hwndDpiInfo];
+#endif
             }
         }
 
@@ -1617,6 +1629,9 @@ namespace System.Windows
         /// </remarks>
         internal static HwndWrapper GetDpiAwarenessCompatibleNotificationWindow(HandleRef hwnd)
         {
+#if PORTABLE_WPF
+            throw new PlatformNotSupportedException("DPI-compatible Win32 notification windows are not supported by portable resource settings.");
+#else
             var processDpiAwarenessContextValue = ProcessDpiAwarenessContextValue;
 
             // Do not call into DpiUtil.GetExtendedDpiInfoForWindow(), DpiUtil.GetWindowDpi etc.
@@ -1634,6 +1649,7 @@ namespace System.Windows
             }
 
             return null;
+#endif
         }
 
         /// <summary>
@@ -1659,7 +1675,13 @@ namespace System.Windows
         /// <summary>
         /// List of {<see cref="DpiAwarenessContextValue"/> , <see cref="DpiScale2"/>} combinations for which notify-windows are being maintained
         /// </summary>
+#if PORTABLE_WPF
+#pragma warning disable CS0649 // Immutable portable settings do not create native resource listeners.
+#endif
         [ThreadStatic] private static List<DpiUtil.HwndDpiInfo> _dpiAwarenessContextAndDpis;
+#if PORTABLE_WPF
+#pragma warning restore CS0649
+#endif
 
         [ThreadStatic] private static Dictionary<DpiUtil.HwndDpiInfo, HwndWrapper> _hwndNotify;
         [ThreadStatic]  private static Dictionary<DpiUtil.HwndDpiInfo, HwndWrapperHook> _hwndNotifyHook;

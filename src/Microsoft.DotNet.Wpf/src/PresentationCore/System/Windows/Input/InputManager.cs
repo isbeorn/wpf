@@ -139,15 +139,25 @@ namespace System.Windows.Input
             // Avalon doesn't necessarily require STA, but many components do.  Examples
             // include Cicero, OLE, COM, etc.  So we throw an exception here if the
             // thread is not STA.
+#if PORTABLE_WPF
+            if(OperatingSystem.IsWindows() && Thread.CurrentThread.GetApartmentState() != ApartmentState.STA)
+#else
             if(Thread.CurrentThread.GetApartmentState() != ApartmentState.STA)
+#endif
             {
                 throw new InvalidOperationException(SR.RequiresSTA);
             }
 
             _stagingArea = new Stack();
 
+#if PORTABLE_WPF
+            PortableInputState = new MS.Internal.Portability.Input.PortableInputState();
+            _primaryKeyboardDevice = new MS.Internal.Portability.Input.PortableKeyboardDevice(this, PortableInputState);
+            _primaryMouseDevice = new MS.Internal.Portability.Input.PortableMouseDevice(this, PortableInputState);
+#else
             _primaryKeyboardDevice = new Win32KeyboardDevice(this);
             _primaryMouseDevice = new Win32MouseDevice(this);
+#endif
             _primaryCommandDevice = new CommandDevice(this);
 
             _continueProcessingStagingAreaCallback = new DispatcherOperationCallback(ContinueProcessingStagingArea);
@@ -163,6 +173,10 @@ namespace System.Windows.Input
             _inputTimer.Tick += new EventHandler(ValidateInputDevices);
             _inputTimer.Interval = TimeSpan.FromMilliseconds(125);
         }
+
+#if PORTABLE_WPF
+        internal MS.Internal.Portability.Input.PortableInputState PortableInputState { get; }
+#endif
 
         public event PreProcessInputEventHandler PreProcessInput
         {

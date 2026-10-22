@@ -1,0 +1,786 @@
+{
+  "revision": "4742afae0a09c79be772f23fcf163fb5852d2775",
+  "sourceLicense": "MPL-2.0",
+  "editorConfigSha256": "C9ECF96BA93AE164A4A2F17A8D4F4FC6FEDEEB9E4E6A9742E62EA7D9CC680870",
+  "mvvmGeneratorSha256": "618515F16243464BDF2C2BBC5810E9001620A4D75D968EBC03F2FE465DD051D5",
+  "winFxTargetsSha256": "E6718E8C0EDCF68F8E751A39F4992669860CF9D7E49A8C47EBA68B436DD88C8B",
+  "portableReferencesTargetsSha256": "4C9A0DFDB0D4B4FB209DE231029C1247221D864B1FF7CA089024E8D694533711",
+  "files": [
+    {
+      "path": "CommonAssemblyInfo.cs",
+      "sha256": "2DAD6C61D5E695CE4A8FA2EF0CBB5552E2692EBB11123DA02E332AEA97E03F75"
+    },
+    {
+      "path": "Directory.Build.props",
+      "sha256": "9ED19ADC3920BDFDF3282E3DD8F3A22652DD0C08551127630A9781417B95D3BD"
+    },
+    {
+      "path": "LICENSE.txt",
+      "sha256": "C76F740D1521B9BED9CA7A04AD526C310493C62621B1341D623B431736533B30"
+    },
+    {
+      "path": "NINA.WPF.Base/app.config",
+      "sha256": "C2F47388131B9F55C7357ED0E9B9DABE107ADEEAC8288B3E6A497FC6A48E3053"
+    },
+    {
+      "path": "NINA.WPF.Base/ARCHITECTURE.md",
+      "sha256": "02F9FA14960EB2C75E2C94E21688AE6F7ACDFC8C459EBC8170D9A8085E9858C1"
+    },
+    {
+      "path": "NINA.WPF.Base/Behaviors/BrowserBehavior.cs",
+      "sha256": "3EA2EE484915D4C5A2FB951F4628BBAEAE3F781DD7747AC969A0C1DEF23314DF"
+    },
+    {
+      "path": "NINA.WPF.Base/Behaviors/BubbleScrollEvent.cs",
+      "sha256": "57BA325C1B3714025DE1A37A67B76BD0907766F2A590D57F6EB6949367FB01BD"
+    },
+    {
+      "path": "NINA.WPF.Base/Behaviors/DragCommandBehavior.cs",
+      "sha256": "6C593E001C36B3D701B7657B233D73C26D413693D8D579572CBCE7C514B5C83E"
+    },
+    {
+      "path": "NINA.WPF.Base/Behaviors/HyperlinkBehavior.cs",
+      "sha256": "449912FC3F6F1570E3199402F9E3D4CF5EBC64B5EF71548F13DD0A1FDE8FA2A2"
+    },
+    {
+      "path": "NINA.WPF.Base/Behaviors/MouseCommandBehavior.cs",
+      "sha256": "39D5CA6360F3DA9B70AACE769D3C8EF831F3B38B3882679E5202F117D416BDA6"
+    },
+    {
+      "path": "NINA.WPF.Base/Behaviors/MouseFollowBehavior.cs",
+      "sha256": "4F94C9B9F7600A96CC03BFDB117F08F8BC424BCC82FFEACA8CE6B26FBE4A07A9"
+    },
+    {
+      "path": "NINA.WPF.Base/Behaviors/MouseWheelCommandBehavior.cs",
+      "sha256": "E8C47A884C3F2328FA1944C34CC74535D764028458E6861CA3CE8C9752A24DE7"
+    },
+    {
+      "path": "NINA.WPF.Base/Exceptions/SkySurveyUnavailableException.cs",
+      "sha256": "B2B7463D1B3D2025989F1253F4E12AC1CB72F9789D28DEB56F5DE7C6BBA7BDAE"
+    },
+    {
+      "path": "NINA.WPF.Base/InputBox/InputBox.xaml",
+      "sha256": "2095CE17C67DDBD7F817591B3040A1827487B542F02A4AF73EC71785A06B5997"
+    },
+    {
+      "path": "NINA.WPF.Base/InputBox/InputBox.xaml.cs",
+      "sha256": "6BBC29B44C6694DEE80C6338CA271C94B54B5DB6F180029D02033EA1DA1954D3"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/IAutoFocusVMFactory.cs",
+      "sha256": "51749C5BE524EBAB962035166711FD2457A4C207C666EF5A7E40ADFC20A1B5B3"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/IMeridianFlipVMFactory.cs",
+      "sha256": "4713A20160E3BBE60D78F227138FD7471EE0CF74C8F9DBFA272ED6A3CBCF0AEA"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/Mediator/IApplicationMediator.cs",
+      "sha256": "D1A5DD0CAAD2BAA2A89FA789F06693A23A0BE72ADA3D39E7165D5B457BCB79F9"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/Mediator/IApplicationStatusMediator.cs",
+      "sha256": "0933FABD40E190B3BC9179F0ABF160440E5EE523CD3240B3F2F3032C8C91BC9B"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/Mediator/IImageSaveMediator.cs",
+      "sha256": "971C3E23A4AB677E11D116845EBBD8431C82F217DA8B62223E5537040D9380CB"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/Utility/IAllDeviceConsumer.cs",
+      "sha256": "A4D002762B2C0821B2EF76E3B7F2CC2C0AA276E7273B61AD27220303AC0B9B1D"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IAnchorablePlateSolverVM.cs",
+      "sha256": "54E50A1BC2DA3595C52F3C6FDB6A10590981778BB16C3500792DE0C73265598B"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IAnchorableSnapshotVM.cs",
+      "sha256": "91388F86C34018500A768808E520988A9D7BDC529B112DA7D154D524C1843ECE"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IApplicationDeviceConnectionVM.cs",
+      "sha256": "C1E823935A449997A17E2C5FC0DF4DB5D9D3A15DA4B5D71D44C4BE31EFB37722"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IApplicationStatusVM.cs",
+      "sha256": "0A62FEB2869B83B4BD5DB1F294BBB9BDAC969A6BFFA1E996E6A2875B198E59CC"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IApplicationVM.cs",
+      "sha256": "C5AEB5573A01C991A2371E222B27901BEFFF854DA8462B2694555405E3B3B097"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IAutoFocusToolVM.cs",
+      "sha256": "92CABF8BC193317D88FB45D8C1B86A2E3693DE5CB303C618EB3962A61693E2E0"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IAutoFocusVM.cs",
+      "sha256": "D9AF52418A9069345E2D33A4DEDE6F796065952AF2823036B48E6F8F3496C7A7"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IDeepSkyObjectSearchVM.cs",
+      "sha256": "0C06964CCE1DD942DE217EE1DD18165E01986039EA99A66304CE5A49B322F4C4"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IDockManagerVM.cs",
+      "sha256": "F4B76A402ADBDF9B9BE653F09ED51CEE8B1B1A8A89A87758FD203DBCB0BF6FEB"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IEquipmentVM.cs",
+      "sha256": "AADCE4FB5B7F2977DAAA9DC09656866F770BFBE6DEB962CD83D35A052C3F14C3"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IFocusTargetsVM.cs",
+      "sha256": "36B8C4FCA1E085BFA1B90F6BEB9A01BA60E226D3803AFFE27A59FCD4ED082A5B"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IFramingAssistantVM.cs",
+      "sha256": "789C6C4D0224ED067E9E51F0F52F6A0B9BCD1E7B1ED08A6EF551753D7F1988CF"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IImageHistoryVM.cs",
+      "sha256": "6777B44155A980639EFAF0FC324E1EA5B1879A2108B9D92D9CEBA0B8520E0B6A"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IImageSaveController.cs",
+      "sha256": "E0D9C07B3A4BB6244BF10832C7749781778C00DF7149B69366B9B2231D10E29A"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IImageStatisticsVM.cs",
+      "sha256": "0A90C6D3BC9133A627D024D02F8883E2D9ACBBC284643434F29FF0DA95961AA3"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IMeridianFlipVM.cs",
+      "sha256": "9E3E6AB47D73DD3BEF51F07BDA850B0ED668EEAB24E6FDC4AB0E16BA74086C94"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IOptionsVM.cs",
+      "sha256": "3177F8C47B2E0C0CDD7BCF8FB2BEB2A5EA372E31C408565D91247A8FD4680A53"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/ISkyAtlasVM.cs",
+      "sha256": "71FC00542F1E6E471B1A93295265D3B3F6661459A83FE4DFA410B60AA79D7688"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/ISkyMapAnnotator.cs",
+      "sha256": "D74013DDD626216C1A180DB47E60AD91835C66A372A888A111E8B0F624383DFA"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IThumbnailVM.cs",
+      "sha256": "489BAC372DB894FCED46A66E08556374124D72A4D4AD33CE2ED83A157BD3AE58"
+    },
+    {
+      "path": "NINA.WPF.Base/Interfaces/ViewModel/IVersionCheckVM.cs",
+      "sha256": "6EDB78C1E007A518661E77D045A33E2D8D369F0E1F363D3EA36DD01C9C3DF717"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/ApplicationMediator.cs",
+      "sha256": "281BAE125F0C23A13A6E554ACEB59FA881EE0EDB988451117C2C583521271473"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/ApplicationStatusMediator.cs",
+      "sha256": "CE23D12D884B6F5180B47EEC5F4B38BB47DCEF743DE1AD8B0AF1C433316B3F53"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/CameraMediator.cs",
+      "sha256": "0E9ECEB630D1B35B47D9972E8D0306DFCF8331625F22EAB174300F280D10FF04"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/DeviceMediator.cs",
+      "sha256": "CFDBBC2CC5C0CE990D7BA59BE7F9C73817E69D37DA41CAA2026E57EB5893382D"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/DomeMediator.cs",
+      "sha256": "ABB3C0C9CAEF8CBA681A9513537DE8094D33C499ECD3A7B64C325075DB108748"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/FilterWheelMediator.cs",
+      "sha256": "EBA88EC9EA09881846954CC27DE28ACD49AA5D39875DDAB18A806FE9AE9CD8CF"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/FlatDeviceMediator.cs",
+      "sha256": "E1B082B4C487F56412AAE5AB564F53AB26DF44792A4BA81C18859F94811D98CA"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/FocuserMediator.cs",
+      "sha256": "297487C8C3D7F4698A9738FA4502F0A014048FCA3E342003B16DA2586B3EF89D"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/GuiderMediator.cs",
+      "sha256": "278FE3E95A1E3CFDDEC17F72A5BA827BBDC572A4BF73857E718FEE177C4D95BA"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/ImageSaveMediator.cs",
+      "sha256": "3B43D340C67126C5CB16CF8806C50C4A1813DC53C65EC17C6EB83B8362B124A9"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/ImagingMediator.cs",
+      "sha256": "563B54012D1937DD10BC6D77DE65341113B0CC79D2F888ABA2E3410DDE3134BC"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/RotatorMediator.cs",
+      "sha256": "84856D8C5EF3225AC5E501D2D521460321C0339C7DA76B3C3A824FAC7FE803E1"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/SafetyMonitorMediator.cs",
+      "sha256": "8B39422D235A650EED410FF8C041E5D52DDB750C1AC7BB9ED93D6634F91976DC"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/SwitchMediator.cs",
+      "sha256": "B0526DB95C2165F2D12E1A6B6472C4FC0C435126FE35303945A9F777C1AF097F"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/TelescopeMediator.cs",
+      "sha256": "10B6D168253142C90D6FB0DB73F62F1F7A21A0BDA11E9C739307F602B67C3991"
+    },
+    {
+      "path": "NINA.WPF.Base/Mediator/WeatherDataMediator.cs",
+      "sha256": "C6FBC5EE300C873B14BEDF2A32ACA0E3FD8B963F215B6E1237A5C3F0480F0CAF"
+    },
+    {
+      "path": "NINA.WPF.Base/Model/Equipment/MyCamera/Simulator/DirectorySettings.cs",
+      "sha256": "6E87389F09EDBF648BC8B2A59CDCC7C5122A9624FAAA9D8E8AD9C884004853D5"
+    },
+    {
+      "path": "NINA.WPF.Base/Model/Equipment/MyCamera/Simulator/ImageSettings.cs",
+      "sha256": "0FF1B50EDB81BEAADCD0DFEC92E18973641D17B65BDEA961CFF7006F3E931908"
+    },
+    {
+      "path": "NINA.WPF.Base/Model/Equipment/MyCamera/Simulator/RandomSettings.cs",
+      "sha256": "4F2743EC794C62E7C2FA1D7DEB2E6A9A1C8BF134615259B2C8C46E22F797C97C"
+    },
+    {
+      "path": "NINA.WPF.Base/Model/Equipment/MyCamera/Simulator/Settings.cs",
+      "sha256": "A1928C5D40F8EEF8F0CD192F7592FE2F1D7B509C6C453E79E8450061DD042DA5"
+    },
+    {
+      "path": "NINA.WPF.Base/Model/Equipment/MyCamera/Simulator/SetupView.xaml",
+      "sha256": "5CC3A14893D79E9F474DD75C2ECBE972C4E0BA450152C550E2606682549EF507"
+    },
+    {
+      "path": "NINA.WPF.Base/Model/Equipment/MyCamera/Simulator/SetupView.xaml.cs",
+      "sha256": "DE3B3BC001930AA68E772C346DE5E949E035FEC0C94290248B22D3687D1925B6"
+    },
+    {
+      "path": "NINA.WPF.Base/Model/Equipment/MyCamera/Simulator/SimulatorCamera.cs",
+      "sha256": "99D4A7FC32EA52FFEFEC97665F31EEB49C665D987E7F09C9480466F266F4E692"
+    },
+    {
+      "path": "NINA.WPF.Base/Model/Equipment/MyCamera/Simulator/SkySurveySettings.cs",
+      "sha256": "DA1693BF073723C99E8819F9D9F11C9EFCF8D7AC4737642EA2BE53D089DC682C"
+    },
+    {
+      "path": "NINA.WPF.Base/Model/Equipment/MySafetyMonitor/Simulator/SafetyMonitorSimulator.cs",
+      "sha256": "6827F2843DE4063A1AA90539B84D24656F36E22985A4C85088087E620F7F119E"
+    },
+    {
+      "path": "NINA.WPF.Base/Model/Equipment/MySafetyMonitor/Simulator/SafetyMonitorSimulatorSetup.xaml",
+      "sha256": "0471616CA864B24E7270D7BA258DDCAA2A73252968EFE1B4078A87C6D686134D"
+    },
+    {
+      "path": "NINA.WPF.Base/Model/Equipment/MySafetyMonitor/Simulator/SafetyMonitorSimulatorSetup.xaml.cs",
+      "sha256": "7C15079379FAE2C84106DC630AB95E90ED3D647109CE8CF1AA04F9FC9FD788F3"
+    },
+    {
+      "path": "NINA.WPF.Base/Model/ImageHistoryPoint.cs",
+      "sha256": "6F9D6B9BC05DC63616A53D5950C3E0EAFD0BE84D0566A612EC500879C6F4496C"
+    },
+    {
+      "path": "NINA.WPF.Base/NINA.WPF.Base.csproj",
+      "sha256": "1F3251447589305686291E3E57103CE3EBBACF311B4E67178439944188E01A7D"
+    },
+    {
+      "path": "NINA.WPF.Base/Properties/AssemblyInfo.cs",
+      "sha256": "ED55B9B10B2962F92D76C72E1086EE07AA05A4FA9A0F5BFABE770FC35A6006C8"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/StaticResources/Brushes.xaml",
+      "sha256": "05F59A771F509C0EABF3D4EB505F0AE86A61D3E4EC0A2FFD9AFFA7BA7827EC37"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/StaticResources/Converters.xaml",
+      "sha256": "134C7B871E789B1564D994F4447A4BC7E2D91D5D92D7ED586CEF1EC5B67C18A9"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/StaticResources/ProfileService.xaml",
+      "sha256": "78E57F1131BD559431DB671406544AD1D3CBAB70C4D5552AD87DF47A9C8A6318"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/StaticResources/SVGDictionary.xaml",
+      "sha256": "1D6E8D19A707638B0008149A978FEEF0331F360FFD34E1E1A64D7BDF025B4A33"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/Button.xaml",
+      "sha256": "ADF9CF8027C272D578F234F04F0409F75D740DECCA979F69D669F08514B72B37"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/CancellableButton.xaml",
+      "sha256": "3A4126C56095F48C25C4560193B02847ABE65EFBC77DF70921858F28BEEED73B"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/CheckBox.xaml",
+      "sha256": "4296D96397BA320DEB78698F19168CAAE670E35628789C400DB3CE11C671BA11"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/ColorPicker.xaml",
+      "sha256": "AF9CA5DA90EAD1C55E8D4193ACA96926E05345B327AB862FFF6C4F7CA58CE525"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/ComboBox.xaml",
+      "sha256": "5DA626A7F71BD32AA727E0AFE081B2ECE8797ED67EB8BD98515E2643541DA306"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/ContextMenu.xaml",
+      "sha256": "FFEAE44057475DF577F7445E64F2880B34DB570BF48005858BFEE2D20B72F372"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/DataGrid.xaml",
+      "sha256": "F0B91ADAB71F3079CD72E2DCD72BF82A46A81D887BF8E71B59A91BC826B6FD18"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/DatePicker.xaml",
+      "sha256": "00D24D6067AD9D05460D2EBFE5D47C71DD2969DDD69AF14FC1594E1117D63068"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/Expander.xaml",
+      "sha256": "66B409A768E3544C520223D4A4522742272D3AE407F25A4269868882FB970E40"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/GridSplitter.xaml",
+      "sha256": "C556BC31FB969249E369C1918EE0D14E0A9251D70DC1FF0E6478515AE077664B"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/GroupBox.xaml",
+      "sha256": "6FAF2AB2095599DDA1C592A6935A4F56DA48C23D220EF7AA07030CBFDEDB2269"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/Hyperlink.xaml",
+      "sha256": "8C80057D7501E3C91D4281061CF771515685DCD3018822E11E7CEF443D640451"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/ListView.xaml",
+      "sha256": "7966AA35677B6417D8CD3001C048D369E60C7A124112A27B3AAC385D4EB045CF"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/Path.xaml",
+      "sha256": "B975F54312A0F789522194E7BE61FC82BEB2CEB953C959F240F6E96216A971FF"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/ProgressBar.xaml",
+      "sha256": "AAA62811E04FCEC1D6123B0CBE3820B82F7036CD689F8711E0F3381610D5F02F"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/RepeatButton.xaml",
+      "sha256": "79C38E21E656672C2A2AAC4628CC1770FDD5147AB594C3B652E9AB34D205B76D"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/ScrollViewer.xaml",
+      "sha256": "AF0B674B76618186C22C36B396784BA5D8174491B8730E1BFA0A21D505DAC88A"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/Slider.xaml",
+      "sha256": "BC44FAFF3E08DCD0DB44926EC9CC1D8631B23C298A143209E59BC58AEF80E228"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/SplitButton.xaml",
+      "sha256": "27EA68B59AB4B2D20136752E6D4DBDB894AC35595C6FB16461D7B47D4AEB7668"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/StepperControl.xaml",
+      "sha256": "34C13FA2DEF99B377AB9801902438BD20EFA7627E67F00BE05F161CB5B8219BE"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/TabControl.xaml",
+      "sha256": "C16B6E1A3C6B0BA66E10E7FFE0C67A299DD6AFEE4186339A55E8FB4380765ECF"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/TextBlock.xaml",
+      "sha256": "BF3CD2205FDFFB979F6B2FA54E84416D35C5F6BC080DA324D7651DDA756A17F8"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/TextBox.xaml",
+      "sha256": "6CC4B2D67FC62B2B2E1E2A433D7D7803026B4D810F09097BEFC34B604CA1C9C4"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/ToggleButton.xaml",
+      "sha256": "616352B894E7D3EB784E4E347F09781F80C64F3B53C803C402806D2FB4ACF128"
+    },
+    {
+      "path": "NINA.WPF.Base/Resources/Styles/Tooltip.xaml",
+      "sha256": "BB1A02210DE88DD8EB29956DBD3B73919A882A174B80399E281951F2DAB95CD9"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/ARCHITECTURE.md",
+      "sha256": "7CEDAFCBD42577D53E42EE2E996ACFB9461A18E57DC97CD9B3A4F20EC890FA27"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/CacheImage.cs",
+      "sha256": "3158B8DA84A8A3E6019F301477815EDE23E4B35E8B540B8535EBC90328138846"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/CacheSkySurvey.cs",
+      "sha256": "52241974E0F3CE46E270C8A6170E4B1BBF3B3DDD5C7CCB8F0EF25A0941615DB1"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/CacheSkySurveyImageFactory.cs",
+      "sha256": "44B994D1C98956FE6A86AAF8426C528E6892DC39A48AF40D114988966B46D2E1"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/ESOSkySurvey.cs",
+      "sha256": "F6F20CB3B6467B3E4F7546D4DB5CC84A4161798C28EE5EDAAB9465E73ABF1BED"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/FileSkySurvey.cs",
+      "sha256": "80D30CEF92FFEF22BD6160FF877EEA7BFE41428E0279926EE7481BEE68FBCBFF"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/Hips2FitsSurvey.cs",
+      "sha256": "B44CFDF359F183EC7D9F6A6C534BC99EC5BCDE14FB8CDF6B47B98697012E7790"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/ISkySurvey.cs",
+      "sha256": "A32F5606752606D8C1F1A3088509A15AF8C9304F4B1B7A0AC780DE1E48E8A074"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/MosaicSkySurvey.cs",
+      "sha256": "02AEF06865477817BCFA7DF6160F99C84B785B94711E9F2D976E4374BA1B5654"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/NASASkySurvey.cs",
+      "sha256": "EBC7AA34101E50CEC6D9E379745BDACED0773D9621071B84F0986B08B45FF4AD"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/SkyAtlasSkySurvey.cs",
+      "sha256": "E956A697428B176AA967D53C88FD2DA635C9A67E597FBCADC7BB2E95196DB027"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/SkyMapAnnotator.cs",
+      "sha256": "8A00B3B3B20F9DA9F382D5808DDA556E1FEA703AD8D200B4E68AEE05FF7806A8"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/SkyMapCameraRectanglePlacement.cs",
+      "sha256": "A7841584A21BE1F69342F36E0138DF02CBEF041964FA1203284E3AA4534F6E62"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/SkyMapImageCache.cs",
+      "sha256": "52BDC9A78FBE3C1E638715B91C84EEDAF28A427C763C078FABD0646B003C3C4F"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/SkyMapObserverSnapshot.cs",
+      "sha256": "3D2EDC9E90CE84755C675528081575F137C601C3E5D1E29B841D505D4A35B6E4"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/SkyMapRasterRenderer.cs",
+      "sha256": "45274D62225185D8B2FFAC964ACEAC1D4BDAA53820D7BC1E81FBBBD59B52527C"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/SkyMapSceneBuilder.cs",
+      "sha256": "EBD9AFBB472F65746B8B3E22D0619D0EC4985CC9261EEB08CD49BB62649FEAD4"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/SkyMapViewportProjection.cs",
+      "sha256": "E92CEF4284D198EA5A61E55BFF600B549B150E6B9485A8D2AA0E06A3B5237222"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/SkyServerSkySurvey.cs",
+      "sha256": "38D6580913E7A0E6467CF3614D92A86A771B00332EA174A2CCDC0D161C935F20"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/SkySurveyFactory.cs",
+      "sha256": "4B6AC4158B79E3629C8F9DF612252BEFD327A994082A3161C475E7EF8180BEDE"
+    },
+    {
+      "path": "NINA.WPF.Base/SkySurvey/StsciSkySurvey.cs",
+      "sha256": "1F8E44F8331702C67CCC8E93B18302DDDD595DB07C9568E0DB02D1DF83894268"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/AllDeviceConsumer.cs",
+      "sha256": "C0C839C844E32CD91CA00BFA538305A355DC8544070B2CE3C82177C9DB46A425"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/AutoFocus/AutoFocusReport.cs",
+      "sha256": "E0DC473C1937BCE19519EF54480E00A71C013F2829967C5CCE7B5AF42DDBB111"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/AutoFocus/GaussianFitting.cs",
+      "sha256": "24F686A507509E028245E9E522E261FB2A53ECED9A2AE2B7303D350180D00E2E"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/AutoFocus/HyperbolicFitting.cs",
+      "sha256": "B8E1A406429A76912CB706DEF8C1C8C266A232173AD0B74F98C1ED3D7305CB29"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/AutoFocus/QuadraticFitting.cs",
+      "sha256": "DAC721A166DB78230684D473EB99BFE07F92B051665CF70F091C93B872F98AB9"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/AutoFocus/ReportAutoFocusPoint.cs",
+      "sha256": "146984570CC05C554998721461E62641E7B138A75AA27704D54B2AC0FA6A3C51"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/AutoFocus/Trendline.cs",
+      "sha256": "BD86ED536C5C435F828D5C91C7025B53FA93F7471FF1D3C2B74D88EE4A00DE75"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/AutoFocus/TrendlineFitting.cs",
+      "sha256": "7D4B484038188838A12917168F7914D64F48FEB9E4FF87C4C1A282E881D715E0"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/DataTemplatePostfix.cs",
+      "sha256": "B90281E71B0609A2D089F74640AA3DE657BDD920CB933C29A2F488654D58BB23"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/GenericTemplateSelector.cs",
+      "sha256": "B8F99C95643C80C59D9426D2E1859B553467AEEFED13953856842D9DBC6820A1"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/MVVMLight/IExecuteWithObject.cs",
+      "sha256": "652ABA589F72B22B2A2D802C9BC79BD0DDDAE4E1B178CC49731F8A60DBC1287F"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/MVVMLight/IExecuteWithObjectAndResult.cs",
+      "sha256": "45E60F0866735ED9246F42F699AACB2A27AAE4C9C8B29B85D0CB975F8B9B04EE"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/MVVMLight/RelayCommand.cs",
+      "sha256": "12E59024D9E1AA2495FE456D1AB71A3B3AAE8E03B11ECC2B4C5E18FED64FEA56"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/MVVMLight/RelayCommandGeneric.cs",
+      "sha256": "7337C7B879639B9FDC936F53CCC0B00761CC7B2F7D417E86BE23B0177D050233"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/MVVMLight/WeakAction.cs",
+      "sha256": "2AA875918052CC2CBD2F21BB848854ECEFADE169116188A9A1FDA5B8738A29DB"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/MVVMLight/WeakActionGeneric.cs",
+      "sha256": "6EC4AED2B82321ED081DFA570A356025BD62B29FCFE9214A95E8F31798C2CA0D"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/MVVMLight/WeakFunc.cs",
+      "sha256": "8C03866995ACEA05C918F764109A423A8459BBE1A9508BC1010598726AC8E094"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/MVVMLight/WeakFuncGeneric.cs",
+      "sha256": "98DC5B25C465EC3F28F82F4D1EEBC3179386B9694A059CD585F0CE69939F5FF0"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/ProgressFactory.cs",
+      "sha256": "33616816D08CF86CAFA5D8C91A94D9C603395B9CBCE4FAC35F6AD1CCFBCB1B7F"
+    },
+    {
+      "path": "NINA.WPF.Base/Utility/SharedResourceDictionary.cs",
+      "sha256": "CF01747502AF5B935BB56A26D428ED096FCF7A58AC719592CBDCE4A32140E17D"
+    },
+    {
+      "path": "NINA.WPF.Base/View/AltitudeChart.xaml",
+      "sha256": "8DA0DCBBB3C8B5C8F4D3090C3EC237BB6A360741DC9DD68D9517252FABA456C5"
+    },
+    {
+      "path": "NINA.WPF.Base/View/AltitudeChart.xaml.cs",
+      "sha256": "F79CB6DBBFDFB3081C0F0D78F2D5AD3F1E5492BFC3C90509F36F3E38A94B0CF9"
+    },
+    {
+      "path": "NINA.WPF.Base/View/Browser.xaml",
+      "sha256": "8E38B9B56F29F54028395C6411FA18645170639346A44D44CA26E9BE77B7E0F7"
+    },
+    {
+      "path": "NINA.WPF.Base/View/Browser.xaml.cs",
+      "sha256": "F14B79B58BAC1FE92FF7FB363B4AE537BEBDB04EC6A0AB768F1731889A898FD1"
+    },
+    {
+      "path": "NINA.WPF.Base/View/BrowserPopupButton.xaml",
+      "sha256": "23EEC0B2AB51BE0D0E2F07D556CE5A41E63831CC4583E7458FB9AA859E8751F3"
+    },
+    {
+      "path": "NINA.WPF.Base/View/BrowserPopupButton.xaml.cs",
+      "sha256": "17D6ADE7F5D0D44602FF532CE88915EE55E25442366F07F5AB1AF1AA5391975D"
+    },
+    {
+      "path": "NINA.WPF.Base/View/CachedPlot.cs",
+      "sha256": "1107FC7C761804111722D11DA06702A9A08AE0E08D129A6424DDF6A090BC5E51"
+    },
+    {
+      "path": "NINA.WPF.Base/View/ImageView.xaml",
+      "sha256": "7B34851F46F3FE67024AFEEEB37F9D1F08CD7E329A8747BDA09CF708F6C369EC"
+    },
+    {
+      "path": "NINA.WPF.Base/View/ImageView.xaml.cs",
+      "sha256": "41CAB419999E1A7717FDEB452FD8F03E1956FAC0E72F47CE326756DB969984B0"
+    },
+    {
+      "path": "NINA.WPF.Base/View/PopupButton.xaml",
+      "sha256": "CFB34F462223CFD67D8B89E677BB04ADE61D38493B15FBF43B69F9A3B1C72363"
+    },
+    {
+      "path": "NINA.WPF.Base/View/PopupButton.xaml.cs",
+      "sha256": "9988EC176296190A664C566F61FFA1EDC04DBB1F4DE2A4221F08703B19DF8A7F"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/AutoFocus/AutoFocusVM.cs",
+      "sha256": "152189B02F7325917286C2A9A627F25BA511A4B4257EE2AC807FC34BFC64B9A9"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/AutoFocus/Chart.cs",
+      "sha256": "B7875EBB5B163B12653C127885FBBCF731A4976763E87BBA4FA8B50A380B1797"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/AutoFocus/FocusPointComparer.cs",
+      "sha256": "3303075689473E79C1AE5093D8270A3CE7B8E7F516497914742D026D20130BF7"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/AutoFocus/MeasureAndError.cs",
+      "sha256": "C8794C7A479CF8D40C7CCA4283AA22DDD83ED51AABF0DF4F1DDE1818218E2A42"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/AutoFocus/PlotPointComparer.cs",
+      "sha256": "5EA333348632D6AADA0017C8303596EDEDC410976230FA2508F170AB78913DC0"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/BaseVM.cs",
+      "sha256": "DB5006AB789779B037522AACC79B518514C948AC11C46B0134D6A2B5A515B733"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/BuiltInAutoFocusVMFactory.cs",
+      "sha256": "DEF1296DE35E369045656D4801F0DBF7A5542608D4BBDBA78659F2A44BC8878D"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/DockableVM.cs",
+      "sha256": "6CFC1139AF2027ABD04C893ECC99FB2C7F2BC929CFE1DE389A5E46229E4C5B0B"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Camera/CameraChooserVM.cs",
+      "sha256": "857A2393BD98B58F04F3E6D9A0A2E0A539A15FDCDF5FE2D06DAC41FFB00B7D04"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Camera/CameraVM.cs",
+      "sha256": "8B03A46674E00AC46C260DAEA112D46E8AB7406212DE3A59882B07E760D517E7"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/DeviceChooserVM.cs",
+      "sha256": "3BDB6B3710C919577E4ABAF2E745DB37A75D990421D1D4B2D38D90C3C624580D"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Dome/DomeChooserVM.cs",
+      "sha256": "4FEF1B6B777755AE68C6BEAB3BD0C3C7FDCBC5A0FD35BBA247BDA9229C0A1BE1"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Dome/DomeFollower.cs",
+      "sha256": "720DC2443A557BA06FF8FCB697340FA097C15DEDE10933B5D6576476CAAAFF8A"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Dome/DomeVM.cs",
+      "sha256": "8EC5C4167C878D1B72228ABF63BB04C12CB0428FDA49571EC0BD431E586ED7F0"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/FilterWheel/FilterWheelChooserVM.cs",
+      "sha256": "60A7C8FF15E3463140EFF81BE1CE60C966CFDBCFD9530CDAF2F46A9E14A5B8A8"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/FilterWheel/FilterWheelVM.cs",
+      "sha256": "20E0388C472C1B53B523E29BB35F28BFB04657D537A8520FE89C64B84D7FC2A6"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/FlatDevice/FlatDeviceChooserVM.cs",
+      "sha256": "954184F614A7D17C9821FD19165D44428F7EED50890C01DFB5B4694EB60486DF"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/FlatDevice/FlatDeviceVM.cs",
+      "sha256": "2992CD87A1CE59FB15F9CB9AFD07B9143D3C77F5F75458127576C34D2EC07016"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Focuser/AbsoluteBacklashCompensationDecorator.cs",
+      "sha256": "E91ED5F79AEB8C1088F17375E3806D28A8172B353B0AFB77C594DD3154C1667C"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Focuser/FocuserChooserVM.cs",
+      "sha256": "183BE97D8EC8F2E322A52BE88C9A2E4F3C40CCE208AFBF7B33754844DD433E36"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Focuser/FocuserDecorator.cs",
+      "sha256": "767F67B4B19E79D35306A5FA77C001342BDF1984F30C3CA7036D566925EF434B"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Focuser/FocuserVM.cs",
+      "sha256": "60E443C9F715EA7103FD50FFF84E5882F4E5E0B76AAFC131989B70595FE05164"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Focuser/OvershootBacklashCompensationDecorator.cs",
+      "sha256": "92B4D6D13FF6DAA44800C63B53E2EC39A44EE4C8C4F71AFDE11B0CEC7C41F1AF"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Guider/GuiderChooserVM.cs",
+      "sha256": "64BE0A32504BFB2AABF3E381007495ED2AFF4F423F05020107056BA4FA7B859B"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Guider/GuiderVM.cs",
+      "sha256": "ED2C7F749378B901B5310339380AC5692181E1D05D350998BAE7FA3C659C97F1"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/HubConfigurationVM.cs",
+      "sha256": "9FF27BC2E270C8FE7AAD96C7D18F5E109A0B2999361985D43626B74532836DED"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Rotator/RotatorChooserVM.cs",
+      "sha256": "AF858B6942EE9B235AE52AD532BD91127DB33E192D4C47C6E037AA08AC88A563"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Rotator/RotatorVM.cs",
+      "sha256": "8A77DD71ACDA0CE94DE72C2F64A8C4814AAE1251DA537FF772A0B02E7ABB5321"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/SafetyMonitor/SafetyMonitorChooserVM.cs",
+      "sha256": "31727F4F2FC734BCD87E9D141BF7AE105F2CCAA6436F74A42AD81845F15F8AA1"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/SafetyMonitor/SafetyMonitorVM.cs",
+      "sha256": "C29B70D856131D7A08E966E4BC18C8B5F4993341BBFD614A8EA4D7B66A3FA196"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Switch/SwitchChooserVM.cs",
+      "sha256": "811EE46E5E5DE39E11A09121E9870D9ED75EE4476F31FBF2B81AEB39211C3C54"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Switch/SwitchVM.cs",
+      "sha256": "1079BA4B3998F1DD926813E537F9506F316DF793EF14EC847FAB74ED9138C495"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Telescope/TelescopeChooserVM.cs",
+      "sha256": "C8F8439D1FE22C97F3A88CB1286CE0342A805BB6E09B7B5D1EBD1573240476A9"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Telescope/TelescopeLatLongSyncVM.cs",
+      "sha256": "F2525F52730971D30369E7478F9F95B630A364C4424DC5A75576CC0A2399286A"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Telescope/TelescopeSlewCoordinates.cs",
+      "sha256": "323EBDF0CAC131808A2C88782FE88CE1E53EE9E80AB7F186B7C790F7F70C85AC"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/Telescope/TelescopeVM.cs",
+      "sha256": "B8D193BE5C5A0D5CC7943D721B74A371215C47B6F4B2259D1D7CE507FFE28751"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/WeatherData/WeatherDataChooserVM.cs",
+      "sha256": "A0DE1937FE60CADB692A32A0316DDDD7C8EBC7A129B0B552E514B0EC95491C7D"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/Equipment/WeatherData/WeatherDataVM.cs",
+      "sha256": "A5121C40F897009E134DF3D9364E7C9C1FC3B6EB7C0C0020A0D07BAFDA30FC4D"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/MeridianFlipVM.cs",
+      "sha256": "7C95058A97FA59DEC9ECD83235595D22A57A4F8D3F0C236F005D814BCFECDADF"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/MeridianFlipVMFactory.cs",
+      "sha256": "701B1D8F664A57C8B72999AD163F2516206CF847EBC34C9FD3AF34156054B4A6"
+    },
+    {
+      "path": "NINA.WPF.Base/ViewModel/PlateSolvingStatusVM.cs",
+      "sha256": "D9778D4BF40DD00AB4BCFDE8EF46EE0B1207D9F436A2FE35D9B20F5B2F09B385"
+    }
+  ]
+}

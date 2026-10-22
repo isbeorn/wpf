@@ -1,0 +1,68 @@
+{
+  "name": "source-built-components-empty-window-component7",
+  "originalBaseline": "stock-source-recovery-20261019-r1",
+  "frameworkManifestSha256": "31225F143C4D154F5FD4409BC79A627B830DA734E10EAB5B1241E25C614977A2",
+  "avalonDockSha256": "79FC3BE351BC40675646E50465E548D3D4F873403C21C20D635E4EE39C2B3057",
+  "avalonDockIdentity": "AvalonDock, Version=4.74.1.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4",
+  "avalonDockSourcePdbProofSha256": "4FF8FD49BBB1C495514FCE0587DC254C7FDDB58C2C73F67DE787AF96A878284D",
+  "officialTemplateFixture": {
+    "provenance": {
+      "name": "official-template-source-recovery-20261020-r1",
+      "templateRevision": "4c90fac4ecbe0e179c16a16a5103d28c69407dd5",
+      "fixture": "official-template-derived-source-fixture-not-published-third-party-plugin",
+      "guid": "A611F2D0-1029-472B-9884-2CFD51F23A17",
+      "namespace": "OfficialTemplateFixture",
+      "compileNinaPackage": "3.3.0.1060-nightly",
+      "hostNinaVersion": "3.3.0.1068",
+      "licenseFile": "Unlicense",
+      "originalManifestLicenseMetadata": "MPL-2.0",
+      "generatedSourceInputCount": 29,
+      "generatedSourceInputsSha256": "DB026EF53C1CC101FBD8C9D96C295A6F3A60B984CF542DBD933C8E7782218D99",
+      "historical29RowManifestReproduced": false,
+      "historicalCompiledBytesReproduced": false,
+      "files": [
+        {
+          "path": "LICENSE.txt",
+          "sha256": "CA2ABDF695884C77EA4B4A5B64CA7B732D9D9DBADE4EEBC1C2E76C53E9E3BC83"
+        },
+        {
+          "path": "OfficialTemplateFixture.dll",
+          "sha256": "29035B73AF4965BFFDA07AF1DC58DC378EA04AA0C95B2F311D54CF7A503079D6"
+        },
+        {
+          "path": "OfficialTemplateFixture.pdb",
+          "sha256": "82A872BFED8940383A99707DD22C7EDBA22AECCDE10C916B5A590D404D6CA58F"
+        }
+      ]
+    },
+    "files": [
+      {
+        "path": "LICENSE.txt",
+        "sha256": "CA2ABDF695884C77EA4B4A5B64CA7B732D9D9DBADE4EEBC1C2E76C53E9E3BC83",
+        "bytes": 1210
+      },
+      {
+        "path": "OfficialTemplateFixture.dll",
+        "sha256": "29035B73AF4965BFFDA07AF1DC58DC378EA04AA0C95B2F311D54CF7A503079D6",
+        "bytes": 18432
+      },
+      {
+        "path": "OfficialTemplateFixture.pdb",
+        "sha256": "82A872BFED8940383A99707DD22C7EDBA22AECCDE10C916B5A590D404D6CA58F",
+        "bytes": 28324
+      },
+      {
+        "path": "plugin-manifest.json",
+        "sha256": "173E58B0265B95D28902BED2DF2AE6ABDCBE1E5F2DF672AF284EB05848573CEF",
+        "bytes": 1148
+      }
+    ]
+  },
+  "avalonDockPdbSha256": "506865BE324EA49F8FBE99FDF268835266CAC3BB009EF1B695F9EFEC5AB47F53",
+  "avalonDockReleaseSha256": "E43E356E55B12084EA027C8A081F6B95CE4501E7F6619E1620DEB1931EDB5E5F",
+  "avalonEditSha256": "870514C17A1F09BCB03067DD35AFC92FFF2ED94C6E2A43707AF14F8B82833D12",
+  "avalonEditPdbSha256": "6BCB2165429D8AF32D8AB93ECDA77BA855F993C8908F9999EB711608DC88BD73",
+  "avalonEditIdentity": "ICSharpCode.AvalonEdit, Version=6.3.1.120, Culture=neutral, PublicKeyToken=9cc39be672370310",
+  "avalonEditSourcePdbProofSha256": "F952594165F7082F88DAE4271F9C3EE15BE40EA59463D445F4DE788299202BBC",
+  "avalonEditReleaseSha256": "700E883070BA51E3D12E161CCF76C5ABD0D6F01FD7ABFF5EB447B1B634E34182"
+}

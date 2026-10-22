@@ -1,0 +1,1548 @@
+{
+  "repository": "https://github.com/icsharpcode/AvalonEdit",
+  "revision": "862415d51eddc9eac93f462dbc522ffbf929cd52",
+  "version": "6.3.1.120",
+  "sourceArchiveSha256": "6A3C0854D288BFA6518F68773A815067085E0252C5E06FA677FF1FD38EB773AE",
+  "packageSha256": "8AC3E5AA2BB6178D92CBE72C7900A683FAB0AEE66A8EAFA481611C444DBEE3E3",
+  "originalBinarySha256": "0FE9AC94AA22E60B32D670A3D35C58FEF628D1B3352D56F32F2986BF5F96F844",
+  "treeSha256": "97FAF9B6F5422E6629D034532AF5580CD143B843F0BAE422F49F75CC405041D1",
+  "archiveCheckoutEolRecoveredFromCanonicalBlob": [
+    "ICSharpCode.AvalonEdit/ICSharpCode.AvalonEdit.csproj"
+  ],
+  "files": [
+    {
+      "path": ".editorconfig",
+      "blob": "3861b0e340202a74791298bfee36a4eeaa582e6b",
+      "sha256": "71812705D7CE4D196568342B4424F5971A1E29EB634F1CEA7C94D4880349FFBA",
+      "bytes": 8460
+    },
+    {
+      "path": ".gitattributes.upstream",
+      "blob": "fbfb41be87f020987a1c9b8e7bd1ff5b20fe34f0",
+      "sha256": "1C41FF2ED288CCE27CBF4CD55ACE211C80F8E6C9A2BA558EBBCAF35D3F4C4262",
+      "bytes": 65,
+      "upstreamPath": ".gitattributes"
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/AvalonEditCommands.cs",
+      "blob": "f37b05a32d1752636c11c18e19718ad65dd0f740",
+      "sha256": "E72EC6EF1FABF6547E25EE2D0A68423F031B7564E8ABE6A50589CD89C769EF6F",
+      "bytes": 4979
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/AvalonEditNuGetPackageIcon.png",
+      "blob": "69836c206c213401f1e15b8c6c113093f6751ba7",
+      "sha256": "4994A1A4F45F144DEDF3A774D7D7F4F97909238C14A341147C58D25A953033D6",
+      "bytes": 2450
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/CodeCompletion/CompletionList.cs",
+      "blob": "315f6d3cb91d8f5412d4a9ee074a260573ffe386",
+      "sha256": "E5F7E4CFAD2705BF9C8FF8B919375E0F4E0C216A989FACF470ACB4B613F8520E",
+      "bytes": 12931
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/CodeCompletion/CompletionList.xaml",
+      "blob": "a288ed357cad26802fd2e808e5484867ea785c70",
+      "sha256": "8B9B0E2C623FB2431FB9C777E2F43C966950513F99FF43FFC3208377C492F1AA",
+      "bytes": 2324
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/CodeCompletion/CompletionListBox.cs",
+      "blob": "702ed4680946f7415018818ea91e5c51dc0e91f6",
+      "sha256": "C02A44CCBBE6345A70A50ABA6E808B42205203EB0D3F1A21024F631E16673C57",
+      "bytes": 3352
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/CodeCompletion/CompletionWindow.cs",
+      "blob": "29e8f9cc5bf0f43d0be5782afe43cb2c409d6e5f",
+      "sha256": "4B624B19BF762F50C3424CE5D42B9C42947D7C1A335312B1E55A9AAC8BC3554B",
+      "bytes": 6797
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/CodeCompletion/CompletionWindowBase.cs",
+      "blob": "0f8c1ebe59f8be40a2d7f7ab0db37eab3f633af6",
+      "sha256": "8D6E9435B433140C487A9434B524FCDC6CF7A8E5DD12E44282B265B93585A59A",
+      "bytes": 13620
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/CodeCompletion/ICompletionData.cs",
+      "blob": "97c05d387d2de18dd18ee99320d668d0aa889987",
+      "sha256": "FE8354EFDE4D94DC47E977710919FADBBD4795773F93CF2F31D684E891ED3B5A",
+      "bytes": 3100
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/CodeCompletion/IOverloadProvider.cs",
+      "blob": "4752c3f16f7c7aa8d283d4cd5e8f4c68b32731af",
+      "sha256": "D60171642E15B79543E0D9861A8C515433150374AF44B98D8C81E04AD94DBF49",
+      "bytes": 1873
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/CodeCompletion/InsightWindow.cs",
+      "blob": "d70ebdf604e245c81cf31929abe10547e79eb7b2",
+      "sha256": "BB285C76D4BF9A648CEA7B6BD2F17226A8BCE179966E79A255091E99F4A6D6B7",
+      "bytes": 3761
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/CodeCompletion/InsightWindow.xaml",
+      "blob": "70e286557e608750d5176a38e01130f8cf97ad83",
+      "sha256": "E52E244E0577B62057A3349B21ED1B563356E5563E8A5E305E4B17F6DC52225B",
+      "bytes": 5907
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/CodeCompletion/OverloadInsightWindow.cs",
+      "blob": "71b83cfc38c1e5a1396c8da7b7517c2cbb33b0bb",
+      "sha256": "7E7A489EC0BC33D2510FC36A406080D3ED0B56E4BEF1E1E72759CB30B3B2850B",
+      "bytes": 2382
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/CodeCompletion/OverloadViewer.cs",
+      "blob": "458b6099a2c2259c147fe18f98f0c4b1fe02056a",
+      "sha256": "5F142CB11BC9DED2830269C6C967CDB4882FA21CFB570D3D66EDE5FBE3DEB03A",
+      "bytes": 3772
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/DocumentChangeEventArgs.cs",
+      "blob": "d31f7ea3a3e761423db6e74272129b2d2f382e7a",
+      "sha256": "A65C4CFC49E02345017A1758847DAF5C42A6C810A6F52753247CA30AD7056053",
+      "bytes": 4400
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/DocumentChangeOperation.cs",
+      "blob": "0b1c1910b6be68bca5d36c91a21208be0f5cdc76",
+      "sha256": "4D462460FDC6C0350DF8FD82E1B2FDE532B718D6F3B9C3759ACCF00C583D1BE4",
+      "bytes": 2434
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/DocumentLine.cs",
+      "blob": "f19a3cf3a8d2f0097be2d0700ea0c3545454a925",
+      "sha256": "3ACC8C6648F684FAF4E9FCC9394BFCD38D438E6DD7A1ACD466AA500B44083424",
+      "bytes": 7837
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/DocumentLineTree.cs",
+      "blob": "8efc55a15f8a0b9b0638a732c734ef8bf998ef2f",
+      "sha256": "44D3526184E7829BAC7531E95C968AFB6155A192A6DA1E876A6271EFE4CB6C40",
+      "bytes": 20043
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/DocumentTextWriter.cs",
+      "blob": "14aa748a7f9ddc3fb7dfdd45f1febd62285abccd",
+      "sha256": "03F2AF2665759DBFB2937D2F843F83B9FDF96EBDFBA4DA76A4D26CABC09E0CA6",
+      "bytes": 2792
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/GapTextBuffer.cs",
+      "blob": "0dd5f2166ca6c95966c0a7398e540a2ad96f37ff",
+      "sha256": "23B11BA9F8487DD6636D1B837C3C05302B9F6FBF195B0FB4876D535DC26C1AD1",
+      "bytes": 6794
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/IDocument.cs",
+      "blob": "266bcec9bc0ec3fbff50361ebbe54425d66f86a6",
+      "sha256": "334A60049911D914D40F7911BD6B270D6E5A27960DB78098EC106DF17F7BD7CE",
+      "bytes": 11569
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/ILineTracker.cs",
+      "blob": "075e0b69754b7e76f51aa9dee7bf0a63f9fce451",
+      "sha256": "B48900BC139FD6E59248893AEA87C738B4832898D9D26536633B1C446C72B43C",
+      "bytes": 3595
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/ITextAnchor.cs",
+      "blob": "c104e8339797d2cc3ab71d3eea3a3b055d83171f",
+      "sha256": "AC63296A0884CFFFCB13C8A94B48CE373DAEA23AE1EBC76EE999153DC61BA47A",
+      "bytes": 6014
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/ITextSource.cs",
+      "blob": "a98eb0905bccdb063dba8e8b35520b397ee12223",
+      "sha256": "A46859AE552E8B0F548853033CEB87DF12A775B59AFF4F556370FBF6EB548E2D",
+      "bytes": 13008
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/IUndoableOperation.cs",
+      "blob": "49b5c3d1a5f278e1843953e1af5e01200b543ef0",
+      "sha256": "B580B47230A2AA5B51347376C52023ECD4C89FC3385B98A066007D36E6FEA22C",
+      "bytes": 1664
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/LineManager.cs",
+      "blob": "374a86c226f44ad5908be7a1e32925b006d0e3a0",
+      "sha256": "53DE2899A99CC7777B707802D5E8EC4F8440E06E9EC9C891D74EB0111D4C3A4C",
+      "bytes": 11226
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/LineNode.cs",
+      "blob": "b66c0d4f4f2dfbfe5207962d847ec559125899d0",
+      "sha256": "45A09C04D2C128CF8144291327885B714F7E83948465F70CB4A93020A3FCA06F",
+      "bytes": 3882
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/NewLineFinder.cs",
+      "blob": "82c2f4355cde651695eb0446180aa4c706b3b52c",
+      "sha256": "B229B8AED267E0E73CD0DCA77F9C60B90661970379A3F0A9139796808D60FA8B",
+      "bytes": 5387
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/OffsetChangeMap.cs",
+      "blob": "d4c32e46092fcbfcb409407db896e6d256dfbd46",
+      "sha256": "7DC2BB96501EFD07FB1B818888995437C298819588C9E70FC5199BBDC8230A8A",
+      "bytes": 12848
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/RopeTextSource.cs",
+      "blob": "9ad005e4097a3f6aba324b1b1759628e4d7dbe16",
+      "sha256": "5F3F925328BE5FFDF596AD41F697E8DD6CC1759D6D1409BEAF6AEDA68A2CB492",
+      "bytes": 4596
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/SimpleSegment.cs",
+      "blob": "4378b954a270d66bb3e9d204366cc59b3d04f86a",
+      "sha256": "637CD4885A81080EEE70E483708C63ED2648F2216BFBC260F4E1A302489D090F",
+      "bytes": 5996
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/TextAnchor.cs",
+      "blob": "840866d6af4ac06e9f7c1d3f0a13b152aaeec836",
+      "sha256": "D13BD80A4286194167A54FF84DBEF133EB6BB4026DBFB6B58266FB93209929A6",
+      "bytes": 5194
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/TextAnchorNode.cs",
+      "blob": "28b81d52c3adeac85cda38f98726f632641869e4",
+      "sha256": "ADF9982EB652B3F3F29D9DD686A13290CD8E88186F8C6155370DB50C0C8E0682",
+      "bytes": 3189
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/TextAnchorTree.cs",
+      "blob": "4d948bd2630e769b089d5b2aacaa1fa233c6d74e",
+      "sha256": "9DC4F166C69F655C674A64C2992E218C4CA4360FB8B431454CAC75381F007219",
+      "bytes": 24873
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/TextDocument.cs",
+      "blob": "525439053dc702767d6ba387dda7e8e55ee98455",
+      "sha256": "4FCD929EC16825F4D885278C64FF245B4954E4A0B491891AFB2D758DE79FB14D",
+      "bytes": 38226
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/TextDocumentWeakEventManager.cs",
+      "blob": "8660ce077b26af31f2e08cd5580d74fa70774e10",
+      "sha256": "47D617B922E1405E2C916DE96F88AB105ADCFAB276E7D5927AD4153A232408CD",
+      "bytes": 4287
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/TextLocation.cs",
+      "blob": "b94e1e5643d6b65620581bc4d1db2b11b8333c62",
+      "sha256": "84EF6E8FC3C10689709678332D770175BC519415B1EA2625F0B02110D5F705BE",
+      "bytes": 7685
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/TextSegment.cs",
+      "blob": "dd830910b5d1d09d5ce1455c37515b74879cf527",
+      "sha256": "45314BB4C377FFF2962369AB1360CDAA638A60BD67A3CF450983E3F96F8CACCF",
+      "bytes": 8539
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/TextSegmentCollection.cs",
+      "blob": "f4490d16a5e9ed42adf1c33d6cb3aa72f0758d83",
+      "sha256": "1F172F1C51E9402A2D8504336BC759B4E1B839D8A4DCBAE3820B1A8680EC53C7",
+      "bytes": 30547
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/TextSourceVersionProvider.cs",
+      "blob": "708fabeb75ca69be8541d171b755216eb21de299",
+      "sha256": "54ABC3DB0E48F60416F3BA6531CFDF82DC5773743194FAF6B371C282998D2365",
+      "bytes": 4420
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/TextUtilities.cs",
+      "blob": "585d4baaffa7ff1c803512ca93774cf3bb8fdbb3",
+      "sha256": "923A0C14C1085E96DFD06D8D2D3DE022EFEF8C1DA4DC0E2244BE7C477A0E3187",
+      "bytes": 16641
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/UndoOperationGroup.cs",
+      "blob": "923f8a59c881fe1c4425518ed5cdc83b4a240a2e",
+      "sha256": "C63D2DFD18B75FCBB4BAEA148F421068E2D38502542BDBDD5B39BAD4214C35C4",
+      "bytes": 2388
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/UndoStack.cs",
+      "blob": "f7820e019f67399a879c2a289ba4ad520db1b6f3",
+      "sha256": "DD422858982A57F4B89538EEE1D39D213ADA112A7FA5CB7528952C09FEEAC0A0",
+      "bytes": 14599
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Document/WeakLineTracker.cs",
+      "blob": "15b70bead4d315b7dc608996903d5392be213b66",
+      "sha256": "993DEE83BE028BCFA8B1EC092F64BFE047B15F0C62DC9BB3900A8C9FF6DF8D6F",
+      "bytes": 3775
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/AbstractMargin.cs",
+      "blob": "93ae59d3d78861114a142f2e5a98b6da27afc9c2",
+      "sha256": "19D9D9EC0B7B8258E9EF3AD83116158D4C41810CE822F81BE43F33907E08787F",
+      "bytes": 4308
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/Caret.cs",
+      "blob": "894031d0b0abda9348790ff5d1716f2f2e7befc6",
+      "sha256": "0E8D41F0B83307EB24D4A91F2A371BEA162DB668D5ADFA7CEF1FD2D1606F7345",
+      "bytes": 16923
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/CaretLayer.cs",
+      "blob": "c2d4e4fdaf581722411d1e732994d81f70bdf3f9",
+      "sha256": "DAC3C431D8B4FE6842D876B6580BA27F5876904B4786C619F2602C3708D05426",
+      "bytes": 3567
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/CaretNavigationCommandHandler.cs",
+      "blob": "90cc8fbef99cc004919731cf920af478ee878ed4",
+      "sha256": "434BF9924AC09DFFB00BCEE723A251231644A66DB52D90DAF85040D583DEF714",
+      "bytes": 19407
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/CaretWeakEventHandler.cs",
+      "blob": "4768180a9966964d07d6c81860c29497d70b0e8f",
+      "sha256": "FF9127150F4E6B148778D490E365FFAE4950B66834332BA741B5021C9809DF88",
+      "bytes": 1916
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/DottedLineMargin.cs",
+      "blob": "49588fe832f091d0707670cfdb050075e1a23d0a",
+      "sha256": "B400A27CF99227D5F3C9C5A65737BB04E4CA21F7775130124C34EA88BCA49A84",
+      "bytes": 2198
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/DragDropException.cs",
+      "blob": "1b6d28bc16aee170e43f4d1baadb048489c5c2a4",
+      "sha256": "AC2EB8B7F0A605ACDDB74242C21D727B47ACF813B59A95C6A3A703ED08DD065D",
+      "bytes": 2202
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/EditingCommandHandler.cs",
+      "blob": "fcdda52c145ace8726c9f0a0021ab0a11a9d9c2b",
+      "sha256": "C30B7505C5609F44DFD06D3F7A254AF3679B4875DD530603EAEBEF96E4575964",
+      "bytes": 27237
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/EmptySelection.cs",
+      "blob": "4e9d22f3e2772d7b4564819850b584109cc55ab8",
+      "sha256": "0F02381B0E9355EF06D90D08A6B2263150F3DA4CCCE699552B8D3E433F91C8FE",
+      "bytes": 3217
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/IReadOnlySectionProvider.cs",
+      "blob": "88ddbb32d89f6d2362c5013193aa3b5fcfee59c9",
+      "sha256": "723A3E3CFA627F48FAE1B00668B0068F685F0A1F3FB6595607DECB822F07B8A9",
+      "bytes": 2099
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/ImeNativeWrapper.cs",
+      "blob": "3e468087bf2227c91fc7da7637727317ac9a525d",
+      "sha256": "89105CA7D5179F199A84FF0CE1E610734ECE6885DABC42B246E405EB689D02BE",
+      "bytes": 8436
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/ImeSupport.cs",
+      "blob": "13c4633c72f444dfc8e6b09bf52227b93b665e86",
+      "sha256": "5622F5BD268401D230385E8592E956BF3A6903C6BF958066738A8F2055F80E6D",
+      "bytes": 5408
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/LineNumberMargin.cs",
+      "blob": "c3f217f63ef41140e5e4ac0112750e9227714929",
+      "sha256": "815AF2FA6A5ACC457D22A45A2F5157F6E8C8270A1E74A20503584735046A9746",
+      "bytes": 9306
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/MouseSelectionMode.cs",
+      "blob": "ce2b643fe807bfaedb63bfd47528955b142be3f7",
+      "sha256": "D68C61FF4F987237C18224A3F078D69B4D8C847E3F5C639DE6C4D0C8C3165B61",
+      "bytes": 1979
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/NoReadOnlySections.cs",
+      "blob": "dc0ad024fe9e781c7161836c55c0cafb3da054b0",
+      "sha256": "30F0B37242BEAB324C55397C13C4B0072E1F38ADFB0840B661EC7DDAE0B06E10",
+      "bytes": 2354
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/RectangleSelection.cs",
+      "blob": "60888d88787ba3fe64e7ffd8a3b6211fa83688f0",
+      "sha256": "74F1813656A9B312C7E4027211C4B6A7F26D98AB777936840DD06B35275A03F2",
+      "bytes": 15957
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/Selection.cs",
+      "blob": "314a5045b97aa2dbda46354bb53b053dacdb0ae3",
+      "sha256": "A144CE20CB8C31A6BE9F3139EA8208100261295D853421BD4E2BEC02F3EE32D9",
+      "bytes": 10128
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/SelectionColorizer.cs",
+      "blob": "17404d7e94971b3ec86080c831b11e59275318e8",
+      "sha256": "C908C452AB99B38C2946632A58D8DB69CC7C5DD81529BA7FE6761194D56A6A3E",
+      "bytes": 2886
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/SelectionLayer.cs",
+      "blob": "a778744e89a663cb51d13647717f3185f7260b51",
+      "sha256": "0FFB7E0F9768598904EB7B3D1517EBAA0F3B76E5786CB1FD0DB093F136ACED0C",
+      "bytes": 2802
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/SelectionMouseHandler.cs",
+      "blob": "e0287a38b23a428c7891b4c0624f89f8797e8693",
+      "sha256": "7A757D42823FCA8C068AACB739086C6567E57A691D3CFE072BF6BBAC95ECB257",
+      "bytes": 24568
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/SelectionSegment.cs",
+      "blob": "a65b62ec9a1ed2dbe58ef76f71b576ace6d7672c",
+      "sha256": "BE12D6712661297858A0044E55256DF05447C549886127311DEF37CA5C3FCA71",
+      "bytes": 3139
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/SimpleSelection.cs",
+      "blob": "1baa68b5039489ebebdd11f0116cf77510fb11db",
+      "sha256": "E0DEE1B568A983492F4F62078B217FCA4758E1D2F8D456F9829B6DDF1A222023",
+      "bytes": 5783
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/TextArea.cs",
+      "blob": "5ede9a16d476a4d5be8246dba9aa8a7f94246567",
+      "sha256": "93B72E23809994C9426B03D6A395A38D33F20331AE8E6E3D194B1C30EDDD291A",
+      "bytes": 36527
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/TextAreaAutomationPeer.cs",
+      "blob": "bca96277f3653306e9186bb2f2ad839c6131e18c",
+      "sha256": "C24963AD7C731339849CC82B9206EB3CB28D75D5CB5FA7AEA97F4584A081F5F0",
+      "bytes": 4408
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/TextAreaDefaultInputHandlers.cs",
+      "blob": "5d6fcd5ad34b768d84c2dcb29c2882fa9e0fae3a",
+      "sha256": "BED14BA8A3476132397A684B3ECA05DC18CF2B484C67DA85375C18AA43B490FE",
+      "bytes": 4559
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/TextAreaInputHandler.cs",
+      "blob": "4aa38f56439b3eaa8c9f5d3837063f1b79194ebd",
+      "sha256": "F0B2DE47298DD09576563E84AA6ED7360D94759B8485C785C389686992369513",
+      "bytes": 7863
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/TextRangeProvider.cs",
+      "blob": "96f01d7fe7c586409a037fe34eca0c7f4aecfb9c",
+      "sha256": "31EFEC071A2D5759E7B30E9372C8B6D4292DEF10B876AFFC00B43ED56ED5B77C",
+      "bytes": 9371
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Editing/TextSegmentReadOnlySectionProvider.cs",
+      "blob": "20ccf0e28ba02767eecbf6d03e708443d5793cd0",
+      "sha256": "5D170517484B63DA1A06E17D039757E5986585A42C8AB6C15C3FEEF2B698AB1C",
+      "bytes": 3576
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Folding/FoldingElementGenerator.cs",
+      "blob": "e89de36d268d2c0377c0d2999802b97a05c0bba6",
+      "sha256": "ADA3D7403440A71410BAC8B28B7F17060DB62D6573F3974422D48C792A8D8A5F",
+      "bytes": 7117
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Folding/FoldingManager.cs",
+      "blob": "27ae5bd4b99a1b94ef0fac9593164301275e1296",
+      "sha256": "7DCCDBF01081DE1CDA141CA17910B71D1C73072C7593CFFBCAA2883487B9A385",
+      "bytes": 14162
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Folding/FoldingMargin.cs",
+      "blob": "52a6ed8823040c50942da5d1c4ee132221854fae",
+      "sha256": "F46DC97348C90953B40C6E7B550349897D7902594F750E05B162E5C1C05235A7",
+      "bytes": 16292
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Folding/FoldingMarginMarker.cs",
+      "blob": "fe1fe35aaa5eb7c739da4ca6b17e948f3c90461d",
+      "sha256": "E6B479306807374DBABBFAED028EDF7DFAF19E5F0942629BA86EA2D9B6DC4308",
+      "bytes": 3855
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Folding/FoldingSection.cs",
+      "blob": "3dc6d971a0afbaaa8d7bac63d06345bfaa80c290",
+      "sha256": "5F3076FE95DCE5C35D5D782338A59397E7C5D124FDB8F7B196D966FC9D9B4423",
+      "bytes": 4745
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Folding/NewFolding.cs",
+      "blob": "36e5b2b793e1accf4f42172aeae01ee43c23b9fb",
+      "sha256": "DF4D6569469B4DF0C2EEE8AF5903AA0C8251B3B6058C6869130F425497E9C697",
+      "bytes": 2632
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Folding/XmlFoldingStrategy.cs",
+      "blob": "1293513697e0686fc3818550b4b2f510478fcff1",
+      "sha256": "33A3950F9F795E498771A463F0B6B1678B0C30370D94AB62F1ED7BB1B8DA096C",
+      "bytes": 8367
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/DocumentHighlighter.cs",
+      "blob": "94245e5f096c5d3241d6a8df73c2f46b7e7b28c9",
+      "sha256": "F4C18557AD7845CBB08467F89462D25C672A0207A3C926B10FF411401AA83769",
+      "bytes": 11295
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HighlightedInlineBuilder.cs",
+      "blob": "1cd33dc4d0f8cf721a95cb04f805de969ecaea24",
+      "sha256": "7F3AE357C0FCFEE13AEC91CCAF126B3E89BA78069AF9BF9D2279658E3F69A055",
+      "bytes": 6619
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HighlightedLine.cs",
+      "blob": "90872fa8ead85ca9ce69f40ab70ce2588ed6b81e",
+      "sha256": "870D6E00BD1B09282A1EBA828D72CB966349FF68EF2E33048863E6AD27D71681",
+      "bytes": 11626
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HighlightedSection.cs",
+      "blob": "e64a2bcbf4102f533ca36bf7f9dca7f1f4308a3c",
+      "sha256": "8EF15CA769CB06B6001DAE9C50F3AD09FA2C4E9970DBEFE9CBEB6667BB4EEA2A",
+      "bytes": 1992
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HighlightingBrush.cs",
+      "blob": "4e612e65a88d58db24e4c4285a65fbb28c9f26b5",
+      "sha256": "5C2C3807897FBFF2BD0CD35FC63F3A64B5F69A15ED5505A9B7AB5C68CD70BDDC",
+      "bytes": 5008
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HighlightingColor.cs",
+      "blob": "69ccec40a1e56e2c253d3db171be2eae5f741403",
+      "sha256": "6048AA79855E14731A67E8EE4D74878740267F7DC0F26D94B57A276A4979095C",
+      "bytes": 11882
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HighlightingColorizer.cs",
+      "blob": "f48e116004d88c1677e0244ba504864730544bd3",
+      "sha256": "D9505050F6D9233BEB462106B809813ACD5E1C433A33CB3F5DD4F19A23D2B5B1",
+      "bytes": 16026
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HighlightingDefinitionInvalidException.cs",
+      "blob": "c05b3415dd207e0f273eb653129586c6816bfefa",
+      "sha256": "A14CDAD66EC915108D4A8C1B218D1B7F337DC9EB1E0B0D7C87477CB18F0608F0",
+      "bytes": 2301
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HighlightingDefinitionTypeConverter.cs",
+      "blob": "9f85e7509affe9ceb636f1499400ab021dfc0dbd",
+      "sha256": "B989C22993F40525C5063E63010A367343A0D03BADEC14E22CC283986D594BB3",
+      "bytes": 2825
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HighlightingEngine.cs",
+      "blob": "949ad1da299efc1cc898e3350a069470181648b7",
+      "sha256": "3136007087D29CF4E2D26732F7209F7AB5FDD1FEDB408F6D0F5EEC6333CFD18A",
+      "bytes": 10534
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HighlightingManager.cs",
+      "blob": "c671c4e4b1a521a39792c2c8dc201630fc7ee2f9",
+      "sha256": "EDD0BFEC4D4509FCF6D80EA4A6246C174AD34BDDAFDFCAA1496D41021EF350FF",
+      "bytes": 10392
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HighlightingRule.cs",
+      "blob": "405e9aff4d412d8a8224f77633197f10835b472a",
+      "sha256": "1D9AD1F514C442BE458388F85AD8A6D416A82484EFF2F2D9511CB85979BE0796",
+      "bytes": 1712
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HighlightingRuleSet.cs",
+      "blob": "5df40562968f7c1f67f2300e39b8380f9a83edde",
+      "sha256": "4A594097DA789DFD7D88980735691099058B33040FBBC439E770C441F2222959",
+      "bytes": 2165
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HighlightingSpan.cs",
+      "blob": "05788d8d79f7d2dfb3fe2fd8e230f355b96e0ede",
+      "sha256": "73676C9B9860DC128213C00992F1D36E5050E4CFEEA3CB9B5460BED0427556B5",
+      "bytes": 2797
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HtmlClipboard.cs",
+      "blob": "517cf282e34dd7dd54aab043d00b5fb50994e0ff",
+      "sha256": "A1F4D93102B96C327F68A3ED88092D3AADF5EC40E7475ED54AFECD20F5AC3E2A",
+      "bytes": 5234
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HtmlOptions.cs",
+      "blob": "ab63d66ed5acb1537148aa9853270520ef46cdd3",
+      "sha256": "6A4CCDB7B36B0D9ADA08E3BA28C798CB947F090509901538579D8CFEE4EC9B5C",
+      "bytes": 2664
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/HtmlRichTextWriter.cs",
+      "blob": "63f9a1a914f7e01fb6a3e8f1259203a8aa49c53c",
+      "sha256": "BDF59092665A4A31734B0B903D7E8723398431598D45BAD0C896B8FA2C2BD288",
+      "bytes": 6757
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/IHighlighter.cs",
+      "blob": "d78ea125aca3331d1a9c265f2b8de8c8050911a8",
+      "sha256": "F22D4B9715545AA51398CD7C6F107CAC916185E0416E4697A1453FD52A718DBB",
+      "bytes": 5802
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/IHighlightingDefinition.cs",
+      "blob": "524a93f92e95ca475c6d1a6e85edbbb9fb8311be",
+      "sha256": "89C03B2BAE81B3F650658CB20453EEA113FC51C31EC297BC1A19E2F77DA88DD1",
+      "bytes": 2293
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/IHighlightingDefinitionReferenceResolver.cs",
+      "blob": "cb90ea54a325e9f49992ffa832040e3cadcf5aee",
+      "sha256": "132A29142CD2161ECDE15AAD432241AD0A0D3C47EA40B5A1CD254B1029F62BE0",
+      "bytes": 1522
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/ASPX.xshd",
+      "blob": "ebae9b8f684b4c5797ed9325bcca647afe0c9329",
+      "sha256": "4E425A1C4E0E8B10AFFB846A43CC006D417950D3C57C34BA43E7FC1EF4D7D2C9",
+      "bytes": 856
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/Boo.xshd",
+      "blob": "a4e5551987387082dd27f5a304350dd57d47a936",
+      "sha256": "14910CC9A4F43EF8AC3E6D924A85CECEC24E95BEB514DA850FB4CD5FE43A594A",
+      "bytes": 5450
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/CPP-Mode.xshd",
+      "blob": "f552ad4136d52d508733ab459ff5b634453fe70d",
+      "sha256": "89B6BE9F0923D2F68734462CF3597F01A25D3221B840C8BFB88EB0C5CF0D598A",
+      "bytes": 5551
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/CSS-Mode.xshd",
+      "blob": "198f6e124b75345fa6f28575087ad050a63b7b59",
+      "sha256": "E683338B1A3F901A8C167283A6432321CB8F8F53AF4827E5FBBF2B4429C339BB",
+      "bytes": 1758
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/CSharp-Mode.xshd",
+      "blob": "04f9a9ffc9ab9c293b7d3b19ba88b875a728825b",
+      "sha256": "EABCA0739696FCD195D4DDB79430684FC1C04C5570FD2FFFD9773CED8BC26E1C",
+      "bytes": 9047
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/Coco-Mode.xshd",
+      "blob": "9395198b52d93ebdbb700d43a330ded695887a46",
+      "sha256": "6EDE59C7FE1DE4C4E6647F63EBF597B2FDC9FDFBA7BDA53FBD6C32D1A0E23952",
+      "bytes": 2839
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/HTML-Mode.xshd",
+      "blob": "3be3b56209532c1713268385fd08c3d7ef146df3",
+      "sha256": "E835E950DEE43DEE6BD288A9677B471AD9CF903D3252B89B0B3855A18E8F20D3",
+      "bytes": 11581
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/Java-Mode.xshd",
+      "blob": "dd5053e9114b9807673857280168fc72ee98c756",
+      "sha256": "1C887E3FFD47558ED072866631F71387BD5699828138C78682FF871D8FA95D49",
+      "bytes": 5066
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/JavaScript-Mode.xshd",
+      "blob": "995491c9430abf1564f26287d9c1986b9e0e8482",
+      "sha256": "E6BF7E576363A03C752D317B1F86EB13C17BD13F6E0C27C7BE310040A09E9AE8",
+      "bytes": 3694
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/Json.xshd",
+      "blob": "561ee39ec711a11b65f1e8aba2eb84d1580692d6",
+      "sha256": "84BE0D9898229F45A19B870BB71636469A18423657B9D4FA8944407E19D0EA46",
+      "bytes": 2001
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/MarkDown-Mode.xshd",
+      "blob": "ead5045ab817aa3cf592b2a91eb16c0c5797645a",
+      "sha256": "021C55F45BF0299CECA5216EE91B36129E6B72B09028DBAAFE157FCCCD6AD631",
+      "bytes": 1691
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/MarkDownWithFontSize-Mode.xshd",
+      "blob": "4fd7c4d3d1206ae4bdeeea6875bb95a0712c6ab9",
+      "sha256": "A644BE4C8560EBA13B61790879B66BCC04203C88C6F22B4D981A267CD73381A3",
+      "bytes": 2641
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/ModeV1.xsd",
+      "blob": "2a219b3be507b718f706d085bb7d51a2a2ae7b43",
+      "sha256": "3B42666A0CC0DFEC9B7117D4AFC43A447CE74A68617E0D0DCD7A85F375CE5347",
+      "bytes": 14769
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/ModeV2.xsd",
+      "blob": "86e3959ba52c08f9f357eae4b7f2bd7a294fc11a",
+      "sha256": "A0167BA0E51E5BEB15F4CD45B5DABC279C93F29FB9BD2EB440A3353A06704F8F",
+      "bytes": 5875
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/PHP-Mode.xshd",
+      "blob": "a594b602c79f64707c9877112de7898d08d29478",
+      "sha256": "801FBBBBA9E200FF76F655C23BF459E204188F0964F8D3164D65D0C57BD9AA14",
+      "bytes": 4532
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/Patch-Mode.xshd",
+      "blob": "c8e1c3cfdb581c1fc82f378e3c47578a8178fcad",
+      "sha256": "258D8D346431D31F442110165CF1D09764EE0C861F8D98C91164277AEAABB4A3",
+      "bytes": 1139
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/PowerShell.xshd",
+      "blob": "d0becb721197b6b9399f7f8aa5e9e9c3264ef33e",
+      "sha256": "7BE97890C87217FBBDE6B962B5A6F85909DE223E947A11428ED783D42AC3E616",
+      "bytes": 3690
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/Python-Mode.xshd",
+      "blob": "12b1dcf6a67dff02ed22db8157460837e4f47752",
+      "sha256": "A854111E0F9C0DF8186BFEDB1DFBB11D79D69256EDBFCECB017863FE9CB7191F",
+      "bytes": 2579
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/Resources.cs",
+      "blob": "c295cc344d4d4df380402c64e567f46c62d94ccc",
+      "sha256": "77983EC93CD3463E539DE7D77EFBFFC0E1195A3D8679980CB6F70A64A159F312",
+      "bytes": 3588
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/TSQL-Mode.xshd",
+      "blob": "ff8e7dccfc314ead9570d62a3b5ee336fa514171",
+      "sha256": "B4B29DC0B4A018024781BDCA1096EA727BD4A79724D027AB4F718B7B63C336F5",
+      "bytes": 14778
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/Tex-Mode.xshd",
+      "blob": "b7900b21a33a5c4fd286103a8e625488a9cd78ad",
+      "sha256": "5C0527FEB2343928F9A182ADB479C9E4C9C0C628AD176121F9285ABBA15B4478",
+      "bytes": 3262
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/VB-Mode.xshd",
+      "blob": "60e23da63f59bc2cf444687cc77427cfa47a1e1c",
+      "sha256": "CA79B9AD2D43B2CB31D9C3FE0C73C179966EE7FBA850C0E6E059CD285E8B150A",
+      "bytes": 6708
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/XML-Mode.xshd",
+      "blob": "8f0bdef7696a3ce9b7190bc531b386712b21e114",
+      "sha256": "EE8428888CE49E4C3ECAD27BD761AADD2E1A18D758E3E4607AC01EF185DF14B5",
+      "bytes": 2399
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Resources/XmlDoc.xshd",
+      "blob": "270ec2b813124eea4fe98d65ab6e8fab4cb341b5",
+      "sha256": "9F96AB26961FA870A527A2778C69C8013573CBBCD2A28C4B63B5957F6AC9DF98",
+      "bytes": 1811
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/RichText.cs",
+      "blob": "44db64d4068d85ed29609d2fd554f0e3abd19bc7",
+      "sha256": "CE0B3B7587BD433107E22D2C32EB063DF6A7A1CC51F64904707D1FED6AAF679A",
+      "bytes": 8646
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/RichTextColorizer.cs",
+      "blob": "bc3e84b1289a8b87c3980dc79fd7a083dc5814bd",
+      "sha256": "F7B9ECFE9ED705E74572319A79FAC82BF64A0F62601A4450389A390FA1D233DB",
+      "bytes": 2287
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/RichTextModel.cs",
+      "blob": "261de31331123b55278c11a10f0ee67bb2f6f399",
+      "sha256": "0C56D88DA6342A5BD0F703396DD73DD34C32351263A737C71BCF11B0FC0B051B",
+      "bytes": 10318
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/RichTextModelWriter.cs",
+      "blob": "07180d22ae021fb0c28882690e74089eece62b03",
+      "sha256": "7DF1A50EA1D7D7DA0F62F75ACC70F42C701DEC9E1E67500C8E778DB53C43B09C",
+      "bytes": 4092
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/HighlightingLoader.cs",
+      "blob": "cc0bd43d27dc86f3e18cef17c8d08dbc582d5f24",
+      "sha256": "9D364D3DF906EB4CB5D055E25ACC0E2B00869650FCB2CA21815C78FDAE61580F",
+      "bytes": 4205
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/IXshdVisitor.cs",
+      "blob": "b00eabaf0e2d4e15198d334f7de9335451580326",
+      "sha256": "6C559F62B41A2D128C3F1CAF8E2916A645EE4C98B84CE7B2DF426C3ED12C4E6E",
+      "bytes": 1867
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/SaveXshdVisitor.cs",
+      "blob": "6e5f38b07d0938370d705c94b57f7005ff85827d",
+      "sha256": "81B371429B4B0842AE950CA92A11B0AD7B8504AD0AC58926E118F8384A63285A",
+      "bytes": 6964
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/V1Loader.cs",
+      "blob": "73b2fb7403254edb12a75d909bb920e45944cda5",
+      "sha256": "03C7EB0B35005F7B2B7DC04CBBF6222C948543DBA7F080083939111478A86A96",
+      "bytes": 11731
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/V2Loader.cs",
+      "blob": "13b46569f332f9401502c8edf8157f36c4d58dbb",
+      "sha256": "52EDA92D7EACE576562A28AA198D03A0D404B5154BA90F360812EAAD28180EC6",
+      "bytes": 12440
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/XmlHighlightingDefinition.cs",
+      "blob": "5a4934564b06eb7a1e5cbde1693cc29d230417d8",
+      "sha256": "01B3A1A2A9CC95737FD3A48D30509B8809E6288AA866D10420AA654A7C78EE1D",
+      "bytes": 14861
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/XshdColor.cs",
+      "blob": "18a4000ac2b97f2276a8119a73a9fd28142814d3",
+      "sha256": "8AFAED15F87B0DA8C3E143ED8AAA64C0749C7FC68C66FB465C820414955D6697",
+      "bytes": 5365
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/XshdElement.cs",
+      "blob": "bf6a18469cef8c91e4d01aaff0a6e067c366d496",
+      "sha256": "1529A8B551CFD50484E604BFE991C2CC92FCC64D5918154412019D1706B06575",
+      "bytes": 1712
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/XshdImport.cs",
+      "blob": "331d943bbb56146f8a9d26623ff8ebfbb9ea8c95",
+      "sha256": "6BA21870222EBC44F8024043A42BE8232A2C517CEA1F6034DD24FCEFF771FA37",
+      "bytes": 1599
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/XshdKeywords.cs",
+      "blob": "c4d31752d2f0a876d8b722802f33ac568520cd27",
+      "sha256": "B17B1097E40C300743B2BABC81CB9211D176DCE969DBB90819E18AFEE022902E",
+      "bytes": 1851
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/XshdProperty.cs",
+      "blob": "de78a9cb58beff4b167423b9c8b9cc0b52dd5398",
+      "sha256": "0339CF14F033E7FB0E9CBA45FFD31C0470AC9BB5065020B19DEE6EC249464C3D",
+      "bytes": 1784
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/XshdReference.cs",
+      "blob": "7ecb8048509142aca602e1d4a82dc7fc7a339af4",
+      "sha256": "AD683B610ACA69E81E57E396A06957A44846439ED92F6BBD5DA098CEDB597C2F",
+      "bytes": 4349
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/XshdRule.cs",
+      "blob": "b7ed5cbd8c24ad59967efb752cf086d925e8ca0c",
+      "sha256": "F3A97AECFEB032EBB6B2FD6C6594ABBEAFD6EFA3A8C82887550BD26CDA66F654",
+      "bytes": 1805
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/XshdRuleSet.cs",
+      "blob": "b24b42e46ea06440eaffc74ba7d876d6f08eaf3a",
+      "sha256": "83E506C44BB00A6A028B334B633807ADF687C17FC89ABD093F3B70B0693A33DD",
+      "bytes": 2261
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/XshdSpan.cs",
+      "blob": "c41f55e312256a645f464104795fbba2326b266e",
+      "sha256": "8451B708FFAF2DF84E4C932BCA5394E9BFFDBB4816751F6C05F5556A115526F1",
+      "bytes": 3148
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Highlighting/Xshd/XshdSyntaxDefinition.cs",
+      "blob": "7174c88813497ed4b70c1b611cab0517e0fd44fc",
+      "sha256": "B8A1D23CA122FD4A8C2B6C1A754850E8C3FAC2D5B4C5DA08A6BCB86E8EDBE55C",
+      "bytes": 2234
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/ICSharpCode.AvalonEdit.csproj",
+      "blob": "f9be5983329a0403863245efdf568276a54c3518",
+      "sha256": "179D6C4B22A0E4DA535807B85557DE47F3E1BF1AF070E45796F496CBDE54A92F",
+      "bytes": 3402
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/ICSharpCode.AvalonEdit.snk",
+      "blob": "de7b334c86a7003cd077c9f9785c16d184d9f3c4",
+      "sha256": "DB71DE327893F1BAE10D1F46BB52829967E39DD56EAAAEDF7368D537AF5BCAF0",
+      "bytes": 596
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Indentation/CSharp/CSharpIndentationStrategy.cs",
+      "blob": "41288b86653b8ea12ecd9d7ef6dcea4b76603295",
+      "sha256": "FBB017B4B23B9040C91DC8D5E83DC9E364D89022E53A24BB06805CC9AA9BEEB2",
+      "bytes": 3486
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Indentation/CSharp/DocumentAccessor.cs",
+      "blob": "b7c655d44d6801f8a0c73a78d27fe117f7739c5a",
+      "sha256": "9A76DE0438278AED200C2C1372E865FD52E41322711EEA57390152636DD2DAB5",
+      "bytes": 3346
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Indentation/CSharp/IndentationReformatter.cs",
+      "blob": "70bb819c2db81e53e0d31ee2dcc00ca7d37254d2",
+      "sha256": "DDAE89B280A0BF234E6074F4FFD1523A7692D3F2DE597553CCD0FFEC1605E57C",
+      "bytes": 14322
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Indentation/DefaultIndentationStrategy.cs",
+      "blob": "7ea6544486d079d8cd2b8ea0659d699fe4214de7",
+      "sha256": "EC6C287D63102F599305407209ED33B7305BCB7DFE790A891E3282E029D591D5",
+      "bytes": 2536
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Indentation/IIndentationStrategy.cs",
+      "blob": "2d063ef20aab822911015768696bbd7f173cff16",
+      "sha256": "92227384EB943046AF0BF1E23B5ADF82A889C6335BF83E14776E73FB620CEE00",
+      "bytes": 1747
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Properties/AssemblyInfo.cs",
+      "blob": "26eef88f5a027f61262eab3acb9728d6ab150952",
+      "sha256": "430CAC02108C3B6C0D900A3DD19837BAADD3EAB98CFDD31E7B17C7C034ABF3EB",
+      "bytes": 3347
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Properties/CodeAnalysisDictionary.xml",
+      "blob": "71301b91d6ca8fcc1034c2f680ae9ac007acd954",
+      "sha256": "BBEBB72D45E98FAA3D65E6FED75313F3ACE29B1A74E65D3D6A03105961F0EBBB",
+      "bytes": 888
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/BackgroundGeometryBuilder.cs",
+      "blob": "cdd4c963e84c4ae45f2b7ce04da1164ab26b2379",
+      "sha256": "7475A455403331F21E79A60B7405F6286BCEA92A3E295AE572FA3F98A99C5D16",
+      "bytes": 16387
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/CollapsedLineSection.cs",
+      "blob": "8dae0fd2195f58a370253d55788445776f4fc257",
+      "sha256": "243CA77F6FE9871922D8A9CFFCBCE1C299373B0195FB19B27CA145C002DB2ECF",
+      "bytes": 3463
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/ColorizingTransformer.cs",
+      "blob": "4d4a01617a5bc44c892d0d01cc1b51fb4170f5ea",
+      "sha256": "D15D4B75750113422FF14419E477E1735F1FEADDC6FAE9C928A3D3B987CF00D5",
+      "bytes": 4584
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/ColumnRulerRenderer.cs",
+      "blob": "7a59a18a0f60ccc116392d2e3a8e5b9c29973ef4",
+      "sha256": "95EA44E92880E9FF1C49349C2B8110CBA1DD60F3A2F00BE76429E47389AC05D6",
+      "bytes": 2706
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/CurrentLineHighlightRenderer.cs",
+      "blob": "8eb206f2fb490e01f54bc613d869de0ca15b2507",
+      "sha256": "9836D127B92CA763321E545058621CEA2B5B5F83E3596FFF82FBFD56353B99AC",
+      "bytes": 3009
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/DefaultTextRunTypographyProperties.cs",
+      "blob": "9e12d0520493970446b6910a7e6b5bedbb4861e5",
+      "sha256": "6F212D98422404CF2C6EDF4509C79860E7D17B40A2FD943674E91007D2908A8E",
+      "bytes": 5389
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/DocumentColorizingTransformer.cs",
+      "blob": "e0e2cc05f521ca9c6bb0095ac6eaef691011ab68",
+      "sha256": "B46B726B592E6E067071D88952AA0AE40A030CB25757405E77D40CF976F70B42",
+      "bytes": 4783
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/FormattedTextElement.cs",
+      "blob": "ffe8e4e0b46418107c8c390b99987a7747fb094f",
+      "sha256": "349C54B37DBD6D1ED32536650DCCA49698367617F94FA7BC3DCF0879BAD1F826",
+      "bytes": 7403
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/GlobalTextRunProperties.cs",
+      "blob": "dbfdd7a1dd52220fd47921df7a211c42eac19791",
+      "sha256": "FD9000570D54AD8B2E2863026B5D5FCE6E657B2C63530625C7A3672C6AE1F7DF",
+      "bytes": 2180
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/HeightTree.cs",
+      "blob": "6cf596401ce8e1583a2b759d8544ea30579d809b",
+      "sha256": "E87ADFB9E88A2970EB3E8341E2CE2936181892E5A0EC2F802FF34FBF925EE954",
+      "bytes": 34274
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/HeightTreeLineNode.cs",
+      "blob": "a0150231667a880cce9237229600ec9056792bad",
+      "sha256": "C9038BEEE7FBAF8220917C6D1D3C379F812088101BEE1036E59D7A352012D8D3",
+      "bytes": 2227
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/HeightTreeNode.cs",
+      "blob": "8f752e0fd31a7ac6ad3e73a180a9b9fa54d60469",
+      "sha256": "A4832CB1D27318D4BE2B063AB1EC79EA4338029B954A4E197C3E1278E9B09B88",
+      "bytes": 5068
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/IBackgroundRenderer.cs",
+      "blob": "f6c6711f3ccb18bed62ae120ee4b63e6a4cb2bc8",
+      "sha256": "8EDF41C72876B3619D8CA25B9F22394D15F3809BD3B7130691CEE562EF89B96B",
+      "bytes": 1758
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/ITextRunConstructionContext.cs",
+      "blob": "c29ebd7adf2d0f2b5db9fc8930271bb285c6f167",
+      "sha256": "5E9A6F402E91D09B3B65AB5469C80B0AFE39F80D929153A755A2A0B91626E5B5",
+      "bytes": 2476
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/ITextViewConnect.cs",
+      "blob": "aa130461d3422c0358b0deda1020c6a33a3e3119",
+      "sha256": "EA4FC6779D510342D52DA6AB849C1E594B580EBCE485F2A27A07E07507774263",
+      "bytes": 1698
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/IVisualLineTransformer.cs",
+      "blob": "fb129b6c9e29dc96fe067e2ec954e98f6329c105",
+      "sha256": "A295F4F945117D451DC5B503C0848191CBAF0CC8E5B6D5B013AF89EDC7BA4E98",
+      "bytes": 1550
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/InlineObjectRun.cs",
+      "blob": "d23a05b97115efcab28e23c25601c1e9ad6093c7",
+      "sha256": "58D651F318C058A5E57C5631B7B606A5F8AE695BE4F3799B7A132039F94551B3",
+      "bytes": 5154
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/Layer.cs",
+      "blob": "66d05df551168c95ceaa9d2da7872d774161b09f",
+      "sha256": "C07AC96F57C578DE6A5895EB275A9932420CE628A8F43C8F308E7641D1A4017C",
+      "bytes": 2040
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/LayerPosition.cs",
+      "blob": "479c763b8f95910720c0b79ea0ea91137e2519fb",
+      "sha256": "3205B99D2F656A56C1F48B21F9D2EE9FD22C92A0B48724D18D78BA10B560FDAA",
+      "bytes": 3648
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/LinkElementGenerator.cs",
+      "blob": "eb838fc283178005e07bb247718588e4e7d8db65",
+      "sha256": "ECBFD5AA7F85BC98938FE30F90EC2AEA19F95CFE57815B4901FC8829B7C8484D",
+      "bytes": 5743
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/MouseHoverLogic.cs",
+      "blob": "d6e18ce3434cd58c36ec104e75fb935a6f860752",
+      "sha256": "6A2B9C3B3B88851B14A37734314AFD924164C8394ECA7D49AA5A7761F755B02F",
+      "bytes": 4613
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/SimpleTextSource.cs",
+      "blob": "baaedcfd983339f2ce2712baba164683306eb422",
+      "sha256": "7F23B55E85C833E50F9AF98E07CC5201498983AFC6F6EB38DC729F49F0516C6F",
+      "bytes": 2098
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/SingleCharacterElementGenerator.cs",
+      "blob": "ee8d672b8e4da2d3b04b58a00ddd62024b9020ba",
+      "sha256": "658CA4CE271628D7FD9C29CE2C932CEB2A4CA0E505F97ADBECB36B199F55A664",
+      "bytes": 9715
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/TextLayer.cs",
+      "blob": "bcb8a62c4b01dca3fcd418af35c216a7f1536f1a",
+      "sha256": "EA6DBF0C3555DD75C002A7BC7A3CB4133103C15F461EB785CC18F679A3E63244",
+      "bytes": 2885
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/TextView.cs",
+      "blob": "9e1aa1f829c5d38b7e2f37146298a4af68d32607",
+      "sha256": "6653B528A3972CFC8C860F84894717E166AF168F59DAFABF8EE93892104ACA6D",
+      "bytes": 72993
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/TextViewCachedElements.cs",
+      "blob": "cfcc296ed6c75f1b2e48b0555eb5978cceca2659",
+      "sha256": "00E79FF8B5A322E5AE28699B2A29951EF3F4855D7AE448EBDB4BAD3C54093FAC",
+      "bytes": 2382
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/TextViewWeakEventManager.cs",
+      "blob": "f26d02d216f60275804c1a666f1a11364b179638",
+      "sha256": "CA95D3FB403412E01528A74FA9591E3C7B4A145859F5BB8988139951755865DD",
+      "bytes": 3167
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/VisualLine.cs",
+      "blob": "66dc837175e7a6881132315996e33500b6d9591e",
+      "sha256": "2A4D14A9237A326FBA693B9548087FA38B17F9802752917E37200CE614742803",
+      "bytes": 28452
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/VisualLineConstructionStartEventArgs.cs",
+      "blob": "e58f24524e240e5a2ebc285f18ed19011eabcc3e",
+      "sha256": "1774F7FACABD444C04D0A381D8AA47C6D358F6F40F40D8D3BF5732717D8C83A7",
+      "bytes": 1899
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/VisualLineElement.cs",
+      "blob": "0f836d4226a8c0b84900115bc2fc7fb6fe3eeaae",
+      "sha256": "FF5CE5934E10D729AF2A218A90F44E75FE9CA9CD0AA65B2F0A2EA3D597A7F32B",
+      "bytes": 11352
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/VisualLineElementGenerator.cs",
+      "blob": "1531d32cadd8d72ca1e2f33c9be5a98e06aaf177",
+      "sha256": "125E8AE2F074A43350594C5D3D101ED11D96CD0D40DE895BE0C4C36F578373ED",
+      "bytes": 2919
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/VisualLineElementTextRunProperties.cs",
+      "blob": "6bda6770e24e8775da8e189ed4f951941bf66708",
+      "sha256": "68B96FAF6153F84A4B33969D817D70EC617B85F747803C814CDA7B528B9EFA05",
+      "bytes": 8184
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/VisualLineLinkText.cs",
+      "blob": "f5dd7642c7d4d571d056a0195338996ddfec8f88",
+      "sha256": "F7E7965592D6CDFA80B5DE6450C583E07AF248F5232279C459FAB8DDC537D61E",
+      "bytes": 4934
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/VisualLineText.cs",
+      "blob": "b4c0c6e328cc5ef2ed1c928700f7d59bb01e21b4",
+      "sha256": "372BA662E37F05AC4B3B15C73B63F4EFFCCED2A70392BEF6680572AE28E27BAB",
+      "bytes": 5777
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/VisualLineTextParagraphProperties.cs",
+      "blob": "c0694779ba343cb06c3956c3f3e69eb25b9aa6f8",
+      "sha256": "E6829D70A6734570A46680CE08BFEBA51989C0AC67F869BDCA1B7FAFE0D80905",
+      "bytes": 2282
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/VisualLineTextSource.cs",
+      "blob": "7624f7670fbe285cc2c0ace0fafd3c800ea7a10b",
+      "sha256": "E7373E0A917502926A905A3CB95822C8D058818A58CF6737F3BEB5B6989AC5DF",
+      "bytes": 5563
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/VisualLinesInvalidException.cs",
+      "blob": "add5db6bf8bada582e5dcdd09b4156861ed58538",
+      "sha256": "1105D6EEC4AC82397F89F26C55E3801F94DA85E4C01BFAE9736D9AC73015215C",
+      "bytes": 2296
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Rendering/VisualYPosition.cs",
+      "blob": "5ecd6fc71b34f67ca2e940f9431857f193644613",
+      "sha256": "5EBE1EB454C51376E1AAA514CECDF5170BC7133FAACB0521F87EF38D90531F56",
+      "bytes": 2390
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Search/DropDownButton.cs",
+      "blob": "2a58da24c7d70d17764ace5a492fd2edddf199ee",
+      "sha256": "5CAE06381F38472F0659442E2E3873B2207DD205E6AB8D087CC0C53A99E21EE0",
+      "bytes": 3628
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Search/DropDownButton.xaml",
+      "blob": "c31010000d0d73a147de1cd33f56f34b4443bff4",
+      "sha256": "91F63CCFE42C05B3118720B26E4E2310968A85632C4D3EF67748128C66246EDF",
+      "bytes": 4194
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Search/ISearchStrategy.cs",
+      "blob": "05f31fd5f640ca310ab2438557214cd2c9d49c54",
+      "sha256": "F5D67B1A1EF773C83BB3BEC84891BFA9D2FFB7BDDAB4E52B922640305D2FD026",
+      "bytes": 3359
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Search/Localization.cs",
+      "blob": "d7876c391a2ff456ec7dae1f7a4b68f98a2df4f2",
+      "sha256": "290680D0FF97F2D59105C94A6698891FF3D534B3001FF35F64BB1A2414E95D98",
+      "bytes": 2418
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Search/RegexSearchStrategy.cs",
+      "blob": "cd9a7fabad619510c4c5df67d5ffc8b76b4e7c92",
+      "sha256": "3DBC954EBA874357C549E52DBA00359C70D6A91155BCA7B858B738CB1CCF628F",
+      "bytes": 3169
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Search/SearchCommands.cs",
+      "blob": "1fbc23f034b6a9d507eeaf3bd739df73e2adcf38",
+      "sha256": "12BE17D206B0EBC0349758471D062995E14FAD6222EB85DC460E2009EF035923",
+      "bytes": 4911
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Search/SearchPanel.cs",
+      "blob": "0b20c8b46ec02b0e448cdb83947df8545e3d186b",
+      "sha256": "43601575750686127247FA73DAD2564ACA5E6BF1B21CF5EE3183C6B1D4937056",
+      "bytes": 17692
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Search/SearchPanel.xaml",
+      "blob": "4fd0ec34eac1299762da0f1a5d647a838a17797d",
+      "sha256": "B318C6FF0D3EBC9042C3CF95B63E954139552BEF8F5E5D819C3D6BE07F352E7D",
+      "bytes": 3335
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Search/SearchResultBackgroundRenderer.cs",
+      "blob": "4cd3d6b99bba5f8b943b52b462fc8a12e073a430",
+      "sha256": "9F5E4370D257B40E78F4E14636753275BF8980B07CB200FA9EB9C67BBFE40E87",
+      "bytes": 3225
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Search/SearchStrategyFactory.cs",
+      "blob": "224e8f2809df96fb250f09a1bed18a998eebaf99",
+      "sha256": "3780BF34CB05A55D9DC0542599E7F6F96613D755359EFF78E914ADF14F989CEF",
+      "bytes": 2739
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Search/next.png",
+      "blob": "250330790b12cd2a59ab899dc8c3820c9b414a24",
+      "sha256": "BEC4296312E131F7AE3547B7934140530D506432984A2680ADB25C3C411BF352",
+      "bytes": 1304
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Search/prev.png",
+      "blob": "f0454a237cbb52216d9bd8d6afe6065e936e9b91",
+      "sha256": "97D175B30D3995B03DABA7B750CE5883D2AD4652F08D252826714314F9BDFB7C",
+      "bytes": 1300
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Snippets/IActiveElement.cs",
+      "blob": "7cbc24df5e03cc7c28f0f1449da184f1c2afb9ed",
+      "sha256": "570D52FBBE9A1B0A22D3386AD77061D17EAD136D2261E32847D1035C7021ACBC",
+      "bytes": 1926
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Snippets/InsertionContext.cs",
+      "blob": "b0fe3b46d2a1984f805178ff5edc3f617a2e393b",
+      "sha256": "164CBAE9976DC6EFFBF607E145235EF1A52D0C5ED749E16C87D5EE1AC7060A97",
+      "bytes": 11142
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Snippets/Snippet.cs",
+      "blob": "e987713764a6ce21b2c132bbd546eb3d7f79c923",
+      "sha256": "37E15DE359142565EFB63A6EADFB76C5294311691F587973456B43137EA1C989",
+      "bytes": 2458
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Snippets/SnippetAnchorElement.cs",
+      "blob": "4e1d851d822996763b0ba04af908732681930203",
+      "sha256": "4820E19970565908446E1653264997C1C2175B4D4E37EE1BF3A6CC85C144980C",
+      "bytes": 3427
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Snippets/SnippetBoundElement.cs",
+      "blob": "4939cdaec349703b296bc27b633e7610aa2cbdd3",
+      "sha256": "1599FFEC156558053D32AE2442BE5E43DF88ACA1E3B14A5CEDC6FB40FBF9FFB0",
+      "bytes": 4863
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Snippets/SnippetCaretElement.cs",
+      "blob": "a532def603f2e2e06cf72a11b95a00bec674cfa2",
+      "sha256": "4F9DF69F88DFF29CB8E1AE2AECA3259F7E1D9BE4C165753DB0C7AB398E084D69",
+      "bytes": 2713
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Snippets/SnippetContainerElement.cs",
+      "blob": "036b5ac8c31d0b0752a2dde3f5e390b3dc11e965",
+      "sha256": "08242D675F0EC68E259ADA596391AC27F20EFBBFFAA3655063CD19DC591AF3CF",
+      "bytes": 2095
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Snippets/SnippetElement.cs",
+      "blob": "68a97db1d2143c86bc2433282f6e5043a74b76dd",
+      "sha256": "3514C0CB19B30CE1F7559E915F22E4F46BD925CAAA5DC11B34817A714458E0B4",
+      "bytes": 1654
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Snippets/SnippetEventArgs.cs",
+      "blob": "6b4375b3f7ff91273a4eb3fba4a881fbfaa29310",
+      "sha256": "729D6904B4167E7D963BD52D0CF74A2FCA970D1A58AB9A80FD1A8C7880206697",
+      "bytes": 2341
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Snippets/SnippetInputHandler.cs",
+      "blob": "89e27571f63b3b5fa5f82af423275d62496c8de5",
+      "sha256": "9CC681629433E58540012E08C4552C21DC40B6A6858FDF3CDC0203C878DF0271",
+      "bytes": 3129
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Snippets/SnippetReplaceableTextElement.cs",
+      "blob": "01f61eceb170a06ef5fe8d544145508532a39a4c",
+      "sha256": "691D90A5716A5DBA9B223F1FBC19940701F979FC68FF7BD8FD39AF1E4D088437",
+      "bytes": 7555
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Snippets/SnippetSelectionElement.cs",
+      "blob": "a96272bb93be40981e28a591526477e8431adadb",
+      "sha256": "3D27722F163672B97BE2E3ADB59F67EA43E02721DB4E5AABD72B1BBB74947620",
+      "bytes": 2142
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Snippets/SnippetTextElement.cs",
+      "blob": "252a28efea63e8b7a5a11170b31656c07f833526",
+      "sha256": "03F3ED4292772FA36113634EB053A9CD51D2900881E2177F909087DBC2B2A1BA",
+      "bytes": 1780
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/TextEditor.cs",
+      "blob": "5325ed84197d5c53eca5c5e7ba64367d817a4c59",
+      "sha256": "975665C420504C14A1CF972264067349289D9C42B63FCCD76BF68A0BCDDF6F4C",
+      "bytes": 36075
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/TextEditor.xaml",
+      "blob": "093a100be356ce406116c56c8ef37125fc23fce4",
+      "sha256": "ED2DB55C1C41C94A9240F92BBB29936DCA4ED6212AE88F37F5465FC0F5485CDF",
+      "bytes": 3107
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/TextEditorAutomationPeer.cs",
+      "blob": "bf3547db76684c6e9fbc7de879211bad09f13bbf",
+      "sha256": "BF8D532858D44A1FC59A32FEA168B49F72FB682E4A130F6FA0C92A8A90F8F503",
+      "bytes": 3016
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/TextEditorComponent.cs",
+      "blob": "8885ff518c168cb2fb167dbcdcacd6a585549f73",
+      "sha256": "7E3F5089DE9F23F719DDA9154957F737F7A4B1CFD7BA483B203F9BD016348477",
+      "bytes": 2193
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/TextEditorOptions.cs",
+      "blob": "66ee37f9f3928182df82d4871ca3f71078901c9b",
+      "sha256": "539C3CD4B448B941B263BBD46BAF87531B5DC1F07DFB408D07D6C9F9F12EBF73",
+      "bytes": 14356
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/TextEditorWeakEventManager.cs",
+      "blob": "c45a4f05c3b6fca9390f43ce74a5f2beb423a57d",
+      "sha256": "313CAB93F69E88106630BE1E9555904FF69113A7FB709DE66EEF237412D41912",
+      "bytes": 2636
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/TextViewPosition.cs",
+      "blob": "f39b3f71eb5b9b622259a42c1d3777e1b9a1e373",
+      "sha256": "BA67D67C28073FF7A5F3BF953DA510E0DF0A5E62B7E097019C98174634BFECE4",
+      "bytes": 6006
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/Boxes.cs",
+      "blob": "e2973709cf795db4872e37523be6423b48c5e987",
+      "sha256": "569D96B7A3B9008441E9A7FF218CB85B55731EF3E275C828276FF83ECEC5AB14",
+      "bytes": 1462
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/CallbackOnDispose.cs",
+      "blob": "a1e6b073d86a7092ece28fb64e1b68f21aa5a230",
+      "sha256": "1DC958AA86CAFDD2CF03877C3ECBF44FD35E66F38E437F6F6CB8E4977E9997C2",
+      "bytes": 3277
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/CharRope.cs",
+      "blob": "6487e001e9e176d5a1a7fce5b822fa6eac23a349",
+      "sha256": "51BC6A5ECA65426B4A328B48D0C7BAB73FE23B5CBE946F48D27BEFD71AFE3359",
+      "bytes": 8172
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/CompressingTreeList.cs",
+      "blob": "d4a942774b85490469601f309c347e90cee284c5",
+      "sha256": "DC89CB5C6E95BFFDB946941CEE4AE8276A8F648E9CA9D2695233A64697DE8647",
+      "bytes": 25499
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/Constants.cs",
+      "blob": "db0b828f0795ebce28503cc4f7fc814dbf3cd600",
+      "sha256": "67A17BC20A72CB8C14ACA0F3FC8E03EED7B1D93754B748411FA5B2696B776A75",
+      "bytes": 1380
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/DelayedEvents.cs",
+      "blob": "e7073ad0bf9db670a3e421e6519fde6bc92f01fb",
+      "sha256": "C8140F19DA8FDAB49D5FA84B27D86569CD05F35A792B9513D792C73F35699B59",
+      "bytes": 1976
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/Deque.cs",
+      "blob": "6b373caff1b8d9a5d7413bb5e85628bdb4af97a4",
+      "sha256": "20187D6B274218B4067D7417B626E4D9F62101470916CDB304F6CB8CB0A6E023",
+      "bytes": 4869
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/DocumentPrinter.cs",
+      "blob": "a9b2c95fdab227c705c30416a4ae03320ab602df",
+      "sha256": "1B195A1C454808F23DD6556DF6AE4D9E161983BE99811C2D926CE9BFED34E551",
+      "bytes": 3569
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/Empty.cs",
+      "blob": "e657374c7c2fa1ca4ccad5ed7025acef73b0e0c7",
+      "sha256": "D23AF4AB75990FD4034FFD2AD89E83152C68A2C383C39F61677E5BA8DABF3D97",
+      "bytes": 1440
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/ExtensionMethods.cs",
+      "blob": "d961dd92b5a517a97b5781f58f09ca4829a4522a",
+      "sha256": "4992D372DC26A67764000CEE04AF647BD46FD239C7C91A23F140221469156C8C",
+      "bytes": 8360
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/FileReader.cs",
+      "blob": "beac96ff5a8ac4085da5287f3b18b7d7d70ae61c",
+      "sha256": "B6946CDF913A9DA9E444AF275E6B40C5F3388AA97FE0012BCCFA856DE2F603AB",
+      "bytes": 8254
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/IFreezable.cs",
+      "blob": "d93329b1bcd48285e55570a5363c5493dbc5aa37",
+      "sha256": "148FF860FFA00401AD76F821A96AB76C32D4D74CF3FB2F00358577D3373DCBF7",
+      "bytes": 3412
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/ImmutableStack.cs",
+      "blob": "f20b082775e2f80b7bbcbeb7c94e908dc2a63815",
+      "sha256": "3A1282B45E8635B87E00BBD9632782AC601E863D6B065F9A15DAFF7130F1FE89",
+      "bytes": 4173
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/NullSafeCollection.cs",
+      "blob": "7796706b6ac3fb1756ea203aa14413934a58f154",
+      "sha256": "18EE25F307CC88748E37EBE6A4B1B44C8929485A323BEEDE5074A66E4B207413",
+      "bytes": 1769
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/ObserveAddRemoveCollection.cs",
+      "blob": "9d3c9eec78e37db209b404b05d0695e177245fbb",
+      "sha256": "10D6FB5EE78890A8BC628F33FABBA7C35496C42CB302021B670E58C27DD9E704",
+      "bytes": 2868
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/PixelSnapHelpers.cs",
+      "blob": "192a4761d32255f327fad42acbd6569461d53f4f",
+      "sha256": "A4F3832076C370CE84FCDB11C953CC87B577D3E3D561DA69EFBA3AE263C8D789",
+      "bytes": 3865
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/PlainRichTextWriter.cs",
+      "blob": "d38a5dc4fa167f2dec436b5be0992106f8b0944d",
+      "sha256": "37BD8BA5710C38A15FF70279C221507BC2936E2CBE8D2F62F5330E0DD6069735",
+      "bytes": 3567
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/PropertyChangedWeakEventManager.cs",
+      "blob": "0b3a8658dceb7ee7e79945e5b82aeed1eca0e0e6",
+      "sha256": "9C81F17A04967A641B079C9D2257FBB75AA1CBFB49022BBF51601260CB271AB2",
+      "bytes": 1735
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/RichTextWriter.cs",
+      "blob": "ecbd56d16c26b4301f7d5a47a0578d7dc92f5f96",
+      "sha256": "3D247743C193DB5D6BF26B54152560BDBCE06A1154412ED878B439D3078AF439",
+      "bytes": 4000
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/Rope.cs",
+      "blob": "a24a8cb095d15c939b9cfacc5430846839f01f2e",
+      "sha256": "C9767D8BF196F88D78130A48A20AF3E8A89D5F6189E7E47953E57BCF3271DE7B",
+      "bytes": 29006
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/RopeNode.cs",
+      "blob": "51c3507037d3112eefc5c8c4d7f69569e245f167",
+      "sha256": "3DD4351D7081D2FDB9C1CBB89A5F9E968A9F140B9643ED5C46FE664616CA1C52",
+      "bytes": 20698
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/RopeTextReader.cs",
+      "blob": "6333087006678ed80d38463a2899f7ed002bd9b9",
+      "sha256": "F906E78136C1035835B547E10F0BCD45998E3FDEF228CC5271308B6A8E00B5A3",
+      "bytes": 3873
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/StringSegment.cs",
+      "blob": "e1ddddc2fec15aac449dded41ac87d83681e441c",
+      "sha256": "8E40D8BC396A2BD608FF90A530C7F1BC743E4CA8A67BC9F745B89DC960476EF9",
+      "bytes": 3516
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/TextFormatterFactory.cs",
+      "blob": "aa0822a0d2182674b1577409ed7819a7eee9ef71",
+      "sha256": "846428B0F6983B3F12D2ADAE08B08836A0CED2BE325F95DA5B5654E54ACC1D44",
+      "bytes": 3720
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/ThrowUtil.cs",
+      "blob": "b450f0c0e7cf82e6bbf4962046f29f14c9a4f548",
+      "sha256": "2EA01DE9A02CA6311184F5BF8F885C0CEBA5E15AC117C2AD0D58E45FFEBF302F",
+      "bytes": 2771
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/WeakEventManagerBase.cs",
+      "blob": "8d3d71dd34c3797987662d885545c4be98cef2bb",
+      "sha256": "8620B237815C92A0080D62EC9D69DC60997CC2DFE6CCD6B9F1A59D90CCACBA13",
+      "bytes": 3640
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/Utils/Win32.cs",
+      "blob": "fe9a57fb04267d40f7d7f13885b0872bc7019393",
+      "sha256": "7DC43912ED7E7D3FABF635ECF0AEF5DE048DF413C011C71DF00AB8FA12D21162",
+      "bytes": 3761
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/docs/PackageReadme.md",
+      "blob": "0a7f82c42cb25eecf0257ad1b83516baf8481918",
+      "sha256": "7A4E294EBFC59C956C4994FE81F018F767EBE0770F10578FC3DEFB02AFC5B394",
+      "bytes": 394
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/themes/RightArrow.cur",
+      "blob": "5691efbaf8997b9957eff92ce6b842edf232689a",
+      "sha256": "5828E602EDF3EED6FD143B403B853B481AB58F812B8F4AAF559983D2C5774027",
+      "bytes": 326
+    },
+    {
+      "path": "ICSharpCode.AvalonEdit/themes/generic.xaml",
+      "blob": "5be5306b4272bb4a87a0bffaddfe9ea9df90fd8f",
+      "sha256": "2012DDC381CDCB4F77F306F5CB51A2D373F6DA619875080965FFDCE97B461D4C",
+      "bytes": 955
+    },
+    {
+      "path": "LICENSE",
+      "blob": "eb15a3c84aaad43e25ce7a1a5525192b5724dd49",
+      "sha256": "7CFE74F11EAEF7A239E7C63D33595F924E7922FB3E3F3651014389620B228A07",
+      "bytes": 1075
+    }
+  ],
+  "allGitBlobsVerified": true,
+  "originalSourcesModified": false,
+  "archivedCheckoutMetadata": [
+    {
+      "upstreamPath": ".gitattributes",
+      "storedPath": ".gitattributes.upstream",
+      "reason": "Preserve canonical blob without letting upstream checkout rules override Original/** -text"
+    }
+  ]
+}

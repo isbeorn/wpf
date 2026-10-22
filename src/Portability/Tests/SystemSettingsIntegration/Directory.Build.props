@@ -1,0 +1,11 @@
+<Project>
+  <Import Project="../../Directory.Build.props" />
+  <PropertyGroup>
+    <PortabilityRepositoryRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../../../../'))</PortabilityRepositoryRoot>
+    <SystemSettingsProjectDirectory>$([System.IO.Path]::GetFileName('$(MSBuildProjectDirectory)'))</SystemSettingsProjectDirectory>
+    <SystemSettingsArtifactsDirectory Condition="'$(SystemSettingsArtifactsDirectory)' == ''">$(PortabilityRepositoryRoot)artifacts/portability/system-settings-integration/</SystemSettingsArtifactsDirectory>
+    <BaseOutputPath>$(SystemSettingsArtifactsDirectory)bin/$(OS)/$(SystemSettingsProjectDirectory)/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(SystemSettingsArtifactsDirectory)obj/$(OS)/$(SystemSettingsProjectDirectory)/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+</Project>

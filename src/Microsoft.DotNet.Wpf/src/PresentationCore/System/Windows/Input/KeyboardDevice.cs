@@ -690,6 +690,9 @@ namespace System.Windows.Input
                 //
                 if((keyboardInput.Actions & RawKeyboardActions.Activate) == RawKeyboardActions.Activate)
                 {
+#if PORTABLE_WPF
+                    if (_activeSource != keyboardInput.InputSource) _previousKey = Key.None;
+#endif
                     //if active source is null, no need to do special-case handling
                     if(_activeSource == null)
                     {
@@ -952,6 +955,9 @@ namespace System.Windows.Input
                     if(IsActive)
                     {
                         _activeSource = null;
+#if PORTABLE_WPF
+                        _previousKey = Key.None;
+#endif
 
                         // Even if handled, a keyboard deactivate results in a lost focus.
                         ChangeFocus(null, e.StagingItem.Input.Timestamp);

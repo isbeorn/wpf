@@ -20,6 +20,31 @@ namespace System.Windows.Media.Imaging
     [Localizability(LocalizationCategory.None, Readability = Readability.Unreadable)]
     public abstract class BitmapSource : ImageSource, DUCE.IResource
     {
+#if PORTABLE_WPF
+        internal PortableBitmapBuffer PortableBuffer { get; private set; }
+
+        internal void InitializePortable(PortableBitmapBuffer buffer, double dpiX, double dpiY)
+        {
+            _bitmapInit.BeginInit();
+            InstallPortableBuffer(buffer, dpiX, dpiY);
+            _bitmapInit.EndInit();
+        }
+
+        internal void InstallPortableBuffer(PortableBitmapBuffer buffer, double dpiX, double dpiY)
+        {
+            PortableBuffer = buffer;
+            _useVirtuals = true;
+            _format = buffer.Format;
+            _pixelWidth = buffer.Width;
+            _pixelHeight = buffer.Height;
+            _dpiX = dpiX;
+            _dpiY = dpiY;
+            _palette = null;
+            _isSourceCached = true;
+            _creationComplete = true;
+            _syncObject = buffer;
+        }
+#endif
         #region Constructor
 
         /// <summary>
@@ -564,6 +589,9 @@ namespace System.Windows.Media.Imaging
         {
             get
             {
+#if PORTABLE_WPF
+                throw new NotSupportedException("Native WIC handles and bitmap conversion graphs are not available in portable WPF.");
+#else
                 CompleteDelayedCreation();
                 if (_wicSource == null || _wicSource.IsInvalid)
                 {
@@ -574,6 +602,7 @@ namespace System.Windows.Media.Imaging
                 }
 
                 return _wicSource;
+#endif
             }
             set
             {
@@ -601,6 +630,10 @@ namespace System.Windows.Media.Imaging
         ///
         internal virtual void UpdateCachedSettings()
         {
+#if PORTABLE_WPF
+            if (PortableBuffer != null)
+                return;
+#endif
             EnsureShouldUseVirtuals();
 
             uint pw, ph;
@@ -702,6 +735,11 @@ namespace System.Windows.Media.Imaging
 
             lock (_syncObject)
             {
+#if PORTABLE_WPF
+                if (PortableBuffer == null)
+                    throw new NotSupportedException("This bitmap source has no portable pixel storage.");
+                PortableBuffer.CopyTo(sourceRect, buffer, bufferSize, stride);
+#else
                 HRESULT.Check(UnsafeNativeMethods.WICBitmapSource.CopyPixels(
                     WicSourceHandle,
                     ref sourceRect,
@@ -709,6 +747,7 @@ namespace System.Windows.Media.Imaging
                     bufferSize,
                     buffer
                     ));
+#endif
             }
         }
 
@@ -1408,6 +1447,20 @@ namespace System.Windows.Media.Imaging
         /// </summary>
         private void CopyCommon(BitmapSource sourceBitmap)
         {
+#if PORTABLE_WPF
+            sourceBitmap.CompleteDelayedCreation();
+            if (sourceBitmap.PortableBuffer != null)
+            {
+                // Source-backed frames and their clones remain views of the original storage.
+                PortableBitmapBuffer buffer = sourceBitmap is BitmapFrameEncode ? sourceBitmap.PortableBuffer :
+                    sourceBitmap.PortableBuffer.Clone(this is WriteableBitmap);
+                if (_bitmapInit.IsInInit)
+                    InstallPortableBuffer(buffer, sourceBitmap.DpiX, sourceBitmap.DpiY);
+                else
+                    InitializePortable(buffer, sourceBitmap.DpiX, sourceBitmap.DpiY);
+                return;
+            }
+#endif
             _useVirtuals = sourceBitmap._useVirtuals;
             _delayCreation = sourceBitmap.DelayCreation;
             _creationComplete = sourceBitmap.CreationCompleted;

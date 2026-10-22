@@ -1,0 +1,73 @@
+<Project>
+  <UsingTask TaskName="ObservePackagedCompilerAssemblies" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <ToolsDirectory ParameterType="System.String" Required="true" />
+      <OutputFile ParameterType="System.String" Required="true" />
+      <RequireCompiler ParameterType="System.Boolean" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Linq" />
+      <Using Namespace="System.Security.Cryptography" />
+      <Using Namespace="System.Xml.Linq" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        var root = new XElement("compilerOrigins");
+        var names = new[] { "PresentationBuildTasks", "System.CodeDom", "System.Reflection.MetadataLoadContext" };
+        Func<string[]> snapshot = () => AppDomain.CurrentDomain.GetAssemblies()
+            .Where(assembly => !assembly.IsDynamic && names.Contains(assembly.GetName().Name))
+            .Select(assembly => assembly.FullName + "|" + assembly.Location).OrderBy(value => value, StringComparer.Ordinal).ToArray();
+        var before = snapshot();
+        var observerReferences = GetType().Assembly.GetReferencedAssemblies().Select(assembly => assembly.Name).ToArray();
+        if (observerReferences.Any(name => names.Contains(name)))
+        {
+            Log.LogError("The compiler observer references a dependency it must only observe.");
+            return false;
+        }
+        if (RequireCompiler)
+        {
+        foreach (var name in new[] { "PresentationBuildTasks", "System.CodeDom", "System.Reflection.MetadataLoadContext" })
+        {
+            string expected = Path.GetFullPath(Path.Combine(ToolsDirectory, name + ".dll"));
+            var matches = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(assembly => !assembly.IsDynamic && assembly.GetName().Name == name &&
+                    string.Equals(assembly.Location, expected, Path.DirectorySeparatorChar == '\\' ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal)).ToArray();
+            if (matches.Length != 1)
+            {
+                Log.LogError("The genuine markup compilation did not expose one already-loaded packaged compiler dependency: " + name);
+                return false;
+            }
+            var match = matches[0];
+            var contextType = typeof(object).Assembly.GetType("System.Runtime.Loader.AssemblyLoadContext", true);
+            var context = contextType.GetMethod("GetLoadContext").Invoke(null, new object[] { match });
+            var contextName = (string)contextType.GetProperty("Name").GetValue(context, null);
+            string digest;
+            using (var hash = SHA256.Create()) digest = BitConverter.ToString(hash.ComputeHash(File.ReadAllBytes(match.Location))).Replace("-", "");
+            root.Add(new XElement("assembly", new XAttribute("name", name), new XAttribute("identity", match.FullName),
+                new XAttribute("path", match.Location), new XAttribute("context", contextName ?? ""), new XAttribute("sha256", digest)));
+        }
+        }
+        var after = snapshot();
+        if (!before.SequenceEqual(after, StringComparer.Ordinal))
+        {
+            Log.LogError("The compiler observer changed the set of matching loaded assemblies.");
+            return false;
+        }
+        root.SetAttributeValue("passive", "true");
+        root.SetAttributeValue("matchingBefore", before.Length);
+        root.SetAttributeValue("matchingAfter", after.Length);
+        root.SetAttributeValue("observerReferences", string.Join(";", observerReferences));
+        foreach (var identityAndPath in before) root.Add(new XElement("beforeAssembly", identityAndPath));
+        foreach (var identityAndPath in after) root.Add(new XElement("afterAssembly", identityAndPath));
+        Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
+        new XDocument(root).Save(OutputFile);
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="CapturePackagedCompilerControl" BeforeTargets="MarkupCompilePass1" Condition="!Exists('$(IntermediateOutputPath)compiler-origins-control.xml')">
+    <ObservePackagedCompilerAssemblies ToolsDirectory="$([System.IO.Path]::GetDirectoryName('$(_PresentationBuildTasksAssembly)'))" OutputFile="$(IntermediateOutputPath)compiler-origins-control.xml" RequireCompiler="false" />
+  </Target>
+  <Target Name="CapturePackagedCompilerOrigins" AfterTargets="MarkupCompilePass1" Condition="!Exists('$(IntermediateOutputPath)compiler-origins.xml')">
+    <ObservePackagedCompilerAssemblies ToolsDirectory="$([System.IO.Path]::GetDirectoryName('$(_PresentationBuildTasksAssembly)'))" OutputFile="$(IntermediateOutputPath)compiler-origins.xml" RequireCompiler="true" />
+  </Target>
+</Project>

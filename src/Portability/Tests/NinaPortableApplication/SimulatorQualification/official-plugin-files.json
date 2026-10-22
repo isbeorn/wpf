@@ -1,0 +1,44 @@
+{
+  "provenance": {
+    "templateRevision": "4c90fac4ecbe0e179c16a16a5103d28c69407dd5",
+    "fixture": "official-template-derived-source-fixture-not-published-third-party-plugin",
+    "guid": "A611F2D0-1029-472B-9884-2CFD51F23A17",
+    "namespace": "OfficialTemplateFixture",
+    "compileNinaPackage": "3.3.0.1060-nightly",
+    "hostNinaVersion": "3.3.0.1068",
+    "licenseFile": "Unlicense",
+    "originalManifestLicenseMetadata": "MPL-2.0",
+    "files": [
+      {
+        "path": "LICENSE.txt",
+        "sha256": "CA2ABDF695884C77EA4B4A5B64CA7B732D9D9DBADE4EEBC1C2E76C53E9E3BC83"
+      },
+      {
+        "path": "OfficialTemplateFixture.dll",
+        "sha256": "2F0808BFE1042537740AA09EF3969324A61895FA766F4D54A1040C0DA2E86283"
+      },
+      {
+        "path": "OfficialTemplateFixture.pdb",
+        "sha256": "5A076EB178145FCBEEA756FEEFF244E744755F59DE12EFA2CD58D30B7D680297"
+      }
+    ]
+  },
+  "files": [
+    {
+      "path": "LICENSE.txt",
+      "sha256": "CA2ABDF695884C77EA4B4A5B64CA7B732D9D9DBADE4EEBC1C2E76C53E9E3BC83"
+    },
+    {
+      "path": "OfficialTemplateFixture.dll",
+      "sha256": "2F0808BFE1042537740AA09EF3969324A61895FA766F4D54A1040C0DA2E86283"
+    },
+    {
+      "path": "OfficialTemplateFixture.pdb",
+      "sha256": "5A076EB178145FCBEEA756FEEFF244E744755F59DE12EFA2CD58D30B7D680297"
+    },
+    {
+      "path": "plugin-manifest.json",
+      "sha256": "8561797EC9E5BEE5407063FE258484CA9F7AC90860C28559826F6F7955C4DD9E"
+    }
+  ]
+}

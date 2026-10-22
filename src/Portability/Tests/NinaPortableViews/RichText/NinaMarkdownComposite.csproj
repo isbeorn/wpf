@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>NinaMarkdownComposite</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Markdown/Program.cs;Markdown/MarkdownCompositeCases.cs" />
+    <None Include="Markdown/CompositeInputs/composite.md;Markdown/CompositeInputs/local.png" Link="CompositeInputs/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

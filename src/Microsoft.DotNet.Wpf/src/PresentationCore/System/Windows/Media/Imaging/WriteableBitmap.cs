@@ -60,6 +60,12 @@ namespace System.Windows.Media.Imaging
             )
             : base(true) // Use base class virtuals
         {
+#if PORTABLE_WPF
+            if (palette != null)
+                throw new NotSupportedException("Portable writeable bitmap palettes are not implemented.");
+            InitializePortable(new PortableBitmapBuffer(pixelWidth, pixelHeight, pixelFormat, mutable: true), dpiX, dpiY);
+            InitializePortableBackBuffer();
+#else
             BeginInit();
 
             //
@@ -131,6 +137,7 @@ namespace System.Windows.Media.Imaging
             Unlock();
 
             EndInit();
+#endif
         }
 
         #endregion // Constructors
@@ -166,9 +173,14 @@ namespace System.Windows.Media.Imaging
             dirtyRect.ValidateForDirtyRect(nameof(dirtyRect), _pixelWidth, _pixelHeight);
             if (dirtyRect.HasArea)
             {
+#if PORTABLE_WPF
+                if (dirtyRect.X > _pixelWidth - dirtyRect.Width || dirtyRect.Y > _pixelHeight - dirtyRect.Height)
+                    throw new ArgumentException("The dirty rectangle must be within the bitmap bounds.", nameof(dirtyRect));
+#else
                 MILSwDoubleBufferedBitmap.AddDirtyRect(
                     _pDoubleBufferedBitmap,
                     ref dirtyRect);
+#endif
 
                 _hasDirtyRects = true;
             }
@@ -243,6 +255,10 @@ namespace System.Windows.Media.Imaging
                 throw new InvalidOperationException(SR.Image_LockCountLimit);
             }
 
+#if PORTABLE_WPF
+            _lockCount++;
+            return true;
+#else
             if (_lockCount == 0)
             {
                 // Try to acquire the back buffer by the supplied timeout, if the acquire call times out, return false.
@@ -292,6 +308,7 @@ namespace System.Windows.Media.Imaging
 
             _lockCount++;
             return true;
+#endif
         }
 
         /// <summary>
@@ -311,6 +328,14 @@ namespace System.Windows.Media.Imaging
             _lockCount--;
             if (_lockCount == 0)
             {
+#if PORTABLE_WPF
+                if (_hasDirtyRects)
+                {
+                    PortableBuffer.Commit();
+                    _hasDirtyRects = false;
+                    WritePostscript();
+                }
+#else
                 // This makes the back buffer read-only.
                 _pBackBufferLock.Dispose();
                 _pBackBufferLock = null;
@@ -324,6 +349,7 @@ namespace System.Windows.Media.Imaging
                     //
                     WritePostscript();
                 }
+#endif
             }
         }
 
@@ -574,6 +600,11 @@ namespace System.Windows.Media.Imaging
 
             if (canFreeze && !isChecking)
             {
+#if PORTABLE_WPF
+                PortableBuffer.Freeze();
+                _hasDirtyRects = false;
+                _actLikeSimpleBitmap = true;
+#else
                 Debug.Assert(_pBackBufferLock == null);
 
                 //
@@ -634,6 +665,7 @@ namespace System.Windows.Media.Imaging
                 // Clear out unused variables
                 _committingBatchHandler = null;
                 _pBackBuffer = null;
+#endif
             }
 
             return canFreeze;
@@ -702,6 +734,12 @@ namespace System.Windows.Media.Imaging
         {
             ArgumentNullException.ThrowIfNull(source);
 
+#if PORTABLE_WPF
+            InitializePortable(new PortableBitmapBuffer(source.PixelWidth, source.PixelHeight, source.Format, mutable: true), source.DpiX, source.DpiY);
+            InitializePortableBackBuffer();
+            source.CopyPixels(new Int32Rect(0, 0, _pixelWidth, _pixelHeight), _backBuffer, checked((int)_backBufferSize), _backBufferStride);
+            PortableBuffer.Commit();
+#else
             if (source.PixelWidth < 0)
             {
                 // Backwards Compat
@@ -756,6 +794,7 @@ namespace System.Windows.Media.Imaging
             }
 
             EndInit();
+#endif
         }
 
         /// <summary>
@@ -892,6 +931,9 @@ namespace System.Windows.Media.Imaging
 
                     try
                     {
+#if PORTABLE_WPF
+                        PortableBuffer.Write(sourceRect, sourceBuffer, sourceBufferSize, sourceBufferStride, destinationX, destinationY);
+#else
                         MILUtilities.MILCopyPixelBuffer(
                             pDest,
                             outputBufferSize,
@@ -903,6 +945,7 @@ namespace System.Windows.Media.Imaging
                             sourceBufferBitOffset,
                             (uint) sourceRect.Height,
                             copyWidthInBits);
+#endif
                         AddDirtyRect(destinationRect);
                     }
                     finally
@@ -978,6 +1021,9 @@ namespace System.Windows.Media.Imaging
         /// <param name="sourceBitmap">The WriteableBitmap to copy from.</param>
         private void CopyCommon(WriteableBitmap sourceBitmap)
         {
+#if PORTABLE_WPF
+            InitializePortableBackBuffer();
+#else
             // Avoid Animatable requesting resource updates for invalidations
             // that occur during construction.
             Animatable_IsResourceInvalidationNecessary = false;
@@ -989,7 +1035,19 @@ namespace System.Windows.Media.Imaging
             // The next invalidation will cause Animatable to register an
             // UpdateResource callback.
             Animatable_IsResourceInvalidationNecessary = true;
+#endif
         }
+
+#if PORTABLE_WPF
+        private void InitializePortableBackBuffer()
+        {
+            _backBuffer = PortableBuffer.BackBuffer;
+            _backBufferStride = PortableBuffer.Stride;
+            _backBufferSize = PortableBuffer.Size;
+            _hasDirtyRects = false;
+            _actLikeSimpleBitmap = false;
+        }
+#endif
 
 
         // ISupportInitialize
@@ -1380,9 +1438,15 @@ namespace System.Windows.Media.Imaging
 
         #region Fields
 
+#if PORTABLE_WPF
+#pragma warning disable CS0649, CS0169 // Fields retained for the unported native DUCE resource path.
+#endif
         private SafeMILHandle _pDoubleBufferedBitmap;   // CSwDoubleBufferedBitmap
 
         private SafeMILHandle _pBackBufferLock;         // IWICBitmapLock
+#if PORTABLE_WPF
+#pragma warning restore CS0649, CS0169
+#endif
 
         private BitmapSourceSafeMILHandle _pBackBuffer; // IWICBitmap
 

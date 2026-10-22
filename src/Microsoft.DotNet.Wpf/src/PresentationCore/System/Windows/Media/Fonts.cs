@@ -258,11 +258,15 @@ namespace System.Windows.Media
         /// </remarks>
         private static ICollection<FontFamily> CreateDefaultFamilyCollection()
         {
+#if PORTABLE_WPF
+            return MS.Internal.TextFormatting.Portable.PortableFontFamily.GetSystemFontFamilies();
+#else
             return CreateFamilyCollection(
                 Util.WindowsFontsUriObject, // fontLocation
                 null,                       // fontFamilyBaseUri,
                 null                        // fontFamilyLocationReference
                 );
+#endif
         }
 
         #endregion Private Methods

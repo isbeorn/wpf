@@ -1,0 +1,10 @@
+<Project>
+  <Import Project="../../Directory.Build.props" />
+  <PropertyGroup>
+    <RepoRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../../../..'))</RepoRoot>
+    <WpfSharedDir>$(RepoRoot)src/Microsoft.DotNet.Wpf/src/Shared/</WpfSharedDir>
+    <BaseOutputPath>$(RepoRoot)artifacts/portability/native-host/bin/$(OS)/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(RepoRoot)artifacts/portability/native-host/obj/$(OS)/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+</Project>

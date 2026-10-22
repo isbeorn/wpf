@@ -74,6 +74,14 @@ namespace System.Windows.Media.Imaging
 
         #region Internal Abstract
 
+#if PORTABLE_WPF
+        internal JpegBitmapDecoder(byte[] encoded, Uri baseUri, Uri uri, Stream stream,
+            BitmapCreateOptions options, BitmapCacheOption cache) : base(true)
+        {
+            InitializePortableDecoder(baseUri, uri, stream, options, cache, MILGuidData.GUID_ContainerFormatJpeg, encoded);
+        }
+#endif
+
         /// Need to implement this to derive from the "sealed" object
         internal override void SealObject()
         {

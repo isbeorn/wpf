@@ -1,0 +1,8 @@
+<Project>
+  <Import Project="../Directory.Build.props" />
+  <PropertyGroup>
+    <BaseOutputPath>$(NinaPortableArtifacts)/avalondock/bin/$(OS)/$(NinaHostOutputSuffix)</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(NinaPortableArtifacts)/avalondock/obj/$(OS)/$(NinaHostOutputSuffix)</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+</Project>

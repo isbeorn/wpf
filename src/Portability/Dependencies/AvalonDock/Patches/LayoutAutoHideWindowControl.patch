@@ -1,0 +1,14 @@
+--- a/Controls/LayoutAutoHideWindowControl.cs
++++ b/Controls/LayoutAutoHideWindowControl.cs
+@@ -186,7 +186,11 @@
+ 		protected override bool HasFocusWithinCore() => false;
+ 
+ 		/// <inheritdoc />
++#if PORTABLE_AVALONDOCK
++		protected internal override System.Collections.IEnumerator LogicalChildren => _internalHostPresenter == null ? new UIElement[] { }.GetEnumerator() : new UIElement[] { _internalHostPresenter }.GetEnumerator();
++#else
+ 		protected override System.Collections.IEnumerator LogicalChildren => _internalHostPresenter == null ? new UIElement[] { }.GetEnumerator() : new UIElement[] { _internalHostPresenter }.GetEnumerator();
++#endif
+ 
+ 		/// <inheritdoc />
+ 		protected override Size MeasureOverride(Size constraint)

@@ -55,6 +55,27 @@ namespace MS.Internal.PtsHost
             }
         }
 
+#if PORTABLE_WPF
+        internal readonly struct PortableBackground
+        {
+            internal readonly DrawingGroup Drawing;
+            internal readonly Brush Brush;
+            internal readonly Rect Bounds;
+            internal PortableBackground(DrawingGroup drawing, Brush brush, Rect bounds)
+            { Drawing = drawing; Brush = brush; Bounds = bounds; }
+        }
+
+        internal PortableBackground CapturePortableBackground() => new PortableBackground(Drawing, _backgroundBrush, _renderBounds);
+
+        internal void RestorePortableBackground(PortableBackground background)
+        {
+            using (DrawingContext context = RenderOpen())
+                if (background.Drawing != null) context.DrawDrawing(background.Drawing);
+            _backgroundBrush = background.Brush;
+            _renderBounds = background.Bounds;
+        }
+#endif
+
         // ------------------------------------------------------------------
         // Get/Set visual child.
         // ------------------------------------------------------------------

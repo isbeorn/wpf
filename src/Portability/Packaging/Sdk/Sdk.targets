@@ -1,0 +1,16 @@
+<Project>
+  <ItemGroup Condition="'$(EnableDefaultItems)' != 'false' and '$(_TargetAssemblyProjectName)' == ''">
+    <ApplicationDefinition Include="App.xaml" Condition="'$(EnableDefaultApplicationDefinition)' == 'true' and ('$(OutputType)' == 'Exe' or '$(OutputType)' == 'WinExe') and Exists('App.xaml') and '@(ApplicationDefinition)' == ''" />
+    <Page Include="**/*.xaml" Exclude="$(DefaultItemExcludes);$(DefaultExcludesInProjectFolder);@(ApplicationDefinition);@(Page)" Condition="'$(EnableDefaultPageItems)' == 'true'" />
+    <None Remove="@(Page);@(ApplicationDefinition);@(Resource)" />
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <_PresentationBuildTasksAssembly>$(MSBuildThisFileDirectory)../tools/net10.0/PresentationBuildTasks.dll</_PresentationBuildTasksAssembly>
+  </PropertyGroup>
+  <Import Project="../targets/Microsoft.WinFX.targets" />
+  <ItemGroup>
+    <Reference Include="$(MSBuildThisFileDirectory)../tools/contracts/*.dll" Private="false" />
+  </ItemGroup>
+  <Import Project="../targets/PortableProfile.targets" />
+</Project>

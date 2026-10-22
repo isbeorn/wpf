@@ -425,8 +425,12 @@ namespace System.Windows.Media
         /// <returns></returns>
         private static FamilyCollection PreCreateDefaultFamilyCollection()
         {
+#if PORTABLE_WPF
+            return null;
+#else
             FamilyCollection familyCollection = FamilyCollection.FromWindowsFonts(Util.WindowsFontsUriObject);
             return familyCollection;
+#endif
         }
 
 
@@ -478,6 +482,13 @@ namespace System.Windows.Media
             ref FontStretch              stretch
             )
         {
+#if PORTABLE_WPF
+            if (canonicalFamilyReference == null || ReferenceEquals(canonicalFamilyReference, CanonicalFontFamilyReference.Unresolved))
+                return null;
+            return MS.Internal.TextFormatting.Portable.PortableFontFamily.Resolve(
+                canonicalFamilyReference.LocationUri, canonicalFamilyReference.FamilyName,
+                style, weight, stretch);
+#else
             if (canonicalFamilyReference == null || object.ReferenceEquals(canonicalFamilyReference, CanonicalFontFamilyReference.Unresolved))
             {
                 // no canonical name, e.g., because the friendly name was an empty string
@@ -545,6 +556,7 @@ namespace System.Windows.Media
 
             // we want to fall back to the default fallback font instead of crashing
             return null;
+#endif
         }
 
         #endregion

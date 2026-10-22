@@ -1,0 +1,3419 @@
+{
+  "repository": "https://github.com/isbeorn/nina",
+  "revision": "4742afae0a09c79be772f23fcf163fb5852d2775",
+  "license": "MPL-2.0",
+  "assemblyIdentity": "NINA, Version=3.3.0.1068, Culture=neutral, PublicKeyToken=null",
+  "originalClosureManifestSha256": "E05B26CA49D09813AE8E81D8482219B6F56F158261A08509CA2626EB4BA4AFA5",
+  "editorConfigSha256": "C9ECF96BA93AE164A4A2F17A8D4F4FC6FEDEEB9E4E6A9742E62EA7D9CC680870",
+  "avalonDockSha256": "8E7E3EA9785044C67669AF3C81A4D8BDF4D42BF735907CF5C76E9497F08EBA82",
+  "currentComponentsManifestSha256": "28332FCBDEEE41218218FDCBF581C4E8BDBF748D18A12031C2DB4255A52EC4A6",
+  "systemEventsContractSha256": "90F625C79FAED521A147F44AB5FC6CAD7F9FE400BC02B9ECE55842BDCAC7EADA",
+  "mvvmGeneratorSha256": "618515F16243464BDF2C2BBC5810E9001620A4D75D968EBC03F2FE465DD051D5",
+  "consoleSourceSha256": "DEE8C61344A556B01E0858691D069B532A2C900C1EA95730BFFFBF503AB11F5D",
+  "consoleOutputSha256": "D5613C6B10E36BBF6C5DF51CBEB6C1017D13888398C705902DD16458390A7B5F",
+  "consolePatchSha256": "A028160C2859AC94465CACC4C2A0DCFB02A4EB95C20FEA712A95F6D016BAA5F5",
+  "portableEntrySha256": "786DDF78BA408DACBF161A30EB7BEDED70BFF8AC4090F80A19C07D90BEC76884",
+  "files": [
+    {
+      "path": "CommonAssemblyInfo.cs",
+      "blob": "e15abab863d6ffb958e07a8e5760c76d39bc98eb",
+      "sha256": "2DAD6C61D5E695CE4A8FA2EF0CBB5552E2692EBB11123DA02E332AEA97E03F75"
+    },
+    {
+      "path": "Directory.Build.props",
+      "blob": "cb5048a39a25e6b66d953958c5d626b84640df1b",
+      "sha256": "9ED19ADC3920BDFDF3282E3DD8F3A22652DD0C08551127630A9781417B95D3BD"
+    },
+    {
+      "path": "NINA/3rd-party-licenses.txt",
+      "blob": "51103f166f2bd4a55453c2f1ec285cb116a491ab",
+      "sha256": "7A8591E2F3065A573A01BF83AFB2DD0882F35FAF7E3F0F1D29F8A493C57490B4"
+    },
+    {
+      "path": "NINA/ARCHITECTURE.md",
+      "blob": "bb24742f11214f98c17813b59fb316895482e856",
+      "sha256": "98D9B4E3EB3A86FD9C70993C5A326FFE56AA677B7C3F692488589DD1237C177E"
+    },
+    {
+      "path": "NINA/App.config",
+      "blob": "b66aa016cdcf2502654341da0f1540fef920a296",
+      "sha256": "818FB472774C1D9025B36C3E71DCE57192178CE3F05EAB1158C2C64ECDD7DE59"
+    },
+    {
+      "path": "NINA/App.xaml",
+      "blob": "aaa6ca3df13314c02b75fd2515a7c7593204f394",
+      "sha256": "699252C5BAFC3C5BE89E174B96771FD18786B3B2540DCAF45D206E5A151AFEAA"
+    },
+    {
+      "path": "NINA/App.xaml.cs",
+      "blob": "5634796218c584510c7d4d445735de4a07a93547",
+      "sha256": "DEE8C61344A556B01E0858691D069B532A2C900C1EA95730BFFFBF503AB11F5D"
+    },
+    {
+      "path": "NINA/AppJumpListExtensions.cs",
+      "blob": "d565adb7735f65f8041bab3bad538fb9c07687a4",
+      "sha256": "E3E6F2E1D6CCD880AE9FB726CFE0F6007D0B0632B4AA0956FC6984528A30846D"
+    },
+    {
+      "path": "NINA/AstrometryIndexDownloader/AstrometryIndexDownloader.xaml",
+      "blob": "91e1ad3aa04dac394f73df89a6151943aff454e8",
+      "sha256": "F450BF1D3EB1CCA6C540E25A5B064BAD131D0F80184F4E4BDBD18F5CD5F5395E"
+    },
+    {
+      "path": "NINA/AstrometryIndexDownloader/AstrometryIndexDownloader.xaml.cs",
+      "blob": "0793d8acc03be6f8333df24cf08cec5e3ada154d",
+      "sha256": "22AF63D0D6226B319FD3746FF70FE36B193804F2510F2E16FE338AD87A60ABD4"
+    },
+    {
+      "path": "NINA/AstrometryIndexDownloader/AstrometryIndexDownloaderVM.cs",
+      "blob": "a1383d4d0b89dd0de65899345f34f45c2debfed9",
+      "sha256": "D3A3CA95C302ABC4DB01C2B3C3D0CCA1C7C0E735B78693C6B63F7100563D32E2"
+    },
+    {
+      "path": "NINA/CompositionRoot.cs",
+      "blob": "942dc35e4c0738805238a014a8d3acb1b05c1c26",
+      "sha256": "709F1B7913569D56B41B2ECB268DD700D966706F217ADCD509358AC4D1B919F6"
+    },
+    {
+      "path": "NINA/Database/Initial/initial_data.sql",
+      "blob": "7c014251e46d5fac97ccfb74c2daafbbde619387",
+      "sha256": "54E1C4DD80C03A9A163BEEE5EAF35C73EA860BABBBF943FCF361B8B08F48126B"
+    },
+    {
+      "path": "NINA/Database/Initial/initial_schema.sql",
+      "blob": "1b6ab27fb4bf57571176151074a1e9c3ccb0d9da",
+      "sha256": "0D1509A284CD9D35509C0C6902DC12531A8662A52C58CF8F115438E9754C0D01"
+    },
+    {
+      "path": "NINA/Database/Migration/1.sql",
+      "blob": "07a208c393c3509a84a1bd93e3a81073c1933888",
+      "sha256": "6819F2948E80F2510F265D23B42068B386DE0CA1CD3F1C74F5B5C7E36324CBDF"
+    },
+    {
+      "path": "NINA/Database/Migration/10.sql",
+      "blob": "b095f5c4ea9b94414116a0804a89316896a28bca",
+      "sha256": "6C44DC7B4E159729760C2C217E188DD83EBEF686D8A858677A43E7B1242B2676"
+    },
+    {
+      "path": "NINA/Database/Migration/11.sql",
+      "blob": "715212c2e8ccd305b15dd0f48c17a4caa92ec1e2",
+      "sha256": "EA087BBE39967B45F8E872BE7060AABAA493281AC30981EC81810320C30F9F30"
+    },
+    {
+      "path": "NINA/Database/Migration/12.sql",
+      "blob": "083d6f79008c4217f03efb62e563024cd9117f8d",
+      "sha256": "28268BDD7BE56FECF28E2618373D058F893A0FE686A7F2945739743548D3BA3E"
+    },
+    {
+      "path": "NINA/Database/Migration/13.sql",
+      "blob": "be4a72d3b5a60d5fec4bdc52745575951bf9a805",
+      "sha256": "EF17216F8E321E4975CD7B13EC17B4B9BFF7B0CA34AECB9B205ACC4FD1254211"
+    },
+    {
+      "path": "NINA/Database/Migration/14.sql",
+      "blob": "043f3ac064690d06841b1821e97c650e67e24857",
+      "sha256": "8EBA79AC41BAA7C6B73E97BCA40D6B11D81A6A57340E77FDFFCDD99682FA7F65"
+    },
+    {
+      "path": "NINA/Database/Migration/15.sql",
+      "blob": "8bfd4f1f7d680299ffd2c9aeb38226c5ea5c838f",
+      "sha256": "90747781A95EEDFE2BE5A2855ADA76630C65B226061AE8F4B5EFAEB3B2D668F9"
+    },
+    {
+      "path": "NINA/Database/Migration/16.sql",
+      "blob": "9d463d9d68f23deb3947e73687dcfa76b9b36c30",
+      "sha256": "23A4349AA4B85FEE5ADD753CA4E74859005C58A207D55BD648A50CEC5C53970F"
+    },
+    {
+      "path": "NINA/Database/Migration/2.sql",
+      "blob": "32015c1436050f0b78d1ac79767c58c401569a0e",
+      "sha256": "8E068618FCB38DA3ED3A0825948A3A1EA54CCE675224DE3CFA0226D5C33BEFAF"
+    },
+    {
+      "path": "NINA/Database/Migration/3.sql",
+      "blob": "4cd358ef7ddcc6602a03f70c71a48d32a185db25",
+      "sha256": "BE7466B3A7EDAD14C38D990DEDE785C3E0B9577466412B32DB73DC5E088FD6C3"
+    },
+    {
+      "path": "NINA/Database/Migration/5.sql",
+      "blob": "b93e366846ddce5c91b55b37e82c0bfd2d836f2b",
+      "sha256": "37224F744C3B7EA51402F7FB7F94F4422822F728596FA8D861151B1EDD257BC4"
+    },
+    {
+      "path": "NINA/Database/Migration/6.sql",
+      "blob": "c69ec75891f384844771a3f9fe32bc79e144a5c9",
+      "sha256": "D0013552F8C6FFC3ED702EA8017F99F8364AC824690CF574118A9F1CD91D5858"
+    },
+    {
+      "path": "NINA/Database/Migration/7.sql",
+      "blob": "63b22d25be7918a092e2c121f305db3437b4eb85",
+      "sha256": "2CA4F8EEE2DF170DBBD5C60B30652C112EC8FE928293444AEA12AD186DA94480"
+    },
+    {
+      "path": "NINA/Database/Migration/8.sql",
+      "blob": "a3cbc344debaec957e95dbd9f7a57ff7c73971e7",
+      "sha256": "2A8D131BA32586636FD1466EB550ACAA9F5EFD90EEC94FE380E1DB4508909BA4"
+    },
+    {
+      "path": "NINA/Database/Migration/9.sql",
+      "blob": "16732f3d2013185bda3c357581ecb62bae2f16a9",
+      "sha256": "BAD55332DA985C4F780867232D797CA47E434387F0E74A4A34FF63A89B0F29B3"
+    },
+    {
+      "path": "NINA/Interfaces/IFlatWizardVM.cs",
+      "blob": "1adfc6e7e2aae77d5bfadfdc8a53d219299f8570",
+      "sha256": "FC17011D036339FC6A6E2B048630B5C628B167F7D47F023D230C94A7EBE6BB4A"
+    },
+    {
+      "path": "NINA/Interfaces/IMainWindowVM.cs",
+      "blob": "fc856c66fa103c72fa8dbcd577ad2eabb18e7e71",
+      "sha256": "0D766FB7AA6D31447B97F6D0F2925D97226AB64E89CEAC087690695EDAC31290"
+    },
+    {
+      "path": "NINA/Interfaces/IPluginsVM.cs",
+      "blob": "6c099506105b969971fbdbe6bab5771afcd927f2",
+      "sha256": "F5A1F6B289916868D4A9A38ECA3A67911C9E27D7ED9E893B29AA3360A755DD93"
+    },
+    {
+      "path": "NINA/LICENSE.rtf",
+      "blob": "0e01c67bd35659c7b5e32a8dab06f2591097c155",
+      "sha256": "B2021B0AE5EDCEE82153DB8E509202533F5FCCC797EC6DCD365B63C868696824"
+    },
+    {
+      "path": "NINA/LICENSE.txt",
+      "blob": "f4bbcd200ad42bbb2fe2faf67e87e8619fafc17a",
+      "sha256": "C76F740D1521B9BED9CA7A04AD526C310493C62621B1341D623B431736533B30"
+    },
+    {
+      "path": "NINA/Logo_Nina.ico",
+      "blob": "46b22ab6a0fd57fc1d0f7c88145d96140642115c",
+      "sha256": "9446DA2A471DAE3A3B16526418C927F28BFB330862540DBE5333009009EB4BB8"
+    },
+    {
+      "path": "NINA/MainWindow.xaml",
+      "blob": "770e43fac008bf41033a9ffd1b1e9bc14832854d",
+      "sha256": "FBC940881369F12B30E3E944FCA805528F6E460BFC14778076EBD4EB28C289B6"
+    },
+    {
+      "path": "NINA/MainWindow.xaml.cs",
+      "blob": "e5e6493a8c6ad1f641e276b3c1b7bd6485706d9b",
+      "sha256": "B2F0C8F91798262B599F5705A7BCB0968AF637BA4673179B67C23E5BD3056605"
+    },
+    {
+      "path": "NINA/NINA.csproj",
+      "blob": "eed845e0391cdcd6ee1a9c61e33b1203aee6dfc4",
+      "sha256": "38F2B874A911D2C9A3B8B8CC5EA1CBCCE1E10E0E18398F0F8D4B784AD6A80909"
+    },
+    {
+      "path": "NINA/NINA.csproj.user",
+      "blob": "bd30c0593f2608fd1497450bb0ec7da3fa967382",
+      "sha256": "F33720C721C7E1366207E02B01E03530DAEB905A82CF4C1D4983C68DC6C35432"
+    },
+    {
+      "path": "NINA/NINA.ruleset",
+      "blob": "7fa93f60e7c908f64a00fb3a4bbe19acbfa05ce0",
+      "sha256": "80844A7A8EF1E465E3CAD6A3B9423ABE0709619E75585CD685E054B647A60811"
+    },
+    {
+      "path": "NINA/Properties/AssemblyInfo.cs",
+      "blob": "2fd98186d18736d66d13781d52135fb9579db87e",
+      "sha256": "48080048EF87203E94F6312DD919589BF07AEB6CD460EB6539E099C9131201AC"
+    },
+    {
+      "path": "NINA/Properties/PublishProfiles/ReadyToRun.pubxml",
+      "blob": "ba2ff762cbeabc8ac728aa80766ddb622f773b60",
+      "sha256": "5EEB401CB1ACF57DD2CB26F9518E6F86DC9AB485925EF613359D553B87BE12F7"
+    },
+    {
+      "path": "NINA/Properties/PublishProfiles/ReadyToRunComposite.pubxml",
+      "blob": "dd5ee24a3f104bf31dce64dce74e4dd0df973368",
+      "sha256": "D90CFBE85BB30B16BDE3D19D8AE2D3FDA179989CEB199717744721B29A21534A"
+    },
+    {
+      "path": "NINA/Properties/Resources.Designer.cs",
+      "blob": "173bb7307c92265878bda98af9df878bb92fb16a",
+      "sha256": "CF148C6B1EA13E14F32F2D950B1EB982C3A7F36BBFB075B65A450999DDFFFA33"
+    },
+    {
+      "path": "NINA/Properties/Resources.resx",
+      "blob": "11c38d4d1e1f3b717c3e02295cc0f8ac4890cf07",
+      "sha256": "0E24C8E51632EE7D75B123B83DD258218E5339B7DE982F0F973FA5DC9DB3E4CB"
+    },
+    {
+      "path": "NINA/Properties/Settings.Designer.cs",
+      "blob": "cb48b974e387eb0a88e23d74763562bdf0947b05",
+      "sha256": "3956A8AD380A3ADC2E1890F45C2AA0EEBE70DFBB7CDF8D4B49A1700FE6C17B0B"
+    },
+    {
+      "path": "NINA/Properties/Settings.settings",
+      "blob": "aecc6b6cb285410bf5a6b45fdadd7b3445f159e9",
+      "sha256": "D5AC3BF6E6BF431DF56DA722E279A04AFECC70648842AC4E2227B6C56BB28734"
+    },
+    {
+      "path": "NINA/Properties/app.manifest",
+      "blob": "2106a617845656a14db81ce80e1cede4d83a3bfa",
+      "sha256": "140B38D7184F2FE2B56798926D8C2182E6716390507F22FDBE6BED3843B375A3"
+    },
+    {
+      "path": "NINA/Properties/launchSettings.json",
+      "blob": "2017cc05615b92cd6db5879240ef1ddf6ca940e1",
+      "sha256": "98CC6AB6F3C77F18BE3A91242677A222EDE837C858CA0F9092C45E31724362C3"
+    },
+    {
+      "path": "NINA/Resources/AutoStretch_active.png",
+      "blob": "ae8402ad5a62ed92d6b2261eb6bc3b2b65987ec4",
+      "sha256": "34955A0D52C5DD400E306CAABF1F74FCBBB90F431FEAC950761EBB26AC33DD2F"
+    },
+    {
+      "path": "NINA/Resources/AutoStretch_inactive.png",
+      "blob": "db1a0d41de561d32709f016cfbe15842e5b85efd",
+      "sha256": "3C91522FD649460EE82FA1479A09F7C101811B71C6ADECB673AE466F06E93158"
+    },
+    {
+      "path": "NINA/Resources/Brightness.png",
+      "blob": "9555fdce120aa852b2404ae889db55acd2c46084",
+      "sha256": "A0877F442ACB3EC6B867035FE14572DA1F42154395F445D67630D0910B373495"
+    },
+    {
+      "path": "NINA/Resources/CamActive.png",
+      "blob": "d22b185816cfd96189f87a274c245c1d9241c8f9",
+      "sha256": "FA50C1C941325EC659CBA013AADD64F11CA0B391CFAA1E0C26247FC37C7CC873"
+    },
+    {
+      "path": "NINA/Resources/CamInactive.png",
+      "blob": "10471b71cd29bcf5b9c9295051cbf241067cbd68",
+      "sha256": "9404973958D13AE520B10BF2B28D4BAD22AD9E40E79D5B95EEAFEF7F1B3FBE9B"
+    },
+    {
+      "path": "NINA/Resources/Camera.xaml",
+      "blob": "62037f0f2294a5dcdfb053f76fc6e3517aae6439",
+      "sha256": "F5F6C19F14853C56F1F64B6794B0CE6A88A8B759520FA45F24EE53AB14070777"
+    },
+    {
+      "path": "NINA/Resources/Contrast.png",
+      "blob": "ba0b7d8f4febef8c61e35442dc9c478a11938b17",
+      "sha256": "B82274026321829060ED8D3BED857E5601F40EBDFFD55ACB463436E71B8EE888"
+    },
+    {
+      "path": "NINA/Resources/FW.png",
+      "blob": "0cc6c8aeff2bc325fd5c8622b1d1f3f8d0014b2d",
+      "sha256": "5E3B1CC518CCFBAF4A24E9F68381BD55B8DBB28B60D8448A13F341CA8F8652CA"
+    },
+    {
+      "path": "NINA/Resources/FWActive.png",
+      "blob": "a44546030a7a21a665c7893dc3d83f2160983e21",
+      "sha256": "8856C094F8A84FA6376F3BE17B5AB757024013C14553CB949E12F18339AEFF18"
+    },
+    {
+      "path": "NINA/Resources/FWInactive.png",
+      "blob": "c23ad37c4c489f0aa85d2b7824954fcacadd5824",
+      "sha256": "023A3ED05078462AE995228978988A0D5134884E7876C72EB021AE88376F0B88"
+    },
+    {
+      "path": "NINA/Resources/Focus - Kopie.png",
+      "blob": "4b6db101a26a9e26af8e39995d60fc960d60b605",
+      "sha256": "58DAF1D65287116E9EAE90301DB71849EC951D17323B9C9F52E01633D90C874D"
+    },
+    {
+      "path": "NINA/Resources/Focus.png",
+      "blob": "1a0bcfbe9fd0a9e422e260fa418ac1729befa628",
+      "sha256": "D9ECADA7CDB6E7AF1F814B3A4B02901D2A476181335EF8ECDB5B0FAB357E3BCE"
+    },
+    {
+      "path": "NINA/Resources/Gamma.png",
+      "blob": "ab78998bb2492a1c7a678cb924bd74242d2638ec",
+      "sha256": "8B58BEF197DBE82B3E8B04EC5A3291F2594992D204B2C4AEB54590143ECA150F"
+    },
+    {
+      "path": "NINA/Resources/HistogramStretch.png",
+      "blob": "a92a6ca4db55358ad045dfc69822bcf59975b365",
+      "sha256": "4C111B9F933F6FD115F0025D31C6E5A9FE4FD75B0EAE2CFC20BDAC1811B35443"
+    },
+    {
+      "path": "NINA/Resources/Imaging.png",
+      "blob": "acf5f3f94c0c39568330b4f57f27de024c755168",
+      "sha256": "90D62634E4A612408AB7CBB8D41AE0E2C32B44C4C924450302364DF15FDA21AA"
+    },
+    {
+      "path": "NINA/Resources/Logo_Nina.ico",
+      "blob": "46b22ab6a0fd57fc1d0f7c88145d96140642115c",
+      "sha256": "9446DA2A471DAE3A3B16526418C927F28BFB330862540DBE5333009009EB4BB8"
+    },
+    {
+      "path": "NINA/Resources/Logo_Nina.png",
+      "blob": "ba0beae482724cf3ea1b4c503c95145bd3f0766b",
+      "sha256": "A86D3302723E9B81AC8391D325759C2AD22D3DB14B5C98E5719A448AF18C569A"
+    },
+    {
+      "path": "NINA/Resources/PHD2.png",
+      "blob": "853bfeb47113e97d08df3bbc746277e9af987ad4",
+      "sha256": "67905A2E17802694901CA56B672958F6C08887A4F4D4057E60A37DA9623F81C4"
+    },
+    {
+      "path": "NINA/Resources/PHD2Active.png",
+      "blob": "0bb708d5e8a427a3935167f373af2b0b756f3ab2",
+      "sha256": "8D625F8A15AE62833AFA6687C64B0671CA702BA62EF8B0786B7853157D65C648"
+    },
+    {
+      "path": "NINA/Resources/PHD2Inactive.png",
+      "blob": "de7173fdb81440a2213fd964e9383eac72286de5",
+      "sha256": "933B4993DC9E72C5D58D3BBB806495D5FDF4259D240500933900EC922B0A3FBC"
+    },
+    {
+      "path": "NINA/Resources/SVG/AutoFocus.ai",
+      "blob": "bb897e9cc7015bb8edbec2f4dce1abd444d7e521",
+      "sha256": "D76331E99360677962253458A2C39235AA57D5B7991944120487AAD156EE71B6"
+    },
+    {
+      "path": "NINA/Resources/SVG/AutoFocus.svg",
+      "blob": "62b90e4a52788d1e63bb28840a5e76a5a5ec77cd",
+      "sha256": "E0C28BFD7B12CE02D28587227739C4A1992EEB06641FCCE83D6752C6130DEB23"
+    },
+    {
+      "path": "NINA/Resources/SVG/AutofocusAfterExposures.ai",
+      "blob": "c6842229b0b0d472d3481303203bda14c4a4e006",
+      "sha256": "E42849D8D5C215ECE3126B0E4D202CA611A5CD44E1F01699D4651698C05E4226"
+    },
+    {
+      "path": "NINA/Resources/SVG/AutofocusAfterExposures.svg",
+      "blob": "ad66173c83f8f3ef3eb32a3fe4791dd6128b6535",
+      "sha256": "F6F2DD5A56CF86C694B2F0F4C3DA4F1AC141CBFF5977277BF0D600FE6E8BA361"
+    },
+    {
+      "path": "NINA/Resources/SVG/AutofocusAfterFilter.ai",
+      "blob": "011708e95c3faf0f7f1a0c889beadceded0bb110",
+      "sha256": "954DE258ED87AC349F397767B020ECA99559519595E47AC0FA29F4F7BFE42AB0"
+    },
+    {
+      "path": "NINA/Resources/SVG/AutofocusAfterFilter.svg",
+      "blob": "2e7165b035af0b84ded3b6e444e41c8511c66130",
+      "sha256": "F7E5E54F9425057E307EE333577DA945C4AA0B7EE47474F057D584F78DFE579C"
+    },
+    {
+      "path": "NINA/Resources/SVG/AutofocusAfterHFR.ai",
+      "blob": "182ae17328a9e50cc4fe712f9ee23077ef91c335",
+      "sha256": "10D83227251BE9B9444AAEF067BB38E065216A744C52DA628B63BA4FE6B88FD7"
+    },
+    {
+      "path": "NINA/Resources/SVG/AutofocusAfterHFR.svg",
+      "blob": "bd261158fbe735a4112c1c59df3bfd053e87efb5",
+      "sha256": "045AB2D1D8587C48602D3B6A3CEE074DCA794843F407AFED90C5C5B4BA0D118E"
+    },
+    {
+      "path": "NINA/Resources/SVG/AutofocusAfterTemperature.ai",
+      "blob": "9b780b800e22f4f5da015f977f936e33f6fcaada",
+      "sha256": "4E60A5D3002F40A82D1E284DAAF196B6DEF304F28ACF01CA83FBAD6556E0CA6B"
+    },
+    {
+      "path": "NINA/Resources/SVG/AutofocusAfterTemperature.svg",
+      "blob": "e4c24c3d3d1ec7b0946b8667f47dd4bf9e39756b",
+      "sha256": "A7DF57CA7D263AD1C9DA0D99146F5B8E61AB9FF6B542D345D884D984CB42A48D"
+    },
+    {
+      "path": "NINA/Resources/SVG/AutofocusAfterTime.ai",
+      "blob": "44c1ed1aacdd1816c4b36c9ccaa00676b1470b95",
+      "sha256": "B966396367C5B0844351E1B768425C3A5D9DC9D96092309F68A1418F24FB097C"
+    },
+    {
+      "path": "NINA/Resources/SVG/AutofocusAfterTime.svg",
+      "blob": "6c497a6c679a245e89fb15778a2eb47c12335631",
+      "sha256": "BA43587B166C336CA8B8D4E9DED8ABB8C017D449414E3804A803F1E888487FB7"
+    },
+    {
+      "path": "NINA/Resources/SVG/CameraSVG.xaml",
+      "blob": "d661ed69c106e30db6b1efb7ee737682e5982eb2",
+      "sha256": "DA4941EA900A4ECA490710B274F6C693C5705DBD29B6A78F97509C3A8AD77CFE"
+    },
+    {
+      "path": "NINA/Resources/SVG/CloseCover.ai",
+      "blob": "170dcbd6f2ed06b535eae0fc63369f37984e78fa",
+      "sha256": "4FC14FCA85C177F1370842B0831D08E3BAEDF94729F7CDCEEFA6726F3338196E"
+    },
+    {
+      "path": "NINA/Resources/SVG/CloseCover.svg",
+      "blob": "c405ceb71cc18299bed577ac9b07d721e40c9f2a",
+      "sha256": "37A94D81D0C86C6F6AF3230B58181C21C49D5AC2A90F15382F016C705CC03D20"
+    },
+    {
+      "path": "NINA/Resources/SVG/CrescentMoon.ai",
+      "blob": "ff4fb4cf195e96b5c099a3d61931729c3d57243d",
+      "sha256": "7D3ED4AF6A05142B59EF479B4784348089BE110261CCB8D79A4E6934366AC4B8"
+    },
+    {
+      "path": "NINA/Resources/SVG/FW.ai",
+      "blob": "584231c649f3614ee70dc7e14d008b23f681ca0b",
+      "sha256": "7B200CB712BF9C6DD2CA6141CBAA9C73E752E142BDF151737357B759D6603750"
+    },
+    {
+      "path": "NINA/Resources/SVG/FW.svg",
+      "blob": "4f0c2f00b77429413ae337fb54a26fbd6c9cf77c",
+      "sha256": "A3FB0CF3339F877E5D5759B55437E6BBDB64CF959CBD096BB1BF4F3EFF11C651"
+    },
+    {
+      "path": "NINA/Resources/SVG/FW_nofill.ai",
+      "blob": "e71b44980236c0e285fd7ccca1a5ba5347e2ab5c",
+      "sha256": "F2F4461390AD8B2BB9A3B46104DCBAC42932434C2258EEE6D79236E0757F2C75"
+    },
+    {
+      "path": "NINA/Resources/SVG/FW_nofill.svg",
+      "blob": "dd7033d5864e56cd486cfcf48c50f34e1ec3d3b1",
+      "sha256": "112EA5FD18E85E8458564D031876415B22A29428649BFE6149C0B3E71CAFD372"
+    },
+    {
+      "path": "NINA/Resources/SVG/Focus (2).ai",
+      "blob": "739d88642ffaeab5aa38778406fed4fbf266bffa",
+      "sha256": "DF499F4EC014C368B0AE6BB3BA2A84886455A7B828BCFC2966F33E6C462773D7"
+    },
+    {
+      "path": "NINA/Resources/SVG/Focus.ai",
+      "blob": "344ed6b49b0ab64cdcc5d7d4c5b5e60ea59a269c",
+      "sha256": "BEB03DF3C1AAA987A2E2A42EF1CFE26C324BA760BAD02ACCB2A4D90A1F7FBAF0"
+    },
+    {
+      "path": "NINA/Resources/SVG/Focus.svg",
+      "blob": "c07221d50e168971244b7f76341fbf28d1cf5ca9",
+      "sha256": "C81E2EFAC92DFBE78BB812A3B26DE29B867059983237C193C9F5D2BDFC0A9F85"
+    },
+    {
+      "path": "NINA/Resources/SVG/FocusAssist.ai",
+      "blob": "53fdcd5ae44fd3bda3136094803b61886befc636",
+      "sha256": "EAFEAC6E936492DA78CCA003C4CA4FBCA2F14CD17A5EA0B0F3AE11756255B5B8"
+    },
+    {
+      "path": "NINA/Resources/SVG/FocusAssist.svg",
+      "blob": "6dc2821553432d2ced1f0312056e45f1cd537136",
+      "sha256": "843B0D130D4B901EB254CEEECD98DB6B1DB3410F82BCD335A3A11BB3290E30C2"
+    },
+    {
+      "path": "NINA/Resources/SVG/Fullmoon.ai",
+      "blob": "4289cb9a5e4fc5fdaabbfc8f104260cc07f6ba23",
+      "sha256": "D05C21B5D72A8B944B8EA32B4682F5AB14153303C62A9F21E341E51AB59A6A70"
+    },
+    {
+      "path": "NINA/Resources/SVG/GibbousMoon.ai",
+      "blob": "9aa11483f1ca9b8e3ae2ace8e1f77ffdcbc6de25",
+      "sha256": "1F3A6E70291A4D802F2803E7F9423E4FFD8E5B994A1AD76AEFBBC0142528C03A"
+    },
+    {
+      "path": "NINA/Resources/SVG/Guider.ai",
+      "blob": "ed67136d60acb7e1cd9e6ca931051409802fcc3f",
+      "sha256": "4F8B5097E263DFC0F2578920F9D6573A0C87E9F04D10A7E91DC190E11F5C4F1E"
+    },
+    {
+      "path": "NINA/Resources/SVG/Guider.svg",
+      "blob": "d2bf50b9d1d28bee0b4c0174021245794dc279f0",
+      "sha256": "D299675BC26E3C149CAAA6B85313B40854041EE817535CA78E279D2EFDE9EC16"
+    },
+    {
+      "path": "NINA/Resources/SVG/Imaging.ai",
+      "blob": "e3fed0afbb3c865c5d2a1baa8ec03af8ff1b58bd",
+      "sha256": "FC7578F517749791F05E7D9EE0AA7CFD78760C04BAB4F166323B58D0B66C198C"
+    },
+    {
+      "path": "NINA/Resources/SVG/Imaging.svg",
+      "blob": "86cea3285847430795d46ad7ea6018d56fa1340c",
+      "sha256": "FA4B43B366E0993800350483363C0D0EB8F8F06B5D271CE09DB6A9C02ED2CC54"
+    },
+    {
+      "path": "NINA/Resources/SVG/MinimizeWindow.ai",
+      "blob": "38251ab59c78a5e12ee97aa927c3e34fee65b362",
+      "sha256": "FC99F4F802786B3EA5F7D50830E6E0482E7052F12F49C84966C6C85E384E1CF8"
+    },
+    {
+      "path": "NINA/Resources/SVG/MinimizeWindow.svg",
+      "blob": "860c303ff0699fbc494b716f464728d9db277202",
+      "sha256": "C09AAFF1B39EFF54D5A6425DFBA9BE8CEC41889F848FE340D96E6D84AD24059C"
+    },
+    {
+      "path": "NINA/Resources/SVG/MoveFocuser.ai",
+      "blob": "7955c45818033883e1d72e29b406b346c4bcfbce",
+      "sha256": "25F79DF95C52A87E6123BE0F1BC521166DF0F5EBBA8E6DD00AD300FF1A1A8CE5"
+    },
+    {
+      "path": "NINA/Resources/SVG/MoveFocuser.svg",
+      "blob": "1542b870678f5cc602728f46cd19e5dba5c2a61a",
+      "sha256": "090D8D589A6C9E157B8B70247E30698812012BC1AE2B593287647364B291BF0F"
+    },
+    {
+      "path": "NINA/Resources/SVG/MoveFocuserByTemp.ai",
+      "blob": "ac647492c2e2bb7f8bc45bc3865e49277099685a",
+      "sha256": "EFBFBC4588675C290363EAD5AD4767D4604CA9B990A7313E809CBB1D7E7437CE"
+    },
+    {
+      "path": "NINA/Resources/SVG/MoveFocuserByTemp.svg",
+      "blob": "0ae3cc57e22da078e74a95d2c1390c9d09778e62",
+      "sha256": "0A27FFC15A59CD25D68D93610E5F37A88CABEA1966374D685F6C348120882AF3"
+    },
+    {
+      "path": "NINA/Resources/SVG/MoveFocuserRelative.ai",
+      "blob": "6cf6c507467b6d67c2798d99751436d6118ba731",
+      "sha256": "D2FE83CD3FE77EAEF900797A702FC555318A969A458FE0D921C6866D249B297F"
+    },
+    {
+      "path": "NINA/Resources/SVG/MoveFocuserRelative.svg",
+      "blob": "4dff7328242d6429de3d5ad826d1edd2afdfcca7",
+      "sha256": "EDD2660C2065D9B935060A03A27700B7D7102555F9FB40813642F8F100734D2E"
+    },
+    {
+      "path": "NINA/Resources/SVG/NewMoon.ai",
+      "blob": "4d03477469777a59e2436a38e1e9b2f253373926",
+      "sha256": "C81B58040E4146B66215BADA75DE8AD8D813DB4599DC87C6B06D22C4728118AE"
+    },
+    {
+      "path": "NINA/Resources/SVG/OpenCover.ai",
+      "blob": "377b364bcc3069cd0485142a548c025b5205725e",
+      "sha256": "2D0D325E1B230BBFC5365B5A22E61758D9CC2BE6B6458ABCC01F5307102A8315"
+    },
+    {
+      "path": "NINA/Resources/SVG/OpenCover.svg",
+      "blob": "33ef58d78f5ba0ac5fe1a3a443bd4acff02b0e3e",
+      "sha256": "4ECEADF79EE8681DE72CDFFBCED72C7C8A2D22A85A54641638E012CF05CCC2F7"
+    },
+    {
+      "path": "NINA/Resources/SVG/Platesolve.ai",
+      "blob": "73add5305bd63cb812197e13783c297968847583",
+      "sha256": "06929C6CE180F915C3781EB3CFCE47678234C2C904238337C59D050AEFEC1679"
+    },
+    {
+      "path": "NINA/Resources/SVG/Platesolve.svg",
+      "blob": "d95fb7e4d67877e7ff3b348ac28726e2d472558d",
+      "sha256": "06E381AEAAF0771FF8BFC59521FEBF4C43BA794387CFC5FEDF4274462FD9E219"
+    },
+    {
+      "path": "NINA/Resources/SVG/PlatesolveAndRotate.ai",
+      "blob": "9aa1ad74e9e91d8046776fce08b3fcfe1fa3d171",
+      "sha256": "F339672AABAFCA79B2D943BB90BC1AFC0DFCD5FA47B57D62351DEB99035035D8"
+    },
+    {
+      "path": "NINA/Resources/SVG/PlatesolveAndRotate.svg",
+      "blob": "cc2cb24c197c3891d4bbed63af884083dca2dc21",
+      "sha256": "747C7D2C9E90B71959086FC4C38AF6BD359A6D30F8EB07EBE49869826AAE4154"
+    },
+    {
+      "path": "NINA/Resources/SVG/Quarter Moon.ai",
+      "blob": "6c6b3fdcb85877841719d2084a35f183b9bf90a7",
+      "sha256": "686A28ACA7DA386C06CF3CDA9B867A5FABAA1D7B7FDD1E655F06D3D77F3F065A"
+    },
+    {
+      "path": "NINA/Resources/SVG/SlewToAltAz.ai",
+      "blob": "60e8f55cad27f4edc1e1cc0c019093392ecd9534",
+      "sha256": "68F253D9FD77C979645D9CC144AB2A472C46F68A4666317D0B32C2F40F492436"
+    },
+    {
+      "path": "NINA/Resources/SVG/SlewToAltAz.svg",
+      "blob": "37bfe1eaff8c341e901f14939d859e8bb29327b0",
+      "sha256": "3B5AA2361C692BF28D7AE2A1D30300CC56D020BB9531DF3105763C475C81215E"
+    },
+    {
+      "path": "NINA/Resources/SVG/SlewToRaDec.ai",
+      "blob": "a8afdb63cb129d5427beb3db0869927ef39cf086",
+      "sha256": "9FAC917B7ABC5FF34722EF922B36CD5C24010CBBB60FAA2E77A80A293DF41BB1"
+    },
+    {
+      "path": "NINA/Resources/SVG/SlewToRaDec.svg",
+      "blob": "93ab237d1f0680cf25e83fb61b2f61c7a5647617",
+      "sha256": "1B51A86FB4A150C4CE3A4E7305A3C69576AFEB45D71A9F49461DE6BD4E3E6CB4"
+    },
+    {
+      "path": "NINA/Resources/SVG/StopGuider.ai",
+      "blob": "9181a8cf406e70c8f5bfc4207d13156eb211c9af",
+      "sha256": "77D64E2F9B993A40B1FADC6F3F98D5F721270C917D97C7BB7C91C6078F15CB54"
+    },
+    {
+      "path": "NINA/Resources/SVG/StopGuider.svg",
+      "blob": "8cf47df0c5fff6ef9ac474c631aebcfcc134fab2",
+      "sha256": "95BB5B5AFAFD6023D55B2887277A2A66A9856E4E34F20E9D837E5B1D01FAC54B"
+    },
+    {
+      "path": "NINA/Resources/SVG/WaitForAltitude.ai",
+      "blob": "ea697439f89714a88db4c3f39f5f17f1ed482dd5",
+      "sha256": "467653D17E772BF908C64000C6B65CE5606DC75F12F11B004837474BE2EBA291"
+    },
+    {
+      "path": "NINA/Resources/SVG/WaitForAltitude.svg",
+      "blob": "fead5eeaa7465ab22b0d72a5e647edabebceff29",
+      "sha256": "3E3E4C8AA851002CA0CDCD784E7DD72550702BE6ABB70B8F4C9DC41898F4F65C"
+    },
+    {
+      "path": "NINA/Resources/SVG/abberationinspector.ai",
+      "blob": "9ad8dc4154a665a506cc1a978aae90cd71003301",
+      "sha256": "15CD6E5A864260F8E23D649C34A4767A61E4F206B5E1915D62C6E97901AC0F4B"
+    },
+    {
+      "path": "NINA/Resources/SVG/abberationinspector.svg",
+      "blob": "344e92f3363d321e3d8a7a012cb4835a807ce49e",
+      "sha256": "2D07717DF55390103A95BC55E4A6D4A60E32F6B1B0197624BDF46413B7851ABA"
+    },
+    {
+      "path": "NINA/Resources/SVG/add.ai",
+      "blob": "446e567c51bf5b78b36717502958f4d51a819452",
+      "sha256": "43D480521C5E21E37E5A2E944B47C4DA986AD818F77CF968F59A62B7CCD4007F"
+    },
+    {
+      "path": "NINA/Resources/SVG/add.svg",
+      "blob": "df7bac8ef43010dc1b789973317c50057760830d",
+      "sha256": "24FFE73AC31130B8F25A831A0BE98CEB67B5957C50571EDDBE583563E3157C65"
+    },
+    {
+      "path": "NINA/Resources/SVG/antidrops.ai",
+      "blob": "5228ce7f2ad1df46b963a9d728e7cead3d071318",
+      "sha256": "4CE11D6489E5D367AA47DAD78C81373A4D25BDA003C8523BF9E719131F082295"
+    },
+    {
+      "path": "NINA/Resources/SVG/antidrops.svg",
+      "blob": "09d241096ec1f4e992f1763c930c7e3e1526b4db",
+      "sha256": "3777D2CE35064DED06010759F190FD5D278316AFFF3A70AA8E24201EE20A9FCA"
+    },
+    {
+      "path": "NINA/Resources/SVG/back.ai",
+      "blob": "813d26783f1be1c8b0bb82f78cf1fe32f6638d48",
+      "sha256": "CB5D7034CBCD82D1A7078B509E7E3399F799511954484FE3058A5EEB63068266"
+    },
+    {
+      "path": "NINA/Resources/SVG/back.svg",
+      "blob": "eb5c4bf004c17e9f77c68c144dfe4eea378bfdfc",
+      "sha256": "25F6A5DB19053B516CA1948923A9D32F1CD3A51CDFB2B3FF98FAEBC583B833A4"
+    },
+    {
+      "path": "NINA/Resources/SVG/bahtinov.ai",
+      "blob": "e9d8f33c8fc6d43fb3f06df1ac4aec14ec5a86f3",
+      "sha256": "6FF8325E516166B16A24E07E3D6A7945532979ED3E31C76F3FF1489F4BCF21DC"
+    },
+    {
+      "path": "NINA/Resources/SVG/bahtinov.svg",
+      "blob": "ce8cccdd0021bd8b915e751d5e9a74cfabe64bec",
+      "sha256": "0EDE5A5C99289680E8FB92261FE354A70333EBE42B28BC5AF8EB8FECCEA318A1"
+    },
+    {
+      "path": "NINA/Resources/SVG/bar-chart.ai",
+      "blob": "de99835b19f0b57736642dffeeac2f96bf50c632",
+      "sha256": "5B5CA9B7E87740267508C0ED3466A1E780E1A6894ADD8346393DBE2FDC8AED3F"
+    },
+    {
+      "path": "NINA/Resources/SVG/bar-chart.svg",
+      "blob": "f48fe81dec05e727b8130a0110b8f36f9ff0bada",
+      "sha256": "F8BCD8BF54F04A23713487A4F4261FF95246525586F963D969916726368E1965"
+    },
+    {
+      "path": "NINA/Resources/SVG/book.ai",
+      "blob": "626a365760cce6f796402adaec6be7baa531320b",
+      "sha256": "8581EAA6F953CC42E22E2431E6CA9F6A6B4C855EBBC373986F9C6F776BCDCAC5"
+    },
+    {
+      "path": "NINA/Resources/SVG/book.svg",
+      "blob": "23d21c777f44ff815421e1a93dcfb1fe8e99e819",
+      "sha256": "6D4EDDB5F02ECC59EAA97DF10AEED402CDD163458EFA88B9E59EEC7A7D5E10EC"
+    },
+    {
+      "path": "NINA/Resources/SVG/borders.ai",
+      "blob": "94007629feab6e7be631a9bc903aed487cc51d51",
+      "sha256": "2385925789B2F956ED2A2618536D111E9BEDA25450D4C008F95987899E0B7B7A"
+    },
+    {
+      "path": "NINA/Resources/SVG/borders.svg",
+      "blob": "256158c57039fa8e2574bfa2c833f4c91d96098c",
+      "sha256": "C50A64E8DA9C18CA9C005D77AD65127541DA1AAB956506EED5BB084516B4B581"
+    },
+    {
+      "path": "NINA/Resources/SVG/box.ai",
+      "blob": "370d67cae31890f004e929638bfdc10d1e7bb27f",
+      "sha256": "920B9F13169FACE60AE19D2E5CB509D1C6C6A94D7D0A43B5BFB1D9723DC96FC6"
+    },
+    {
+      "path": "NINA/Resources/SVG/box.svg",
+      "blob": "48a6fe2da8a133f1ccabe146ddbbfc4739df025b",
+      "sha256": "08003E38E6DCC6432CC31E7878A5BBBA08BFACFA637362E3042B636ADD42CB2E"
+    },
+    {
+      "path": "NINA/Resources/SVG/box_closed.ai",
+      "blob": "742d4ffd0f4d65199ef4d2397a5f02ee1b71b26d",
+      "sha256": "0C23D0E9A3223E31C6BF7C028156D06CCCA978A5B92442F41AA552C071385625"
+    },
+    {
+      "path": "NINA/Resources/SVG/box_closed.svg",
+      "blob": "ced2127f34c2a52c1c26d5224400f7fb0fd04c07",
+      "sha256": "B2DFC4ABDB6B2FB5ED667B9C8F58717565DFCB73C6589E4DB10BC66D39906F10"
+    },
+    {
+      "path": "NINA/Resources/SVG/brainbulb.ai",
+      "blob": "1014bb63d57bcfe302c65531c9a3299b45bbd737",
+      "sha256": "808CF7EE7536C91FCF12D61752CA2773CBDCF80CB7646D59CF087E615A58F88C"
+    },
+    {
+      "path": "NINA/Resources/SVG/brainbulb.svg",
+      "blob": "ceebf51acf76bbc0a08671cfe855ca3dfe6a5ac6",
+      "sha256": "D26F8AA539196150932B34890251850FAA816EE19802858DFE2BDF6989A32ACD"
+    },
+    {
+      "path": "NINA/Resources/SVG/brightness.ai",
+      "blob": "87210dbc60d8fcaa30afa6e4ed711ef4dd9b189a",
+      "sha256": "DB118C7EE2F66C28B705CB2CFF1277FC6D9EABB23C334AF55BD3FF1EDC55A397"
+    },
+    {
+      "path": "NINA/Resources/SVG/brightness.svg",
+      "blob": "61eb3d8c66963830af7dfe0b32776776996fd337",
+      "sha256": "13D745BB86656287D07EB020C17C86028DFEA8A7509A5936A989545B8797733F"
+    },
+    {
+      "path": "NINA/Resources/SVG/button.ai",
+      "blob": "a2c78fc26d75b29a744cbfbf064506d82d6f2327",
+      "sha256": "DAC46E1296AE0CA2714D0365B3D488A78025B362350231AF09634CB6EF12DE26"
+    },
+    {
+      "path": "NINA/Resources/SVG/button.svg",
+      "blob": "5483fd34cab6534bd5f833d9015a9d69510ec71c",
+      "sha256": "E8548B770EC44C6D6765DF97A557BA966DE255B77E4A6A3328E8DA15F06C5176"
+    },
+    {
+      "path": "NINA/Resources/SVG/calculator.ai",
+      "blob": "60b6ddd50558369fd8f0a233a3cb3ad136886142",
+      "sha256": "6B80656D91F10C9F4DF5C81D825D176A03F57DA2367D5D744371A6624C042124"
+    },
+    {
+      "path": "NINA/Resources/SVG/calculator.svg",
+      "blob": "1fc7f9242402c2d9666c6e38692a6445d7fd49d7",
+      "sha256": "F573E7C1996F963921ED415FF1E2A383CB497653B1B8A0509F52A3992DDD48FC"
+    },
+    {
+      "path": "NINA/Resources/SVG/camera-shutter.ai",
+      "blob": "d0ec734aa566e29e1c5a465c90d183fe46eeb098",
+      "sha256": "A4B2F6DEEF2550ADB2DA1C8FFD0B1577AB4B21BFEE576DEBC6D02A0CF9F842F9"
+    },
+    {
+      "path": "NINA/Resources/SVG/camera-shutter.svg",
+      "blob": "69b125a65b025eec4f1886104f6bda0a25b2f8c3",
+      "sha256": "C141545CDA19B3C0F7F410E3272DAF92C70E5402B113D823896F0A94EF3FBC04"
+    },
+    {
+      "path": "NINA/Resources/SVG/camera-shutter.xaml",
+      "blob": "58a4994b259cabc408324e290a0a94e71470e951",
+      "sha256": "538F1CFA61C0D453FF0EF894E7142D08F89A9EDA001B3956AF17FC6155F64073"
+    },
+    {
+      "path": "NINA/Resources/SVG/cameradetails.ai",
+      "blob": "efffe459d0f1e1a78eb31955a6c8ab1e15e46eb6",
+      "sha256": "050A18CC2FBA85423444DFFF2AC776A8BAC817BB71FA73E9A0552C90E533DE14"
+    },
+    {
+      "path": "NINA/Resources/SVG/cameradetails.svg",
+      "blob": "d31fa33e98fd77c2ab8f86e9492d538166fac777",
+      "sha256": "2FD7BC680E947008022D07353F48B482CDA8C5300657A0A006724AF074B50593"
+    },
+    {
+      "path": "NINA/Resources/SVG/cancel.ai",
+      "blob": "6c9bfe6b6dc7561510a3b1cded07fc346e75cbac",
+      "sha256": "F0A4C17514F91759F41CD30E2EC82FC628092EB75E535E1A62418B68250C9493"
+    },
+    {
+      "path": "NINA/Resources/SVG/cancel.svg",
+      "blob": "749b17df8d4ce7dac3ae82533e7d336344d3ec28",
+      "sha256": "1B755F1905522669C0367AA5808BC0D4B1C4110901575CF6FD04910A52EB2513"
+    },
+    {
+      "path": "NINA/Resources/SVG/cancel_circled.ai",
+      "blob": "3624da0f959c55c6420bdc1aaba98d70417b693e",
+      "sha256": "C247B0DC3F6F5056ED0E5D00DA964D14DEF3511AC8215E841F2E0620610E2C1D"
+    },
+    {
+      "path": "NINA/Resources/SVG/cancel_circled.svg",
+      "blob": "254b1e1925d2e02b7468b63abbbe7e40f3e36865",
+      "sha256": "91216155F4ADCC51ED781AFA97EB2241DF4731BD1B1486AD80746F5AE26F7060"
+    },
+    {
+      "path": "NINA/Resources/SVG/checked.ai",
+      "blob": "bff89ac59a74558a265f40705c7c6e5e25fd20a8",
+      "sha256": "6236BA1597AA3C7C0C209A961E42B19F26A419BD55524936F3315FE25B06D221"
+    },
+    {
+      "path": "NINA/Resources/SVG/checked.svg",
+      "blob": "a148e90db17076236ecc3db4520570454022b36d",
+      "sha256": "D2E0E289B71ACDAABB49C381B5DAEB5C7D7C63488EBE42EEACC40AC1C4ACD31C"
+    },
+    {
+      "path": "NINA/Resources/SVG/checked_circled.ai",
+      "blob": "024d95c17778bf304a057253c382999b840a31ba",
+      "sha256": "FA76F842C9DCD2D3A826334F384E4E7DF49BA96872D1ACF3669722B5A8304250"
+    },
+    {
+      "path": "NINA/Resources/SVG/checked_circled.svg",
+      "blob": "0765e974c8dcd5e9f9e1b94d67ad65c2f6492273",
+      "sha256": "7D82AC551F34324656DB262E94B58DCF2CF2863A407AEC7CFB3185D74A605279"
+    },
+    {
+      "path": "NINA/Resources/SVG/clock.ai",
+      "blob": "a0a1c4b33aabdcc01825f496cfb4dd20ba5cfead",
+      "sha256": "D278035C7F35C9510168217DF8EBCD5E010F058A9D3627B0E389C2C6F0B05885"
+    },
+    {
+      "path": "NINA/Resources/SVG/clock.svg",
+      "blob": "64d16a88d1ae56a49c72290aaacfbeb88f05b0eb",
+      "sha256": "6DA423C56D5DF891BC87E151358A24AED3D8B15576A0BAAB24DE8D39A3F1483E"
+    },
+    {
+      "path": "NINA/Resources/SVG/cloud.ai",
+      "blob": "36c753815f3450f9c1d573694a6e8f310a23f494",
+      "sha256": "6DC88A40E7A2B2DC46CB8A1AA3003F15A0C41B6BEEEFC35578659CEC0F66DFB1"
+    },
+    {
+      "path": "NINA/Resources/SVG/cloud.svg",
+      "blob": "2841007231f4b6c2de794cc3bab1b92b8d42054d",
+      "sha256": "91F0623620D3806F5D1F61BF73A65946D4237C123D2A17D06D11D26DFC4C6F46"
+    },
+    {
+      "path": "NINA/Resources/SVG/collapse-all.ai",
+      "blob": "1cf040eac49ca7c04269ceb4e8ed2ec516426a4b",
+      "sha256": "72712F38BA75E760E4599161D7C7B8DD7A71FE9F88D3FDAD2E1A3FDA3DB24B82"
+    },
+    {
+      "path": "NINA/Resources/SVG/collapse-all.svg",
+      "blob": "13eadda1688331262626622d0d92d37d405cd16e",
+      "sha256": "70A65AC86C2A011874CA84CA7772A44483D6A9FB5C879B7F19A70D79D87AB360"
+    },
+    {
+      "path": "NINA/Resources/SVG/communicationerror.ai",
+      "blob": "5a5d80068f2f28b72600e23ef369c1be51867d1b",
+      "sha256": "31ACE6EBDDC8FFA397F7188737B970BBE2C9345CC80C427329CC390858842CB1"
+    },
+    {
+      "path": "NINA/Resources/SVG/communicationerror.svg",
+      "blob": "2d1a13b2489d1f082f1677a283267b8185311a84",
+      "sha256": "EFACB23595F4F3DF64A446DDD02A00A06777AAE9BAC1F550A2CB8DEBB9D3256B"
+    },
+    {
+      "path": "NINA/Resources/SVG/communicationwarning.ai",
+      "blob": "1a01c19778b28d2d181b754f3dcd6f64b2dd0481",
+      "sha256": "4DA4B0D2188B30C7840CA40ACBC75BE38EE4329BFB4D8E4B977FED881D0C17D9"
+    },
+    {
+      "path": "NINA/Resources/SVG/communicationwarning.svg",
+      "blob": "876314253db6bb659e92511edc478aa53c842388",
+      "sha256": "8486C3C54AA4BDF36CD9FC3D8B32829E4F49B7C2632FBF746A19F4C87116ADC9"
+    },
+    {
+      "path": "NINA/Resources/SVG/constellation.ai",
+      "blob": "6391e387c91367c0ad2de85402ecafde871549da",
+      "sha256": "E9929CFD29F4BF70CAAAAC2C179B2D630A3C923AF6F2DF3D5A6298028CF41277"
+    },
+    {
+      "path": "NINA/Resources/SVG/constellation.svg",
+      "blob": "08d54ee296e250fa8ee0045578c239cec79c6e5c",
+      "sha256": "B5435F8F1A8E2E68AC5ED51F80DA5AEB16DEBED96D14A455ACE6CFD621A76137"
+    },
+    {
+      "path": "NINA/Resources/SVG/constellation_simple.ai",
+      "blob": "13943a04ce6b9a004e87e81e7186009ca4209e02",
+      "sha256": "6EDFBAD3D023C68FA3262EDE6DC7F7866E6192ED02AD77B97B7C5DAC1517AA87"
+    },
+    {
+      "path": "NINA/Resources/SVG/constellation_simple.svg",
+      "blob": "db3f1913e93580fc1284cd3da8cd086f1d346f51",
+      "sha256": "233A479C74A95880C475BFC2C3751899BB10AADE3E7ACFB3BECAA014E7A1DF12"
+    },
+    {
+      "path": "NINA/Resources/SVG/contrast.ai",
+      "blob": "4b53931f359f9db92e6ad6371c2e84653fffc7e4",
+      "sha256": "01678B19A94C5C929548BCA81F63A971F32EB79B61E48639FB2433AC87DE9029"
+    },
+    {
+      "path": "NINA/Resources/SVG/contrast.svg",
+      "blob": "32d1dd30c37780b707991f8d3a3c8463ac079716",
+      "sha256": "CB0BDA56C9DB26565E97FA143CE5D1F9D833212A7B769FE8795ABED2173176D3"
+    },
+    {
+      "path": "NINA/Resources/SVG/copy.ai",
+      "blob": "3e94fbd254d9b85bec73a64b23abb480b17bd9d7",
+      "sha256": "92C0E2D76C95EC3B8D9892A4C4DE425EF02A21E30B6AFD7AAC211AA3830E6811"
+    },
+    {
+      "path": "NINA/Resources/SVG/copy.svg",
+      "blob": "81ee0a432febd954f0dd9d778e3b52e14be124db",
+      "sha256": "2BBD52F956EC4C80358652321DFA0FF17EB20FFCF24B52FCA7942A0C9C452327"
+    },
+    {
+      "path": "NINA/Resources/SVG/disabledrag.ai",
+      "blob": "7dfe90b5d5ec6c209146a743b7aa13361db8224b",
+      "sha256": "03516C0811213FA05813AF84FA569C189814FCD2B4B5C518A64272E6DDF17E17"
+    },
+    {
+      "path": "NINA/Resources/SVG/disabledrag.svg",
+      "blob": "f2e4d2e79041bcec544b456497f3dc4ef8525ad5",
+      "sha256": "9863D788BC081154739279CE0BA0C193C7FB0424E90EBC7C1420373159211C29"
+    },
+    {
+      "path": "NINA/Resources/SVG/dislike.ai",
+      "blob": "a6d179bec51e88e409c9219d8183b9825a34c69a",
+      "sha256": "256EDC62A579EC9DE3D4707744B9AABD02E23D7BA37AEFC17E96A3E227765D5D"
+    },
+    {
+      "path": "NINA/Resources/SVG/dislike.svg",
+      "blob": "d7e3df925e33f6454be99b389332cb700805022b",
+      "sha256": "FFCAEBD81330F7F0BB245F883994BE5EA3FD79934E3502EA7AC228498A55A550"
+    },
+    {
+      "path": "NINA/Resources/SVG/dither.ai",
+      "blob": "bcf8ec00b3b5a642d8824105a90c44bff9bcaac3",
+      "sha256": "ED533EBA35D5E9FF0DBF311EDC26C53F6C5B2DF90F178A29BEED8277CE87BFC3"
+    },
+    {
+      "path": "NINA/Resources/SVG/dither.svg",
+      "blob": "4da2cdb02dc91ce4549f42511c9f84ee9f2a4805",
+      "sha256": "7050124E929831647BB6E97022703E37F5BF115FA0977584D60E45680F59DA26"
+    },
+    {
+      "path": "NINA/Resources/SVG/dots.ai",
+      "blob": "1b5712f61515f2c042453e1a4cfc0e65a2d6e014",
+      "sha256": "2CF1B9DCFF5534058C682F682F050187A0988ABF9635D668F604AF48C72D7757"
+    },
+    {
+      "path": "NINA/Resources/SVG/dots.svg",
+      "blob": "bfcfcb6f0280508f415d1c1320a17a373eb9e4d4",
+      "sha256": "85A17B7619C3D11792B5BA62D7C07E26EBC3221945166A92D763C77842B4C79D"
+    },
+    {
+      "path": "NINA/Resources/SVG/dots_vertical.ai",
+      "blob": "272b926b675d0426b588733f5c0c126616833b33",
+      "sha256": "71ACD15EFD54A0102DDD0A669D8AFCB6C7D7CA680C4837DFFA3F08FFD87C9A8F"
+    },
+    {
+      "path": "NINA/Resources/SVG/dots_vertical.svg",
+      "blob": "9d298eed3053bae59576fad44a382835bf4e8536",
+      "sha256": "CD4F127627DEA174C8F7388EDB4694431117B9A4D82E5A20B28DEC4F640B9B13"
+    },
+    {
+      "path": "NINA/Resources/SVG/download-archive-tray.ai",
+      "blob": "a097fad73835f1dad1c5bcd83d1107340f66f262",
+      "sha256": "82103E70BF965F13ADE1C8EAC66618B58F962B8C744D277224105BEBDB680F07"
+    },
+    {
+      "path": "NINA/Resources/SVG/download-archive-tray.svg",
+      "blob": "64bbc2067b815f548efe1d573a9845a91e028d65",
+      "sha256": "2DAA1BC2ED97A8D6C57ACD250B493851B2841BD7E69E2C4DF2E80B63EB779139"
+    },
+    {
+      "path": "NINA/Resources/SVG/drag-left.ai",
+      "blob": "dec09da5fcd3169bafae548fad967d45429181dd",
+      "sha256": "66FBE867D5B1109E53041FDDC29A09A1F6CB08AF330D3614F11B11F4DE804A04"
+    },
+    {
+      "path": "NINA/Resources/SVG/drag-left.svg",
+      "blob": "2ca9312b1acfa807be08faa5cad00951d62c4955",
+      "sha256": "AE6E3AB29F8D1DB8A4A7BF998C1120CA10DAADD6E37FFAC35DE70FD4884A3550"
+    },
+    {
+      "path": "NINA/Resources/SVG/drops.ai",
+      "blob": "c233e929f74d6e4054f7ab7564953bc4538ad132",
+      "sha256": "867B6E6174A417CE2A727453DC3738D056AA4A776A6D8F7F476ABBD2F4C87003"
+    },
+    {
+      "path": "NINA/Resources/SVG/drops.svg",
+      "blob": "c21dea243d871ee266eebc7be007f0d91aa11c1c",
+      "sha256": "0D475BEAF0C7B9B24B14869D7B6B1A6B9CFF423E702F7746A465D47422B9CA46"
+    },
+    {
+      "path": "NINA/Resources/SVG/equal.svg",
+      "blob": "c0d9ce84a9233bad5b4039c64d48638543b893ea",
+      "sha256": "1D40D832FF35EC362DABBA8668D325640D88688D60399DFBD9FC8F88A1943297"
+    },
+    {
+      "path": "NINA/Resources/SVG/equipment.ai",
+      "blob": "c449393cf0abe71400628f6d3a3434c037e309b4",
+      "sha256": "03721A29427BD1ADDEEA27B827EE64B468C2D3E90CAFDCE1DB90E6093130508B"
+    },
+    {
+      "path": "NINA/Resources/SVG/equipment.svg",
+      "blob": "c7b41905792b8f8cc9599b6b4d76c2c21a3f49cc",
+      "sha256": "9FC3FA374EF66619A599AE1C9DB440EFA67CD46DF15775B3A536ED9B5D5D0C68"
+    },
+    {
+      "path": "NINA/Resources/SVG/exclamation_circled.ai",
+      "blob": "b5021684fab3b8345d774239466a42ff38d716f1",
+      "sha256": "7561E03FB7DB138ADBCDED55D7C81AFC207B99792582916E4ECC0699C60CC5BD"
+    },
+    {
+      "path": "NINA/Resources/SVG/exclamation_circled.svg",
+      "blob": "c2ed44f99a3e5ce0f62f46708af2826bc9c0a3b3",
+      "sha256": "835F5AF75BAE243A490CF3DBDAFDABE3D2914F24DE4AADBB20E33647981EC0B6"
+    },
+    {
+      "path": "NINA/Resources/SVG/expand-all.ai",
+      "blob": "40d99859f8af61630ad88b11871bd1125e4ae75e",
+      "sha256": "BEF3DA1BE41660D3691648526A3C8B8A5C6D98C8A05A396A6F54D156E65F5DA4"
+    },
+    {
+      "path": "NINA/Resources/SVG/expand-all.svg",
+      "blob": "e13a855b1a0ee5941e84ba7327c5edb742e0adef",
+      "sha256": "C0D5F6E1EABE0CA52CB157BC6EED180385F7116E1003AD66F75B95D4D37B3474"
+    },
+    {
+      "path": "NINA/Resources/SVG/fire.ai",
+      "blob": "223a80d5c9903cdfb1084eb847cc7ef7b3fb4a03",
+      "sha256": "5DAD7263200408316801F9C7660401A839F4515F3C1C21BEBE6E3405115141DC"
+    },
+    {
+      "path": "NINA/Resources/SVG/fire.svg",
+      "blob": "f48d4adc95b29e795c04514ea7871bdbf3b3915d",
+      "sha256": "E583D4AD51BE0990A9E93A4113EF922DD2E7C45035001EF6D6C5BF470B4A04F9"
+    },
+    {
+      "path": "NINA/Resources/SVG/fire_nofill.ai",
+      "blob": "b7178de5c50686fc5fd8d9e5fe1486745171e142",
+      "sha256": "0E194B52A29C679D2C25D5A67B8F52E5323AE1B53BB550DDD20837913FB53946"
+    },
+    {
+      "path": "NINA/Resources/SVG/fire_nofill.svg",
+      "blob": "c697f1861b8797b819e92fd6c13dd739984f09c5",
+      "sha256": "B62FB1700A7B3BD354A74F54425E5A4B0C7D9B0053282191EEE4359696E45FD3"
+    },
+    {
+      "path": "NINA/Resources/SVG/flag_finish.ai",
+      "blob": "884f0d35d31830071bca271eab8e18269c05f679",
+      "sha256": "25C68E868785CC84B04BB478740C305683CFD659AD3BA4340E8339B45FEBE126"
+    },
+    {
+      "path": "NINA/Resources/SVG/flag_finish.svg",
+      "blob": "0b1bc5ddd0a6139f7ce153da4c2e7acb8df1babd",
+      "sha256": "14261236C86944A9E80855005AB827728037F5DC33557120E2EAFD8A854A3F2E"
+    },
+    {
+      "path": "NINA/Resources/SVG/flatwizard.ai",
+      "blob": "0bdf0597f64df89dd44aabd6639ab5d85b7fa589",
+      "sha256": "BDE31DF67C084E8E2DCCC7B8192C04EC04F56E77E322C26213F9C27B1456FD6A"
+    },
+    {
+      "path": "NINA/Resources/SVG/flatwizard.svg",
+      "blob": "e357039e223ec9bb93fadb12ab3984092f746ed1",
+      "sha256": "D89212EB9428AAC7FCB5205421482F97FDEA0E6AAD17DD9A94B683218D0458A3"
+    },
+    {
+      "path": "NINA/Resources/SVG/flip-horizontal.ai",
+      "blob": "ad52ca1016748177504111bafeb02365e1c66412",
+      "sha256": "3BB6C66F93638557F6298F971441FFD97FD508DD36B6F7FC6954DBB1FDF03DEE"
+    },
+    {
+      "path": "NINA/Resources/SVG/flip-horizontal.svg",
+      "blob": "1581e10c999efa4b91ee4d3a9a38ca0f1332d98a",
+      "sha256": "9E8EB7986F8F0D879D45FD189C070401EDE87B8CCDE24DC43A6738815DDE15D8"
+    },
+    {
+      "path": "NINA/Resources/SVG/floppy-disk-as-new.ai",
+      "blob": "4e51dede1cfcfcebe393b6e66ab798790f30c931",
+      "sha256": "B4EE3332DC38FBE3E1391FE958C612BCCB1DB5D314F9767052C74BEC0972EBB0"
+    },
+    {
+      "path": "NINA/Resources/SVG/floppy-disk.ai",
+      "blob": "54acd4df27252a433a1541e3cb7fd421c1755700",
+      "sha256": "DED2092C083C139CB89896C9329910DC498470BF5C7F5386E504C29097977F14"
+    },
+    {
+      "path": "NINA/Resources/SVG/floppy-disk.svg",
+      "blob": "76f78e8f60a62447a264b1102f15425fceee1ca3",
+      "sha256": "88DEF4535B472FC2A4242718DE8A41D2CF0AACAA97C6B3AFB31568328A150760"
+    },
+    {
+      "path": "NINA/Resources/SVG/folder.ai",
+      "blob": "6478fb6a42446b96d4ca161cc4efb4abca9768b6",
+      "sha256": "736A06DA90E3B1ACDC497112A0497BF6E6995F6CBC8193A41A04B8EE174F75BB"
+    },
+    {
+      "path": "NINA/Resources/SVG/folder.svg",
+      "blob": "e9416718c2d02482a25230689de5bfb626ff9b46",
+      "sha256": "E91FFA43968F77D4CAF0C96FA22CE04B3429947276FAF21EBBC85A036DB8099F"
+    },
+    {
+      "path": "NINA/Resources/SVG/gamma.ai",
+      "blob": "4ded55b792b2f9c35d5d53398b0b0dfbbb8507ce",
+      "sha256": "425775147252B5D6B3222D56E12EA477D831758EAAE94F75DF16E692A3D5CF38"
+    },
+    {
+      "path": "NINA/Resources/SVG/gamma.svg",
+      "blob": "587d84f661a71d4e0418ed2daf75c7a9b9603ebd",
+      "sha256": "D87DEE0C90656C2D82AAAFBC9819E6C4A62C49E360E5CC14A4A2823067D7E12D"
+    },
+    {
+      "path": "NINA/Resources/SVG/gps.ai",
+      "blob": "e76da9632d04a535b59aa28ea5b9ef66d4f1c5b5",
+      "sha256": "5CF40A2618B74C8277DA82D77ED72C416A58397EDC83521B656BB30FD4533A14"
+    },
+    {
+      "path": "NINA/Resources/SVG/gps.svg",
+      "blob": "03d8427cd616d3288e5e16b1e5d771686fdf1e54",
+      "sha256": "266913F66BA68FEC1149259513EDA571710652C3F8B2534C1C519FB3FE0E48F5"
+    },
+    {
+      "path": "NINA/Resources/SVG/grid.ai",
+      "blob": "c43fba46e6ebe47e5a1da213a3dbc324b36c1a47",
+      "sha256": "64425FE4734B84F9535926C94396CA5F0924A977AE9CBE7856E366202EF738BE"
+    },
+    {
+      "path": "NINA/Resources/SVG/grid.svg",
+      "blob": "b027480e1374cddd269e7bfeb0021ced96c1cc20",
+      "sha256": "6AE2ABFCDCE66E836F9389C5B3F2CFFDCB0842E5F803839B4609194411C4EB31"
+    },
+    {
+      "path": "NINA/Resources/SVG/history.ai",
+      "blob": "0d1aa5897e3e56aee5ed87bdcbb5f3fbf0178335",
+      "sha256": "978E4FF1E485FE09D2BDE9B0E878E954ECA8AFAEE1CB208CF6E9BD844136C280"
+    },
+    {
+      "path": "NINA/Resources/SVG/history.svg",
+      "blob": "8cf2be23fc84b6c421900e8742e020420e150f72",
+      "sha256": "201A76BCB180DC5F85485B02D092DFC68B862420E4C617C55D6F5542157EE92F"
+    },
+    {
+      "path": "NINA/Resources/SVG/home.ai",
+      "blob": "4c34781721755ce5701a82c3e330184a0e2f1cfa",
+      "sha256": "F688FEC7806494E6795C8F318C8D3846B97EE56B0600945A5D179D6F52A4D511"
+    },
+    {
+      "path": "NINA/Resources/SVG/home.svg",
+      "blob": "987215fe2d7ef796a3e1b6a35b3557ca5f161f40",
+      "sha256": "55EF97A54646E3354BF5D2A0782090AF2E59446CC85B02E08D45C001909A76ED"
+    },
+    {
+      "path": "NINA/Resources/SVG/hourglass.ai",
+      "blob": "51b291cd9dc733c5353ba7f9e62d35fc29e2bd90",
+      "sha256": "76F09C0C314096CD8BAF641FC156B2ABAD96BC5D60BD4A0FE1A49449B0559716"
+    },
+    {
+      "path": "NINA/Resources/SVG/hourglass.svg",
+      "blob": "be3b4b5af341befa95e2f2e67ed37a749c99b2c5",
+      "sha256": "5FF6B29E59443635C2CF8EDA5237BA04C78487985CB5AE16B1F8880A9B16B6EA"
+    },
+    {
+      "path": "NINA/Resources/SVG/light-bulb.ai",
+      "blob": "21dd0ca49e470558d297e1693f7c4f1442230bd4",
+      "sha256": "4AC76FCAC653C4F49072A4B65D324A5677FA2717A4D90C66987D751CA373AF0C"
+    },
+    {
+      "path": "NINA/Resources/SVG/light-bulb.svg",
+      "blob": "4841cce4d39fb5cccfd6467b4ceabdf64ed0c8aa",
+      "sha256": "A9B86F0CF60B281F87CDAA43D19897581E713B0AC738D57FD7CF5E16E7A5BD1D"
+    },
+    {
+      "path": "NINA/Resources/SVG/like.ai",
+      "blob": "3f82b60131ca5fb8fc5b76524e66417b9cdccd90",
+      "sha256": "9D1BB4AD0CB817D6D0A9EDAEDCBF4199D41D4E0271C8124074BD7B6BECEEA2F5"
+    },
+    {
+      "path": "NINA/Resources/SVG/like.svg",
+      "blob": "21197bec725a495e40756e35214cda38676ce077",
+      "sha256": "CE3C9DF4AFDB04BFAF83F4FA3F7E90513837584B9D925D638A6B0A13681EDE64"
+    },
+    {
+      "path": "NINA/Resources/SVG/line-chart.ai",
+      "blob": "262138ba9c9be4722e91845ed890f33692b404b2",
+      "sha256": "04C6E21520EF541F8B106B40B863E73E2DD637BBA4A92787F0027D0DAA5F016F"
+    },
+    {
+      "path": "NINA/Resources/SVG/line-chart.svg",
+      "blob": "2098505def0869e21efaceb80921bba12dd1e180",
+      "sha256": "CA18B754D8679BAF1F573C179E391775CC24AEC17F5CC0972D64FE23DAC18862"
+    },
+    {
+      "path": "NINA/Resources/SVG/list.svg",
+      "blob": "d6b316be94aab7702061aa7c45e74766bfd1cbf9",
+      "sha256": "1A80AD2007990A9DA0F44C901349198DF57CA1821D4C850FE927611413F25F0B"
+    },
+    {
+      "path": "NINA/Resources/SVG/lock.ai",
+      "blob": "de25b4b68185ed1642a2e92128bd3872d7891416",
+      "sha256": "BE49B382D4CCB4DBD22E71E89DF7F5BCC24660843669C4488C80C76B4CFF8431"
+    },
+    {
+      "path": "NINA/Resources/SVG/lock.svg",
+      "blob": "d8192766e61a6be6352b5d6e997c3f98fe834681",
+      "sha256": "E5F03E578F3C06341FDB27DB9F46B6A03EE4AD0339CB9ADC06884FC109E2E18C"
+    },
+    {
+      "path": "NINA/Resources/SVG/loop.ai",
+      "blob": "4cc731c5a8e4d005e75b607efcc7b035f9330890",
+      "sha256": "DC85AD8115A1C1DC1C0F41D1167FB9B4F417CCD8E7EDE35F41F37D80586A063F"
+    },
+    {
+      "path": "NINA/Resources/SVG/loop.svg",
+      "blob": "16977fac2ef2b2c8b47d88059694847eb55615e7",
+      "sha256": "9B4AC8F40135FED6826273C4218ADA8D4C05B1E4000E855D3724F7F55C6A71BD"
+    },
+    {
+      "path": "NINA/Resources/SVG/loupe.svg",
+      "blob": "ae532d862732f4aa5d51a8cbb7c5d0ec37480b36",
+      "sha256": "1411080AE993962928C356AD65E3DC68A2AE1855EDE0F9D65D1C4A411210F7B1"
+    },
+    {
+      "path": "NINA/Resources/SVG/map.ai",
+      "blob": "c1c55f97eed0f8db9a355267e17221af9cfd1c8c",
+      "sha256": "CA66C539A8BEAB9F451CF847C4B70AD651EA8BEEADA621362D36725C851393F0"
+    },
+    {
+      "path": "NINA/Resources/SVG/map.svg",
+      "blob": "afe5aee40d011fb12e8b118877b71a4043987558",
+      "sha256": "5A7778EBE46B39C6ED135AAC7CB3F03461821A8E1B3F432C031BB5816C8081EB"
+    },
+    {
+      "path": "NINA/Resources/SVG/menu.ai",
+      "blob": "c66931916cc6b15edaa606b868a5e400a062936e",
+      "sha256": "D474F7067A680CC796503C3A49E31694421E2B31A392BB4954E604A67786D95B"
+    },
+    {
+      "path": "NINA/Resources/SVG/menu.svg",
+      "blob": "7265161652afd3ecce454d8378c212d5e4a60b9c",
+      "sha256": "F836BEB72F5DFFDC9D94157299D5302A2167AB544B6906B143B11A24CF753854"
+    },
+    {
+      "path": "NINA/Resources/SVG/meridianflip.ai",
+      "blob": "0ceb7f912e2f78d67727dddf004f9dc22382020b",
+      "sha256": "D7B84BB97787A142F820F1618A56B29FDEE21D983D515EBA55304110085B35B8"
+    },
+    {
+      "path": "NINA/Resources/SVG/meridianflip.svg",
+      "blob": "5643768bca9709389aac3a1c067728a5b84c81f2",
+      "sha256": "1ACFF19C21ECFDEA2193189824E28FE6004015937A96B38614A76221B4D0EC1B"
+    },
+    {
+      "path": "NINA/Resources/SVG/messagebox.ai",
+      "blob": "d5c8b26949878592ca936fa9ed43edc7b169ecef",
+      "sha256": "3793A51DD109EDA2C6FC219E415ED69621C6CBF7E984577434034989B8394D33"
+    },
+    {
+      "path": "NINA/Resources/SVG/messagebox.svg",
+      "blob": "631d1b354c1cdb8ddf23c69093d556f6887fcd37",
+      "sha256": "9D42D3FD508ADAE0EC47A7930A809EC6250589F497939793C4929D2D5F89DFF6"
+    },
+    {
+      "path": "NINA/Resources/SVG/meteor.ai",
+      "blob": "1ed80c0baf9518268865c86f45b41fe175f10303",
+      "sha256": "559516A45A53FD33F9F0ADB203A066DABA63C0C6040BA089247AFBC280B1351A"
+    },
+    {
+      "path": "NINA/Resources/SVG/meteor.svg",
+      "blob": "de74cd6725f4b3da2530a1a281d47e7948ff7cef",
+      "sha256": "B38EF9B1712BBF5E7E7102A8DDFE3B50B68529DD065B2F91F083ABA65E5F0028"
+    },
+    {
+      "path": "NINA/Resources/SVG/minimize.ai",
+      "blob": "320af3909e94741d5dfdfd8c3975b49b8e3719af",
+      "sha256": "21DF1AB3EED72AA468106F13D18DFD6CF1899099F3CE6BC4A2B9FDF5231A1EB9"
+    },
+    {
+      "path": "NINA/Resources/SVG/minimize.svg",
+      "blob": "fff55350a40239a549204963d0510b32cdb889c8",
+      "sha256": "33118A569218B0E8DFC48C9A85EFB052CDD1453C23A9EE9358529E73E0FFCADA"
+    },
+    {
+      "path": "NINA/Resources/SVG/moon-phase-symbol (1).svg",
+      "blob": "d8b1cc42616ed01c16525212c24d3fa68ec80a6c",
+      "sha256": "4B50FC30EFE7330E0FD3AB328CC70A27379AEF05610AB94FDA58AF39B0EFE05E"
+    },
+    {
+      "path": "NINA/Resources/SVG/moon-phase-symbol (2).svg",
+      "blob": "7005d37addd63844f1962ca9c59c5b53ce92e45f",
+      "sha256": "DFCD29A8B861FD477F1709C0B7B635758A23B7BA9341707D84F07F38FF552CCC"
+    },
+    {
+      "path": "NINA/Resources/SVG/moon-phase-symbol.svg",
+      "blob": "1392be1892d33a27a32e48eed78d2aa598275f18",
+      "sha256": "F87F9440F968723EABCB3127DC552D60ADD848467149DBF7A0CB784D00B0E51C"
+    },
+    {
+      "path": "NINA/Resources/SVG/moon-phase.svg",
+      "blob": "4643632d1cede8eb3adaef6474def1fa27dff1a0",
+      "sha256": "A9DB54A0DBA3B8A3299C68724F62CAE41CCB92A56D7F0152610D8F455D8618C4"
+    },
+    {
+      "path": "NINA/Resources/SVG/multi-tab.ai",
+      "blob": "a86e5c34d8382694cd24362ad33cf8e97ea968eb",
+      "sha256": "307D04E371BF9F464546E5A194183CBC9F4CDAFDCE42DE36A25284AC9FBB7D0B"
+    },
+    {
+      "path": "NINA/Resources/SVG/multi-tab.svg",
+      "blob": "4cc3acab70ce5176353edb7ee50fd20f79f7dde9",
+      "sha256": "C606A976359A321CB54EE19CB25B84AA1C6407A15195E8C85AA3E9497E3753CA"
+    },
+    {
+      "path": "NINA/Resources/SVG/new-moon-phase-circle.svg",
+      "blob": "b8a774d5e279d199ada7cc9f3625ef4cc48e7ce8",
+      "sha256": "A59EEFFA3DCE7C502958B66DE4BC0757C598FF00A53B61FB5EA79F8D1EE51020"
+    },
+    {
+      "path": "NINA/Resources/SVG/next.ai",
+      "blob": "2f4d85fc5b6d0e34568bfbccf26f2bafa8144800",
+      "sha256": "A5A031B5DBBF4162B1C1C0B6A60D226578768DE3FEF5799B97BF4FDF24553B81"
+    },
+    {
+      "path": "NINA/Resources/SVG/next.svg",
+      "blob": "f0a9f242b5d0da11a66d541a6bbefa4a78d40f84",
+      "sha256": "2E091E381486C9941C9A40FE22A50DCE5681590E6FBC4B698F7D79F4F67DCEE8"
+    },
+    {
+      "path": "NINA/Resources/SVG/notepad.ai",
+      "blob": "f21573b6ee6f32fa65bba578f3b3fd98f3030a69",
+      "sha256": "ACE47F3FF073B75DC2D612CF37A27CD6C3E6992C9CE371C1BD83C0BE47C6E2F8"
+    },
+    {
+      "path": "NINA/Resources/SVG/notepad.svg",
+      "blob": "0316a43f6c23c2161770768e0e78c51343498c3d",
+      "sha256": "6DD4D7A57A3CD916945CB4B64768B1C2A8CC3022CF4F8BF54F0E6E520DD91340"
+    },
+    {
+      "path": "NINA/Resources/SVG/observatory.ai",
+      "blob": "8ee5af0e19de16d34e5dfd1e2257e251f9156d2f",
+      "sha256": "C87CDBC37B71DFDB5F5ABE383BF458DFE0984021721A29E6B769148F521DF3C9"
+    },
+    {
+      "path": "NINA/Resources/SVG/observatory.svg",
+      "blob": "e47300296e996d4863560f064447dd57bb9cb38e",
+      "sha256": "16879514BF93F2EB2F1D054558E266D013DD9E090BAFB6D703ACF2BC8D5B861E"
+    },
+    {
+      "path": "NINA/Resources/SVG/observatory_closed.ai",
+      "blob": "d2fc7c2bd2410be92c2c54b55dd35e1341c9361b",
+      "sha256": "605DA55EE29FF3F76DC9AC4324C79C87A83A4838B40BCFC10AD5DF8E86935C8F"
+    },
+    {
+      "path": "NINA/Resources/SVG/observatory_closed.svg",
+      "blob": "e617cc036cd5744bd556029d394f6d3b0263ae8d",
+      "sha256": "7D60EEFF6EE6A9D28BB25195790F5730A3D39A8C63268BCDCD4EFBF77A943A15"
+    },
+    {
+      "path": "NINA/Resources/SVG/parallel.ai",
+      "blob": "bcbb3c8ec744ce4e378c2c8b9f1f3291b8feb1ed",
+      "sha256": "C90A6297355AA763EBD77D37AEE4850CD4B5853D1C5C04B4919A02BA88E01EA5"
+    },
+    {
+      "path": "NINA/Resources/SVG/parallel.svg",
+      "blob": "646258d46196a89e97eab386e12264bc60766481",
+      "sha256": "343BA78784F5E440F431A2F074F1D826893726A9316B29CA3A32796102199EC7"
+    },
+    {
+      "path": "NINA/Resources/SVG/park.ai",
+      "blob": "6be3804236f8a14a05056c7218911c3db06f83fa",
+      "sha256": "7D41F309B5E6FD5199CBAE535410E4DC7CF30374816C097E9D852706E1AD4BFE"
+    },
+    {
+      "path": "NINA/Resources/SVG/park.svg",
+      "blob": "48f74008c61bf5028ba47df83f4e01597260caef",
+      "sha256": "4F6E93C64B994B3F38663495DFE7869F74413ED07DF50E3E4AD6AAF168CA3B2C"
+    },
+    {
+      "path": "NINA/Resources/SVG/pause-button.ai",
+      "blob": "c862ba3cf82c752dcd3e658d2c31913940d707f1",
+      "sha256": "2C050D29FC092FC50BC0BB298D930314FE6684154387389B220BD0ECFBB4A922"
+    },
+    {
+      "path": "NINA/Resources/SVG/pause-button.svg",
+      "blob": "7db464cd4180a4e05c758201d34235b3b565d48d",
+      "sha256": "0EEE60422A88EE353364CC2E78ABD8AA5CF7DFE62FBAD6D8CAC74ED404BDCE76"
+    },
+    {
+      "path": "NINA/Resources/SVG/pen.ai",
+      "blob": "39c1d35ccedbfb8c96e2b3f32448ed42fa03a70e",
+      "sha256": "789D8B81910A72FAFE3670FE12CB64562CEA1A28B82411170C07B1387EA259D7"
+    },
+    {
+      "path": "NINA/Resources/SVG/pen.svg",
+      "blob": "5f67b8c9e3f2501902a66ee3ddeb5f94231445b5",
+      "sha256": "B04F3F6DEEF944F727345FDCA77755C5F9B2ACBBAEFE79DE609CF50DBA055218"
+    },
+    {
+      "path": "NINA/Resources/SVG/pen_nofill.ai",
+      "blob": "ea18c546b27759063b36618cff1338affe7b122d",
+      "sha256": "1B98F45E08E1EE71FD909C3F34C22681A5E0D2D308501314261B6169D7769B07"
+    },
+    {
+      "path": "NINA/Resources/SVG/pen_nofill.svg",
+      "blob": "a88cbd1157a9e7e341edcb37e0a240460677e724",
+      "sha256": "089EBD6F9656364BABA948CDA780763515DDA5533482C4AE30D4745BAF39263A"
+    },
+    {
+      "path": "NINA/Resources/SVG/picture.ai",
+      "blob": "4502bef0281e3d5da822382b953b64f3492aef5f",
+      "sha256": "6376E50E74D609F9CBE7641102351B1CB2B8358BD8B627509828AAAF337C55E8"
+    },
+    {
+      "path": "NINA/Resources/SVG/picture.svg",
+      "blob": "af3a57bd072d966178c297caafc68e33fd3cc522",
+      "sha256": "7F8ED60882C17DD80E73586DD7155E59B0AD5578F3250B1968129882FB30FB9A"
+    },
+    {
+      "path": "NINA/Resources/SVG/play.ai",
+      "blob": "ffdbe78d301c86c1fb30afbb3b4f88cb78877dcc",
+      "sha256": "E313893AC47BE285A4441D9075E43F8395DE6A30772C6F4F3D87F72E2C1BDABA"
+    },
+    {
+      "path": "NINA/Resources/SVG/play.svg",
+      "blob": "e58a296c319f33a8ebb252c4d101d093bfab1900",
+      "sha256": "7E6CFCD0C5FFC2A8C17CCFEA5F13DFD0AC98CF426FAA8BF99899A291FB1E72E4"
+    },
+    {
+      "path": "NINA/Resources/SVG/polaralign.svg",
+      "blob": "12542ae20494fdc1f183d893fcc33fd4bb1204c9",
+      "sha256": "046B2A59A0418C325C86055EBAE105F0EF7CC707096FC79F3FACD66DDFD00A0A"
+    },
+    {
+      "path": "NINA/Resources/SVG/power.svg",
+      "blob": "f95e772c66cc4d93e425dc17f39c1c8e918b2d16",
+      "sha256": "7CE7D293FE94B55B975AE3594B387DF8556B841943D23EDD13FA45E8209EC4DD"
+    },
+    {
+      "path": "NINA/Resources/SVG/preview.ai",
+      "blob": "7afa8cfa8084a58b889fa1835d731dc4107e5186",
+      "sha256": "AD3D9685D0F19568715291A409DC9475D323317D2C4CF9D700778DCD98F9B294"
+    },
+    {
+      "path": "NINA/Resources/SVG/preview.svg",
+      "blob": "76f454157f9808ed5226c4d1e177f0bcf4edce2a",
+      "sha256": "FF42DB608242D0F61BA0DED98669DEDD31DBDDFC2A0C3BE21B354AB22B6EE24F"
+    },
+    {
+      "path": "NINA/Resources/SVG/puzzle-piece.ai",
+      "blob": "c10355c155808a6d47c3b59a4455626b4b66c707",
+      "sha256": "FA615630B967247DD5A1314B0F89B159DA2FEE231C0278CA0F1873C8C8571D18"
+    },
+    {
+      "path": "NINA/Resources/SVG/puzzle-piece.svg",
+      "blob": "491f09ec7fc57709c9a6de7ec33e2d8e35c09d35",
+      "sha256": "FFA42495451DFCFD8AAD19E1F149184525B18752D83C96F171EE5E25E14CDC02"
+    },
+    {
+      "path": "NINA/Resources/SVG/question.ai",
+      "blob": "c7c7ffec87c348e27ea4b9a9c97a3cff1667a3f8",
+      "sha256": "67CBD0C1AD5B41B4F1D7DE2D9C8BA579D7E09E4BF0BC8D501FC14F24D84B02B7"
+    },
+    {
+      "path": "NINA/Resources/SVG/question.svg",
+      "blob": "77e46595fb8ad503930d5c6d9013a2db03639b27",
+      "sha256": "05B76F5C35960FD2C2BA0C164870E76F73DD38375A2D50FC7FC4B2A877CE10F3"
+    },
+    {
+      "path": "NINA/Resources/SVG/refresh.ai",
+      "blob": "565667ea1b853b7df968a6487834ef7fdaa70e1f",
+      "sha256": "C430C7EFE5944D3F84770A7810E58B9CAF540EED9ED546C8C3FFA181C0441875"
+    },
+    {
+      "path": "NINA/Resources/SVG/refresh.svg",
+      "blob": "d25a26dcc0973f703f69524b0c96d6b1fa03d13e",
+      "sha256": "C3DE876350F0747F4A7893C6CD6B0EC7EB424F4CDD850EEF69C62CF5BC54519E"
+    },
+    {
+      "path": "NINA/Resources/SVG/reset.ai",
+      "blob": "7a853e99fbc0140e6294a85bfc9de9277da11ff6",
+      "sha256": "96B45B032CE7B0E88B8B2CB3E6C4D1BEF0D6D09A57170A05C575B71CD4611F8D"
+    },
+    {
+      "path": "NINA/Resources/SVG/reset.svg",
+      "blob": "6c2346cdf62de9f25ef1a934c2d869b4e2437c69",
+      "sha256": "E775E4F52778B55724D4DF0D5FF7E875496165ED2AE4A50F386CCADF1A6B5DFB"
+    },
+    {
+      "path": "NINA/Resources/SVG/rotate-to-left-button.ai",
+      "blob": "25d0329221e192b09dba1312ba2b55a23b04c916",
+      "sha256": "4BC28CB7097CE53C24688131D8A454A9A07D5FC070502FDA0F541BFE3C712499"
+    },
+    {
+      "path": "NINA/Resources/SVG/rotate-to-left-button.svg",
+      "blob": "07681a15346d1c299caca3fe27a117ce989f85b6",
+      "sha256": "AAA99F731E1225C6B736AA6C897D7D6A762ED6FC5FCAACA258A7AA00CA58E3BF"
+    },
+    {
+      "path": "NINA/Resources/SVG/satellitedish.ai",
+      "blob": "6a72bf59214ec80736e1d3ecae503af6d4906427",
+      "sha256": "638BF275C2F1BD2AB661F3A6341599FD02F6631DB061157687516801E059CB09"
+    },
+    {
+      "path": "NINA/Resources/SVG/satellitedish.svg",
+      "blob": "c3c85eb717a9289b4fea92dc8c478e31f0f1ba3d",
+      "sha256": "EBDA56C0FEDC4439BAB04D64BFFB26E4E3B822CB320B38390008B8F3235FF9C1"
+    },
+    {
+      "path": "NINA/Resources/SVG/script.ai",
+      "blob": "58977847c3d12c08c98abb9c3e8ba4f8423e6c07",
+      "sha256": "AC5F8187E28BF2D46B42FF65177344DBE6A50247DF00E19B893B770DB8EE90D8"
+    },
+    {
+      "path": "NINA/Resources/SVG/script.svg",
+      "blob": "2a888d148c59b133e8494a4df558004adcb032c4",
+      "sha256": "C00E262BA5D401A689D55FBED445A5032351F897CDC04E27BF422523A765FE7A"
+    },
+    {
+      "path": "NINA/Resources/SVG/sequential.ai",
+      "blob": "bdbb904385bfce2f0941af6e2a088fe7108a1c8e",
+      "sha256": "EEA24C4DBCA695822897F859E6AB35A0F20F269A0F1F903503228FBDA226CC7F"
+    },
+    {
+      "path": "NINA/Resources/SVG/sequential.svg",
+      "blob": "0d474c080ed436045e2d6845a6c7c9ef1f517539",
+      "sha256": "9AD0D00A304D14C605DEB359F1683226092054A2752E54D99A2C91885D0BE778"
+    },
+    {
+      "path": "NINA/Resources/SVG/settings.ai",
+      "blob": "7deb09e37c61ddba3eab39c37653ccc7ce613ad2",
+      "sha256": "E4A019A1DB8CEF62592EF8FB4C791886132C221F966FA55FFBB70789C4473646"
+    },
+    {
+      "path": "NINA/Resources/SVG/settings.svg",
+      "blob": "8959b77d1b5e9764673aac2759cd0c84e3821720",
+      "sha256": "E8B7E14885D907B3A5636DDFB91952B0A7042C55DD9CF2181059F28FC4FC4308"
+    },
+    {
+      "path": "NINA/Resources/SVG/shield.ai",
+      "blob": "80f159600e1476f939cfe39fc624290cca8f28d2",
+      "sha256": "E6607EE8CA8BF61233EA38B6ABB9E3BAE4498264652A2B2857615450572F62B4"
+    },
+    {
+      "path": "NINA/Resources/SVG/shield.svg",
+      "blob": "8956ca6eb6d020410622414dac19ea3eeb2a9545",
+      "sha256": "45290D062046963F768B5D6780D6FE7CF07BF44F98C4EBDAC4B80DBBD99ED5E8"
+    },
+    {
+      "path": "NINA/Resources/SVG/show.ai",
+      "blob": "ba9824ef60d258fea3390fe2abf5b10c84160f97",
+      "sha256": "C419F83A0C2D2E01DEBD2E315F2BE3CCEE76EE9350CEB6DDA3E45D51332EF635"
+    },
+    {
+      "path": "NINA/Resources/SVG/show.svg",
+      "blob": "d48cac697c42a2fbbaa404d589c9c7ff9bfe25ee",
+      "sha256": "30B970A82D3F0FB8FC612EE98C88A9EB9AB53259FBCBFF7507006E26797B4F8C"
+    },
+    {
+      "path": "NINA/Resources/SVG/sketch.ai",
+      "blob": "7aaa1b4828a1df75db32cd988393d864ce2bf06c",
+      "sha256": "EC05B9D8DD1F897F49CC23B660064262A1D74913073E996A7313228D357693DB"
+    },
+    {
+      "path": "NINA/Resources/SVG/sketch.svg",
+      "blob": "4d76d1ed5550f11027c60bff31a00a0fe94e303b",
+      "sha256": "866938247A4D0A8589C1A97B6690D63F9E2C8BA1007AA5AFB97CF4ACE47593AD"
+    },
+    {
+      "path": "NINA/Resources/SVG/skip.ai",
+      "blob": "eef52aba2c706838588dfcd34e85dc992f3efaae",
+      "sha256": "B983AE5F7240CB8D3264077FCECC7E56DBD4F0D0D65E69A7E099A8EF101EF956"
+    },
+    {
+      "path": "NINA/Resources/SVG/skip.svg",
+      "blob": "95509af393ac7d8c03c01c63fffb2112d1ede446",
+      "sha256": "5FBEC26FDC9604D8574769D92E566408F423AFE0E79E0BDAF0B4A4537E0D77BE"
+    },
+    {
+      "path": "NINA/Resources/SVG/snowflake.ai",
+      "blob": "7cbb06bc7d17c5a9cb1fccb80edcac01fccce26e",
+      "sha256": "E0B474CFEDFD3612C547FC89481C973172418527EC00F67BDCC08FC0160E8E9D"
+    },
+    {
+      "path": "NINA/Resources/SVG/snowflake.svg",
+      "blob": "f5d77d74e5e502f426f5948b5800e17d2da4ec21",
+      "sha256": "A47E7F995E78852894A9407C5A23F49C8ADE8CA9860DC8106FA1B33A7302E092"
+    },
+    {
+      "path": "NINA/Resources/SVG/snowflake_nofill.ai",
+      "blob": "93e3dec6b53765ecdca726f1d6a49bf19f5bf30a",
+      "sha256": "5D7135CA5EF93A4F6DFBE7035A38EC2114A4C5BC8721BEDBAA1B421725547DE5"
+    },
+    {
+      "path": "NINA/Resources/SVG/snowflake_nofill.svg",
+      "blob": "a320e345bfedc73e9597423e11fdc17a8d9dd64f",
+      "sha256": "3F2E4D245A0312594E3716439211B9929BD35A47D40325C02C22D9E2AF5AAC03"
+    },
+    {
+      "path": "NINA/Resources/SVG/speedometer.ai",
+      "blob": "bf848ecae119006d5a05b117c925b3bff5c0e087",
+      "sha256": "576DD08E57CC5F4D0495F0087B097FFC66D35D58CCAFA7AC5E45F075D8E47B6D"
+    },
+    {
+      "path": "NINA/Resources/SVG/speedometer.svg",
+      "blob": "a3ecb84aee4032e21e6b9c5b4441b7e8b7dd6367",
+      "sha256": "7ACBC8C8D345691EAC53AC534C217AFDF832278D380EB7C63C6232BF626632DA"
+    },
+    {
+      "path": "NINA/Resources/SVG/spinner-circle.ai",
+      "blob": "ff0569a704e986033285ee09160c201bd2961caf",
+      "sha256": "85199D6A1D3E193623BABBB43516304CACC41A25B0AB9973A51A95D3CBCD546C"
+    },
+    {
+      "path": "NINA/Resources/SVG/spinner-circle.svg",
+      "blob": "d766e84a1f3eaec2f98e0b3fe6b48767370a672e",
+      "sha256": "94C4B5CAA76460B7403A614EDE2EB32FDD582F89E2978F2EC2058AC393E60EE9"
+    },
+    {
+      "path": "NINA/Resources/SVG/star.svg",
+      "blob": "049bbd8f64340ea0581701d6adf92b1c0ccf1ea8",
+      "sha256": "D724E6383F88CDB3C60823D29855762AED5895D32B2E43A6F6960CBB45D402FF"
+    },
+    {
+      "path": "NINA/Resources/SVG/stretch.ai",
+      "blob": "2fb000e003d7f5772bca9662b01b2c9b408942b2",
+      "sha256": "8E83C789CC533665768B8B537E6B3117F1E08F8B4951CF96CAFDF0EEE64CFC4E"
+    },
+    {
+      "path": "NINA/Resources/SVG/stretch.svg",
+      "blob": "54718f9312c5ae62aa4055a95cf71c7d58173c23",
+      "sha256": "3929414EB7B8516752B363BC159DD837EFB5159B6291EE60FBCF7B07320B6339"
+    },
+    {
+      "path": "NINA/Resources/SVG/sunrise.ai",
+      "blob": "e3431c6718a2b83e2586cc74d1a5573d5139966a",
+      "sha256": "56F4A35D6882A0282B14AEF36E9D1F735D155C29D9AE8059FA6C1B80203378EE"
+    },
+    {
+      "path": "NINA/Resources/SVG/sunrise.svg",
+      "blob": "15cdff626bfa0925d3dc0eccbdd5e0f94f568d0f",
+      "sha256": "9B0C5620B2683ADC1CC7A79EF8CCBD655F514D4D8E6F2448759AF720146E6E70"
+    },
+    {
+      "path": "NINA/Resources/SVG/switches.ai",
+      "blob": "541420f443cb5fb227bafa7c3a2e9becee924ca9",
+      "sha256": "473FDFA192EEBF0D13C7ECF15BF0450100E7DE39DA89E032070A6A12607F24FB"
+    },
+    {
+      "path": "NINA/Resources/SVG/switches.svg",
+      "blob": "efd425cf508aac970f15fe556fc1c628480ec031",
+      "sha256": "0BD9A29D7B992927EDDBB42226EB2C72B00588C50DD1BD83D466F7CC9B545F46"
+    },
+    {
+      "path": "NINA/Resources/SVG/symbol-braces.ai",
+      "blob": "7f71d62557577791352968f427708c43689e15b3",
+      "sha256": "FF1122067967AFC2980F37C805850E9876537BCECDC32FED65DC455E2D05E91E"
+    },
+    {
+      "path": "NINA/Resources/SVG/symbol-braces.svg",
+      "blob": "154aaeb9abca2809acdf5e46ca6059eead52fa1b",
+      "sha256": "CF84EBF2C0ABE65DAAF75025F37CBE4A3FA54A938177AA0E08A6F09554240981"
+    },
+    {
+      "path": "NINA/Resources/SVG/target.ai",
+      "blob": "345e53b1d2048561edd3a0409ad287b2a26674aa",
+      "sha256": "D2AB4DC3530044E0EA7B6AE04656097DACC41989DB8F97AE55F9112A8E255B75"
+    },
+    {
+      "path": "NINA/Resources/SVG/target.svg",
+      "blob": "3a91ac4acb841e44fd59d86adb1e7f466be476d0",
+      "sha256": "2C1BFECD6EC305F84469C04AB9BD6F930BB5E947B942CB6585F64007944E4A25"
+    },
+    {
+      "path": "NINA/Resources/SVG/targetwitharrow.ai",
+      "blob": "066001ae59973f25db1f1e95df22cc83ba3656e9",
+      "sha256": "C8E802BDB5E1CAA7464710652CAB52DA3E99C8D36E21C290FA6903E7478C5528"
+    },
+    {
+      "path": "NINA/Resources/SVG/targetwitharrow.svg",
+      "blob": "385802551d1fd99c5a5148bb0ff076866d88be28",
+      "sha256": "069965ED580481C25EF6BF712219007C11532B72D28ACC93CF79AB6F8174780A"
+    },
+    {
+      "path": "NINA/Resources/SVG/telescope.ai",
+      "blob": "0286ae0d8af32cef1284aa06e7027776fd3edd1c",
+      "sha256": "6CA2736916BDF977FC6953C2B771F8AF6743E52472872AD32D79602DD57CC5ED"
+    },
+    {
+      "path": "NINA/Resources/SVG/telescope.svg",
+      "blob": "508c842684135c44f12f2177feb1bd440cf361fb",
+      "sha256": "042781700CD8037C40B6DE73AEEA6BE51C7B44F264D0611CB25942D5DDDE387F"
+    },
+    {
+      "path": "NINA/Resources/SVG/thermometer.svg",
+      "blob": "e72610c504c689e3c7301b9678cdc1537775ac07",
+      "sha256": "E8A598D69CBFB54261F5DAAD4D319950FDE6BBF1D66D3BFDBE5997C141131BB7"
+    },
+    {
+      "path": "NINA/Resources/SVG/thunder.ai",
+      "blob": "1643ef1d3d38eebd4fc10971f461f16556c98a6e",
+      "sha256": "B224011CA32C77CA9B9C7A71C11EC3089C8E2FB4EB39DA268145F974D0328D8F"
+    },
+    {
+      "path": "NINA/Resources/SVG/thunder.svg",
+      "blob": "df28e3dd29363058962c4a2e6f4b58e80503992f",
+      "sha256": "88358FDF782CA2FCEFE25EA8A273D3B316F770D3733021EDE469C3AAE7FE5EE8"
+    },
+    {
+      "path": "NINA/Resources/SVG/trash-can-open.ai",
+      "blob": "efe0b720cee72519a08f24f848e7069e69b172c2",
+      "sha256": "A80999FEF93FF63B5CBBA04770D8CD533AD3C32AC843DCE930D7BA530B6C8C90"
+    },
+    {
+      "path": "NINA/Resources/SVG/trash-can-open.svg",
+      "blob": "cb680d2805b9563891fd71f3b69699aaf82d9aa0",
+      "sha256": "69BA11A129C966E654E01C1E21F04DBBB30695EF94CAD2E968ADB2F9E8F19718"
+    },
+    {
+      "path": "NINA/Resources/SVG/trash-can.ai",
+      "blob": "adddae8ca2fd0fa723034af08d7acb0c1f287aea",
+      "sha256": "F95629E84FBEAA5A82F8A552225495F473561F451F6F7D2E6FB2DEA66DAA9A48"
+    },
+    {
+      "path": "NINA/Resources/SVG/trash-can.svg",
+      "blob": "82be2cc7058012df49f39b287a05fa3dd2921257",
+      "sha256": "42507935D9A1F0CEFE8EB29CCA174C2BC38C9A270F65DF99D9923A561600A99C"
+    },
+    {
+      "path": "NINA/Resources/SVG/unlock.ai",
+      "blob": "ac71a7c17a9a1ded0c146a97aca27967680a12d8",
+      "sha256": "F3EE93B1F9E903F4DE0641C57229FBE7AD98EBA42681E4465A119895EC585FD9"
+    },
+    {
+      "path": "NINA/Resources/SVG/unlock.svg",
+      "blob": "efe718bf80b35a3a2a5b9249e4384a371de851e8",
+      "sha256": "5540580CFAD49C50CE37E16790B96DDA2BD795403F04BF2A2246614A22BBE51F"
+    },
+    {
+      "path": "NINA/Resources/SVG/unpark.ai",
+      "blob": "06ffd4c2cb119b99146d02c787d574fd7e3c1a68",
+      "sha256": "12C017D0AB339DCCBA0938E480723B35CF2A3BAA674F7BBCEC88EF0FFBA9C2DB"
+    },
+    {
+      "path": "NINA/Resources/SVG/unpark.svg",
+      "blob": "4b89298e2d4dd1230067b2aac1d56a6237431da8",
+      "sha256": "27ED95BA6DC1CEC35D3BA0A85562A45D28CFE8941A0E9C67388406ECAA790A05"
+    },
+    {
+      "path": "NINA/Resources/SVG/unshield.ai",
+      "blob": "9aac9c96b2a0173a2e06bd8571f913ee0a7a404b",
+      "sha256": "A28E7C9EC8D3CCD8A01CF4D939460C5034A29E731EF984CF088F74360A35333C"
+    },
+    {
+      "path": "NINA/Resources/SVG/unshield.svg",
+      "blob": "c1dccfdd8742081f74e7002b8fd577a1e38e7f87",
+      "sha256": "8AC432576F93E1B4EC648B5C4FB8891FE0880F606676C25B9702143D023E7699"
+    },
+    {
+      "path": "NINA/Resources/SVG/usb.ai",
+      "blob": "06dbddb203200e32f2c9bdb3aab6dd920ae22b57",
+      "sha256": "B36734C0113D1691B7F88B1F8C2680B19DD24DF51A9AA2B507FE8F4111F030B5"
+    },
+    {
+      "path": "NINA/Resources/SVG/usb.svg",
+      "blob": "9e64d276a5f2b27423be92d3f1e3b0279fcbde7e",
+      "sha256": "C540540F26CC3C9DE9EB2C1A9ADD4F3ED61834B8F1B5A8FD0D75F1184ADC9D62"
+    },
+    {
+      "path": "NINA/Resources/SVG/wand.ai",
+      "blob": "a0f551800692f18cd6c6b53d2abcdae9fd1cf322",
+      "sha256": "DC1987A09A9F7B19358B91521F915B5CBB0143AC7606FB78B683FA8546642D50"
+    },
+    {
+      "path": "NINA/Resources/SVG/wand.svg",
+      "blob": "39819becb8ee924b6e7566d628fa97fdeed1506d",
+      "sha256": "847F724A6C96EB016F13D721224E35C50555BCD7711513314D65C15AE4DC0118"
+    },
+    {
+      "path": "NINA/Resources/SVG/worldmap_equirectangular.ai",
+      "blob": "dabf31b5363b2b44be1e1661635f9afeca10e779",
+      "sha256": "41182A2D95BB3E8629F338B09907F4016D0F918FA23CCE19B0A8454F3E537AD1"
+    },
+    {
+      "path": "NINA/Resources/SVG/worldmap_equirectangular.svg",
+      "blob": "fddc72ccdae5ef94c9c09d80d23c43fde910748e",
+      "sha256": "247A80953E7616016FE87E650B1E66050CA4C806CC1FB15D0286117A759D78A6"
+    },
+    {
+      "path": "NINA/Resources/SVG/zoom-in.ai",
+      "blob": "eb93ed03ad0f7619380d1cd0760a5735aece9c23",
+      "sha256": "3A7C978EA76DD9D05F588243A46F803B596C6DB550CB63C1CD88BEAE1B357075"
+    },
+    {
+      "path": "NINA/Resources/SVG/zoom-in.svg",
+      "blob": "0758228e25183f6b0848ba0b710bb0de92c5472d",
+      "sha256": "9936147E95D927E0C1139CBB04296BD363DD6343BE651FA01BDFC58EFAD4D4B0"
+    },
+    {
+      "path": "NINA/Resources/SVG/zoom-out.ai",
+      "blob": "82866d2df7e06ec19ef019ab3a6c00e8d286ff41",
+      "sha256": "8BAA950265025F6D3BA44241FAB347AB533A0FB22598905351D4D159B791EDCD"
+    },
+    {
+      "path": "NINA/Resources/SVG/zoom-out.svg",
+      "blob": "cead4841d56e2ccb2c501c185d7ae79c2df232b4",
+      "sha256": "293E54406944DF71E1CDE25EC845232B6DFD96935B12739C9A4E2790C69B68C6"
+    },
+    {
+      "path": "NINA/Resources/StaticResources/DataTemplates.xaml",
+      "blob": "a2e7a5526ab1ba57013d285d731a9f79a5c8120a",
+      "sha256": "D666B65752AE3A2A47A9D0301EBC9088599A85AA54C5D95BB4EC57F68AD8D9E4"
+    },
+    {
+      "path": "NINA/Resources/Styles/AvalonDock.xaml",
+      "blob": "7938326d22862ed619e5ff01a488022430cb2811",
+      "sha256": "7CC197CE1610DCADDC6331F4985864649B50A211E49716ABBFE1B3EF15C20820"
+    },
+    {
+      "path": "NINA/Resources/Styles/Markdown.xaml",
+      "blob": "da473214b6d4792c93769cd1660b58182e8298ea",
+      "sha256": "5D0FC7221AA107FDB68E1EAA0C57855E814B6450620018D28BD6D85D8F9B96F3"
+    },
+    {
+      "path": "NINA/Resources/Styles/Oxyplot.xaml",
+      "blob": "6a623a29bbe0f727aab32a167afe9de2ce63aa27",
+      "sha256": "30186943F1C8F46DFEEE6AC00AC8E625127CB26AE6C8CAE3422B92CD51010FAB"
+    },
+    {
+      "path": "NINA/Resources/Styles/Window.xaml",
+      "blob": "9f7dee649c2024647cdf6854f5d07e8c7084476f",
+      "sha256": "54DCED0CED393D2DD17E06D95DBCF2CFF91246ED5EBAC01900A60E9164BFF910"
+    },
+    {
+      "path": "NINA/Resources/Telescope1.png",
+      "blob": "b50b4a41a51a1a70205c83969f0940a35970ae84",
+      "sha256": "741BE0A8376D28CBE7DF98ADF578CA4D12D0C4BA74482604A158C7A0479ECDE3"
+    },
+    {
+      "path": "NINA/Resources/TelescopeActive.png",
+      "blob": "aab94e1036b342a3a8a2fc3cef7c1e01c003b217",
+      "sha256": "1D752EAC366ED7E0164F9856EA0D0B8F3B0E82D4677C3E381BB6F73D21F9A135"
+    },
+    {
+      "path": "NINA/Resources/TelescopeInactive.png",
+      "blob": "eda1d3179d4d992f89201d3fa7196e57c7beda38",
+      "sha256": "11651A5258D8D5E28A4159E05A9292B1CC43834D6F82BAF4F64A8D709A2FCE50"
+    },
+    {
+      "path": "NINA/Resources/add.png",
+      "blob": "7076142bd4fcae075923c6a7a00f7b63a0915fff",
+      "sha256": "360D16EABE413C07C270D55DBB5456966292514B7D6E606855C1E09033C0804C"
+    },
+    {
+      "path": "NINA/Resources/astrometry.net.png",
+      "blob": "0147664be91b216239fe38b8c1659a5011fa6a15",
+      "sha256": "95EA44B6B782C4884199A5C5DE205E5DAB789CDC7E68EA19B769C5A80786CB0D"
+    },
+    {
+      "path": "NINA/Resources/avalondock.config",
+      "blob": "ce553d022a4eadea01f23149f0c917b611547136",
+      "sha256": "4BDDF4E976C7BC098B0C8D7BB192F8163E6623F209EBF471D4BF7B3F54969F01"
+    },
+    {
+      "path": "NINA/Resources/back.png",
+      "blob": "00aef453fab10e4a89a9d895af0852ca526a3e2a",
+      "sha256": "75F85643EA5D8C4AD5973DD667B41319B8BBE6744014F004926C918449F7CE82"
+    },
+    {
+      "path": "NINA/Resources/bar-chart.png",
+      "blob": "6b1465e46e39db3b9cf834d72ef401b3ca7bce1a",
+      "sha256": "3511CCDE53A88C7FE44C3DD488AB82866D97E388153CC401F4619AA5130D40D1"
+    },
+    {
+      "path": "NINA/Resources/cancel-32.png",
+      "blob": "f6c80dd74739bef75926aaaa502b89f27e8bc79d",
+      "sha256": "3DBA54D27C8EFCE5A1F78864D6685A2A96892980DC02D63A847E3DB9048ACCB3"
+    },
+    {
+      "path": "NINA/Resources/cancel.png",
+      "blob": "5aa72bd1d0076a71f8b63d44c48748f2de89a070",
+      "sha256": "0C07230706AEFC73A14592E421F3106EAE135DFB0E5CA39E5502C92E122906B0"
+    },
+    {
+      "path": "NINA/Resources/checked.png",
+      "blob": "1b23ea97f8bcfa47251ebdc5fed8a0943a249afc",
+      "sha256": "9310EFE4ADA21EF6EA6183844D87CCD544B483EBCE3F6BC222523C3E0E035D02"
+    },
+    {
+      "path": "NINA/Resources/compact.png",
+      "blob": "12d0c436d905aa8e433a5894dd54412d73b3b17b",
+      "sha256": "9CC25F338EA33032574EA52C4E5C4B5F1A4E56953D30A9578C13CBD375AD468C"
+    },
+    {
+      "path": "NINA/Resources/dots.png",
+      "blob": "f5620cf4594d86a3c2c74b71c9a87cd139c7613a",
+      "sha256": "D8CEBAB5DC381B6CF289EABF0E92BF896D4528CD7ADEF666016D3DBE299C25AC"
+    },
+    {
+      "path": "NINA/Resources/loop_active.png",
+      "blob": "0b0f9d79728d9cb931832ec03d7143de2742830d",
+      "sha256": "3EF8C08402F7293302EEC3B48BD8DD5143F8587C4820C6C913F6DC76A0DB0EFA"
+    },
+    {
+      "path": "NINA/Resources/loop_inactive.png",
+      "blob": "3f85dbe67804ff06dfdf6d2a8d2147884c246c99",
+      "sha256": "A70DC87CD6E9175A3CA98CB38BB5FA0B57FF917418400BFBA456DB285BA2919F"
+    },
+    {
+      "path": "NINA/Resources/magic-wand.png",
+      "blob": "b4ee5d558287ad2377107d27e6cf3b79141d2973",
+      "sha256": "FA010C50FC694D049D1E102F79B0659646D2BA1C167CE2CE25ACCCBEC2F24059"
+    },
+    {
+      "path": "NINA/Resources/next.png",
+      "blob": "c90b9cc13a632d93fb43dfdb4d187c3faf615d42",
+      "sha256": "1FD2EB3E33024D2FD73693D96A7E9DE8C7DFEE4E87809D909D3F7E7145682CF4"
+    },
+    {
+      "path": "NINA/Resources/ninasplash.png",
+      "blob": "4b849eca7a2840b0c3e208832670fb13a26bf59f",
+      "sha256": "4D859FE437C3B1E99C96B4EE8EB446DDE2104BA7FC93E32EB3928057A92A5406"
+    },
+    {
+      "path": "NINA/Resources/observatory.ico",
+      "blob": "1fefbd409dfcb45e3f163db2b0ae7789fd7fbab2",
+      "sha256": "A844F9E6EACDC677F8D91EEFD8FF65E6CA97D39B9F94087A7D997132DEBC0153"
+    },
+    {
+      "path": "NINA/Resources/observatory.png",
+      "blob": "7992c94c5e48ebaa6edf14dd1deeec2906b44e1c",
+      "sha256": "FF22C4196B72947033F504E5680150AA95944E2B43C9497A33A850664D1DC418"
+    },
+    {
+      "path": "NINA/Resources/observatory_mini.png",
+      "blob": "f120197fcf2c969ef008a8f8f45d502c192ab250",
+      "sha256": "21A77883FD47B87C2549EE7AF95CAFC457B8A5B78EA23DED52F06BEFCAB4BC93"
+    },
+    {
+      "path": "NINA/Resources/pause-32.png",
+      "blob": "284592f230d67f8f169f867c68073ebed899f465",
+      "sha256": "D09DBD489DD9D9C3C74D8ED4E87E9975F6C3F03AB7B60FB36AF3020A98CC529C"
+    },
+    {
+      "path": "NINA/Resources/picture.png",
+      "blob": "e8432dd3bac4fde436a75bf5ec0d08d4a26f6844",
+      "sha256": "C568AFE741D0D4EE1D8CECC193831EFDEC32BA727EC629F9141C8406C4DDBE7B"
+    },
+    {
+      "path": "NINA/Resources/play-32.png",
+      "blob": "cf706a070cc7af914598741dd5ca245bb3f0f406",
+      "sha256": "C0EB5F036809FCCB6F313495041868F41D47C0A1A58D5DCA1030BB5D9DAFF1E3"
+    },
+    {
+      "path": "NINA/Resources/play.png",
+      "blob": "9fe08dd655d5dd725641ecbbc65287d6912accf5",
+      "sha256": "8E1D34762D4CDB880EA5577A187DB9A29D229DA5788FF6AE94964C087FB7B566"
+    },
+    {
+      "path": "NINA/Resources/plugged.png",
+      "blob": "5bad99bfaf269d9eeeefd395f7180a29248a848a",
+      "sha256": "6137CEAD3BCF7A5D71BF0C61B30828F29AC0C9205533C49F271A9C0E766CBCEB"
+    },
+    {
+      "path": "NINA/Resources/plugin.png",
+      "blob": "ddf28c2c47b83e3c4e460d47794fb2e1b247e668",
+      "sha256": "44B778BEABDB31F18A0F385C17C5B8A590A7EE089C586A018D4A672F6B8452BB"
+    },
+    {
+      "path": "NINA/Resources/preview.png",
+      "blob": "91cb0ff018442fa336679fc047df96f057551c04",
+      "sha256": "6CBEDBA6A2E6BDF7BCEE00D94B28618498A33080CEFE49D86582EB999158E972"
+    },
+    {
+      "path": "NINA/Resources/stretch.png",
+      "blob": "cf9d53ddbad3e2d0a7d45750db23ad3b13a5cc18",
+      "sha256": "974C29C870B1F696D1C4B77F6D0618DE1B6B12FC54B25B7B28245CC17DAB6BB6"
+    },
+    {
+      "path": "NINA/Resources/unplugged.png",
+      "blob": "a260e70e21b5f2c95d949054e976a86efd1059f7",
+      "sha256": "672FCD128EA7616F54A6743443CA0101DAA6C80F5C16C06CC995370F80B4CB0F"
+    },
+    {
+      "path": "NINA/Sequencer/Examples/Basic Sequence End.template.json",
+      "blob": "74e46fcd2854427b515d9ec6d642d841d98853f1",
+      "sha256": "6EC8287AB2C7A8AB04B2E5DFEB83D6274570C26E9570B8EBD651F9F7F2CD4E2C"
+    },
+    {
+      "path": "NINA/Sequencer/Examples/Basic Sequence Startup.template.json",
+      "blob": "7e4cdb74451a8ecfadc36f5f2d49b1f5fca5f555",
+      "sha256": "00D735E2934FB1CBEBBB2A5CE16E176BA92820CD6C35AA5854C8C69D50E98198"
+    },
+    {
+      "path": "NINA/Sequencer/Examples/Basic Sequence Target.template.json",
+      "blob": "6fe1a6269b8f893b120301bb00b705e2519900ef",
+      "sha256": "2A4C017E252FF34B09E37E74454395F33D66C4B70328BFBCB6DA669582F3E3A0"
+    },
+    {
+      "path": "NINA/Settings.cs",
+      "blob": "9f7ee5b2e54da2ef30ebe8f7906b1213bb46e922",
+      "sha256": "AC4A3A096E1FD62C59007E28A8602CAA6460D744B925DFF93F69AA3473FAD4A9"
+    },
+    {
+      "path": "NINA/Utility/AvalonDock/LayoutInitializer.cs",
+      "blob": "b8fa7920c51d558311b6e59664f14e7155174a25",
+      "sha256": "BDFF1306C01204941F51B08C5650FC12DA5293F5B365772DECFF81020AA0942B"
+    },
+    {
+      "path": "NINA/Utility/AvalonDock/PaneStyleSelector.cs",
+      "blob": "a607141a90effc3d8f60458ebccc80f6a7ebb72e",
+      "sha256": "3DA4B44307C1CE8F5791F2D13F2278BFCA9B035EE7973E42F06A19A61C29D875"
+    },
+    {
+      "path": "NINA/Utility/CommandLineOptions.cs",
+      "blob": "047aecb0d27170d0a622c6f02442fca65ceec92d",
+      "sha256": "DB12A8F863D36F18A196211DFFB162C334E75056683A0B79DA075880DF90AFE1"
+    },
+    {
+      "path": "NINA/Utility/ExifTool/exiftool.exe",
+      "blob": "8626eb0a5fdb12b86b306084e44ef7654a911850",
+      "sha256": "25C0F009B5B79C3068DAA41E34E696C39E58008ED1E0884BED89D6C3626A37DE"
+    },
+    {
+      "path": "NINA/Utility/GlobalObjects.cs",
+      "blob": "fd4a38a38d86a0cb6a0316197e9ab30eca41c1d5",
+      "sha256": "093CF89956478DE0595CCAF6C064D6149B05D1EE1B481313DBE2D3CB8A1DDB86"
+    },
+    {
+      "path": "NINA/Utility/ICommandLineOptions.cs",
+      "blob": "46b90a2fcc2da6bd79b973482c858aa7884cad90",
+      "sha256": "7C73040E5B5ECA2BD55D14FD61B9DCCF7456B5EF67A4C840CF0138A8F9EDCF5E"
+    },
+    {
+      "path": "NINA/Utility/IPluggableBehaviorManager.cs",
+      "blob": "da753a108798eb99c5fad4404111c55c37865b7a",
+      "sha256": "143940A6CE8A6F1E964ADA821133336044D90D00D9ABABB8B2740B35844FB655"
+    },
+    {
+      "path": "NINA/Utility/IoCBindings.cs",
+      "blob": "781d1a1fd896de1e2b65eeac1944e4c09cf7858f",
+      "sha256": "58463FEE7EEDFFCF70A6EBC0969AB2B0879E03BBC6485FD1B39626F13E0DB8EF"
+    },
+    {
+      "path": "NINA/Utility/PaneTemplateSelector.cs",
+      "blob": "1a541c062930cebcc1176eac420f6109cedf9b9a",
+      "sha256": "325383F2EA2733BE9704033EB74C0EEC4B96AC0BEA3D03398C75E7415622685C"
+    },
+    {
+      "path": "NINA/Utility/PluggableAutoFocusVMFactory.cs",
+      "blob": "2095923a7f980b7c3d0cf964da4449a38c4761f4",
+      "sha256": "B2D0D42095AE42F8D026C36E38B76530BAF48BFA56AF073E89B9CA467018DDC0"
+    },
+    {
+      "path": "NINA/Utility/PluggableBehaviorManager.cs",
+      "blob": "81cea4df13d07ca7ea9f97cf21761286dc06c3bb",
+      "sha256": "B49C711400098AD06B9D0EC3D86746292992E53D31C1EAB29DA5B4B0CAD3D5EB"
+    },
+    {
+      "path": "NINA/Utility/PluggableBehaviorSelector.cs",
+      "blob": "1d688a5ca5b5620f6e93666eeee07b298ec95909",
+      "sha256": "D3D1CBBB992D826E7769ED7CADF6D6635EACC3E392DBFB38B5F68F1EE65254A2"
+    },
+    {
+      "path": "NINA/Utility/PluginEquipmentProvider.cs",
+      "blob": "a67c6987054fe9837d7d2019b5337e1d1a11f331",
+      "sha256": "BBEE2E70E1FFD9A58C90877845E07BF977F39EC05C6F0995EF14EEBB5237C1CC"
+    },
+    {
+      "path": "NINA/View/About/AboutNINAView.xaml",
+      "blob": "830167428b395374205ea94224e1717370e452b1",
+      "sha256": "FF1508B3A425CFEB8ECECC72804A2B2A0E8D3B94052D664D0F221FA0592A9578"
+    },
+    {
+      "path": "NINA/View/About/AboutNINAView.xaml.cs",
+      "blob": "eed46c9ce4ae763a8ee8583019222efaec383813",
+      "sha256": "0C0EA1BCDDF67EC25D9FF3ACFB8FA9D863AE9F51CE3E77E6A6670D39908A9553"
+    },
+    {
+      "path": "NINA/View/About/AboutPageView.xaml",
+      "blob": "71437b0ba22c5cafbe5ae2fc98b226977593f8e0",
+      "sha256": "8503FBE53947738C792F1642E0FCCEA114BC2A203EBC5782F6BC2AD3A3ECBA21"
+    },
+    {
+      "path": "NINA/View/About/AboutPageView.xaml.cs",
+      "blob": "f432294bcc4da2fe4c4c70beed32bfbe942f0abc",
+      "sha256": "9EC4496ACFE77E176FF46CB91823C3FE360A9345338004484924EADE6E57EC2C"
+    },
+    {
+      "path": "NINA/View/About/AboutSDKsView.xaml",
+      "blob": "a5bc5021f010776dc13797d6b8823eea0ead44e6",
+      "sha256": "DB33F14FC01F0CDCA682D966E5B5FBB06B46E4304536EA1840CBC17BED02E1C8"
+    },
+    {
+      "path": "NINA/View/About/AboutSDKsView.xaml.cs",
+      "blob": "a0d3206a5e6069473bd94ed8e096d8633c972252",
+      "sha256": "04A7C2F9F6BFDDE47401049E2938345E52577FF86DF301DA31225AF325014D5D"
+    },
+    {
+      "path": "NINA/View/About/AuthorsView.xaml",
+      "blob": "38907950a6fb151cb0b45cd426ad04f98fd069ab",
+      "sha256": "0FDAB178D0DE9A4B1518FC50883B9E775AFBD15DFC09B9158A150256202F684A"
+    },
+    {
+      "path": "NINA/View/About/AuthorsView.xaml.cs",
+      "blob": "a5dc0b42cd8c6f9fec47b32ab8cad178afb60bdb",
+      "sha256": "1A12E7B6F168B47903AE0BA602D38918D27C56927421ED1404A376E67FADE59D"
+    },
+    {
+      "path": "NINA/View/About/IconsView.xaml",
+      "blob": "edefbcfc67a9f86316b78d38e36beee551c9ab2d",
+      "sha256": "8FBA5E1E457285588BC0438BC0F02E7B9AA51A8B8B086D1135CCC2598305AE0A"
+    },
+    {
+      "path": "NINA/View/About/IconsView.xaml.cs",
+      "blob": "a76e28b6ea2ccff9bfaaec85c6c0d5d8c68579d8",
+      "sha256": "E4C7D9A6FF50F96DEF29115CC5D293052B2199B8D69E58FCAFC8178DB3211A6F"
+    },
+    {
+      "path": "NINA/View/About/LicenseView.xaml",
+      "blob": "4be8eb24c7eb662333024fac49003ae686f21028",
+      "sha256": "1EAB3261552DDF0D14B7FA15931C1E4A474A3E1709185B2FB92A964D6B49AA14"
+    },
+    {
+      "path": "NINA/View/About/LicenseView.xaml.cs",
+      "blob": "92e001c7b6ecc9a52bb24a19d6d4e9767143d976",
+      "sha256": "CD0B2023633F0D1EF576A46C4532F54A26122844C6EFD5E08D4FD04F2155C09A"
+    },
+    {
+      "path": "NINA/View/About/ThirdPartyLicensesView.xaml",
+      "blob": "7d22aae3a91d4637005b918a39cda33f58cabc0c",
+      "sha256": "638597854B2EB6943EC61220D82F943C569D15B591EF8A979C4D87923433B1AC"
+    },
+    {
+      "path": "NINA/View/About/ThirdPartyLicensesView.xaml.cs",
+      "blob": "c1765ce762ff87d673ee4f55c3e6b2bddf1770ca",
+      "sha256": "263B14C6D17C3BD9B2B51C0F6A1C0572738F945EA48F2C5BA0011321E72DE588"
+    },
+    {
+      "path": "NINA/View/AboutView.xaml",
+      "blob": "05ca68761c7d341036ee7fa3fcd4f67f71d2e89f",
+      "sha256": "07386E66C5CE6754DB9634100A00B8DC84986DE7B596010224B3CB09236016F9"
+    },
+    {
+      "path": "NINA/View/AboutView.xaml.cs",
+      "blob": "e61a87895d9717e6f25587686d382317563c0109",
+      "sha256": "B2C76584CBFFCA9357BCE6BA79C7052B4239CFE4F6907CF9FBD1D4241DCA637D"
+    },
+    {
+      "path": "NINA/View/AutoFocusChart.xaml",
+      "blob": "07c0b95ab4b684483347efb3b372ec68abb7866b",
+      "sha256": "6C82E3F64D4C9C129DABEE78D6BE2AE3CF15F2E2EE7711585EBF4D43DAA12DE8"
+    },
+    {
+      "path": "NINA/View/AutoFocusChart.xaml.cs",
+      "blob": "40ddccc0847cea1df8934b534c644d4fbedc3a70",
+      "sha256": "095E17247319EB03CDF24523FA9575ACDB021AFE3E8D192C1E377766F65DC290"
+    },
+    {
+      "path": "NINA/View/CameraControlView.xaml",
+      "blob": "c677c008e78a994de873d4169af93e6bd8c57753",
+      "sha256": "660EC1A434BC7734AF8BDF3463672F613C8C1899D8A8753AAA6D507BC0F6882F"
+    },
+    {
+      "path": "NINA/View/CameraControlView.xaml.cs",
+      "blob": "bf7800d9473485b9455d4e6afcd1a99ff1da0c91",
+      "sha256": "E26BE1BAC0838AB73D43E9189ED5245D5FB2E1A7BB36C5221AB957DA29F34BF1"
+    },
+    {
+      "path": "NINA/View/Equipment/Camera/CameraCoolingChartsView.xaml",
+      "blob": "ff4dbdad0bc4a54700e187996fb0aaf776670554",
+      "sha256": "D9FA1DE5AB92AF27AA05BED035F2DDD28502B124A306006B29F69DCFA69E9528"
+    },
+    {
+      "path": "NINA/View/Equipment/Camera/CameraCoolingChartsView.xaml.cs",
+      "blob": "bdbfae20311937d1755a54d155e3cffe4f81b8e9",
+      "sha256": "FB82F2173AFDEB186A48354ABB5401E8F65F473B4CD06B3D3FD4699BC33F6579"
+    },
+    {
+      "path": "NINA/View/Equipment/Camera/CameraTemplateSelector.cs",
+      "blob": "e8bb812591ef382cc2f34a8e43615d67c846708a",
+      "sha256": "EEE4AA57704D4CC36B5639E99CAE9D4F066B071FCB92287F516590D7597ED715"
+    },
+    {
+      "path": "NINA/View/Equipment/Camera/CameraView.xaml",
+      "blob": "f08e795a9a83644b41654c44b2c17342bd4121df",
+      "sha256": "B49D0243BE530465D61DA3137DFEAA7A0154099BDF0CA3256617B738FE48E763"
+    },
+    {
+      "path": "NINA/View/Equipment/Camera/CameraView.xaml.cs",
+      "blob": "b4984821dee2c8b6fa2a5bac60673d8801ba1c97",
+      "sha256": "A3C8CB471B7D575662EDF38E47417A8290E3A9F6CAD9A4C76E1F4E8F49B0F893"
+    },
+    {
+      "path": "NINA/View/Equipment/Camera/FLICameraSetupView.xaml",
+      "blob": "8a9e5f07cfea2098cb371d5d5cbe538875d2a539",
+      "sha256": "9B7B4BAA39EEB6F4B94D111E3C1FFE2DA5B92B641125878E7B18D202ED818080"
+    },
+    {
+      "path": "NINA/View/Equipment/Camera/FLICameraSetupView.xaml.cs",
+      "blob": "1e8a986dc4bbbba47ccf929b73bbff5186951cdb",
+      "sha256": "6D09F09FAF771A18A3CD8EC529F3DE66F93454C78ED574E47A5689B5500F7D09"
+    },
+    {
+      "path": "NINA/View/Equipment/Camera/FileCameraSetupView.xaml",
+      "blob": "adb7f1c9dff8266158f81bbaa2d5384a6577e8b9",
+      "sha256": "094789F9C5BAEB7E6785B8407E7AA880B4F4594EDACAB065149B9B70D1538CE4"
+    },
+    {
+      "path": "NINA/View/Equipment/Camera/FileCameraSetupView.xaml.cs",
+      "blob": "b6a7d77f859e9f2ea826eeb2be596484774d851d",
+      "sha256": "BDA377E5F2C0BD8BD18DB64D574583230412DBD2D2AC0C01BBBB49E0418A7683"
+    },
+    {
+      "path": "NINA/View/Equipment/Connector.xaml",
+      "blob": "56c1e1ca620695efed565d887f9c868a557856ec",
+      "sha256": "C495A6AFF84F0D7EAE498AA3D421F44BF8954A3B36BFA49B44AE7E769AE3B02F"
+    },
+    {
+      "path": "NINA/View/Equipment/Connector.xaml.cs",
+      "blob": "4050fa58b89295f67af2c31c1fc29821ed2d855f",
+      "sha256": "9C20133AC96B5A4E357A8B11D660F2FFC009E2D7FAC1F221A6FA15E158E30362"
+    },
+    {
+      "path": "NINA/View/Equipment/Dome/DomeView.xaml",
+      "blob": "db593753def59f3d371fadae7bb2d0ba2adb7719",
+      "sha256": "53DA11F7BB57C9334C01B7F4298E0276D25F1D9FEC22668DF3FF7E841D29D019"
+    },
+    {
+      "path": "NINA/View/Equipment/Dome/DomeView.xaml.cs",
+      "blob": "268b613dc0c3093de228f4bb8c038ad85962ebff",
+      "sha256": "E601410823272E84875D559411A60CBBF70BFD3B9349CAAF7B83F094BAAF4848"
+    },
+    {
+      "path": "NINA/View/Equipment/FilterWheel/FilterWheelTemplateSelector.cs",
+      "blob": "8f97a7da4d5db563752d3a441a7f39311d89b0d9",
+      "sha256": "3905A69AE115508AE0EC2BDB4C40AEDB38DE26EE4BDFA4E92CCB24861AD200D0"
+    },
+    {
+      "path": "NINA/View/Equipment/FilterWheel/FilterWheelView.xaml",
+      "blob": "55b72de370e4f50e72e0e4c711f8b77a97a02691",
+      "sha256": "72276C5AABDB96DF4DF542E58C5172AF8E146957F11ACEA494E2410E9B069628"
+    },
+    {
+      "path": "NINA/View/Equipment/FilterWheel/FilterWheelView.xaml.cs",
+      "blob": "878cd882cd80e5c44baf4d240835d0cf16ad486f",
+      "sha256": "23E1595E35CE503C2C33FB1DAF527EB48C191EDD9D0EBD39213BA7A0CBA339C9"
+    },
+    {
+      "path": "NINA/View/Equipment/FlatDevice/AlnitakSetupView.xaml",
+      "blob": "c01f8ba34f8e621a443fa1f88b6b52fb4153f88b",
+      "sha256": "78AAA6C442772760C6D7069BB623416A14CFDB01B73CB081A4A49B1DFF8E4318"
+    },
+    {
+      "path": "NINA/View/Equipment/FlatDevice/AlnitakSetupView.xaml.cs",
+      "blob": "0c917390f6a5ae399c783a80427aeae9182b1a41",
+      "sha256": "E14A8348DF0554B507F6132353EA77A9689D433316A352355FE37DB5BCFE22B1"
+    },
+    {
+      "path": "NINA/View/Equipment/FlatDevice/ArteskyFlatBoxSetupView.xaml",
+      "blob": "fd63a6bb936badb7293e36c19fa8d4c765da01bb",
+      "sha256": "160827518BD539DA96D2E45FEE66B2196680A7042DB20EE9D6503D47931386BE"
+    },
+    {
+      "path": "NINA/View/Equipment/FlatDevice/ArteskyFlatBoxSetupView.xaml.cs",
+      "blob": "137dc85ac6211282f7b3b9192555e41c3def51f3",
+      "sha256": "08DB8BA730E6B639E506B899C13C3A70AF2FA35D936549CB5BC42F201090ABFE"
+    },
+    {
+      "path": "NINA/View/Equipment/FlatDevice/FilterPositionToFilterConverter.cs",
+      "blob": "d267d9dcee10a24ccf0405933517d1e8afe7ed72",
+      "sha256": "08614E016B29A27D7054EA5BF5261CFA178E45D6C148F78284B27C46C76BF6BA"
+    },
+    {
+      "path": "NINA/View/Equipment/FlatDevice/FlatDeviceView.xaml",
+      "blob": "e0785efcd715aef02b5510044b756abe6f2f0e30",
+      "sha256": "085747702752365ABB25CEEE5E3B7B38B42F5DC2C5BDCED3331DB4F7FD57ECC3"
+    },
+    {
+      "path": "NINA/View/Equipment/FlatDevice/FlatDeviceView.xaml.cs",
+      "blob": "50590a28ec62adb072a06dc603e3a72f3327969d",
+      "sha256": "3DB1E111476B942183AFA70154F2A711789817A274213D3D38B5268D9D5E9E39"
+    },
+    {
+      "path": "NINA/View/Equipment/FlatDevice/PegasusAstroFlatMasterSetupView.xaml",
+      "blob": "b0861cf1a0e4a2585c1a650250c59e095d302c6a",
+      "sha256": "B678F7933A64B5041795329920FDBEE403B2889EA13410F938EA0F8B3803AAFB"
+    },
+    {
+      "path": "NINA/View/Equipment/FlatDevice/PegasusAstroFlatMasterSetupView.xaml.cs",
+      "blob": "3dce26bb81dd8597b9655aba1cdb3b23853c9a0c",
+      "sha256": "AFD61AE6E553F851067F63BB9687448897657F1A2F0F09DA50C8A8DB9C853526"
+    },
+    {
+      "path": "NINA/View/Equipment/Focuser/FocuserTemplateSelector.cs.cs",
+      "blob": "30bb1cfde309c664136c8aeef7bef659535a3040",
+      "sha256": "43DA229481699FF20455CD9C124EED246A6B31C2D32F5405BDDA961C6E9C1D08"
+    },
+    {
+      "path": "NINA/View/Equipment/Focuser/FocuserView.xaml",
+      "blob": "166b90f1868a2e42c714c4477a3023e4b4a9070b",
+      "sha256": "88BC2BB22484A7FEEF98BEA036F1F78EDDA37A4AB257602B6CDF8039FE272E8C"
+    },
+    {
+      "path": "NINA/View/Equipment/Focuser/FocuserView.xaml.cs",
+      "blob": "06582f9bf35e5e3e0a21afab1ffa71df421e30f4",
+      "sha256": "A758EABE2F78127D9BCD0CD09FAFA45214A2204A72887BE4A8CEBDFFFDA411AB"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/DefaultDetailView.xaml",
+      "blob": "a0e8f293bf5592036e03bbe6c404ed296bf3757e",
+      "sha256": "D85D3B378BBFE0EFBF073AA51939AF80F3CC20D397FDE562F29105BE5E5A3876"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/DefaultDetailView.xaml.cs",
+      "blob": "f95e0ea867ddea3973817c498a7693d1c2e8db84",
+      "sha256": "BD4CCE0B5A734416259DA95079E67C169E9589E4E05C8C16015A6DEF1D0DCA52"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/DirectGuiderDetailView.xaml",
+      "blob": "bddd0d1e179102fecfb8b79ff3022ea060cf3f7e",
+      "sha256": "B4294CE0E92B2AE710E1EA576D9F5DDD1061A393E35EF359552222C461D66FF6"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/DirectGuiderDetailView.xaml.cs",
+      "blob": "eeb3b37cd44b35bea1a3bf3272b0db4821541654",
+      "sha256": "938680A5CAF17644D4A5C6DFD0405BD3C00F36983E9370F433545BEE912C4A40"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/GuiderGraph.xaml",
+      "blob": "1a2983ca38fbfa3d55c99cdae2b8567612609ee0",
+      "sha256": "140A5018359445988A32BCFE51413A7C60778D730B92BCC52A9FEC6858D7DF40"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/GuiderGraph.xaml.cs",
+      "blob": "aed080c7f7cd6247144bb0303aa6981dd91ef95c",
+      "sha256": "E79414A6E7A6AE463E9970ECB431290B0D7B7FCA7FB27630AD330C5EDF1767A9"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/GuiderTemplateSelector.cs",
+      "blob": "020f7aa16014992ef2465f96c677287d1ceafa7a",
+      "sha256": "DBF80D4333C16BC5183CA34F360A73AAC42105272E534F835F6552B846E64905"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/GuiderView.xaml",
+      "blob": "2079c24b8eeed59aed3fbd4676ebedb1dc24dc06",
+      "sha256": "B5B70CFD072AF6C87BAA1ED5F12346D95F2F066047F956952AA19552736E9E12"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/GuiderView.xaml.cs",
+      "blob": "3a3c920cc015eb6638243edf161638aff6027bd5",
+      "sha256": "C7BE22925CA5D06C611A87752E28E4B336E5FDB257C6E7C6CC9164CB9FC924BA"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/IsMGEN2ToVisibilityConverter.cs",
+      "blob": "7dbb9af6c3da4e19759de4f3da2d99c409f33b5f",
+      "sha256": "6F0C7891FD6455271D7A5739D899C81A7355E28C61B3851C5C20FA55CA81E57F"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/MGenDetailView.xaml",
+      "blob": "4e6dae113425d743751f1f203bf5f6f0fae9721f",
+      "sha256": "9594F6644B74DAE952AB40A994F6B191CF37B96C641DD1C6FB0EE88EB72C87DB"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/MGenDetailView.xaml.cs",
+      "blob": "92fdf9a7e8ce92c7b84f5030f57721fdce2bf125",
+      "sha256": "69BEC8250376DA64E4DB7D5B7EE010E9C9C0413945F09D6E916D45979400027A"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/MGenSetupView.xaml",
+      "blob": "b71c6ae51036894aa5c7d2b62c760e86aed13a18",
+      "sha256": "A1260821559F0B60335E5EA77BE249B52306E94B04B2503E05548A6C03F41603"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/MGenSetupView.xaml.cs",
+      "blob": "69c97221e999c64af9c22e2e1c84ba7d32f2cee6",
+      "sha256": "D68B5E92EB2792FC9F556A8EA22FE42756F43CECC8A00E717CD53464D216CC58"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/MetaGuideDetailView.xaml",
+      "blob": "125637f4556540132feca6b550e795ee23aad22a",
+      "sha256": "8DE50861428811AD32333688ABE497D413A59F82FE6A5BE7E3E5D8F2282D2755"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/MetaGuideDetailView.xaml.cs",
+      "blob": "3786d54b8629ed9d264e752d4515fef7e800e3e9",
+      "sha256": "EB38FF6708C40DE6D4725F8EF60354C5DBE0DAE4591938F5D3ECBE8949DAF8E8"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/MetaGuideSetupView.xaml",
+      "blob": "87334b97ecbd9a16bf8beaad8328b1a561cc7db1",
+      "sha256": "99488C4875B2F31AE6C9B7F0789A142306A7F0DA8F598D37BBE664F7879500FC"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/MetaGuideSetupView.xaml.cs",
+      "blob": "21af20a0ced156708493707e3e4b8c0827525aba",
+      "sha256": "5610AC09D0B75562313C2FFC3D29D6660F2B2FDB6D29799DEB60C6654C724A8E"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/PHD2DetailView.xaml",
+      "blob": "612ccef44a0498c298f02507dd346b8b4fb1afad",
+      "sha256": "BB8B67E15C354BE2199EDEC45E1E88CA3F1BD6A94842E2EB5C9F929D94275357"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/PHD2DetailView.xaml.cs",
+      "blob": "32918f4917db4975a4d0d744ef3f7be65d343022",
+      "sha256": "CB2127669F736FD66F5BC1C25AAD00CC9317976D6EA4D8DF9F6AF4800DF416C0"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/PHD2SetupView.xaml",
+      "blob": "9dbebe77d2d94add5aa7cbf41d98017baed2a42b",
+      "sha256": "65ADE130837EDE187065C6B00E67EA7D9B6094D9C52B3AE0F26CCDE2076D82F2"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/PHD2SetupView.xaml.cs",
+      "blob": "05b0db917562ce96e5641cb605fa56013d2516a8",
+      "sha256": "AFAF17489796DC0350A5AA3ABE32DE30CCA51B5EEA92CF6989A3C958EA213CD8"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/SkyGuardDetailView.xaml",
+      "blob": "9dd6c26a40546471151e5fcfa9a68c7eeefe78c6",
+      "sha256": "C85973597B298D391726B24789F752CAEBA4104E3F6809A424912291F769EC03"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/SkyGuardDetailView.xaml.cs",
+      "blob": "169b1d55d41177bad433072ad912016dcbb849c8",
+      "sha256": "BF2DDDCE67D5682E5EC5D0E9F82BE6BAFE2A0A0C12AA9502A7C92B10958C0352"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/SkyGuardSetupView.xaml",
+      "blob": "62a4b52478b58b9e1008eae4159c4559d50b40a5",
+      "sha256": "D373DBE1D8DC0922EBBE5EFB19429B08E79A59C93590A01D64E0B329BC4D8A9F"
+    },
+    {
+      "path": "NINA/View/Equipment/Guider/SkyGuardSetupView.xaml.cs",
+      "blob": "b7a22ee5cdedd25c2c86412e2754f01d22d81743",
+      "sha256": "8F0A86FFCEF1141BC3E043E71D8F2C493DD8CF047A7F8392C472D29C5ADDC306"
+    },
+    {
+      "path": "NINA/View/Equipment/HubConfigurationView.xaml",
+      "blob": "ba3604078b2fd0932a6e1943d3b6393dce0d79a1",
+      "sha256": "F2B2DA0587F7689B49F14B03B8659FC7FF66FDFF774346974AF97C956759155A"
+    },
+    {
+      "path": "NINA/View/Equipment/HubConfigurationView.xaml.cs",
+      "blob": "cb403fe0fa0f0eeaec8ec0efd89d0677ad562bee",
+      "sha256": "3A8CC6CDB284FBE7A4ACC9007EA234057DEA3D5BFB7EE37E4E88EF7229A85B95"
+    },
+    {
+      "path": "NINA/View/Equipment/HubDeviceStatusView.xaml",
+      "blob": "d11d23bd26c4b700532da5632c592c30143ed84f",
+      "sha256": "C69452E21999315FA0AF1980F1C6E4771F3C887283FC61943180AC0A371B9AB6"
+    },
+    {
+      "path": "NINA/View/Equipment/HubDeviceStatusView.xaml.cs",
+      "blob": "a50a01e3392bfbf765c90c6babfaef41ad57429f",
+      "sha256": "B900A64E449C54420FB5C2EB96BB26AB628A24FB0BF186794CD491BF5128DA04"
+    },
+    {
+      "path": "NINA/View/Equipment/Rotator/RotatorView.xaml",
+      "blob": "5c399122b1dca145822949b0563417c9d26a88bd",
+      "sha256": "94737B104877866120D29D1FD0EF469F5C177FAC902BA53E99B454E0E083EE9D"
+    },
+    {
+      "path": "NINA/View/Equipment/Rotator/RotatorView.xaml.cs",
+      "blob": "f92b54cd912eb749dbce57bf0454850dee1c6d19",
+      "sha256": "49345D80FCD97008902BE6E629B3E7C5C64C9FE487D9F87E63A32C78765F821F"
+    },
+    {
+      "path": "NINA/View/Equipment/SafetyMonitor/SafetyMonitorView.xaml",
+      "blob": "032aec1187a8d860763ab400d9af99711d5dc9bd",
+      "sha256": "3E2476CAC0EC94E972675C919E0FD57EE5EFD9A79560FDD76CC14ED6D5B59D07"
+    },
+    {
+      "path": "NINA/View/Equipment/SafetyMonitor/SafetyMonitorView.xaml.cs",
+      "blob": "63a68c1c6aea5a73d10cd11f7f5b1d7bed9de1ed",
+      "sha256": "CD244EFE427DAF937AF497AE4245BE4A30A2E989227F0A380986DF1C128308EE"
+    },
+    {
+      "path": "NINA/View/Equipment/Switch/DoubleToOnOffConverter.cs",
+      "blob": "77d531ad7d6c085bade885a2d02292be94d606a4",
+      "sha256": "18A13D21A084578B15E751D7455DE1FAE99B499B9367948B35D2EF2446FA2C0E"
+    },
+    {
+      "path": "NINA/View/Equipment/Switch/Generic.xaml",
+      "blob": "fa0b728d4f2f7f03a1209dbc4f72b30329225ff7",
+      "sha256": "4AAB7B62D7EFA7B1269AA05F530609A81BA8D59AB9960BBB0D6BB9A889FD2A8C"
+    },
+    {
+      "path": "NINA/View/Equipment/Switch/Generic.xaml.cs",
+      "blob": "c0d8e52e228a0f4756051d2b55609f053826c132",
+      "sha256": "7B79CC980C2AACDBFCBC5A848138A420201C868749945FCB5A99FE6BDAFF0D3E"
+    },
+    {
+      "path": "NINA/View/Equipment/Switch/PowerValueConverter.cs",
+      "blob": "5273f1ef5173682945724cad4f6a7070bba945c1",
+      "sha256": "0B9394A6648ADBB1DC00626C9BE83993C52BA713352E352A2FDA051D43BBCDD0"
+    },
+    {
+      "path": "NINA/View/Equipment/Switch/SwitchHubTemplateSelector.cs",
+      "blob": "a843883266f276255085a9f6e413afebe844e20f",
+      "sha256": "FBAAEF1BBA863BD54B7272DC0AC49F89DD3AFBD177CECC13FF4DB7B27BEAC104"
+    },
+    {
+      "path": "NINA/View/Equipment/Switch/SwitchHubView.xaml",
+      "blob": "ec7bb11f3fc76ac1dae42245e0d91b04f3a548c7",
+      "sha256": "7A2E5EAC670E0AF7E1A61CB575D411F01ED5CCAECD631D85E169E015B2B3DB71"
+    },
+    {
+      "path": "NINA/View/Equipment/Switch/SwitchHubView.xaml.cs",
+      "blob": "22ff4a0b8139696140ca415b03e2dfe1b437c3f7",
+      "sha256": "AABA61DDA8AD36676BBEC0E14C923E222D17A1FFA251FA93E505CD47CDB126C9"
+    },
+    {
+      "path": "NINA/View/Equipment/Switch/SwitchTemplateSelector.cs",
+      "blob": "b7da00afcd214a056a5306ecc470a5ecac8cc1e0",
+      "sha256": "D5106BAD7AD0002A2338BF1E3860B725ABC79580EB48462262AB19D7DD7D54C3"
+    },
+    {
+      "path": "NINA/View/Equipment/TabPage.xaml",
+      "blob": "aa8a5712482c832b7a52ee47fbef17bc263140e8",
+      "sha256": "5196F3326B98B8136F2EB3F090424DF34D134FF33AC8840E448F795B6B628989"
+    },
+    {
+      "path": "NINA/View/Equipment/TabPage.xaml.cs",
+      "blob": "209adec48c29f6491c988cc1c9676c965c2735ba",
+      "sha256": "00945EEECD2204F97616EA2D7E396FE79A6916FDB61E1942CCFAA7370EF145D0"
+    },
+    {
+      "path": "NINA/View/Equipment/Telescope/TelescopeLatLongSyncView.xaml",
+      "blob": "3d803a6289462abba86b0fb395a3e729d05ca695",
+      "sha256": "2A1B14DCF83347AA4B0B0C4899432E529A20B7F67C1F72F2BE177C093C77082C"
+    },
+    {
+      "path": "NINA/View/Equipment/Telescope/TelescopeLatLongSyncView.xaml.cs",
+      "blob": "c20f90685eb74cb5a199dd37e1734cbb360c39fc",
+      "sha256": "D0A883D66679A36E56BAD644AB00C6C76B97851EE3F7B96C4153F7D502094E5E"
+    },
+    {
+      "path": "NINA/View/Equipment/Telescope/TelescopeView.xaml",
+      "blob": "387d1b5bb3bf4849adf77a21425ddfa27306b205",
+      "sha256": "15238F066776364509BA19F81D54148BBB4202F84A05273187AF6F54F8990361"
+    },
+    {
+      "path": "NINA/View/Equipment/Telescope/TelescopeView.xaml.cs",
+      "blob": "b911142caf543b562d53c13e778c9fd475cb9cc9",
+      "sha256": "4ACCDF996BA4C1352EBFB18F027B19A57317C4F441AF044F8118BA4D34276104"
+    },
+    {
+      "path": "NINA/View/Equipment/WeatherData/WeatherDataView.xaml",
+      "blob": "dfada2bfea0b449c2f9ac2e56ae31381c05818ac",
+      "sha256": "30B264C45CE1B193AB7CC754D4D27F9B5EB78ED02929D35F2C4E1D664A4F2518"
+    },
+    {
+      "path": "NINA/View/Equipment/WeatherData/WeatherDataView.xaml.cs",
+      "blob": "b4c5ceac952cdef13132de7706412f7081e6ce5b",
+      "sha256": "F08B4BC444CB845750EF3249C09235F6A252EB358B3F91FD5B5E3C424FDF317F"
+    },
+    {
+      "path": "NINA/View/FlatWizard/FlatWizardFilterSettingsWrapperView.xaml",
+      "blob": "63da2f6b537762b4346e3778a8bdaecff9553582",
+      "sha256": "FA13A4EDEFF3F26BB7631E87BCB15068BAD69C6AB3F7130D80D46364352D003D"
+    },
+    {
+      "path": "NINA/View/FlatWizard/FlatWizardFilterSettingsWrapperView.xaml.cs",
+      "blob": "322ecf490f768e5e916cadd6e34e466f0a301a76",
+      "sha256": "11385BD58690EC202DD7B8A7FA622AC1EE1734642BA1602BC46EB3BEE9661C5C"
+    },
+    {
+      "path": "NINA/View/FlatWizard/FlatWizardView.xaml",
+      "blob": "9612bc28c6557a906ce86a4e22ff59e0ba5437f4",
+      "sha256": "009B9F8AC1A8C85C72B20CFFA49664C1FED9645336A45C367FE95575811A180B"
+    },
+    {
+      "path": "NINA/View/FlatWizard/FlatWizardView.xaml.cs",
+      "blob": "0fb1cf18799127b19d47fac7abd087fe45c18bfc",
+      "sha256": "D5ACD2D0AD9DA14BD7D802C13B1C76C774FBC4DDD57D6772438ACF62BD780437"
+    },
+    {
+      "path": "NINA/View/FrameFocusView.xaml",
+      "blob": "c6da85bee60b5f594b8e257fc4edec8be3e1ea8f",
+      "sha256": "9B4F73A8E49B7C22F8B66FFBCC024D8ADE7CE6A1868029401AD87CB9384BB3DB"
+    },
+    {
+      "path": "NINA/View/FrameFocusView.xaml.cs",
+      "blob": "dbad0fc3a25bf0f5c9181daec8c8f24df57d6999",
+      "sha256": "3AC5873EACD39D16B0D6F24E60C91111D99B7C4D591B1B5F9605E858294DFAE9"
+    },
+    {
+      "path": "NINA/View/FramingAssistantView.xaml",
+      "blob": "5cbf0ea75d204b7ce3d81244f64bdb5480e19739",
+      "sha256": "072D3CC385FE694C1AFB81DC6FE793452BAC57CACD797A3FD7B507E67B1B8734"
+    },
+    {
+      "path": "NINA/View/FramingAssistantView.xaml.cs",
+      "blob": "05939db44139d475b01cf56ce005ae1eae377ee8",
+      "sha256": "EEA09A759736973573092416037DFF0D490CBC7D9B11CE543DB13898C39EFE52"
+    },
+    {
+      "path": "NINA/View/FramingPlateSolvePromptView.xaml",
+      "blob": "f4f7a7d262b021eada30ec619cf3156a895a4ed8",
+      "sha256": "478BF0FBFF658E25E7693ABEAFD7A9B4ED50730D3046F90B0B81F6B216C60C6D"
+    },
+    {
+      "path": "NINA/View/FramingPlateSolvePromptView.xaml.cs",
+      "blob": "2dbfd69a0c4f1687bd1af876e6ac2151d3775117",
+      "sha256": "F7D20E90BB61B22705858F0CC5C3D1B9B86CE6C0B786C91EB8EFE71750C3AD7B"
+    },
+    {
+      "path": "NINA/View/HistogramView.xaml",
+      "blob": "741772c3107b602a5943a3bcfe7fe2b178fab1f3",
+      "sha256": "2282E5E93FD33D73FDFEFFCDFD2A9C4A3AA004CB872682CD84179AADDE9021C5"
+    },
+    {
+      "path": "NINA/View/HistogramView.xaml.cs",
+      "blob": "8d33115e8423ab8ac6e5bf0df95c56cd1dd72cc6",
+      "sha256": "34341500BE99D5FDA0E7216D5D437861E96B40B0330E09F5057E862063C2BFC0"
+    },
+    {
+      "path": "NINA/View/ImageControlView.xaml",
+      "blob": "cdc432e90010607f5d86bcc675eb0325247dbe91",
+      "sha256": "68F5F681097DF90E2F92FF5C5F7C22B41824A9C14CFF0C9256094B1498CA4B3E"
+    },
+    {
+      "path": "NINA/View/ImageControlView.xaml.cs",
+      "blob": "753f361c67cfeeab9b155636665e3f536c3ff0de",
+      "sha256": "273139D02EDD7E6EA28F3CD12CF5440636582551FF4709C268A302539989A9B3"
+    },
+    {
+      "path": "NINA/View/ImageHistoryPlotView.xaml",
+      "blob": "d6fa5ee9ea44df4aaaf76bc2da8af8c15c611919",
+      "sha256": "CDFF38621DE6C987A9BE0F3253A5CE4482B39E1A84D1107173720490BEB1F6F6"
+    },
+    {
+      "path": "NINA/View/ImageHistoryPlotView.xaml.cs",
+      "blob": "1682ec95359615e72f720b8aaf7515d0a775866e",
+      "sha256": "5E8B57B9D1ADDD1FD732C17E2DDB1481F413F3E50E94DC9A9165D36FCEF8B79D"
+    },
+    {
+      "path": "NINA/View/ImageStatisticsView.xaml",
+      "blob": "d0ef24d4ce618e186c4d9414b533b046c1f0565a",
+      "sha256": "96F4A193164F6C4146D94096A38279BF392CE93C05CA3D42990B42B740D81B2E"
+    },
+    {
+      "path": "NINA/View/ImageStatisticsView.xaml.cs",
+      "blob": "898e3eaf6e08908bf8baa6debd27d92809369c13",
+      "sha256": "114336BC8DDF606E7087AACE0CC22FF00CE1EA5FB28B50231262247BFBDE031A"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableAutoFocusView.xaml",
+      "blob": "9a47fa155814af65954752b7916b6cfec8c985fc",
+      "sha256": "9870DC2AD03C795A9327A1217D3059A9407B1E18B4DC836AB41611BD28166503"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableAutoFocusView.xaml.cs",
+      "blob": "5534995a65bde51377ddb15d0f8253877dd04a4b",
+      "sha256": "EC3BB73164047AE943601917FF30CE0CC1CBA1E1BDACFA02E97CA4A68FA99BEA"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableCameraControlView.xaml",
+      "blob": "8d970b072c956c08b15faa1d835ca5a640b15d9b",
+      "sha256": "7F7E54DD833804B7C2774BBAD0BDFD464CA005AE565925F6A30442D42F0D0D19"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableCameraControlView.xaml.cs",
+      "blob": "8e9d34ca0bb7f1148dbb2439105c972a16ecb908",
+      "sha256": "AC015AEC6492D88874B8939272D3583A385E3FD1595E4A9B1CC502938E68DEFD"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableCameraView.xaml",
+      "blob": "a9670cd3613844922dc0601afd6539af01f942cf",
+      "sha256": "60F484C7138BB3ED7B0EBEB8755F41EAE80C37EF863B124D5A1CF35C20C81019"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableCameraView.xaml.cs",
+      "blob": "9ec1bd168ca852ff3e16a198c64400b984b72787",
+      "sha256": "8088CC5501FF113AFF68B8965BCCC2FAB4C67D8C8AAA545D5D268A2364B2AA57"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableDomeView.xaml",
+      "blob": "779bed2b975aa31ec8608075538763dc7b89f785",
+      "sha256": "28C99394A49FD882E095FA0591AD0EF53BBFF05DB3DF9E0D9D1895B12CCAC656"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableDomeView.xaml.cs",
+      "blob": "f6373c4bb26291106b461ca372d493b823fe168d",
+      "sha256": "97B26E23A0824FD0DFB69785E701F0634044C786BF5E2A01E473244C2A244A56"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableFilterWheelView.xaml",
+      "blob": "fd64cebc108269c50a0bb13e6f470aa7a3ac2091",
+      "sha256": "16BFB8C7F2F8B5500C95C104D1516CF2EF6D61AC3FAC076CE62FC49D41AA4A30"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableFilterWheelView.xaml.cs",
+      "blob": "09c0b6c5637f727560b293d9e8613072614f97de",
+      "sha256": "D9D6AC593EE1BA9DEF520CE266A50DD7B0ECDBA6234FD48035DEADE43385CCBF"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableFlatDeviceView.xaml",
+      "blob": "b9f963088876f76eb7f839e9ad447c3d5fad2ae7",
+      "sha256": "E38340ED6A54A42DBEC555778A3BC9ED22B1E66D27C75569A597B385A4D9A67E"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableFlatDeviceView.xaml.cs",
+      "blob": "14c31b65574fbca532785d39c796300a9261bdef",
+      "sha256": "6B4F4AE62EC5A5DCEA5425E6D07F126B0045373DD788D10ADE3E41F72B209673"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableFocusTargetsView.xaml",
+      "blob": "c49d0bebf79faa82c1cd2065582112427bc09ca1",
+      "sha256": "9B5EE4980B45CBC1515E021E0725A62DD86E4AA4E274DCE79FCD9BE11FA177A1"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableFocusTargetsView.xaml.cs",
+      "blob": "9c911016ee88f93a4741bb43f76e214293fda854",
+      "sha256": "E469B9AE802099682A571AA3E17786371A43BB564278E1C822B6DC7A1E8EBFF8"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableFocuserView.xaml",
+      "blob": "97447762bd5b0e24746ab48c3c8bea0700dbfc27",
+      "sha256": "484713BAC7DFC6430C10FCFB28FDA2E952F0CFD20D8373D1026830F31C5CCC54"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableFocuserView.xaml.cs",
+      "blob": "0b56dc1deaaf3d05d78a17f54b77bdbea5044d68",
+      "sha256": "FAA19F8215177689586EBF890D11C929A1FADB7109EB0B077015D261D36F5CAD"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableGuiderView.xaml",
+      "blob": "daceaa375d3fd9932919d52eb1110f62898ff4f1",
+      "sha256": "4664F7387FBCAAE9D5540578533193582261B5644507B3B3D0A70810EBF73C67"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableGuiderView.xaml.cs",
+      "blob": "eedf54671961a1e89e37145977d935bc666b13fe",
+      "sha256": "E4883D3C01E9B850062B1FFDC64BD92FD257DC0B6CFB5B6ACD511D7E24F0EECF"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableImageHistoryView.xaml",
+      "blob": "9e2d480ef2d2872de85c8f9879b745fb2b58cbe3",
+      "sha256": "C0A69AB92C55D282709D7A10643BCA9A87C0A65F5098A0E2A7823B1DAC924267"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableImageHistoryView.xaml.cs",
+      "blob": "34df9f8039b5e0f278626ae6606a87b87e7c3593",
+      "sha256": "C99121ACB023934CBA1F2C8488AF6B81653725C2F6541E5A02311719F6CD91FB"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableImageStatisticsView.xaml",
+      "blob": "baff6ce66cea156ff3bb7c2e0ba8e109ecc7e4d6",
+      "sha256": "D388C1AE3D553CB7B1CF42251236CB60BB8523C089BD89BB2B33ADD5DCC27EB7"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableImageStatisticsView.xaml.cs",
+      "blob": "ebee79895e62010fc3a6a8b424047d16677ea717",
+      "sha256": "EF3BED7451DD9B56E549383071076CE0CD3AE2864D08CC6B71CFAD604739272F"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorablePlateSolveView.xaml",
+      "blob": "de2c44c992d309a4a2802d911a923d4c37a48808",
+      "sha256": "58AE6260687883CCCB34BA10068472F28C1C61FBFD07481DB7EB915C2C9B10ED"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorablePlateSolveView.xaml.cs",
+      "blob": "29b68a8a7778863b9a533341d601c92bdedbfc75",
+      "sha256": "865DBFBFD0008BC4DA3990F15957ACF0F03D3C94AF63C1B4A87990E3B175A3B1"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableRotatorView.xaml",
+      "blob": "1eb5cd8efd4c2861adc33036f3ae69fa94c91550",
+      "sha256": "73DEA765564CFF640B290D027D04125FACFE2BE6E94AE7D671390BD3CDE7DBB8"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableRotatorView.xaml.cs",
+      "blob": "73bf2951ef12060c19db3534397580b52472ff39",
+      "sha256": "DC5F90DA8CCC234DEAB76C0DD8A0DFE3BAEC48D7979F82FFF601D93B6A4C6D5E"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableSafetyMonitorView.xaml",
+      "blob": "4577bf257709889bf11960c3baa25187b32e3e28",
+      "sha256": "A357F56CBFEEFEED64917FF767C8F05BCDA0BA36DEF2F54DA5E1916D1B8824C4"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableSafetyMonitorView.xaml.cs",
+      "blob": "3f65b010489a2b0e4442cc40c6aa468a549ef044",
+      "sha256": "86D21F2870B5A5A1B23978E3F83A3CAE42E13FB73AD8AC23629E19C68C77975D"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableSequence2View.xaml",
+      "blob": "5fcfa2150e4fd0f5be62831003488f88d7cd8e7a",
+      "sha256": "F932587E11CD7C50936DD93FE5A215D7F5FFEBA54D5ACAF1295F1599E1BADD4F"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableSequence2View.xaml.cs",
+      "blob": "647513616f17a8d583835c19bbf4bcad6d81ce33",
+      "sha256": "C35DC95400AC1237A461E72C68928BDB2C5A8A9BA3F4081903AD61376D529EBD"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableSequenceNavigationView.xaml",
+      "blob": "a583339f5cb409c2e7237be2ba118dd9e7f179ba",
+      "sha256": "122C385F9DD3B21E9AA2DA932F3CC2EE8740118E65906E98E68AC81FD27E1359"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableSequenceNavigationView.xaml.cs",
+      "blob": "4141e63d46dc6952dd6e72832591767bcc74a978",
+      "sha256": "0999C5549A8C8687BC347E66698796408000F324305FD5245BD0D609C00BCDD6"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableSequenceView.xaml",
+      "blob": "0ea3c5983a2cc588be568f62003a9f6211a580f0",
+      "sha256": "8CEB61AE8E021E6BE969980C0EA441388F001E33F40A2949AF522A30D91C9E0A"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableSequenceView.xaml.cs",
+      "blob": "a5e2dfb3e2d04161de2767e333d93fa1983585f8",
+      "sha256": "F8F9EDA54C48FADED4C461F4F0CF0855DF88CE4F59C9AC48DA18E223702C7D7F"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableSwitchHubView.xaml",
+      "blob": "0eae6a45a56cdcb3c0f148d6c643e2d2295bc8dc",
+      "sha256": "94C32400959189FB01378EC21812ACC7168D43259B6A289126A35928306364B9"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableSwitchHubView.xaml.cs",
+      "blob": "f4ec1505569d0f03724f55389c1532fb2769a9ed",
+      "sha256": "AF947FF84DE19E7D8D9F754B27F3991CC55EB26AB1F8B72D8F24A8B38A7929DB"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableTelescopeView.xaml",
+      "blob": "ceab445ae43bc1121472fb63b8dc3cefd8182879",
+      "sha256": "A4EADC4C002277CE6CD9CC65D10C767F22238D6DFA58477545DC626685DE4B31"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableTelescopeView.xaml.cs",
+      "blob": "6fe3773d4c24d382f244c2d1969fc1f7e03067dd",
+      "sha256": "DD8B4669D3B725BCB87AAAAA127413D7BCC2ED2F798D60D73F0B9148E5FDEC9A"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableWeatherDataView.xaml",
+      "blob": "5936f010784d7310b00e46ce49b600b3bf5bcf88",
+      "sha256": "E294F7DC8F624941958E79BA73A4E886E846CA17137A969EF33B80FD9955936F"
+    },
+    {
+      "path": "NINA/View/Imaging/AnchorableWeatherDataView.xaml.cs",
+      "blob": "6d3418790812ada59a27e07ac02c50d3f9d7d074",
+      "sha256": "BE5B56E0A67726CB4FBDA5D402DE0D6E9CD7BE18D0B3BA01B4DD2A18AD1E2387"
+    },
+    {
+      "path": "NINA/View/Imaging/AutoFocusDataTemplateSelector.cs",
+      "blob": "c97a5cc685719f0aa4e3791f6ae276c6ba7659bd",
+      "sha256": "720AE6429D4847CE2D2238DD5040934B93011CB300880144BD2A8B3F847D91BD"
+    },
+    {
+      "path": "NINA/View/Imaging/OverView.xaml",
+      "blob": "31f28cb13d4e217bc311ab74d913760d6df07922",
+      "sha256": "D264D6936DCD5539BB720FB8AA21A042CE3BB22BE2EB9F4588664514C1946277"
+    },
+    {
+      "path": "NINA/View/Imaging/OverView.xaml.cs",
+      "blob": "8359b301e70fae7661b92b19bb723193dbb1fa21",
+      "sha256": "AC45CA812D6C2C5E512F38D91E0899CB753934FAFC9DAD6143D9BDE0E8BFF671"
+    },
+    {
+      "path": "NINA/View/ManualRotatorView.xaml",
+      "blob": "2259f4f39cdde3c5eca15f2368f7f819860993fa",
+      "sha256": "6BD9853E9413A7493514DF3E4372A744369DA5FC2788B1CF1B552B0531908C55"
+    },
+    {
+      "path": "NINA/View/ManualRotatorView.xaml.cs",
+      "blob": "cee41a7e5cdb51646758136ffd78dee03a6d17c7",
+      "sha256": "52EF6D7A30D79489D697C2D6C593029C1FFDFF5D0BDDF5E3F44AB65080118AAA"
+    },
+    {
+      "path": "NINA/View/MeridianFlipView.xaml",
+      "blob": "80bb20b6c85802b378dccef805e0c838f15677d0",
+      "sha256": "02543E8CD102E41F73C616B04DD424C3E93BDCF83C4799DB99B15659609A129A"
+    },
+    {
+      "path": "NINA/View/MeridianFlipView.xaml.cs",
+      "blob": "7f1d517d0fd8765548f2024c636047ebf4e74851",
+      "sha256": "558F2C9F5F2A324543EADF9DD5722E6C5E2C48919864FF5DDD82A38176B5EAB1"
+    },
+    {
+      "path": "NINA/View/Options/AutoFocusView.xaml",
+      "blob": "3b355bf6169a031c18f9a5f18c041f8ba127bf16",
+      "sha256": "CEE8009F3EEAFC72FCF2C5C0312C4E488F26397EDB0DCA9A02CFFE24777B8858"
+    },
+    {
+      "path": "NINA/View/Options/AutoFocusView.xaml.cs",
+      "blob": "839d27aaac0a76cae79654716ec9251154ee07d4",
+      "sha256": "F6B0B6F19CD8D60682783F40C3E57408912C710D2D85D9F0C864F6AB94ECB52B"
+    },
+    {
+      "path": "NINA/View/Options/BlindSolverSettingsVisibilityConverter.cs",
+      "blob": "f928795d372ffb6f621de5ee2514295ee9b77879",
+      "sha256": "79CFF20B10F4BBC9FABE576C828693C8C289A2C2DF27CA8A0DA7491439E344D7"
+    },
+    {
+      "path": "NINA/View/Options/DomeView.xaml",
+      "blob": "f7f808e4034af58da896f0d817faddd6087052ec",
+      "sha256": "3BB15CB3FF97B77B6453E802D929C90E115435A45BC7DCE94A9267E5CA413DD5"
+    },
+    {
+      "path": "NINA/View/Options/DomeView.xaml.cs",
+      "blob": "32bc82688c3d0dac840e4bde0955ba146951e670",
+      "sha256": "58AA35DDE7A14AE9FF3764D48BFC2D5FA4BC3604535629E0FB5D9A15A39322D9"
+    },
+    {
+      "path": "NINA/View/Options/EquipmentView.xaml",
+      "blob": "df10aefff92cbd89f3d6c4cdeeb1a929247b328b",
+      "sha256": "32BCE51506E699D9F9158B57F2DF001F4DFA6C427BFFDE339CE7B9D1CEADA44D"
+    },
+    {
+      "path": "NINA/View/Options/EquipmentView.xaml.cs",
+      "blob": "457e72a264d9550068199adbbd2d5a5cdb9c99bd",
+      "sha256": "53F80356FDA5013D1CEE362E69A262BEDA4AFA8CB737FD827119A76E51D362F1"
+    },
+    {
+      "path": "NINA/View/Options/GeneralView.xaml",
+      "blob": "b252f0e8e60e3ed7916ea095804153eafbcc102c",
+      "sha256": "36F389A6A80EC574DCE924E689DCC628F2B035F6E226D7A74552F7AE6F482239"
+    },
+    {
+      "path": "NINA/View/Options/GeneralView.xaml.cs",
+      "blob": "3e72884640fec3b42dc8b65b3158a80e9c4e8b89",
+      "sha256": "FEEC947F0CDA1A8774CE18516E6A81B91DB16909011A8BF691B7F1CB8EC855A1"
+    },
+    {
+      "path": "NINA/View/Options/GnssSourceTemplateSelector.cs",
+      "blob": "00054e090976fcede265df1cf14e8eeb2e060819",
+      "sha256": "638C2F34664F10C13FD5A93B810A876C72E47BA0074757090813D8C0FB08B704"
+    },
+    {
+      "path": "NINA/View/Options/ImagingView.xaml",
+      "blob": "e47d7ba1a7752c1ad508ccc0019ddf91e06f9afc",
+      "sha256": "56D75B29ADED8F4EC62A3225BED3AF015D90224BCD3F64DC5BF9C4D8C83A9CD7"
+    },
+    {
+      "path": "NINA/View/Options/ImagingView.xaml.cs",
+      "blob": "240b5668d9192a2ee7df979bd1b3620dab3adb27",
+      "sha256": "07E76F74DC2314273F3A14D377692979BE1DCAE7FEF77B1278759F6D545BEA51"
+    },
+    {
+      "path": "NINA/View/Options/PlateSolverSettingsTemplateSelector.cs",
+      "blob": "6cf7b4a1f31ea100317820baa83cace805ad8941",
+      "sha256": "EA687661170D26616C732FD8DDAC7028F20C36474E5B443B87BBDB7B02D57000"
+    },
+    {
+      "path": "NINA/View/Options/PlateSolverView.xaml",
+      "blob": "880bd2df1d61be3da918d36b73a7b7b876f0af90",
+      "sha256": "86F3BE84A769872BF3C232AF2FA91B00C45FA82DF744F7CF92C9A741E0C0E451"
+    },
+    {
+      "path": "NINA/View/Options/PlateSolverView.xaml.cs",
+      "blob": "d533a61e10123bcceb6421c9e8a44fbaddbc3ba7",
+      "sha256": "B3AD621977173B7F8F1EF2904116C55D852493877D050971C1C612FD6E87BCE6"
+    },
+    {
+      "path": "NINA/View/Options/TabPage.xaml",
+      "blob": "db31541460008e96de956e8d3336f225f0b7f6a3",
+      "sha256": "32A2ABF25C0EB9FC23331A7C7916263D07B064AC5DD8519FF17EE56B7F6D42AC"
+    },
+    {
+      "path": "NINA/View/Options/TabPage.xaml.cs",
+      "blob": "5ccf67954a6a779b282d3d20d453893c589d2e05",
+      "sha256": "BECB4A90799F98A066A2BF5D9EBE67C7F4186571D474EE6FC338E5AEEFA1A2AA"
+    },
+    {
+      "path": "NINA/View/Options/WorldMapConverter.cs",
+      "blob": "5bd256c9bfc6d76fd7d5bc8cf9368808845c20c6",
+      "sha256": "4AB313AF27EE94D6EC1D5BE1BDC106F2EB7C8CCD2C21600181B4CE0961969CBD"
+    },
+    {
+      "path": "NINA/View/PlateSolveView.xaml",
+      "blob": "c2159dba07b33000f6fd8fda6223d0fa39a36890",
+      "sha256": "7097EB5E5F72C11F56DFF73B97C47AB0FDA920403A74E1F082461E7A70A62319"
+    },
+    {
+      "path": "NINA/View/PlateSolveView.xaml.cs",
+      "blob": "27fbb56c72f7725b700f09a32051d7ccbd3ad5ea",
+      "sha256": "08AF315340729BEA1CEA1C37E04EF23A4E49266A9BA65DD869A2C03156FC40C7"
+    },
+    {
+      "path": "NINA/View/Plugins/AvailablePluginsView.xaml",
+      "blob": "ad90e3d9cc6194cbcbf425caaa768c24b47cdbb5",
+      "sha256": "BEB3ED23F19C9B18FDBA2A508D4662C6DDEBA5BCA89FEC85EE2EBBDE0A167CD1"
+    },
+    {
+      "path": "NINA/View/Plugins/AvailablePluginsView.xaml.cs",
+      "blob": "841ade7853e04038dc65e86922d0c4bb8013fc61",
+      "sha256": "AAC64BC54F082209851E720A751645CC9B79D679EF2F9B8F9D5848687E55D126"
+    },
+    {
+      "path": "NINA/View/Plugins/PluginContentCache.cs",
+      "blob": "2ad5b4f922164f5219d64e8c1621e0062cf14e10",
+      "sha256": "4415C0F2E5B28E7E2872B08BE17B4477DFF0115BD54CDA011AE90286520FB385"
+    },
+    {
+      "path": "NINA/View/Plugins/PluginImage.cs",
+      "blob": "074a227c7b937daf0eac97a613151b916c3e9993",
+      "sha256": "E952500A7034A50C0B96C4DFE05864850B6E108F484A7EC0FC7BDFA9CF4F85DE"
+    },
+    {
+      "path": "NINA/View/Plugins/PluginsView.xaml",
+      "blob": "c1a47a65ec8efc694c5d3042f9dca0a7666bded9",
+      "sha256": "4A0E32E18997BA6F930FA6289E72DFDCCF4A45924BDC4FF5E0006AF1B37C6DA2"
+    },
+    {
+      "path": "NINA/View/Plugins/PluginsView.xaml.cs",
+      "blob": "9f418b18bd21b1357f9500b74960a211af54b74e",
+      "sha256": "B7D2DC8FDDC4CD797411EA5570B0A1B1F27F4A4AA97EC8BE63A1C41CB83BC0A2"
+    },
+    {
+      "path": "NINA/View/ProfileSelectView.xaml",
+      "blob": "6cd4ad75c537b4dd056c5108dcfa38ee94d8636b",
+      "sha256": "4B47D4316E24316EE015A4A25ED743F5254856F50312AF973F1C732735BBDB3A"
+    },
+    {
+      "path": "NINA/View/ProfileSelectView.xaml.cs",
+      "blob": "e2b380ee96d02393fe6db12b5957abf43325b6e7",
+      "sha256": "DEB9989FBC63E8C28A9987F9836652303F1A85639F8EE076117CD37D34F762B5"
+    },
+    {
+      "path": "NINA/View/Sequencer/AdvancedSequencer/AdvancedSequencerView.xaml",
+      "blob": "b4ec11d1c06d61f9922f75d1dfa5db08b82f0406",
+      "sha256": "911EC151989EAF32B7F14018E4C2C214E1A1DC1317599C856092418821779762"
+    },
+    {
+      "path": "NINA/View/Sequencer/AdvancedSequencer/AdvancedSequencerView.xaml.cs",
+      "blob": "72929ccdfce8fae30d4da0cae42f5882e6cda43f",
+      "sha256": "1336C9AD2AF2A48A630408FE3990C551A08E91E38E1D72644D29363F40D3FB77"
+    },
+    {
+      "path": "NINA/View/Sequencer/SequenceView.xaml",
+      "blob": "c2cf088905ad0760fcc59b40e59699396e3628ea",
+      "sha256": "CE12B5E09DB629AA3EFE7029333F066F68D141FFFB08BBC950EF629840B8F116"
+    },
+    {
+      "path": "NINA/View/Sequencer/SequenceView.xaml.cs",
+      "blob": "0a6512f61b42358aacadb0e3e1a83619457c6dd0",
+      "sha256": "3F60C744F6522638B41C05C49C770739B3650912AD3ED1E588981B636A76C72A"
+    },
+    {
+      "path": "NINA/View/Sequencer/SequencerVMTemplateSelector.cs",
+      "blob": "3b1a5e867c4391fc755232cb59ff480a5a9a7205",
+      "sha256": "98968C91B90C70E6784EF552F4A0DECF0F682073AB115D56E76E15143EFE54EE"
+    },
+    {
+      "path": "NINA/View/Sequencer/SimpleSequencer/CameraGainOffsetConverter.cs",
+      "blob": "f346268e64e8fa4c258448677af63571239cc41c",
+      "sha256": "8FC46B1904A8D855DE154EA57D2F05D9CEE9FA7C0E31A5B284B27225BB1066B3"
+    },
+    {
+      "path": "NINA/View/Sequencer/SimpleSequencer/ReadoutModeNameConverter.cs",
+      "blob": "91c31bf6ac5dbaf063af54b56736f0676067187c",
+      "sha256": "796909CCE4F8AF7717FFDE0AB30779C27DD29E639F96F00C217492BEEBEDADE7"
+    },
+    {
+      "path": "NINA/View/Sequencer/SimpleSequencer/SequenceModeIsRotateToVisibilityConverter.cs",
+      "blob": "b0decbaf4ced29223f6826bf9b6c644c54744ee0",
+      "sha256": "9CCEC7D2EE047727AD0D8A54239FC86592FC912A5637936B2A6E5CA2F3E4F3B8"
+    },
+    {
+      "path": "NINA/View/Sequencer/SimpleSequencer/SimpleDSOContainerView.xaml",
+      "blob": "9ad1000b41123f07c03ddfd094e2d494d0217329",
+      "sha256": "0E014DDAF97CD9C319B927DA134464C5F71912959F8719CFCC95B4543914D4EC"
+    },
+    {
+      "path": "NINA/View/Sequencer/SimpleSequencer/SimpleDSOContainerView.xaml.cs",
+      "blob": "541dc586993a3075d34da976f0a026285544809e",
+      "sha256": "1D1D6759C96B2A451437A7366ED4CE9DFFA8DFB00EF147C98A2E00C8D08C886E"
+    },
+    {
+      "path": "NINA/View/Sequencer/SimpleSequencer/SimpleSequenceView.xaml",
+      "blob": "ae3137071f13dbef46d0795c9c43f26ef1faa166",
+      "sha256": "3C4D3574637DF07FA6B1D9FD89ACAF03C7E35AC1211D026C17DDAC88DDE9FCCF"
+    },
+    {
+      "path": "NINA/View/Sequencer/SimpleSequencer/SimpleSequenceView.xaml.cs",
+      "blob": "36a83a61d0b04676d88adbb9fb7fafec5ddd7764",
+      "sha256": "5014F53A4608B61005349FAC4AEFC62BDDEAA86C4A3D5B11CFC46D5C36A96640"
+    },
+    {
+      "path": "NINA/View/SkyAtlasView.xaml",
+      "blob": "0641e1d56de2f4a4546d247b6800abc0514dfa64",
+      "sha256": "CCFB2BFF4AFE460BBA45D4C858D7CA6C4822250CC0E91DE1D7CB7F773D5D248E"
+    },
+    {
+      "path": "NINA/View/SkyAtlasView.xaml.cs",
+      "blob": "5d49423f73db1bb52d066bda04f997a43faa29da",
+      "sha256": "82F62353F717F003BCC908BB18C180DDFADBD42A822D9D8241822004AB21AAA8"
+    },
+    {
+      "path": "NINA/View/SkyMapOverlayView.xaml",
+      "blob": "0489a138c8d8637c4a051107d7185d2c5998d11f",
+      "sha256": "335DFB32F4AF3E4D5AE1E86338CFE88DAE2259C48DD5C5EBB36B1E60B6B98377"
+    },
+    {
+      "path": "NINA/View/SkyMapOverlayView.xaml.cs",
+      "blob": "7834284ec3cfa284580d6616013985c5c0991ce6",
+      "sha256": "92256F83B505B61DA4E1D7CD9AE3E56EDE0AFE0A3B659EF0080D0F2FE6612102"
+    },
+    {
+      "path": "NINA/View/SubSampleView.xaml",
+      "blob": "20a32d5ccc54260a777e471bdbef60ec9588e743",
+      "sha256": "D971E983E9D24DFFFA88E864235102A3908684A4E807DB9C4960E10F5A1BF313"
+    },
+    {
+      "path": "NINA/View/SubSampleView.xaml.cs",
+      "blob": "d6a4d7821c1055dc308bdbb011907e1a8825d2c9",
+      "sha256": "EFFC73E4A6C2FC9B3CEDCED3514629C0CFB37656BAB3D436D9A982145C6A0D9A"
+    },
+    {
+      "path": "NINA/View/Thumbnail/ThumbnailGradeToButtonImageConverter.cs",
+      "blob": "ffed0c1b5799a52f10928f8d5a0e633693fee3f5",
+      "sha256": "8AE55634AB4DC1153387CE2974DBDCF0D61C26C184E04796A111062272295C7A"
+    },
+    {
+      "path": "NINA/View/Thumbnail/ThumbnailGradeToImageConverter.cs",
+      "blob": "d5bef6e71b084dc1d668c77a37d85b0df774030c",
+      "sha256": "087CE7E79BC83BBB4EBF4D86450407A8CBF646785CABE3BE6E6B4335894D311B"
+    },
+    {
+      "path": "NINA/View/Thumbnail/ThumbnailListView.xaml",
+      "blob": "ce28c8f351fe403086311df1dcf0df857a6f7b03",
+      "sha256": "1C3F74FF3A5A222661781C6ADE497B721B38551F496223CBF4CE4DED6FC1E8B1"
+    },
+    {
+      "path": "NINA/View/Thumbnail/ThumbnailListView.xaml.cs",
+      "blob": "8045c7a78d6cbc78a9aa82fe405386648f187067",
+      "sha256": "D6087125DA4836641E174168D571B8E6136F591776EEA7490FE8AB933EC42C28"
+    },
+    {
+      "path": "NINA/View/VersionCheckView.xaml",
+      "blob": "108c0fd30f4eea927c2b78dd51475026c66ac438",
+      "sha256": "44E3842C28374473BA4466F1394439D4FFBEB6A2F2DD7D4FDD71D468A24C804F"
+    },
+    {
+      "path": "NINA/View/VersionCheckView.xaml.cs",
+      "blob": "1ca9e4848d0409f2b4f1a95ecef32498b918df86",
+      "sha256": "A731C9E2F2F9046B9597C3C69356C1CF9528B48CCD580C12EA45404781DAC634"
+    },
+    {
+      "path": "NINA/ViewModel/AberrationInspectorVM.cs",
+      "blob": "b4d98da9bc6f7d044052d999b773b2028753eb6f",
+      "sha256": "4C9676FBB8D8EA11E600BC9D6CE8C954A49603521D2498774603CFBD6E309AFE"
+    },
+    {
+      "path": "NINA/ViewModel/AboutSDKsVM.cs",
+      "blob": "89b1b33752ffa23f6a03fd55334056352b8dd068",
+      "sha256": "E72929AD26C1B8FC7E969B17D114515F4D973387434A8DEF063662B05B27812D"
+    },
+    {
+      "path": "NINA/ViewModel/ApplicationDeviceConnectionVM.cs",
+      "blob": "c6cd1d7bc77edf315efa43c2c9bdd820d577c4be",
+      "sha256": "BBB5C5C120B4C2CC5989E40D7104747591DF04919F277DE04096D7684F5FE265"
+    },
+    {
+      "path": "NINA/ViewModel/ApplicationStatusVM.cs",
+      "blob": "b451d34e525a0311c2b91952d85bd0867359edd3",
+      "sha256": "E432E683A13E2D23641CF33E01F106DF4D5825D5DCE5D2F53569E15F7A7D7A13"
+    },
+    {
+      "path": "NINA/ViewModel/ApplicationVM.cs",
+      "blob": "fd665d8bf4e1d48aed1ae9806efcf413970c640e",
+      "sha256": "ACA4D49B3650322562F756AFBDAB01F2D67182C1818229A9208254A13C0E61C5"
+    },
+    {
+      "path": "NINA/ViewModel/DeepSkyObjectSearchVM.cs",
+      "blob": "3adbf73e998c0adbe36210fe3b0e6519e74b6021",
+      "sha256": "A5750D3F5B3428992B1C3F0299497F3DE3CAEA7ACC3ED5510283787236971C1A"
+    },
+    {
+      "path": "NINA/ViewModel/DockManagerVM.cs",
+      "blob": "e7b5c2e49eb76475b9cca486c4d2d90d590d780d",
+      "sha256": "6E236A39237AB79D2F91B8BB640053F06125722FAB9FC7D7333D87742FDFA171"
+    },
+    {
+      "path": "NINA/ViewModel/EquipmentVM.cs",
+      "blob": "56d8fd5ccb2f9acb109be7d669a768b90a51416b",
+      "sha256": "493493024CCD9665ECB78B8C8A7FBA936D667A8C866D864D312C65DF13CA164C"
+    },
+    {
+      "path": "NINA/ViewModel/FlatWizard/FlatWizardFilterSettingsWrapper.cs",
+      "blob": "74e2fd8328191f2dff1793b290d23d2c12637e7c",
+      "sha256": "0A24CADD10EFDC2C1D10875497F5C3EE839F8FD4F8AC24D854518B5D6E5A0AEA"
+    },
+    {
+      "path": "NINA/ViewModel/FlatWizard/FlatWizardVM.cs",
+      "blob": "144121fa27ad228de1236506c65267df99a7f98f",
+      "sha256": "73D72D254D314D010A3D0C4487DA9371DD8CD783F4834F35C83E211607D3194E"
+    },
+    {
+      "path": "NINA/ViewModel/FocusTargetsVM.cs",
+      "blob": "b1e872fe393cb99fa14f1abd2253f65472f5c3f5",
+      "sha256": "608C56E266E6FDB43ED762C9794498337840C2659FE4014C4B2472C5AEB003D4"
+    },
+    {
+      "path": "NINA/ViewModel/FramingAssistant/FramingAssistantTimeContext.cs",
+      "blob": "3c3acac09e004aa4cde84e7eaebeeac85adac0b9",
+      "sha256": "8EDAA02753EDC2F36F69B717C5409990C4FA0192602712FD017D4DFE32D16482"
+    },
+    {
+      "path": "NINA/ViewModel/FramingAssistant/FramingAssistantVM.cs",
+      "blob": "cc5f9b7eef09ad5354464a8977b056b3201cfb09",
+      "sha256": "DAB2F65E1E02B471EC0AEE40EFA40F333D81E8600DD34C6DFBDE6AA9420387B7"
+    },
+    {
+      "path": "NINA/ViewModel/FramingAssistant/FramingPlateSolveParameter.cs",
+      "blob": "a657e0ed6a65a665840f988de43c36dccad22e64",
+      "sha256": "E4559AB91F6D6F7270B0729950E995F98FBB80F2092F277DB36F133EC23E74D0"
+    },
+    {
+      "path": "NINA/ViewModel/ImageControlVM.cs",
+      "blob": "7a15ee1a9839d2d41554163570028da2c5446839",
+      "sha256": "BB9B15A035CBAD4FD116297C23720F39DD76339F128A8651647BABC5B87E6B3A"
+    },
+    {
+      "path": "NINA/ViewModel/ImageGeometryProvider.cs",
+      "blob": "7801a1e114b616e10673dbfa73ef3fee3e822357",
+      "sha256": "5325E0DC98BE7B532E0CCAAD8233F569D0212A1DE7DFECD56AF74306684F6CA7"
+    },
+    {
+      "path": "NINA/ViewModel/ImageHistory/ImageHistoryVM.cs",
+      "blob": "5c4697cfa905431c71ce1a455918887962ae53e9",
+      "sha256": "E613C4073467521D7E4EC7ED4442E6F7CD71188928B86C1027C9D47EBF984235"
+    },
+    {
+      "path": "NINA/ViewModel/ImageSaveController.cs",
+      "blob": "b58a02b748085c9e3617e585c6fb9fc3687e6ae3",
+      "sha256": "29096F05EC09BA9ABB6AD0EF778B4EB80ABDC707D40EC694EEA23376813B51A5"
+    },
+    {
+      "path": "NINA/ViewModel/ImageStatisticsVM.cs",
+      "blob": "ec21e99a36740b8322e4f816265209ae02e894ff",
+      "sha256": "6141D9A1ECDCA15F37BD87D86380268C931E9776F428E37464A18ECF340DBA85"
+    },
+    {
+      "path": "NINA/ViewModel/Imaging/AnchorablePlateSolverVM.cs",
+      "blob": "76c4d63b24cdbe4fc9d10a34b60a7a9603d06067",
+      "sha256": "EC6442F08E6BB811652F085FA6AA6F206B91F5AE42259DA7600162A0A88C32FE"
+    },
+    {
+      "path": "NINA/ViewModel/Imaging/AnchorableSnapshotVM.cs",
+      "blob": "61e26c46ca4a0dfd9233bcb5514b295c4d070429",
+      "sha256": "102A40874499DCAF648067B9DF391ED71F71755B71A62EC6A93C1233E1F9DE77"
+    },
+    {
+      "path": "NINA/ViewModel/Imaging/AutoFocusToolVM.cs",
+      "blob": "ae479dccbb76e34c7565f33d4bd6909abbc0f965",
+      "sha256": "1B091096B357ABB43B104198915D4FE6C61A9480455C75382809C9F781B6E0F8"
+    },
+    {
+      "path": "NINA/ViewModel/ImagingVM.cs",
+      "blob": "2d66af80ed7448b976da2973222b351573c1302b",
+      "sha256": "4C778C05DB6D681847FF064087584CC08C568ACD55B5DEF5E35A4DAC98B4AB04"
+    },
+    {
+      "path": "NINA/ViewModel/MainWindowVM.cs",
+      "blob": "098ac566655b36c112f8c443c52783bfe16034c6",
+      "sha256": "88DE09922B5BFBD73EB036F5495BE5D9CD95C1DF522F0E31CEF8FD887F1542BD"
+    },
+    {
+      "path": "NINA/ViewModel/OptionsVM.cs",
+      "blob": "e08278e4d57aa96901c6790bdc479ff73baa5048",
+      "sha256": "0AD60E7439FFB75C2A1270FD029F02429FD94AA7E6E94E9C8C1891C666D0CF29"
+    },
+    {
+      "path": "NINA/ViewModel/Plugins/ExtendedPluginManifest.cs",
+      "blob": "5ad2315145f8b060bec2039189aaad67cbd90fb5",
+      "sha256": "A6466247FC25CABB2F7F0A46CE302BD4D36B43C0FEA418FFB22018E3E926A868"
+    },
+    {
+      "path": "NINA/ViewModel/Plugins/PluginChangelogVM.cs",
+      "blob": "50116bf31819ecdb29f5325f3efdddfa257a1a41",
+      "sha256": "6B0F3AAB5242A4C8BBC0B9A7CC7C54EFAF6F103ADF28AD7670C0293B6D4FEA7F"
+    },
+    {
+      "path": "NINA/ViewModel/Plugins/PluginEntryVM.cs",
+      "blob": "36e02bd8cfb8fc88713df96f2e9462b61027063a",
+      "sha256": "835B2375460FE0DCD97A15ED18D71479369E8A277F0449C16A661E30FD9E1AA8"
+    },
+    {
+      "path": "NINA/ViewModel/Plugins/PluginInstallerDescriptionTemplateSelector.cs",
+      "blob": "a263d72dddeebd5823ed3844d154ecf4ab397fd5",
+      "sha256": "0F9C7504C558D0FA59950D7E9EF90852D147EA3965F63D691B640A75A3E23BA1"
+    },
+    {
+      "path": "NINA/ViewModel/Plugins/PluginOptionsDataTemplateSelector.cs",
+      "blob": "c5e18f4e50e1fe7c566b581fd93290dc774a3138",
+      "sha256": "3217C4F68CCEBBD0026939A7C1B3D61400307B233DE5493D174FB7605827EC7C"
+    },
+    {
+      "path": "NINA/ViewModel/Plugins/PluginShowcaseVM.cs",
+      "blob": "7045ead88a175beeaa1ee43cb669e7ad0015c4d4",
+      "sha256": "BBD8CB5B960DA2409AB2CB85F45A67FCFF86A3A511F8C63D332E27875A1409DF"
+    },
+    {
+      "path": "NINA/ViewModel/Plugins/PluginState.cs",
+      "blob": "32381d4622e3862bfed8270d262cbb7a69cd15ae",
+      "sha256": "92F94FDF72ECA3C3361AC2568B3F0FA81E93EE4B9A5508CAD183E69BBDB6387D"
+    },
+    {
+      "path": "NINA/ViewModel/Plugins/PluginStateToDataTemplateSelector.cs",
+      "blob": "62d9f95fd75028bdf491adcb40b6573796ed204e",
+      "sha256": "C09231A79CFB0F8899E300D64D28A8886B745FBC0C64CB3CDE9C4C4AC9CFD381"
+    },
+    {
+      "path": "NINA/ViewModel/Plugins/PluginTag.cs",
+      "blob": "cdb7bdf1f9b47323e6f8962a5bcc7b4633286f51",
+      "sha256": "ECD0C54ED11B7880CDD32C383F8BDDB3391BEAC5BB29FE7F9AEB29EAFB381174"
+    },
+    {
+      "path": "NINA/ViewModel/Plugins/PluginVersionVM.cs",
+      "blob": "51d29ae745e8e7da08e0b153bd27f36433c681ae",
+      "sha256": "9C64341494E5B5BE22F769EBCB3003AEF9179273546EA69435D8D174901B91C8"
+    },
+    {
+      "path": "NINA/ViewModel/Plugins/PluginsVM.History.cs",
+      "blob": "89cb51459cebafa5e8ef60549accdf9a2104b7c3",
+      "sha256": "2F5DD1C3FAB374D43A2639D193B45B5903B6D9A37348762188F6968D6187B1A9"
+    },
+    {
+      "path": "NINA/ViewModel/Plugins/PluginsVM.cs",
+      "blob": "56a5d7d1467095cb04a69a3c5e42610565f13e5d",
+      "sha256": "25DB51340C0A4C52CA96A9ECE6DD7F14DFF67C6E52565C24E62AA7F793012467"
+    },
+    {
+      "path": "NINA/ViewModel/ProfileSelectVM.cs",
+      "blob": "8c2447cc972db6dbe81df6907aaaf28f9310b6db",
+      "sha256": "5C88A1176FFFBBE49DC4296760D320AC5F7CC2F115FB6FE1BEB7402B3D36DEAA"
+    },
+    {
+      "path": "NINA/ViewModel/Sequencer/Sequence2/Sequence2VM.EditHistory.cs",
+      "blob": "142ffc0a814d55cdd9e84ef041688e5ab44e4ddd",
+      "sha256": "D09BBCAEC7FA595192CF7B3FBE6EB2E695144FDF79C70CD7C66470060CE5F1C1"
+    },
+    {
+      "path": "NINA/ViewModel/Sequencer/Sequence2/Sequence2VM.cs",
+      "blob": "2138ee94b2b0508221e5ce9fa3254a16a41b2393",
+      "sha256": "B6ECECAAA55A32F563CD6F725DC0AD8106B52A91D10EAC6540F989A12B12BBD8"
+    },
+    {
+      "path": "NINA/ViewModel/Sequencer/SequenceNavigationVM.cs",
+      "blob": "1fec51450035992163187767e2c5f7b131d2d63a",
+      "sha256": "E50027ED396F8423CCB8E8E5B6B593D1065E33034581B277E8680816A846CEF2"
+    },
+    {
+      "path": "NINA/ViewModel/Sequencer/SimpleSequence/SimpleDSOContainer.cs",
+      "blob": "d9418afa5cc6a55b7841a1be14df582b85095e5d",
+      "sha256": "499F605EB2BD80BC03D0CA6E31C81A9C71FE69BA038ECF65FD0C80B350F45FD0"
+    },
+    {
+      "path": "NINA/ViewModel/Sequencer/SimpleSequence/SimpleEndContainer.cs",
+      "blob": "8f239412df17fe4ff8a52f41cec5225a203dc3f1",
+      "sha256": "965DBDE5E12639E58577E553EFE88933E916FC0119B1C21BE2DB2A2A920DDB31"
+    },
+    {
+      "path": "NINA/ViewModel/Sequencer/SimpleSequence/SimpleExposure.cs",
+      "blob": "f916c565f7eb6dad9df2fece7196d49f311bf2db",
+      "sha256": "81B8D6DB8803C15A5C1F0B2926666949A0C260FB9A7FEE8FAF473AB44007D5A3"
+    },
+    {
+      "path": "NINA/ViewModel/Sequencer/SimpleSequence/SimpleSequenceVM.cs",
+      "blob": "9e9c6ab26e0f8059a9f98bd4cbf2c40b8663d549",
+      "sha256": "6D6FE4ABAB9F7EFCBFED1D1C8A093C0745C8C5BE89BEDD0239B45FF4DF16D9C0"
+    },
+    {
+      "path": "NINA/ViewModel/Sequencer/SimpleSequence/SimpleStartContainer.cs",
+      "blob": "70304c4b0c5453c7ebd9c7dd7d99d89b51f89689",
+      "sha256": "AA4B328F544A2C5FE6216AA4C34230D1549F0AA3105B2F6CB76180989EE04606"
+    },
+    {
+      "path": "NINA/ViewModel/SkyAtlasVM.cs",
+      "blob": "138896c839853d8d90fead600342d78274dd06b1",
+      "sha256": "D365D30C84BE18BB142082B96D749CF8635401E2C39A2DD7EB05F781429DE738"
+    },
+    {
+      "path": "NINA/ViewModel/ThumbnailVM.cs",
+      "blob": "6505db4b1d18644614097165d9e83e4026bb0ada",
+      "sha256": "B0295E773C0CEC935D8622B501DD4FCE0AA7BA529E7BB80FEF9C2DD4AC8E33B5"
+    },
+    {
+      "path": "NINA/ViewModel/VersionCheckVM.cs",
+      "blob": "3944d2b2573a1e0e8561e1fb97bee1dc796a5fab",
+      "sha256": "1AB7256F8BCE7FDA83D311148A3050DB1FBADB39DEC950C26FC4E2E73BF93B46"
+    },
+    {
+      "path": "NINA/WindowPlacement.cs",
+      "blob": "9ee13a03773b6c43960ee03a81d9a0554b8fa91f",
+      "sha256": "2D64B56C9ABA04319F26EFAA487B56393AC731C5F6E77E8DE5CF539AE45FF21F"
+    },
+    {
+      "path": "NINA/observatory.ico",
+      "blob": "1fefbd409dfcb45e3f163db2b0ae7789fd7fbab2",
+      "sha256": "A844F9E6EACDC677F8D91EEFD8FF65E6CA97D39B9F94087A7D997132DEBC0153"
+    }
+  ],
+  "simulatorQualificationManifestSha256": "0263CF570072735C70CE2C2BC91ABCC17E30F98B755A15B0E01C3E21AB2B8855"
+}

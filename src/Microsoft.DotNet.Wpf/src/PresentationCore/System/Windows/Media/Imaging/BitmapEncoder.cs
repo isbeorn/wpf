@@ -235,6 +235,9 @@ namespace System.Windows.Media.Imaging
             {
                 VerifyAccess();
                 EnsureBuiltIn();
+#if PORTABLE_WPF
+                throw new NotSupportedException("Portable bitmap encoders do not support codec information.");
+#else
                 EnsureUnmanagedEncoder();
 
                 // There should always be a codec info.
@@ -251,6 +254,7 @@ namespace System.Windows.Media.Imaging
                 }
 
                 return _codecInfo;
+#endif
             }
         }
 
@@ -313,6 +317,35 @@ namespace System.Windows.Media.Imaging
         /// <param name="stream">Stream to save into</param>
         public virtual void Save(System.IO.Stream stream)
         {
+#if PORTABLE_WPF
+            VerifyAccess();
+            EnsureBuiltIn();
+            if (this is not PngBitmapEncoder && this is not JpegBitmapEncoder)
+                throw new NotSupportedException("Portable bitmap encoding supports only PNG or JPEG.");
+            string portableCodec = this is PngBitmapEncoder ? "PNG" : "JPEG";
+            if (_hasSaved)
+                throw new InvalidOperationException(SR.Image_OnlyOneSave);
+            if (_frames == null || _frames.Count == 0)
+                throw new NotSupportedException(SR.Format(SR.Image_NoFrames, null));
+            if (_frames.Count != 1 || _thumbnail != null || _preview != null || _metadata != null ||
+                _readOnlycolorContexts != null || _palette != null)
+                throw new NotSupportedException("Portable " + portableCodec + " encoding requires one frame without global thumbnails, previews, metadata, color contexts or palettes.");
+            ArgumentNullException.ThrowIfNull(stream);
+            _ = stream.Position;
+            if (!stream.CanSeek || !stream.CanWrite)
+                throw new NotSupportedException("Portable " + portableCodec + " encoding requires a seekable writable stream.");
+            byte[] bytes = this is PngBitmapEncoder png ? png.EncodePortable(_frames[0]) : ((JpegBitmapEncoder)this).EncodePortable(_frames[0]);
+            // A failed output attempt consumes the encoder, as does a successful Save.
+            _hasSaved = true;
+            try
+            {
+                stream.Write(bytes, 0, bytes.Length);
+            }
+            catch (Exception exception) when (exception is System.IO.IOException || exception is NotSupportedException)
+            {
+                throw new InvalidOperationException("Cannot write to the portable " + portableCodec + " stream.", exception);
+            }
+#else
             VerifyAccess();
             EnsureBuiltIn();
             EnsureUnmanagedEncoder();
@@ -453,6 +486,7 @@ namespace System.Windows.Media.Imaging
             }
 
             _hasSaved = true;
+#endif
         }
 
         #endregion
@@ -810,7 +844,9 @@ namespace System.Windows.Media.Imaging
         private ReadOnlyCollection<ColorContext> _readOnlycolorContexts;
 
         /// codecinfo
+#if !PORTABLE_WPF
         private BitmapCodecInfoInternal _codecInfo;
+#endif
 
         /// thumbnail
         private BitmapSource _thumbnail;
@@ -851,7 +887,13 @@ namespace System.Windows.Media.Imaging
             EncoderCommitted = 13,
             FrameEncodeColorContextsSet = 14,
         };
+#if PORTABLE_WPF
+#pragma warning disable CS0414 // Native frame methods remain compiled alongside the portable PNG path.
+#endif
         private EncodeState _encodeState;
+#if PORTABLE_WPF
+#pragma warning restore CS0414
+#endif
 
         #endregion
     }

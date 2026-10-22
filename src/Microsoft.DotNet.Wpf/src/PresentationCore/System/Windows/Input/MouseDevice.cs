@@ -35,9 +35,11 @@ namespace System.Windows.Input
             //
             // The call here goes into the safe helper calls, more of a consistency in approach
             //
+#if !PORTABLE_WPF
             _doubleClickDeltaX = SafeSystemMetrics.DoubleClickDeltaX;
             _doubleClickDeltaY = SafeSystemMetrics.DoubleClickDeltaY;
             _doubleClickDeltaTime = SafeNativeMethods.GetDoubleClickTime();
+#endif
 
             _overIsEnabledChangedEventHandler = new DependencyPropertyChangedEventHandler(OnOverIsEnabledChanged);
             _overIsVisibleChangedEventHandler = new DependencyPropertyChangedEventHandler(OnOverIsVisibleChanged);
@@ -374,9 +376,20 @@ namespace System.Windows.Input
                         bool savedIsCaptureMouseInProgress = _isCaptureMouseInProgress;
                         _isCaptureMouseInProgress = true;
 
+#if PORTABLE_WPF
+                        try
+                        {
+                            success = mouseInputProvider.CaptureMouse();
+                        }
+                        finally
+                        {
+                            _isCaptureMouseInProgress = savedIsCaptureMouseInProgress;
+                        }
+#else
                         success = mouseInputProvider.CaptureMouse();
 
                         _isCaptureMouseInProgress = savedIsCaptureMouseInProgress;
+#endif
 
                         if (success)
                         {
@@ -1200,6 +1213,7 @@ namespace System.Windows.Input
 
                         if (inputDevice == null)
                         {
+#if !PORTABLE_WPF
                             if (StylusLogic.IsPointerStackEnabled
                                 && StylusLogic.IsPromotedMouseEvent(rawMouseInputReport))
                             {
@@ -1214,6 +1228,7 @@ namespace System.Windows.Input
                                 inputDevice = tablets.GetStylusDeviceByCursorId(cursorId)?.StylusDevice;
                             }
                             else
+#endif
                             {
                                 inputDevice = inputReportEventArgs.Device as StylusDevice;
                             }
@@ -2096,6 +2111,18 @@ namespace System.Windows.Input
 
             Point ptClient = clientUnits ? pt : PointUtil.RootToClient(pt, inputSource);
 
+#if PORTABLE_WPF
+            if (inputSource is MS.Internal.Portability.Windowing.PortablePresentationSource)
+            {
+                var provider = inputSource.GetInputProvider(typeof(MouseDevice)) as MS.Internal.Portability.Input.PortableInputProvider;
+                Point screenPoint = provider.ClientToScreen(ptClient);
+                PresentationSource hitSource = provider.SourceFromScreenPoint(screenPoint);
+                if (hitSource != null)
+                    LocalHitTest(true, PointUtil.ScreenToClient(screenPoint, hitSource), hitSource, out enabledHit, out originalHit);
+                return;
+            }
+#endif
+
             // Note: this only works for HWNDs for now.
             HwndSource source = inputSource as HwndSource;
             if (source != null && source.CompositionTarget != null && !source.IsHandleNull)
@@ -2163,6 +2190,9 @@ namespace System.Windows.Input
 
         internal bool IsSameSpot(Point newPosition, StylusDevice stylusDevice)
         {
+#if PORTABLE_WPF
+            if (stylusDevice == null) ReadPortablePointerSettings();
+#endif
             int doubleClickDeltaX = (stylusDevice != null)?stylusDevice.DoubleTapDeltaX:_doubleClickDeltaX;
             int doubleClickDeltaY = (stylusDevice != null)?stylusDevice.DoubleTapDeltaY:_doubleClickDeltaY;
 
@@ -2173,6 +2203,9 @@ namespace System.Windows.Input
 
         internal int CalculateClickCount(MouseButton button, int timeStamp, StylusDevice stylusDevice, Point downPt)
         {
+#if PORTABLE_WPF
+            if (stylusDevice == null) ReadPortablePointerSettings();
+#endif
             // How long since the last click?
             int timeSpan = timeStamp - _lastClickTime;
 
@@ -2198,6 +2231,16 @@ namespace System.Windows.Input
                 return 1;
             }
         }
+
+#if PORTABLE_WPF
+        private void ReadPortablePointerSettings()
+        {
+            var settings = MS.Internal.Portability.Settings.PortableSystemSettingsProvider.Current.PointerSettings;
+            _doubleClickDeltaX = settings.DoubleClickWidth;
+            _doubleClickDeltaY = settings.DoubleClickHeight;
+            _doubleClickDeltaTime = settings.DoubleClickTimeMilliseconds;
+        }
+#endif
 
         internal Point PositionRelativeToOver
         {

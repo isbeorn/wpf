@@ -1,0 +1,118 @@
+{
+  "revision": "4742afae0a09c79be772f23fcf163fb5852d2775",
+  "assemblyIdentity": "NINA.Plugin, Version=3.3.0.1068, Culture=neutral, PublicKeyToken=null",
+  "files": [
+    {
+      "path": "NINA.Plugin/app.config",
+      "sha256": "5741BA7A55EFB3FB75844BCC1C3CBD63A07F37C806E0F7EE032EFCF25A09C3F4"
+    },
+    {
+      "path": "NINA.Plugin/ARCHITECTURE.md",
+      "sha256": "51D35B88281B13EE9126558CB4C397888F2CEC67F673E67D8A3225C1C662DAD6"
+    },
+    {
+      "path": "NINA.Plugin/Constants.cs",
+      "sha256": "9B8510F5D062CFF6E47B1DEA91536026D4F584C0E31DF2CF9FFCEB93AF2E8825"
+    },
+    {
+      "path": "NINA.Plugin/Interfaces/IMessage.cs",
+      "sha256": "CDC6D5F14BD0E55BDF814E54B41933FBC0A5F042A2A26ED74AB3CCCADB3B982D"
+    },
+    {
+      "path": "NINA.Plugin/Interfaces/IMessageBroker.cs",
+      "sha256": "5BB28A86574FB7ACCDF13110180DEE0F77F5D54B51DAE8CD94C1EA7FCD72C7F2"
+    },
+    {
+      "path": "NINA.Plugin/Interfaces/IPluginDescription.cs",
+      "sha256": "DA368A17535C5EAC0927AD07960D58126096414E4FD8EB799484A124C4E4E34F"
+    },
+    {
+      "path": "NINA.Plugin/Interfaces/IPluginInstallerDetails.cs",
+      "sha256": "60830358BAB75A7469DCBD6ADC47A6AC45836DB2F49F62EB3756380BB490744A"
+    },
+    {
+      "path": "NINA.Plugin/Interfaces/IPluginLoader.cs",
+      "sha256": "7A69838845093784A9705503A3B0557FA4DB5F4EBEAE421258B247629926C148"
+    },
+    {
+      "path": "NINA.Plugin/Interfaces/IPluginManifest.cs",
+      "sha256": "5C49EC9E91F9FFC2256C12FA940B6A83C98335CA84BEBC89AD7CBEE6669E7EEE"
+    },
+    {
+      "path": "NINA.Plugin/Interfaces/IPluginVersion.cs",
+      "sha256": "D0CF42BA9F27447DC8666E6FE2C67082BB05A43CA2226E0BF9EDE91011C40B84"
+    },
+    {
+      "path": "NINA.Plugin/Interfaces/ISubscriber.cs",
+      "sha256": "EDD05254E07CE8F9BF404FAEF40426B855A574C65B230BA5351066FCCA1258E8"
+    },
+    {
+      "path": "NINA.Plugin/ManifestDefinition/ConcreteManifestConverter.cs",
+      "sha256": "A1E78E13D09F2246A9A948490E9641165A5C2F30DF880B062CADE27669AD7BC5"
+    },
+    {
+      "path": "NINA.Plugin/ManifestDefinition/InstallerChecksum.cs",
+      "sha256": "1F4ED4A7C384768A4B879828C6D0D17C86014DF501AAAF2460D0E5B68372F829"
+    },
+    {
+      "path": "NINA.Plugin/ManifestDefinition/InstallerType.cs",
+      "sha256": "9ECB6C7EA897E4701F80BC5F843B9D53F0730CBC323674397B59FF91710844C9"
+    },
+    {
+      "path": "NINA.Plugin/ManifestDefinition/PluginDescription.cs",
+      "sha256": "69DEC413328541C350A0316A82830EECCD62FB37D627B797FC585590CB8DEB4E"
+    },
+    {
+      "path": "NINA.Plugin/ManifestDefinition/PluginInstallerDetails.cs",
+      "sha256": "45F9455382B7D1227D068FE4F3B2D5E8B08C2508F47ED0A5EAAB5A65003F863D"
+    },
+    {
+      "path": "NINA.Plugin/ManifestDefinition/PluginManifest.cs",
+      "sha256": "48BDD4CD774094900D6180D19AE99D6A4872F32C5531AE63158B0783A37566F2"
+    },
+    {
+      "path": "NINA.Plugin/ManifestDefinition/PluginVersion.cs",
+      "sha256": "37DBD07D3A24983B3966E0D0ACA7CF2E40B2314C2088CDB66A4A4DB338B0DF96"
+    },
+    {
+      "path": "NINA.Plugin/Messaging/MessageBroker.cs",
+      "sha256": "D31EC217E254700FA80C392B93459A4B0795DF2EE8D654EF5C268C8B9B4FE7BA"
+    },
+    {
+      "path": "NINA.Plugin/NINA.Plugin.csproj",
+      "sha256": "1D881B35660F1741490BC298AB514ADF4606FE31BF24C682AC61786BD04CE577"
+    },
+    {
+      "path": "NINA.Plugin/PluginAssemblyReader.cs",
+      "sha256": "57802D59D81A4131B1B3792F0CFB445AA16A66A37BB4DD114F9E0A27634F09E7"
+    },
+    {
+      "path": "NINA.Plugin/PluginBase.cs",
+      "sha256": "3E4406EDF0B526A207C2D7FDBA3A1B41EEC629B9EE9A70290BE0FE28D017029A"
+    },
+    {
+      "path": "NINA.Plugin/PluginCompatibility.cs",
+      "sha256": "C1FB1253A78E0646AB98DE976E85907A74C150BCD2AF501159D8462A7926D40D"
+    },
+    {
+      "path": "NINA.Plugin/PluginFetcher.cs",
+      "sha256": "EFBAE3EC3FD2D29213542F4D85E2FCA7D8704A2C5F9949C66F765A4C63FF47BB"
+    },
+    {
+      "path": "NINA.Plugin/PluginInstaller.cs",
+      "sha256": "CFE98955C035F28927840008E1B83836FCCA107A2898C2306FB2AEA5FD69E651"
+    },
+    {
+      "path": "NINA.Plugin/PluginLoader.cs",
+      "sha256": "B2BE5928F014C8CC0D19FE96DD535199D10E9AF41B8C155BCD5E8E7C1EB469F9"
+    },
+    {
+      "path": "NINA.Plugin/PluginMergedEntityMap.cs",
+      "sha256": "CA52DD9F15EFE15E842DF1F2365212B5F26622A99D5A8AD79118555C5959FC0A"
+    },
+    {
+      "path": "NINA.Plugin/Properties/AssemblyInfo.cs",
+      "sha256": "8A3AA3F31FA1FE4057443BA1C7BB2784F98AEB9E806E461EA1553A3C3731C2A7"
+    }
+  ]
+}

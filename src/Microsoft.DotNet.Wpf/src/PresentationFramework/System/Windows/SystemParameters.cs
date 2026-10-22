@@ -10,6 +10,9 @@ using System.Windows.Media;
 using MS.Win32;
 using MS.Internal;
 using MS.Internal.Interop;
+#if PORTABLE_WPF
+using MS.Internal.Portability.Settings;
+#endif
 
 namespace System.Windows
 {
@@ -159,6 +162,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.HighContrast;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.HighContrast])
@@ -182,6 +188,7 @@ namespace System.Windows
                 }
 
                 return _highContrast;
+#endif
             }
         }
 
@@ -193,6 +200,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.MouseVanish;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MouseVanish])
@@ -211,6 +221,7 @@ namespace System.Windows
                 }
 
                 return _mouseVanish;
+#endif
             }
         }
 
@@ -283,6 +294,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return false;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.DropShadow])
@@ -301,6 +315,7 @@ namespace System.Windows
                 }
 
                 return _dropShadow;
+#endif
             }
         }
 
@@ -340,6 +355,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                var workArea = PortableSystemSettingsProvider.Current.PrimaryScreenMetrics.WorkAreaPixels;
+                return new NativeMethods.RECT(workArea.X, workArea.Y,
+                    checked(workArea.X + workArea.Width), checked(workArea.Y + workArea.Height));
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.WorkAreaInternal])
@@ -359,6 +379,7 @@ namespace System.Windows
                 }
 
                 return _workAreaInternal;
+#endif
             }
         }
 
@@ -369,6 +390,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.PrimaryScreenMetrics.WorkAreaDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.WorkArea])
@@ -381,6 +405,7 @@ namespace System.Windows
                 }
 
                 return _workArea;
+#endif
             }
         }
 
@@ -566,6 +591,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.KeyboardCues;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.KeyboardCues])
@@ -584,6 +612,7 @@ namespace System.Windows
                 }
 
                 return _keyboardCues;
+#endif
             }
         }
 
@@ -594,6 +623,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return 1;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.KeyboardDelay])
@@ -612,6 +644,7 @@ namespace System.Windows
                 }
 
                 return _keyboardDelay;
+#endif
             }
         }
 
@@ -650,6 +683,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return 31;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.KeyboardSpeed])
@@ -668,6 +704,7 @@ namespace System.Windows
                 }
 
                 return _keyboardSpeed;
+#endif
             }
         }
 
@@ -742,6 +779,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.MouseHoverTimeMilliseconds;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MouseHoverTime])
@@ -760,6 +800,7 @@ namespace System.Windows
                 }
 
                 return _mouseHoverTime;
+#endif
             }
         }
 
@@ -770,6 +811,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.MouseHoverHeightDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MouseHoverHeight])
@@ -791,6 +835,7 @@ namespace System.Windows
                 }
 
                 return _mouseHoverHeight;
+#endif
             }
         }
 
@@ -802,6 +847,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.MouseHoverWidthDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MouseHoverWidth])
@@ -823,6 +871,7 @@ namespace System.Windows
                 }
 
                 return _mouseHoverWidth;
+#endif
             }
         }
 
@@ -986,6 +1035,10 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                // Initial portable Classic placement policy, without an inferred desktop preference.
+                return false;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MenuDropAlignment])
@@ -1003,6 +1056,7 @@ namespace System.Windows
                     }
                 }
                 return _menuDropAlignment;
+#endif
             }
         }
 
@@ -1013,6 +1067,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return false;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MenuFade])
@@ -1031,6 +1088,7 @@ namespace System.Windows
                 }
 
                 return _menuFade;
+#endif
             }
         }
 
@@ -1042,6 +1100,9 @@ namespace System.Windows
 
             get
             {
+#if PORTABLE_WPF
+                return 400;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MenuShowDelay])
@@ -1060,6 +1121,7 @@ namespace System.Windows
                 }
 
                 return _menuShowDelay;
+#endif
             }
         }
 
@@ -1144,6 +1206,9 @@ namespace System.Windows
 
             get
             {
+#if PORTABLE_WPF
+                return false;
+#else
 
                 lock (_cacheValid)
                 {
@@ -1163,6 +1228,7 @@ namespace System.Windows
                 }
 
                 return _comboBoxAnimation;
+#endif
             }
         }
 
@@ -1344,6 +1410,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return false;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MenuAnimation])
@@ -1362,6 +1431,7 @@ namespace System.Windows
                 }
 
                 return _menuAnimation;
+#endif
             }
         }
 
@@ -1445,6 +1515,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return false;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.ToolTipAnimation])
@@ -1463,6 +1536,7 @@ namespace System.Windows
                 }
 
                 return _toolTipAnimation;
+#endif
             }
         }
 
@@ -1473,6 +1547,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return false;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.ToolTipFade])
@@ -1491,6 +1568,7 @@ namespace System.Windows
                 }
 
                 return _tooltipFade;
+#endif
             }
         }
 
@@ -1836,6 +1914,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.CaretWidthDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.CaretWidth])
@@ -1878,6 +1959,7 @@ namespace System.Windows
                 }
 
                 return _caretWidth;
+#endif
             }
         }
 
@@ -2410,6 +2492,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.MinimumHorizontalDragDistanceDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MinimumHorizontalDragDistance])
@@ -2420,6 +2505,7 @@ namespace System.Windows
                 }
 
                 return _minimumHorizontalDragDistance;
+#endif
             }
         }
 
@@ -2430,6 +2516,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.MinimumVerticalDragDistanceDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.MinimumVerticalDragDistance])
@@ -2440,6 +2529,7 @@ namespace System.Windows
                 }
 
                 return _minimumVerticalDragDistance;
+#endif
             }
         }
 
@@ -2577,6 +2667,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.ScrollBarMetrics.HorizontalScrollBarButtonWidthDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.HorizontalScrollBarButtonWidth])
@@ -2587,6 +2680,7 @@ namespace System.Windows
                 }
 
                 return _horizontalScrollBarButtonWidth;
+#endif
             }
         }
 
@@ -2597,6 +2691,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.ScrollBarMetrics.HorizontalScrollBarHeightDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.HorizontalScrollBarHeight])
@@ -2607,6 +2704,7 @@ namespace System.Windows
                 }
 
                 return _horizontalScrollBarHeight;
+#endif
             }
         }
 
@@ -3067,6 +3165,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.PrimaryScreenMetrics.WidthDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.PrimaryScreenWidth])
@@ -3077,6 +3178,7 @@ namespace System.Windows
                 }
 
                 return _primaryScreenWidth;
+#endif
             }
         }
 
@@ -3087,6 +3189,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.PrimaryScreenMetrics.HeightDip;
+#else
 
                 lock (_cacheValid)
                 {
@@ -3098,6 +3203,7 @@ namespace System.Windows
                 }
 
                 return _primaryScreenHeight;
+#endif
             }
         }
 
@@ -3275,6 +3381,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.VirtualScreenBoundsDip.Width;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.VirtualScreenWidth])
@@ -3285,6 +3394,7 @@ namespace System.Windows
                 }
 
                 return _virtualScreenWidth;
+#endif
             }
         }
 
@@ -3298,6 +3408,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.VirtualScreenBoundsDip.Height;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.VirtualScreenHeight])
@@ -3308,6 +3421,7 @@ namespace System.Windows
                 }
 
                 return _virtualScreenHeight;
+#endif
             }
         }
 
@@ -3319,6 +3433,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.ScrollBarMetrics.VerticalScrollBarWidthDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.VerticalScrollBarWidth])
@@ -3329,6 +3446,7 @@ namespace System.Windows
                 }
 
                 return _verticalScrollBarWidth;
+#endif
             }
         }
 
@@ -3339,6 +3457,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.ScrollBarMetrics.VerticalScrollBarButtonHeightDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.VerticalScrollBarButtonHeight])
@@ -3349,6 +3470,7 @@ namespace System.Windows
                 }
 
                 return _verticalScrollBarButtonHeight;
+#endif
             }
         }
 
@@ -3362,6 +3484,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.WindowCaptionHeightDip;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.WindowCaptionHeight])
@@ -3372,6 +3497,7 @@ namespace System.Windows
                 }
 
                 return _windowCaptionHeight;
+#endif
             }
         }
 
@@ -3743,6 +3869,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.VirtualScreenBoundsDip.Left;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.VirtualScreenLeft])
@@ -3753,6 +3882,7 @@ namespace System.Windows
                 }
 
                 return _virtualScreenLeft;
+#endif
             }
         }
 
@@ -3766,6 +3896,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return PortableSystemSettingsProvider.Current.VirtualScreenBoundsDip.Top;
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.VirtualScreenTop])
@@ -3776,6 +3909,7 @@ namespace System.Windows
                 }
 
                 return _virtualScreenTop;
+#endif
             }
         }
 
@@ -5096,11 +5230,13 @@ namespace System.Windows
             if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.MaximizedPrimaryScreenHeight))
                 changed |= _maximizedPrimaryScreenHeight != MaximizedPrimaryScreenHeight;
 
+#if !PORTABLE_WPF
             if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.PrimaryScreenWidth))
                 changed |= _primaryScreenWidth != PrimaryScreenWidth;
 
             if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.PrimaryScreenHeight))
                 changed |= _primaryScreenHeight != PrimaryScreenHeight;
+#endif
 
             if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.VirtualScreenWidth))
                 changed |= _virtualScreenWidth != VirtualScreenWidth;
@@ -5205,12 +5341,16 @@ namespace System.Windows
 
                 case NativeMethods.SPI_SETKEYBOARDCUES:
                     return InvalidateProperty((int)CacheSlot.KeyboardCues, "KeyboardCues");
+#if !PORTABLE_WPF
                 case NativeMethods.SPI_SETKEYBOARDDELAY:
                     return InvalidateProperty((int)CacheSlot.KeyboardDelay, "KeyboardDelay");
+#endif
                 case NativeMethods.SPI_SETKEYBOARDPREF:
                     return InvalidateProperty((int)CacheSlot.KeyboardPreference, "KeyboardPreference");
+#if !PORTABLE_WPF
                 case NativeMethods.SPI_SETKEYBOARDSPEED:
                     return InvalidateProperty((int)CacheSlot.KeyboardSpeed, "KeyboardSpeed");
+#endif
                 case NativeMethods.SPI_SETSNAPTODEFBUTTON:
                     return InvalidateProperty((int)CacheSlot.SnapToDefaultButton, "SnapToDefaultButton");
                 case NativeMethods.SPI_SETWHEELSCROLLLINES:
@@ -5239,8 +5379,10 @@ namespace System.Windows
                 case NativeMethods.SPI_SETMENUSHOWDELAY:
                     return InvalidateProperty((int)CacheSlot.MenuShowDelay, "MenuShowDelay");
 
+#if !PORTABLE_WPF
                 case NativeMethods.SPI_SETCOMBOBOXANIMATION:
                     return InvalidateProperty((int)CacheSlot.ComboBoxAnimation, "ComboBoxAnimation");
+#endif
                 case NativeMethods.SPI_SETCLIENTAREAANIMATION:
                     return InvalidateProperty((int)CacheSlot.ClientAreaAnimation, "ClientAreaAnimation");
                 case NativeMethods.SPI_SETCURSORSHADOW:
@@ -5307,11 +5449,13 @@ namespace System.Windows
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.FixedFrameVerticalBorderWidth))
                             changed |= _fixedFrameVerticalBorderWidth != FixedFrameVerticalBorderWidth;
 
+#if !PORTABLE_WPF
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.HorizontalScrollBarButtonWidth))
                             changed |= _horizontalScrollBarButtonWidth != HorizontalScrollBarButtonWidth;
 
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.HorizontalScrollBarHeight))
                             changed |= _horizontalScrollBarHeight != HorizontalScrollBarHeight;
+#endif
 
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.HorizontalScrollBarThumbWidth))
                             changed |= _horizontalScrollBarThumbWidth != HorizontalScrollBarThumbWidth;
@@ -5394,11 +5538,13 @@ namespace System.Windows
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.SmallWindowCaptionButtonHeight))
                             changed |= _smallWindowCaptionButtonHeight != SmallWindowCaptionButtonHeight;
 
+#if !PORTABLE_WPF
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.VerticalScrollBarWidth))
                             changed |= _verticalScrollBarWidth != VerticalScrollBarWidth;
 
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.VerticalScrollBarButtonHeight))
                             changed |= _verticalScrollBarButtonHeight != VerticalScrollBarButtonHeight;
+#endif
 
                         if (SystemResources.ClearSlot(_cacheValid, (int)CacheSlot.WindowCaptionHeight))
                             changed |= _windowCaptionHeight != WindowCaptionHeight;
@@ -5583,6 +5729,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return new CornerRadius(PortableSystemSettingsProvider.Current.WindowCornerRadiusDip);
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.WindowCornerRadius])
@@ -5631,6 +5780,7 @@ namespace System.Windows
                 }
 
                 return _windowCornerRadius;
+#endif
             }
         }
 
@@ -5691,6 +5841,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return new Thickness(PortableSystemSettingsProvider.Current.WindowResizeBorderThicknessDip);
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.WindowResizeBorderThickness])
@@ -5706,6 +5859,7 @@ namespace System.Windows
                 }
 
                 return _windowResizeBorderThickness;
+#endif
             }
         }
 
@@ -5716,6 +5870,11 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return new Thickness(PortableSystemSettingsProvider.Current.WindowResizeBorderThicknessDip,
+                    PortableSystemSettingsProvider.Current.WindowResizeBorderThicknessDip + PortableSystemSettingsProvider.Current.WindowCaptionHeightDip,
+                    PortableSystemSettingsProvider.Current.WindowResizeBorderThicknessDip, PortableSystemSettingsProvider.Current.WindowResizeBorderThicknessDip);
+#else
                 lock (_cacheValid)
                 {
                     while (!_cacheValid[(int)CacheSlot.WindowNonClientFrameThickness])
@@ -5732,6 +5891,7 @@ namespace System.Windows
                 }
 
                 return _windowNonClientFrameThickness;
+#endif
             }
         }
 
@@ -5945,31 +6105,47 @@ namespace System.Windows
 
         private static double _focusBorderWidth;
         private static double _focusBorderHeight;
+#if !PORTABLE_WPF
         private static bool _highContrast;
+#endif
+#if !PORTABLE_WPF
         private static bool _mouseVanish;
+#endif
 
+#if !PORTABLE_WPF
         private static bool _dropShadow;
+#endif
         private static bool _flatMenu;
         private static NativeMethods.RECT _workAreaInternal;
         private static Rect _workArea;
 
         private static NativeMethods.ICONMETRICS _iconMetrics;
 
+#if !PORTABLE_WPF
         private static bool _keyboardCues;
+#endif
+#if !PORTABLE_WPF
         private static int _keyboardDelay;
+#endif
         private static bool _keyboardPref;
+#if !PORTABLE_WPF
         private static int _keyboardSpeed;
+#endif
         private static bool _snapToDefButton;
         private static int _wheelScrollLines;
         private static int _mouseHoverTime;
         private static double _mouseHoverHeight;
         private static double _mouseHoverWidth;
 
+#if !PORTABLE_WPF
         private static bool _menuDropAlignment;
+#endif
         private static bool _menuFade;
         private static int _menuShowDelay;
 
+#if !PORTABLE_WPF
         private static bool _comboBoxAnimation;
+#endif
         private static bool _clientAreaAnimation;
         private static bool _cursorShadow;
         private static bool _gradientCaptions;
@@ -5984,7 +6160,9 @@ namespace System.Windows
 
         private static bool _minAnimation;
         private static int _border;
+#if !PORTABLE_WPF
         private static double _caretWidth;
+#endif
         private static bool _dragFullWindows;
         private static int _foregroundFlashCount;
         private static NativeMethods.NONCLIENTMETRICS _ncm;
@@ -5995,16 +6173,20 @@ namespace System.Windows
         private static double _cursorHeight;
         private static double _thickHorizontalBorderHeight;
         private static double _thickVerticalBorderWidth;
+#if !PORTABLE_WPF
         private static double _minimumHorizontalDragDistance;
         private static double _minimumVerticalDragDistance;
+#endif
         private static double _fixedFrameHorizontalBorderHeight;
         private static double _fixedFrameVerticalBorderWidth;
         private static double _focusHorizontalBorderHeight;
         private static double _focusVerticalBorderWidth;
         private static double _fullPrimaryScreenHeight;
         private static double _fullPrimaryScreenWidth;
+#if !PORTABLE_WPF
         private static double _horizontalScrollBarHeight;
         private static double _horizontalScrollBarButtonWidth;
+#endif
         private static double _horizontalScrollBarThumbWidth;
         private static double _iconWidth;
         private static double _iconHeight;
@@ -6026,8 +6208,10 @@ namespace System.Windows
         private static double _minimizedGridHeight;
         private static double _minimumWindowTrackWidth;
         private static double _minimumWindowTrackHeight;
+#if !PORTABLE_WPF
         private static double _primaryScreenWidth;
         private static double _primaryScreenHeight;
+#endif
         private static double _windowCaptionButtonWidth;
         private static double _windowCaptionButtonHeight;
         private static double _resizeFrameHorizontalBorderHeight;
@@ -6038,8 +6222,10 @@ namespace System.Windows
         private static double _smallWindowCaptionButtonHeight;
         private static double _virtualScreenWidth;
         private static double _virtualScreenHeight;
+#if !PORTABLE_WPF
         private static double _verticalScrollBarWidth;
         private static double _verticalScrollBarButtonHeight;
+#endif
         private static double _windowCaptionHeight;
         private static double _kanjiWindowHeight;
         private static double _menuBarHeight;

@@ -1,0 +1,38 @@
+--- a/Controls/FocusElementManager.cs
++++ b/Controls/FocusElementManager.cs
+@@ -37,10 +37,12 @@
+ 			{
+ 				// InputManager.Current.EnterMenuMode += new EventHandler(InputManager_EnterMenuMode);
+ 				// InputManager.Current.LeaveMenuMode += new EventHandler(InputManager_LeaveMenuMode);
++#if !PORTABLE_AVALONDOCK
+ 				_windowHandler = new WindowHookHandler();
+ 				_windowHandler.FocusChanged += new EventHandler<FocusChangeEventArgs>(WindowFocusChanging);
+ 				// _windowHandler.Activate += new EventHandler<WindowActivateEventArgs>(WindowActivating);
+ 				_windowHandler.Attach();
++#endif
+ 				if (Application.Current != null)
+ 				{
+ 					// Application.Current.Exit += new ExitEventHandler( Current_Exit );
+@@ -76,6 +78,10 @@
+ 
+ 			if (_managers.Count == 0)
+ 			{
++#if PORTABLE_AVALONDOCK
++				if (Application.Current != null)
++					Application.Current.Exit -= Current_Exit;
++#endif
+ 				// InputManager.Current.EnterMenuMode -= new EventHandler(InputManager_EnterMenuMode);
+ 				// InputManager.Current.LeaveMenuMode -= new EventHandler(InputManager_LeaveMenuMode);
+ 				if (_windowHandler != null)
+@@ -129,9 +135,11 @@
+ 				focused = objectToFocus == Keyboard.Focus(objectToFocus);
+ 			}
+ 
++#if !PORTABLE_AVALONDOCK
+ 			IntPtr handleToFocus;
+ 			if (_modelFocusedWindowHandle.GetValue(model, out handleToFocus))
+ 				focused = IntPtr.Zero != Win32Helper.SetFocus(handleToFocus);
++#endif
+ 
+ 			if (focused)
+ 			{

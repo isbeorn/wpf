@@ -1,0 +1,57 @@
+--- a/Controls/LayoutAnchorableFloatingWindowControl.cs
++++ b/Controls/LayoutAnchorableFloatingWindowControl.cs
+@@ -49,6 +49,9 @@
+ 			HideWindowCommand = new RelayCommand<object>((p) => OnExecuteHideWindowCommand(p), (p) => CanExecuteHideWindowCommand(p));
+ 			CloseWindowCommand = new RelayCommand<object>((p) => OnExecuteCloseWindowCommand(p), (p) => CanExecuteCloseWindowCommand(p));
+ 			Activated += LayoutAnchorableFloatingWindowControl_Activated;
++#if PORTABLE_AVALONDOCK
++			Deactivated += OnPortableDeactivated;
++#endif
+ 			UpdateThemeResources();
+ 			MinWidth = _model.RootPanel.CalculatedDockMinWidth();
+ 			MinHeight = _model.RootPanel.CalculatedDockMinHeight();
+@@ -65,10 +68,25 @@
+ 
+ 		private void LayoutAnchorableFloatingWindowControl_Activated(object sender, EventArgs e)
+ 		{
++#if PORTABLE_AVALONDOCK
++			SetPortableActiveContent(true);
++#endif
+ 			// Issue similar to: http://avalondock.codeplex.com/workitem/15036
+ 			var visibilityBinding = GetBindingExpression(VisibilityProperty);
+ 			if (visibilityBinding == null && Visibility == Visibility.Visible) SetVisibilityBinding();
+ 		}
++
++#if PORTABLE_AVALONDOCK
++		private void OnPortableDeactivated(object sender, EventArgs e) => SetPortableActiveContent(false);
++
++		private void SetPortableActiveContent(bool active)
++		{
++			if (_model.IsSinglePane)
++				LayoutFloatingWindowControlHelper.ActiveTheContentOfSinglePane(this, active);
++			else
++				LayoutFloatingWindowControlHelper.ActiveTheContentOfMultiPane(this, active);
++		}
++#endif
+ 
+ 		internal LayoutAnchorableFloatingWindowControl(LayoutAnchorableFloatingWindow model)
+ 			: this(model, false)
+@@ -159,7 +177,7 @@
+ 			if (_dropAreas != null) return _dropAreas;
+ 			_dropAreas = new List<IDropArea>();
+ 			if (draggingWindow.Model is LayoutDocumentFloatingWindow) return _dropAreas;
+-			var rootVisual = (Content as FloatingWindowContentHost).RootVisual;
++			var rootVisual = ContentRootVisual;
+ 			foreach (var areaHost in rootVisual.FindVisualChildren<LayoutAnchorablePaneControl>())
+ 				_dropAreas.Add(new DropArea<LayoutAnchorablePaneControl>(areaHost, DropAreaType.AnchorablePane));
+ 			foreach (var areaHost in rootVisual.FindVisualChildren<LayoutDocumentPaneControl>())
+@@ -207,6 +225,9 @@
+ 			_model.PropertyChanged -= _model_PropertyChanged;
+ 			_model.IsVisibleChanged -= _model_IsVisibleChanged;
+ 			Activated -= LayoutAnchorableFloatingWindowControl_Activated;
++#if PORTABLE_AVALONDOCK
++			Deactivated -= OnPortableDeactivated;
++#endif
+ 			IsVisibleChanged -= LayoutAnchorableFloatingWindowControl_IsVisibleChanged;
+ 			BindingOperations.ClearBinding(this, VisibilityProperty);
+ 			BindingOperations.ClearBinding(this, SingleContentLayoutItemProperty);

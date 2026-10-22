@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../Framework/WindowsBase/WindowsBase.csproj" Aliases="WpfFork" />
+    <ProjectReference Include="../../Backend/NativeHost/NativeHost.csproj" />
+    <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" Aliases="WpfFork" />
+    <ProjectReference Include="../../Framework/PresentationFramework/PresentationFramework.csproj" Aliases="WpfFork" />
+    <Compile Include="../NativeWindowIntegration/X11Fixture.cs" Link="X11Fixture.cs" />
+    <Compile Include="../NativeWindowIntegration/OwnedNativeAccess.cs" Link="OwnedNativeAccess.cs" />
+  </ItemGroup>
+  <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+</Project>

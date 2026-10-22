@@ -49,6 +49,10 @@ namespace MS.Internal
 
                     if (!_fileExtensionToMimeType.TryGetValue(completeExt, out mimeType))
                     {
+#if PORTABLE_WPF
+                        // Portable pack resources have no OS association or content-sniffing service.
+                        mimeType = completeExt == "txt" ? TextPlainMime : OctetMime;
+#else
                         //
                         // If the hashtable doesn't contain the MimeType for this extension, 
                         // Call UrlMon API to get it, once UrlMon API returns a vallid MimeType,
@@ -56,6 +60,7 @@ namespace MS.Internal
                         // with the same extension will be faster.
                         //
                         mimeType = GetMimeTypeFromUrlMon(uriSource);
+#endif
 
                         if (mimeType != ContentType.Empty)
                         {

@@ -162,6 +162,10 @@ namespace MS.Internal
         /// </summary>
         public static Point ClientToScreen(Point pointClient, PresentationSource presentationSource)
         {
+#if PORTABLE_WPF && PRESENTATION_CORE
+            if (presentationSource is MS.Internal.Portability.Windowing.PortablePresentationSource)
+                return ((MS.Internal.Portability.Input.PortableInputProvider)presentationSource.GetInputProvider(typeof(System.Windows.Input.MouseDevice))).ClientToScreen(pointClient);
+#endif
             // For now we only know how to use HwndSource.
             HwndSource inputSource = presentationSource as HwndSource;
             if(inputSource == null)
@@ -184,6 +188,10 @@ namespace MS.Internal
         /// </summary>
         internal static Point ScreenToClient(Point pointScreen, PresentationSource presentationSource)
         {
+#if PORTABLE_WPF && PRESENTATION_CORE
+            if (presentationSource is MS.Internal.Portability.Windowing.PortablePresentationSource)
+                return ((MS.Internal.Portability.Input.PortableInputProvider)presentationSource.GetInputProvider(typeof(System.Windows.Input.MouseDevice))).ScreenToClient(pointScreen);
+#endif
             // For now we only know how to use HwndSource.
             HwndSource inputSource = presentationSource as HwndSource;
             if(inputSource == null)

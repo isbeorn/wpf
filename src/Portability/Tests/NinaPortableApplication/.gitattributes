@@ -1,0 +1,6 @@
+App.xaml.cs.patch -text -whitespace
+LICENSE.txt -text -whitespace
+PortableEntry.cs -text
+CurrentComponents.json -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+SimulatorQualification/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+SimulatorQualification/source.patch -whitespace

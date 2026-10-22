@@ -142,6 +142,16 @@ namespace System.Windows.Documents
             }
         }
 
+#if PORTABLE_WPF
+        internal UIElementIsland PortableCachedIsland => _uiElementIsland;
+
+        internal bool PortableExchangeIsland(UIElementIsland expected, UIElementIsland replacement)
+        {
+            if (!ReferenceEquals(_uiElementIsland, expected)) return false;
+            _uiElementIsland = replacement;
+            return true;
+        }
+#endif
         #endregion Internal Properties
 
 

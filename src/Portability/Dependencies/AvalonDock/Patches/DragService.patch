@@ -1,0 +1,26 @@
+--- a/Controls/DragService.cs
++++ b/Controls/DragService.cs
+@@ -8,6 +8,9 @@
+  ************************************************************************/
+ 
+ using System;
++#if PORTABLE_AVALONDOCK
++using MS.Internal.Portability.Windowing;
++#endif
+ using System.Collections.Generic;
+ using System.Linq;
+ using System.Windows;
+@@ -266,9 +269,13 @@
+ 		{
+ 			if (window == null) return;
+ 
++#if PORTABLE_AVALONDOCK
++			PortableWindowPlatform.RaiseWithoutActivation(window);
++#else
+ 			Win32Helper.SetWindowPos(
+ 				new WindowInteropHelper(window).Handle,
+ 				IntPtr.Zero, 0, 0, 0, 0, Win32Helper.SetWindowPosFlags.IgnoreResize | Win32Helper.SetWindowPosFlags.IgnoreMove | Win32Helper.SetWindowPosFlags.DoNotActivate);
++#endif
+ 		}
+ 
+ 		/// <summary>

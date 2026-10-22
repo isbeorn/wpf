@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><AssemblyName>Portability.FrameworkIdentity.Companion</AssemblyName></PropertyGroup>
+  <ItemGroup><ProjectReference Include="../../../Framework/WindowsBase/WindowsBase.csproj" /></ItemGroup>
+  <Import Project="../../../Framework/Build/PortableWpfReferences.targets" />
+</Project>

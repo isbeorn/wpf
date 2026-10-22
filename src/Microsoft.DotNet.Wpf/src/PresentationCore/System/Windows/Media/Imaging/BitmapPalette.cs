@@ -96,6 +96,18 @@ namespace System.Windows.Media.Imaging
         internal BitmapPalette(WICPaletteType paletteType,
                 bool addtransparentColor)
         {
+#if PORTABLE_WPF
+            if (paletteType != WICPaletteType.WICPaletteTypeFixedGray256 || addtransparentColor)
+                throw new NotSupportedException("Portable predefined bitmap palettes support only opaque Gray256.");
+
+            Color[] colors = new Color[256];
+            for (int i = 0; i < colors.Length; i++)
+            {
+                byte value = (byte)i;
+                colors[i] = Color.FromRgb(value, value, value);
+            }
+            _colors = new ReadOnlyCollection<Color>(colors);
+#else
             switch (paletteType)
             {
                 case WICPaletteType.WICPaletteTypeFixedBW:
@@ -124,6 +136,7 @@ namespace System.Windows.Media.Imaging
 
             // Fill in the Colors property.
             UpdateManaged();
+#endif
         }
 
         internal BitmapPalette(SafeMILHandle unmanagedPalette)
@@ -243,6 +256,9 @@ namespace System.Windows.Media.Imaging
 
         internal static SafeMILHandle CreateInternalPalette()
         {
+#if PORTABLE_WPF
+            throw new NotSupportedException("Native bitmap palette handles and palette quantization are not available in portable WPF.");
+#else
             SafeMILHandle palette = null;
 
             using (FactoryMaker myFactory = new FactoryMaker())
@@ -254,6 +270,7 @@ namespace System.Windows.Media.Imaging
             }
 
             return palette;
+#endif
         }
 
         /// <summary>

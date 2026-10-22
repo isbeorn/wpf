@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>Wpf.Portable.NativeHost</AssemblyName>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <IsPackable>false</IsPackable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../Framework/WindowsBase/WindowsBase.csproj" Aliases="WpfFork" />
+    <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" Aliases="WpfFork" />
+    <ProjectReference Include="../../Framework/PresentationFramework/PresentationFramework.csproj" Aliases="WpfFork" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux" Version="[3.119.4]" />
+  </ItemGroup>
+  <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+  <Import Project="../../Framework/Build/PublicSigning.targets" />
+</Project>

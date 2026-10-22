@@ -30,7 +30,7 @@ namespace Microsoft.Win32
     ///    This class is not intended to be derived from except by
     ///    the OpenFileDialog and SaveFileDialog classes.
     /// </summary>
-    public abstract class FileDialog : CommonItemDialog
+    public abstract partial class FileDialog : CommonItemDialog
     {
         //---------------------------------------------------
         //

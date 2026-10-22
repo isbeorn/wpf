@@ -4,6 +4,10 @@
 using MS.Internal;
 using MS.Win32.PresentationCore;
 using System.Windows.Media.Composition;
+#if PORTABLE_WPF
+using MS.Internal.Portability.Rendering;
+using SkiaSharp;
+#endif
 
 namespace System.Windows.Media.Imaging
 {
@@ -87,6 +91,7 @@ namespace System.Windows.Media.Imaging
         /// </summary>
         private void CopyCommon(RenderTargetBitmap sourceBitmap)
         {
+#if !PORTABLE_WPF
             _bitmapInit.BeginInit();
             _pixelWidth = sourceBitmap._pixelWidth;
             _pixelHeight = sourceBitmap._pixelHeight;
@@ -124,6 +129,7 @@ namespace System.Windows.Media.Imaging
             }
 
             _bitmapInit.EndInit();
+#endif
         }
 
         /// <summary>
@@ -180,8 +186,32 @@ namespace System.Windows.Media.Imaging
         /// </summary>
         public void Render(Visual visual)
         {
+#if PORTABLE_WPF
+            if (IsFrozen)
+                throw new System.ArgumentException(SR.Image_CantBeFrozen);
+            WritePreamble();
+            System.ArgumentNullException.ThrowIfNull(visual);
+            if (!double.IsFinite(_dpiX) || !double.IsFinite(_dpiY))
+                throw new System.NotSupportedException("Portable RenderTargetBitmap rendering requires finite DPI.");
+            using (var target = new PortableRenderTarget(visual, _pixelWidth, _pixelHeight, new DpiScale(_dpiX / 96, _dpiY / 96)))
+            {
+                target.Render();
+                using SKBitmap rendered = target.Snapshot();
+                using SKBitmap combined = PortableBuffer.CreateDisplayBitmap();
+                using (var canvas = new SKCanvas(combined))
+                {
+                    canvas.DrawBitmap(rendered, 0, 0);
+                    canvas.Flush();
+                }
+                PortableBuffer.Write(new Int32Rect(0, 0, _pixelWidth, _pixelHeight), combined.GetPixels(),
+                    checked((uint)(combined.RowBytes * combined.Height)), combined.RowBytes, 0, 0);
+                PortableBuffer.Commit();
+            }
+            RenderTargetContentsChanged();
+#else
             BitmapVisualManager bmv = new BitmapVisualManager(this);
             bmv.Render(visual); // Render indirectly calls RenderTargetContentsChanged();
+#endif
         }
 
         /// <summary>
@@ -189,7 +219,15 @@ namespace System.Windows.Media.Imaging
         /// </summary>
         public void Clear()
         {
+#if PORTABLE_WPF
+            unsafe
+            {
+                new System.Span<byte>((void*)PortableBuffer.BackBuffer, checked((int)PortableBuffer.Size)).Clear();
+            }
+            PortableBuffer.Commit();
+#else
             HRESULT.Check(MILRenderTargetBitmap.Clear(_renderTargetBitmap));
+#endif
             RenderTargetContentsChanged();
         }
 
@@ -209,6 +247,7 @@ namespace System.Windows.Media.Imaging
         ///
         internal void RenderTargetContentsChanged()
         {
+#if !PORTABLE_WPF
             // If the render target has changed, we need to update the UCE resource.  We ensure
             // this happens by throwing away our reference to the previous DUCE bitmap source
             // and forcing the creation of a new one.
@@ -218,6 +257,7 @@ namespace System.Windows.Media.Imaging
 
             // Register for update in the next render pass
             RegisterForAsyncUpdateResource();
+#endif
             FireChanged();
         }
 
@@ -226,6 +266,9 @@ namespace System.Windows.Media.Imaging
         ///
         internal override void FinalizeCreation()
         {
+#if PORTABLE_WPF
+            InstallPortableBuffer(new PortableBitmapBuffer(_pixelWidth, _pixelHeight, _format, mutable: false), (float)_dpiX, (float)_dpiY);
+#else
             try
             {
                 using (FactoryMaker myFactory = new FactoryMaker())
@@ -270,9 +313,10 @@ namespace System.Windows.Media.Imaging
                 _bitmapInit.Reset();
                 throw;
             }
+#endif
 }
 
-        private SafeMILHandle /* IMILRenderTargetBitmap */ _renderTargetBitmap;
+        private SafeMILHandle /* IMILRenderTargetBitmap */ _renderTargetBitmap = null;
 }
     #endregion // RenderTargetBitmap
 }

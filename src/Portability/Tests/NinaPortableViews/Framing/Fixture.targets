@@ -1,0 +1,31 @@
+<Project>
+ <PropertyGroup>
+  <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  <EnableNETAnalyzers>false</EnableNETAnalyzers>
+  <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  <BuildProjectReferences>false</BuildProjectReferences>
+  <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  <DebugType>portable</DebugType>
+  <EnableSourceControlManagerQueries>false</EnableSourceControlManagerQueries>
+  <EnableSourceLink>false</EnableSourceLink>
+  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+ </PropertyGroup>
+ <ItemGroup>
+  <Compile Remove="@(Compile)" />
+  <Compile Include="$(FramingSourceDirectory)/*.cs" />
+  <Compile Include="$(FramingRepositoryRoot)/src/Portability/Tests/NinaPortableViews/RichText/OriginalStartupHook.cs" />
+
+  <PackageReference Remove="@(PackageReference)" />
+  <Reference Remove="@(Reference)" />
+  <None Remove="@(None)" />
+  <None Include="$(FramingRepositoryRoot)/src/Portability/Tests/Fixtures/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
+  <None Include="$(FramingAssetDirectory)/**/*" Link="%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+ </ItemGroup>
+ <Import Project="$(FramingReleasedReferences)" />
+ <ItemGroup><Reference Update="@(Reference)" Private="false" /></ItemGroup>
+ <Target Name="FramingOnlyInputs" BeforeTargets="ResolveReferences">
+  <Error Condition="'@(ProjectReference)' != ''" Text="Framing fixture must not build producer projects." />
+  <Error Condition="'@(PackageReference)' != ''" Text="Use released whole family references without backend packages." />
+  <Error Condition="'$(NinaStockWindowsReference)' == 'true'" Text="Linux projection must not import WindowsDesktop." />
+ </Target>
+</Project>

@@ -65,3 +65,7 @@
 # https://github.com/github/linguist/issues/1626#issuecomment-401442069
 # this only affects the repo's language statistics
 *.h linguist-language=C
+
+# Preserve the upstream decoder fixture license text.
+src/Portability/Tests/ImagingIntegration/Assets/AvalonDock-LICENSE.txt -text -whitespace
+src/Portability/Tests/ImagingIntegration/Assets/NINA-LICENSE.txt -text -whitespace

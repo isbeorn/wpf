@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <OutputType>Exe</OutputType>
+    <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
+    <RollForward>Disable</RollForward>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="FixtureControls/**" />
+    <Page Remove="FixtureControls/**" />
+    <ProjectReference Include="FixtureControls/FixtureControls.csproj" />
+  </ItemGroup>
+</Project>

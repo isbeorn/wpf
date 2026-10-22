@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="CoreTestAccess.cs" />
+    <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" />
+  </ItemGroup>
+  <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+  <Import Project="../../Framework/Build/PublicSigning.targets" />
+</Project>

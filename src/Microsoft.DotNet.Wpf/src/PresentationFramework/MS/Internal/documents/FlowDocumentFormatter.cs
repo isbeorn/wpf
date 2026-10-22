@@ -118,6 +118,13 @@ namespace MS.Internal.Documents
 
             // Arrange the content and create visual tree.
             _documentPage.Arrange(arrangeSize);
+#if PORTABLE_WPF
+            if (!_documentPage.IsPortableLayoutCurrent)
+            {
+                ((IFlowDocumentFormatter)this).OnContentInvalidated(true);
+                return;
+            }
+#endif
             _documentPage.EnsureValidVisuals();
             _arrangedAfterFormat = true;
 
@@ -127,9 +134,13 @@ namespace MS.Internal.Documents
                 viewport = new Rect(0, 0, arrangeSize.Width, _document.StructuralCache.BackgroundFormatInfo.ViewportHeight);
             }
             PTS.FSRECT fsrectViewport = new PTS.FSRECT(viewport);
-            _documentPage.UpdateViewport(ref fsrectViewport, true);
-
+#if PORTABLE_WPF
             _isContentFormatValid = true;
+            _documentPage.UpdateViewport(ref fsrectViewport, true);
+#else
+            _documentPage.UpdateViewport(ref fsrectViewport, true);
+            _isContentFormatValid = true;
+#endif
         }
 
         #endregion Internal Methods
@@ -145,6 +156,16 @@ namespace MS.Internal.Documents
         /// <summary>
         /// DocumentPage representing formatted content.
         /// </summary>
+#if PORTABLE_WPF
+        internal void ReleasePortableLayout()
+        {
+            _documentPage.ReleasePortableLayout();
+            _isContentFormatValid = false;
+            _arrangedAfterFormat = false;
+            _lastFormatSuccessful = false;
+            _document.StructuralCache.InvalidateFormatCache(true);
+        }
+#endif
         internal FlowDocumentPage DocumentPage
         {
             get
@@ -328,6 +349,9 @@ namespace MS.Internal.Documents
         /// </summary>
         void IFlowDocumentFormatter.Suspend()
         {
+#if PORTABLE_WPF
+            ReleasePortableLayout();
+#endif
             if (Suspended != null)
             {
                 Suspended(this, EventArgs.Empty);
@@ -361,6 +385,9 @@ namespace MS.Internal.Documents
                 bool layoutValid = _documentPage != null &&
                     _document.StructuralCache.IsFormattedOnce &&
                     !_document.StructuralCache.ForceReformat &&
+#if PORTABLE_WPF
+                    _documentPage.IsPortableLayoutCurrent &&
+#endif
                     _isContentFormatValid &&
                     !_document.StructuralCache.IsContentChangeInProgress &&
                     !_document.StructuralCache.IsFormattingInProgress;

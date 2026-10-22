@@ -51,6 +51,10 @@ namespace System.Windows.Media
         { 
             get
             {
+#if PORTABLE_WPF
+                ReadPreamble();
+                return MS.Internal.Portability.Rendering.SkiaGeometry.GetBounds(this);
+#else
                 return PathGeometry.GetPathBounds(
                     GetPathGeometryData(),
                     null,   // pen
@@ -58,6 +62,7 @@ namespace System.Windows.Media
                     StandardFlatteningTolerance, 
                     ToleranceType.Absolute,
                     false); // Do not skip non-fillable figures
+#endif
             }
         }
 
@@ -122,6 +127,9 @@ namespace System.Windows.Media
         /// </summary>
         internal virtual Rect GetBoundsInternal(Pen pen, Matrix matrix, double tolerance, ToleranceType type)
         {
+#if PORTABLE_WPF
+            return MS.Internal.Portability.Rendering.SkiaGeometry.GetRenderBounds(this, pen, matrix, tolerance, type);
+#else
             if (IsObviouslyEmpty())
             {
                 return Rect.Empty;
@@ -136,6 +144,7 @@ namespace System.Windows.Media
                 tolerance,
                 type,
                 skipHollows: true);
+#endif
         }
         
         /// <summary>
@@ -160,6 +169,11 @@ namespace System.Windows.Media
             ToleranceType type,
             bool fSkipHollows)
         {
+#if PORTABLE_WPF
+            return MS.Internal.Portability.Rendering.SkiaGeometry.GetRenderBounds(
+                Pen.ContributesToBounds(pen) ? pen : null, *pWorldMatrix, pPoints, pTypes, pointCount, segmentCount,
+                pGeometryMatrix == null ? Matrix.Identity : *pGeometryMatrix, tolerance, type);
+#else
             MIL_PEN_DATA penData;
             double[] dashArray = null;
 
@@ -213,6 +227,7 @@ namespace System.Windows.Media
             }
 
             return bounds;
+#endif
         }
 
         internal virtual void TransformPropertyChangedHook(DependencyPropertyChangedEventArgs e)
@@ -377,6 +392,10 @@ namespace System.Windows.Media
         /// <param name="type">The way the error tolerance will be interpreted - relative or absolute</param>
         internal virtual bool ContainsInternal(Pen pen, Point hitPoint, double tolerance, ToleranceType type)
         {
+#if PORTABLE_WPF
+            ReadPreamble();
+            return MS.Internal.Portability.Rendering.SkiaGeometry.Contains(this, pen, hitPoint, tolerance, type);
+#else
             if (IsObviouslyEmpty())
             {
                 return false;
@@ -432,6 +451,7 @@ namespace System.Windows.Media
             }
 
             return contains;
+#endif
         }
 
         /// <summary>
@@ -440,6 +460,10 @@ namespace System.Windows.Media
         internal unsafe bool ContainsInternal(Pen pen, Point hitPoint, double tolerance, ToleranceType type, 
                                                 Point *pPoints, uint pointCount, byte *pTypes, uint typeCount)
         {
+#if PORTABLE_WPF
+            ReadPreamble();
+            return MS.Internal.Portability.Rendering.SkiaGeometry.Contains(this, pen, hitPoint, tolerance, type);
+#else
             bool contains = false;
 
             MilMatrix3x2D matrix = CompositionResourceManager.TransformToMilMatrix3x2D(Transform);
@@ -477,6 +501,7 @@ namespace System.Windows.Media
             }
 
             return contains;
+#endif
         }
 
         /// <summary>
@@ -808,6 +833,9 @@ namespace System.Windows.Media
         {
             ReadPreamble();
 
+#if PORTABLE_WPF
+            return MS.Internal.Portability.Rendering.PortableGeometryOutline.Create(this, tolerance, type);
+#else
             if (IsObviouslyEmpty())
             {
                 return new PathGeometry();
@@ -857,6 +885,7 @@ namespace System.Windows.Media
             }
 
             return resultGeometry;
+#endif
         }
 
         /// <summary>

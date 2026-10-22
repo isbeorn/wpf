@@ -1,7 +1,11 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+#if !PORTABLE_WPF
 using MS.Win32;
+#else
+using MS.Internal.Portability;
+#endif
 using System.Windows.Interop;
 using MS.Utility;
 using System.Runtime.InteropServices;
@@ -21,7 +25,9 @@ namespace System.Windows.Threading
     {
         static Dispatcher()
         {
+#if !PORTABLE_WPF
             _msgProcessQueue = UnsafeNativeMethods.RegisterWindowMessage("DispatcherProcessQueue");
+#endif
             _globalLock = new object();
             _dispatchers = new List<WeakReference>();
             _possibleDispatcher = new WeakReference(null);
@@ -1716,6 +1722,9 @@ namespace System.Windows.Threading
 
         private Dispatcher()
         {
+#if PORTABLE_WPF
+            _pump = DispatcherPlatform.CreatePump();
+#endif
             _queue = new PriorityQueue<DispatcherOperation>();
 
             _tlsDispatcher = this; // use TLS for ownership only
@@ -1732,12 +1741,14 @@ namespace System.Windows.Threading
 
             _defaultDispatcherSynchronizationContext = new DispatcherSynchronizationContext(this);
 
+#if !PORTABLE_WPF
             // Create the message-only window we use to receive messages
             // that tell us to process the queue.
             _window = new MessageOnlyHwndWrapper();
 
             _hook = new HwndWrapperHook(WndProcHook);
             _window.AddHook(_hook);
+#endif
 
             // Verify that the accessibility switches are set prior to any major UI code running.
             AccessibilitySwitches.VerifySwitches(this);
@@ -1841,6 +1852,15 @@ namespace System.Windows.Threading
             // Note: we need to do this BEFORE we actually mark the dispatcher
             // as shutdown.  This is because the window will need the dispatcher
             // to execute the window proc.
+#if PORTABLE_WPF
+            IDispatcherPump pump;
+            lock (_instanceLock)
+            {
+                pump = _pump;
+                _pump = null;
+            }
+            pump.Dispose();
+#else
             MessageOnlyHwndWrapper window = null;
             lock(_instanceLock)
             {
@@ -1848,6 +1868,7 @@ namespace System.Windows.Threading
                 _window = null;
             }
             window.Dispose();
+#endif
 
             // Mark this dispatcher as shut down.  Attempts to BeginInvoke
             // or Invoke will result in an exception.
@@ -2047,7 +2068,9 @@ namespace System.Windows.Threading
         {
             SynchronizationContext oldSyncContext = null;
             SynchronizationContext newSyncContext = null;
+#if !PORTABLE_WPF
             MSG msg = new MSG();
+#endif
 
             _frameDepth++;
             try
@@ -2061,10 +2084,14 @@ namespace System.Windows.Threading
                 {
                     while(frame.Continue)
                     {
+#if PORTABLE_WPF
+                        PumpPortableFrame(frame);
+#else
                         if (!GetMessage(ref msg, IntPtr.Zero, 0, 0))
                             break;
 
                         TranslateAndDispatchMessage(ref msg);
+#endif
                     }
 
                     // If this was the last frame to exit after a quit, we
@@ -2095,6 +2122,48 @@ namespace System.Windows.Threading
         }
 
 
+#if PORTABLE_WPF
+        private void PumpPortableFrame(DispatcherFrame frame)
+        {
+            if (_disableProcessingCount > 0)
+            {
+                throw new InvalidOperationException(SR.DispatcherProcessingDisabledButStillPumping);
+            }
+
+            _pump.WaitAndDispatch(0);
+            if (!frame.Continue || _hasShutdownFinished)
+            {
+                return;
+            }
+            PromoteTimers(Environment.TickCount);
+
+            bool runnable;
+            int timeout;
+            DispatcherHooks hooks;
+            lock (_instanceLock)
+            {
+                DispatcherPriority priority = _queue.MaxPriority;
+                runnable = priority > DispatcherPriority.Inactive &&
+                    (_foregroundPriorityRange.Contains(priority) || !IsInputPending());
+                timeout = _dueTimeFound ? Math.Max(1, unchecked(_dueTimeInTicks - Environment.TickCount)) : Timeout.Infinite;
+                hooks = _hooks;
+            }
+
+            if (runnable)
+            {
+                ProcessQueue();
+            }
+            else
+            {
+                hooks?.RaiseDispatcherInactive(this);
+                ComponentDispatcher.RaiseIdle();
+                if (frame.Continue)
+                {
+                    _pump.WaitAndDispatch(timeout);
+                }
+            }
+        }
+#else
         private bool GetMessage(ref MSG msg, IntPtr hwnd, int minMessage, int maxMessage)
         {
             // If Any TextServices for Cicero is not installed GetMessagePump() returns null.
@@ -2176,6 +2245,7 @@ namespace System.Windows.Threading
             return messagePump;
         }
 
+#endif
         /// <summary>
         /// Enables/disables ITfMessagePump handshake with Text Services Framework.
         /// </summary>
@@ -2192,6 +2262,7 @@ namespace System.Windows.Threading
             }
         }
 
+#if !PORTABLE_WPF
         private void TranslateAndDispatchMessage(ref MSG msg)
         {
             bool handled = false;
@@ -2268,8 +2339,13 @@ namespace System.Windows.Threading
             return IntPtr.Zero ;
         }
 
+#endif
+
         private bool IsInputPending()
         {
+#if PORTABLE_WPF
+            return _pump.HasPendingInput;
+#else
             int retVal = 0;
 
             // We need to know if there is any pending input in the Win32
@@ -2312,6 +2388,7 @@ namespace System.Windows.Threading
                                                                      NativeMethods.MWMO_INPUTAVAILABLE);
 
             return retVal == 0;
+#endif
         }
 
 
@@ -2322,6 +2399,20 @@ namespace System.Windows.Threading
 
         internal bool CriticalRequestProcessing(bool force)
         {
+#if PORTABLE_WPF
+            if (_pump == null)
+            {
+                return false;
+            }
+
+            DispatcherPriority priority = _queue.MaxPriority;
+            if (priority > DispatcherPriority.Inactive)
+            {
+                _postedProcessingType = _foregroundPriorityRange.Contains(priority) ? PROCESS_FOREGROUND : PROCESS_BACKGROUND;
+                _pump.Wake();
+            }
+            return true;
+#else
             bool succeeded = true;
 
             // This method is called from within the instance lock.  So we
@@ -2368,8 +2459,12 @@ namespace System.Windows.Threading
             }
 
             return succeeded;
+#endif
         }
 
+#if PORTABLE_WPF
+        private bool IsWindowNull() => _pump is null;
+#else
         private bool IsWindowNull() => _window is null;
 
         private bool RequestForegroundProcessing()
@@ -2426,6 +2521,7 @@ namespace System.Windows.Threading
 
             return succeeded;
         }
+#endif
 
         // Request{Foreground|Background}Processing can encounter failures from an
         // underlying OS method.  We cannot recover from these failures - they are
@@ -2649,10 +2745,14 @@ namespace System.Windows.Threading
                 // We are being called on the dispatcher thread so we can rely on
                 // _window.Value being non-null without taking the instance lock.
 
+#if PORTABLE_WPF
+                _pump.Wake();
+#else
                 SafeNativeMethods.SetTimer(
                     new HandleRef(this, _window.Handle),
                     TIMERID_TIMERS,
                     delta);
+#endif
 
                 _isWin32TimerSet = true;
             }
@@ -2665,9 +2765,11 @@ namespace System.Windows.Threading
                 // We are being called on the dispatcher thread so we can rely on
                 // _window.Value being non-null without taking the instance lock.
 
+#if !PORTABLE_WPF
                 SafeNativeMethods.KillTimer(
                     new HandleRef(this, _window.Handle),
                     TIMERID_TIMERS);
+#endif
 
                 _isWin32TimerSet = false;
             }
@@ -2820,12 +2922,17 @@ namespace System.Windows.Threading
         private static PriorityRange _backgroundPriorityRange = new PriorityRange(DispatcherPriority.Background, true, DispatcherPriority.Input, true);
         private static PriorityRange _idlePriorityRange = new PriorityRange(DispatcherPriority.SystemIdle, true, DispatcherPriority.ContextIdle, true);
 
+#if PORTABLE_WPF
+        private IDispatcherPump _pump;
+#else
         private MessageOnlyHwndWrapper _window;
 
         private HwndWrapperHook _hook;
 
-        private int _postedProcessingType;
         private static WindowMessage _msgProcessQueue;
+#endif
+
+        private int _postedProcessingType;
 
         private static ExceptionWrapper _exceptionWrapper;
         private static readonly object ExceptionDataKey = new object();

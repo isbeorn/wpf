@@ -1,0 +1,112 @@
+--- a/DockingManager.cs
++++ b/DockingManager.cs
+@@ -8,6 +8,9 @@
+  ************************************************************************/
+ 
+ using System;
++#if PORTABLE_AVALONDOCK
++using MS.Internal.Portability.Windowing;
++#endif
+ using System.Collections;
+ using System.Collections.Generic;
+ using System.Collections.Specialized;
+@@ -1356,7 +1359,11 @@
+ 		private readonly List<WeakReference> _logicalChildren = new List<WeakReference>();
+ 
+ 		/// <inheritdoc />
++#if PORTABLE_AVALONDOCK
++		protected internal override IEnumerator LogicalChildren => _logicalChildren.Select(ch => ch.GetValueOrDefault<object>()).GetEnumerator();
++#else
+ 		protected override IEnumerator LogicalChildren => _logicalChildren.Select(ch => ch.GetValueOrDefault<object>()).GetEnumerator();
++#endif
+ 
+ 		public IEnumerator LogicalChildrenPublic => LogicalChildren;
+ 
+@@ -1685,10 +1692,21 @@
+ 		/// <param name="anchor"><see cref="LayoutAnchorControl"/> to pop out of the side panel.</param>
+ 		internal void ShowAutoHideWindow(LayoutAnchorControl anchor)
+ 		{
++#if PORTABLE_AVALONDOCK
++			throw new PlatformNotSupportedException("AvalonDock portable auto-hide presentation is not implemented.");
++#else
+ 			_autoHideWindowManager.ShowAutoHideWindow(anchor);
+-		}
+-
+-		internal void HideAutoHideWindow(LayoutAnchorControl anchor) => _autoHideWindowManager.HideAutoWindow(anchor);
++#endif
++		}
++
++		internal void HideAutoHideWindow(LayoutAnchorControl anchor)
++		{
++#if PORTABLE_AVALONDOCK
++			_autoHideWindowManager?.HideAutoWindow(anchor);
++#else
++			_autoHideWindowManager.HideAutoWindow(anchor);
++#endif
++		}
+ 
+ 		internal FrameworkElement GetAutoHideAreaElement() => _autohideArea;
+ 
+@@ -1782,6 +1800,10 @@
+ 
+ 		internal IEnumerable<LayoutFloatingWindowControl> GetFloatingWindowsByZOrder()
+ 		{
++#if PORTABLE_AVALONDOCK
++			return PortableWindowPlatform.GetWindowsByZOrder(_fwList.Cast<Window>().ToArray())
++				.OfType<LayoutFloatingWindowControl>().Where(fw => fw.Model.Root != null && fw.Model.Root.Manager == this);
++#else
+ 			var parentWindow = Window.GetWindow(this);
+ 			var windowParentHandle = parentWindow != null ? new WindowInteropHelper(parentWindow).Handle : Process.GetCurrentProcess().MainWindowHandle;
+ 			var currentHandle = Win32Helper.GetWindow(windowParentHandle, (uint)Win32Helper.GetWindow_Cmd.GW_HWNDFIRST);
+@@ -1793,10 +1815,33 @@
+ 
+ 				currentHandle = Win32Helper.GetWindow(currentHandle, (uint)Win32Helper.GetWindow_Cmd.GW_HWNDNEXT);
+ 			}
++#endif
+ 		}
+ 
+ 		internal void GetOverlayWindowHostsByZOrder(ref List<IOverlayWindowHost> overlayWindowHosts, LayoutFloatingWindowControl dragFloatingWindow)
+ 		{
++#if PORTABLE_AVALONDOCK
++			overlayWindowHosts.Clear();
++			var parentWindow = Window.GetWindow(this);
++			var candidates = _fwList.Where(fw => fw != dragFloatingWindow && fw.IsVisible && fw.Model.Root != null && fw.Model.Root.Manager == this).Cast<Window>().ToList();
++			if (parentWindow != null) candidates.Add(parentWindow);
++			var ordered = PortableWindowPlatform.GetWindowsByZOrder(candidates).ToList();
++			int parentIndex = ordered.IndexOf(parentWindow);
++			if (!IsVisible || parentIndex < 0)
++			{
++				overlayWindowHosts.AddRange(ordered.OfType<LayoutFloatingWindowControl>().OfType<IOverlayWindowHost>());
++				return;
++			}
++			var bottom = new List<IOverlayWindowHost>();
++			for (int i = 0; i < ordered.Count; i++)
++			{
++				if (!(ordered[i] is LayoutFloatingWindowControl fw) || !(fw is IOverlayWindowHost host)) continue;
++				if (fw.OwnedByDockingManagerWindow || (parentIndex >= 0 && i < parentIndex)) overlayWindowHosts.Add(host);
++				else bottom.Add(host);
++			}
++			overlayWindowHosts.Add(this);
++			overlayWindowHosts.AddRange(bottom);
++#else
+ 			overlayWindowHosts.Clear();
+ 
+ 			var topFloatingWindows = new List<IOverlayWindowHost>();
+@@ -1831,6 +1876,7 @@
+ 			overlayWindowHosts.AddRange(topFloatingWindows);
+ 			overlayWindowHosts.Add(this);
+ 			overlayWindowHosts.AddRange(bottomFloatingWindows);
++#endif
+ 		}
+ 
+ 		internal void RemoveFloatingWindow(LayoutFloatingWindowControl floatingWindow)
+@@ -2087,7 +2133,9 @@
+ 				SizeChanged += OnSizeChanged;
+ 			}
+ 
++#if !PORTABLE_AVALONDOCK
+ 			SetupAutoHideWindow();
++#endif
+ 
+ 			foreach (var fwc in _fwHiddenList)
+ 			{

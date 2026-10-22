@@ -24,11 +24,14 @@ using BuildInfo = MS.Internal.PresentationFramework.BuildInfo;
 using SNM = Standard.NativeMethods;
 using HRESULT = MS.Internal.Interop.HRESULT;
 using Win32Error = MS.Internal.Interop.Win32Error;
+#if PORTABLE_WPF
+using MS.Internal.Portability.Windowing;
+#endif
 
 namespace System.Windows
 {
     [Localizability(LocalizationCategory.Ignore)]
-    public class Window : ContentControl, IWindowService
+    public partial class Window : ContentControl, IWindowService
     {
         //---------------------------------------------------
         //
@@ -73,9 +76,11 @@ namespace System.Windows
             ClipToBoundsProperty.OverrideMetadata(typeof(Window), new FrameworkPropertyMetadata(BooleanBoxes.FalseBox, new PropertyChangedCallback(_OnClipToBoundsChanged), new CoerceValueCallback(CoerceClipToBounds)));
 
             // Note that this event only gets raised in Windows 7 and later.
+#if !PORTABLE_WPF
             WM_TASKBARBUTTONCREATED = UnsafeNativeMethods.RegisterWindowMessage("TaskbarButtonCreated");
 
             WM_APPLYTASKBARITEMINFO = UnsafeNativeMethods.RegisterWindowMessage("WPF_ApplyTaskbarItemInfo");
+#endif
 
             EventManager.RegisterClassHandler(typeof(Window),
                 UIElement.ManipulationCompletedEvent,
@@ -227,6 +232,9 @@ namespace System.Windows
         /// </remarks>
         public void DragMove()
         {
+#if PORTABLE_WPF
+            throw PortableUnsupported("DragMove");
+#else
             // this call ends up throwing an exception if dragmove
             // is not allowed
             VerifyApiSupported();
@@ -256,7 +264,8 @@ namespace System.Windows
             {
                 throw new InvalidOperationException(SR.DragMoveFail);
             }
-}
+#endif
+        }
 
         /// <summary>
         ///     Shows the window as a modal window
@@ -267,6 +276,9 @@ namespace System.Windows
         /// </remarks>
         public Nullable<bool> ShowDialog()
         {
+#if PORTABLE_WPF
+            return PortableShowDialog();
+#else
             // this call ends up throwing an exception if ShowDialog
             // is not allowed
             VerifyApiSupported();
@@ -468,6 +480,7 @@ namespace System.Windows
                 _showingAsDialog = false;
             }
             return _dialogResult;
+#endif
         }
 
 
@@ -494,7 +507,11 @@ namespace System.Windows
                 return false;
             }
 
+#if PORTABLE_WPF
+            return _portablePeer.Activate();
+#else
             return UnsafeNativeMethods.SetForegroundWindow(new HandleRef(null, Handle));
+#endif
         }
         #region LogicalTree
         /// <summary>
@@ -586,6 +603,9 @@ namespace System.Windows
                     throw new ArgumentException(string.Format("ThemeMode value {0} is invalid. Use None, System, Light or Dark", value));
                 }
 
+#if PORTABLE_WPF
+                if (value != ThemeMode.None) throw PortableUnsupported(nameof(ThemeMode));
+#endif
                 ThemeMode oldTheme = _themeMode;
                 _themeMode = value;
 
@@ -644,6 +664,9 @@ namespace System.Windows
 
         private void OnTaskbarItemInfoChanged(DependencyPropertyChangedEventArgs e)
         {
+#if PORTABLE_WPF
+            if (e.NewValue != null) throw PortableUnsupported(nameof(TaskbarItemInfo));
+#else
             var oldBar = (TaskbarItemInfo)e.OldValue;
             var newBar = (TaskbarItemInfo)e.NewValue;
 
@@ -659,6 +682,7 @@ namespace System.Windows
                 newBar?.PropertyChanged += OnTaskbarItemInfoSubPropertyChanged;
                 ApplyTaskbarItemInfo();
             }
+        #endif
         }
 
         private void HandleTaskbarListError(HRESULT hr)
@@ -842,7 +866,11 @@ namespace System.Windows
                         typeof(Window),
                         new FrameworkPropertyMetadata(
                                 new PropertyChangedCallback(_OnIconChanged),
+#if PORTABLE_WPF
+                                new CoerceValueCallback(CoerceIcon)));
+#else
                                 new CoerceValueCallback(VerifyAccessCoercion)));
+#endif
 
         /// <summary>
         ///     Sets the Icon of the Window
@@ -1069,7 +1097,11 @@ namespace System.Windows
                     return Rect.Empty;
                 }
 
+#if PORTABLE_WPF
+                return _portableRestoreBounds;
+#else
                 return GetNormalRectLogicalUnits(Handle);
+#endif
             }
         }
 
@@ -1283,7 +1315,11 @@ namespace System.Windows
                     return;
                 }
 
+#if PORTABLE_WPF
+                _portablePeer?.SetOwner(_ownerWindow?._portablePeer);
+#else
                 SetOwnerHandle(_ownerWindow != null ? _ownerWindow.Handle: IntPtr.Zero);
+#endif
 
                 // Update OwnerWindows of the new owner
                 // using OwnedWindowsInternl b/c we want to modifying the
@@ -1492,7 +1528,11 @@ namespace System.Windows
                         new FrameworkPropertyMetadata(ResizeMode.CanResize,
                                 FrameworkPropertyMetadataOptions.AffectsMeasure,
                                 new PropertyChangedCallback(_OnResizeModeChanged),
+#if PORTABLE_WPF
+                                new CoerceValueCallback(CoerceResizeMode)),
+#else
                                 new CoerceValueCallback(VerifyAccessCoercion)),
+#endif
                         new ValidateValueCallback(_ValidateResizeModeCallback));
 
         /// <summary>
@@ -2111,16 +2151,24 @@ namespace System.Windows
         #region Internal Methods
         internal Point DeviceToLogicalUnits(Point ptDeviceUnits)
         {
+#if PORTABLE_WPF
+            return _portableSource.CompositionTarget.TransformFromDevice.Transform(ptDeviceUnits);
+#else
             Invariant.Assert(!IsCompositionTargetInvalid, "IsCompositionTargetInvalid is supposed to be false here");
             Point ptLogicalUnits = _swh.CompositionTarget.TransformFromDevice.Transform(ptDeviceUnits);
             return ptLogicalUnits;
+        #endif
         }
 
         internal Point LogicalToDeviceUnits(Point ptLogicalUnits)
         {
+#if PORTABLE_WPF
+            return _portableSource.CompositionTarget.TransformToDevice.Transform(ptLogicalUnits);
+#else
             Invariant.Assert(!IsCompositionTargetInvalid, "IsCompositionTargetInvalid is supposed to be false here");
             Point ptDeviceUnits = _swh.CompositionTarget.TransformToDevice.Transform(ptLogicalUnits);
             return ptDeviceUnits;
+        #endif
         }
 
         internal void AddFluentDictionary(ResourceDictionary value, out bool invalidateResources)
@@ -2190,6 +2238,9 @@ namespace System.Windows
         /// <param name="ignoreCancel">Specifies whether cancelling closing should be ignored </param>
         internal void InternalClose(bool shutdown, bool ignoreCancel)
         {
+#if PORTABLE_WPF
+            PortableClose(shutdown, ignoreCancel);
+#else
             VerifyNotClosing();
 
             if (_disposed)
@@ -2244,6 +2295,7 @@ namespace System.Windows
                 // message or not, so it is not interesting
                 UnsafeNativeMethods.UnsafeSendMessage(Handle, WindowMessage.WM_CLOSE, new IntPtr(), new IntPtr());
             }
+#endif
         }
 
         // NOTE:
@@ -2261,11 +2313,15 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return _portablePeer == null;
+#else
                 if ( _swh != null )
                 {
                     return _swh.IsSourceWindowNull;
                 }
                 return true;
+#endif
             }
         }
 
@@ -2273,11 +2329,15 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                return _portableSource == null || _portableSource.IsDisposed;
+#else
                 if (_swh != null)
                 {
                     return _swh.IsCompositionTargetInvalid;
                 }
                 return true;
+#endif
             }
         }
 
@@ -2332,11 +2392,20 @@ namespace System.Windows
         private void InternalDispose()
         {
             _disposed = true;
+#if PORTABLE_WPF
+            try
+            {
+#endif
 
             // UpdateWindowLists here instead of in WM_CLOSE for 2 reasons.
             // 1. WM_CLOSE is not fired for child window. An example would be RootBrowserWindow (bug 1754467).
             // 2. It is not fired as a result of calling Dispose directly on HwndSource (HwndSource distroy the window).
             UpdateWindowListsOnClose();
+#if PORTABLE_WPF
+            }
+            finally
+            {
+#endif
 
 #if DISPOSE
             // detach all events
@@ -2377,6 +2446,9 @@ namespace System.Windows
             {
                 _isClosing = false;
             }
+#if PORTABLE_WPF
+            }
+#endif
         }
 
         /// <summary>
@@ -2463,6 +2535,11 @@ namespace System.Windows
         /// or WindowInteropHelper.EnsureHandle</param>
         internal void CreateSourceWindow(bool duringShow)
         {
+#if PORTABLE_WPF
+            if (!duringShow)
+                throw PortableUnsupported("WindowInteropHelper.EnsureHandle");
+            PortableCreateSource();
+#else
             VerifyContextAndObjectState();
             VerifyCanShow();
             VerifyNotClosing();
@@ -2589,6 +2666,7 @@ namespace System.Windows
 
             // Fire SourceInitialized event
             OnSourceInitialized(EventArgs.Empty);
+#endif
         }
 
         internal void SetImmersiveDarkMode(bool useDarkMode)
@@ -2877,7 +2955,11 @@ namespace System.Windows
             // set root visual  synchronously, shell request
             if (!IsSourceWindowNull)
             {
+#if PORTABLE_WPF
+                _portableSource.RootVisual = this;
+#else
                 _swh.RootVisual = this;
+#endif
             }
         }
 
@@ -2994,11 +3076,15 @@ namespace System.Windows
         // called as a result of title property changing to propagate it to the hwnd
         internal virtual void UpdateTitle(string title)
         {
+#if PORTABLE_WPF
+            _portablePeer?.SetTitle(title);
+#else
             // Adding check for IsCompositionTargetInvalid
             if (!IsSourceWindowNull && !IsCompositionTargetInvalid)
             {
                 UnsafeNativeMethods.SetWindowText(new HandleRef(this, Handle), title);
             }
+#endif
         }
 
         // called as a result of Height/MinHeight/MaxHeight and Width/MinWidth/MaxWidth property changing to update the hwnd size
@@ -3179,6 +3265,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                throw PortableUnsupported("WindowInteropHelper.Handle");
+#else
                 VerifyContextAndObjectState();
                 if (_swh != null)
                 {
@@ -3186,6 +3275,7 @@ namespace System.Windows
                 }
                 else
                 return IntPtr.Zero;
+#endif
             }
         }
 
@@ -3414,7 +3504,11 @@ namespace System.Windows
             }
 
             // if we reach here, we return the input size
+#if PORTABLE_WPF
+            return _portablePeer.OuterSize;
+#else
             return _swh.GetSizeFromHwndInMeasureUnits();
+#endif
         }
 
         // Similar logic as in FE.MinMax and takes care of max/min size allowed by win32 for the hwnd.  However, we
@@ -3438,6 +3532,15 @@ namespace System.Windows
         //
         internal virtual WindowMinMax GetWindowMinMax()
         {
+#if PORTABLE_WPF
+            return new WindowMinMax
+            {
+                minWidth = MinWidth,
+                maxWidth = Math.Max(MinWidth, MaxWidth),
+                minHeight = MinHeight,
+                maxHeight = Math.Max(MinHeight, MaxHeight)
+            };
+#else
             WindowMinMax mm = new WindowMinMax( );
 
             Invariant.Assert(!IsCompositionTargetInvalid, "IsCompositionTargetInvalid is supposed to be false here");
@@ -3501,6 +3604,7 @@ namespace System.Windows
             }
 
             return mm;
+#endif
         }
 
         private void LoadedHandler(object sender, RoutedEventArgs e)
@@ -4488,10 +4592,23 @@ namespace System.Windows
             // when closing.
             // Although we explicitly do this here, we don't really need to. (see PS # 857285)
             // We use a while loop like this because closing an owned window will modify the owned windows list.
+#if PORTABLE_WPF
+            System.Runtime.ExceptionServices.ExceptionDispatchInfo closeFailure = null;
+#endif
             while (ownedWindows.Count > 0)
             {
                 // if parent window is closing, child window Closing cannot be cancelled.
+#if PORTABLE_WPF
+                Window child = ownedWindows[0];
+                try { child.InternalClose(false, true /* Ignore cancel */); }
+                catch (Exception exception)
+                {
+                    closeFailure ??= System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(exception);
+                    ownedWindows.Remove(child);
+                }
+#else
                 ownedWindows[0].InternalClose(false, true /* Ignore cancel */);
+#endif
             }
 
             Debug.Assert(ownedWindows.Count == 0, "All owned windows should now be gone");
@@ -4530,6 +4647,9 @@ namespace System.Windows
                     App.NonAppWindowsInternal.Remove(this);
                 }
             }
+#if PORTABLE_WPF
+            closeFailure?.Throw();
+#endif
 }
         private bool  WmDestroy()
         {
@@ -4820,7 +4940,13 @@ namespace System.Windows
                 try
                 {
                     _updateHwndLocation = false;
+#if PORTABLE_WPF
+                    if ((_portablePendingBounds & PortableBoundsChanges.Left) == 0)
+#endif
                     SetValue(LeftProperty, _actualLeft);
+#if PORTABLE_WPF
+                    if ((_portablePendingBounds & PortableBoundsChanges.Top) == 0)
+#endif
                     SetValue(TopProperty, _actualTop);
                 }
                 finally
@@ -5049,6 +5175,16 @@ namespace System.Windows
             return false;
         }
 
+#if PORTABLE_WPF
+        private static object CoerceIcon(DependencyObject d, object value)
+        {
+            value = VerifyAccessCoercion(d, value);
+            // Reject native limitations before the local Freezable value is committed.
+            ((Window)d)._portablePeer?.ValidateIcon(value as ImageSource);
+            return value;
+        }
+#endif
+
         private static void _OnIconChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Window w = (Window)d;
@@ -5061,6 +5197,10 @@ namespace System.Windows
 
         private void OnIconChanged(ImageSource newIcon)
         {
+#if PORTABLE_WPF
+            _icon = newIcon;
+            _portablePeer?.SetIcon(newIcon);
+#else
             // No need to dispose previous _icon.
             // _icon is a ref to the ImageSource object
             // set by the developer.  Since the dev created
@@ -5073,6 +5213,7 @@ namespace System.Windows
             {
                 UpdateIcon();
             }
+        #endif
         }
 
         private static void _OnTitleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -5103,6 +5244,9 @@ namespace System.Windows
 
         private void OnShowInTaskbarChanged()
         {
+#if PORTABLE_WPF
+            _portablePeer?.SetShowInTaskbar(ShowInTaskbar);
+#else
             // this call ends up throwing an exception if accessing
             // ShowInTaskbar is not allowed
             VerifyApiSupported();
@@ -5146,6 +5290,7 @@ namespace System.Windows
                                                     NativeMethods.SWP_SHOWWINDOW);
                 }
             }
+        #endif
         }
 
         private static bool _ValidateWindowStateCallback(object value)
@@ -5163,6 +5308,9 @@ namespace System.Windows
 
         private void OnWindowStateChanged(WindowState windowState)
         {
+#if PORTABLE_WPF
+            PortableRequestState(windowState);
+#else
 
             //      WCP:  Window.Visible.Set : Make sure that window updates the styles
             //      when set while window is hidden
@@ -5273,6 +5421,7 @@ namespace System.Windows
             {
                 _updateHwndLocation = true;
             }
+        #endif
         }
 
         private static bool _ValidateWindowStyleCallback(object value)
@@ -5290,6 +5439,10 @@ namespace System.Windows
 
         private void OnWindowStyleChanged(WindowStyle windowStyle)
         {
+#if PORTABLE_WPF
+            if (windowStyle is not WindowStyle.None and not WindowStyle.SingleBorderWindow) throw PortableUnsupported("WindowStyle");
+            PortableUpdateChrome();
+#else
             // Adding check for IsCompositionTargetInvalid
             if (!IsSourceWindowNull && !IsCompositionTargetInvalid)
             {
@@ -5298,6 +5451,7 @@ namespace System.Windows
                     CreateWindowStyle();
                 }
             }
+        #endif
         }
 
         private static void _OnTopmostChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -5310,6 +5464,9 @@ namespace System.Windows
 
         private void OnTopmostChanged(bool topmost)
         {
+#if PORTABLE_WPF
+            _portablePeer?.SetTopmost(topmost);
+#else
 
             // this call ends up throwing an exception if accessing
             // Topmost is not allowed
@@ -5324,6 +5481,7 @@ namespace System.Windows
                        0, 0, 0, 0,
                        NativeMethods.SWP_NOMOVE | NativeMethods.SWP_NOSIZE | NativeMethods.SWP_NOACTIVATE);
             }
+        #endif
         }
 
         private static object CoerceVisibility(DependencyObject d, object value)
@@ -5445,6 +5603,9 @@ namespace System.Windows
         /// </summary>
         private object ShowHelper(object booleanBox)
         {
+#if PORTABLE_WPF
+            return PortableShowHelper((bool)booleanBox);
+#else
             // Setting Visiblilty is async. When this is called from the async callback,
             // check whether the window is already closed.
             // E.g. window.Visibility = true;
@@ -5583,6 +5744,7 @@ namespace System.Windows
             }
 
             return null;
+#endif
         }
 
         internal virtual int nCmdForShow()
@@ -5641,6 +5803,11 @@ namespace System.Windows
 
         private void OnSizeToContentChanged(SizeToContent sizeToContent)
         {
+#if PORTABLE_WPF
+            VerifyApiSupported();
+            InvalidateMeasure();
+            if (_portablePeer != null) PortableLayoutRoot(_portablePeer.ClientSize);
+#else
             // this call ends up throwing an exception if accessing
             // SizeToContent is not allowed
             VerifyApiSupported();
@@ -5653,6 +5820,7 @@ namespace System.Windows
             {
                 HwndSourceSizeToContent = sizeToContent;
             }
+        #endif
         }
 
         /// <summary>
@@ -5704,6 +5872,9 @@ namespace System.Windows
 
         private void OnHeightChanged(double height)
         {
+#if PORTABLE_WPF
+            PortableUpdateBounds(PortableBoundsChanges.Height);
+#else
             //  Move ValidateLengthForHeightWidth calls from property
             // invalidation callback to PropertyMetadata
             ValidateLengthForHeightWidth(height);
@@ -5713,6 +5884,7 @@ namespace System.Windows
             {
                 UpdateHeight(height);
             }
+        #endif
         }
 
         private static void _OnMinHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -5724,6 +5896,9 @@ namespace System.Windows
 
         private void OnMinHeightChanged(double minHeight)
         {
+#if PORTABLE_WPF
+            PortableUpdateBounds();
+#else
             // this call ends up throwing an exception if accessing
             // MinHeight is not allowed
             VerifyApiSupported();
@@ -5752,6 +5927,7 @@ namespace System.Windows
                     }
                 }
             }
+        #endif
         }
 
         private static void _OnMaxHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -5763,6 +5939,9 @@ namespace System.Windows
 
         private void OnMaxHeightChanged(double maxHeight)
         {
+#if PORTABLE_WPF
+            PortableUpdateBounds();
+#else
             // this call ends up throwing an exception if accessing
             // MaxHeight is not allowed
             VerifyApiSupported();
@@ -5790,6 +5969,7 @@ namespace System.Windows
                     }
                 }
             }
+        #endif
         }
 
         private static void _OnWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -5804,6 +5984,9 @@ namespace System.Windows
 
         private void OnWidthChanged(double width)
         {
+#if PORTABLE_WPF
+            PortableUpdateBounds(PortableBoundsChanges.Width);
+#else
             ValidateLengthForHeightWidth(width);
 
             // Adding check for IsCompositionTargetInvalid
@@ -5811,6 +5994,7 @@ namespace System.Windows
             {
                 UpdateWidth(width);
             }
+        #endif
         }
 
         private static void _OnMinWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -5822,6 +6006,9 @@ namespace System.Windows
 
         private void OnMinWidthChanged(double minWidth)
         {
+#if PORTABLE_WPF
+            PortableUpdateBounds();
+#else
             // this call ends up throwing an exception if accessing
             // MinWidth is not allowed
             VerifyApiSupported();
@@ -5852,6 +6039,7 @@ namespace System.Windows
                     }
                 }
             }
+        #endif
         }
 
         private static void _OnMaxWidthChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -5863,6 +6051,9 @@ namespace System.Windows
 
         private void OnMaxWidthChanged(double maxWidth)
         {
+#if PORTABLE_WPF
+            PortableUpdateBounds();
+#else
             // this call ends up throwing an exception if accessing
             // MaxWidth is not allowed
             VerifyApiSupported();
@@ -5889,6 +6080,7 @@ namespace System.Windows
                     }
                 }
             }
+        #endif
         }
 
         // Updates the restore bounds of the hwnd based on BoundsSpecified enum values
@@ -6097,6 +6289,9 @@ namespace System.Windows
 
         private void OnTopChanged(double newTop)
         {
+#if PORTABLE_WPF
+            PortableUpdatePosition(PortableBoundsChanges.Top, newTop);
+#else
             // Adding check for IsCompositionTargetInvalid
             if (!IsSourceWindowNull && !IsCompositionTargetInvalid)
             {
@@ -6120,6 +6315,7 @@ namespace System.Windows
                 // here the value is stored as measure units as newTop is in measure/logical units
                 _actualTop = newTop;
             }
+        #endif
         }
 
         // Please see comments for CoerceTop.
@@ -6192,6 +6388,9 @@ namespace System.Windows
         // 3) SetupInitialState
         private void OnLeftChanged(double newLeft)
         {
+#if PORTABLE_WPF
+            PortableUpdatePosition(PortableBoundsChanges.Left, newLeft);
+#else
             // Adding check for IsCompositionTargetInvalid
             if (!IsSourceWindowNull && !IsCompositionTargetInvalid)
             {
@@ -6215,6 +6414,7 @@ namespace System.Windows
                 // here the value is stored as measure units as newLeft is in measure/logical units
                 _actualLeft = newLeft;
             }
+        #endif
         }
 
         private void UpdateHwndPositionOnTopLeftChange(double leftLogicalUnits, double topLogicalUnits)
@@ -6238,6 +6438,15 @@ namespace System.Windows
             return IsValidResizeMode((ResizeMode)value);
         }
 
+#if PORTABLE_WPF
+        private static object CoerceResizeMode(DependencyObject d, object value)
+        {
+            ((Window)d).VerifyApiSupported();
+            if ((ResizeMode)value == ResizeMode.CanResizeWithGrip) throw PortableUnsupported("ResizeMode.CanResizeWithGrip");
+            return value;
+        }
+#endif
+
         private static void _OnResizeModeChanged (DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             Window w = d as Window;
@@ -6248,6 +6457,10 @@ namespace System.Windows
 
         private void OnResizeModeChanged()
         {
+#if PORTABLE_WPF
+            if (ResizeMode == ResizeMode.CanResizeWithGrip) throw PortableUnsupported("ResizeMode.CanResizeWithGrip");
+            _portablePeer?.SetResizeMode(ResizeMode);
+#else
             // this call ends up throwing an exception if accessing
             // ResizeMode is not allowed
             VerifyApiSupported();
@@ -6260,6 +6473,7 @@ namespace System.Windows
                     CreateResizibility();
                 }
             }
+        #endif
         }
 
         private static object VerifyAccessCoercion(DependencyObject d, object value)
@@ -6283,6 +6497,9 @@ namespace System.Windows
         /// </summary>
         private void OnFlowDirectionChanged()
         {
+#if PORTABLE_WPF
+            throw PortableUnsupported(nameof(FlowDirection));
+#else
             // Adding check for IsCompositionTargetInvalid
             if (!IsSourceWindowNull && !IsCompositionTargetInvalid)
             {
@@ -6291,6 +6508,7 @@ namespace System.Windows
                     CreateRtl();
                 }
             }
+        #endif
         }
 
         private static object CoerceRenderTransform(DependencyObject d, object value)
@@ -6879,13 +7097,20 @@ namespace System.Windows
         //     you may get inconsistent results.
         private Size GetHwndNonClientAreaSizeInMeasureUnits()
         {
+#if PORTABLE_WPF
+            return PortableFrameSize;
+#else
             // HwndSource expands the client area to cover the entire window when it is in UsesPerPixelOpacity mode,
             // So non client area is (0,0)
             return AllowsTransparency ? new Size(0, 0) : _swh.GetHwndNonClientAreaSizeInMeasureUnits();
+#endif
         }
 
         private void ClearSourceWindow()
         {
+#if PORTABLE_WPF
+            PortableReleasePeer();
+#else
             if (_swh != null)
             {
                 try
@@ -6900,6 +7125,7 @@ namespace System.Windows
                     source?.SizeToContentChanged -= new EventHandler(OnSourceSizeToContentChanged);
                 }
             }
+#endif
         }
 
         private void ClearHiddenWindowIfAny()
@@ -7180,6 +7406,9 @@ namespace System.Windows
         {
             get
             {
+#if PORTABLE_WPF
+                if (_portableFrameworkOwned) return false;
+#endif
                 return (Application.Current != null);
             }
         }

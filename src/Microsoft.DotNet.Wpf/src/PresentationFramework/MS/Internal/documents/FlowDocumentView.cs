@@ -365,6 +365,9 @@ namespace MS.Internal.Documents
         {
             Invariant.Assert(sender == _formatter);
 
+#if PORTABLE_WPF
+            _formatter.ReleasePortableLayout();
+#endif
             // Disconnect formatter.
             _formatter.ContentInvalidated -= new EventHandler(HandleContentInvalidated);
             _formatter.Suspended -= new EventHandler(HandleFormatterSuspended);

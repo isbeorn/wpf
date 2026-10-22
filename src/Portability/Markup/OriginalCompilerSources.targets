@@ -1,0 +1,50 @@
+<Project>
+  <UsingTask TaskName="ResolveOriginalCompilerSources" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <SourceRoot ParameterType="System.String" Required="true" />
+      <Sources ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Xml.Linq" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Linq" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        var compilerRoot = Path.Combine(SourceRoot, "PresentationBuildTasks");
+        var project = XDocument.Load(Path.Combine(compilerRoot, "PresentationBuildTasks.csproj"));
+        var sourcePaths = new System.Collections.Generic.List<Microsoft.Build.Framework.ITaskItem>();
+        foreach (var item in project.Descendants("Compile").Where(element => element.Attribute("Include") != null))
+        {
+            var include = item.Attribute("Include").Value
+                .Replace("$" + "(WpfCommonDir)", Path.Combine(SourceRoot, "Common") + Path.DirectorySeparatorChar)
+                .Replace("$" + "(WpfSharedDir)", Path.Combine(SourceRoot, "Shared") + Path.DirectorySeparatorChar)
+                .Replace("$" + "(WpfSourceDir)", SourceRoot + Path.DirectorySeparatorChar)
+                .Replace('\\', Path.DirectorySeparatorChar);
+            var requested = Path.GetFullPath(Path.Combine(compilerRoot, include));
+            var current = Path.GetPathRoot(requested);
+            foreach (var segment in requested.Substring(current.Length).Split(Path.DirectorySeparatorChar))
+            {
+                var exact = Path.Combine(current, segment);
+                if (File.Exists(exact) || Directory.Exists(exact)) current = exact;
+                else
+                {
+                    var matches = Directory.EnumerateFileSystemEntries(current)
+                        .Where(path => string.Equals(Path.GetFileName(path), segment, System.StringComparison.OrdinalIgnoreCase)).ToArray();
+                    if (matches.Length != 1) throw new FileNotFoundException("Cannot resolve original compiler source unambiguously: " + requested);
+                    current = matches[0];
+                }
+            }
+            sourcePaths.Add(new Microsoft.Build.Utilities.TaskItem(current));
+        }
+        Sources = sourcePaths.ToArray();
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="ResolveCompilerSourceClosure" BeforeTargets="CoreCompile">
+    <ResolveOriginalCompilerSources SourceRoot="$(WpfSourceRoot)">
+      <Output TaskParameter="Sources" ItemName="OriginalCompilerSource" />
+    </ResolveOriginalCompilerSources>
+    <ItemGroup>
+      <Compile Include="@(OriginalCompilerSource)" />
+    </ItemGroup>
+  </Target>
+</Project>

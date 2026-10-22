@@ -1,0 +1,75 @@
+# Original NINA application source build
+
+`eng/portability/Build-NinaPortableApplication.ps1` builds the pinned NINA application from verified external sources. It does not launch NINA. This is the source-build, paired-console-guard and app-local native-bootstrap portion of Phase 4, not a complete portable application or hardware support claim.
+
+`upstream.json` records NINA revision 4742afae0a09c79be772f23fcf163fb5852d2775 and the SHA-256 and Git blob identities of its 680 selected files: the complete NINA application directory, CommonAssemblyInfo.cs and Directory.Build.props. Sources and the original managed closure are supplied externally rather than vendored. The original source directory is never modified.
+
+The helper creates a fresh owned output, copies only those pinned source files and derives only App.xaml.cs. Both AttachConsole and FreeConsole calls gain OperatingSystem.IsWindows guards. Parsing remains between the calls and all other branches are unchanged. Exact source and derived hashes guard the transformation. App.xaml.cs.patch is the reviewable diff and remains byte-stable through .gitattributes. Original copyright and MPL headers remain in the derived source. The full MPL license and source provenance manifest accompany the build under ThirdPartyNotices/NINA.
+
+The generated project retains original application resources and content while replacing the project/package build graph with explicit verified inputs. It removes the Windows packaging PostBuild command and absent External native copy items, recording each omission. It does not silently replace native behavior.
+
+The generated project also copies the repository's exact AvalonDock `LICENSE` and `upstream.json` to `ThirdPartyNotices/AvalonDock` in both build output and normal publication. This supplements the unchanged original NINA notices; it does not assemble a corresponding-source distribution.
+
+PortableEntry.cs is one additional internal source file in the NINA assembly. Its STAThread Main is selected through StartupObject. On Linux it initializes the existing NativeWindowHost before calling the untouched generated NINA.App.Main. This preserves EntryAssembly=NINA, process arguments and the generated splash/App/InitializeComponent/Run order. Native-only types remain in one private NoInlining initializer so the outer entry can be prepared on stock Windows without native-host assemblies. The existing Application/Dispatcher owns its normal event loop and pump shutdown. There is no second loop, host lease, module initializer or external startup hook.
+
+The bootstrap hash is recorded separately in upstream.json; all 680 upstream source pins and the existing paired-console transformation remain unchanged. This build product needs a coherent framework family with genuine portable SplashScreen support before complete entry execution can pass. A real desktop must supply XSETTINGS. An isolated Xvfb test needs an external owned settings publisher; production PortableEntry never fabricates desktop settings.
+
+On Linux, set `WPF_NINA_PORTABLE_DIAGNOSTICS=1` before starting NINA to emit WPF binding, resource-dictionary and markup warnings/errors to stderr. Diagnostics are off by default; all other values leave them off. The entry configures the existing `PresentationTraceSources` after NativeHost initialization and before `App.Main`, using one shared standard console listener and automatic flushing. Repeated setup does not duplicate the listener. Windows startup is unchanged.
+
+This is startup configuration, not a live toggle. Changing the environment later does not remove an installed listener. The enabled mode sets process-wide `Trace.AutoFlush=true`; NINA's normal profile log level controls its separate Serilog output. Capture stderr together with stdout, original NINA logs and the installed publication/runtime manifests. A handled application exception may still end with exit zero and empty stderr. Binding messages identify the source path/type and target control/property; resource warnings identify the missing key. Do not assume compiled BAML file/line locations are available.
+
+Required inputs:
+
+- NinaSourceDirectory: root of the pinned, unchanged upstream source tree.
+- FrameworkRuntimeDirectory and FrameworkRuntimeManifest: one released whole Unix Release framework family and its complete stage-manifests.json. Supply ExpectedFrameworkRuntimeManifestSha256 and ExpectedFrameworkRuntimeFileCount from the reviewed producer release. The helper requires the exact unique safe-relative path set, every file hash and all active profile runtime assemblies; it rejects extra, missing and legacy Avalonia runtime assets. A raw source-build Stage is a local qualification family, not a curated redistributable package runtime.
+- MarkupCompiler, WinFxTargets and PortableReferencesTargets: the coherent source-built portable PresentationBuildTasks DLL and existing Microsoft.WinFX.targets/PortableWpfReferences.targets imports.
+- OriginalManagedClosure: the original 160-PE fixture's Closure.json, with managed/ and satellites/ siblings. Its exact manifest and every PE hash are verified.
+- AvalonDockPath: the qualified source-adapted AvalonDock component pinned in upstream.json. Its runtime qualification remains limited to the declared programmatic docking paths.
+- SystemEventsContractPath: the existing official Microsoft.Win32.SystemEvents 10.0.10 lib/net10.0 host-neutral contract asset. Its exact hash is pinned. It is compile-only, has Private=false and remains outside the WPF runtime family. A later runtime consumer needs its own explicit companion intake.
+- MvvmGeneratorPath: the pinned CommunityToolkit.Mvvm 8.4.2 analyzers/dotnet/roslyn5.0/cs/CommunityToolkit.Mvvm.SourceGenerators.dll from the existing package cache.
+- OutputDirectory: a new or empty owned directory outside the inputs.
+- DotnetPath: optional SDK executable, defaulting to dotnet.
+
+Invoke with the same parameter names on Windows or Linux PowerShell. All paths must be expressed for the current host. For example, after assigning the reviewed input paths to a hashtable:
+
+```powershell
+& ./eng/portability/Build-NinaPortableApplication.ps1 @ninaBuildInputs
+```
+
+The helper selects SDK 10.0.401 with roll-forward disabled, targets net10.0 and requires runtime 10.0.12. It uses no package feeds or new packages. Existing compilation inputs and required .NET reference packs must already be present. CLI home, caches, project, generated sources, intermediates, logs and outputs stay in OutputDirectory. Original application code is never executed.
+
+OutputDirectory contains a build product rather than a runnable closure. Only managed closure entries are compilation references; the verified original satellites are not staged into that output. A later runtime consumer must separately stage the original dependencies and satellites, the rebuilt NINA assembly and its explicitly approved runtime companions. The helper does not establish localization or full runtime loading through compilation alone.
+
+Verification requires 196 Compile items: the original 195 plus PortableEntry.cs. The original 103 Page, one ApplicationDefinition, 10 Resource, 17 Content and one SplashScreen items remain. Both original App.xaml and MainWindow.xaml are compiled. Metadata-only inspection requires the original NINA assembly identity and exactly the original 115 embedded resource keys, including 104 BAML entries. All source files and the added bootstrap are checked again after building. results.json records input/output hashes, StartupObject, native deployment omissions and the build log.
+
+The original source-build feasibility and paired-console-guard candidate each built on Windows and Linux. Each reported zero errors and 320 CS0612/CS0618 obsolete API warnings. Their full App resource payloads matched before and after the console-only adaptation. Separately isolated invalid-CLI App-boundary probes reached all 34 original App dictionaries and returned the expected exit code 1 on Linux and stock Windows. These bounded results do not establish valid startup, MainWindow construction, profile workflows, hardware composition, raw generated Main or package qualification.
+
+
+## Simulator-only offline qualification build
+
+The build-only `-SimulatorQualification` switch adds the immutable `NINA_SIMULATOR_QUALIFICATION` symbol to NINA and source-built NINA.Plugin. It has no public runtime mode switch. Supply `-OfficialPluginDirectory` with the reviewed original official-template-derived fixture directory. `SimulatorQualification/manifest.json` and upstream.json hash-bind the source edits, added internal classes, 28 original Plugin source files and approved fixture intake. External source files remain untouched. Derived UTF-8 sources have their own exact hashes.
+
+The original private IoC composition keeps the real equipment VMs, mediators, factories and command paths. One internal derivative of original DeviceChooserVM<T> supplies only original no-device entries and real SimulatorCamera. The original base semaphore and selection logic keep persisted physical IDs offline. Original SDK choosers are not registered in this build. EDSDK startup and Atik shutdown are excluded symmetrically. The USB watcher owns a lifecycle without physical discovery.
+
+The actual PluginLoader still composes core sequencer exports, loads the exact approved local fixture through its original MEF/manifest/init path and retains original application plugin teardown. Core equipment SDK exports and unreviewed plugin staging/migration are excluded. The fresh owned QualificationPlugins folder must contain exactly the original fixture DLL, PDB, license and provenance manifest with pinned hashes. NTFS alternate-stream access remains Windows-only. This fixture is official-template-derived source, not a published third-party plugin. Its manifest's original license metadata and actual license file remain distinct and unchanged.
+
+Original App and MainWindow XAML, BAML, resources, parser, profile loading/locking/watcher, real VM graph and generated Main remain. Windows shell/console/activation/window interop has explicit OS guards. Linux window bounds/state use WPF properties and an owned placement file. NINA.App's qualification constructor sets only the existing public application/profile paths to QualificationState beside the owned application. Automatic app/plugin downloads, installation and EOP refresh report their offline qualification status rather than running. Original astronomy, image processing, framing and survey algorithms are unchanged.
+
+The declared qualification source edits also guard ProfileSelectView's existing `SystemEvents.DisplaySettingsChanged` constructor subscription with `OperatingSystem.IsWindows()`, matching MainWindow's existing guard. The original view has no unsubscribe and this adaptation adds none. The separate NINA.Core adaptation guards NotificationHostWindow's subscription and removal symmetrically while preserving Reposition and main-window hooks. Linux receives no notification solely from `SystemEvents.DisplaySettingsChanged`; no replacement event service or WPF control is supplied. Original pinned source remains unchanged and derived source hashes and patches identify these application dependencies explicitly.
+
+A runnable consumer must supply a fresh owned HOME/XDG/state environment, a coherent backend and genuine astronomy/database native assets and data. Arbitrary network use must also be excluded at the owned runtime boundary: the unchanged simulator setup still offers its original SkySurvey mode, and original navigation contains further network leaves. Windows valid-startup KnownFolder isolation is not established by APPDATA variables. Full shell execution, MainWindow placement roundtrip, real full PluginLoader startup/teardown and Linux VM construction remain pending those reviewed inputs.
+
+The qualification application compiles 200 items: the original 195, PortableEntry and four internal simulation files. Its original 103 Page items, one ApplicationDefinition, 10 Resource items, 17 Content items and splash remain, producing 115 resource keys including 104 BAML entries. Each later selected manifest must explicitly classify all promoted NINA, NINA.Plugin, NINA.Core, AvalonDock and AvalonEdit members and count unchanged original PEs from that actual closure. The source-build output is not that runnable closure.
+
+## App-only portable-package qualification
+
+A separate retained local recipe rebuilds only the copied qualified App sources through `Wpf.Portable.Sdk/10.0.0-portable.1` and its exact `Wpf.Portable.Runtime` package reference. The existing helper above continues to require its declared Stage family and source-built compiler. This package route uses SDK 10.0.401, net10.0 and runtime 10.0.12, with a hash-verified local feed and a fresh package cache for the released pair. The retained generated project and inputs are recorded in the [local build handoff](../../../../artifacts/portability/current/nina/package-app-20261021-1/package-app-build-handoff.json); a fresh-checkout one-command builder is not provided.
+
+Two consumer settings preserve the selected input contract:
+
+- Set `EnableDefaultPageItems=false` because NINA already includes its Pages explicitly. The SDK's later default scan otherwise re-adds three XAML resources that the original project removes. Exact item membership remains 200 Compile, 103 Page, one ApplicationDefinition, 10 Resource, 17 Content and one SplashScreen.
+- Point the existing Core reference at a small owned directory containing the exact qualified Core DLL/PDB and 35 pinned original satellites. Normal reference resolution otherwise selects different satellite PEs adjacent to Core's producer output. The coherent reference directory preserves the selected bytes without rebuilding Core or satellites or rewriting published files.
+
+Ordinary restore, build and Linux framework-dependent publish produce the App's dependency metadata and runtime configuration. The package owns framework/runtime identities and supplies metadata-only compile contracts with copying disabled. The generated graph and publication exclude the Stage wrapper and compile-only GdiPlus support assets, with no additional-deps file or hand-edited JSON. Required application native libraries, data, plugins and state remain separately qualified composition inputs.
+
+The retained result proves all 469 App PDB documents, including 401 physical and 68 embedded sources, plus the original App/MainWindow, ordered 34 App dictionaries, 115 resource keys and 104 BAML entries. Resource payloads match the predecessor exactly. A passive observer records the packaged compiler, CodeDom and MetadataLoadContext origins. Runtime assets, notices and all 159 reused companion PEs match their pins: 152 original PEs and seven adapted companions. Only the App and its BAML gain the new package compiler origin; reused companions retain their historical producer receipts. These build and publication checks do not complete actual NINA workflow qualification.

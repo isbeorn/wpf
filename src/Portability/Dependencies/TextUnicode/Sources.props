@@ -1,0 +1,38 @@
+<Project>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/FormattingBufferHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/BiDi.trie.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/BiDiAlgorithm.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/BiDiClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/BiDiData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/BiDiPairedBracketType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/Codepoint.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/CodepointEnumerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/EastAsianWidth.trie.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/EastAsianWidthClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/GeneralCategory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/Grapheme.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/GraphemeBreak.trie.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/GraphemeBreakClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/GraphemeEnumerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/IndicConjunctBreakClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/LineBreak.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/LineBreakClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/LineBreakEnumerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/Script.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/ScriptExtensions.data.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/UnicodeData.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/UnicodeData.Lookups.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/UnicodeData.trie.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/UnicodeDataSource.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/UnicodeTrie.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/UnicodeTrieBuilder.Constants.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/Utf16Utils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/WordBreakClass.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/ArrayBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/ArraySlice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/BidiDictionary.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/ImmutableReadOnlyListStructEnumerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sources/MappedArraySlice.cs" />
+  </ItemGroup>
+</Project>

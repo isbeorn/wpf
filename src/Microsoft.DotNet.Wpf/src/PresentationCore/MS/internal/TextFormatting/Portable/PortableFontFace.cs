@@ -1,0 +1,402 @@
+// Licensed to the .NET Foundation under one or more agreements.
+// The .NET Foundation licenses this file to you under the MIT license.
+
+#if PORTABLE_WPF
+using System;
+using System.Buffers.Binary;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Concurrent;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Markup;
+using System.Windows.Media;
+using System.Windows.Media.TextFormatting;
+using MS.Internal.FontCache;
+using MS.Internal.FontFace;
+using SkiaSharp;
+
+namespace MS.Internal.TextFormatting.Portable
+{
+    // The owning GlyphTypeface keeps the native immutable face alive. Fonts and shapers
+    // are per-operation objects, so callers do not share their mutable size/buffer state.
+    internal sealed class PortableFontFace
+    {
+        internal SKTypeface Typeface { get; }
+        internal Uri Uri { get; }
+        internal SKFontMetrics Metrics { get; }
+        private readonly Lazy<IDictionary<int, ushort>> _characterMap;
+        private readonly Lazy<double[]> _nominalAdvances;
+        internal IDictionary<int, ushort> CharacterMap => _characterMap.Value;
+
+        internal PortableFontFace(Uri uri)
+        {
+            if (!uri.IsAbsoluteUri || !uri.IsFile || !string.IsNullOrEmpty(uri.Fragment))
+                throw new NotSupportedException("Portable font faces currently require a local font file without a collection index.");
+            Uri = uri;
+            Typeface = SKTypeface.FromFile(uri.LocalPath) ?? throw new FileFormatException(uri);
+            _characterMap = new Lazy<IDictionary<int, ushort>>(ReadCharacterMap);
+            _nominalAdvances = new Lazy<double[]>(ReadNominalAdvances);
+            using (var font = new SKFont(Typeface, 1))
+                Metrics = font.Metrics;
+        }
+
+        internal ushort GetGlyph(int codepoint)
+        {
+            using (var font = new SKFont(Typeface, 1))
+                return font.GetGlyph(codepoint);
+        }
+
+        internal double GetAdvance(ushort glyph)
+        {
+            double[] advances = _nominalAdvances.Value;
+            if (glyph >= advances.Length) throw new ArgumentOutOfRangeException(nameof(glyph));
+            return advances[glyph];
+        }
+
+        private double[] ReadNominalAdvances()
+        {
+            byte[] head = Typeface.GetTableData(0x68656164);
+            byte[] hhea = Typeface.GetTableData(0x68686561);
+            byte[] hmtx = Typeface.GetTableData(0x686d7478);
+            if (head == null || head.Length < 20 || hhea == null || hhea.Length < 36 || hmtx == null)
+                throw new FileFormatException(Uri);
+            int units = BinaryPrimitives.ReadUInt16BigEndian(head.AsSpan(18, 2));
+            int count = BinaryPrimitives.ReadUInt16BigEndian(hhea.AsSpan(34, 2));
+            int glyphs = Typeface.GlyphCount;
+            if (units == 0 || count == 0 || count > glyphs || hmtx.Length < count * 4)
+                throw new FileFormatException(Uri);
+            var advances = new double[glyphs];
+            for (int glyph = 0; glyph < glyphs; glyph++)
+                advances[glyph] = (double)BinaryPrimitives.ReadUInt16BigEndian(hmtx.AsSpan(Math.Min(glyph, count - 1) * 4, 2)) / units;
+            return advances;
+        }
+
+        internal Rect GetInkBounds(GlyphRun run)
+        {
+            if (run.IsSideways)
+                throw new NotSupportedException("Portable glyph bounds support horizontal runs.");
+            using (var font = new SKFont(Typeface, (float)run.FontRenderingEmSize))
+            {
+                ushort[] glyphs = run.GlyphIndices.ToArray();
+                SKRect[] bounds;
+                font.GetGlyphWidths(glyphs, out bounds);
+                Rect result = Rect.Empty;
+                double advance = 0;
+                for (int index = 0; index < glyphs.Length; index++)
+                {
+                    SKRect bound = bounds[index];
+                    Point offset = run.GlyphOffsets == null || run.GlyphOffsets.Count == 0 ? default : run.GlyphOffsets[index];
+                    if (bound.Width > 0 && bound.Height > 0)
+                    {
+                        double x = GetGlyphOrigin(run, glyphs[index], advance, offset);
+                        result.Union(new Rect(x + bound.Left, bound.Top - offset.Y, bound.Width, bound.Height));
+                    }
+                    advance += run.AdvanceWidths[index];
+                }
+                GC.KeepAlive(run);
+                return result;
+            }
+        }
+
+        internal double GetGlyphOrigin(GlyphRun run, ushort glyph, double advance, Point offset)
+        {
+            if ((run.BidiLevel & 1) == 0) return advance + offset.X;
+            double nominal = GetAdvance(glyph) * run.FontRenderingEmSize;
+            if (run.PortableTextFormattingMode == TextFormattingMode.Display)
+                nominal = Math.Round(nominal * run.PixelsPerDip) / run.PixelsPerDip;
+            return -advance - nominal - offset.X;
+        }
+
+        internal Geometry GetOutline(ushort glyph, double emSize)
+        {
+            using (var font = new SKFont(Typeface, (float)emSize))
+            using (var path = font.GetGlyphPath(glyph))
+            {
+                if (path == null)
+                    return Geometry.Empty;
+                var geometry = new StreamGeometry();
+                using (var context = geometry.Open())
+                using (var iterator = path.CreateRawIterator())
+                {
+                    var points = new SKPoint[4];
+                    SKPathVerb verb;
+                    bool open = false;
+                    while ((verb = iterator.Next(points)) != SKPathVerb.Done)
+                    {
+                        switch (verb)
+                        {
+                            case SKPathVerb.Move:
+                                context.BeginFigure(ToPoint(points[0]), true, true);
+                                open = true;
+                                break;
+                            case SKPathVerb.Line:
+                                context.LineTo(ToPoint(points[1]), true, false);
+                                break;
+                            case SKPathVerb.Quad:
+                                context.QuadraticBezierTo(ToPoint(points[1]), ToPoint(points[2]), true, false);
+                                break;
+                            case SKPathVerb.Cubic:
+                                context.BezierTo(ToPoint(points[1]), ToPoint(points[2]), ToPoint(points[3]), true, false);
+                                break;
+                            case SKPathVerb.Conic:
+                                throw new NotSupportedException("Conic glyph outlines are not implemented by the portable backend.");
+                            case SKPathVerb.Close:
+                                open = false;
+                                break;
+                        }
+                    }
+                    if (open)
+                        throw new NotSupportedException("Open glyph contours are not supported.");
+                }
+                return geometry;
+            }
+        }
+
+        private static Point ToPoint(SKPoint point) => new Point(point.X, point.Y);
+
+        private IDictionary<int, ushort> ReadCharacterMap()
+        {
+            byte[] table = Typeface.GetTableData(0x636d6170);
+            if (table == null || table.Length < 4)
+                throw new FileFormatException(Uri);
+            int U16(int offset)
+            {
+                if (offset < 0 || offset > table.Length - 2) throw new FileFormatException(Uri);
+                return BinaryPrimitives.ReadUInt16BigEndian(table.AsSpan(offset, 2));
+            }
+            uint U32(int offset)
+            {
+                if (offset < 0 || offset > table.Length - 4) throw new FileFormatException(Uri);
+                return BinaryPrimitives.ReadUInt32BigEndian(table.AsSpan(offset, 4));
+            }
+            int selected = -1, priority = -1;
+            for (int index = 0; index < U16(2); index++)
+            {
+                int record = 4 + index * 8;
+                int platform = U16(record), encoding = U16(record + 2);
+                if (platform != 0 && !(platform == 3 && (encoding == 1 || encoding == 10)))
+                    continue;
+                int offset = checked((int)U32(record + 4));
+                int format = U16(offset);
+                int score = format == 12 ? 2 : format == 4 ? 1 : 0;
+                if (score > priority) { selected = offset; priority = score; }
+            }
+            var map = new Dictionary<int, ushort>();
+            if (priority == 2)
+            {
+                uint count = U32(selected + 12);
+                if (count > (uint)table.Length / 12) throw new FileFormatException(Uri);
+                for (int index = 0; index < count; index++)
+                {
+                    int group = checked(selected + 16 + index * 12);
+                    uint first = U32(group), last = U32(group + 4), glyph = U32(group + 8);
+                    if (first > last || last > 0x10ffff || (ulong)glyph + last - first > ushort.MaxValue)
+                        throw new FileFormatException(Uri);
+                    for (uint codepoint = first; codepoint <= last; codepoint++)
+                    {
+                        uint value = glyph + codepoint - first;
+                        if (value != 0 && !(codepoint >= 0xd800 && codepoint <= 0xdfff))
+                            map[(int)codepoint] = (ushort)value;
+                    }
+                }
+            }
+            else if (priority == 1)
+            {
+                int segments = U16(selected + 6) / 2;
+                int starts = selected + 16 + 2 * segments;
+                int deltas = starts + 2 * segments;
+                int ranges = deltas + 2 * segments;
+                for (int segment = 0; segment < segments; segment++)
+                {
+                    int first = U16(starts + 2 * segment), last = U16(selected + 14 + 2 * segment);
+                    int delta = U16(deltas + 2 * segment), range = U16(ranges + 2 * segment);
+                    if (first > last) throw new FileFormatException(Uri);
+                    for (int codepoint = first; codepoint <= last && codepoint != 0xffff; codepoint++)
+                    {
+                        int value = range == 0 ? codepoint : U16(ranges + 2 * segment + range + 2 * (codepoint - first));
+                        if (range == 0 || value != 0) value = (value + delta) & 0xffff;
+                        if (value != 0 && !(codepoint >= 0xd800 && codepoint <= 0xdfff))
+                            map[codepoint] = (ushort)value;
+                    }
+                }
+            }
+            else
+                throw new NotSupportedException("Portable character maps currently support Unicode OpenType cmap formats 4 and 12.");
+            return new ReadOnlyDictionary<int, ushort>(map);
+        }
+    }
+
+    internal sealed class PortableFontFamily : IFontFamily
+    {
+        private static readonly ConcurrentDictionary<string, GlyphTypeface> FallbackFaces = new ConcurrentDictionary<string, GlyphTypeface>(StringComparer.Ordinal);
+        private static readonly ConcurrentDictionary<string, FontFile[]> FallbackCatalogs = new ConcurrentDictionary<string, FontFile[]>(StringComparer.Ordinal);
+        private sealed record FontFile(string Path, string Family, int Weight, int Width, SKFontStyleSlant Slant)
+        {
+            internal bool Italic => Slant != SKFontStyleSlant.Upright;
+        }
+        private static readonly Lazy<FontFile[]> SystemFonts = new Lazy<FontFile[]>(() => ReadFonts(FontDirectories()).ToArray());
+        private readonly FontFile[] _files;
+        private readonly FontStyle _style;
+        private readonly FontWeight _weight;
+        private readonly FontStretch _stretch;
+        private readonly GlyphTypeface _metrics;
+
+        internal static ICollection<FontFamily> GetSystemFontFamilies() =>
+            Array.AsReadOnly(SystemFonts.Value.Select(file => file.Family)
+                .Distinct(StringComparer.OrdinalIgnoreCase).OrderBy(name => name, StringComparer.OrdinalIgnoreCase)
+                .Select(name => new FontFamily(Util.ConvertFontFamilyReferenceToFriendlyName(
+                    Util.ConvertFamilyNameAndLocationToFontFamilyReference(name, null)))).ToArray());
+
+        internal static GlyphTypeface ResolveGrapheme(TextRunProperties properties, string grapheme)
+        {
+            if (properties?.Typeface == null || properties.CultureInfo == null ||
+                !double.IsFinite(properties.FontRenderingEmSize) || properties.FontRenderingEmSize <= 0)
+                throw new ArgumentException("Portable text requires a typeface, culture and positive finite font size.");
+            if (!properties.Typeface.TryGetGlyphTypeface(out GlyphTypeface primary))
+                throw new NotSupportedException("Portable text requires a physical font family.");
+            if (Covers(primary, grapheme)) return primary;
+            string directory = Path.GetDirectoryName(primary.FontUri.LocalPath);
+            SKTypeface primaryFace = primary.PortableFontFace.Typeface;
+            foreach (FontFile file in FallbackCatalogs.GetOrAdd(directory, value => ReadFonts(new[] { value }).ToArray())
+                .OrderBy(file => Math.Abs(file.Weight - primaryFace.FontWeight) + Math.Abs(file.Width - primaryFace.FontWidth) * 100 +
+                    (file.Italic == primaryFace.IsItalic ? 0 : 1000)).ThenBy(file => file.Path, StringComparer.Ordinal))
+            {
+                string path = file.Path;
+                if (string.Equals(path, primary.FontUri.LocalPath, StringComparison.Ordinal)) continue;
+                GlyphTypeface candidate = FallbackFaces.GetOrAdd(path, value => new GlyphTypeface(new Uri(value, UriKind.Absolute)));
+                if (Covers(candidate, grapheme)) return candidate;
+            }
+            throw new NotSupportedException("No font file in the selected physical font's directory covers the complete grapheme cluster.");
+        }
+
+        private static bool Covers(GlyphTypeface face, string text)
+        {
+            foreach (Rune rune in text.EnumerateRunes())
+                if (!MS.Internal.Portability.Text.Unicode.UnicodeData.GetIsDefaultIgnorable((uint)rune.Value) &&
+                    !face.CharacterToGlyphMap.ContainsKey(rune.Value)) return false;
+            return true;
+        }
+
+        private PortableFontFamily(FontFile[] files, FontStyle style, FontWeight weight, FontStretch stretch)
+        {
+            _files = files;
+            _style = style;
+            _weight = weight;
+            _stretch = stretch;
+            _metrics = OpenFace(style, weight, stretch);
+        }
+
+        internal static IFontFamily Resolve(Uri location, string name, FontStyle style, FontWeight weight, FontStretch stretch)
+        {
+            FontFile[] catalog;
+            if (location != null)
+            {
+                if (!location.IsFile)
+                    throw new NotSupportedException("Portable font families currently require local font sources.");
+                catalog = ReadFonts(new[] { location.LocalPath }).ToArray();
+            }
+            else
+                catalog = SystemFonts.Value;
+
+            FontFile[] matches = catalog.Where(file => string.Equals(file.Family, name, StringComparison.OrdinalIgnoreCase)).ToArray();
+            if (matches.Length == 0 && (string.Equals(name, "GLOBAL USER INTERFACE", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(name, "ARIAL", StringComparison.OrdinalIgnoreCase)))
+            {
+                string[] defaults = { "DejaVu Sans", "Liberation Sans", "Arial" };
+                foreach (string candidate in defaults)
+                {
+                    matches = catalog.Where(file => string.Equals(file.Family, candidate, StringComparison.OrdinalIgnoreCase)).ToArray();
+                    if (matches.Length != 0)
+                        break;
+                }
+            }
+            return matches.Length == 0 ? null : new PortableFontFamily(matches, style, weight, stretch);
+        }
+
+        private GlyphTypeface OpenFace(FontStyle style, FontWeight weight, FontStretch stretch)
+        {
+            FontFile file = _files.OrderBy(candidate =>
+                Math.Abs(candidate.Weight - weight.ToOpenTypeWeight()) +
+                Math.Abs(candidate.Width - stretch.ToOpenTypeStretch()) * 100 +
+                (GetStyle(candidate.Slant) == style ? 0 : candidate.Italic == (style != FontStyles.Normal) ? 1 : 1000)).First();
+            return new GlyphTypeface(new Uri(file.Path, UriKind.Absolute));
+        }
+
+        public IDictionary<XmlLanguage, string> Names => new Dictionary<XmlLanguage, string>
+        {
+            [XmlLanguage.GetLanguage("en-US")] = _metrics.PortableFontFace.Typeface.FamilyName
+        };
+        public double BaselineDesign => _metrics.Baseline;
+        public double LineSpacingDesign => _metrics.Height + _metrics.PortableFontFace.Metrics.Leading;
+        public double Baseline(double emSize, double toReal, double pixelsPerDip, TextFormattingMode mode) => Round(BaselineDesign * emSize, pixelsPerDip, mode);
+        public double LineSpacing(double emSize, double toReal, double pixelsPerDip, TextFormattingMode mode) => Round(LineSpacingDesign * emSize, pixelsPerDip, mode);
+        public ITypefaceMetrics GetTypefaceMetrics(FontStyle style, FontWeight weight, FontStretch stretch) =>
+            style == _style && weight == _weight && stretch == _stretch ? _metrics : OpenFace(style, weight, stretch);
+        public IDeviceFont GetDeviceFont(FontStyle style, FontWeight weight, FontStretch stretch) => null;
+        public bool GetMapTargetFamilyNameAndScale(CharacterBufferRange text, CultureInfo culture, CultureInfo digitCulture,
+            double defaultSizeInEm, out int length, out string targetFamilyName, out double scaleInEm)
+        {
+            length = text.Length;
+            targetFamilyName = null;
+            scaleInEm = 1;
+            return false;
+        }
+        public ICollection<Typeface> GetTypefaces(FontFamilyIdentifier identifier)
+        {
+            var family = new FontFamily(identifier);
+            return Array.AsReadOnly(_files.Select(file => (file.Slant, file.Weight, file.Width)).Distinct()
+                .OrderBy(face => face.Weight).ThenBy(face => face.Width).ThenBy(face => face.Slant)
+                .Select(face => new Typeface(family, GetStyle(face.Slant),
+                    FontWeight.FromOpenTypeWeight(face.Weight), FontStretch.FromOpenTypeStretch(face.Width))).ToArray());
+        }
+
+        internal static FontStyle GetStyle(SKFontStyleSlant slant) => slant switch
+        {
+            SKFontStyleSlant.Upright => FontStyles.Normal,
+            SKFontStyleSlant.Italic => FontStyles.Italic,
+            SKFontStyleSlant.Oblique => FontStyles.Oblique,
+            _ => throw new NotSupportedException("The physical font has an unsupported slant.")
+        };
+
+        private static double Round(double value, double pixelsPerDip, TextFormattingMode mode) =>
+            mode == TextFormattingMode.Display ? Math.Round(value * pixelsPerDip) / pixelsPerDip : value;
+
+        private static IEnumerable<string> FontDirectories()
+        {
+            string fonts = Environment.GetFolderPath(Environment.SpecialFolder.Fonts);
+            if (!string.IsNullOrEmpty(fonts))
+                yield return fonts;
+            yield return "/usr/share/fonts";
+            yield return "/usr/local/share/fonts";
+            yield return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local", "share", "fonts");
+            yield return "/System/Library/Fonts";
+            yield return "/Library/Fonts";
+        }
+
+        private static IEnumerable<FontFile> ReadFonts(IEnumerable<string> roots)
+        {
+            foreach (string root in roots)
+            {
+                IEnumerable<string> files = File.Exists(root) ? new[] { root } : Directory.Exists(root)
+                    ? Directory.EnumerateFiles(root, "*", new EnumerationOptions { RecurseSubdirectories = true, IgnoreInaccessible = true })
+                    : Array.Empty<string>();
+                foreach (string file in files)
+                {
+                    string extension = Path.GetExtension(file);
+                    if (!extension.Equals(".ttf", StringComparison.OrdinalIgnoreCase) && !extension.Equals(".otf", StringComparison.OrdinalIgnoreCase))
+                        continue;
+                    using (SKTypeface face = SKTypeface.FromFile(file))
+                    {
+                        if (face != null)
+                            yield return new FontFile(Path.GetFullPath(file), face.FamilyName, face.FontWeight, face.FontWidth, face.FontSlant);
+                    }
+                }
+            }
+        }
+    }
+}
+#endif

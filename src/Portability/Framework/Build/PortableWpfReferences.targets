@@ -1,0 +1,7 @@
+<Project>
+  <Target Name="ExcludeCoreWindowsBaseShim" AfterTargets="ResolveTargetingPackAssets" BeforeTargets="_HandlePackageFileConflicts;ResolveAssemblyReferences">
+    <ItemGroup>
+      <Reference Remove="@(Reference)" Condition="'%(Reference.AssemblyName)' == 'WindowsBase' and '%(Reference.ExternallyResolved)' == 'true'" />
+    </ItemGroup>
+  </Target>
+</Project>

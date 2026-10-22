@@ -46,6 +46,9 @@ namespace System.Windows.Media.TextFormatting
             int     removal
             )
         {
+#if PORTABLE_WPF
+            PortableParagraph = null;
+#endif
             _imp?.Change(
                     textSourceCharacterIndex,
                     addition,
@@ -61,6 +64,9 @@ namespace System.Windows.Media.TextFormatting
         /// </summary>
         public void Invalidate()
         {
+#if PORTABLE_WPF
+            PortableParagraph = null;
+#endif
             if(_imp != null)
             {
                 _imp = null;
@@ -97,6 +103,9 @@ namespace System.Windows.Media.TextFormatting
             set { _imp = value; }
         }
 
+#if PORTABLE_WPF
+        internal MS.Internal.TextFormatting.Portable.PortableParagraph PortableParagraph { get; set; }
+#endif
         private TextRunCacheImp   _imp;
     }
 }

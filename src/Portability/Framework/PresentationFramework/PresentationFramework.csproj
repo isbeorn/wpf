@@ -1,0 +1,45 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PresentationFramework</AssemblyName>
+    <DefineConstants>$(DefineConstants);FRAMEWORK_NATIVEMETHODS;COMMONDPS;PRESENTATIONFRAMEWORK_ONLY;PRESENTATIONFRAMEWORK;RIBBON_IN_FRAMEWORK;PORTABLE_WPF</DefineConstants>
+    <WpfSourceProject>$(WpfSourceDir)PresentationFramework/PresentationFramework.csproj</WpfSourceProject>
+    <WpfResourceFile>$(WpfSourceDir)PresentationFramework/Resources/Strings.resx</WpfResourceFile>
+    <WpfResourceNamespace>System.Windows</WpfResourceNamespace>
+    <WpfResourceManifestName>FxResources.PresentationFramework.SR</WpfResourceManifestName>
+    <!-- The framework's own ThemeMode implementation opts into its existing experimental API. -->
+    <NoWarn>$(NoWarn);1058;SYSLIB5005;WPF0001</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="PortableAssemblyInfo.cs" />
+    <Compile Include="$(WpfSourceDir)PresentationFramework/MS/Internal/documents/Portable/*.cs" />
+    <Compile Include="$(WpfSourceDir)PresentationFramework/System/Windows/Shell/WindowChromeWorker.Portable.cs" />
+    <Compile Include="$(WpfSourceDir)PresentationFramework/System/Windows/Window.Portable.cs" Condition="Exists('$(WpfSourceDir)PresentationFramework/System/Windows/Window.Portable.cs')" />
+    <Compile Include="$(WpfSourceDir)PresentationFramework/System/Windows/MessageBox.Portable.cs" />
+    <Compile Include="$(WpfSourceDir)PresentationFramework/Microsoft/Win32/FileDialog.Portable.cs" />
+    <Compile Include="$(WpfSourceDir)PresentationFramework/MS/Internal/Portability/Windowing/*.cs" />
+    <Compile Include="$(WpfSourceDir)PresentationFramework/MS/Internal/Portability/Input/*.cs" />
+    <EmbeddedResource Include="$(WpfResourceFile)" LogicalName="$(WpfResourceManifestName).resources" />
+    <EmbeddedResource Include="$(WpfSourceDir)PresentationFramework/Resources/win32res/split.cur" LogicalName="SplitCursor" />
+    <EmbeddedResource Include="$(WpfSourceDir)PresentationFramework/Resources/win32res/splitopen.cur" LogicalName="SplitOpenCursor" />
+    <ProjectReference Include="../PresentationCore/PresentationCore.csproj" />
+    <ProjectReference Include="../WindowsBase/WindowsBase.csproj" />
+    <ProjectReference Include="../System.Xaml/System.Xaml.csproj" />
+    <ProjectReference Include="../UIAutomationTypes/UIAutomationTypes.csproj" />
+    <ProjectReference Include="../UIAutomationProvider/UIAutomationProvider.csproj" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.13" />
+    <PackageReference Include="System.Windows.Extensions" Version="10.0.13" />
+    <PackageReference Include="System.IO.Packaging" Version="10.0.13" />
+    <PackageReference Include="System.Formats.Nrbf" Version="10.0.13" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="ReachFramework;System.Printing;PresentationUI;DirectWriteForwarder">
+      <HintPath>$(NuGetPackageRoot)/microsoft.windowsdesktop.app.runtime.win-x64/10.0.13/runtimes/win-x64/lib/net10.0/%(Identity).dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+  <Import Project="../Build/SourceManifest.targets" />
+  <Import Project="../Build/WindowsNativeContracts.props" />
+  <Import Project="../Build/SourceResources.targets" />
+  <Import Project="../Build/PublicSigning.targets" />
+  <Import Project="../Build/PortableWpfReferences.targets" />
+</Project>

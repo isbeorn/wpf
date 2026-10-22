@@ -1,0 +1,15 @@
+<Project>
+  <Import Project="../../Directory.Build.props" />
+  <PropertyGroup>
+    <RepoRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../../../..'))</RepoRoot>
+    <AvalonDockArtifactsDir Condition="'$(AvalonDockArtifactsDir)' == ''">$(RepoRoot)artifacts/portability/avalondock/</AvalonDockArtifactsDir>
+    <BaseOutputPath>$(AvalonDockArtifactsDir)bin/$(OS)/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(AvalonDockArtifactsDir)obj/$(OS)/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <EnableDefaultItems>false</EnableDefaultItems>
+  </PropertyGroup>
+</Project>

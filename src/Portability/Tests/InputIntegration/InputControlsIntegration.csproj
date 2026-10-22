@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType><EnableDefaultCompileItems>false</EnableDefaultCompileItems></PropertyGroup>
+  <ItemGroup>
+    <Compile Include="ControlsProgram.cs" />
+    <Compile Include="UnicodeCommitChecks.cs" />
+    <Compile Include="ManagedPreeditChecks.cs" />
+    <Compile Include="AutomationCases.cs" />
+    <ProjectReference Include="../../Framework/PresentationFramework/PresentationFramework.csproj" />
+  </ItemGroup>
+  <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+  <Import Project="../../Framework/Build/PublicSigning.targets" />
+</Project>

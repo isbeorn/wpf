@@ -1,0 +1,10 @@
+<Project>
+  <Import Project="../../Directory.Build.props" />
+  <PropertyGroup>
+    <PortabilityRepositoryRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../../../../'))</PortabilityRepositoryRoot>
+    <MarkupRuntimeProjectDirectory>$([System.IO.Path]::GetFileName('$(MSBuildProjectDirectory)'))</MarkupRuntimeProjectDirectory>
+    <BaseOutputPath>$(PortabilityRepositoryRoot)artifacts/portability/markup-runtime-integration/bin/$(OS)/$(MarkupRuntimeProjectDirectory)/$(MarkupRuntimeArtifactSuffix)</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(PortabilityRepositoryRoot)artifacts/portability/markup-runtime-integration/obj/$(OS)/$(MarkupRuntimeProjectDirectory)/$(MarkupRuntimeArtifactSuffix)</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+</Project>

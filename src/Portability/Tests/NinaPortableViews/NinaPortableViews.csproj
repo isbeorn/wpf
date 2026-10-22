@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <StartupObject>Program</StartupObject>
+    <DefineConstants Condition="'$(NinaStockWindowsReference)' != 'true'">$(DefineConstants);NINA_PORTABLE_ENTRY_DIAGNOSTICS</DefineConstants>
+    <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
+    <NinaFixtureDirectory>$(NinaPortableArtifacts)/fixture</NinaFixtureDirectory>
+    <TargetFramework Condition="'$(NinaStockWindowsReference)' == 'true'">net10.0-windows</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="AvalonDock/**/*.cs;NativeImaging/**/*.cs;RichText/**/*.cs;Framing/**/*.cs" />
+    <Compile Remove="PortableEntryDiagnosticsCases.cs" Condition="'$(NinaStockWindowsReference)' == 'true'" />
+    <Compile Include="../NinaPortableApplication/PortableEntry.cs" Link="Portability/PortableEntry.cs" Condition="'$(NinaStockWindowsReference)' != 'true'" />
+    <Compile Include="../NativeWindowIntegration/X11Fixture.cs" Link="Portability/X11Fixture.cs" Condition="'$(NinaStockWindowsReference)' != 'true'" />
+    <PackageReference Include="Wpf.Portable.Runtime" Version="[10.0.0-portable.1]" Condition="'$(NinaStockWindowsReference)' != 'true'" />
+    <FrameworkReference Include="Microsoft.WindowsDesktop.App.WPF" Condition="'$(NinaStockWindowsReference)' == 'true'" />
+    <None Include="$(NinaFixtureDirectory)/Closure.json" Link="Closure.json" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Import Project="$(NinaFixtureDirectory)/References.props" Condition="Exists('$(NinaFixtureDirectory)/References.props')" />
+  <Target Name="RequirePreparedNinaClosure" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(NinaFixtureDirectory)/References.props')" Text="Run eng/portability/Run-NinaPortableViews.ps1 -HostProfile PrepareOnly to verify and prepare the unchanged NINA closure first." />
+  </Target>
+</Project>

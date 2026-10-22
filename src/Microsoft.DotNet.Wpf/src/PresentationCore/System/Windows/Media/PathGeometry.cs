@@ -599,6 +599,9 @@ namespace System.Windows.Media
             double tolerance,
             ToleranceType type)
         {
+#if PORTABLE_WPF
+            return MS.Internal.Portability.Rendering.PortableGeometryOutline.Combine(geometry1, geometry2, mode, transform, tolerance, type);
+#else
             PathGeometry resultGeometry = null;
 
             unsafe
@@ -652,6 +655,7 @@ namespace System.Windows.Media
             }
 
             return resultGeometry;
+#endif
         }
         #endregion Combine
 
@@ -677,6 +681,9 @@ namespace System.Windows.Media
             {
                 ReadPreamble();
 
+#if PORTABLE_WPF
+                return MS.Internal.Portability.Rendering.SkiaGeometry.GetBounds(this);
+#else
                 if (IsEmpty())
                 {
                     return Rect.Empty;
@@ -699,6 +706,7 @@ namespace System.Windows.Media
 
                     return _bounds.AsRect;
                 }
+#endif
             }
         }
 

@@ -22,7 +22,7 @@ namespace System.Windows.Media.Imaging
     /// Any BitmapFrame it returns are frozen
     /// be immutable.
     /// </summary>
-    public abstract class BitmapDecoder : DispatcherObject
+    public abstract partial class BitmapDecoder : DispatcherObject
     {
         #region Constructors
 
@@ -54,6 +54,10 @@ namespace System.Windows.Media.Imaging
             Guid expectedClsId
             )
         {
+#if PORTABLE_WPF
+            ArgumentNullException.ThrowIfNull(bitmapUri);
+            InitializePortableDecoder(null, bitmapUri, null, createOptions, cacheOption, expectedClsId, null);
+#else
             Guid clsId = Guid.Empty;
             bool isOriginalWritable = false;
 
@@ -99,6 +103,7 @@ namespace System.Windows.Media.Imaging
             _syncObject = _decoderHandle;
             _isOriginalWritable = isOriginalWritable;
             Initialize(decoder);
+#endif
         }
 
         /// <summary>
@@ -111,6 +116,10 @@ namespace System.Windows.Media.Imaging
             Guid expectedClsId
             )
         {
+#if PORTABLE_WPF
+            ArgumentNullException.ThrowIfNull(bitmapStream);
+            InitializePortableDecoder(null, null, bitmapStream, createOptions, cacheOption, expectedClsId, null);
+#else
             Guid clsId = Guid.Empty;
             bool isOriginalWritable = false;
 
@@ -143,6 +152,7 @@ namespace System.Windows.Media.Imaging
             _syncObject = _decoderHandle;
             _isOriginalWritable = isOriginalWritable;
             Initialize(null);
+#endif
         }
 
         /// <summary>
@@ -225,6 +235,9 @@ namespace System.Windows.Media.Imaging
             bool insertInDecoderCache
             )
         {
+#if PORTABLE_WPF
+            return CreatePortableDecoder(baseUri, uri, stream, createOptions, cacheOption, uriCachePolicy);
+#else
             Guid clsId = Guid.Empty;
             bool isOriginalWritable = false;
             SafeMILHandle decoderHandle = null;
@@ -437,6 +450,7 @@ namespace System.Windows.Media.Imaging
             }
 
             return decoder;
+#endif
         }
 
         /// <summary>
@@ -522,6 +536,9 @@ namespace System.Windows.Media.Imaging
             get
             {
                 VerifyAccess();
+#if PORTABLE_WPF
+                if (_isPortable) return null;
+#endif
                 EnsureBuiltInDecoder();
 
                 if (!_isPaletteCached)
@@ -571,6 +588,9 @@ namespace System.Windows.Media.Imaging
             get
             {
                 VerifyAccess();
+#if PORTABLE_WPF
+                if (_isPortable) return null;
+#endif
                 EnsureBuiltInDecoder();
 
                 if (!_isThumbnailCached)
@@ -632,6 +652,9 @@ namespace System.Windows.Media.Imaging
             get
             {
                 VerifyAccess();
+#if PORTABLE_WPF
+                if (_isPortable) throw UnsupportedPortableDecoder("metadata");
+#endif
                 EnsureBuiltInDecoder();
 
                 if (!_isMetadataCached)
@@ -673,6 +696,9 @@ namespace System.Windows.Media.Imaging
             get
             {
                 VerifyAccess();
+#if PORTABLE_WPF
+                if (_isPortable) throw UnsupportedPortableDecoder("codec information");
+#endif
                 EnsureBuiltInDecoder();
 
                 // There should always be a codec info.
@@ -725,6 +751,9 @@ namespace System.Windows.Media.Imaging
             get
             {
                 VerifyAccess();
+#if PORTABLE_WPF
+                if (_isPortable) return null;
+#endif
                 EnsureBuiltInDecoder();
 
                 if (!_isPreviewCached)
@@ -860,6 +889,9 @@ namespace System.Windows.Media.Imaging
         public virtual InPlaceBitmapMetadataWriter CreateInPlaceBitmapMetadataWriter()
         {
             VerifyAccess();
+#if PORTABLE_WPF
+            if (_isPortable) throw UnsupportedPortableDecoder("metadata writing");
+#endif
             EnsureBuiltInDecoder();
 
             CheckOriginalWritable();
@@ -960,6 +992,9 @@ namespace System.Windows.Media.Imaging
             get
             {
                 EnsureBuiltInDecoder();
+#if PORTABLE_WPF
+                if (_isPortable) throw UnsupportedPortableDecoder("color contexts");
+#endif
 
                 if (!_isColorContextCached)
                 {
@@ -1007,6 +1042,9 @@ namespace System.Windows.Media.Imaging
             out SafeFileHandle safeFilehandle
             )
         {
+#if PORTABLE_WPF
+            throw new NotSupportedException("Portable bitmap codecs and URI/stream decoding are not implemented.");
+#else
             SafeMILHandle decoderHandle;
             IntPtr decoder = IntPtr.Zero;
             System.IO.Stream bitmapStream = null;
@@ -1190,6 +1228,7 @@ namespace System.Windows.Media.Imaging
             clsId = GetCLSIDFromDecoder(decoderHandle, out decoderMimeTypes);
 
             return decoderHandle;
+#endif
         }
 
         private static Stream ProcessHttpsFiles(Uri uri, Stream stream)

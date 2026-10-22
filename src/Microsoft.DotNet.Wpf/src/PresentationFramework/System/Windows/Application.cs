@@ -1711,7 +1711,10 @@ namespace System.Windows
                 }
             }
 
+#if !PORTABLE_WPF
+            // Win32 application activation and session messages require the parking HWND.
             EnsureHwndSource();
+#endif
 
             //Even if the subclass app cancels the event we still want to create and run the dispatcher
             //so that when the app explicitly calls Shutdown, we have a dispatcher to service the posted

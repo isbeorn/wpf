@@ -28,6 +28,17 @@ namespace System.Windows.Media.Imaging
             )
             : base(true)
         {
+#if PORTABLE_WPF
+            double dpiX = source.DpiX;
+            double dpiY = source.DpiY;
+            if (thumbnail != null || metadata != null || colorContexts != null)
+                throw new NotSupportedException("Portable source-backed bitmap frames do not support thumbnails, metadata or color contexts.");
+            if (source.PortableBuffer == null)
+                throw new NotSupportedException("Portable source-backed bitmap frames require owned pixel storage.");
+            _source = source;
+            _isColorCorrected = source._isColorCorrected;
+            InitializePortable(source.PortableBuffer, dpiX, dpiY);
+#else
             _bitmapInit.BeginInit();
 
             Debug.Assert(source != null);
@@ -42,6 +53,7 @@ namespace System.Windows.Media.Imaging
             _bitmapInit.EndInit();
 
             FinalizeCreation();
+#endif
         }
 
         /// <summary>
@@ -157,6 +169,14 @@ namespace System.Windows.Media.Imaging
         /// </summary>
         private void CopyCommon(BitmapFrameEncode sourceBitmapFrameEncode)
         {
+#if PORTABLE_WPF
+            if (PortableBuffer != null)
+            {
+                _source = sourceBitmapFrameEncode._source;
+                _isColorCorrected = sourceBitmapFrameEncode._isColorCorrected;
+                return;
+            }
+#endif
             _bitmapInit.BeginInit();
 
             Debug.Assert(sourceBitmapFrameEncode._source != null);

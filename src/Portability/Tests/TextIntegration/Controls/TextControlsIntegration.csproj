@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup>
+    <Content Include="WordSelectionReference.json" CopyToOutputDirectory="PreserveNewest" />
+    <ProjectReference Include="../../../Framework/PresentationFramework/PresentationFramework.csproj" />
+    <Content Include="../../Fixtures/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Import Project="../../../Framework/Build/PortableWpfReferences.targets" />
+</Project>

@@ -110,6 +110,10 @@ namespace MS.Utility
         /// </summary>
         static EventTrace()
         {
+#if PORTABLE_WPF
+            // Native ETW registration is unavailable in the initial portable build.
+            EventProvider = new DisabledPortableTraceProvider();
+#else
             Guid providerGuid = new Guid("E13B77A8-14B6-11DE-8069-001B212B5009");
 
             if (Environment.OSVersion.Version.Major < 6 ||
@@ -122,7 +126,19 @@ namespace MS.Utility
                 EventProvider = new ManifestTraceProvider();
             }
             EventProvider.Register(providerGuid);
+#endif
         }
+
+#if PORTABLE_WPF
+        private sealed class DisabledPortableTraceProvider : TraceProvider
+        {
+            internal override void Register(Guid providerGuid) =>
+                throw new PlatformNotSupportedException("Native WPF ETW is disabled in portable builds.");
+
+            internal override unsafe uint EventWrite(Event eventID, Keyword keywords, Level level, int argc, EventData* argv) =>
+                throw new PlatformNotSupportedException("Native WPF ETW is disabled in portable builds.");
+        }
+#endif
 
         private static bool IsClassicETWRegistryEnabled()
         {

@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <RuntimeFrameworkVersion>10.0.12</RuntimeFrameworkVersion>
+    <RollForward>Disable</RollForward>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NINA.Core">
+      <HintPath>$(NinaCorePath)</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="CommunityToolkit.Mvvm" Condition="'$(OriginalManagedDirectory)' != ''">
+      <HintPath>$(OriginalManagedDirectory)/CommunityToolkit.Mvvm.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="$(FrameworkRuntimeDirectory)/*.dll" Condition="'$(FrameworkRuntimeDirectory)' != ''" Private="true" />
+  </ItemGroup>
+  <Target Name="RequireNinaCore" BeforeTargets="ResolveReferences">
+    <Error Condition="'$(NinaCorePath)' == '' or !Exists('$(NinaCorePath)')" Text="Supply the complete original or declared source-adapted NINA.Core assembly through NinaCorePath." />
+  </Target>
+</Project>

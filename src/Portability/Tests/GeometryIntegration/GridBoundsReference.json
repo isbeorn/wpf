@@ -1,0 +1,2772 @@
+{
+  "scope": "Public stock Geometry/retained DrawingVisual bounds and offscreen RTB only; no Window, Application, display read or input.",
+  "runtime": ".NET 10.0.12",
+  "snapshotSha256": "5228C2FBE4F0D317E91100C4B18D7730C4D76A57D916C001211350CBF06B311E",
+  "core": {
+    "identity": "PresentationCore, Version=10.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35",
+    "path": "C:\\Program Files\\dotnet\\shared\\Microsoft.WindowsDesktop.App\\10.0.12\\PresentationCore.dll",
+    "sha256": "A0CE98A232C65ED2B9F9AF58B39359A6016066AFD62E85ECFD745DA202F0B01B"
+  },
+  "program": {
+    "path": "E:\\Projects\\wpf\\artifacts\\portability\\oxyplot-dashed-grid-bounds-calibration\\GeometryIntegration\\Reference\\bin\\Debug\\net10.0-windows\\Reference.dll",
+    "sha256": "C64643039A95477B7D175A6AD7704B7F7A52B4319C7B8CC331E5D59D2746D89D"
+  },
+  "failures": 0,
+  "checks": [
+    {
+      "name": "stock-Core10.0.12",
+      "status": "pass"
+    },
+    {
+      "name": "original-retained-snapshot-hash",
+      "status": "pass"
+    },
+    {
+      "name": "exact-open-hollow-nine-runs",
+      "status": "pass"
+    },
+    {
+      "name": "phase-0/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "phase-0/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "phase-0/independent-nine-rows",
+      "status": "pass"
+    },
+    {
+      "name": "phase-2.75/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "phase-2.75/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "phase-2.75/independent-nine-rows",
+      "status": "pass"
+    },
+    {
+      "name": "phase--8.25/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "phase--8.25/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "phase--8.25/independent-nine-rows",
+      "status": "pass"
+    },
+    {
+      "name": "negative-period-equivalent",
+      "status": "pass"
+    },
+    {
+      "name": "phase-1.5/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "phase-1.5/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "phase-1.5/independent-nine-rows",
+      "status": "pass"
+    },
+    {
+      "name": "phase--9.5/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "phase--9.5/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "phase--9.5/independent-nine-rows",
+      "status": "pass"
+    },
+    {
+      "name": "endpoint-gap-negative-period-equivalent",
+      "status": "pass"
+    },
+    {
+      "name": "phase-11/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "phase-11/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "phase-11/independent-nine-rows",
+      "status": "pass"
+    },
+    {
+      "name": "phase-11/base-restored",
+      "status": "pass"
+    },
+    {
+      "name": "phase-restore0/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "phase-restore0/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "phase-restore0/independent-nine-rows",
+      "status": "pass"
+    },
+    {
+      "name": "phase-restore0/base-restored",
+      "status": "pass"
+    },
+    {
+      "name": "exact-world-translate723-16/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "exact-world-translate723-16/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "world-translate/independent-nine-rows",
+      "status": "pass"
+    },
+    {
+      "name": "geometry-translate723-16/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "geometry-translate723-16/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "geometry-vs-world-translation/paint",
+      "status": "pass"
+    },
+    {
+      "name": "reverse-row-order/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "reverse-row-order/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "reverse-row-order/independent-nine-rows",
+      "status": "pass"
+    },
+    {
+      "name": "reverse-run-direction/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "reverse-run-direction/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "reverse-run-direction/independent-nine-rows",
+      "status": "pass"
+    },
+    {
+      "name": "original-order-and-phase-restored/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "original-order-and-phase-restored/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "original-order-and-phase-restored",
+      "status": "pass"
+    },
+    {
+      "name": "leading-gap/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "leading-gap/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "leading-gap/no-gap-ink",
+      "status": "pass"
+    },
+    {
+      "name": "outside-origin-leading-gap/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "outside-origin-leading-gap/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "outside-origin-leading-gap/no-gap-ink",
+      "status": "pass"
+    },
+    {
+      "name": "trailing-gap/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "trailing-gap/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "trailing-gap/no-gap-ink",
+      "status": "pass"
+    },
+    {
+      "name": "outside-origin-both-gaps/retained-before-after-paint",
+      "status": "pass"
+    },
+    {
+      "name": "outside-origin-both-gaps/ink-covered-by-retained-bounds",
+      "status": "pass"
+    },
+    {
+      "name": "outside-origin-both-gaps/no-gap-ink",
+      "status": "pass"
+    },
+    {
+      "name": "wrong-stroked-connectors-differ",
+      "status": "pass"
+    },
+    {
+      "name": "unstroked-connector-absent-0.2",
+      "status": "pass"
+    },
+    {
+      "name": "unstroked-connector-absent-0.3",
+      "status": "pass"
+    },
+    {
+      "name": "unstroked-connector-absent-0.4",
+      "status": "pass"
+    },
+    {
+      "name": "unstroked-connector-absent-0.5",
+      "status": "pass"
+    },
+    {
+      "name": "unstroked-connector-absent-0.6",
+      "status": "pass"
+    },
+    {
+      "name": "unstroked-connector-absent-0.7",
+      "status": "pass"
+    },
+    {
+      "name": "wrong-stroked-connector-probes-detect-ink",
+      "status": "pass"
+    }
+  ],
+  "samples": [
+    {
+      "name": "phase-0",
+      "phase": 0,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            31.5,
+            14.5,
+            438,
+            754
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "contentBefore": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "contentAfter": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "rasterSha256": "A260F00BCA61A3BCFAE79463D4F111354CF1EE846D8C8B206358F1AFABB04AAB",
+      "nontransparentPixels": 3951,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "phase-2.75",
+      "phase": 2.75,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            31.5,
+            14.5,
+            438,
+            754
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "contentBefore": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "contentAfter": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "rasterSha256": "BAC545F2125CB2BD8EB2415EF1295D7CE4A883E45CE4025B41DD84AD04706862",
+      "nontransparentPixels": 3951,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "phase--8.25",
+      "phase": -8.25,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            31.5,
+            14.5,
+            438,
+            754
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "contentBefore": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "contentAfter": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "rasterSha256": "BAC545F2125CB2BD8EB2415EF1295D7CE4A883E45CE4025B41DD84AD04706862",
+      "nontransparentPixels": 3951,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "phase-1.5",
+      "phase": 1.5,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            31.5,
+            14.5,
+            438,
+            754
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        469,
+        769
+      ],
+      "contentBefore": [
+        0,
+        0,
+        469,
+        769
+      ],
+      "contentAfter": [
+        0,
+        0,
+        469,
+        769
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        469,
+        769
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        469,
+        769
+      ],
+      "rasterSha256": "9747729695B73D5CFFDD6D48856D90A04D811FB5264AB4EB73B175552FFCAECB",
+      "nontransparentPixels": 3591,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "phase--9.5",
+      "phase": -9.5,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            31.5,
+            14.5,
+            438,
+            754
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        469,
+        769
+      ],
+      "contentBefore": [
+        0,
+        0,
+        469,
+        769
+      ],
+      "contentAfter": [
+        0,
+        0,
+        469,
+        769
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        469,
+        769
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        469,
+        769
+      ],
+      "rasterSha256": "9747729695B73D5CFFDD6D48856D90A04D811FB5264AB4EB73B175552FFCAECB",
+      "nontransparentPixels": 3591,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "phase-11",
+      "phase": 11,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            31.5,
+            14.5,
+            438,
+            754
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "contentBefore": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "contentAfter": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "rasterSha256": "A260F00BCA61A3BCFAE79463D4F111354CF1EE846D8C8B206358F1AFABB04AAB",
+      "nontransparentPixels": 3951,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "phase-restore0",
+      "phase": 0,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            31.5,
+            14.5,
+            438,
+            754
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "contentBefore": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "contentAfter": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "rasterSha256": "A260F00BCA61A3BCFAE79463D4F111354CF1EE846D8C8B206358F1AFABB04AAB",
+      "nontransparentPixels": 3951,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "exact-world-translate723-16",
+      "phase": 0,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        723,
+        16
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            31.5,
+            14.5,
+            438,
+            754
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "rasterSha256": "81AA13119D6879EAE3254587B6F9BB0555A2B842CC1D6008447C09A20E9F3EB6",
+      "nontransparentPixels": 3951,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "geometry-translate723-16",
+      "phase": 0,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        723,
+        16
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            754.5,
+            30.5,
+            438,
+            754
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            1192.5,
+            785
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            0,
+            0,
+            754.5,
+            784.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            1192.5,
+            785
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            1192.5,
+            785
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            1192.5,
+            785
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            0,
+            0,
+            754.5,
+            784.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            1192.5,
+            785
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "rasterSha256": "81AA13119D6879EAE3254587B6F9BB0555A2B842CC1D6008447C09A20E9F3EB6",
+      "nontransparentPixels": 3951,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "reverse-row-order",
+      "phase": 2.75,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        723,
+        16
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            31.5,
+            14.5,
+            438,
+            754
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            14.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            14.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "rasterSha256": "208F6E961F7F979013882A090345F8834AF5C8750BF2F7D14602012F19ECD967",
+      "nontransparentPixels": 3951,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "reverse-run-direction",
+      "phase": 2.75,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        723,
+        16
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            31.5,
+            14.5,
+            438,
+            754
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "rasterSha256": "CEAEEBC65916111077F6B345033DF82008E5407A6DB50C8EFB7E796CF32749CD",
+      "nontransparentPixels": 3951,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "original-order-and-phase-restored",
+      "phase": 0,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        723,
+        16
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            31.5,
+            14.5,
+            438,
+            754
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "rasterSha256": "81AA13119D6879EAE3254587B6F9BB0555A2B842CC1D6008447C09A20E9F3EB6",
+      "nontransparentPixels": 3951,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "leading-gap",
+      "phase": 0,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        723,
+        16
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            5.5,
+            14.5,
+            464,
+            776
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            0,
+            0,
+            5.5,
+            790.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            0,
+            0,
+            5.5,
+            790.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "rasterSha256": "81AA13119D6879EAE3254587B6F9BB0555A2B842CC1D6008447C09A20E9F3EB6",
+      "nontransparentPixels": 3951,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "outside-origin-leading-gap",
+      "phase": 0,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        723,
+        16
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            -100.5,
+            -40.5,
+            570,
+            809
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            -100.5,
+            -40.5,
+            100.5,
+            40.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            -100.5,
+            -40.5,
+            100.5,
+            40.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "rasterSha256": "81AA13119D6879EAE3254587B6F9BB0555A2B842CC1D6008447C09A20E9F3EB6",
+      "nontransparentPixels": 3951,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "trailing-gap",
+      "phase": 0,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        723,
+        16
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            31.5,
+            5.5,
+            479,
+            763
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            0,
+            0,
+            31.5,
+            768.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "rasterSha256": "81AA13119D6879EAE3254587B6F9BB0555A2B842CC1D6008447C09A20E9F3EB6",
+      "nontransparentPixels": 3951,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "outside-origin-both-gaps",
+      "phase": 0,
+      "world": [
+        1,
+        0,
+        0,
+        1,
+        723,
+        16
+      ],
+      "geometryTransform": [
+        1,
+        0,
+        0,
+        1,
+        0,
+        0
+      ],
+      "queries": [
+        {
+          "name": "Geometry.Bounds",
+          "bounds": [
+            -100.5,
+            -40.5,
+            611,
+            809
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-pen",
+          "bounds": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-zero-width",
+          "bounds": [
+            -100.5,
+            -40.5,
+            100.5,
+            40.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "GetRenderBounds-null-brush",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-0.25",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        },
+        {
+          "name": "absolute-tolerance-1000",
+          "bounds": [
+            -100.5,
+            -40.5,
+            100.5,
+            40.5
+          ],
+          "empty": false
+        },
+        {
+          "name": "relative-tolerance-.001",
+          "bounds": [
+            0,
+            0,
+            469.5,
+            769
+          ],
+          "empty": false
+        }
+      ],
+      "geometryDrawingBounds": [
+        0,
+        0,
+        469.5,
+        769
+      ],
+      "drawingGroupBounds": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "contentAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantBefore": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "descendantAfter": [
+        0,
+        0,
+        1192.5,
+        785
+      ],
+      "rasterSha256": "81AA13119D6879EAE3254587B6F9BB0555A2B842CC1D6008447C09A20E9F3EB6",
+      "nontransparentPixels": 3951,
+      "outsideBoundsPixels": 0
+    },
+    {
+      "name": "connector-and-dash-boundary-probes",
+      "probes": [
+        {
+          "point": {
+            "X": 381.9,
+            "Y": 749.5
+          },
+          "correctContains": false,
+          "wrongContains": false
+        },
+        {
+          "point": {
+            "X": 338.1,
+            "Y": 740
+          },
+          "correctContains": false,
+          "wrongContains": true
+        },
+        {
+          "point": {
+            "X": 294.29999999999995,
+            "Y": 730.5
+          },
+          "correctContains": false,
+          "wrongContains": true
+        },
+        {
+          "point": {
+            "X": 250.5,
+            "Y": 721
+          },
+          "correctContains": false,
+          "wrongContains": true
+        },
+        {
+          "point": {
+            "X": 206.7,
+            "Y": 711.5
+          },
+          "correctContains": false,
+          "wrongContains": true
+        },
+        {
+          "point": {
+            "X": 162.90000000000003,
+            "Y": 702
+          },
+          "correctContains": false,
+          "wrongContains": true
+        },
+        {
+          "rowDistance": 9.75,
+          "point": {
+            "X": 41.25,
+            "Y": 768.5
+          },
+          "contains": true
+        },
+        {
+          "rowDistance": 10.25,
+          "point": {
+            "X": 41.75,
+            "Y": 768.5
+          },
+          "contains": false
+        },
+        {
+          "rowDistance": 10.75,
+          "point": {
+            "X": 42.25,
+            "Y": 768.5
+          },
+          "contains": false
+        },
+        {
+          "rowDistance": 11.25,
+          "point": {
+            "X": 42.75,
+            "Y": 768.5
+          },
+          "contains": true
+        }
+      ]
+    }
+  ]
+}

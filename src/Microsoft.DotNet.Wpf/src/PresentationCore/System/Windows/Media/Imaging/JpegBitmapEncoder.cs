@@ -14,7 +14,7 @@ namespace System.Windows.Media.Imaging
     /// <summary>
     /// Built-in Encoder for Jpeg files.
     /// </summary>
-    public sealed class JpegBitmapEncoder : BitmapEncoder
+    public sealed partial class JpegBitmapEncoder : BitmapEncoder
     {
         #region Constructors
 

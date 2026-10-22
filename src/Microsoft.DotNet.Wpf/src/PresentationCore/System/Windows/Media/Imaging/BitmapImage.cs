@@ -80,7 +80,11 @@ namespace System.Windows.Media.Imaging
             _xpsPackageOrigin = XpsLoadingContext.ActivePackageUri;
 
             // If the Uri is relative, use delay creation as the BaseUri could be set at a later point
-            if (UriSource != null && !UriSource.IsAbsoluteUri && CacheOption != BitmapCacheOption.OnLoad)
+            if (UriSource != null && !UriSource.IsAbsoluteUri && CacheOption != BitmapCacheOption.OnLoad
+#if PORTABLE_WPF
+                && PortableBuffer == null
+#endif
+                )
             {
                 DelayCreation = true;
             }
@@ -284,6 +288,9 @@ namespace System.Windows.Media.Imaging
         ///
         internal override void FinalizeCreation()
         {
+#if PORTABLE_WPF
+            FinalizePortableCreation();
+#else
             _bitmapInit.EnsureInitializedComplete();
             Uri uri = UriSource;
             if (_baseUri != null)
@@ -635,6 +642,7 @@ namespace System.Windows.Media.Imaging
             {
                 InsertInCache(uri);
             }
+#endif
         }
 
         private void UriCachePolicyPropertyChangedHook(DependencyPropertyChangedEventArgs e)
@@ -932,9 +940,11 @@ namespace System.Windows.Media.Imaging
         private BitmapCacheOption _cacheOption;
 
         // used to ensure the source isn't GC'd
+#if !PORTABLE_WPF
         private BitmapSource _finalSource;
 
         private BitmapImage _cachedBitmapImage;
+#endif
 
         // Captured in EndInit so deferred FinalizeCreation can enforce
         // XPS package boundary even after the ambient context has ended.

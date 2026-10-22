@@ -10,6 +10,9 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Threading;
 using MS.Internal;
+#if PORTABLE_WPF
+using MS.Internal.Portability;
+#endif
 using MS.Internal.KnownBoxes;
 using MS.Win32;
 using MS.Internal.WindowsBase;
@@ -25,6 +28,9 @@ namespace System.Windows
 {
     public class SplashScreen
     {
+#if PORTABLE_WPF
+        private IPortableSplashWindow _portableSplash;
+#endif
         private HWND _hwnd = HWND.Null;
         private readonly string _resourceName;
         private readonly HINSTANCE _hInstance;
@@ -33,7 +39,9 @@ namespace System.Windows
         private DispatcherTimer _timer;
         private TimeSpan _fadeoutDuration;
         private DateTime _fadeoutEnd;
+#if !PORTABLE_WPF
         private BLENDFUNCTION _blendFunction;
+#endif
         private readonly ResourceManager _resourceManager;
         private Dispatcher _dispatcher;
 
@@ -63,10 +71,14 @@ namespace System.Windows
 
         public unsafe void Show(bool autoClose, bool topMost)
         {
+#if PORTABLE_WPF
+            if (_portableSplash != null) return;
+#else
             if (!_hwnd.IsNull)
             {
                 return;
             }
+#endif
 
             // If we've already been shown it isn't an error to call show
             // again (maybe you forgot) since you will still be shown state.
@@ -76,7 +88,19 @@ namespace System.Windows
 
             resourceStream.Seek(0, SeekOrigin.Begin); // ensure stream position
 
+#if PORTABLE_WPF
+            try
+            {
+                _portableSplash = PortableSplashPlatform.Create(resourceStream, topMost, Dispatcher.CurrentDispatcher);
+            }
+            catch
+            {
+                DestroyResources();
+                throw;
+            }
+#else
             CreateLayeredWindowFromImgBuffer(new(resourceStream.PositionPointer, (int)resourceStream.Length), topMost);
+#endif
 
             if (autoClose)
             {
@@ -233,11 +257,16 @@ namespace System.Windows
             // In the case where the developer has specified AutoClose=True and then calls
             // Close(non_zero_timespan) before the auto close operation is dispatched we begin
             // the fadeout immidiately and ignore the later call to close.
+#if PORTABLE_WPF
+            if (_timer is not null || _portableSplash == null)
+#else
             if (_timer is not null || _hwnd.IsNull)
+#endif
             {
                 return BooleanBoxes.TrueBox;
             }
 
+#if !PORTABLE_WPF
             // By default close gets called as soon as the first application window is created
             // since it will have become the active window we need to steal back the active window
             // status so that the fade out animation is visible.
@@ -249,6 +278,8 @@ namespace System.Windows
                 DestroyResources();
                 return BooleanBoxes.TrueBox;
             }
+
+#endif
 
             _timer = new DispatcherTimer
             {
@@ -274,6 +305,9 @@ namespace System.Windows
             else
             {
                 double progress = (_fadeoutEnd - now).TotalMilliseconds / _fadeoutDuration.TotalMilliseconds;
+#if PORTABLE_WPF
+                _portableSplash?.SetOpacity(progress);
+#else
                 _blendFunction.SourceConstantAlpha = (byte)(255 * progress);
                 PInvoke.UpdateLayeredWindow(
                     _hwnd,
@@ -285,6 +319,7 @@ namespace System.Windows
                     default,
                     _blendFunction,
                     UPDATE_LAYERED_WINDOW_FLAGS.ULW_ALPHA);
+#endif
             }
         }
 
@@ -296,6 +331,11 @@ namespace System.Windows
                 _timer = null;
             }
 
+#if PORTABLE_WPF
+            IPortableSplashWindow splash = _portableSplash;
+            _portableSplash = null;
+            splash?.Dispose();
+#else
             if (!_hwnd.IsNull)
             {
                 if (PInvoke.IsWindow(_hwnd))
@@ -319,6 +359,8 @@ namespace System.Windows
                 PInvoke.UnregisterClass((PCWSTR)(char*)(nint)_windowClass, _hInstance);
                 _windowClass = 0;
             }
+
+#endif
 
             // Mark this so it doesn't get finalized and try to release resources again.
             GC.SuppressFinalize(this);

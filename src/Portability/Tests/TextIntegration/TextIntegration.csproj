@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Controls/**/*.cs;StockOracle/**/*.cs" />
+    <Content Include="BidiCharacterCases.txt" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="StockPositionReference.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../Fixtures/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../Fixtures/Fonts/Inter-Regular.ttf" Link="Fonts/Inter-Regular.ttf" CopyToOutputDirectory="PreserveNewest" />
+    <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" />
+    <ProjectReference Include="../../Framework/WindowsBase/WindowsBase.csproj" />
+  </ItemGroup>
+  <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+</Project>

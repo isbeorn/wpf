@@ -1,0 +1,26 @@
+<Project>
+  <Target Name="SelectPortableXamlAccessImplementation" AfterTargets="ResolvePackageAssets" Condition="'$(TargetFramework)' == 'net10.0'">
+    <ItemGroup>
+      <_PortableExtensionsPackage Include="@(RuntimeCopyLocalItems)" Condition="'%(RuntimeCopyLocalItems.NuGetPackageId)' == 'System.Windows.Extensions'" />
+    </ItemGroup>
+    <Error Condition="'@(_PortableExtensionsPackage)' != '' and '%(_PortableExtensionsPackage.NuGetPackageVersion)' != '10.0.13'"
+           Text="The portable XAML access implementation is qualified only for System.Windows.Extensions 10.0.13. Review a package version change before selecting its runtime asset." />
+    <PropertyGroup Condition="'@(_PortableExtensionsPackage)' != ''">
+      <_PortableExtensionsImplementation>$([MSBuild]::NormalizePath('$(NuGetPackageRoot)', 'system.windows.extensions', '10.0.13', 'runtimes', 'win', 'lib', 'net10.0', 'System.Windows.Extensions.dll'))</_PortableExtensionsImplementation>
+    </PropertyGroup>
+    <Error Condition="'@(_PortableExtensionsPackage)' != '' and !Exists('$(_PortableExtensionsImplementation)')"
+           Text="The official System.Windows.Extensions 10.0.13 managed implementation was not restored: $(_PortableExtensionsImplementation)" />
+    <ItemGroup Condition="'@(_PortableExtensionsPackage)' != ''">
+      <RuntimeCopyLocalItems Remove="@(RuntimeCopyLocalItems)" Condition="'%(RuntimeCopyLocalItems.NuGetPackageId)' == 'System.Windows.Extensions'" />
+      <RuntimeTargetsCopyLocalItems Remove="@(RuntimeTargetsCopyLocalItems)" Condition="'%(RuntimeTargetsCopyLocalItems.NuGetPackageId)' == 'System.Windows.Extensions'" />
+      <RuntimeCopyLocalItems Include="$(_PortableExtensionsImplementation)">
+        <DestinationSubPath>System.Windows.Extensions.dll</DestinationSubPath>
+        <NuGetPackageVersion>10.0.13</NuGetPackageVersion>
+        <AssetType>runtime</AssetType>
+        <NuGetPackageId>System.Windows.Extensions</NuGetPackageId>
+        <CopyLocal>true</CopyLocal>
+        <PathInPackage>runtimes/win/lib/net10.0/System.Windows.Extensions.dll</PathInPackage>
+      </RuntimeCopyLocalItems>
+    </ItemGroup>
+  </Target>
+</Project>

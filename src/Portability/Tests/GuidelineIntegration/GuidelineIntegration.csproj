@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><OutputType>Exe</OutputType></PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="StockOracle/**/*.cs" />
+    <Content Include="StockDashReference.json" CopyToOutputDirectory="PreserveNewest" />
+    <Compile Include="../RenderingIntegration/VisibilityCases.cs" Link="VisibilityCases.cs" />
+    <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" />
+    <Content Include="StockGuidelineReference.json" CopyToOutputDirectory="PreserveNewest" Condition="Exists('StockGuidelineReference.json')" />
+    <Content Include="StockBitmapSamplingReference.json" CopyToOutputDirectory="PreserveNewest" />
+    <Content Include="../Fixtures/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+  <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+</Project>

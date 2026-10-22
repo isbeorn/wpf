@@ -1,0 +1,82 @@
+        private static IntPtr ResolvePortableCfitsio(string name, System.Reflection.Assembly assembly, DllImportSearchPath? searchPath) {
+            if (name != DLLNAME) return IntPtr.Zero;
+            if (RuntimeInformation.ProcessArchitecture != Architecture.X64) throw new PlatformNotSupportedException("Portable CFITSIO requires the qualified Linux x64 library.");
+            return NativeLibrary.Load(Path.Combine(AppContext.BaseDirectory, "External", "x64", "Cfitsio", "libcfitsio.so.10"));
+        }
+
+        [DllImport(DLLNAME, EntryPoint = "ffomem", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int OpenMemoryPortable(out IntPtr fptr, string filename, IOMODE iomode, ref IntPtr buffer, ref UIntPtr size, UIntPtr deltaSize, IntPtr fnMemRealloc, ref int status);
+        public static int fits_open_memory(out IntPtr fptr, string filename, IOMODE iomode, ref IntPtr buffer, ref UIntPtr size, ref UIntPtr deltaSize, IntPtr fnMemRealloc, out int status) {
+            if (!OperatingSystem.IsLinux()) return Windows_fits_open_memory(out fptr, filename, iomode, ref buffer, ref size, ref deltaSize, fnMemRealloc, out status);
+            status = 0;
+            return OpenMemoryPortable(out fptr, filename, iomode, ref buffer, ref size, deltaSize, fnMemRealloc, ref status);
+        }
+
+        [DllImport(DLLNAME, EntryPoint = "ffgpxvll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int ReadPixelsPortable(IntPtr fptr, DATATYPE datatype, long[] firstpix, long nelem, IntPtr nulval, IntPtr array, out int anynul, ref int status);
+        public static int fits_read_pix(IntPtr fptr, DATATYPE datatype, int[] firstpix, long nelem, IntPtr nulval, IntPtr array, out int anynul, out int status) {
+            if (!OperatingSystem.IsLinux()) return Windows_fits_read_pix(fptr, datatype, firstpix, nelem, nulval, array, out anynul, out status);
+            if (firstpix == null || firstpix.Length == 0 || Array.Exists(firstpix, value => value < 1)) throw new ArgumentException("FITS pixel coordinates must be positive.", nameof(firstpix));
+            if (nelem < 0) throw new ArgumentOutOfRangeException(nameof(nelem));
+            if (firstpix.Length < GetPortableAxisCount(fptr)) throw new ArgumentException("FITS pixel coordinates must cover every image axis.", nameof(firstpix));
+            status = 0;
+            return ReadPixelsPortable(fptr, datatype, Array.ConvertAll(firstpix, value => (long)value), nelem, nulval, array, out anynul, ref status);
+        }
+
+        private static int GetPortableAxisCount(IntPtr fptr) {
+            int status = 0;
+            fits_get_img_dim(fptr, out var axes, out status);
+            CheckStatus("fits_get_img_dim", status);
+            if (axes < 1) throw new InvalidDataException("FITS pixel reads require at least one image axis.");
+            return axes;
+        }
+
+        [DllImport(DLLNAME, EntryPoint = "ffcrimll", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int CreateImagePortable(IntPtr fptr, BITPIX bitpix, int naxis, long[] naxes, ref int status);
+        public static int fits_create_img(IntPtr fptr, BITPIX bitpix, int naxis, int[] naxes, out int status) {
+            if (!OperatingSystem.IsLinux()) return Windows_fits_create_img(fptr, bitpix, naxis, naxes, out status);
+            if (naxes == null || naxis != naxes.Length || naxis < 1 || Array.Exists(naxes, value => value < 1)) throw new ArgumentException("FITS image axes must match positive dimensions.", nameof(naxes));
+            status = 0;
+            return CreateImagePortable(fptr, bitpix, naxis, Array.ConvertAll(naxes, value => (long)value), ref status);
+        }
+
+        public static int fits_get_img_size(IntPtr fptr, out int nlen, out int[] naxes, out int status) {
+            if (OperatingSystem.IsLinux()) throw new NotSupportedException("The original output-only image-size declaration cannot safely marshal a Linux axis buffer. Read NAXIS keys instead.");
+            return Windows_fits_get_img_size(fptr, out nlen, out naxes, out status);
+        }
+
+        [DllImport(DLLNAME, EntryPoint = "ffgkyjj", CallingConvention = CallingConvention.Cdecl)]
+        private static extern int ReadKeyPortable(IntPtr fptr, string keyname, out long value, IntPtr comment, ref int status);
+        private static long ReadPortableIntegerKey(IntPtr fptr, string keyname) {
+            int status = 0;
+            ReadKeyPortable(fptr, keyname, out var value, IntPtr.Zero, ref status);
+            CheckStatus("fits_read_key_long", status);
+            return value;
+        }
+
+        private static void ValidatePortableWrite(DATATYPE datatype, DATATYPE expected, long fpixel, long nelements, Array array) {
+            if (datatype != expected) throw new NotSupportedException("Portable FITS writes require the datatype matching the supplied managed array.");
+            if (array == null) throw new ArgumentNullException(nameof(array));
+            if (fpixel < 1 || nelements < 0 || nelements > array.LongLength) throw new ArgumentOutOfRangeException(nameof(nelements));
+        }
+
+        public static int fits_write_img(IntPtr fptr, DATATYPE datatype, long fpixel, long nelements, ushort[] array, out int status) {
+            if (OperatingSystem.IsLinux()) { ValidatePortableWrite(datatype, DATATYPE.TUSHORT, fpixel, nelements, array); status = 0; }
+            return Windows_fits_write_img(fptr, datatype, fpixel, nelements, array, out status);
+        }
+        public static int fits_write_img_int(IntPtr fptr, DATATYPE datatype, long fpixel, long nelements, int[] array, out int status) {
+            if (OperatingSystem.IsLinux()) { ValidatePortableWrite(datatype, DATATYPE.TINT, fpixel, nelements, array); status = 0; }
+            return Windows_fits_write_img_int(fptr, datatype, fpixel, nelements, array, out status);
+        }
+        public static int fits_write_img_uint(IntPtr fptr, DATATYPE datatype, long fpixel, long nelements, uint[] array, out int status) {
+            if (OperatingSystem.IsLinux()) { ValidatePortableWrite(datatype, DATATYPE.TUINT, fpixel, nelements, array); status = 0; }
+            return Windows_fits_write_img_uint(fptr, datatype, fpixel, nelements, array, out status);
+        }
+        public static int fits_write_img_float(IntPtr fptr, DATATYPE datatype, long fpixel, long nelements, float[] array, out int status) {
+            if (OperatingSystem.IsLinux()) { ValidatePortableWrite(datatype, DATATYPE.TFLOAT, fpixel, nelements, array); status = 0; }
+            return Windows_fits_write_img_float(fptr, datatype, fpixel, nelements, array, out status);
+        }
+        public static int fits_write_img_double(IntPtr fptr, DATATYPE datatype, long fpixel, long nelements, double[] array, out int status) {
+            if (OperatingSystem.IsLinux()) { ValidatePortableWrite(datatype, DATATYPE.TDOUBLE, fpixel, nelements, array); status = 0; }
+            return Windows_fits_write_img_double(fptr, datatype, fpixel, nelements, array, out status);
+        }

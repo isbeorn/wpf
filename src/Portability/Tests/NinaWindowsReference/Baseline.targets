@@ -1,0 +1,18 @@
+<Project>
+  <!-- Fence the cached upstream projects from this repository's Arcade targets. -->
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'NINA.Test' and '$(NinaViewReferenceEvidence)' == 'true'">
+    <Compile Include="$(MSBuildThisFileDirectory)AssemblyEvidence.cs" />
+  </ItemGroup>
+  <Target Name="OmitAbsentNinaNativePayload" BeforeTargets="AssignTargetPaths;GetCopyToOutputDirectoryItems"
+          Condition="'$(MSBuildProjectName)' == 'NINA' and '$(NinaViewOnlyBaseline)' == 'true'">
+    <ItemGroup>
+      <_NinaAbsentNativePayload Include="@(Content);@(ContentWithTargetPath)"
+          Condition="$([System.String]::Copy('%(Identity)').StartsWith('External\')) and !Exists('%(Identity)')" />
+      <Content Remove="@(_NinaAbsentNativePayload)" />
+      <ContentWithTargetPath Remove="@(_NinaAbsentNativePayload)" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(NinaNativeOmissionsFile)"
+        Lines="@(_NinaAbsentNativePayload->'%(FullPath)|absent file from pinned NINA/External native payload')"
+        Overwrite="true" Condition="'@(_NinaAbsentNativePayload)' != ''" />
+  </Target>
+</Project>

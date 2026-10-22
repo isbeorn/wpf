@@ -1,0 +1,55 @@
+        [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+        private static BitmapSource ConvertColorToGrayWindows(BitmapSource original) {
+            using (var source = ImageUtility.BitmapFromSource(original, System.Drawing.Imaging.PixelFormat.Format48bppRgb)) {
+                using (var image = new Grayscale(0.2125, 0.7154, 0.0721).Apply(source)) {
+                    var result = ImageUtility.ConvertBitmap(image, System.Windows.Media.PixelFormats.Gray16);
+                    result.Freeze();
+                    return result;
+                }
+            }
+        }
+
+        private static List<DetectedStar> IdentifyStarsPortable(StarDetectionParams p, State state, StarDetectionResult result, IProgress<ApplicationStatus> progress, CancellationToken token, out int detectedStars) {
+            PortableImageBuffer image = PortableImageBuffer.Gray8(state._originalBitmapSource);
+            try {
+                token.ThrowIfCancellationRequested();
+                if (p.NoiseReduction != NoiseReductionEnum.None && image.Width > _maxWidth) {
+                    PortableImageBuffer reduced;
+                    if (p.NoiseReduction == NoiseReductionEnum.Median) {
+                        reduced = new PortableImageBuffer(image.Width, image.Height, image.Format);
+                        try { using (var src = image.Borrow()) using (var dst = reduced.Borrow()) new Median().Apply(src, dst); }
+                        catch { reduced.Dispose(); throw; }
+                    } else {
+                        int radial = p.NoiseReduction == NoiseReductionEnum.High ? 2 : p.NoiseReduction == NoiseReductionEnum.Highest ? 3 : 1;
+                        reduced = new FastGaussianBlur(image).ProcessBuffer(radial);
+                    }
+                    image.Dispose(); image = reduced;
+                }
+                image = DetectionUtility.ResizeForDetection(image, _maxWidth, state._resizefactor);
+                using (var edges = new PortableImageBuffer(image.Width, image.Height, image.Format)) {
+                    image.CopyTo(edges);
+                    if (p.NoiseReduction == NoiseReductionEnum.None || p.NoiseReduction == NoiseReductionEnum.Median) {
+                        using (var blurred = new PortableImageBuffer(image.Width, image.Height, image.Format)) {
+                            using (var src = image.Borrow()) using (var dst = blurred.Borrow()) new GaussianBlur(1.4, 5).Apply(src, dst);
+                            using (var src = blurred.Borrow()) using (var dst = edges.Borrow()) new NoBlurCannyEdgeDetector(10, 80).Apply(src, dst);
+                        }
+                    } else {
+                        using (var src = image.Borrow()) using (var dst = edges.Borrow()) new NoBlurCannyEdgeDetector(10, 80).Apply(src, dst);
+                    }
+                    token.ThrowIfCancellationRequested();
+                    using (var view = edges.Borrow()) new SISThreshold().ApplyInPlace(view);
+                    token.ThrowIfCancellationRequested();
+                    using (var structures = new PortableImageBuffer(image.Width, image.Height, image.Format)) {
+                        edges.CopyTo(structures);
+                        using (var src = edges.Borrow()) using (var dst = structures.Borrow()) new BinaryDilation3x3().Apply(src, dst);
+                        token.ThrowIfCancellationRequested();
+                        progress?.Report(new ApplicationStatus() { Status = "Detecting structures" });
+                        var blobs = new BlobCounter();
+                        using (var view = structures.Borrow()) blobs.ProcessImage(view);
+                        token.ThrowIfCancellationRequested();
+                        progress?.Report(new ApplicationStatus() { Status = "Analyzing stars" });
+                        return IdentifyStars(p, state, blobs, new Size(structures.Width, structures.Height), result, token, out detectedStars);
+                    }
+                }
+            } finally { image.Dispose(); }
+        }

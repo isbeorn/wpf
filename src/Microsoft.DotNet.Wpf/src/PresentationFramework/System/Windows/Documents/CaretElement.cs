@@ -946,6 +946,9 @@ namespace System.Windows.Documents
         // Win32 application have the compatibility to handle the caret event which is Magnifier or Tablet Tip.
         private void Win32CreateCaret()
         {
+#if PORTABLE_WPF
+            if (PresentationSource.CriticalFromVisual(this) is MS.Internal.Portability.Windowing.PortablePresentationSource) return;
+#endif
             if (!_isSelectionActive)
             {
                 // We do not want to interfere with Win32 caret
@@ -1035,6 +1038,9 @@ namespace System.Windows.Documents
         // Set Win32 caret position with checking Win32 error.
         private void Win32SetCaretPos()
         {
+#if PORTABLE_WPF
+            if (PresentationSource.CriticalFromVisual(this) is MS.Internal.Portability.Windowing.PortablePresentationSource) return;
+#endif
             if (!_isSelectionActive)
             {
                 // We do not want to interfere with Win32 caret
@@ -1125,7 +1131,11 @@ namespace System.Windows.Documents
             Invariant.Assert(_isSelectionActive, "Blink animation should only be required for an owner with active selection.");
 
             // Win32 GetCaretBlinkTime can return "0" without the error if SetCaretBlinkTime set as "0".
+#if PORTABLE_WPF
+            int caretBlinkTime = MS.Internal.Portability.Settings.PortableSystemSettingsProvider.Current.CaretBlinkTimeMilliseconds;
+#else
             int caretBlinkTime = (int)SafeNativeMethods.GetCaretBlinkTime();
+#endif
             if (caretBlinkTime == 0)
             {
                 // Return "-1" which is no blinking caret instead of throwing

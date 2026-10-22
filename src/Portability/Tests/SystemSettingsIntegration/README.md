@@ -1,0 +1,82 @@
+# Portable system settings integration
+
+This fixture uses the actual source-built PresentationCore and PresentationFramework assemblies, normal app-local references and the existing compiled BAML fixture. It does not supply replacement WPF types.
+
+The portable product starts with the named `portable-light-v1` snapshot: 30 system color roles, seven accent roles, `KeyboardCues=false` and `HighContrast=false`. The complete opaque palette is declared in `PresentationCore/MS/internal/Portability/Settings/PortableSystemSettings.cs`. It is an initial product palette, not a claim that an OS desktop theme was detected. Existing frozen-brush caches, high-contrast brush aliases and resource keys remain in use.
+
+An internal platform adapter can call `PortableSystemSettingsProvider.Register(snapshot)` before the first settings consumption. Snapshots copy and validate the complete palette. First consumption seals registration. Replacing a consumed snapshot fails with its profile name; live appearance changes are not implemented. The portable resource path therefore does not create a hidden Win32 settings notification window. Resource lookup, theme dictionary lookup, expression invalidation and application dictionary replacement still use the existing WPF implementation. APIs that request a Win32 resource notification window explicitly report that unsupported boundary.
+
+The immutable source resource policy selects `ThemeName=Classic` and `ThemedResourceName=themes/classic`. Existing `ThemeInfo`, external assembly lookup and `DefaultStyleKey` metadata load the genuine source-built `PresentationFramework.Classic` dictionary. This is a fixed portable theme, without Windows desktop or Aero2 pixel parity. `UxThemeWrapper` reports no active Windows native theme and does not query UxTheme. A genuine custom-control `themes/generic.baml` fixture verifies that source-assembly generic fallback still works under the Classic policy. Windows theme color and live native theme-change requests receive explicit unsupported diagnostics. Package delivery and a fresh unchanged NINA view replay remain separate qualification gates.
+
+Caret preferences belong to the same immutable snapshot. The initial product defaults are 1 DIP width and a 500 ms blink interval, not observed OS preferences. Startup adapters may supply a positive finite DIP width and a blink interval from -1 through `int.MaxValue/2` milliseconds. Both -1 and 0 mean steady caret; the upper bound preserves the existing animation's doubled interval without integer overflow. The alternate fixture uses 2 DIPs and -1 to check both startup directions.
+
+`MouseVanish=false` is the initial editing preference. A startup adapter can explicitly enable it in the same snapshot. The alternate fixture enables it and checks the actual SystemParameters getter; real typing, cursor hiding and recovery are verified by the input integration lane.
+
+The initial horizontal and vertical drag thresholds are 4 DIPs each as explicit product preferences. Startup adapters can supply independent positive finite DIP values. The fixture verifies asymmetric 2.5/7.5 DIP getters, both axes' invalid values and retained finite limits. Native desktop preference discovery, live changes and full drag/drop behavior remain separate qualification; this boundary allows the existing TextEditor mouse-down path to read its real drag thresholds without user32.
+
+Mouse hover preferences belong to the same immutable snapshot. The declared product defaults are 400 ms and a 4 by 4 DIP hover rectangle, not observed desktop preferences. Startup adapters may supply a nonnegative integer millisecond interval (including 0 and `int.MaxValue`) and independent positive finite DIP dimensions. The original public getters and resource keys use this profile without user32. `--hover-settings-only` checks defaults; append `--custom`, `--zero` or `--max` in separate processes to exercise registered asymmetric dimensions and each time boundary. The checks also cover resource override/removal, validation and startup immutability. Windows builds without `PORTABLE_WPF` retain the original native getters and cache behavior.
+
+Four scrollbar metrics also belong to the immutable snapshot: horizontal button width, horizontal bar height, vertical bar width and vertical button height. Each accepts an independent finite positive DIP value. Their declared portable Classic defaults are 17 DIPs, independent of desktop preferences. `--metric-fixture` supplies asymmetric fractional values. Tests verify the actual SystemParameters getters and original DynamicResource keys, local override/removal, paired layout axes, invalid boundaries and rejected replacement after consumption. Normal Windows getters and cache behavior remain unchanged.
+
+The portable Icon, Caption, SmallCaption, Menu and Status font roles share the existing declared Message policy: cached `Global User Interface`, 11 DIPs, Normal style, Normal weight and the same frozen empty decoration collection. These are uniform portable product choices, not detected desktop fonts or fabricated native font metrics. All 25 original getters and resource keys are exercised with local override/removal. A real Classic ToolTip also exercises Status font resources through its unchanged template and layout. Windows builds without `PORTABLE_WPF` retain the original role-specific native getters and caches.
+
+`SystemParameters.DropShadow=false` is the declared initial portable Classic appearance policy. The original resource key remains active, including ordinary local override/removal. It does not query native desktop shadow preferences or qualify popup presentation or rendered effects. The real offscreen ToolTip layout test checks that its unchanged Classic template consumes this policy without user32.
+
+Pointer settings are optional and read lazily. Without them, a pointer-dependent operation receives a named unsupported diagnostic. `PortablePointerSettings` contains positive double-click time in milliseconds and positive X/Y thresholds in raw mouse-report client pixels. These match the direct comparisons in `MouseDevice.IsSameSpot`; they are not DIPs or an inferred desktop default. The native host owns acquisition and registration of genuine platform preferences. This fixture's explicit 4 by 6 pixel and 500 ms values are test inputs only.
+
+The suite checks all 37 colors, frozen brush identity and cache invalidation, immutable palette copying and completeness, late registration rejection, KeyboardNavigation cue show/hide logic, pointer presence/absence, genuine Control/Window/BAML construction and DynamicResource add/replace/remove with local and application dictionaries. Application changes use a real registered Window, matching WPF's existing application resource invalidation scope. `--high-contrast-fixture` selects an explicitly named test snapshot to verify existing high-contrast brush aliases; it does not claim a production high-contrast theme. Normal Windows builds without `PORTABLE_WPF` retain the original OS settings and notification code.
+
+Run from `src/Portability` using the pinned .NET 10 SDK. Set `NUGET_PACKAGES` and `DOTNET_CLI_HOME` to the workspace's OS-specific `artifacts/portability` locations. Use a separate `PortableFrameworkArtifactsDir` when other framework graphs are building.
+
+```text
+dotnet build Tests/SystemSettingsIntegration/SystemSettingsIntegration.csproj -c Release -m:1 -nr:false -p:UseSharedCompilation=false -p:PortableFrameworkArtifactsDir=<isolated-absolute-directory>/
+dotnet <test-output>/Portability.SystemSettingsIntegration.dll
+dotnet <test-output>/Portability.SystemSettingsIntegration.dll --always-show-cues --pointer-fixture --high-contrast-fixture
+```
+
+The console emits structured JSON and returns nonzero on a failed check. Separate processes exercise both startup preference directions, pointer supplied/missing and high contrast enabled/disabled. Native theme parity, general system metrics, live settings updates, native Alt-key delivery and native window presentation require separate platform integration.
+
+The [source-built Classic theme](../../Framework/PresentationFramework.Classic/README.md) supplies the ordinary default control templates. `--default-theme-layout` exercises UserControl, Button and TextBox templates plus custom generic fallback and explicit-style removal. It assigns no local control templates. The main suite expects the live Classic source policy with no arguments. `--expect-classic-theme` asserts the same policy explicitly; `--expect-generic-theme` is a negative-policy diagnostic against this source. Neither flag selects or changes a theme, palette or settings snapshot. Supplying both expectation flags is rejected. Historical generic-profile blank-view results and private Classic rehearsals remain frozen under `artifacts/portability/classic`; fresh normal source-graph results belong under `artifacts/portability/classic/live-source`.
+
+The runtime load check rejects DirectWriteForwarder and the private WinForms contract on both OSes. It also requires the Windows UxTheme module to be absent on Linux. The Windows process can load UxTheme outside this resource policy, so that observation is reported without treating whole-process Windows module absence as a portable resource guarantee.
+
+The shared portable build selects the unchanged official `System.Windows.Extensions` 10.0.13 `runtimes/win/lib/net10.0` managed implementation for XAML access types. The package's ordinary `lib/net10.0` assembly throws on Linux even for these pure managed methods. Tests cover all four `XamlAccessLevel` factories and real internal/private object-writer construction, exact assembly identity, Default ALC and the qualified implementation SHA-256. This selects NuGet runtime items before SDK copy/dependency/publish processing; it does not copy over finished outputs, alter assembly references or install a runtime resolver. SoundPlayer, certificate UI and other Windows-only operations are not qualified by the XAML access proof.
+
+
+Primary-screen width and height are an optional immutable pair of positive finite DIPs. The default profile supplies no monitor dimensions. Without a registered observation, both original SystemParameters getters and resource keys throw a named unsupported diagnostic before entering user32. `--primary-screen-fixture` declares asymmetric fractional 1537.25 by 947.75 DIP test dimensions. It verifies both keys, independent local override/removal, finite boundaries, late-registration rejection and genuine closed Classic ComboBox metadata, template and MaxDropDownHeight binding. `--primary-screen-unavailable` verifies the missing pair and original ComboBox construction failure in a separate process.
+
+The initial portable Classic animation policy is `ComboBoxAnimation=false`, so the unchanged `ComboBoxPopupAnimation` getter resolves `None`. Both original resource keys retain independent override/removal semantics. This policy does not observe desktop animation preferences or qualify opening a native popup.
+
+The same disabled animation policy supplies `MenuAnimation=false` and
+`MenuFade=false`, so the unchanged `MenuPopupAnimation` getter resolves `None`.
+`MenuShowDelay` is fixed at 400 ms for portable Classic menus, matching the current
+Windows reference profile. This is a declared product policy, not an observation
+of Linux desktop preferences. `--menu-animation-only` checks these four public
+getters and original resource keys, including independent override/removal, plus the retained ComboBox and
+tooltip policy. This avoids a Windows menu-animation query when the genuine
+ContextMenu connects its parent Popup. It does not observe desktop animation
+preferences or change UIEffects. The native fixture's `--context-menu-only`
+route opens, closes and reopens a genuine default ContextMenu, checking its
+disabled Popup animation, a submenu opened by the actual pointer-hover timer,
+fresh mapped sources and cleanup. Green qualification
+for these new routes is pending the joint family build.
+
+The portable Classic repeat policy fixes `KeyboardDelay=1` and `KeyboardSpeed=31`. The unchanged RepeatButton calculations therefore supply 500 ms Delay and 33 ms Interval. These are declared product defaults, not observed desktop keyboard preferences. The fixture constructs and lays out the genuine Classic RepeatButton, verifies both original resource keys with independent override/removal and checks local Delay/Interval removal restores those metadata defaults. It does not time an OS keyboard repeat engine or alter RepeatButton's timer.
+
+Virtual-screen left, top, width and height use an optional immutable DIP rectangle
+in the same process-wide startup profile. The native host unions full monitor
+bounds, including negative origins and gaps, then divides once by the observed
+desktop DPI. Work-area reservations do not shrink that rectangle. Missing values
+produce a named prerequisite diagnostic before user32; empty or nonfinite bounds
+are rejected. Background callers read the same snapshot. Live topology and DPI
+updates remain outside this profile.
+
+`--virtual-screen-settings` covers signed fractional values, all four original
+resource keys with override/removal, constructor validation, value-copy isolation,
+background reads and rejected late replacement. `--virtual-screen-unavailable`
+checks all four missing-value diagnostics in a separate process. The final joint
+family passes 121 positive settings checks per OS across ten processes. The
+standalone `--primary-screen-constructor` readiness diagnostic deliberately skips
+registration and fails with the missing-primary prerequisite; it is not a positive
+suite route. Valid closed ComboBox construction is covered by the registered
+primary-screen profile.

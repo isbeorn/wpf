@@ -1,0 +1,66 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>System.Xaml</AssemblyName>
+    <AssemblyVersion>10.0.0.0</AssemblyVersion>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <DefineConstants>$(DefineConstants);OLDRESOURCES;SYSTEM_XAML</DefineConstants>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);0618</NoWarn>
+    <WpfSourceDir>$(RepoRoot)src/Microsoft.DotNet.Wpf/src/</WpfSourceDir>
+    <WpfSharedDir>$(WpfSourceDir)Shared/</WpfSharedDir>
+    <XamlSourceDir>$(WpfSourceDir)System.Xaml/</XamlSourceDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(XamlSourceDir)**/*.cs" Exclude="$(XamlSourceDir)ref/**;$(XamlSourceDir)obj/**;$(XamlSourceDir)bin/**" />
+    <Compile Include="$(WpfSharedDir)System/Windows/Markup/TypeConverterHelper.cs;$(WpfSharedDir)System/Windows/Markup/Replacements/TypeUriConverter.cs;$(WpfSharedDir)System/Windows/Markup/ReflectionHelper.cs;$(WpfSharedDir)MS/Internal/Xaml/Parser/SpecialBracketCharacters.cs;$(WpfSharedDir)MS/Internal/ReflectionUtils.cs;$(WpfSharedDir)MS/Internal/SafeSecurityHelper.cs;$(WpfSharedDir)MS/Internal/CriticalExceptions.cs;$(WpfSharedDir)System/Windows/Markup/RuntimeIdentifierPropertyAttribute.cs;$(WpfSharedDir)MS/Internal/Xaml/Context/XamlContextStack.cs;$(WpfSharedDir)MS/Internal/Xaml/Context/XamlFrame.cs;$(WpfSharedDir)System/Windows/Markup/XmlCompatibilityReader.cs;$(WpfSharedDir)System/Windows/Markup/XmlWrappingReader.cs;$(WpfSharedDir)MS/Utility/FrugalList.cs" />
+    <Compile Include="$(WpfSourceDir)Common/src/System/SR.cs" />
+    <EmbeddedResource Include="$(XamlSourceDir)Resources/Strings.resx" LogicalName="FxResources.System.Xaml.SR.resources" />
+    <PackageReference Include="System.Security.Permissions" Version="10.0.0" />
+    <PackageReference Include="System.Windows.Extensions" Version="10.0.0" />
+  </ItemGroup>
+  <UsingTask TaskName="GenerateSourceResourceAccessors" TaskFactory="RoslynCodeTaskFactory" AssemblyFile="$(MSBuildToolsPath)/Microsoft.Build.Tasks.Core.dll">
+    <ParameterGroup>
+      <SourceProject ParameterType="System.String" Required="true" />
+      <ResourceFile ParameterType="System.String" Required="true" />
+      <OutputFile ParameterType="System.String" Required="true" />
+      <RemovedSources ParameterType="Microsoft.Build.Framework.ITaskItem[]" Output="true" />
+    </ParameterGroup>
+    <Task>
+      <Using Namespace="System.Xml.Linq" />
+      <Using Namespace="System.IO" />
+      <Using Namespace="System.Text" />
+      <Using Namespace="System.Linq" />
+      <Code Type="Fragment" Language="cs"><![CDATA[
+        var project = XDocument.Load(SourceProject);
+        RemovedSources = project.Descendants("Compile")
+            .Where(element => element.Attribute("Remove") != null)
+            .Select(element => (Microsoft.Build.Framework.ITaskItem)new Microsoft.Build.Utilities.TaskItem(
+                Path.Combine(Path.GetDirectoryName(SourceProject), element.Attribute("Remove").Value.Replace('\\', Path.DirectorySeparatorChar))))
+            .ToArray();
+        var source = new StringBuilder("#nullable disable\nnamespace System { internal partial class SR {\n");
+        source.Append("private static readonly global::System.Resources.ResourceManager s_resourceManager = new global::System.Resources.ResourceManager(\"FxResources.System.Xaml.SR\", typeof(SR).Assembly);\n");
+        source.Append("internal static global::System.Resources.ResourceManager ResourceManager => s_resourceManager;\n");
+        foreach (var entry in XDocument.Load(ResourceFile).Root.Elements("data"))
+        {
+            var name = entry.Attribute("name").Value;
+            if (!System.Text.RegularExpressions.Regex.IsMatch(name, "^[A-Za-z_][A-Za-z0-9_]*$"))
+                throw new InvalidDataException("Unsupported resource identifier: " + name);
+            source.Append("internal static string @").Append(name).Append(" => GetResourceString(\"").Append(name).Append("\");\n");
+        }
+        source.Append("} }\n");
+        Directory.CreateDirectory(Path.GetDirectoryName(OutputFile));
+        File.WriteAllText(OutputFile, source.ToString(), new UTF8Encoding(false));
+      ]]></Code>
+    </Task>
+  </UsingTask>
+  <Target Name="PrepareForkSources" BeforeTargets="CoreCompile">
+    <GenerateSourceResourceAccessors SourceProject="$(XamlSourceDir)System.Xaml.csproj" ResourceFile="$(XamlSourceDir)Resources/Strings.resx" OutputFile="$(IntermediateOutputPath)SR.g.cs">
+      <Output TaskParameter="RemovedSources" ItemName="OriginalRemovedSources" />
+    </GenerateSourceResourceAccessors>
+    <ItemGroup>
+      <Compile Remove="@(OriginalRemovedSources)" />
+      <Compile Include="$(IntermediateOutputPath)SR.g.cs" />
+    </ItemGroup>
+  </Target>
+</Project>

@@ -1,0 +1,7 @@
+<Project>
+  <Import Project="../../Directory.Build.props" />
+  <PropertyGroup>
+    <BaseOutputPath>$(MSBuildThisFileDirectory)../../../../artifacts/portability/guidelines/bin/$(OS)/$(MSBuildProjectName)/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)../../../../artifacts/portability/guidelines/obj/$(OS)/$(MSBuildProjectName)/</BaseIntermediateOutputPath>
+  </PropertyGroup>
+</Project>

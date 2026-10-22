@@ -8,6 +8,11 @@ using System.Windows.Media;
 using System.Windows.Media.TextFormatting;
 using System.Collections;
 using MS.Internal.Generic;
+#if PORTABLE_WPF
+using ItemSpan = MS.Internal.TextFormatting.Portable.PortableSpan;
+#else
+using ItemSpan = MS.Internal.Span;
+#endif
 
 namespace MS.Internal.TextFormatting
 {
@@ -1057,7 +1062,7 @@ namespace MS.Internal.TextFormatting
         {
             for (int i = 0, cp = 0, lscp = 0; i < _plsrunVector.Count; ++i)
             {
-                Span span = _plsrunVector[i];
+                ItemSpan span = _plsrunVector[i];
                 Plsrun plsrun = (Plsrun)span.element;
 
                 // Is it a normal, non-static, LSRun?
@@ -1115,7 +1120,7 @@ namespace MS.Internal.TextFormatting
 
             for (int i = 0; i < runInfoVector.Count && ichRun < cchToAdd; ++i)
             {
-                Span span = runInfoVector[i];
+                ItemSpan span = runInfoVector[i];
                 TextRunInfo runInfo = (TextRunInfo)span.element;
 
                 int runLength = Math.Min(span.length, cchToAdd - ichRun);
@@ -1946,7 +1951,7 @@ namespace MS.Internal.TextFormatting
             {
                 Debug.Assert(i < _plsrunVector.Count);
 
-                Span span = _plsrunVector[i++];
+                ItemSpan span = _plsrunVector[i++];
                 LSRun lsrun = GetRun((Plsrun)span.element);
 
                 if(     lsrun.Type == Plsrun.Text

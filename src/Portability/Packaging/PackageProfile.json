@@ -1,0 +1,29 @@
+{
+  "version": "10.0.0-portable.1",
+  "sdk": "10.0.401",
+  "targetFramework": "net10.0",
+  "runtimeIdentifier": "linux-x64",
+  "sourceBaseline": {
+    "wpfCommit": "65d15adece1df9a73e3d1abc11f8bbf99e9fc7a9",
+    "unicodeVersion": "17.0.0"
+  },
+  "frameworkAssemblies": [
+    "WindowsBase", "System.Xaml", "System.Windows.Primitives", "System.Private.Windows.Core", "PresentationCore", "PresentationFramework", "PresentationFramework.Classic", "PresentationUI",
+    "UIAutomationTypes", "UIAutomationProvider", "PresentationFramework-SystemCore", "PresentationFramework-SystemData",
+    "PresentationFramework-SystemDrawing", "PresentationFramework-SystemXml", "PresentationFramework-SystemXmlLinq"
+  ],
+  "backendAssemblies": [ "Wpf.Portable.NativeHost" ],
+  "genuineManagedContracts": [ "Accessibility", "System.Windows.Input.Manipulations" ],
+  "metadataOnly": [ "System.Private.Windows.GdiPlus", "DirectWriteForwarder", "ReachFramework", "System.Printing" ],
+  "packages": {
+    "HarfBuzzSharp": "8.3.1.5", "HarfBuzzSharp.NativeAssets.Linux": "8.3.1.5",
+    "SkiaSharp": "3.119.4", "SkiaSharp.HarfBuzz": "3.119.4",
+    "SkiaSharp.NativeAssets.Linux": "3.119.4",
+    "System.Configuration.ConfigurationManager": "10.0.13", "System.Diagnostics.EventLog": "10.0.13",
+    "System.Drawing.Common": "10.0.13", "Microsoft.Win32.SystemEvents": "10.0.13",
+    "System.Formats.Nrbf": "10.0.13", "System.IO.Packaging": "10.0.13",
+    "System.Security.Cryptography.Pkcs": "10.0.13", "System.Security.Cryptography.ProtectedData": "10.0.13",
+    "System.Security.Cryptography.Xml": "10.0.13", "System.Security.Permissions": "10.0.13",
+    "System.Windows.Extensions": "10.0.13"
+  }
+}

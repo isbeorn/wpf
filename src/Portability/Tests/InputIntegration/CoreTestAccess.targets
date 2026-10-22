@@ -1,0 +1,5 @@
+<Project>
+  <ItemGroup Condition="'$(MSBuildProjectName)' == 'PresentationCore' Or '$(MSBuildProjectName)' == 'PresentationFramework'">
+    <Compile Include="$(MSBuildThisFileDirectory)CoreTestAccess.cs" />
+  </ItemGroup>
+</Project>

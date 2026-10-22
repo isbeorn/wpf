@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Tmds.DBus.Protocol" Version="[0.94.1]" />
+    <EmbeddedResource Include="SplashResources.resources" LogicalName="$(AssemblyName).g.resources" />
+    <ProjectReference Include="../../Framework/WindowsBase/WindowsBase.csproj" Aliases="WpfFork" />
+    <ProjectReference Include="../../Framework/PresentationCore/PresentationCore.csproj" Aliases="WpfFork" />
+    <ProjectReference Include="../../Framework/PresentationFramework/PresentationFramework.csproj" Aliases="WpfFork" />
+    <ProjectReference Include="../../Framework/PresentationFramework.Classic/PresentationFramework.Classic.csproj" Aliases="WpfFork" />
+    <ProjectReference Include="../../Backend/NativeHost/NativeHost.csproj" />
+  </ItemGroup>
+  <Import Project="../../Framework/Build/PortableWpfReferences.targets" />
+  <Import Project="../../Framework/Build/WindowsNativeContracts.props" />
+</Project>

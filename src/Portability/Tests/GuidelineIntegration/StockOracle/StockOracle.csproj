@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <OutputType>Exe</OutputType>
+    <DefineConstants>$(DefineConstants);STOCK</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Program.cs" Link="Program.cs" />
+    <Compile Include="../../RenderingIntegration/VisibilityCases.cs" Link="VisibilityCases.cs" />
+    <Compile Include="../../RenderingIntegration/ImageBrushCases.cs" Link="ImageBrushCases.cs" />
+    <Compile Include="../../RenderingIntegration/LinearGradientCases.cs" Link="LinearGradientCases.cs" />
+    <Compile Include="../BitmapSamplingCases.cs" Link="BitmapSamplingCases.cs" />
+    <Compile Include="../BitmapSamplingMath.cs" Link="BitmapSamplingMath.cs" />
+    <Compile Include="../BitmapSamplingCorpus.cs" Link="BitmapSamplingCorpus.cs" />
+    <Compile Include="../VisualGuidelineCases.cs" Link="VisualGuidelineCases.cs" />
+    <Compile Include="../UniformGuidelineCases.cs" Link="UniformGuidelineCases.cs" />
+    <Compile Include="../NativeCubicFillCases.cs" Link="NativeCubicFillCases.cs" />
+    <Compile Include="../DashedPenCases.cs" Link="DashedPenCases.cs" />
+    <Compile Include="../DashedFocusOracle.cs" Link="DashedFocusOracle.cs" />
+    <Content Include="../../Fixtures/Fonts/DejaVuSans.ttf" Link="Fonts/DejaVuSans.ttf" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

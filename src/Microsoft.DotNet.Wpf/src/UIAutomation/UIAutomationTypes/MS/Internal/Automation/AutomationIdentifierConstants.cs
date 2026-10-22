@@ -28,6 +28,14 @@ namespace MS.Internal.Automation
 
         static AutomationIdentifierConstants()
         {
+#if PORTABLE_WPF
+            // These are managed schema identifiers, independent of native automation transport availability.
+            LastSupportedProperty = Properties.IsDialog;
+            LastSupportedEvent = Events.ActiveTextPositionChanged;
+            LastSupportedPattern = Patterns.CustomNavigation;
+            LastSupportedTextAttribute = TextAttributes.SayAsInterpretAs;
+            LastSupportedControlType = ControlTypes.AppBar;
+#else
             if (OSVersionHelper.IsOsWindows10RS5OrGreater)
             {
                 LastSupportedProperty = Properties.IsDialog;
@@ -117,6 +125,7 @@ namespace MS.Internal.Automation
                 LastSupportedTextAttribute = TextAttributes.UnderlineStyle;
                 LastSupportedControlType = ControlTypes.Separator;
             }
+#endif
         }
 
         

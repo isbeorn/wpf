@@ -3,6 +3,11 @@
 
 using System.Globalization;
 using System.Windows.Media.TextFormatting;
+#if PORTABLE_WPF
+using ItemSpan = MS.Internal.TextFormatting.Portable.PortableSpan;
+#else
+using ItemSpan = MS.Internal.Span;
+#endif
 
 namespace MS.Internal.TextFormatting
 {
@@ -311,7 +316,7 @@ namespace MS.Internal.TextFormatting
 
             for (int i = 0; i < textRunList.Length; i++)
             {
-                Span currentSpan = _textRunVector[i];
+                ItemSpan currentSpan = _textRunVector[i];
                 textRunList[i] = new TextSpan<TextRun>(currentSpan.length, currentSpan.element as TextRun);
             }
 

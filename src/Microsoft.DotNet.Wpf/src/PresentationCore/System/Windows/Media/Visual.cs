@@ -2608,7 +2608,9 @@ namespace System.Windows.Media
             //
             UIElement.PropagateResumeLayout(this, child);
 
+#if !PORTABLE_WPF
             if (HwndTarget.IsProcessPerMonitorDpiAware == true && HwndTarget.IsPerMonitorDpiScalingEnabled)
+#endif
             {
                 bool flag1 = CheckFlagsAnd(VisualFlags.DpiScaleFlag1);
                 bool flag2 = CheckFlagsAnd(VisualFlags.DpiScaleFlag2);
@@ -4683,8 +4685,12 @@ namespace System.Windows.Media
             {
                 if (UIElement.DpiScaleXValues.Count == 0)
                 {
+#if PORTABLE_WPF
+                    return new DpiScale(1, 1);
+#else
                     // This is for scenarios where an HWND hasn't been created yet.
                     return UIElement.EnsureDpiScale();
+#endif
                 }
 
                 // initialized to system DPI as a fallback value
@@ -5191,6 +5197,16 @@ namespace System.Windows.Media
             VisualFlags flags,
             VisualProxyFlags proxyFlags)
         {
+#if PORTABLE_WPF
+            // Native channel flags can remain dirty between portable frames.
+            // Notify each registered ancestor before the native propagation early-out.
+            for (Visual current = e; current != null; current = current._parent as Visual)
+            {
+                MediaContext context = current.Dispatcher.Reserved0 as MediaContext;
+                if (context != null && (current.CheckFlagsOr(VisualFlags.ShouldPostRender) || context.IsPortableBrushSource(current)))
+                    context.PostRender();
+            }
+#endif
             while ((e != null) &&
                    (!e.CheckFlagsAnd(flags) || !e.CheckFlagsOnAllChannels(proxyFlags)))
             {

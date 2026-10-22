@@ -1,0 +1,21 @@
+<Project>
+  <PropertyGroup>
+    <_OriginalPortableProjectProps>$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildProjectDirectory)'))</_OriginalPortableProjectProps>
+  </PropertyGroup>
+  <Import Project="$(_OriginalPortableProjectProps)" />
+  <PropertyGroup>
+    <_PortableDistributionProjectName>$(MSBuildProjectName)</_PortableDistributionProjectName>
+    <_PortableDistributionProjectName Condition="'$(_TargetAssemblyProjectName)' != ''">$(_TargetAssemblyProjectName)</_PortableDistributionProjectName>
+    <BaseOutputPath>$(PortableDistributionBuildRoot)bin/$(_PortableDistributionProjectName)/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(PortableDistributionBuildRoot)obj/$(_PortableDistributionProjectName)/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+    <NuGetLockFilePath>$(BaseIntermediateOutputPath)packages.lock.json</NuGetLockFilePath>
+    <CustomAfterMicrosoftCommonTargets Condition="'$(MSBuildProjectName)' == 'PresentationBuildTasks'">$(MSBuildThisFileDirectory)CompilerClosure.targets</CustomAfterMicrosoftCommonTargets>
+  </PropertyGroup>
+  <Target Name="CapturePortableDistributionInputs" AfterTargets="CoreCompile">
+    <ItemGroup>
+      <_PortableDistributionInput Include="@(Compile);@(EmbeddedResource);@(Page);@(ApplicationDefinition);@(Resource);@(AdditionalFiles);@(Analyzer);@(PortableSourceInput);$(MSBuildAllProjects)" />
+    </ItemGroup>
+    <WriteLinesToFile File="$(IntermediateOutputPath)portable-inputs.txt" Lines="@(_PortableDistributionInput->'%(FullPath)')" Overwrite="true" WriteOnlyWhenDifferent="true" />
+  </Target>
+</Project>

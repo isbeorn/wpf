@@ -1,0 +1,9 @@
+<Project>
+  <Import Project="../../Directory.Build.props" />
+  <PropertyGroup>
+    <RepoRoot>$([MSBuild]::NormalizeDirectory('$(MSBuildThisFileDirectory)', '../../../..'))</RepoRoot>
+    <BaseOutputPath>$(RepoRoot)artifacts/portability/native-window-integration/bin/$(OS)/</BaseOutputPath>
+    <BaseIntermediateOutputPath>$(RepoRoot)artifacts/portability/native-window-integration/obj/$(OS)/</BaseIntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
+  </PropertyGroup>
+</Project>

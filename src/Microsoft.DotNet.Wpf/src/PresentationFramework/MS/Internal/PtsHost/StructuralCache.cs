@@ -1,4 +1,4 @@
-﻿// Licensed to the .NET Foundation under one or more agreements.
+// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
 // 
@@ -130,6 +130,10 @@ namespace MS.Internal.PtsHost
         /// </summary>
         internal void InvalidateFormatCache(bool destroyStructure)
         {
+#if PORTABLE_WPF
+            _destroyStructure |= destroyStructure;
+            _forceReformat = true;
+#else
             if (_section != null)
             {
                 _section.InvalidateFormatCache();
@@ -139,6 +143,7 @@ namespace MS.Internal.PtsHost
                 // to reacquire formatting caches.
                 _forceReformat = true;
             }
+#endif
         }
 
         /// <summary>
@@ -627,7 +632,9 @@ namespace MS.Internal.PtsHost
                 _owner = owner;
                 _owner._currentPage = page;
                 _owner._illegalTreeChangeDetected = false;
+#if !PORTABLE_WPF
                 owner.PtsContext.Enter();
+#endif
             }
 
             /// <summary>
@@ -639,7 +646,9 @@ namespace MS.Internal.PtsHost
 
                 try
                 {
+#if !PORTABLE_WPF
                     _owner.PtsContext.Leave();
+#endif
                 }
                 finally
                 {

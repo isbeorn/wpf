@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>PresentationBuildTasks</AssemblyName>
+    <AssemblyVersion>10.0.0.0</AssemblyVersion>
+    <Version>10.0.0-portable.1</Version>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <NoWarn>$(NoWarn);1058</NoWarn>
+    <DefineConstants>$(DefineConstants);PBTCOMPILER;PARSERM8BC;NEWLOADER;IGNORABLESUPPORT;ONLYMARKUPEXTENSIONS</DefineConstants>
+    <WpfSourceRoot>$(PortabilityRepositoryRoot)src/Microsoft.DotNet.Wpf/src/</WpfSourceRoot>
+    <CompilerSourceRoot>$(WpfSourceRoot)PresentationBuildTasks/</CompilerSourceRoot>
+    <WpfResourceFile>$(CompilerSourceRoot)Resources/Strings.resx</WpfResourceFile>
+    <WpfResourceNamespace>MS.Utility</WpfResourceNamespace>
+    <WpfResourceManifestName>FxResources.PresentationBuildTasks.SR</WpfResourceManifestName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Build.Framework" HintPath="$(MSBuildToolsPath)/Microsoft.Build.Framework.dll" Private="false" />
+    <Reference Include="Microsoft.Build.Utilities.Core" HintPath="$(MSBuildToolsPath)/Microsoft.Build.Utilities.Core.dll" Private="false" />
+    <Reference Include="System.Reflection.MetadataLoadContext" HintPath="$(MSBuildToolsPath)/System.Reflection.MetadataLoadContext.dll" Private="false" />
+    <Reference Include="System.CodeDom" HintPath="$(MSBuildToolsPath)/System.CodeDom.dll" Private="false" />
+    <EmbeddedResource Include="$(CompilerSourceRoot)Resources/Strings.resx" LogicalName="FxResources.PresentationBuildTasks.SR.resources" />
+  </ItemGroup>
+  <Import Project="../OriginalCompilerSources.targets" />
+  <Import Project="../../Framework/Build/SourceResources.targets" />
+</Project>

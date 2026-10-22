@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>Wpf.Stock.WindowRestoreOracle</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../ApplicationRunCases.cs" Link="ApplicationRunCases.cs" />
+  </ItemGroup>
+</Project>

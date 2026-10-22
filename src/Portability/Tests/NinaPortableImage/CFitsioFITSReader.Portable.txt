@@ -1,0 +1,26 @@
+        private void ReleasePortableReader() {
+            if (_disposed) return;
+            var input = filePtr;
+            var output = portableTempPtr;
+            filePtr = IntPtr.Zero;
+            portableTempPtr = IntPtr.Zero;
+            try {
+                if (input != IntPtr.Zero) {
+                    int status = 0;
+                    CfitsioNative.fits_close_file(input, out status);
+                }
+            } finally {
+                try {
+                    if (output != IntPtr.Zero) {
+                        int status = 0;
+                        CfitsioNative.fits_close_file(output, out status);
+                    }
+                } finally {
+                    if (!string.IsNullOrEmpty(tempFile) && File.Exists(tempFile)) {
+                        try { File.Delete(tempFile); tempFile = null; }
+                        catch (Exception error) { Logger.Error("Failed to delete temp file", error); }
+                    }
+                    _disposed = true;
+                }
+            }
+        }
